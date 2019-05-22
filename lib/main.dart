@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/login.dart';
+import 'package:pmsbmibile3/pages/home.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,9 +12,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: "/",
+      initialRoute: "/login",
       routes: {
-        "/":(context) => LoginPage(),
+        "/login":(context) => LoginPage(),
+        "/":(context) => HomePage(),
       },
     );
   }

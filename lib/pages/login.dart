@@ -68,7 +68,7 @@ class LoginPageState extends State<LoginPage> {
                       child: RaisedButton(
                         child: Text("Acessar com email e senha"),
                         onPressed: () {
-                          Navigator.pushNamed(context, "/");
+                          Navigator.of(context).pop();
                         },
                       ),
                     ),
