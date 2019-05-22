@@ -21,9 +21,7 @@ class LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              child: FlutterLogo(
-                size: 300,
-              ),
+              child: Image.asset('assets/images/logos/Splash_1024x1024.png'),
             ),
             Container(
               padding: EdgeInsets.symmetric(
