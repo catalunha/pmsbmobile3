@@ -1,4 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:pmsbmibile3/UserRepository.dart';
+import 'package:pmsbmibile3/pages/login.dart';
+
+class BaseHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Consumer(
+      builder: (context, UserRepository user, _) {
+        switch (user.status) {
+          case Status.Unauthenticated:
+            return LoginPage();
+          case Status.Uninitialized:
+            return LoginPage();
+          case Status.Authenticating:
+            return LoginPage();
+          case Status.Authenticated:
+            return HomePage();
+        }
+      },
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   @override
