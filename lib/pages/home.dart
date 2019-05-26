@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/login_required.dart';
+import 'package:provider/provider.dart';
+import 'package:pmsbmibile3/state/user_repository.dart';
 
-class HomePageProxy extends StatelessWidget {
+class HomePage extends StatelessWidget {
+  UserRepository userRepository;
   Widget _appBarBuild() {
     return AppBar(
       actions: <Widget>[
@@ -97,7 +100,9 @@ class HomePageProxy extends StatelessWidget {
             ),
             ListTile(
               title: Text('Sair'),
-              onTap: () {},
+              onTap: () {
+                userRepository.signOut();
+              },
             ),
           ],
         ),
@@ -107,6 +112,8 @@ class HomePageProxy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    userRepository = Provider.of<UserRepository>(context);
+
     return DefaultLoginRequired(
       child: Scaffold(
         drawer: _drawerBuild(),
