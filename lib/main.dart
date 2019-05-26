@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: "/",
         routes: {
-          "/": (context) => BaseHomePage(),
+          "/": (context) => HomePageProxy(),
         },
       ),
     );

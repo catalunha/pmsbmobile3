@@ -1,37 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:pmsbmibile3/state/user_repository.dart';
-import 'package:pmsbmibile3/pages/login.dart';
+import 'package:pmsbmibile3/components/login_required.dart';
 
-class BaseHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Consumer(
-      builder: (context, UserRepository user, _) {
-        switch (user.status) {
-          case Status.Unauthenticated:
-            return LoginPage();
-          case Status.Uninitialized:
-            return LoginPage();
-          case Status.Authenticating:
-            return LoginPage();
-          case Status.Authenticated:
-            return HomePage();
-        }
-      },
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  HomePageState createState() {
-    return HomePageState();
-  }
-}
-
-class HomePageState extends State<HomePage> {
+class HomePageProxy extends StatelessWidget {
   Widget _appBarBuild() {
     return AppBar(
       actions: <Widget>[
@@ -137,21 +107,23 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: _drawerBuild(),
-      appBar: _appBarBuild(),
-      endDrawer: _endDrawerBuild(),
-      body: Container(
-        child: ListView(
-          children: <Widget>[
-            _cardBuild(),
-            _cardBuild(),
-            _cardBuild(),
-            _cardBuild(),
-            _cardBuild(),
-            _cardBuild(),
-            _cardBuild(),
-          ],
+    return DefaultLoginRequired(
+      child: Scaffold(
+        drawer: _drawerBuild(),
+        appBar: _appBarBuild(),
+        endDrawer: _endDrawerBuild(),
+        body: Container(
+          child: ListView(
+            children: <Widget>[
+              _cardBuild(),
+              _cardBuild(),
+              _cardBuild(),
+              _cardBuild(),
+              _cardBuild(),
+              _cardBuild(),
+              _cardBuild(),
+            ],
+          ),
         ),
       ),
     );
