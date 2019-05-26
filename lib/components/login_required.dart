@@ -12,8 +12,12 @@ class LoginRequired extends StatelessWidget {
   final Widget loadingPage;
   final Widget child;
 
-  LoginRequired(
-      {this.loadingPage, this.loginPage, this.splashPage, this.child});
+  LoginRequired({
+    this.loadingPage,
+    this.loginPage,
+    this.splashPage,
+    this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,9 @@ class LoginRequired extends StatelessWidget {
 class DefaultLoginRequired extends StatelessWidget {
   final Widget child;
 
-  DefaultLoginRequired({this.child});
+  DefaultLoginRequired({
+    this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
