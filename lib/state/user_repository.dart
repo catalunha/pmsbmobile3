@@ -35,7 +35,7 @@ class UserRepository with ChangeNotifier {
     return Future.delayed(Duration.zero);
   }
 
-  Future<void> _onAuthStateChange(FirebaseUser firebaseUser) {
+  void _onAuthStateChange(FirebaseUser firebaseUser) {
     if (firebaseUser == null) {
       _status = Status.Unauthenticated;
     } else {
