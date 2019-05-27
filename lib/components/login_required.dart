@@ -33,6 +33,7 @@ class LoginRequired extends StatelessWidget {
       case Status.Authenticated:
         return child;
     }
+    return loadingPage;
   }
 }
 
