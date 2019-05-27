@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/login_required.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
+import 'package:pmsbmibile3/state/services.dart';
+import 'package:pmsbmibile3/state/models/usuarios.dart';
+
+var db = DatabaseService();
 
 class HomePage extends StatelessWidget {
   UserRepository userRepository;
+
   Widget _appBarBuild() {
     return AppBar(
       actions: <Widget>[
@@ -13,7 +18,10 @@ class HomePage extends StatelessWidget {
 
       //leading: Text("leading"),
       centerTitle: true,
-      title: Text("Ola, Nome do Usuario"),
+      title: Consumer(
+        builder: (context, Usuario usuario, _) =>
+            Text("Ola, ${usuario.lastName}"),
+      ),
     );
   }
 
@@ -46,17 +54,19 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Icon(
-                    Icons.people,
-                    size: 75,
+            Consumer(
+              builder: (context, Usuario usuario, _) => DrawerHeader(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Icon(
+                          Icons.people,
+                          size: 75,
+                        ),
+                        Text("${usuario.telefoneCelular}"),
+                      ],
+                    ),
                   ),
-                  Text("+55 63 9 0000 0000"),
-                ],
-              ),
             ),
             ListTile(
               title: Text('Questionarios'),
@@ -114,22 +124,31 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     userRepository = Provider.of<UserRepository>(context);
 
+    var userId = null;
+    if (userRepository.user != null) {
+      userId = userRepository.user.uid;
+    }
+
     return DefaultLoginRequired(
-      child: Scaffold(
-        drawer: _drawerBuild(),
-        appBar: _appBarBuild(),
-        endDrawer: _endDrawerBuild(),
-        body: Container(
-          child: ListView(
-            children: <Widget>[
-              _cardBuild(),
-              _cardBuild(),
-              _cardBuild(),
-              _cardBuild(),
-              _cardBuild(),
-              _cardBuild(),
-              _cardBuild(),
-            ],
+      child: StreamProvider<Usuario>.value(
+        initialData: Usuario(firstName: "..", lastName: ".."),
+        stream: db.streamUsuario(userId),
+        child: Scaffold(
+          drawer: _drawerBuild(),
+          appBar: _appBarBuild(),
+          endDrawer: _endDrawerBuild(),
+          body: Container(
+            child: ListView(
+              children: <Widget>[
+                _cardBuild(),
+                _cardBuild(),
+                _cardBuild(),
+                _cardBuild(),
+                _cardBuild(),
+                _cardBuild(),
+                _cardBuild(),
+              ],
+            ),
           ),
         ),
       ),
