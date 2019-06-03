@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _drawerBuild() {
+  Widget _drawerBuild(context) {
     return Drawer(
       child: SafeArea(
         child: ListView(
@@ -75,6 +75,12 @@ class HomePage extends StatelessWidget {
             ListTile(
               title: Text('Perguntas'),
               onTap: () {},
+            ),
+            ListTile(
+              title: Text('Comunicação'),
+              onTap: () {
+                Navigator.pushNamed(context, '/comunicacao');
+              },
             ),
             ListTile(
               title: Text('Relatorios'),
@@ -134,7 +140,7 @@ class HomePage extends StatelessWidget {
         initialData: Usuario(firstName: "..", lastName: ".."),
         stream: db.streamUsuario(userId),
         child: Scaffold(
-          drawer: _drawerBuild(),
+          drawer: _drawerBuild(context),
           appBar: _appBarBuild(),
           endDrawer: _endDrawerBuild(),
           body: Container(
