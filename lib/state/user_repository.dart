@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
 class UserRepository with ChangeNotifier {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseAuth _auth;
   FirebaseUser _user;
   Status _status = Status.Uninitialized;
@@ -26,6 +28,29 @@ class UserRepository with ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  Future<bool> googleSignIn() async{
+    print("tentando logar: ");
+    try{
+      _status = Status.Authenticating;
+      notifyListeners();
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await _auth.signInWithCredential(credential);
+      return true;
+    }catch(e){
+      print(e);
+      _status = Status.Unauthenticated;
+      notifyListeners();
+      return false;
+    }
+
+
   }
 
   Future signOut() async {
