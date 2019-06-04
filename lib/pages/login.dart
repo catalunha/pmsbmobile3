@@ -88,15 +88,6 @@ class LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 4,
-                        ),
-                        child: RaisedButton(
-                          child: Text("Acessar com conta do google"),
-                          onPressed: () {},
-                        ),
-                      ),
                     ],
                   ),
                 ),
