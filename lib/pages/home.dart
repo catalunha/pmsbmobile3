@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/models/usuarios.dart';
+import 'package:pmsbmibile3/state/models/noticia.dart';
 
 var db = DatabaseService();
 
@@ -21,29 +22,6 @@ class HomePage extends StatelessWidget {
       title: Consumer(
         builder: (context, Usuario usuario, _) =>
             Text("Ola, ${usuario.lastName}"),
-      ),
-    );
-  }
-
-  Widget _cardBuild() {
-    return Container(
-      padding: EdgeInsets.all(6),
-      child: Card(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              //leading: Text("asdf"),
-              title: Text("Noticia N"),
-              subtitle: Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
-            ),
-            Container(
-              padding: EdgeInsets.all(12),
-              alignment: Alignment.centerRight,
-              child: Icon(Icons.thumb_up),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -138,20 +116,69 @@ class HomePage extends StatelessWidget {
           appBar: _appBarBuild(),
           endDrawer: _endDrawerBuild(),
           body: Container(
-            child: ListView(
-              children: <Widget>[
-                _cardBuild(),
-                _cardBuild(),
-                _cardBuild(),
-                _cardBuild(),
-                _cardBuild(),
-                _cardBuild(),
-                _cardBuild(),
-              ],
+            child: StreamProvider<List<Future<Noticia>>>.value(
+              stream: db.streamNoticias(userId),
+              child: ListaNoticias(),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class ListaNoticias extends StatelessWidget {
+  Widget _futureCard(Future<Noticia> futureNoticia) {
+    return FutureBuilder(
+      future: futureNoticia,
+      builder: (BuildContext context, AsyncSnapshot<Noticia> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          case ConnectionState.done:
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            return _cardBuild(snapshot.data);
+        }
+        return null; // unreachable
+      },
+    );
+  }
+
+  Widget _cardBuild(Noticia noticia) {
+    return Container(
+      padding: EdgeInsets.all(6),
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              //leading: Text("asdf"),
+              title: Text("Titulo: ${noticia.titulo} id:${noticia.id}"),
+              subtitle: Text("${noticia.conteudoMarkdown}"),
+            ),
+            Container(
+              padding: EdgeInsets.all(12),
+              alignment: Alignment.centerRight,
+              child: Icon(Icons.thumb_up),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Future<Noticia>> noticias =
+        Provider.of<List<Future<Noticia>>>(context);
+    print(noticias.length);
+    return ListView(
+      children: noticias.map((noticia) => _futureCard(noticia)).toList(),
     );
   }
 }
