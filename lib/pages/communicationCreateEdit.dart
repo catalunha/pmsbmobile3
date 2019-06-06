@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/area_checked_list.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+import 'file_explorer.dart';
+
 class CommunicationCreateEdit extends StatefulWidget {
   @override
   _CommunicationCreateEditState createState() =>
@@ -9,8 +11,13 @@ class CommunicationCreateEdit extends StatefulWidget {
 }
 
 class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
+  //Dados do formulario
+
   DateTime _date = new DateTime.now();
+
   TimeOfDay _hora = new TimeOfDay.now();
+
+  var myController = TextEditingController();
 
   String _markdownData = """# Markdown Example
 Markdown allows you to easily include formatted text, images, and even formatted Dart code in your app.
@@ -53,6 +60,8 @@ void main() {
 Enjoy!
 """;
 
+// --------- TELA DADOS ---------
+
   //Destinatario
   _tituloNoticia() {
     return Padding(
@@ -68,7 +77,6 @@ Enjoy!
   }
 
   // Data - Horario
-
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -154,14 +162,17 @@ Enjoy!
 
   //Anexo
 
+  // --------- TELA TEXTO ---------
+
   //Texto da Noticia
   _textoNoticia() {
     return Padding(
         padding: EdgeInsets.all(5.0),
         child: TextField(
+          controller: myController,
           onChanged: (text) {
             setState(() {
-               _markdownData = text;
+              _markdownData = text;
             });
           },
           keyboardType: TextInputType.multiline,
@@ -173,31 +184,7 @@ Enjoy!
   }
 
   _anexos() {
-    return Padding(
-      padding: EdgeInsets.all(5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          new Flexible(
-            child: TextField(
-              obscureText: true,
-              enabled: false,
-              keyboardType: TextInputType.datetime,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  //labelText: '${_datestring}',
-                  hintText: ""),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.attach_file),
-            onPressed: () {
-              //inserir arquivos anexos aqui
-            },
-          ),
-        ],
-      ),
-    );
+    return FileExplorer();
   }
 
   _botoes() {
@@ -269,13 +256,45 @@ Enjoy!
             _tituloNoticia(),
             _texto("Data / Hora da notícia:"),
             _dataHorarioNoticia(context),
-            _texto("Anexo:"),
+            _texto("Anexo"),
             _anexos(),
             _texto("Escolha um ou varios destinatarios:"),
             _eixos(context),
             _botoes()
           ],
         ));
+  }
+
+  _iconesLista() {
+    return Row(
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.link),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.format_bold),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.format_size),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.format_list_bulleted),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.format_list_numbered),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.camera_alt),
+          onPressed: () {},
+        ),
+        IconButton(icon: Icon(Icons.attach_file), onPressed: () {})
+      ],
+    );
   }
 
   _bodyTexto(context) {
@@ -285,22 +304,17 @@ Enjoy!
         child: ListView(
           padding: EdgeInsets.all(5),
           children: <Widget>[
+            //_iconesLista(),
             _texto("Texto da notícia:"),
             _textoNoticia(),
           ],
         ));
   }
 
+  // ---------- TELA PREVIEW ----------
+
   _bodyPreview(context) {
-    return SafeArea(
-        top: false,
-        bottom: false,
-        child: ListView(
-          padding: EdgeInsets.all(5),
-          children: <Widget>[
-            _texto("Texto:"),
-          ],
-        ));
+    return Markdown(data: _markdownData);
   }
 
   @override
@@ -327,7 +341,7 @@ Enjoy!
             children: [
               _bodyDados(context),
               _bodyTexto(context),
-              Markdown(data: _markdownData)
+              _bodyPreview(context)
             ],
           ),
           floatingActionButton: FloatingActionButton(
@@ -338,5 +352,6 @@ Enjoy!
         ),
       ),
     );
+    myController.text = _markdownData;
   }
 }

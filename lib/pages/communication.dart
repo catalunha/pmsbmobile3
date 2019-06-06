@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pmsbmibile3/pages/communicationCreateEdit.dart';
-import 'package:pmsbmibile3/pages/home.dart';
 
 class CommunicationPage extends StatefulWidget {
   @override
@@ -8,6 +8,7 @@ class CommunicationPage extends StatefulWidget {
 }
 
 class _CommunicationPageState extends State<CommunicationPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,10 +101,6 @@ class _CommunicationPageState extends State<CommunicationPage> {
                       }));
                     },
                   ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {},
-                  )
                 ],
               ),
             )

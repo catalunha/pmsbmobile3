@@ -7,8 +7,9 @@ import 'package:pmsbmibile3/pages/home.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+    
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     return ChangeNotifierProvider(
       builder: (_) => UserRepository.instance(),
       child: MaterialApp(
