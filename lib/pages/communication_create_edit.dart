@@ -2,7 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/area_checked_list.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import 'file_explorer.dart';
+import 'user_files.dart';
+
+class SelectingTextEditingController extends TextEditingController {
+  SelectingTextEditingController({String text}) : super(text: text) {
+    if (text != null) setTextAndPosition(text);
+  }
+
+  void setTextAndPosition(String newText, {int caretPosition}) {
+    int offset = caretPosition != null ? caretPosition : newText.length;
+    value = value.copyWith(
+        text: newText,
+        selection: TextSelection.collapsed(offset: offset),
+        composing: TextRange.empty);
+  }
+}
 
 class CommunicationCreateEdit extends StatefulWidget {
   @override
@@ -14,51 +28,9 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   //Dados do formulario
 
   DateTime _date = new DateTime.now();
-
   TimeOfDay _hora = new TimeOfDay.now();
-
-  var myController = TextEditingController();
-
-  String _markdownData = """# Markdown Example
-Markdown allows you to easily include formatted text, images, and even formatted Dart code in your app.
-
-## Styling
-Style text as _italic_, __bold__, or `inline code`.
-
-- Use bulleted lists
-- To better clarify
-- Your points
-
-## Links
-You can use [hyperlinks](https://rockcontent.com/blog/wp-content/uploads/2017/01/formatos-de-imagem-2.jpg) in markdown
-
-## Images
-
-You can include images:
-
-![Flutter logo](https://rockcontent.com/blog/wp-content/uploads/2017/01/formatos-de-imagem-2.jpg)
-
-## Markdown widget
-
-This is an example of how to create your own Markdown widget:
-
-    new Markdown(data: 'Hello _world_!');
-
-## Code blocks
-Formatted Dart code looks really pretty too:
-
-```
-void main() {
-  runApp(new MaterialApp(
-    home: new Scaffold(
-      body: new Markdown(data: markdownData)
-    )
-  ));
-}
-```
-
-Enjoy!
-""";
+  String _textoMarkdown = "  ";
+  var myController = new SelectingTextEditingController();
 
 // --------- TELA DADOS ---------
 
@@ -169,22 +141,17 @@ Enjoy!
     return Padding(
         padding: EdgeInsets.all(5.0),
         child: TextField(
-          controller: myController,
-          onChanged: (text) {
-            setState(() {
-              _markdownData = text;
-            });
+          onChanged: (text){
+              _textoMarkdown = text;
+              print(myController.selection);
           },
+          controller: myController,
           keyboardType: TextInputType.multiline,
           maxLines: null,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
           ),
         ));
-  }
-
-  _anexos() {
-    return FileExplorer();
   }
 
   _botoes() {
@@ -256,8 +223,8 @@ Enjoy!
             _tituloNoticia(),
             _texto("Data / Hora da notícia:"),
             _dataHorarioNoticia(context),
-            _texto("Anexo"),
-            _anexos(),
+            //_texto("Anexo"),
+            //_anexos(),
             _texto("Escolha um ou varios destinatarios:"),
             _eixos(context),
             _botoes()
@@ -265,16 +232,29 @@ Enjoy!
         ));
   }
 
+  _atualizarMarkdown(texto, posicao) {
+    _textoMarkdown = _textoMarkdown + texto;
+    myController.setTextAndPosition(_textoMarkdown, caretPosition: 0);// myController.selection.baseOffset + texto.length- posicao);
+  }
+
   _iconesLista() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         IconButton(
           icon: Icon(Icons.link),
-          onPressed: () {},
+          onPressed: () {
+            _textoMarkdown = _textoMarkdown + "[]";
+            myController.setTextAndPosition(_textoMarkdown,
+                caretPosition: myController.selection.baseOffset);
+          },
         ),
         IconButton(
           icon: Icon(Icons.format_bold),
-          onPressed: () {},
+          onPressed: () {
+           myController.setTextAndPosition("This is a test",caretPosition: 5);
+           // _atualizarMarkdown("*", 0);
+          },
         ),
         IconButton(
           icon: Icon(Icons.format_size),
@@ -289,10 +269,12 @@ Enjoy!
           onPressed: () {},
         ),
         IconButton(
-          icon: Icon(Icons.camera_alt),
-          onPressed: () {},
-        ),
-        IconButton(icon: Icon(Icons.attach_file), onPressed: () {})
+            icon: Icon(Icons.attach_file),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return UserFilesFirebaseList();
+              }));
+            })
       ],
     );
   }
@@ -304,7 +286,7 @@ Enjoy!
         child: ListView(
           padding: EdgeInsets.all(5),
           children: <Widget>[
-            //_iconesLista(),
+            _iconesLista(),
             _texto("Texto da notícia:"),
             _textoNoticia(),
           ],
@@ -314,11 +296,12 @@ Enjoy!
   // ---------- TELA PREVIEW ----------
 
   _bodyPreview(context) {
-    return Markdown(data: _markdownData);
+    return Markdown(data: myController.text);
   }
 
   @override
   Widget build(BuildContext context) {
+    myController.setTextAndPosition(_textoMarkdown);
     return MaterialApp(
       home: DefaultTabController(
         length: 3,
@@ -352,6 +335,5 @@ Enjoy!
         ),
       ),
     );
-    myController.text = _markdownData;
   }
 }

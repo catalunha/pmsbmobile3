@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 
-class FileExplorer extends StatefulWidget {
+class UserFilesFirebaseList extends StatefulWidget {
   @override
-  _FileExplorerState createState() => new _FileExplorerState();
+  _UserFilesFirebaseListState createState() =>
+      new _UserFilesFirebaseListState();
 }
 
-class _FileExplorerState extends State<FileExplorer> {
+class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
   final key = new GlobalKey<ScaffoldState>();
   String _fileName;
   String _path;
@@ -24,7 +25,7 @@ class _FileExplorerState extends State<FileExplorer> {
     _controller.addListener(() => _extension = _controller.text);
   }
 
-  void _openFileExplorer() async {
+  void _openUserFilesFirebaseList() async {
     if (_pickingType != FileType.CUSTOM || _hasValidMime) {
       try {
         if (_multiPick) {
@@ -49,49 +50,20 @@ class _FileExplorerState extends State<FileExplorer> {
     }
   }
 
-  _itemSelecionadoCard(String name, String path) {
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            //leading: Icon(Icons.album),
-            title: Text(name),
-            subtitle: Text(path),
-          ),
-          ButtonTheme.bar(
-            // make buttons use the appropriate styles for cards
-            child: ButtonBar(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.content_copy),
-                  onPressed: () {
-                    Clipboard.setData(
-                        new ClipboardData(text: "![Não encontrado]($path)"));
-                    key.currentState.showSnackBar(new SnackBar(
-                      content: new Text("Copiado para o Clipboard"),
-                    ));
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    /* Funcao de deletar imagem da area de tranferencia */
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+  _itemSelecionado(String name, String path) {
+    return ListTile(
+      leading: Checkbox(value:false),
+      trailing: IconButton(icon: Icon(Icons.delete),),
+      title: Text(name),
+      subtitle: Text("Tipo: Imagem"),
     );
   }
 
   _listaSelecionados() {
     return Builder(
       builder: (BuildContext context) => new Container(
-            padding: const EdgeInsets.only(bottom: 30.0),
-            height: MediaQuery.of(context).size.height * 0.90,
+            //padding: const EdgeInsets.only(bottom: 30.0),
+            //height: MediaQuery.of(context).size.height * 0.90,
             child: _path != null || _paths != null
                 ? new ListView.separated(
                     itemCount:
@@ -99,7 +71,7 @@ class _FileExplorerState extends State<FileExplorer> {
                     itemBuilder: (BuildContext context, int index) {
                       final bool isMultiPath =
                           _paths != null && _paths.isNotEmpty;
-                      final String name = 'Arquivo $index: ' +
+                      final String name =
                           (isMultiPath
                               ? _paths.keys.toList()[index]
                               : _fileName ?? '...');
@@ -107,7 +79,7 @@ class _FileExplorerState extends State<FileExplorer> {
                           ? _paths.values.toList()[index].toString()
                           : _path;
 
-                      return _itemSelecionadoCard(name, path);
+                      return _itemSelecionado(name, path);
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         new Divider(),
@@ -117,29 +89,40 @@ class _FileExplorerState extends State<FileExplorer> {
     );
   }
 
+  _body() {
+    return Column(children: <Widget>[
+      IconButton(
+        icon: Icon(Icons.attach_file),
+        onPressed: () => _openUserFilesFirebaseList(),
+      ),
+      _listaSelecionados()
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
+    return Scaffold(
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.camera_alt),
+              onPressed: () {},
+            ),
             IconButton(
               icon: Icon(Icons.attach_file),
-              onPressed: () => _openFileExplorer(),
+              onPressed: () {
+                _openUserFilesFirebaseList();
+              },
             ),
           ],
+          centerTitle: true,
+          title: Text("Seus arquivos"),
         ),
-        Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xffDCDCDC), width: 1.0),
-              borderRadius: BorderRadius.all(
-                  Radius.circular(5.0) //         <--- border radius here
-                  ),
-            ),
-            alignment: FractionalOffset.center,
-            child: _listaSelecionados())
-      ],
-    );
+        body: _listaSelecionados(),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Icon(Icons.thumb_up),
+            backgroundColor: Colors.blue,
+          ),);
   }
 }
