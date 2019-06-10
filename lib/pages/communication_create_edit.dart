@@ -26,7 +26,7 @@ class CommunicationCreateEdit extends StatefulWidget {
 
 class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   //Dados do formulario
-
+  bool showFab;
   DateTime _date = new DateTime.now();
   TimeOfDay _hora = new TimeOfDay.now();
   String _textoMarkdown = "  ";
@@ -34,7 +34,15 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
 
 // --------- TELA DADOS ---------
 
-  //Destinatario
+  _texto(String texto) {
+    return Padding(
+        padding: EdgeInsets.all(5.0),
+        child: Text(
+          texto,
+          style: TextStyle(fontSize: 15, color: Colors.blue),
+        ));
+  }
+
   _tituloNoticia() {
     return Padding(
         padding: EdgeInsets.all(5.0),
@@ -48,7 +56,6 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
         ));
   }
 
-  // Data - Horario
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -132,28 +139,6 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
     );
   }
 
-  //Anexo
-
-  // --------- TELA TEXTO ---------
-
-  //Texto da Noticia
-  _textoNoticia() {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: TextField(
-          onChanged: (text){
-              _textoMarkdown = text;
-              print(myController.selection);
-          },
-          controller: myController,
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-        ));
-  }
-
   _botoes() {
     return SafeArea(
         child: Row(
@@ -203,15 +188,6 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
     );
   }
 
-  _texto(String texto) {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Text(
-          texto,
-          style: TextStyle(fontSize: 15, color: Colors.blue),
-        ));
-  }
-
   _bodyDados(context) {
     return SafeArea(
         top: false,
@@ -223,8 +199,6 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
             _tituloNoticia(),
             _texto("Data / Hora da notícia:"),
             _dataHorarioNoticia(context),
-            //_texto("Anexo"),
-            //_anexos(),
             _texto("Escolha um ou varios destinatarios:"),
             _eixos(context),
             _botoes()
@@ -232,9 +206,36 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
         ));
   }
 
+  // --------- TELA TEXTO ---------
+
+  _textoNoticia() {
+    return Padding(
+        padding: EdgeInsets.all(5.0),
+        child: TextField(
+          onChanged: (text) {
+            _textoMarkdown = text;
+            print(myController.selection);
+          },
+          controller: myController,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+        ));
+  }
+
   _atualizarMarkdown(texto, posicao) {
-    _textoMarkdown = _textoMarkdown + texto;
-    myController.setTextAndPosition(_textoMarkdown, caretPosition: 0);// myController.selection.baseOffset + texto.length- posicao);
+    String inicio =
+        _textoMarkdown.substring(0, myController.selection.baseOffset);
+    print("INICIO:" + inicio);
+    String fim = _textoMarkdown.substring(
+        myController.selection.baseOffset, _textoMarkdown.length);
+    print("FIM:" + fim);
+
+    _textoMarkdown = "$inicio$texto$fim";
+    myController.setTextAndPosition(_textoMarkdown,
+        caretPosition: myController.selection.baseOffset + posicao);
   }
 
   _iconesLista() {
@@ -242,31 +243,28 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.link),
-          onPressed: () {
-            _textoMarkdown = _textoMarkdown + "[]";
-            myController.setTextAndPosition(_textoMarkdown,
-                caretPosition: myController.selection.baseOffset);
-          },
-        ),
-        IconButton(
           icon: Icon(Icons.format_bold),
           onPressed: () {
-           myController.setTextAndPosition("This is a test",caretPosition: 5);
-           // _atualizarMarkdown("*", 0);
+            _atualizarMarkdown("****", 2);
           },
         ),
         IconButton(
           icon: Icon(Icons.format_size),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(Icons.format_list_bulleted),
-          onPressed: () {},
+          onPressed: () {
+            _atualizarMarkdown("#", 1);
+          },
         ),
         IconButton(
           icon: Icon(Icons.format_list_numbered),
-          onPressed: () {},
+          onPressed: () {
+            _atualizarMarkdown("- ", 2);
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.link),
+          onPressed: () {
+            _atualizarMarkdown("[ clique aqui ](   )", 5);
+          },
         ),
         IconButton(
             icon: Icon(Icons.attach_file),
@@ -280,17 +278,25 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   }
 
   _bodyTexto(context) {
-    return SafeArea(
-        top: false,
-        bottom: false,
-        child: ListView(
-          padding: EdgeInsets.all(5),
-          children: <Widget>[
-            _iconesLista(),
-            _texto("Texto da notícia:"),
-            _textoNoticia(),
-          ],
-        ));
+    return new Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        new Expanded(
+          child: ListView(
+            padding: EdgeInsets.all(5),
+            children: <Widget>[
+              _texto("Texto da notícia:"),
+              _textoNoticia(),
+            ],
+          ),
+        ),
+        new Container(
+          color: Colors.white,
+          padding: new EdgeInsets.all(10.0),
+          child: _iconesLista(),
+        ),
+      ],
+    );
   }
 
   // ---------- TELA PREVIEW ----------
@@ -299,8 +305,11 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
     return Markdown(data: myController.text);
   }
 
+  // ---------- TELA BUILD ----------
+
   @override
   Widget build(BuildContext context) {
+    showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     myController.setTextAndPosition(_textoMarkdown);
     return MaterialApp(
       home: DefaultTabController(
@@ -327,11 +336,13 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
               _bodyPreview(context)
             ],
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Icon(Icons.thumb_up),
-            backgroundColor: Colors.blue,
-          ),
+          floatingActionButton: Padding(
+              padding: EdgeInsets.only(bottom: 75),
+              child: FloatingActionButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Icon(Icons.thumb_up),
+                backgroundColor: Colors.blue,
+              )),
         ),
       ),
     );
