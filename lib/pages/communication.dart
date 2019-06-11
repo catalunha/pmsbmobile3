@@ -40,22 +40,6 @@ class _CommunicationPageState extends State<CommunicationPage> {
     );
   }
 
-  Widget _modalBottomSheet() {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.all(32.0),
-        child: Text(
-          'This is the modal bottom sheet. Slide down to dismiss.',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _appBarBuild(context) {
     return AppBar(
       actions: <Widget>[

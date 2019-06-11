@@ -53,7 +53,9 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
   _itemSelecionado(String name, String path) {
     return ListTile(
       leading: Checkbox(value:false),
-      trailing: IconButton(icon: Icon(Icons.delete),),
+      trailing: IconButton(icon: Icon(Icons.delete),onPressed: (){
+        //apagar esse arquivo/imagem da lista do firebase
+      },),
       title: Text(name),
       subtitle: Text("Tipo: Imagem"),
     );
@@ -66,8 +68,7 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
             //height: MediaQuery.of(context).size.height * 0.90,
             child: _path != null || _paths != null
                 ? new ListView.separated(
-                    itemCount:
-                        _paths != null && _paths.isNotEmpty ? _paths.length : 1,
+                    itemCount: _paths != null && _paths.isNotEmpty ? _paths.length : 1,
                     itemBuilder: (BuildContext context, int index) {
                       final bool isMultiPath =
                           _paths != null && _paths.isNotEmpty;
@@ -106,12 +107,15 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.camera_alt),
-              onPressed: () {},
+              onPressed: () {
+                // Apos selecionar imagem da camera já inserir na lista no firebase
+              },
             ),
             IconButton(
               icon: Icon(Icons.attach_file),
               onPressed: () {
                 _openUserFilesFirebaseList();
+                // Apos selecionar arquivo já inserir na lista no firebase
               },
             ),
           ],
@@ -120,7 +124,10 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
         ),
         body: _listaSelecionados(),
         floatingActionButton: FloatingActionButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: (){
+              // retornar pras telas anteriores os setotes sensitarios que foram selecionados
+              Navigator.of(context).pop();
+              },
             child: Icon(Icons.thumb_up),
             backgroundColor: Colors.blue,
           ),);

@@ -83,6 +83,12 @@ class HomePage extends StatelessWidget {
               },
             ),
             ListTile(
+              title: Text('Produto'),
+              onTap: () {
+                Navigator.pushNamed(context, '/produto');
+              },
+            ),
+            ListTile(
               title: Text('Relatorios'),
               onTap: () {},
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/communication.dart';
+import 'package:pmsbmibile3/pages/product_areas.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:pmsbmibile3/pages/home.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           "/": (context) => HomePage(),
-          '/comunicacao':(context)=> CommunicationPage()
+          '/comunicacao':(context)=> CommunicationPage(),
+          '/produto':(context)=> ProductPage()
         },
       ),
     );
