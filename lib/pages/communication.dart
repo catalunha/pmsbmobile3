@@ -51,7 +51,6 @@ class _CommunicationPageState extends State<CommunicationPage> {
         ),
         MoreAppAction(),
       ],
-
       //leading: Text("leading"),
       centerTitle: true,
       title: Text("Eixo de comunicação"),

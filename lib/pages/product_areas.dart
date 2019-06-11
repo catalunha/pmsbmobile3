@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/pages/product_list.dart';
 import 'appbar.dart';
 
 //PRODUTO 00
@@ -9,7 +10,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  
   List<String> _setores = ["Setor 001", "Setor 002", "Setor 003", "Setor 004"];
   String _eixo = "eixo exemplo";
 
@@ -26,6 +26,10 @@ class _ProductPageState extends State<ProductPage> {
                           icon: Icon(Icons.remove_red_eye),
                           onPressed: () {
                             //abrir pagina de lista de produtos
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ProductList();
+                            }));
                           },
                         ),
                       );
