@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:pmsbmibile3/state/models/usuarios.dart';
-import 'package:pmsbmibile3/state/models/noticia.dart';
+import 'package:pmsbmibile3/state/models/noticias.dart';
+import 'package:pmsbmibile3/state/models/noticias_usuarios.dart';
+import 'package:meta/meta.dart';
 
 class DatabaseService {
   final Firestore _firestore = Firestore.instance;
@@ -19,15 +21,44 @@ class DatabaseService {
         .map((snap) => Usuario.fromFirestore(snap));
   }
 
-  Stream<List<Future<Noticia>>> streamNoticias(String userId) {
+  Stream<List<NoticiaUsuario>> streamNoticiasUsuarios({
+    @required String userId,
+    @required bool visualizada,
+  }) {
     return _firestore
-        .collection("perfis_usuarios")
-        .document(userId)
-        .collection("noticias")
-        .where("visualizada", isEqualTo: false)
+        .collection("noticias_usuarios")
+        .where("userId", isEqualTo: userId)
+        .where("visualizada", isEqualTo: visualizada)
         .snapshots()
         .map((snap) => snap.documents
-            .map((docSnap) async => Noticia.fromFirestore(await docSnap['noticia'].get()))
+            .map((doc) => NoticiaUsuario.fromFirestore(doc))
             .toList());
+  }
+
+  Stream<Noticia> streamNoticiaByDocumentReference(DocumentReference ref) {
+    return ref.snapshots().map((doc) => Noticia.fromFirestore(doc));
+  }
+
+  Stream<List<Future<Noticia>>> streamNoticias(
+      {@required String userId, bool visualizada = false}) {
+    return _firestore
+        .collection("noticias_usuarios")
+        .where("userId", isEqualTo: userId)
+        .where("visualizada", isEqualTo: visualizada)
+        .snapshots()
+        .map((snap) => snap.documents
+            .map((docSnap) async =>
+                Noticia.fromFirestore(await docSnap['noticia'].get()))
+            .toList());
+  }
+
+  Future<void> marcarNoticiaUsuarioVisualizada(String noticiaUsuarioId) {
+    _firestore
+        .collection("noticias_usuarios")
+        .document(noticiaUsuarioId)
+        .setData({
+      "visualizada": true,
+    }, merge: true);
+    return Future.delayed(Duration.zero);
   }
 }
