@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/add_edit_product.dart';
+import 'package:pmsbmibile3/pages/product_visual.dart';
 
 class ProductList extends StatefulWidget {
   @override
@@ -44,6 +45,10 @@ class _ProductListState extends State<ProductList> {
                                         icon: Icon(Icons.attach_file),
                                          onPressed: () {
                                            //Ir para a pagina visuais do produto
+                                           Navigator.push(context,
+                                               MaterialPageRoute(builder: (context) {
+                                                 return ProductVisual();
+                                               }));
                                          },
                                       ),
                                       IconButton(
