@@ -1,22 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/area_checked_list.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
 import 'user_files.dart';
 
-class SelectingTextEditingController extends TextEditingController {
-  SelectingTextEditingController({String text}) : super(text: text) {
-    if (text != null) setTextAndPosition(text);
-  }
-
-  void setTextAndPosition(String newText, {int caretPosition}) {
-    int offset = caretPosition != null ? caretPosition : newText.length;
-    value = value.copyWith(
-        text: newText,
-        selection: TextSelection.collapsed(offset: offset),
-        composing: TextRange.empty);
-  }
-}
 
 class CommunicationCreateEdit extends StatefulWidget {
   @override
@@ -239,42 +227,45 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   }
 
   _iconesLista() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.format_bold),
-          onPressed: () {
-            _atualizarMarkdown("****", 2);
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.format_size),
-          onPressed: () {
-            _atualizarMarkdown("#", 1);
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.format_list_numbered),
-          onPressed: () {
-            _atualizarMarkdown("- ", 2);
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.link),
-          onPressed: () {
-            _atualizarMarkdown("[ clique aqui ](   )", 5);
-          },
-        ),
-        IconButton(
-            icon: Icon(Icons.attach_file),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return UserFilesFirebaseList();
-              }));
-            })
-      ],
-    );
+    return !showFab
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.format_bold),
+                onPressed: () {
+                  _atualizarMarkdown("****", 2);
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.format_size),
+                onPressed: () {
+                  _atualizarMarkdown("#", 1);
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.format_list_numbered),
+                onPressed: () {
+                  _atualizarMarkdown("- ", 2);
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.link),
+                onPressed: () {
+                  _atualizarMarkdown("[ clique aqui ](   )", 5);
+                },
+              ),
+              IconButton(
+                  icon: Icon(Icons.attach_file),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return UserFilesFirebaseList();
+                    }));
+                  })
+            ],
+          )
+        : null;
   }
 
   _bodyTexto(context) {
@@ -315,35 +306,34 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
+            appBar: AppBar(
+              leading: new IconButton(
+                icon: new Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              bottom: TabBar(
+                tabs: [
+                  Tab(text: "Dados"),
+                  Tab(text: "Texto"),
+                  Tab(text: "Preview")
+                ],
+              ),
+              title: Text('Criação e edicao de notícias'),
             ),
-            bottom: TabBar(
-              tabs: [
-                Tab(text: "Dados"),
-                Tab(text: "Texto"),
-                Tab(text: "Preview")
+            body: TabBarView(
+              children: [
+                _bodyDados(context),
+                _bodyTexto(context),
+                _bodyPreview(context)
               ],
             ),
-            title: Text('Criação e edicao de notícias'),
-          ),
-          body: TabBarView(
-            children: [
-              _bodyDados(context),
-              _bodyTexto(context),
-              _bodyPreview(context)
-            ],
-          ),
-          floatingActionButton: Padding(
-              padding: EdgeInsets.only(bottom: 75),
-              child: FloatingActionButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Icon(Icons.thumb_up),
-                backgroundColor: Colors.blue,
-              )),
-        ),
+            floatingActionButton: showFab
+                ? FloatingActionButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Icon(Icons.thumb_up),
+                    backgroundColor: Colors.blue,
+                  )
+                : null),
       ),
     );
   }

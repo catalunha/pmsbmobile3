@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/pages/add_edit_product.dart';
 
 class ProductList extends StatefulWidget {
   @override
@@ -49,6 +50,10 @@ class _ProductListState extends State<ProductList> {
                                         icon: Icon(Icons.edit),
                                          onPressed: () {
                                            //Ir a pagina de Adicionar ou editar Produtos
+                                           Navigator.push(context,
+                                               MaterialPageRoute(builder: (context) {
+                                                 return AddEditProduct();
+                                               }));
                                          },
                                       ),
                                     ],
