@@ -14,36 +14,43 @@ class _ProductVisualState extends State<ProductVisual> {
   String _setor = "Setor exemplo";
   String _produto = "produto exemplo";
 
+  var tabindex;
+
   var myController = new SelectingTextEditingController();
   String _textoMarkdown = "  ";
   bool showFab;
 
-  List<String> _visuais = [
-    "Produto 001",
-    "Produto 002",
-    "Produto 003",
-    "Produto 004"
+  List<Map<String, dynamic>> _visuais = [
+    {'nome': 'imagem-01', 'tipo': 'imagem'},
+    {'nome': 'imagem-02', 'tipo': 'imagem'},
+    {'nome': 'grafico-01', 'tipo': 'grafico'},
+    {'nome': 'grafico-02', 'tipo': 'grafico'},
+    {'nome': 'tabela-01', 'tipo': 'tabela'},
+    {'nome': 'tabela-02', 'tipo': 'tabela'},
+    {'nome': 'mapa-01', 'tipo': 'mapa'},
+    {'nome': 'mapa-02', 'tipo': 'mapa'},
+     {'nome': 'imagem-03', 'tipo': 'imagem'},
   ];
 
-  _tituloProduto() {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-        ));
+  _imagem(String link) {
+    return Image.network(
+      link,
+      //width: 300,
+      //height: 400,
+      //fit: BoxFit.scaleDown,
+    );
   }
 
-  _texto(String texto) {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Text(
-          texto,
-          style: TextStyle(fontSize: 15, color: Colors.blue),
-        ));
+  SizedBox _imagemRow(linkracunho, linkeditado) {
+    return SizedBox(
+      height: 80,
+      child: PageView(
+        children: <Widget>[
+          _imagem(linkracunho),
+          _imagem(linkeditado),
+        ],
+      ),
+    );
   }
 
   _textoTopo(text) {
@@ -55,95 +62,111 @@ class _ProductVisualState extends State<ProductVisual> {
     );
   }
 
-  _listaVisuais() {
+  _listaVisuais(String tipo) {
+    print(tipo);
     return Builder(
         builder: (BuildContext context) => new Container(
               child: _visuais.length >= 0
                   ? new ListView.builder(
                       itemCount: _visuais.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                            elevation: 10,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text(_visuais[index]),
-                                ),
-                                ButtonTheme.bar(
-                                  child: ButtonBar(
-                                    children: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.print),
-                                        onPressed: () {
-                                          // Gerar pdf do produto e imprimir
-                                        },
+                        return _visuais[index]['tipo'] == tipo
+                            ? Card(
+                                elevation: 10,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Text(_visuais[index]['nome']),
+                                    ),
+                                    _imagemRow('http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-components-symbol%402x.png','http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-ionicons-symbol%402x.png'),
+                                    ButtonTheme.bar(
+                                      child: ButtonBar(
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: Icon(Icons.info),
+                                            onPressed: () {
+                                              //
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.check),
+                                            onPressed: () {
+                                              //
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.content_copy),
+                                            onPressed: () {
+                                              //COPIAR PRA TELA ANTERIOR
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.edit),
+                                            onPressed: () {
+                                              //IR PRA PAGINA DE EDITAR VISUAL
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                      IconButton(
-                                        icon: Icon(Icons.attach_file),
-                                        onPressed: () {
-                                          //Ir para a pagina visuais do produto
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return ProductVisual();
-                                          }));
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.edit), 
-                                        onPressed: () {
-                                          //Ir a pagina de Adicionar ou editar Produtos
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return AddEditProduct();
-                                          }));
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ));
+                                    )
+                                  ],
+                                ))
+                            : Container();
                       })
                   : Container(),
             ));
   }
 
-  _bodyTexto(context) {
-    return new Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+  _bodyTexto(context, tipo) {
+    return Column(
       children: <Widget>[
-        new Expanded(
-          child: ListView(
-            padding: EdgeInsets.all(5),
-            children: <Widget>[
-              _textoTopo("Eixo : $_eixo"),
-              _textoTopo("Setor - $_setor"),
-              _textoTopo("Produto - $_produto"),
-            ],
-          ),
-        ),
-        _listaVisuais()
+        Padding(padding: EdgeInsets.all(10)),
+        _textoTopo("Eixo : $_eixo"),
+        _textoTopo("Setor - $_setor"),
+        _textoTopo("Produto - $_produto"),
+        Padding(padding: EdgeInsets.all(10)),
+        Expanded(child: _listaVisuais(tipo)),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Visuais do produto"),
-        ),
-        body: _bodyTexto(context),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // ADICIONAR NOVO VISUAL
-          },
-          child: Icon(Icons.thumb_up),
-          backgroundColor: Colors.blue,
-        ));
+    return MaterialApp(
+        home: DefaultTabController(
+      length: 4,
+      child: Scaffold(
+          appBar: AppBar(
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: "Imagens"),
+                Tab(text: "Graficos"),
+                Tab(text: "Tabelas"),
+                Tab(text: "Mapas")
+              ],
+            ),
+            title: Text('Visuais do produto'),
+          ),
+          body: TabBarView(
+            children: [
+              _bodyTexto(context, 'imagem'),
+              _bodyTexto(context, 'tabela'),
+              _bodyTexto(context, 'grafico'),
+              _bodyTexto(context, 'mapa'),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => {
+                  // ADICIONAR NOVO VISUAL DE ACORDO COM A TAB QUE ESTA SELECIONADA - IMAGENS, GRAFICOS ...
+                },
+            child: Icon(Icons.add),
+            backgroundColor: Colors.blue,
+          )),
+    ));
   }
 }
