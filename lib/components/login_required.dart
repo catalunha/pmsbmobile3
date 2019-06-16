@@ -1,7 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
-
 import 'package:pmsbmibile3/pages/autenticacao/login.dart';
 import 'package:pmsbmibile3/pages/geral/splash.dart';
 import 'package:pmsbmibile3/pages/geral/loading.dart';
@@ -21,19 +20,24 @@ class LoginRequired extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserRepository userRepository = Provider.of<UserRepository>(context);
-
-    switch (userRepository.status) {
-      case Status.Uninitialized:
-        return splashPage;
-      case Status.Unauthenticated:
-        return loginPage;
-      case Status.Authenticating:
-        return loadingPage;
-      case Status.Authenticated:
-        return child;
-    }
-    return loadingPage;
+    return Consumer<UserRepository>(
+      builder: (context, userRepository, consumerChild) {
+        if (userRepository == null) {
+          return consumerChild;
+        }
+        switch (userRepository.status) {
+          case Status.Uninitialized:
+            return splashPage;
+          case Status.Unauthenticated:
+            return loginPage;
+          case Status.Authenticating:
+            return loadingPage;
+          case Status.Authenticated:
+            return child;
+        }
+      },
+      child: loadingPage,
+    );
   }
 }
 
