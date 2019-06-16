@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/pages/loading.dart';
+import 'package:pmsbmibile3/pages/geral/loading.dart';
 import 'package:pmsbmibile3/state/models/usuarios.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';

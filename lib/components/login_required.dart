@@ -2,9 +2,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 
-import 'package:pmsbmibile3/pages/login.dart';
-import 'package:pmsbmibile3/pages/splash.dart';
-import 'package:pmsbmibile3/pages/loading.dart';
+import 'package:pmsbmibile3/pages/autenticacao/login.dart';
+import 'package:pmsbmibile3/pages/geral/splash.dart';
+import 'package:pmsbmibile3/pages/geral/loading.dart';
 
 class LoginRequired extends StatelessWidget {
   final Widget loginPage;
