@@ -67,7 +67,7 @@ class DatabaseService {
 
   Stream<List<AdministradorVariavel>> streamAdministradorVariaveis() {
     return _firestore
-        .collection("akdministrador_variaveis")
+        .collection("administrador_variaveis")
         .snapshots()
         .map((snapshot) => snapshot.documents
             .map((variavel) => AdministradorVariavel(
