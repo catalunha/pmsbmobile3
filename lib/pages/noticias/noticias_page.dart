@@ -6,11 +6,11 @@ import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:pmsbmibile3/state/models/noticias.dart';
 import 'package:pmsbmibile3/state/models/noticias_usuarios.dart';
 
-var db = DatabaseService();
 
 class NoticiasNaoVisualizadasBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var db = Provider.of<DatabaseService>(context);
     var userRepository = Provider.of<UserRepository>(context);
     if (userRepository.user != null) {
       var userId;
@@ -40,6 +40,7 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
 class NoticiasVisualizadasBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var db = Provider.of<DatabaseService>(context);
     var userRepository = Provider.of<UserRepository>(context);
     if (userRepository.user != null) {
       var userId;
@@ -70,7 +71,8 @@ class NoticiasVisualizadasPage extends StatelessWidget {
 }
 
 class ListaNoticiasUsuarios extends StatelessWidget {
-  Widget _card(NoticiaUsuario noticiaUsuario) {
+  Widget _card(BuildContext context, NoticiaUsuario noticiaUsuario) {
+    var db = Provider.of<DatabaseService>(context);
     return noticiaUsuario != null
         ? Container(
             padding: EdgeInsets.all(6),
@@ -108,7 +110,7 @@ class ListaNoticiasUsuarios extends StatelessWidget {
     if (noticiasUsuarios != null) {
       return ListView(
         children: noticiasUsuarios
-            .map((noticiaUsuario) => _card(noticiaUsuario))
+            .map((noticiaUsuario) => _card(context, noticiaUsuario))
             .toList(),
       );
     } else {

@@ -60,7 +60,11 @@ class DefaultEndDrawer extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Perfil'),
-              onTap: () {},
+              onTap: () {
+                //noticias perfil
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/perfil");
+              },
             ),
             ListTile(
               title: Text('Noticias Arquivadas'),
