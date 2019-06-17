@@ -1,10 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
+import 'dart:io';
+import 'package:meta/meta.dart';
+import 'package:mime/mime.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pmsbmibile3/state/models/usuarios.dart';
 import 'package:pmsbmibile3/state/models/noticias.dart';
 import 'package:pmsbmibile3/state/models/noticias_usuarios.dart';
 import 'package:pmsbmibile3/state/models/administrador_variaveis.dart';
-import 'package:meta/meta.dart';
 
 import 'models/variaveis_usuarios.dart';
 
@@ -137,4 +141,31 @@ class DatabaseService {
           {"userId": userId, "tipo": tipo, "conteudo": conteudo, "nome": nome});
     }
   }
+
+  Future<bool> uploadFile(File file, String filename, String userId, String titulo) async{
+    final fileContentType = lookupMimeType(filename, headerBytes: file.readAsBytesSync());
+    final StorageReference _storage = FirebaseStorage.instance.ref().child(filename);
+    final StorageUploadTask _uploadTask = _storage.putFile(
+      file,
+      StorageMetadata(
+        contentType: fileContentType,
+      ),
+    );
+    final snapshot = await _uploadTask.onComplete;
+    final filepath = await snapshot.ref.getPath();
+    final url = await snapshot.ref.getDownloadURL();
+
+    if(_uploadTask.isCanceled){
+      return false;
+    }
+    _firestore.collection("arquivos_usuarios").document().setData({
+      "userId":userId,
+      "mimetype":fileContentType,
+      "storage_path":filepath,
+      "titulo": titulo,
+      "url":url,
+    });
+    return true;
+  }
+
 }
