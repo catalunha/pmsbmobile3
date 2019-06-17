@@ -82,6 +82,7 @@ class DefaultEndDrawer extends StatelessWidget {
               title: Text('Sair'),
               onTap: () {
                 userRepository.signOut();
+                Navigator.pushNamedAndRemoveUntil(context, "/", (Route<dynamic> route) => false);
               },
             ),
           ],

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
+
 import 'package:pmsbmibile3/state/models/administrador_variaveis.dart';
 import 'package:pmsbmibile3/state/models/variaveis_usuarios.dart';
-import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 
@@ -49,6 +51,8 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
                 );
               } else if (administradorVariavel.tipo == "arquivo") {
                 return VariavelFormularioArquivo(
+                  formKey: _formKey,
+                  formData: _formData,
                   administradorVariavel: administradorVariavel,
                 );
               }
@@ -120,21 +124,29 @@ class VariavelUsuarioFormulario extends StatelessWidget {
 
 class VariavelFormularioArquivo extends StatelessWidget {
   final AdministradorVariavel administradorVariavel;
+  final GlobalKey<FormState> formKey;
+  final FormData formData;
 
-  const VariavelFormularioArquivo({Key key, this.administradorVariavel})
-      : super(key: key);
+  const VariavelFormularioArquivo({
+    Key key,
+    this.administradorVariavel,
+    this.formKey,
+    this.formData,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return VariavelUsuarioFormulario(
       administradorVariavel: administradorVariavel,
       child: Form(
+        key: formKey,
         child: ListView(
           children: <Widget>[
             Text(
               administradorVariavel.nome,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
+            Text("nada preenchido"),
             Container(
               alignment: Alignment.centerLeft,
               child: Row(
@@ -142,6 +154,12 @@ class VariavelFormularioArquivo extends StatelessWidget {
                   Text("Selecione o arquivo"),
                   InkWell(
                     child: Icon(Icons.attach_file),
+                    onTap: () async {
+                      print("tap");
+                      String filePath =
+                          await FilePicker.getFilePath(type: FileType.ANY);
+                      print(filePath);
+                    },
                   ),
                 ],
               ),
@@ -175,7 +193,7 @@ class VariavelFormularioValor extends StatelessWidget {
       administradorVariavel: administradorVariavel,
       child: Consumer<VarivelUsuario>(
         builder: (context, variavelUsuario, child) {
-          if (variavelUsuario == null){
+          if (variavelUsuario == null) {
             return child;
           }
           return Form(
