@@ -29,7 +29,7 @@ class _ProductVisualState extends State<ProductVisual> {
     {'nome': 'tabela-02', 'tipo': 'tabela'},
     {'nome': 'mapa-01', 'tipo': 'mapa'},
     {'nome': 'mapa-02', 'tipo': 'mapa'},
-     {'nome': 'imagem-03', 'tipo': 'imagem'},
+    {'nome': 'imagem-03', 'tipo': 'imagem'},
   ];
 
   _imagem(String link) {
@@ -79,26 +79,24 @@ class _ProductVisualState extends State<ProductVisual> {
                                     ListTile(
                                       title: Text(_visuais[index]['nome']),
                                     ),
-                                    _imagemRow('http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-components-symbol%402x.png','http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-ionicons-symbol%402x.png'),
+                                    _imagemRow(
+                                        'http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-components-symbol%402x.png',
+                                        'http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-ionicons-symbol%402x.png'),
                                     ButtonTheme.bar(
                                       child: ButtonBar(
                                         children: <Widget>[
                                           IconButton(
-                                            icon: Icon(Icons.info),
+                                            icon: Icon(Icons.assignment),
                                             onPressed: () {
-                                              //
+                                              // O ultimo a editar automaticamente o app
+                                              // atualiza seu icone, equipe do
+                                              // diagramador ou equipe do projeto.
                                             },
                                           ),
                                           IconButton(
                                             icon: Icon(Icons.check),
                                             onPressed: () {
-                                              //
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.content_copy),
-                                            onPressed: () {
-                                              //COPIAR PRA TELA ANTERIOR
+                                              // Indica que a img a ser incorporada é a diagramada
                                             },
                                           ),
                                           IconButton(
