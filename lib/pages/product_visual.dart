@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/pages/edit_visual.dart';
 import 'package:pmsbmibile3/pages/user_files.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
@@ -103,6 +104,11 @@ class _ProductVisualState extends State<ProductVisual> {
                                             icon: Icon(Icons.edit),
                                             onPressed: () {
                                               //IR PRA PAGINA DE EDITAR VISUAL
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                return EditVisual();
+                                              }));
                                             },
                                           ),
                                         ],

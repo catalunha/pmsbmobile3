@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/user_files.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
-import 'appbar.dart';
 
 class AddEditProduct extends StatefulWidget {
   @override
