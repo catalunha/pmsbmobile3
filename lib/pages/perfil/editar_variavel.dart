@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -69,14 +72,25 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
             }
             return FloatingActionButton(
               child: Icon(Icons.save),
-              onPressed: () {
+              onPressed: () async {
                 _formKey.currentState.save();
-                db.updateVariavelUsuario(
-                  userId: userRepository.user.uid,
-                  tipo: administradorVariavel.tipo,
-                  nome: administradorVariavel.nome,
-                  conteudo: _formData.conteudo,
-                );
+                if (administradorVariavel.tipo == "valor") {
+                  db.updateVariavelUsuario(
+                    userId: userRepository.user.uid,
+                    tipo: administradorVariavel.tipo,
+                    nome: administradorVariavel.nome,
+                    conteudo: _formData.conteudo,
+                  );
+                } else {
+                  File file = File(_formData.conteudo);
+                  await db.uploadFile(
+                    file,
+                    Random().nextInt(99999).toString(),
+                    userRepository.user.uid,
+                    "titulo",
+                  );
+                }
+
                 Navigator.pop(context);
               },
             );
@@ -155,10 +169,9 @@ class VariavelFormularioArquivo extends StatelessWidget {
                   InkWell(
                     child: Icon(Icons.attach_file),
                     onTap: () async {
-                      print("tap");
                       String filePath =
                           await FilePicker.getFilePath(type: FileType.ANY);
-                      print(filePath);
+                      formData.conteudo = filePath;
                     },
                   ),
                 ],
