@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 
-class LoginData{
+class LoginData {
   String password;
   String email;
 }
@@ -28,7 +28,7 @@ class LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.symmetric(
             horizontal: 24,
           ),
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Container(
                 alignment: Alignment.center,
@@ -49,7 +49,7 @@ class LoginPageState extends State<LoginPage> {
                           vertical: 12,
                         ),
                         child: TextFormField(
-                          onSaved: (email){
+                          onSaved: (email) {
                             _data.email = email;
                           },
                           decoration: InputDecoration(
@@ -62,7 +62,7 @@ class LoginPageState extends State<LoginPage> {
                           vertical: 12,
                         ),
                         child: TextFormField(
-                          onSaved: (password){
+                          onSaved: (password) {
                             _data.password = password;
                           },
                           obscureText: true,
@@ -86,15 +86,6 @@ class LoginPageState extends State<LoginPage> {
                             _formKey.currentState.save();
                             userRepository.signIn(_data.email, _data.password);
                           },
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 4,
-                        ),
-                        child: RaisedButton(
-                          child: Text("Acessar com conta do google"),
-                          onPressed: () {},
                         ),
                       ),
                     ],

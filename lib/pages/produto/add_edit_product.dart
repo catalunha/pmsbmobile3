@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/pages/user_files.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
@@ -66,7 +67,7 @@ class _AddEditProductState extends State<AddEditProduct> {
           },
         ),
         IconButton(
-            icon: Icon(Icons.attach_file),
+            icon: Icon(Icons.image),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return UserFilesFirebaseList();
@@ -76,7 +77,7 @@ class _AddEditProductState extends State<AddEditProduct> {
     );
   }
 
-   _botaoDeletarProduto() {
+  _botaoDeletarProduto() {
     return SafeArea(
         child: Row(
       children: <Widget>[
@@ -136,11 +137,11 @@ class _AddEditProductState extends State<AddEditProduct> {
     );
   }
 
-  _bodyTexto(context) {
-    return new Column(
+  _bodyDados(context) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        new Expanded(
+        Expanded(
           child: ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
@@ -154,10 +155,78 @@ class _AddEditProductState extends State<AddEditProduct> {
               ),
               _texto("Titulo do produto:"),
               _tituloProduto(),
-              _texto("Texto da notícia:"),
-              _textoMarkdownField(),
               _botaoDeletarProduto()
             ],
+          ),
+        ),
+        Visibility(
+          child: new Container(
+            color: Colors.white,
+            padding: new EdgeInsets.all(10.0),
+            child: _iconesLista(),
+          ),
+          visible: !showFab,
+        )
+      ],
+    );
+  }
+
+  _bodyTexto() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.all(5),
+            children: <Widget>[
+              _textoTopo(
+                "Eixo : $_eixo",
+              ),
+              _textoTopo("Setor - $_setor"),
+              _textoTopo("Produto - $_produto"),
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+              _texto("Texto da notícia:"),
+              _textoMarkdownField(),
+            ],
+          ),
+        ),
+        Visibility(
+          child: new Container(
+            color: Colors.white,
+            padding: new EdgeInsets.all(10.0),
+            child: _iconesLista(),
+          ),
+          visible: !showFab,
+        )
+      ],
+    );
+  }
+
+  _bodyPreview(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.all(5),
+            children: <Widget>[
+              _textoTopo(
+                "Eixo : $_eixo",
+              ),
+              _textoTopo("Setor - $_setor"),
+              _textoTopo("Produto - $_produto"),
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: Container(
+            child: Markdown(data: myController.text),
           ),
         ),
         Visibility(
@@ -176,21 +245,41 @@ class _AddEditProductState extends State<AddEditProduct> {
   Widget build(BuildContext context) {
     showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     myController.setTextAndPosition(_textoMarkdown);
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Adicionar ou editar produto"),
-        ),
-        body: _bodyTexto(context),
-        floatingActionButton: Visibility(
-            visible: showFab,
-            child: FloatingActionButton(
-              onPressed: () {
-                // SALVAR TUDO E VOLTAR A TELA ANTERIOR
-                Navigator.of(context).pop();
-              },
-              child: Icon(Icons.thumb_up),
-              backgroundColor: Colors.blue,
-            )));
+
+    return MaterialApp(
+        home: DefaultTabController(
+            length: 3,
+            child: Scaffold(
+                appBar: AppBar(
+                  leading: new IconButton(
+                    icon: new Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  bottom: TabBar(
+                    tabs: [
+                      Tab(text: "Dados"),
+                      Tab(text: "Texto"),
+                      Tab(text: "Preview"),
+                    ],
+                  ),
+                  title: Text("Adicionar ou editar produto"),
+                ),
+                body: TabBarView(
+                  children: [
+                    _bodyDados(context),
+                    _bodyTexto(),
+                    _bodyPreview(context)
+                  ],
+                ),
+                floatingActionButton: Visibility(
+                    visible: showFab,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        // SALVAR TUDO E VOLTAR A TELA ANTERIOR
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.thumb_up),
+                      backgroundColor: Colors.blue,
+                    )))));
   }
 }

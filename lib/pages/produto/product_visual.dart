@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/pages/edit_visual.dart';
+import 'package:pmsbmibile3/pages/produto/edit_visual.dart';
 import 'package:pmsbmibile3/pages/user_files.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
-import 'add_edit_product.dart';
 
 class ProductVisual extends StatefulWidget {
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/pages/add_edit_product.dart';
-import 'package:pmsbmibile3/pages/product_visual.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/pages/produto/add_edit_product.dart';
+import 'package:pmsbmibile3/pages/produto/product_visual.dart';
 
 class ProductList extends StatefulWidget {
   @override
@@ -95,6 +96,9 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
+    return DefaultScaffold(
+      body: _body(),
+    );
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
