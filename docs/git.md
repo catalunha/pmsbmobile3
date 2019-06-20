@@ -18,7 +18,7 @@ Este branch deve conter a ultima versão funcional do projeto
 ### DEV
 Este branch contem o projeto em desenvolvimento
 
-##Branching
+### Branching
 Branchs devem ser usados de forma pontual, para atender uma demanda especifica, guardar trabalho incompleto ou experimentos.
 
 A não ser em casos especiais deve-se evitar gerar branchs de longa duração. Branchs de longa duração podem gerar retrabalho,
