@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/state/models/variaveis_usuarios.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
-import 'package:pmsbmibile3/state/models/administrador_variaveis.dart';
 
 class PerfilPage extends StatelessWidget {
   @override
@@ -18,7 +17,7 @@ class PerfilPage extends StatelessWidget {
           horizontal: 12,
           vertical: 12,
         ),
-        child: StreamProvider<List<AdministradorVariavel>>.value(
+        child: StreamProvider<List<AdministradorVariavelModel>>.value(
           stream: db.streamAdministradorVariaveis(),
           child: ListaAdministradorVariavel(),
         ),
@@ -30,10 +29,10 @@ class PerfilPage extends StatelessWidget {
 class ListaAdministradorVariavel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<List<AdministradorVariavel>>(
+    return Consumer<List<AdministradorVariavelModel>>(
       builder: (
         BuildContext context,
-        List<AdministradorVariavel> administradorVariaveis,
+        List<AdministradorVariavelModel> administradorVariaveis,
         Widget child,
       ) {
         if (administradorVariaveis == null) {
@@ -55,7 +54,7 @@ class ListaAdministradorVariavel extends StatelessWidget {
 }
 
 class ItemListaAdministradorVariavel extends StatelessWidget {
-  final AdministradorVariavel variavel;
+  final AdministradorVariavelModel variavel;
 
   const ItemListaAdministradorVariavel({Key key, this.variavel})
       : super(key: key);
@@ -72,7 +71,7 @@ class ItemListaAdministradorVariavel extends StatelessWidget {
   Widget build(BuildContext context) {
     var db = Provider.of<DatabaseService>(context);
     var userRepository = Provider.of<UserRepository>(context);
-    return StreamProvider<VarivelUsuario>.value(
+    return StreamProvider<VariavelUsuarioModel>.value(
       stream: db.streamVarivelUsuarioByNomeAndUserId(
           userId: userRepository.user.uid, nome: variavel.nome),
       child: Card(
@@ -101,8 +100,8 @@ class ItemListaAdministradorVariavel extends StatelessWidget {
                   ),
                 ],
               ),
-              Consumer<VarivelUsuario>(
-                builder: (BuildContext context, VarivelUsuario variavelUsuario,
+              Consumer<VariavelUsuarioModel>(
+                builder: (BuildContext context, VariavelUsuarioModel variavelUsuario,
                     Widget child) {
                   if (variavelUsuario != null) {
                     return ConteudoVariavelUsuario(
@@ -129,7 +128,7 @@ class ItemListaAdministradorVariavel extends StatelessWidget {
 }
 
 class ConteudoVariavelUsuario extends StatelessWidget {
-  final VarivelUsuario variavelUsuario;
+  final VariavelUsuarioModel variavelUsuario;
 
   const ConteudoVariavelUsuario({Key key, this.variavelUsuario})
       : super(key: key);
@@ -137,6 +136,11 @@ class ConteudoVariavelUsuario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: retornar widget diferente para valor e arquivo
-    return Text(variavelUsuario.conteudo);
+    if ( variavelUsuario.tipo == "valor"){
+      return Text(variavelUsuario.conteudo);
+    }
+    else{
+      return Text(variavelUsuario.conteudo.toString());
+    }
   }
 }

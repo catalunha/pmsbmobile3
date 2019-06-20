@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/geral/loading.dart';
-import 'package:pmsbmibile3/state/models/usuarios.dart';
+import 'package:pmsbmibile3/models/usuarios_model.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,7 @@ class DefaultDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Consumer(
-              builder: (context, Usuario usuario, _) => DrawerHeader(
+              builder: (context, UsuarioModel usuario, _) => DrawerHeader(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -121,7 +121,7 @@ class DefaultScaffold extends StatelessWidget {
       //leading: Text("leading"),
       centerTitle: true,
       title: Consumer(
-        builder: (context, Usuario usuario, _) =>
+        builder: (context, UsuarioModel usuario, _) =>
             Text("Ola, ${usuario.lastName}"),
       ),
     );
@@ -131,8 +131,8 @@ class DefaultScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     UserRepository userRepository = Provider.of<UserRepository>(context);
     if (userRepository.user != null) {
-      return StreamProvider<Usuario>.value(
-        initialData: Usuario(firstName: "..", lastName: ".."),
+      return StreamProvider<UsuarioModel>.value(
+        initialData: UsuarioModel(firstName: "..", lastName: ".."),
         stream: db.streamUsuario(userRepository.user.uid),
         child: Scaffold(
           drawer: DefaultDrawer(),

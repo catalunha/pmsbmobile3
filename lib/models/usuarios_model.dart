@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Usuario {
+class UsuarioModel {
   String id;
   String firstName;
   String lastName;
   String username;
   String telefoneCelular;
 
-  Usuario({
+  UsuarioModel({
     this.id,
     this.firstName,
     this.lastName,
@@ -15,8 +15,8 @@ class Usuario {
     this.telefoneCelular,
   });
 
-  factory Usuario.fromFirestore(DocumentSnapshot ref) {
-    return Usuario(
+  factory UsuarioModel.fromFirestore(DocumentSnapshot ref) {
+    return UsuarioModel(
       id: ref.data['id'] ?? 'id',
       firstName: ref.data['first_name'] ?? 'first_name',
       lastName: ref.data['last_name'] ?? 'last_name',

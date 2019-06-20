@@ -1,18 +1,15 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'package:pmsbmibile3/state/models/administrador_variaveis.dart';
-import 'package:pmsbmibile3/state/models/variaveis_usuarios.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 
 class FormData {
   String conteudo = "";
 }
+
 
 class PerfilEditarVariavelPage extends StatefulWidget {
   @override
@@ -28,11 +25,10 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
   @override
   Widget build(BuildContext context) {
     var db = Provider.of<DatabaseService>(context);
-    var userRepository = Provider.of<UserRepository>(context);
 
     final String administradorVariavelId =
         ModalRoute.of(context).settings.arguments;
-    return StreamProvider<AdministradorVariavel>.value(
+    return StreamProvider<AdministradorVariavelModel>.value(
       stream: db.streamAdministradorVariavelById(administradorVariavelId),
       child: Scaffold(
         appBar: AppBar(
@@ -40,9 +36,9 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
         ),
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-          child: Consumer<AdministradorVariavel>(
+          child: Consumer<AdministradorVariavelModel>(
             builder: (BuildContext context,
-                AdministradorVariavel administradorVariavel, Widget child) {
+                AdministradorVariavelModel administradorVariavel, Widget child) {
               if (administradorVariavel == null) {
                 return child;
               }
@@ -65,7 +61,7 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
             ),
           ),
         ),
-        floatingActionButton: Consumer2<AdministradorVariavel, UserRepository>(
+        floatingActionButton: Consumer2<AdministradorVariavelModel, UserRepository>(
           builder: (context, administradorVariavel, userRepository, child) {
             if (administradorVariavel == null || userRepository == null) {
               return child;
@@ -74,22 +70,12 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
               child: Icon(Icons.save),
               onPressed: () async {
                 _formKey.currentState.save();
-                if (administradorVariavel.tipo == "valor") {
-                  db.updateVariavelUsuario(
-                    userId: userRepository.user.uid,
-                    tipo: administradorVariavel.tipo,
-                    nome: administradorVariavel.nome,
-                    conteudo: _formData.conteudo,
-                  );
-                } else {
-                  File file = File(_formData.conteudo);
-                  await db.uploadFile(
-                    file,
-                    Random().nextInt(99999).toString(),
-                    userRepository.user.uid,
-                    "titulo",
-                  );
-                }
+                await db.updateVariavelUsuario(
+                  userId: userRepository.user.uid,
+                  tipo: administradorVariavel.tipo,
+                  nome: administradorVariavel.nome,
+                  conteudo: _formData.conteudo,
+                );
 
                 Navigator.pop(context);
               },
@@ -103,7 +89,7 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
 }
 
 class VariavelUsuarioFormulario extends StatelessWidget {
-  final AdministradorVariavel administradorVariavel;
+  final AdministradorVariavelModel administradorVariavel;
   final Widget child;
 
   const VariavelUsuarioFormulario({
@@ -117,11 +103,11 @@ class VariavelUsuarioFormulario extends StatelessWidget {
     var db = Provider.of<DatabaseService>(context);
 
     return Consumer<UserRepository>(
-      builder: (context, userRepository, builder_child) {
+      builder: (context, userRepository, builderChild) {
         if (userRepository.user == null) {
-          return builder_child;
+          return builderChild;
         } else {
-          return StreamProvider<VarivelUsuario>.value(
+          return StreamProvider<VariavelUsuarioModel>.value(
             stream: db.streamVarivelUsuarioByNomeAndUserId(
                 userId: userRepository.user.uid,
                 nome: administradorVariavel.nome),
@@ -137,7 +123,7 @@ class VariavelUsuarioFormulario extends StatelessWidget {
 }
 
 class VariavelFormularioArquivo extends StatelessWidget {
-  final AdministradorVariavel administradorVariavel;
+  final AdministradorVariavelModel administradorVariavel;
   final GlobalKey<FormState> formKey;
   final FormData formData;
 
@@ -185,7 +171,7 @@ class VariavelFormularioArquivo extends StatelessWidget {
 }
 
 class VariavelFormularioValor extends StatelessWidget {
-  final AdministradorVariavel administradorVariavel;
+  final AdministradorVariavelModel administradorVariavel;
   final GlobalKey<FormState> formKey;
   final FormData formData;
 
@@ -204,7 +190,7 @@ class VariavelFormularioValor extends StatelessWidget {
   Widget build(BuildContext context) {
     return VariavelUsuarioFormulario(
       administradorVariavel: administradorVariavel,
-      child: Consumer<VarivelUsuario>(
+      child: Consumer<VariavelUsuarioModel>(
         builder: (context, variavelUsuario, child) {
           if (variavelUsuario == null) {
             return child;

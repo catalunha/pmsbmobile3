@@ -1,0 +1,4 @@
+class PerfilUsuarioModel{
+  String nome;
+
+}
