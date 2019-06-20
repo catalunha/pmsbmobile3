@@ -17,15 +17,22 @@ class DefaultDrawer extends StatelessWidget {
           children: <Widget>[
             Consumer(
               builder: (context, UsuarioModel usuario, _) => DrawerHeader(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          Icons.people,
-                          size: 75,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: Theme.of(context).textTheme.title.color),
                         ),
-                        Text("${usuario.telefoneCelular}"),
-                      ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            Icons.people,
+                            size: 75,
+                          ),
+                          Text("${usuario.telefoneCelular}"),
+                        ],
+                      ),
                     ),
                   ),
             ),
@@ -34,11 +41,27 @@ class DefaultDrawer extends StatelessWidget {
               onTap: () {},
             ),
             ListTile(
-              title: Text('Perguntas'),
+              title: Text('Aplicação'),
               onTap: () {},
             ),
             ListTile(
-              title: Text('Relatorios'),
+              title: Text('Respostas'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Síntese'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Produtos'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Comunicação'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text('Administração'),
               onTap: () {},
             ),
           ],
@@ -82,7 +105,8 @@ class DefaultEndDrawer extends StatelessWidget {
               title: Text('Sair'),
               onTap: () {
                 userRepository.signOut();
-                Navigator.pushNamedAndRemoveUntil(context, "/", (Route<dynamic> route) => false);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/", (Route<dynamic> route) => false);
               },
             ),
           ],
@@ -141,8 +165,7 @@ class DefaultScaffold extends StatelessWidget {
           body: body,
         ),
       );
-    }
-    else{
+    } else {
       return LoadingPage();
     }
   }
