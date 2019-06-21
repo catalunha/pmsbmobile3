@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class NoticiaUsuario {
+class NoticiaUsuarioModel {
   String id;
   DocumentReference noticia;
   String userId;
   bool visualizada;
 
-  NoticiaUsuario({
+  NoticiaUsuarioModel({
     this.id,
     this.userId,
     this.visualizada,
     this.noticia,
   });
 
-  factory NoticiaUsuario.fromFirestore(DocumentSnapshot ref) {
-    return NoticiaUsuario(
+  factory NoticiaUsuarioModel.fromFirestore(DocumentSnapshot ref) {
+    return NoticiaUsuarioModel(
       id: ref.documentID,
       userId: ref.data['userId'] ?? 'userId',
       visualizada: ref['visualizada'] ?? false,

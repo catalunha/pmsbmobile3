@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Noticia {
+class NoticiaModel {
   String id;
   String conteudoMarkdown;
   Timestamp dataPublicacao;
   String userId;
   String titulo;
 
-  Noticia({
+  NoticiaModel({
     this.id,
     this.userId,
     this.conteudoMarkdown,
@@ -15,8 +15,8 @@ class Noticia {
     this.titulo,
   });
 
-  factory Noticia.fromFirestore(DocumentSnapshot ref) {
-    return Noticia(
+  factory NoticiaModel.fromFirestore(DocumentSnapshot ref) {
+    return NoticiaModel(
       id: ref.documentID,
       userId: ref.data['userId'] ?? 'userId',
       conteudoMarkdown: ref.data['conteudo_markdown'] ?? 'conteudo_markdown',

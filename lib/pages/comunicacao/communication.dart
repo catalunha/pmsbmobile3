@@ -85,10 +85,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () async {
-                      String s = await Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CommunicationCreateEdit();
-                      }));
+                      Navigator.pushNamed(context, '/comunicacao/criar_editar');
                     },
                   ),
                 ],

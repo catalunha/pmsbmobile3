@@ -26,10 +26,7 @@ class _ProductPageState extends State<ProductPage> {
                           icon: Icon(Icons.remove_red_eye),
                           onPressed: () {
                             //abrir pagina de lista de produtos
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return ProductList();
-                            }));
+                            Navigator.pushNamed(context, '/produto/lista');
                           },
                         ),
                       );

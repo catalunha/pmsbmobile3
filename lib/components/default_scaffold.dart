@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/geral/loading.dart';
-import 'package:pmsbmibile3/state/models/usuarios.dart';
+import 'package:pmsbmibile3/models/usuarios_model.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -16,16 +16,23 @@ class DefaultDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Consumer(
-              builder: (context, Usuario usuario, _) => DrawerHeader(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          Icons.people,
-                          size: 75,
+              builder: (context, UsuarioModel usuario, _) => DrawerHeader(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: Theme.of(context).textTheme.title.color),
                         ),
-                        Text("${usuario.telefoneCelular}"),
-                      ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            Icons.people,
+                            size: 75,
+                          ),
+                          Text("${usuario.telefoneCelular}"),
+                        ],
+                      ),
                     ),
                   ),
             ),
@@ -34,7 +41,7 @@ class DefaultDrawer extends StatelessWidget {
               onTap: () {},
             ),
             ListTile(
-              title: Text('Perguntas'),
+              title: Text('Aplicação'),
               onTap: () {},
             ),
             ListTile(
@@ -94,6 +101,8 @@ class DefaultEndDrawer extends StatelessWidget {
               title: Text('Sair'),
               onTap: () {
                 userRepository.signOut();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/", (Route<dynamic> route) => false);
               },
             ),
           ],
@@ -117,12 +126,10 @@ class MoreAppAction extends StatelessWidget {
 
 class DefaultScaffold extends StatelessWidget {
   final Widget body;
-  final Widget title;
 
   const DefaultScaffold({
     Key key,
-    this.body,
-    this.title,
+    this.body
   }) : super(key: key);
 
   Widget _appBarBuild() {
@@ -134,7 +141,7 @@ class DefaultScaffold extends StatelessWidget {
       //leading: Text("leading"),
       centerTitle: true,
       title: Consumer(
-        builder: (context, Usuario usuario, _) =>
+        builder: (context, UsuarioModel usuario, _) =>
             Text("Ola, ${usuario.lastName}"),
       ),
     );
@@ -144,8 +151,8 @@ class DefaultScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     UserRepository userRepository = Provider.of<UserRepository>(context);
     if (userRepository.user != null) {
-      return StreamProvider<Usuario>.value(
-        initialData: Usuario(firstName: "..", lastName: ".."),
+      return StreamProvider<UsuarioModel>.value(
+        initialData: UsuarioModel(firstName: "..", lastName: ".."),
         stream: db.streamUsuario(userRepository.user.uid),
         child: Scaffold(
           drawer: DefaultDrawer(),
@@ -154,8 +161,7 @@ class DefaultScaffold extends StatelessWidget {
           body: body,
         ),
       );
-    }
-    else{
+    } else {
       return LoadingPage();
     }
   }

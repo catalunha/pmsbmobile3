@@ -1,4 +1,0 @@
-class PerfilUsuario{
-  String nome;
-
-}
