@@ -125,9 +125,9 @@ class _ProductVisualState extends State<ProductVisual> {
     return Column(
       children: <Widget>[
         Padding(padding: EdgeInsets.all(10)),
-        _textoTopo("Eixo : $_eixo"),
-        _textoTopo("Setor - $_setor"),
-        _textoTopo("Produto - $_produto"),
+        _textoTopo("Eixo: $_eixo"),
+        _textoTopo("Setor: $_setor"),
+        _textoTopo("Produto: $_produto"),
         Padding(padding: EdgeInsets.all(10)),
         Expanded(child: _listaVisuais(tipo)),
       ],
@@ -148,8 +148,8 @@ class _ProductVisualState extends State<ProductVisual> {
             bottom: TabBar(
               tabs: [
                 Tab(text: "Imagens"),
-                Tab(text: "Graficos"),
                 Tab(text: "Tabelas"),
+                Tab(text: "Graficos"),
                 Tab(text: "Mapas")
               ],
             ),

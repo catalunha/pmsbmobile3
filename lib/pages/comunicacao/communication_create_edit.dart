@@ -254,7 +254,7 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
               IconButton(
                 icon: Icon(Icons.link),
                 onPressed: () {
-                  _atualizarMarkdown("[ clique aqui ](   )", 5);
+                  _atualizarMarkdown("[ clique aqui ](   )", 17);
                 },
               ),
               IconButton(

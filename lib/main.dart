@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/pages/produto/product_list.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
@@ -26,8 +25,8 @@ class MyApp extends StatelessWidget {
                 NoticiasVisualizadasPage(),
             "/perfil": (context) => PerfilPage(),
             "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),
-            "/comunicacao/criar_editar": (context) => CommunicationCreateEdit(),
-            "/produto": (context) => ProductList(),
+            "/comunicacao": (context) => CommunicationPage(),
+            "/produto": (context) => ProductPage(),
           },
         ),
       ),

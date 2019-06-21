@@ -179,11 +179,9 @@ class _AddEditProductState extends State<AddEditProduct> {
           child: ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
-              _textoTopo(
-                "Eixo : $_eixo",
-              ),
-              _textoTopo("Setor - $_setor"),
-              _textoTopo("Produto - $_produto"),
+              _textoTopo("Eixo: $_eixo"),
+              _textoTopo("Setor: $_setor"),
+              _textoTopo("Produto: $_produto"),
               Padding(
                 padding: EdgeInsets.all(10),
               ),
@@ -212,11 +210,9 @@ class _AddEditProductState extends State<AddEditProduct> {
           child: ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
-              _textoTopo(
-                "Eixo : $_eixo",
-              ),
-              _textoTopo("Setor - $_setor"),
-              _textoTopo("Produto - $_produto"),
+              _textoTopo("Eixo: $_eixo"),
+              _textoTopo("Setor: $_setor"),
+              _textoTopo("Produto: $_produto"),
               Padding(
                 padding: EdgeInsets.all(10),
               ),

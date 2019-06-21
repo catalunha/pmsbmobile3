@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/produto/product_list.dart';
-
-import '../appbar.dart';
 
 //PRODUTO 00
 
@@ -43,7 +42,7 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget _body() {
+  Widget _body(context) {
     return Column(
       children: <Widget>[
         Padding(
@@ -60,6 +59,10 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    return DefaultScaffold(
+      body: _body(context),
+    );
+    /** 
     return Scaffold(
       drawer: drawerBuild(context),
       appBar: AppBar(
@@ -75,5 +78,6 @@ class _ProductPageState extends State<ProductPage> {
       endDrawer: endDrawerBuild(context),
       body: _body(),
     );
+    */
   }
 }
