@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:pmsbmibile3/models/models.dart';
 
-
-class   NoticiasNaoVisualizadasBody extends StatelessWidget {
+class NoticiasNaoVisualizadasBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var db = Provider.of<DatabaseService>(context);
@@ -78,28 +78,27 @@ class ListaNoticiasUsuarios extends StatelessWidget {
     var db = Provider.of<DatabaseService>(context);
     return noticiaUsuario != null
         ? Container(
-            padding: EdgeInsets.all(6),
-            child: Card(
-              child: Column(
-                children: <Widget>[
-                  StreamProvider<NoticiaModel>.value(
-                    stream: db.streamNoticiaByDocumentReference(
-                        noticiaUsuario.noticia),
-                    child: NoticiaTile(),
-                  ),
-                  if (!noticiaUsuario.visualizada)
-                    Container(
-                      padding: EdgeInsets.all(12),
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () {
-                          db.marcarNoticiaUsuarioVisualizada(noticiaUsuario.id);
-                        },
-                        child: Icon(Icons.thumb_up),
-                      ),
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Column(
+              children: <Widget>[
+                Divider(),
+                StreamProvider<NoticiaModel>.value(
+                  stream: db.streamNoticiaByDocumentReference(
+                      noticiaUsuario.noticia),
+                  child: NoticiaTile(),
+                ),
+                if (!noticiaUsuario.visualizada)
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        db.marcarNoticiaUsuarioVisualizada(noticiaUsuario.id);
+                      },
+                      child: Icon(Icons.thumb_up),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           )
         : Center(
@@ -112,6 +111,7 @@ class ListaNoticiasUsuarios extends StatelessWidget {
     var noticiasUsuarios = Provider.of<List<NoticiaUsuarioModel>>(context);
     if (noticiasUsuarios != null) {
       return ListView(
+        shrinkWrap: true,
         children: noticiasUsuarios
             .map((noticiaUsuario) => _card(context, noticiaUsuario))
             .toList(),
@@ -130,9 +130,8 @@ class NoticiaTile extends StatelessWidget {
     return Consumer<NoticiaModel>(
       builder: (BuildContext context, NoticiaModel noticia, Widget child) {
         if (noticia != null) {
-          return ListTile(
-            title: Text(noticia.titulo),
-            subtitle: Text(noticia.conteudoMarkdown),
+          return MarkdownBody(
+            data: noticia.conteudoMarkdown,
           );
         } else {
           return Center(
