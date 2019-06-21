@@ -39,27 +39,60 @@ class DefaultDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Questionarios'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/questionario/home');
+              },
+            ),
+            ListTile(
+              title: Text('Perguntas'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/pergunta/home');
+              },
             ),
             ListTile(
               title: Text('Aplicação'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/aplicacao/home');
+              },
             ),
             ListTile(
-              title: Text('Comunicação'),
+              title: Text('Respostas'),
               onTap: () {
-                Navigator.pushNamed(context, '/comunicacao');
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/resposta/home');
+              },
+            ),
+            ListTile(
+              title: Text('Síntese'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/sintese/home');
               },
             ),
             ListTile(
               title: Text('Produto'),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, '/produto');
               },
             ),
             ListTile(
-              title: Text('Relatorios'),
-              onTap: () {},
+              title: Text('Comunicação'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/comunicacao');
+              },
+            ),
+
+            ListTile(
+              title: Text('Administração'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/administracao/home');
+              },
             ),
           ],
         ),
