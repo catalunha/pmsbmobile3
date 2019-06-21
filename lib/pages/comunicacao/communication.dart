@@ -14,6 +14,15 @@ class _CommunicationPageState extends State<CommunicationPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       body: _body(context),
+      title: Text("Comunicação"),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.pushNamed(context, '/comunicacao/criar_editar');
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+      ),
+
     );
     /** 
     return Scaffold(

@@ -20,7 +20,8 @@ class DefaultDrawer extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(color: Theme.of(context).textTheme.title.color),
+                          bottom: BorderSide(
+                              color: Theme.of(context).textTheme.title.color),
                         ),
                       ),
                       child: Column(
@@ -126,24 +127,22 @@ class MoreAppAction extends StatelessWidget {
 
 class DefaultScaffold extends StatelessWidget {
   final Widget body;
+  final Widget floatingActionButton;
+  final Widget title;
+  final Widget actions;
 
-  const DefaultScaffold({
-    Key key,
-    this.body
-  }) : super(key: key);
+  const DefaultScaffold(
+      {Key key, this.body, this.floatingActionButton, this.title, this.actions})
+      : super(key: key);
 
   Widget _appBarBuild() {
     return AppBar(
       actions: <Widget>[
         MoreAppAction(),
       ],
-
       //leading: Text("leading"),
       centerTitle: true,
-      title: Consumer(
-        builder: (context, UsuarioModel usuario, _) =>
-            Text("Ola, ${usuario.lastName}"),
-      ),
+      title: title,
     );
   }
 
@@ -158,6 +157,7 @@ class DefaultScaffold extends StatelessWidget {
           drawer: DefaultDrawer(),
           endDrawer: DefaultEndDrawer(),
           appBar: _appBarBuild(),
+          floatingActionButton: floatingActionButton,
           body: body,
         ),
       );

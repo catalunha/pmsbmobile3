@@ -58,6 +58,7 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       body: _body(context),
+      title: Text("Produto em edição"),
     );
     /** 
     return Scaffold(

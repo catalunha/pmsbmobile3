@@ -31,6 +31,10 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      title: Consumer(
+        builder: (context, UsuarioModel usuario, _) =>
+            Text("Ola, ${usuario.lastName}"),
+      ),
       body: NoticiasNaoVisualizadasBody(),
     );
   }
