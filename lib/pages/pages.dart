@@ -3,6 +3,7 @@ export 'package:pmsbmibile3/pages/noticias/noticias_page.dart';
 //perfil
 export 'package:pmsbmibile3/pages/perfil/perfil.dart';
 export 'package:pmsbmibile3/pages/perfil/editar_variavel.dart';
+export 'package:pmsbmibile3/pages/perfil/configuracao_page.dart';
 
 //autenticação
 export 'package:pmsbmibile3/pages/autenticacao/login.dart';

@@ -129,7 +129,10 @@ class DefaultEndDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Configurações'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/perfil/configuracao");
+              },
             ),
             ListTile(
               title: Text('Sair'),
