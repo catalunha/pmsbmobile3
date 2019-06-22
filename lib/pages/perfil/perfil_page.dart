@@ -3,6 +3,9 @@ import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:pmsbmibile3/pages/perfil/perfil_bloc.dart';
 
 class PerfilPage extends StatelessWidget {
   @override
@@ -101,8 +104,8 @@ class ItemListaAdministradorVariavel extends StatelessWidget {
                 ],
               ),
               Consumer<VariavelUsuarioModel>(
-                builder: (BuildContext context, VariavelUsuarioModel variavelUsuario,
-                    Widget child) {
+                builder: (BuildContext context,
+                    VariavelUsuarioModel variavelUsuario, Widget child) {
                   if (variavelUsuario != null) {
                     return ConteudoVariavelUsuario(
                       variavelUsuario: variavelUsuario,
@@ -129,18 +132,35 @@ class ItemListaAdministradorVariavel extends StatelessWidget {
 
 class ConteudoVariavelUsuario extends StatelessWidget {
   final VariavelUsuarioModel variavelUsuario;
+  final bloc = ConteudoVariavelUsuarioBloc();
 
-  const ConteudoVariavelUsuario({Key key, this.variavelUsuario})
-      : super(key: key);
+  ConteudoVariavelUsuario({
+    Key key,
+    this.variavelUsuario,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: retornar widget diferente para valor e arquivo
-    if ( variavelUsuario.tipo == "valor"){
+    if (variavelUsuario.tipo == "valor") {
       return Text(variavelUsuario.conteudo);
-    }
-    else{
-      return Text(variavelUsuario.conteudo.toString());
+    } else {
+      bloc.setArquivoReference(variavelUsuario.conteudo);
+      return StreamBuilder<ArquivoUsuarioModel>(
+        stream: bloc.arquivo,
+        initialData: null,
+        builder: (context, snapshot) {
+          if(snapshot.data == null) return Text("...");
+          return InkWell(
+            onTap: () {
+              launch(snapshot.data.url);
+            },
+            child: Text(
+              snapshot.data.titulo,
+              style: TextStyle(color: Colors.blue),
+            ),
+          );
+        }
+      );
     }
   }
 }
