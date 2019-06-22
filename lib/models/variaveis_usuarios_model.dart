@@ -1,6 +1,7 @@
 class VariavelUsuarioModel {
   String id;
   String userId;
+  String variavelId;
   String tipo;
   String nome;
   dynamic conteudo;
@@ -8,33 +9,17 @@ class VariavelUsuarioModel {
   VariavelUsuarioModel({
     this.id,
     this.userId,
+    this.variavelId,
     this.tipo,
     this.nome,
     this.conteudo,
   });
 
-  VariavelUsuarioModel.fromFirestore() {
-    VariavelUsuarioModel(
-      id: "",
-      userId: "",
-      tipo: "",
-      nome: "",
-      conteudo: "",
-    );
-  }
-
-  VariavelUsuarioModel.fromJson(Map<dynamic, dynamic> json) {
-    id = json['id'];
-    userId = json['userId'];
-    tipo = json['tipo'];
-    nome = json['nome'];
-    conteudo = json['conteudo'];
-  }
-
   VariavelUsuarioModel.fromMap(Map<String, dynamic> map) {
 
     id = map['id'];
     userId = map['userId'];
+    variavelId = map['variavelId'];
     tipo = map['tipo'];
     nome = map['nome'];
     conteudo = map['conteudo'];
@@ -44,6 +29,7 @@ class VariavelUsuarioModel {
   Map<String, dynamic> toMap() {
     return {
       "userId": userId,
+      "variavelId": variavelId,
       "nome": nome,
       "tipo": tipo,
       "conteudo": conteudo,
