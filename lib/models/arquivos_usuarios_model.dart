@@ -18,14 +18,12 @@ class ArquivoUsuarioModel extends Model{
   });
 
   ArquivoUsuarioModel.fromMap(Map<String, dynamic> map){
-    ArquivoUsuarioModel(
-      id: map['id'],
-      userId: map['userId'],
-      url: map['url'],
-      storagePath: map['storagePath'],
-      titulo: map['titulo'],
-      contentType: map['contentType']
-    );
+    id = map['id'];
+    userId = map['userId'];
+    url = map['url'];
+    storagePath = map['storagePath'];
+    titulo = map['titulo'];
+    contentType = map['contentType'];
   }
 
   Map<String, dynamic> toMap(){
