@@ -78,25 +78,12 @@ class DatabaseService {
   }
 
   Stream<VariavelUsuarioModel> streamVarivelUsuarioByNomeAndUserId(
-      {@required String userId, @required String nome}) {
-    return _firestore
-        .collection("variaveis_usuarios")
-        .where("nome", isEqualTo: nome)
-        .where("userId", isEqualTo: userId)
-        .limit(1)
-        .snapshots()
-        .map((snap) {
-      if (snap.documents.length > 0) {
-        return VariavelUsuarioModel(
-          id: snap.documents[0].documentID,
-          tipo: snap.documents[0]['tipo'],
-          nome: snap.documents[0]['nome'],
-          userId: snap.documents[0]['userId'],
-          conteudo: snap.documents[0]['conteudo'],
-        );
-      } else {
-        return null;
-      }
+      {@required String userId, @required String variavelId}) {
+    var ref = _firestore.collection("variaveis_usuarios").document("${userId}_${variavelId}");
+
+    return ref.snapshots().map((snap) {
+      if(!snap.exists) return null;
+      return VariavelUsuarioModel.fromMap({"id":snap.documentID, ...snap.data});
     });
   }
 
@@ -114,6 +101,7 @@ class DatabaseService {
 
   Future<void> updateVariavelUsuario({
     String userId,
+    String variavelId,
     String nome,
     String tipo,
     dynamic conteudo,
@@ -128,23 +116,15 @@ class DatabaseService {
       );
       conteudo = arquivoUsuario.ref;
     }
-    var query = await _firestore
-        .collection("variaveis_usuarios")
-        .where("userId", isEqualTo: userId)
-        .where("nome", isEqualTo: nome)
-        .where("tipo", isEqualTo: tipo)
-        .getDocuments();
-    if (query.documents.length > 0) {
-      _firestore
-          .collection("variaveis_usuarios")
-          .document(query.documents.single.documentID)
-          .setData({
-        "conteudo": conteudo,
-      }, merge: true);
-    } else {
-      _firestore.collection("variaveis_usuarios").document().setData(
-          {"userId": userId, "tipo": tipo, "conteudo": conteudo, "nome": nome});
-    }
+    var ref = _firestore.collection("variaveis_usuarios").document("${userId}_${variavelId}");
+    ref.get().then((snap){
+      if(snap.exists){
+        ref.setData({"conteudo":conteudo}, merge: true);
+      }
+      else{
+        ref.setData({"userId": userId, "variavelId": variavelId, "tipo": tipo, "conteudo": conteudo, "nome": nome});
+      }
+    });
   }
 
   Future<ArquivoUsuarioModel> uploadFile(

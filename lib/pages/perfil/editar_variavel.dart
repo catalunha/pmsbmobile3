@@ -72,6 +72,7 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
                 _formKey.currentState.save();
                 await db.updateVariavelUsuario(
                   userId: userRepository.user.uid,
+                  variavelId: administradorVariavel.id,
                   tipo: administradorVariavel.tipo,
                   nome: administradorVariavel.nome,
                   conteudo: _formData.conteudo,
@@ -110,7 +111,8 @@ class VariavelUsuarioFormulario extends StatelessWidget {
           return StreamProvider<VariavelUsuarioModel>.value(
             stream: db.streamVarivelUsuarioByNomeAndUserId(
                 userId: userRepository.user.uid,
-                nome: administradorVariavel.nome),
+                variavelId: administradorVariavel.id,
+            ),
             child: child,
           );
         }
@@ -192,9 +194,6 @@ class VariavelFormularioValor extends StatelessWidget {
       administradorVariavel: administradorVariavel,
       child: Consumer<VariavelUsuarioModel>(
         builder: (context, variavelUsuario, child) {
-          if (variavelUsuario == null) {
-            return child;
-          }
           return Form(
             key: formKey,
             child: ListView(
@@ -205,15 +204,12 @@ class VariavelFormularioValor extends StatelessWidget {
                 ),
                 TextFormField(
                   onSaved: valurOnSave,
-                  initialValue: variavelUsuario.conteudo,
+                  initialValue: variavelUsuario?.conteudo,
                 ),
               ],
             ),
           );
         },
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
       ),
     );
   }

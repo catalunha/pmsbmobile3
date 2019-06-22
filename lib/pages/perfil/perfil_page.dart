@@ -76,7 +76,7 @@ class ItemListaAdministradorVariavel extends StatelessWidget {
     var userRepository = Provider.of<UserRepository>(context);
     return StreamProvider<VariavelUsuarioModel>.value(
       stream: db.streamVarivelUsuarioByNomeAndUserId(
-          userId: userRepository.user.uid, nome: variavel.nome),
+          userId: userRepository.user.uid, variavelId: variavel.id),
       child: Card(
         child: Container(
           padding: EdgeInsets.symmetric(
