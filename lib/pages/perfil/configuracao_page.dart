@@ -7,12 +7,27 @@ class ConfiguracaoPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Configurações"),
       ),
-      body: ListView(
-        children: <Widget>[
-          SelecionarEixo(),
-          SelecionarSetorCensitario(),
-          SelecionarTema(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(left: 12, right: 12),
+        child: ListView(
+          children: <Widget>[
+            SelecionarEixo(),
+            SelecionarSetorCensitario(),
+            SelecionarTema(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: AtualizarNumeroCelular(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: AtualizarNomeNoProjeto(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: AtualizarImagemPerfil(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -26,7 +41,7 @@ class SelecionarEixo extends StatelessWidget {
         showDialog(context: context, builder: (context) => OpcoesEixo());
       },
       child: Container(
-        margin: EdgeInsets.all(12),
+        margin: EdgeInsets.symmetric(vertical: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -45,13 +60,13 @@ class OpcoesEixo extends StatelessWidget {
     return SimpleDialog(
       children: <Widget>[
         SimpleDialogOption(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           child: Text("Eixo 1"),
         ),
         SimpleDialogOption(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           child: Text("Eixo 2"),
@@ -66,10 +81,11 @@ class SelecionarSetorCensitario extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showDialog(context: context, builder: (context) => OpcoesSetorCensitario());
+        showDialog(
+            context: context, builder: (context) => OpcoesSetorCensitario());
       },
       child: Container(
-        margin: EdgeInsets.all(12),
+        margin: EdgeInsets.symmetric(vertical: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -88,13 +104,13 @@ class OpcoesSetorCensitario extends StatelessWidget {
     return SimpleDialog(
       children: <Widget>[
         SimpleDialogOption(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           child: Text("Setor 1"),
         ),
         SimpleDialogOption(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           child: Text("Setor 2"),
@@ -112,7 +128,7 @@ class SelecionarTema extends StatelessWidget {
         showDialog(context: context, builder: (context) => OpcoesTema());
       },
       child: Container(
-        margin: EdgeInsets.all(12),
+        margin: EdgeInsets.symmetric(vertical: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -131,17 +147,56 @@ class OpcoesTema extends StatelessWidget {
     return SimpleDialog(
       children: <Widget>[
         SimpleDialogOption(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           child: Text("Dark"),
         ),
         SimpleDialogOption(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           child: Text("Light"),
         ),
+      ],
+    );
+  }
+}
+
+class AtualizarNumeroCelular extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Atualizar numero celular"),
+        TextField(),
+      ],
+    );
+  }
+}
+
+class AtualizarNomeNoProjeto extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Atualizar numero celular"),
+        TextField(),
+      ],
+    );
+  }
+}
+
+class AtualizarImagemPerfil extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Atualizar numero celular"),
+        TextField(),
       ],
     );
   }
