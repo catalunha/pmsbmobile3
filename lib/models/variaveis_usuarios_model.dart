@@ -24,23 +24,21 @@ class VariavelUsuarioModel {
   }
 
   VariavelUsuarioModel.fromJson(Map<dynamic, dynamic> json) {
-    VariavelUsuarioModel(
-      id: json['id'],
-      userId: json['userId'],
-      tipo: json['tipo'],
-      nome: json['nome'],
-      conteudo: json['conteudo'],
-    );
+    id = json['id'];
+    userId = json['userId'];
+    tipo = json['tipo'];
+    nome = json['nome'];
+    conteudo = json['conteudo'];
   }
 
   VariavelUsuarioModel.fromMap(Map<String, dynamic> map) {
-    VariavelUsuarioModel(
-      id: map['id'],
-      userId: map['userId'],
-      tipo: map['tipo'],
-      nome: map['nome'],
-      conteudo: map['conteudo'],
-    );
+
+    id = map['id'];
+    userId = map['userId'];
+    tipo = map['tipo'];
+    nome = map['nome'];
+    conteudo = map['conteudo'];
+
   }
 
   Map<String, dynamic> toMap() {
