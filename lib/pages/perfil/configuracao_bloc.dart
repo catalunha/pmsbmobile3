@@ -125,6 +125,8 @@ class ConfiguracaoBloc {
   void perfilUpdateFormState(PerfilUsuarioModel perfil) {
     formState.numeroCelular = perfil.celular;
     formState.nomeProjeto = perfil.nomeProjeto;
+    formState.imagemPerfilUrl = perfil.imagemPerfilUrl;
+    formState.imagemPerfil = perfil.imagemPerfil;
   }
 
   bool processFormState(bool flag, String userId) {
