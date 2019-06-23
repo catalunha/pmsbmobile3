@@ -21,8 +21,11 @@ class DefaultDrawer extends StatelessWidget {
           children: <Widget>[
             StreamBuilder<PerfilUsuarioModel>(
               stream: authBloc.perfil,
-              builder: (context, snap){
-                if (snap.data == null) Center(child: CircularProgressIndicator(),);
+              builder: (context, snap) {
+                if (snap.data == null)
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
 
                 return DrawerHeader(
                   child: Container(
@@ -36,7 +39,13 @@ class DefaultDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(child: snap.data.imagemPerfilUrl == null? Icon(Icons.people, size: 75): SquareImage(image:NetworkImage(snap.data.imagemPerfilUrl)),),
+                        Expanded(
+                          child: snap.data.imagemPerfilUrl == null
+                              ? Icon(Icons.people, size: 75)
+                              : SquareImage(
+                                  image:
+                                      NetworkImage(snap.data.imagemPerfilUrl)),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Text("${snap.data.celular}"),
@@ -46,7 +55,6 @@ class DefaultDrawer extends StatelessWidget {
                   ),
                 );
               },
-
             ),
             ListTile(
               title: Text('Questionarios'),
@@ -97,7 +105,6 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/comunicacao');
               },
             ),
-
             ListTile(
               title: Text('Administração'),
               onTap: () {
@@ -148,9 +155,9 @@ class DefaultEndDrawer extends StatelessWidget {
             ListTile(
               title: Text('Sair'),
               onTap: () {
-                userRepository.signOut();
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/", (Route<dynamic> route) => false);
+                userRepository.signOut();
               },
             ),
           ],
