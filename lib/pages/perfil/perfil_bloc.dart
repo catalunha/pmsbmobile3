@@ -21,4 +21,8 @@ class ConteudoVariavelUsuarioBloc{
     }
     ref.snapshots().map(convert).pipe(_streamArquivo);
   }
+
+  void dispose(){
+    _streamArquivo.close();
+  }
 }
