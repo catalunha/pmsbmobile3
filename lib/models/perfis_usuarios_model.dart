@@ -1,4 +1,5 @@
 class PerfilUsuarioModel{
+  static final String collection = "Usuario";
   String id; //mesmo id do usuario
   String nome;
   String email;
@@ -14,7 +15,7 @@ class PerfilUsuarioModel{
 
   List<String> rotas;
 
-  PerfilUsuarioModel.fromMap(Map<String, dynamic> map) {
+  PerfilUsuarioModel.fromMap(Map<String, dynamic> map) : assert(map.containsKey("id")){
     id = map['id'] ?? "";
     nome = map['nome'] ?? "";
     email = map['email'] ?? "";
@@ -22,5 +23,6 @@ class PerfilUsuarioModel{
     setorCensitario = map['setorCensitario'] ?? "";
     nomeProjeto = map['nomeProjeto'] ?? "";
     imagemPeril = map['imagemPerfil'] ?? "";
+
   }
 }

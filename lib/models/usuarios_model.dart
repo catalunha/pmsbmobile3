@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UsuarioModel {
+  static final String collection = "usuarios";
   String id;
   String firstName;
   String lastName;

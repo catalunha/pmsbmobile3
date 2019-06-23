@@ -1,4 +1,5 @@
 class AdministradorVariavelModel{
+  static final String collection = "administrador_variaveis";
   String id;
   String nome;
   String tipo;

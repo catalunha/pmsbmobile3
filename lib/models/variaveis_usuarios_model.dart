@@ -1,4 +1,5 @@
 class VariavelUsuarioModel {
+  static final String collection = "variaveis_usuarios";
   String id;
   String userId;
   String variavelId;

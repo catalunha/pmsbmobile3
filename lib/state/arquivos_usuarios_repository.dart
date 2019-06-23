@@ -3,7 +3,7 @@ import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
 
 class ArquivoUsuariosRepository {
   CollectionReference _arquivosUsuariosRef =
-      Firestore.instance.collection("arquivos_usuarios");
+      Firestore.instance.collection(ArquivoUsuarioModel.collection);
 
   Future<ArquivoUsuarioModel> getById(String id) async {
     var doc = await _arquivosUsuariosRef.document(id).get();

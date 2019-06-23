@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class VariavelUsuarioRepository {
   static final instance = VariavelUsuarioRepository();
   CollectionReference _collectionReference =
-      Firestore.instance.collection("variaveis_usuarios");
+      Firestore.instance.collection(VariavelUsuarioModel.collection);
 
   Stream<VariavelUsuarioModel> streamGetById(String id) {
     return _collectionReference.document(id).snapshots().map((snap) {

@@ -11,13 +11,13 @@ class DatabaseService {
   final Firestore _firestore = Firestore.instance;
 
   Future<UsuarioModel> getUsuario(String id) async {
-    var snap = await _firestore.collection("usuarios").document(id).get();
+    var snap = await _firestore.collection(UsuarioModel.collection).document(id).get();
     return UsuarioModel.fromFirestore(snap);
   }
 
   Stream<UsuarioModel> streamUsuario(String id) {
     return _firestore
-        .collection("usuarios")
+        .collection(UsuarioModel.collection)
         .document(id)
         .snapshots()
         .map((snap) => UsuarioModel.fromFirestore(snap));
@@ -28,7 +28,7 @@ class DatabaseService {
     @required bool visualizada,
   }) {
     return _firestore
-        .collection("noticias_usuarios")
+        .collection(NoticiaUsuarioModel.collection)
         .where("userId", isEqualTo: userId)
         .where("visualizada", isEqualTo: visualizada)
         .snapshots()
@@ -44,7 +44,7 @@ class DatabaseService {
   Stream<List<Future<NoticiaModel>>> streamNoticias(
       {@required String userId, bool visualizada = false}) {
     return _firestore
-        .collection("noticias_usuarios")
+        .collection(NoticiaModel.collection)
         .where("userId", isEqualTo: userId)
         .where("visualizada", isEqualTo: visualizada)
         .snapshots()
@@ -56,7 +56,7 @@ class DatabaseService {
 
   Future<void> marcarNoticiaUsuarioVisualizada(String noticiaUsuarioId) {
     _firestore
-        .collection("noticias_usuarios")
+        .collection(NoticiaUsuarioModel.collection)
         .document(noticiaUsuarioId)
         .setData({
       "visualizada": true,
@@ -66,7 +66,7 @@ class DatabaseService {
 
   Stream<List<AdministradorVariavelModel>> streamAdministradorVariaveis() {
     return _firestore
-        .collection("administrador_variaveis")
+        .collection(AdministradorVariavelModel.collection)
         .snapshots()
         .map((snapshot) => snapshot.documents
             .map((variavel) => AdministradorVariavelModel(
@@ -79,7 +79,7 @@ class DatabaseService {
 
   Stream<VariavelUsuarioModel> streamVarivelUsuarioByNomeAndUserId(
       {@required String userId, @required String variavelId}) {
-    var ref = _firestore.collection("variaveis_usuarios").document("${userId}_${variavelId}");
+    var ref = _firestore.collection(VariavelUsuarioModel.collection).document("${userId}_${variavelId}");
 
     return ref.snapshots().map((snap) {
       if(!snap.exists) return null;
@@ -90,7 +90,7 @@ class DatabaseService {
   Stream<AdministradorVariavelModel> streamAdministradorVariavelById(
       String administradorVariavelId) {
     return _firestore
-        .collection("administrador_variaveis")
+        .collection(AdministradorVariavelModel.collection)
         .document(administradorVariavelId)
         .snapshots()
         .map((snap) => AdministradorVariavelModel(
@@ -116,7 +116,7 @@ class DatabaseService {
       );
       conteudo = arquivoUsuario.ref;
     }
-    var ref = _firestore.collection("variaveis_usuarios").document("${userId}_${variavelId}");
+    var ref = _firestore.collection(VariavelUsuarioModel.collection).document("${userId}_${variavelId}");
     ref.get().then((snap){
       if(snap.exists){
         ref.setData({"conteudo":conteudo}, merge: true);
@@ -150,7 +150,7 @@ class DatabaseService {
     if (_uploadTask.isCanceled) {
       return null;
     }
-    var doc = _firestore.collection("arquivos_usuarios").document();
+    var doc = _firestore.collection(ArquivoUsuarioModel.collection).document();
     var arquivo = ArquivoUsuarioModel(
       contentType: fileContentType,
       titulo: titulo,

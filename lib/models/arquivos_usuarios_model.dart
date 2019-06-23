@@ -1,6 +1,7 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 
 class ArquivoUsuarioModel extends Model{
+  static final String collection = "arquivos_usuarios";
   String id;
   String userId;
   String url;

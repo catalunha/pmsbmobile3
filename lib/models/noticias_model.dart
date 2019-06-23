@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NoticiaModel {
+  static final String collection = "noticias";
   String id;
   String conteudoMarkdown;
   Timestamp dataPublicacao;
