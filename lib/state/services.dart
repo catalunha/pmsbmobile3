@@ -79,7 +79,7 @@ class DatabaseService {
 
   Stream<VariavelUsuarioModel> streamVarivelUsuarioByNomeAndUserId(
       {@required String userId, @required String variavelId}) {
-    var ref = _firestore.collection(VariavelUsuarioModel.collection).document("${userId}_${variavelId}");
+    var ref = _firestore.collection(VariavelUsuarioModel.collection).document("${userId}_$variavelId");
 
     return ref.snapshots().map((snap) {
       if(!snap.exists) return null;
@@ -116,7 +116,7 @@ class DatabaseService {
       );
       conteudo = arquivoUsuario.ref;
     }
-    var ref = _firestore.collection(VariavelUsuarioModel.collection).document("${userId}_${variavelId}");
+    var ref = _firestore.collection(VariavelUsuarioModel.collection).document("${userId}_$variavelId");
     ref.get().then((snap){
       if(snap.exists){
         ref.setData({"conteudo":conteudo}, merge: true);
