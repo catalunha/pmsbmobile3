@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/square_image.dart';
+import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
 import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
 import 'package:pmsbmibile3/models/setores_censitarios_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 
+class ConfiguracaoPage extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return ConfiguracaoState();
+  }
 
-class ConfiguracaoPage extends StatelessWidget {
+}
+
+class ConfiguracaoState extends State<ConfiguracaoPage> {
   final bloc = ConfiguracaoBloc();
 
   @override
@@ -38,16 +47,10 @@ class ConfiguracaoPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: StreamBuilder<bool>(
-                    initialData: false,
-                    stream: bloc.isValidForm,
-                    builder: (context, snapshot) {
-                      return RaisedButton(
-                        onPressed:
-                            snapshot.data ? () => bloc.processForm(true) : null,
-                        child: Text("salvar"),
-                      );
-                    }),
+                child: RaisedButton(
+                  onPressed: () => bloc.processForm(true),
+                  child: Text("salvar"),
+                ),
               ),
             ],
           ),
@@ -134,16 +137,18 @@ class OpcoesSetorCensitario extends StatelessWidget {
     return StreamBuilder<List<SetorCensitarioModel>>(
         stream: bloc.setores,
         builder: (context, snapshot) {
-          if(snapshot.data == null) return Text("...");
+          if (snapshot.data == null) return Text("...");
           return SimpleDialog(
-            children: snapshot.data.map(
-              (setor) => SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(setor.nome),
-                  ),
-            ).toList(),
+            children: snapshot.data
+                .map(
+                  (setor) => SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(setor.nome),
+                      ),
+                )
+                .toList(),
           );
         });
   }
@@ -205,7 +210,7 @@ class AtualizarNumeroCelular extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Atualizar numero celular"),
-              Text("atual: ${celular}"),
+              Text("atual: $celular"),
               TextField(
                 onChanged: bloc.updateNumeroCelular,
               ),
@@ -230,10 +235,7 @@ class AtualizarNomeNoProjeto extends StatelessWidget {
               Text("Atualizar nome no projeto"),
               Text("atual: $nomeProjeto"),
               TextField(
-                onChanged: (String v) {
-                  print("change");
-                  bloc.updateNomeProjeto(v);
-                },
+                onChanged: bloc.updateNomeProjeto,
               ),
             ],
           );
@@ -245,36 +247,49 @@ class AtualizarImagemPerfil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(bottom: 12),
-          child: Text("Atualizar imagem do perfil"),
-        ),
-        InkWell(
-          child: Row(
-            children: <Widget>[
-              Spacer(
-                flex: 2,
+    return StreamBuilder<PerfilUsuarioModel>(
+      stream: bloc.perfil,
+      builder: (context, snapshot) {
+        var perfil = snapshot.data;
+        dynamic image = FlutterLogo();
+        if(snapshot.data?.imagemPerfilUrl != null){
+          image = SquareImage(image:NetworkImage(perfil.imagemPerfilUrl));
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(bottom: 12),
+              child: Text("Atualizar imagem do perfil"),
+            ),
+            InkWell(
+              child: Row(
+                children: <Widget>[
+                  Spacer(
+                    flex: 2,
+                  ),
+                  StreamBuilder<ArquivoUsuarioModel>(
+                    stream: bloc.uploadBloc.arquivo,
+                    builder: (context, snapshot) {
+                      return Expanded(
+                        flex: 4,
+                        child: snapshot.data ==null ? image : SquareImage(image:NetworkImage(snapshot.data.url)),
+                      );
+                    }
+                  ),
+                  Spacer(
+                    flex: 2,
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 4,
-                child: FlutterLogo(size: 150,),
-                //Image.network("https://avatars1.githubusercontent.com/u/3485625?s=460&v=4")
-              ),
-              Spacer(
-                flex: 2,
-              ),
-            ],
-          ),
-          onTap: () async {
-            var filepath = await FilePicker.getFilePath(type: FileType.IMAGE);
-            bloc.updateImagemPerfil(filepath);
-            print(filepath);
-          },
-        ),
-      ],
+              onTap: () async {
+                var filepath = await FilePicker.getFilePath(type: FileType.IMAGE);
+                bloc.updateImagemPerfil(filepath);
+              },
+            ),
+          ],
+        );
+      }
     );
   }
 }
