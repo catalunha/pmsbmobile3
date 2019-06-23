@@ -74,6 +74,7 @@ class UploadBloc {
     _filePath.close();
     _events.close();
     _arquivo.close();
+    _arquivoSubscriptio.cancel();
   }
 
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
