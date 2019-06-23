@@ -5,12 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
 
 class AuthBloc {
+  final _userId = BehaviorSubject<String>();
 
-  BehaviorSubject<String> _userId = BehaviorSubject<String>();
   Stream<String> get userId => _userId.stream;
 
-  BehaviorSubject<PerfilUsuarioModel> _perfilController =
-      BehaviorSubject<PerfilUsuarioModel>();
+  final _perfilController = BehaviorSubject<PerfilUsuarioModel>();
+  StreamSubscription<PerfilUsuarioModel> _perfilSubscription;
+
   Stream<PerfilUsuarioModel> get perfil => _perfilController.stream;
 
   AuthBloc() {
@@ -24,21 +25,32 @@ class AuthBloc {
   void dispose() {
     _perfilController.close();
     _userId.close();
+    _perfilSubscription.cancel();
   }
 
   void _getPerfilUsuarioFromFirebaseUser(FirebaseUser user) {
-    var perfilRef = Firestore.instance
+    final perfilRef = Firestore.instance
         .collection(PerfilUsuarioModel.collection)
         .document(user.uid);
 
-    perfilRef
-        .snapshots()
-        .map((perfilSnap) => PerfilUsuarioModel.fromMap(
-            {"id": perfilSnap.documentID, ...perfilSnap.data}))
-        .pipe(_perfilController);
+    final perfilStream = perfilRef.snapshots().map((perfilSnap) =>
+        PerfilUsuarioModel.fromMap(
+            {"id": perfilSnap.documentID, ...perfilSnap.data}));
+    //.pipe(_perfilController);
+    if (_perfilSubscription != null) {
+      _perfilSubscription.cancel().then((_) {
+        _perfilSubscription = perfilStream.listen(_pipPerfil);
+      });
+    } else {
+      _perfilSubscription = perfilStream.listen(_pipPerfil);
+    }
   }
 
   void _getUserId(FirebaseUser user) {
     _userId.sink.add(user.uid);
+  }
+
+  void _pipPerfil(PerfilUsuarioModel perfil) {
+    _perfilController.sink.add(perfil);
   }
 }
