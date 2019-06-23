@@ -23,6 +23,7 @@ class AuthBloc {
 
   void dispose() {
     _perfilController.close();
+    _userId.close();
   }
 
   void _getPerfilUsuarioFromFirebaseUser(FirebaseUser user) {
