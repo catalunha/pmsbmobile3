@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
@@ -28,12 +29,23 @@ class NoticiasNaoVisualizadasBody extends StatelessWidget {
 }
 
 class NoticiasNaoVisualizadasPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    var authBloc = Provider.of<AuthBloc>(context);
+
     return DefaultScaffold(
-      title: Consumer(
-        builder: (context, UsuarioModel usuario, _) =>
-            Text("Ola, ${usuario.lastName}"),
+      title: StreamBuilder<PerfilUsuarioModel>(
+        stream: authBloc.perfil,
+        builder: (context, snap) {
+          if(snap.hasData){
+            var perfil = snap.data;
+            return Text("Ola, ${perfil.nomeProjeto}");
+          }else{
+            return Text("Ola, estranho");
+          }
+
+        },
       ),
       body: NoticiasNaoVisualizadasBody(),
     );

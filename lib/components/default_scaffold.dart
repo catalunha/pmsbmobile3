@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/square_image.dart';
+import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
 import 'package:pmsbmibile3/pages/geral/loading.dart';
 import 'package:pmsbmibile3/models/usuarios_model.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:provider/provider.dart';
@@ -10,32 +13,40 @@ var db = DatabaseService();
 class DefaultDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var authBloc = Provider.of<AuthBloc>(context);
     return Drawer(
       child: SafeArea(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            Consumer(
-              builder: (context, UsuarioModel usuario, _) => DrawerHeader(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: Theme.of(context).textTheme.title.color),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(
-                            Icons.people,
-                            size: 75,
-                          ),
-                          Text("${usuario.telefoneCelular}"),
-                        ],
+            StreamBuilder<PerfilUsuarioModel>(
+              stream: authBloc.perfil,
+              builder: (context, snap){
+                if (snap.data == null) Center(child: CircularProgressIndicator(),);
+
+                return DrawerHeader(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).textTheme.title.color),
                       ),
                     ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(child: snap.data.imagemPerfilUrl == null? Icon(Icons.people, size: 75): SquareImage(image:NetworkImage(snap.data.imagemPerfilUrl)),),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text("${snap.data.celular}"),
+                        ),
+                      ],
+                    ),
                   ),
+                );
+              },
+
             ),
             ListTile(
               title: Text('Questionarios'),
@@ -171,7 +182,7 @@ class DefaultScaffold extends StatelessWidget {
       {Key key, this.body, this.floatingActionButton, this.title, this.actions})
       : super(key: key);
 
-  Widget _appBarBuild() {
+  Widget _appBarBuild(BuildContext context) {
     return AppBar(
       actions: <Widget>[
         MoreAppAction(),
@@ -184,21 +195,12 @@ class DefaultScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserRepository userRepository = Provider.of<UserRepository>(context);
-    if (userRepository.user != null) {
-      return StreamProvider<UsuarioModel>.value(
-        initialData: UsuarioModel(firstName: "..", lastName: ".."),
-        stream: db.streamUsuario(userRepository.user.uid),
-        child: Scaffold(
-          drawer: DefaultDrawer(),
-          endDrawer: DefaultEndDrawer(),
-          appBar: _appBarBuild(),
-          floatingActionButton: floatingActionButton,
-          body: body,
-        ),
-      );
-    } else {
-      return LoadingPage();
-    }
+    return Scaffold(
+      drawer: DefaultDrawer(),
+      endDrawer: DefaultEndDrawer(),
+      appBar: _appBarBuild(context),
+      floatingActionButton: floatingActionButton,
+      body: body,
+    );
   }
 }
