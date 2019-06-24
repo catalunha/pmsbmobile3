@@ -29,7 +29,6 @@ class NoticiasNaoVisualizadasBody extends StatelessWidget {
 }
 
 class NoticiasNaoVisualizadasPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     var authBloc = Provider.of<AuthBloc>(context);
@@ -38,13 +37,12 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
       title: StreamBuilder<PerfilUsuarioModel>(
         stream: authBloc.perfil,
         builder: (context, snap) {
-          if(snap.hasData){
+          if (snap.hasData) {
             var perfil = snap.data;
             return Text("Ola, ${perfil.nomeProjeto}");
-          }else{
+          } else {
             return Text("Ola, estranho");
           }
-
         },
       ),
       body: NoticiasNaoVisualizadasBody(),
@@ -88,34 +86,45 @@ class NoticiasVisualizadasPage extends StatelessWidget {
 class ListaNoticiasUsuarios extends StatelessWidget {
   Widget _card(BuildContext context, NoticiaUsuarioModel noticiaUsuario) {
     var db = Provider.of<DatabaseService>(context);
-    return noticiaUsuario != null
-        ? Container(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Column(
-              children: <Widget>[
-                Divider(),
-                StreamProvider<NoticiaModel>.value(
-                  stream: db.streamNoticiaByDocumentReference(
-                      noticiaUsuario.noticia),
-                  child: NoticiaTile(),
-                ),
-                if (!noticiaUsuario.visualizada)
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {
-                        db.marcarNoticiaUsuarioVisualizada(noticiaUsuario.id);
-                      },
-                      child: Icon(Icons.thumb_up),
-                    ),
-                  ),
-              ],
+    if (noticiaUsuario == null){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+//    return StreamBuilder<NoticiaModel>(
+//      stream: db.streamNoticiaByDocumentReference(noticiaUsuario.noticia),
+//      builder: (context, snap){
+//        if(snap.hasError) return Text("Error ${snap.error}");
+//        else if(snap.hasData) return Text("${snap.data.titulo}");
+//        else return Center(child: Text("Noticia não encontrada"));
+//
+//      },
+//    );
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      child: Column(
+        children: <Widget>[
+          Divider(),
+          StreamProvider<NoticiaModel>.value(
+            stream: db.streamNoticiaByDocumentReference(noticiaUsuario.noticia),
+            child: NoticiaTile(),
+          ),
+          if (!noticiaUsuario.visualizada)
+            Container(
+              padding: EdgeInsets.all(12),
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () {
+                  db.marcarNoticiaUsuarioVisualizada(noticiaUsuario.id);
+                },
+                child: Icon(Icons.thumb_up),
+              ),
             ),
-          )
-        : Center(
-            child: CircularProgressIndicator(),
-          );
+        ],
+      ),
+    );
   }
 
   @override
@@ -143,7 +152,8 @@ class NoticiaTile extends StatelessWidget {
       builder: (BuildContext context, NoticiaModel noticia, Widget child) {
         if (noticia != null) {
           return MarkdownBody(
-            data: noticia.conteudoMarkdown,
+            //TODO: replace all deve ir para bloc
+            data: noticia.conteudoMarkdown.replaceAll("\\n", "\n"),
           );
         } else {
           return Center(
