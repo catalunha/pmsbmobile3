@@ -8,10 +8,30 @@ import 'package:pmsbmibile3/models/setores_censitarios_model.dart';
 import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
 import 'package:pmsbmibile3/state/upload_bloc.dart';
 
-class FormState {
+class ConfiguracaoEvent {}
+
+class ConfiguracaoUpdateEmailEvent extends ConfiguracaoEvent {
+  final String email;
+
+  ConfiguracaoUpdateEmailEvent(this.email);
+}
+
+class ConfiguracaoUpdateUserIdEvent extends ConfiguracaoEvent {
+  final String userId;
+
+  ConfiguracaoUpdateUserIdEvent(this.userId);
+}
+
+class ConfiguracaoSaveEvent extends ConfiguracaoEvent{
+
+}
+
+class ConfiguracaoBlocState {
   PerfilUsuarioModel currentPerfilUsuario;
+  String userId;
   String nomeProjeto;
   String numeroCelular;
+  String email;
 
   String filePath;
   dynamic imagemPerfil;
@@ -22,10 +42,14 @@ class FormState {
 }
 
 class ConfiguracaoBloc {
-  final formState = FormState();
+  final formState = ConfiguracaoBlocState();
   final uploadBloc = UploadBloc();
 
-  BehaviorSubject<String> _userId = BehaviorSubject<String>();
+  final _inputController = BehaviorSubject<ConfiguracaoEvent>();
+  final _outputController = BehaviorSubject<ConfiguracaoBlocState>();
+  Stream<ConfiguracaoBlocState> get state => _outputController.stream;
+
+  Function get dispatch => _inputController.sink.add;
 
   BehaviorSubject<PerfilUsuarioModel> _perfil =
       BehaviorSubject<PerfilUsuarioModel>();
@@ -61,14 +85,16 @@ class ConfiguracaoBloc {
 
   get processForm => _processForm.sink.add;
 
-  Observable<bool> formSaved;
-
   ConfiguracaoBloc() {
+    _inputController.stream.listen(_handleInputEvent);
+
     //retorna somente id do usuario caso esteja logado
     FirebaseAuth.instance.onAuthStateChanged
         .where((user) => user != null)
         .map((user) => user.uid)
-        .pipe(_userId);
+        .listen((userId) {
+      dispatch(ConfiguracaoUpdateUserIdEvent(userId));
+    });
 
     //pega lista de eixos
     Firestore.instance
@@ -81,19 +107,13 @@ class ConfiguracaoBloc {
           .toList();
     }).pipe(_setoresCensitarios);
 
-    _userId.stream.listen(setUpUser);
-
     //update state
-    _perfil.stream.listen(perfilUpdateFormState);
+    _perfil.stream.listen(perfilUpdateConfiguracaoBlocState);
     _numeroCelular.listen(numeroCelularUpdateState);
     _nomeProjeto.listen(nomeProjetoUpdateState);
     _imagemPerfil.listen(_imagemPerfilUpload);
-    uploadBloc.arquivo.listen(_imagemPerfilUpdateState); //update informação do perfil
-
-    //processa formulario
-    formSaved = Observable.combineLatest2(
-        _processForm.stream, _userId.stream, processFormState);
-    formSaved.listen((_) => _);
+    uploadBloc.arquivo
+        .listen(_imagemPerfilUpdateState); //update informação do perfil
   }
 
   PerfilUsuarioModel perfilSnapToInstance(DocumentSnapshot snap) {
@@ -122,14 +142,14 @@ class ConfiguracaoBloc {
     formState.nomeProjeto = nomeProjeto;
   }
 
-  void perfilUpdateFormState(PerfilUsuarioModel perfil) {
+  void perfilUpdateConfiguracaoBlocState(PerfilUsuarioModel perfil) {
     formState.numeroCelular = perfil.celular;
     formState.nomeProjeto = perfil.nomeProjeto;
     formState.imagemPerfilUrl = perfil.imagemPerfilUrl;
     formState.imagemPerfil = perfil.imagemPerfil;
   }
 
-  bool processFormState(bool flag, String userId) {
+  bool processConfiguracaoBlocState(String userId) {
     Firestore.instance
         .collection(PerfilUsuarioModel.collection)
         .document(userId)
@@ -140,6 +160,7 @@ class ConfiguracaoBloc {
         celular: formState.numeroCelular,
         imagemPerfil: formState.imagemPerfil,
         imagemPerfilUrl: formState.imagemPerfilUrl,
+        email: formState.email,
       ).toMap(),
     }, merge: true);
     return true;
@@ -149,9 +170,9 @@ class ConfiguracaoBloc {
     _perfil.close();
     _processForm.close();
     _nomeProjeto.close();
-    _userId.close();
     _setoresCensitarios.close();
     _eixos.close();
+    _inputController.close();
   }
 
   //upload file
@@ -162,6 +183,24 @@ class ConfiguracaoBloc {
 
   void _imagemPerfilUpdateState(ArquivoUsuarioModel arquivo) {
     formState.imagemPerfilUrl = arquivo.url;
-    formState.imagemPerfil = Firestore.instance.collection(ArquivoUsuarioModel.collection).document(arquivo.id);
+    formState.imagemPerfil = Firestore.instance
+        .collection(ArquivoUsuarioModel.collection)
+        .document(arquivo.id);
+  }
+
+  void _handleInputEvent(ConfiguracaoEvent event) {
+    if (event is ConfiguracaoUpdateEmailEvent) {
+      formState.email = event.email;
+    }
+    if (event is ConfiguracaoUpdateUserIdEvent) {
+      formState.userId = event.userId;
+      setUpUser(event.userId);
+    }
+    if (event is ConfiguracaoSaveEvent) {
+      processConfiguracaoBlocState(formState.userId);
+    }
+
+
+    _outputController.sink.add(formState);
   }
 }

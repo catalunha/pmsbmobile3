@@ -7,12 +7,11 @@ import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 
-class ConfiguracaoPage extends StatefulWidget{
+class ConfiguracaoPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return ConfiguracaoState();
   }
-
 }
 
 class ConfiguracaoState extends State<ConfiguracaoPage> {
@@ -35,6 +34,10 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
               SelecionarTema(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
+                child: AtualizarEmail(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 child: AtualizarNumeroCelular(),
               ),
               Padding(
@@ -48,7 +51,7 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: RaisedButton(
-                  onPressed: () => bloc.processForm(true),
+                  onPressed: () => bloc.dispatch(ConfiguracaoSaveEvent()),
                   child: Text("salvar"),
                 ),
               ),
@@ -197,20 +200,42 @@ class OpcoesTema extends StatelessWidget {
   }
 }
 
-class AtualizarNumeroCelular extends StatelessWidget {
+class AtualizarEmail extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
     return StreamBuilder<PerfilUsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
-          var celular = "";
-          if (snapshot.data != null) celular = snapshot.data.celular;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("Atualizar Email"),
+              Text("${snapshot.data?.email}"),
+              TextField(
+                onChanged: (email) =>
+                    bloc.dispatch(ConfiguracaoUpdateEmailEvent(email)),
+              ),
+            ],
+          );
+        });
+  }
+}
+
+class AtualizarNumeroCelular extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<ConfiguracaoBloc>(context);
+    return StreamBuilder<PerfilUsuarioModel>(
+        stream: bloc.perfil,
+        builder: (context, snapshot) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Atualizar numero celular"),
-              Text("atual: $celular"),
+              Text("${snapshot.data?.celular}"),
               TextField(
                 onChanged: bloc.updateNumeroCelular,
               ),
@@ -221,19 +246,18 @@ class AtualizarNumeroCelular extends StatelessWidget {
 }
 
 class AtualizarNomeNoProjeto extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
     return StreamBuilder<PerfilUsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
-          var nomeProjeto = "";
-          if (snapshot.data != null) nomeProjeto = snapshot.data.nomeProjeto;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Atualizar nome no projeto"),
-              Text("atual: $nomeProjeto"),
+              Text("${snapshot.data?.nomeProjeto}"),
               TextField(
                 onChanged: bloc.updateNomeProjeto,
               ),
@@ -248,48 +272,50 @@ class AtualizarImagemPerfil extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
     return StreamBuilder<PerfilUsuarioModel>(
-      stream: bloc.perfil,
-      builder: (context, snapshot) {
-        var perfil = snapshot.data;
-        dynamic image = FlutterLogo();
-        if(snapshot.data?.imagemPerfilUrl != null){
-          image = SquareImage(image:NetworkImage(perfil.imagemPerfilUrl));
-        }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 12),
-              child: Text("Atualizar imagem do perfil"),
-            ),
-            InkWell(
-              child: Row(
-                children: <Widget>[
-                  Spacer(
-                    flex: 2,
-                  ),
-                  StreamBuilder<ArquivoUsuarioModel>(
-                    stream: bloc.uploadBloc.arquivo,
-                    builder: (context, snapshot) {
-                      return Expanded(
-                        flex: 4,
-                        child: snapshot.data ==null ? image : SquareImage(image:NetworkImage(snapshot.data.url)),
-                      );
-                    }
-                  ),
-                  Spacer(
-                    flex: 2,
-                  ),
-                ],
+        stream: bloc.perfil,
+        builder: (context, snapshot) {
+          var perfil = snapshot.data;
+          dynamic image = FlutterLogo();
+          if (snapshot.data?.imagemPerfilUrl != null) {
+            image = SquareImage(image: NetworkImage(perfil.imagemPerfilUrl));
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(bottom: 12),
+                child: Text("Atualizar imagem do perfil"),
               ),
-              onTap: () async {
-                var filepath = await FilePicker.getFilePath(type: FileType.IMAGE);
-                bloc.updateImagemPerfil(filepath);
-              },
-            ),
-          ],
-        );
-      }
-    );
+              InkWell(
+                child: Row(
+                  children: <Widget>[
+                    Spacer(
+                      flex: 2,
+                    ),
+                    StreamBuilder<ArquivoUsuarioModel>(
+                        stream: bloc.uploadBloc.arquivo,
+                        builder: (context, snapshot) {
+                          return Expanded(
+                            flex: 4,
+                            child: snapshot.data == null
+                                ? image
+                                : SquareImage(
+                                    image: NetworkImage(snapshot.data.url)),
+                          );
+                        }),
+                    Spacer(
+                      flex: 2,
+                    ),
+                  ],
+                ),
+                onTap: () async {
+                  var filepath =
+                      await FilePicker.getFilePath(type: FileType.IMAGE);
+                  bloc.updateImagemPerfil(filepath);
+                },
+              ),
+            ],
+          );
+        });
   }
 }
