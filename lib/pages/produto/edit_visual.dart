@@ -301,6 +301,7 @@ class _EditVisualState extends State<EditVisual> {
             length: 3,
             child: Scaffold(
                 appBar: AppBar(
+                  backgroundColor: Colors.red,
                   leading: new IconButton(
                     icon: new Icon(Icons.arrow_back),
                     onPressed: () => Navigator.of(context).pop(),

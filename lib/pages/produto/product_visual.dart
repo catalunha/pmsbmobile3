@@ -141,6 +141,7 @@ class _ProductVisualState extends State<ProductVisual> {
       length: 4,
       child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.red,
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
