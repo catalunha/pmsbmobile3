@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/models/noticias_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/communication_create_edit.dart';
+import 'package:provider/provider.dart';
 
+import 'communication_bloc.dart';
 import 'modal_filter_list.dart';
 
 class CommunicationPage extends StatefulWidget {
@@ -10,49 +14,66 @@ class CommunicationPage extends StatefulWidget {
 }
 
 class _CommunicationPageState extends State<CommunicationPage> {
+  final bloc = CommunicationBloc();
+
   @override
   Widget build(BuildContext context) {
-    return DefaultScaffold(
-      body: _body(context),
-      title: Text("Comunicação"),
-      floatingActionButton: FloatingActionButton(
+    return Provider<CommunicationBloc>.value(
+      value: bloc,
+      child: DefaultScaffold(
+        body: _body(context),
+        title: Text("Comunicação"),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            Navigator.pushNamed(context, '/comunicacao/criar_editar');
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.blue,
+        ),
+      ),
+    );
+    /**
+        return Scaffold(
+        //drawer: _drawerBuild(),
+        appBar: _appBarBuild(context),
+        //endDrawer: _endDrawerBuild(),
+        body: _body(context),
+        floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Navigator.pushNamed(context, '/comunicacao/criar_editar');
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CommunicationCreateEdit()),
+        );
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
-      ),
+        ),
+        );
 
-    );
-    /** 
-    return Scaffold(
-      //drawer: _drawerBuild(),
-      appBar: _appBarBuild(context),
-      //endDrawer: _endDrawerBuild(),
-      body: _body(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CommunicationCreateEdit()),
-          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
-      ),
-    );
-    
-    */
+     */
   }
 
   Widget _body(context) {
     return Container(
-      child: ListView(
-        children: <Widget>[
-          _cardBuild(),
-          _cardBuild(),
-        ],
-      ),
+      child: StreamBuilder<List<NoticiaModel>>(
+          stream: bloc.noticias,
+          initialData: [],
+          builder: (context, snapshot) {
+            if (snapshot.hasError)
+              return Center(
+                child: Text("Error"),
+              );
+            if (snapshot.hasData && snapshot.data == null)
+              return Center(
+                child: Text("Nenhuma noticia"),
+              );
+            else
+              return ListView(
+                children: snapshot.data
+                    .map((noticia) => _cardBuild(noticia))
+                    .toList(),
+              );
+          }),
     );
   }
 
@@ -73,35 +94,51 @@ class _CommunicationPageState extends State<CommunicationPage> {
     );
   }
 
-  Widget _cardBuild() {
+  Widget _cardBuild(NoticiaModel noticia) {
     return Card(
         elevation: 10,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const ListTile(
-              title: Text('Noticia teste'),
-              subtitle: Text(
-                  '01/02/0202 - 01/02/0202: \nMusic by Julie Gable. https://api.flutter.dev/flutter/material/ListTile-class.html Lyrics by Sidney Stein. Music by Julie Gable. Lyrics by Sidney Stein.Music by Julie Gable. Lyrics by Sidney Stein.'),
-            ),
-            ButtonTheme.bar(
-              child: ButtonBar(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.archive),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () async {
-                      Navigator.pushNamed(context, '/comunicacao/criar_editar');
-                    },
-                  ),
-                ],
+        child: Container(
+          padding: EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: Text(
+                  "# ${noticia.titulo}",
+                  style: Theme.of(context).textTheme.title,
+                ),
               ),
-            )
-          ],
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: Text("# ${noticia.dataPublicacao?.toDate()}"),
+              ),
+              MarkdownBody(
+                data: noticia.conteudoMarkdown,
+              ),
+              Divider(),
+              ButtonTheme.bar(
+                child: ButtonBar(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        bloc.dispatch(DeleteCommunicationEvent(noticia.id));
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, '/comunicacao/criar_editar',
+                            arguments: noticia.id);
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ));
-  }  
+  }
 }
-
