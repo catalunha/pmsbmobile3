@@ -20,7 +20,9 @@ class AdministracaoHomePage extends StatelessWidget {
             initialData: [],
             builder: (context, snapshot) {
               return ListView(
-                children: snapshot.data.map((usuario)=>PerfilUsuarioItem(usuario)).toList(),
+                children: snapshot.data
+                    .map((usuario) => PerfilUsuarioItem(usuario))
+                    .toList(),
               );
             }),
       ),
@@ -28,29 +30,29 @@ class AdministracaoHomePage extends StatelessWidget {
   }
 }
 
-class PerfilUsuarioItem extends StatelessWidget{
+class PerfilUsuarioItem extends StatelessWidget {
   final PerfilUsuarioModel usuario;
 
   PerfilUsuarioItem(this.usuario);
+
   @override
   Widget build(BuildContext context) {
+
     return InkWell(
-      onTap: (){
-        Navigator.pushNamed(context, "/administracao/perfil", arguments: usuario.id);
+      onTap: () {
+        Navigator.pushNamed(context, "/administracao/perfil",
+            arguments: usuario.id);
       },
       child: Card(
         child: Container(
-          padding: EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 12
-          ),
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                   flex: 3,
                   child: SquareImage(
-                    image: NetworkImage(usuario.imagemPerfilUrl),
+                    image: NetworkImage(usuario.safeImagePerfilUrl),
                   )),
               Expanded(
                 flex: 5,
@@ -62,7 +64,8 @@ class PerfilUsuarioItem extends StatelessWidget{
                       Text("Nome: ${usuario.nomeProjeto}"),
                       Text("Celular: ${usuario.celular}"),
                       Text("Email: ${usuario.email}"),
-                      Text("Eixo: ${usuario.eixo != null ? usuario.eixo : "nada"}"),
+                      Text(
+                          "Eixo: ${usuario.eixo != null ? usuario.eixo : "nada"}"),
                     ],
                   ),
                 ),
@@ -73,5 +76,4 @@ class PerfilUsuarioItem extends StatelessWidget{
       ),
     );
   }
-
 }
