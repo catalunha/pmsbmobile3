@@ -57,25 +57,12 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backgroundColor: Colors.red,
       body: _body(context),
       title: Text("Produto em edição"),
     );
     /** 
-    return Scaffold(
-      drawer: drawerBuild(context),
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
-        centerTitle: true,
-        title: Text("Produto em edição"),
-      ),
-      endDrawer: endDrawerBuild(context),
-      body: _body(),
-    );
+   
     */
   }
 }

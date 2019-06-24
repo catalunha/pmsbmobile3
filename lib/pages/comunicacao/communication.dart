@@ -21,6 +21,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
     return Provider<CommunicationBloc>.value(
       value: bloc,
       child: DefaultScaffold(
+        backgroundColor: Colors.red,
         body: _body(context),
         title: Text("Comunicação"),
         floatingActionButton: FloatingActionButton(
@@ -32,25 +33,6 @@ class _CommunicationPageState extends State<CommunicationPage> {
         ),
       ),
     );
-    /**
-        return Scaffold(
-        //drawer: _drawerBuild(),
-        appBar: _appBarBuild(context),
-        //endDrawer: _endDrawerBuild(),
-        body: _body(context),
-        floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-        Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CommunicationCreateEdit()),
-        );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
-        ),
-        );
-
-     */
   }
 
   Widget _body(context) {

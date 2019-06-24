@@ -242,11 +242,11 @@ class _AddEditProductState extends State<AddEditProduct> {
     showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     myController.setTextAndPosition(_textoMarkdown);
 
-    return MaterialApp(
-        home: DefaultTabController(
+    return DefaultTabController(
             length: 3,
             child: Scaffold(
                 appBar: AppBar(
+                  backgroundColor: Colors.red,
                   leading: new IconButton(
                     icon: new Icon(Icons.arrow_back),
                     onPressed: () => Navigator.of(context).pop(),
@@ -276,6 +276,6 @@ class _AddEditProductState extends State<AddEditProduct> {
                       },
                       child: Icon(Icons.thumb_up),
                       backgroundColor: Colors.blue,
-                    )))));
+                    ))));
   }
 }

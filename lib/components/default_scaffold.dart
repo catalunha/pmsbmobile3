@@ -184,13 +184,15 @@ class DefaultScaffold extends StatelessWidget {
   final Widget floatingActionButton;
   final Widget title;
   final Widget actions;
+  final Color backgroundColor;
 
   const DefaultScaffold(
-      {Key key, this.body, this.floatingActionButton, this.title, this.actions})
+      {Key key, this.body, this.floatingActionButton, this.title, this.actions,this.backgroundColor })
       : super(key: key);
 
   Widget _appBarBuild(BuildContext context) {
     return AppBar(
+      backgroundColor: backgroundColor,
       actions: <Widget>[
         MoreAppAction(),
       ],
