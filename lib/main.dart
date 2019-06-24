@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           value: DatabaseService(),
           child: MaterialApp(
             title: 'PMSB',
-            theme: ThemeData.dark(),
+            //theme: ThemeData.dark(),
             initialRoute: "/",
             routes: {
               "/": (context) => HomePage(),
@@ -43,9 +43,9 @@ class MyApp extends StatelessWidget {
               "/produto/editar_visual": (context) => EditVisual(),
 
               //comunicacao
+              "/comunicacao": (context) => CommunicationPage(),
               "/noticias/noticias_visualizadas": (context) =>
                   NoticiasVisualizadasPage(),
-              "/comunicacao": (context) => CommunicationPage(),
               "/comunicacao/criar_editar": (context) => CommunicationCreateEdit(),
 
               //administração
