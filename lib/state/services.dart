@@ -38,7 +38,7 @@ class DatabaseService {
   }
 
   Stream<NoticiaModel> streamNoticiaByDocumentReference(DocumentReference ref) {
-    return ref.snapshots().map((doc) => NoticiaModel.fromFirestore(doc));
+    return ref.snapshots().where((snap)=>snap.exists).map((doc) => NoticiaModel.fromFirestore(doc));
   }
 
   Stream<List<Future<NoticiaModel>>> streamNoticias(
