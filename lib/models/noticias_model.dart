@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
+class DestinatarioModel{
+  String opcao;
+  String destinatario;
+}
+
 class NoticiaModel {
   static final String collection = "noticias";
   String id;
@@ -7,6 +13,7 @@ class NoticiaModel {
   Timestamp dataPublicacao;
   String userId;
   String titulo;
+  List<DestinatarioModel> destinatarios;
 
   NoticiaModel({
     this.id,
@@ -20,10 +27,19 @@ class NoticiaModel {
     return NoticiaModel(
       id: ref.documentID,
       userId: ref.data['userId'] ?? 'userId',
-      conteudoMarkdown: ref.data['conteudo_markdown'] ?? 'conteudo_markdown',
-      dataPublicacao: ref.data['data_publicacao'] ?? 'data_publicacao',
+      conteudoMarkdown: ref.data['conteudoMarkdown'] ?? 'conteudoMarkdown',
+      dataPublicacao: ref.data['dataPublicacao'] ?? null,
       titulo: ref.data['titulo'],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return{
+      "userId":userId,
+      "conteudoMarkdown":conteudoMarkdown,
+      "dataPublicacao":dataPublicacao,
+      "titulo":titulo,
+    };
   }
 
 }
