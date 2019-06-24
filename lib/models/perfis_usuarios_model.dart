@@ -1,3 +1,5 @@
+import 'package:validators/validators.dart';
+
 class PerfilUsuarioModel {
   static final String collection = "Usuario";
   String id; //mesmo id do usuario
@@ -60,5 +62,10 @@ class PerfilUsuarioModel {
       "eixo":eixo,
       "rotas":rotas,
     };
+  }
+
+  String get safeImagePerfilUrl{
+    if(isURL(imagemPerfilUrl)) return imagemPerfilUrl;
+    return "https://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png";
   }
 }
