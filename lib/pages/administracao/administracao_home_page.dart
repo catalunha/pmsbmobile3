@@ -9,52 +9,68 @@ class AdministracaoHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Administração"),
+      ),
       body: Container(
         child: StreamBuilder<List<PerfilUsuarioModel>>(
             stream: bloc.usuarios,
             initialData: [],
             builder: (context, snapshot) {
               return ListView(
-                children: snapshot.data.map(_buildPerfilUsuario).toList(),
+                children: snapshot.data.map((usuario)=>PerfilUsuarioItem(usuario)).toList(),
               );
             }),
       ),
     );
   }
+}
 
-  Widget _buildPerfilUsuario(PerfilUsuarioModel usuario) {
-    return Card(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 12,
-          horizontal: 12
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-                flex: 3,
-                child: SquareImage(
-                  image: NetworkImage(usuario.imagemPerfilUrl),
-                )),
-            Expanded(
-              flex: 5,
-              child: Container(
-                padding: EdgeInsets.only(left: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("Nome: ${usuario.nomeProjeto}"),
-                    Text("Celular: ${usuario.celular}"),
-                    Text("Email: ${usuario.email}"),
-                    Text("Eixo: ${usuario.eixo != null ? usuario.eixo : "nada"}"),
-                  ],
+class PerfilUsuarioItem extends StatelessWidget{
+  final PerfilUsuarioModel usuario;
+
+  PerfilUsuarioItem(this.usuario);
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: (){
+        Navigator.pushNamed(context, "/administracao/perfil", arguments: usuario.id);
+      },
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 12
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                  flex: 3,
+                  child: SquareImage(
+                    image: NetworkImage(usuario.imagemPerfilUrl),
+                  )),
+              Expanded(
+                flex: 5,
+                child: Container(
+                  padding: EdgeInsets.only(left: 6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Nome: ${usuario.nomeProjeto}"),
+                      Text("Celular: ${usuario.celular}"),
+                      Text("Email: ${usuario.email}"),
+                      Text("Eixo: ${usuario.eixo != null ? usuario.eixo : "nada"}"),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
 }
