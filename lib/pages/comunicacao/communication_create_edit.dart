@@ -4,9 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
 import '../user_files.dart';
-
-
-
+import 'package:pmsbmibile3/pages/comunicacao/communication_create_edit_bloc.dart';
 
 class CommunicationCreateEdit extends StatefulWidget {
   @override
@@ -15,12 +13,18 @@ class CommunicationCreateEdit extends StatefulWidget {
 }
 
 class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
+  final bloc = CommunicationCreateEditBloc();
+
   //Dados do formulario
   bool showFab;
   DateTime _date = new DateTime.now();
   TimeOfDay _hora = new TimeOfDay.now();
   String _textoMarkdown = "  ";
   var myController = new SelectingTextEditingController();
+  final _tituloController = TextEditingController();
+
+  @override
+  void initState() {}
 
 // --------- TELA DADOS ---------
 
@@ -34,16 +38,26 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   }
 
   _tituloNoticia() {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            //labelText: 'Titulo da notícia',
-          ),
-        ));
+    return StreamBuilder<CommunicationCreateEditState>(
+      stream: bloc.initialState,
+      builder: (context, snapshot) {
+        if (snapshot.hasData){
+          _tituloController.text = snapshot.data.titulo;
+        }
+        return Padding(
+            padding: EdgeInsets.all(5.0),
+            child: TextField(
+              controller: _tituloController,
+              onChanged: (String t) => bloc.dispatch(UpdateNoticiaTituloEvent(t)),
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                //labelText: 'Titulo da notícia',
+              ),
+            ));
+      }
+    );
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -63,6 +77,7 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
           );
         });
     if (picked != null) {
+      bloc.dispatch(UpdateNoticiaDataPublicacaoEvent(picked));
       setState(() {
         _date = picked;
       });
@@ -82,6 +97,7 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
     );
     if (selectedTime != null) {
       setState(() {
+        bloc.dispatch(UpdateNoticiaDataPublicacaoEvent(selectedTime));
         _hora = selectedTime;
       });
     }
@@ -137,7 +153,9 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
             padding: EdgeInsets.all(5.0),
             child: RaisedButton(
                 color: Colors.red,
-                onPressed: () {},
+                onPressed: () {
+                  //delete action
+                },
                 child: Row(
                   children: <Widget>[
                     Text('Apagar', style: TextStyle(fontSize: 20)),
@@ -199,20 +217,29 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   // --------- TELA TEXTO ---------
 
   _textoNoticia() {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: TextField(
-          onChanged: (text) {
-            _textoMarkdown = text;
-            print(myController.selection);
-          },
-          controller: myController,
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-        ));
+    return StreamBuilder<CommunicationCreateEditState>(
+      stream: bloc.initialState,
+      builder: (context, snapshot) {
+        if(snapshot.hasData){
+          myController.text = snapshot.data.conteudoMarkdown;
+        }
+        return Padding(
+            padding: EdgeInsets.all(5.0),
+            child: TextField(
+              onChanged: (text) {
+                bloc.dispatch(UpdateNoticiaConteudoEvent(text));
+                _textoMarkdown = text;
+                print(myController.selection);
+              },
+              controller: myController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ));
+      }
+    );
   }
 
   _atualizarMarkdown(texto, posicao) {
@@ -295,7 +322,15 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   // ---------- TELA PREVIEW ----------
 
   _bodyPreview(context) {
-    return Markdown(data: myController.text);
+    return StreamBuilder<CommunicationCreateEditState>(
+      stream: bloc.initialState,
+      builder: (context, snapshot) {
+        if(snapshot.hasData){
+          myController.text = snapshot.data.conteudoMarkdown;
+        }
+        return Markdown(data: myController.text);
+      }
+    );
   }
 
   // ---------- TELA BUILD ----------
@@ -304,39 +339,47 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
   Widget build(BuildContext context) {
     showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     myController.setTextAndPosition(_textoMarkdown);
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            appBar: AppBar(
-              leading: new IconButton(
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              bottom: TabBar(
-                tabs: [
-                  Tab(text: "Dados"),
-                  Tab(text: "Texto"),
-                  Tab(text: "Preview")
-                ],
-              ),
-              title: Text('Criação e edicao de notícias'),
+
+    //TODO: isso talvez não seja aqui
+    var noticiaId = ModalRoute.of(context).settings.arguments;
+    if (noticiaId != null) {
+      bloc.dispatch(UpdateNoticiaIdEvent(noticiaId));
+    }
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+          appBar: AppBar(
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            body: TabBarView(
-              children: [
-                _bodyDados(context),
-                _bodyTexto(context),
-                _bodyPreview(context)
+            bottom: TabBar(
+              tabs: [
+                Tab(text: "Dados"),
+                Tab(text: "Texto"),
+                Tab(text: "Preview"),
               ],
             ),
-            floatingActionButton: showFab
-                ? FloatingActionButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Icon(Icons.thumb_up),
-                    backgroundColor: Colors.blue,
-                  )
-                : null),
-      ),
+            title: Text('Criação e edicao de notícias'),
+          ),
+          body: TabBarView(
+            children: [
+              _bodyDados(context),
+              _bodyTexto(context),
+              _bodyPreview(context),
+            ],
+          ),
+          floatingActionButton: showFab
+              ? FloatingActionButton(
+                  onPressed: () {
+                    //TODO: remover o pop?
+                    //Navigator.of(context).pop();
+                    bloc.dispatch(SaveEvent());
+                  },
+                  child: Icon(Icons.thumb_up),
+                  backgroundColor: Colors.blue,
+                )
+              : null),
     );
   }
 }
