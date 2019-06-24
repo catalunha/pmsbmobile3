@@ -136,8 +136,7 @@ class _ProductVisualState extends State<ProductVisual> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: DefaultTabController(
+    return DefaultTabController(
       length: 4,
       child: Scaffold(
           appBar: AppBar(
@@ -171,6 +170,6 @@ class _ProductVisualState extends State<ProductVisual> {
             child: Icon(Icons.add),
             backgroundColor: Colors.blue,
           )),
-    ));
+    );
   }
 }

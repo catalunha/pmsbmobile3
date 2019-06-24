@@ -296,8 +296,7 @@ class _EditVisualState extends State<EditVisual> {
     showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     myController.setTextAndPosition(_textoMarkdown);
 
-    return MaterialApp(
-        home: DefaultTabController(
+    return DefaultTabController(
             length: 3,
             child: Scaffold(
                 appBar: AppBar(
@@ -331,6 +330,6 @@ class _EditVisualState extends State<EditVisual> {
                       },
                       child: Icon(Icons.thumb_up),
                       backgroundColor: Colors.blue,
-                    )))));
+                    ))));
   }
 }
