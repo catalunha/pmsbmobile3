@@ -200,7 +200,14 @@ class OpcoesTema extends StatelessWidget {
   }
 }
 
-class AtualizarEmail extends StatelessWidget {
+
+class AtualizarEmail extends StatefulWidget {
+  @override
+  AtualizarEmailState createState() => AtualizarEmailState();
+}
+
+class AtualizarEmailState extends State<AtualizarEmail> {
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -208,12 +215,15 @@ class AtualizarEmail extends StatelessWidget {
     return StreamBuilder<PerfilUsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
+          if (_controller.text == null || _controller.text.isEmpty) {
+            _controller.text = snapshot.data?.email;
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Atualizar Email"),
-              Text("${snapshot.data?.email}"),
               TextField(
+                controller: _controller,
                 onChanged: (email) =>
                     bloc.dispatch(ConfiguracaoUpdateEmailEvent(email)),
               ),
@@ -223,20 +233,31 @@ class AtualizarEmail extends StatelessWidget {
   }
 }
 
-class AtualizarNumeroCelular extends StatelessWidget {
+class AtualizarNumeroCelular extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return AtualizarNumeroCelularState();
+  }
 
+}
+
+class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
+  final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
     return StreamBuilder<PerfilUsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
+          if (_controller.text == null || _controller.text.isEmpty) {
+            _controller.text = snapshot.data?.celular;
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Atualizar numero celular"),
-              Text("${snapshot.data?.celular}"),
               TextField(
+                controller: _controller,
                 onChanged: bloc.updateNumeroCelular,
               ),
             ],
@@ -245,20 +266,30 @@ class AtualizarNumeroCelular extends StatelessWidget {
   }
 }
 
-class AtualizarNomeNoProjeto extends StatelessWidget {
+class AtualizarNomeNoProjeto extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return AtualizarNomeNoProjetoState();
+  }
+}
 
+class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto>{
+  final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
     return StreamBuilder<PerfilUsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
+          if (_controller.text == null || _controller.text.isEmpty) {
+            _controller.text = snapshot.data?.nomeProjeto;
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Atualizar nome no projeto"),
-              Text("${snapshot.data?.nomeProjeto}"),
               TextField(
+                controller: _controller,
                 onChanged: bloc.updateNomeProjeto,
               ),
             ],
