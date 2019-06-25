@@ -81,6 +81,12 @@ class DefaultDrawer extends StatelessWidget {
               },
             ),
             ListTile(
+              title: Text('Home'),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/");
+              },
+            ),
+            ListTile(
               title: Text('Questionarios'),
               onTap: () {
                 Navigator.pop(context);
