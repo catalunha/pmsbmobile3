@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/components/square_image.dart';
+import 'package:pmsbmibile3/components/circle_image.dart';
 import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
-import 'package:pmsbmibile3/pages/geral/loading.dart';
-import 'package:pmsbmibile3/models/usuarios_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/user_repository.dart';
@@ -37,18 +35,44 @@ class DefaultDrawer extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(
-                          child: snap.data.imagemPerfilUrl == null
-                              ? Icon(Icons.people, size: 75)
-                              : SquareImage(
-                                  image:
-                                      NetworkImage(snap.data.imagemPerfilUrl)),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 4,
+                              child: snap.data.imagemPerfilUrl == null
+                                  ? Icon(Icons.people, size: 75)
+                                  : CircleImage(
+                                      image: NetworkImage(
+                                          snap.data.imagemPerfilUrl),
+                                    ),
+                            ),
+                            Expanded(
+                              flex: 8,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text("${snap.data.nomeProjeto}"),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text("${snap.data.celular}"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
-                          child: Text("${snap.data.celular}"),
+                          child: Text("${snap.data.email}"),
                         ),
                       ],
                     ),
@@ -187,7 +211,12 @@ class DefaultScaffold extends StatelessWidget {
   final Color backgroundColor;
 
   const DefaultScaffold(
-      {Key key, this.body, this.floatingActionButton, this.title, this.actions,this.backgroundColor })
+      {Key key,
+      this.body,
+      this.floatingActionButton,
+      this.title,
+      this.actions,
+      this.backgroundColor})
       : super(key: key);
 
   Widget _appBarBuild(BuildContext context) {
