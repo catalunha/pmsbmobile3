@@ -49,7 +49,3 @@ git add .
 // now, commit for new .gitignore to apply
 git commit -m ".gitignore is now working"
 ~~~
-
-## Global config
-
-
