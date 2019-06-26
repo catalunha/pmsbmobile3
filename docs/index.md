@@ -1,10 +1,28 @@
-# Documentação do projeto
+# Folders and Files
 
-### COMPONENTS
+## /lib/components
 Diretorio contento Widgets para serem reutilizados em todo o projeto focado em elementos graficos.
 
-### PAGES
-Diretorio contento telas do app. As areas do app são divididas em subdiretorios dentro desta pasta.
+## /lib/pages
+Diretorio contendo telas do app. As areas do app são divididas em subdiretorios dentro desta pasta. Com a respectiva tela/bloc conforme padrao:
+Exemplo para área de comunicacao no gerenciamento de noticias.
+~~~
+/lib/pages/comunicacao
+/lib/pages/comunicacao/comunicacao.dart // tela principal lista noticias
+/lib/pages/comunicacao/comunicacao_bloc.dart // bloc
+/lib/pages/comunicacao/comunicacao_crud_noticia.dart // tela crud noticia
+/lib/pages/comunicacao/comunicacao_crud_noticia_bloc.dart // bloc para crud noticia
+...
+~~~
 
-### MODELS
-Diretorio contendo modelos de dados
+## /lib/models ?
+Diretorio contendo modelos dos dados.
+
+
+# Widgets
+
+Nas telas buscar construir os widgets com as seguintes diretrizes:
+- Dividir em funçoes e widgets para simplificar codigos grandes
+- Documentar widgets, funçes e variáveis
+- Aproveitar widgets padroes de /lib/components
+- Usar StreamBuilder sempre q possível no widget.
