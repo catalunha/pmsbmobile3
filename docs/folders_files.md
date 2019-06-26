@@ -15,5 +15,9 @@ Exemplo para área de comunicacao no gerenciamento de noticias.
 ...
 ~~~
 
-## /lib/models ?
-Diretorio contendo modelos dos dados.
+## /lib/models
+Diretorio contendo modelo para gerenciamento dos dados dos documentos nas coleções.
+Exemplo para área de comunicacao no gerenciamento de noticias.
+~~~
+/lib/models/noticia_model.dart
+~~~
