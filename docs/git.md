@@ -2,11 +2,9 @@
 Alguns comentarios sobre a utilização do git e github
 
 ## ISSUES
-Utilize as issues para ajudar a se organizar e comunicar com a equipe sobre as demandas geradas e atendidas por você.
+- Utilize as issues para ajudar a se organizar e comunicar com a equipe sobre as demandas geradas e atendidas por você.
+- Tente não codificar muitas issues ao mesmo tempo, isso pode levar a dificuldade de merge no futuro e a demora do merge individual de cada demanda.
 
-Tente não codificar muitas issues ao mesmo tempo, isso pode levar a dificuldade de merge no futuro.
-
-Tente não codificar muitas issues ao mesmo tempo, isso pode levar a demora do merge individual de cada demanda.
 Isso é ruim porque algum membro da equipe pode estar com trabalho bloqueado esperando uma issue ser liberada.
 
 ## BRANCHS
