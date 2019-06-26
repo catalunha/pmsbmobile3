@@ -1,6 +1,20 @@
 # Lendo
 
 
+
+# Channel flutter
+https://www.youtube.com/channel/UCwXdFgeE9KYzlDdR7TG9cMw
+
+# Channel Firebase
+https://www.youtube.com/channel/UCP4bf6IHJJQehibu6ai__cg
+
+## videos
+> https://www.youtube.com/watch?v=lW7DWV2jST0&t=3s
+
+## playlist
+
+
+
 # Estudado e indico
 
 - Curso Flutter Essencial de Ricardo Lecheta oferecido pela udemy https://www.udemy.com/flutter-essencial/
