@@ -49,3 +49,7 @@ git add .
 // now, commit for new .gitignore to apply
 git commit -m ".gitignore is now working"
 ~~~
+
+# Guias Git
+- Desfazendo Coisas: 
+https://git-scm.com/book/pt-br/v1/Git-Essencial-Desfazendo-Coisas
