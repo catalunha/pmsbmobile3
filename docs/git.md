@@ -1,5 +1,8 @@
 Alguns comentarios sobre a utilização do git e github
 
+# Tutoriais git
+- https://git-scm.com/book/pt-br/v1/
+
 # ISSUES
 - Utilize as issues para ajudar a se organizar e comunicar com a equipe sobre as demandas geradas e atendidas por você.
 - Tente não codificar muitas issues ao mesmo tempo, isso pode levar a dificuldade de merge no futuro e a demora do merge individual de cada demanda.
@@ -50,6 +53,3 @@ git add .
 git commit -m ".gitignore is now working"
 ~~~
 
-# Guias Git
-- Desfazendo Coisas: 
-https://git-scm.com/book/pt-br/v1/Git-Essencial-Desfazendo-Coisas
