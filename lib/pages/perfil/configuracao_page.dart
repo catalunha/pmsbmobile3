@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
-import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
-import 'package:pmsbmibile3/models/setores_censitarios_model.dart';
+import 'package:pmsbmibile3/models/arquivo_model.dart';
+import 'package:pmsbmibile3/models/setor_censitario_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -212,7 +212,7 @@ class AtualizarEmailState extends State<AtualizarEmail> {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           if (_controller.text == null || _controller.text.isEmpty) {
@@ -246,7 +246,7 @@ class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           if (_controller.text == null || _controller.text.isEmpty) {
@@ -278,7 +278,7 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto>{
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           if (_controller.text == null || _controller.text.isEmpty) {
@@ -302,7 +302,7 @@ class AtualizarImagemPerfil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           var perfil = snapshot.data;
@@ -323,7 +323,7 @@ class AtualizarImagemPerfil extends StatelessWidget {
                     Spacer(
                       flex: 2,
                     ),
-                    StreamBuilder<ArquivoUsuarioModel>(
+                    StreamBuilder<ArquivoModel>(
                         stream: bloc.uploadBloc.arquivo,
                         builder: (context, snapshot) {
                           return Expanded(

@@ -1,4 +1,4 @@
-import 'package:pmsbmibile3/models/variaveis_usuarios_model.dart';
+import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VariavelUsuarioRepository {

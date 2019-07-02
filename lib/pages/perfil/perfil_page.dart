@@ -145,7 +145,7 @@ class ConteudoVariavelUsuario extends StatelessWidget {
       return Text(variavelUsuario.conteudo);
     } else {
       bloc.setArquivoReference(variavelUsuario.conteudo);
-      return StreamBuilder<ArquivoUsuarioModel>(
+      return StreamBuilder<ArquivoModel>(
         stream: bloc.arquivo,
         initialData: null,
         builder: (context, snapshot) {

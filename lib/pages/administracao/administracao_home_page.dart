@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'administracao_home_page_bloc.dart';
 
 class AdministracaoHomePage extends StatelessWidget {
@@ -15,7 +15,7 @@ class AdministracaoHomePage extends StatelessWidget {
         title: Text("Administração"),
       ),
       body: Container(
-        child: StreamBuilder<List<PerfilUsuarioModel>>(
+        child: StreamBuilder<List<UsuarioModel>>(
             stream: bloc.usuarios,
             initialData: [],
             builder: (context, snapshot) {
@@ -31,7 +31,7 @@ class AdministracaoHomePage extends StatelessWidget {
 }
 
 class PerfilUsuarioItem extends StatelessWidget {
-  final PerfilUsuarioModel usuario;
+  final UsuarioModel usuario;
 
   PerfilUsuarioItem(this.usuario);
 
@@ -52,7 +52,7 @@ class PerfilUsuarioItem extends StatelessWidget {
               Expanded(
                   flex: 3,
                   child: SquareImage(
-                    image: NetworkImage(usuario.safeImagePerfilUrl),
+                    image: NetworkImage(usuario.safeImagemPerfilUrl),
                   )),
               Expanded(
                 flex: 5,
@@ -65,7 +65,7 @@ class PerfilUsuarioItem extends StatelessWidget {
                       Text("Celular: ${usuario.celular}"),
                       Text("Email: ${usuario.email}"),
                       Text(
-                          "Eixo: ${usuario.eixo != null ? usuario.eixo : "nada"}"),
+                          "Eixo: ${usuario.eixoNome != null ? usuario.eixoNome : "nada"}"),
                     ],
                   ),
                 ),

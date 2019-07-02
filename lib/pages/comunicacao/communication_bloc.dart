@@ -1,6 +1,7 @@
+import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pmsbmibile3/models/noticias_model.dart';
+import 'package:pmsbmibile3/models/noticia_model.dart';
 
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -16,7 +17,7 @@ class DeleteCommunicationEvent extends CommunicationEvent{
 
 class CommunicationBloc {
   final _firestore = Firestore.instance;
-  final _authBloc = AuthBloc();
+  final _authBloc = AuthBloc(AuthApiMobile());
   final _noticiasController = BehaviorSubject<List<NoticiaModel>>();
   final _inputController = BehaviorSubject<CommunicationEvent>();
   Function get dispatch => _inputController.sink.add;
@@ -42,7 +43,7 @@ class CommunicationBloc {
     noticiasRef
         .snapshots()
         .map((querySnap) =>
-            querySnap.documents.map((docSnap) => NoticiaModel.fromFirestore(docSnap)).toList())
+            querySnap.documents.map((docSnap) => NoticiaModel(id: docSnap.documentID).fromMap(docSnap.data)).toList())
         .pipe(_noticiasController);
   }
 

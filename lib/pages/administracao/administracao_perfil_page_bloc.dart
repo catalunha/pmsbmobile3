@@ -1,7 +1,7 @@
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
-import 'package:pmsbmibile3/models/variaveis_usuarios_model.dart';
+import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
 
 class AdministracaoPerfilPageEvent {}
 
@@ -24,9 +24,9 @@ class AdministracaoPerfilPageBloc {
 
   Function get dispatch => _inputController.sink.add;
 
-  final _perfilController = BehaviorSubject<PerfilUsuarioModel>();
+  final _perfilController = BehaviorSubject<UsuarioModel>();
 
-  Stream<PerfilUsuarioModel> get perfil => _perfilController.stream;
+  Stream<UsuarioModel> get perfil => _perfilController.stream;
 
   final _variaveisController = BehaviorSubject<List<VariavelUsuarioModel>>();
 
@@ -48,10 +48,10 @@ class AdministracaoPerfilPageBloc {
       currentState.usuarioId = event.usuarioId;
       //perfil usuario
       var userRef = Firestore.instance
-          .collection(PerfilUsuarioModel.collection)
+          .collection(UsuarioModel.collection)
           .document(event.usuarioId);
       userRef.snapshots().map((snap) {
-        return PerfilUsuarioModel.fromMap(
+        return UsuarioModel().fromMap(
             {"id": snap.documentID, ...snap.data});
       }).listen((usuario) {
         _perfilController.sink.add(usuario);

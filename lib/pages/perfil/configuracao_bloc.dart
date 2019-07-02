@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
-import 'package:pmsbmibile3/models/eixos_model.dart';
-import 'package:pmsbmibile3/models/setores_censitarios_model.dart';
-import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:pmsbmibile3/models/eixo_model.dart';
+import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/state/upload_bloc.dart';
 
 class ConfiguracaoEvent {}
@@ -27,7 +27,7 @@ class ConfiguracaoSaveEvent extends ConfiguracaoEvent{
 }
 
 class ConfiguracaoBlocState {
-  PerfilUsuarioModel currentPerfilUsuario;
+  UsuarioModel currentPerfilUsuario;
   String userId;
   String nomeProjeto;
   String numeroCelular;
@@ -51,10 +51,10 @@ class ConfiguracaoBloc {
 
   Function get dispatch => _inputController.sink.add;
 
-  BehaviorSubject<PerfilUsuarioModel> _perfil =
-      BehaviorSubject<PerfilUsuarioModel>();
+  BehaviorSubject<UsuarioModel> _perfil =
+      BehaviorSubject<UsuarioModel>();
 
-  Stream<PerfilUsuarioModel> get perfil => _perfil.stream;
+  Stream<UsuarioModel> get perfil => _perfil.stream;
 
   BehaviorSubject<List<EixoModel>> _eixos = BehaviorSubject<List<EixoModel>>();
 
@@ -103,7 +103,7 @@ class ConfiguracaoBloc {
         .map((snap) {
       return snap.documents
           .map((doc) =>
-              SetorCensitarioModel.fromMap({"id": doc.documentID, ...doc.data}))
+              SetorCensitarioModel(id: doc.documentID).fromMap(doc.data))
           .toList();
     }).pipe(_setoresCensitarios);
 
@@ -116,8 +116,8 @@ class ConfiguracaoBloc {
         .listen(_imagemPerfilUpdateState); //update informação do perfil
   }
 
-  PerfilUsuarioModel perfilSnapToInstance(DocumentSnapshot snap) {
-    var user = PerfilUsuarioModel.fromMap({
+  UsuarioModel perfilSnapToInstance(DocumentSnapshot snap) {
+    var user = UsuarioModel().fromMap({
       "id": snap.documentID,
       ...snap.data,
     });
@@ -126,7 +126,7 @@ class ConfiguracaoBloc {
 
   void setUpUser(String userId) {
     Firestore.instance
-        .collection(PerfilUsuarioModel.collection)
+        .collection(UsuarioModel.collection)
         .document(userId)
         .snapshots()
         .where((snap) => snap.exists)
@@ -142,23 +142,23 @@ class ConfiguracaoBloc {
     formState.nomeProjeto = nomeProjeto;
   }
 
-  void perfilUpdateConfiguracaoBlocState(PerfilUsuarioModel perfil) {
+  void perfilUpdateConfiguracaoBlocState(UsuarioModel perfil) {
     formState.numeroCelular = perfil.celular;
     formState.nomeProjeto = perfil.nomeProjeto;
     formState.imagemPerfilUrl = perfil.imagemPerfilUrl;
-    formState.imagemPerfil = perfil.imagemPerfil;
+    formState.imagemPerfil = perfil.imagemPerfilId;
   }
 
   bool processConfiguracaoBlocState(String userId) {
     Firestore.instance
-        .collection(PerfilUsuarioModel.collection)
+        .collection(UsuarioModel.collection)
         .document(userId)
         .setData({
-      ...PerfilUsuarioModel(
+      ...UsuarioModel(
         id: userId,
         nomeProjeto: formState.nomeProjeto,
         celular: formState.numeroCelular,
-        imagemPerfil: formState.imagemPerfil,
+        imagemPerfilId: formState.imagemPerfil,
         imagemPerfilUrl: formState.imagemPerfilUrl,
         email: formState.email,
       ).toMap(),
@@ -181,10 +181,10 @@ class ConfiguracaoBloc {
     uploadBloc.uploadFromPath(formState.filePath);
   }
 
-  void _imagemPerfilUpdateState(ArquivoUsuarioModel arquivo) {
+  void _imagemPerfilUpdateState(ArquivoModel arquivo) {
     formState.imagemPerfilUrl = arquivo.url;
     formState.imagemPerfil = Firestore.instance
-        .collection(ArquivoUsuarioModel.collection)
+        .collection(ArquivoModel.collection)
         .document(arquivo.id);
   }
 

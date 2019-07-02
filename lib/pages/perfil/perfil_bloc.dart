@@ -1,21 +1,20 @@
 import 'dart:async';
+import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ConteudoVariavelUsuarioBloc{
   BehaviorSubject<DocumentReference> _arquivo = BehaviorSubject<DocumentReference>();
-  BehaviorSubject<ArquivoUsuarioModel> _streamArquivo = BehaviorSubject<ArquivoUsuarioModel>();
-  Stream<ArquivoUsuarioModel> get arquivo => _streamArquivo.stream;
+  BehaviorSubject<ArquivoModel> _streamArquivo = BehaviorSubject<ArquivoModel>();
+  Stream<ArquivoModel> get arquivo => _streamArquivo.stream;
   Function get setArquivoReference => _arquivo.sink.add;
 
   ConteudoVariavelUsuarioBloc(){
     _arquivo.listen(getArquivo);
   }
   void getArquivo(DocumentReference ref){
-    ArquivoUsuarioModel convert(DocumentSnapshot snap) {
-      return ArquivoUsuarioModel.fromMap({
-        "id":snap.documentID,
+    ArquivoModel convert(DocumentSnapshot snap) {
+      return ArquivoModel(id: snap.documentID).fromMap({
         ...snap.data,
       });
     }

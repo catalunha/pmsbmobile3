@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart' show TimeOfDay;
+import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pmsbmibile3/models/noticias_model.dart';
+import 'package:pmsbmibile3/models/noticia_model.dart';
 
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -52,7 +53,7 @@ class CommunicationCreateEditState {
     currentModel = m;
     noticiaId = m.id;
     userId = m.userId;
-    dataPublicacao = m.dataPublicacao;
+    dataPublicacao = Timestamp.fromDate(m.dataPublicacao);
     titulo = m.titulo;
     conteudoMarkdown = m.conteudoMarkdown;
   }
@@ -62,13 +63,13 @@ class CommunicationCreateEditState {
       userId: userId,
       titulo: titulo,
       conteudoMarkdown: conteudoMarkdown,
-      dataPublicacao: dataPublicacao,
+      dataPublicacao: dataPublicacao.toDate(),
     );
   }
 }
 
 class CommunicationCreateEditBloc {
-  final _authBloc = AuthBloc();
+  final _authBloc = AuthBloc(AuthApiMobile());
   final currentState = CommunicationCreateEditState();
 
   final _inputController = BehaviorSubject<CommunicationCreateEditEvent>();
@@ -143,7 +144,7 @@ class CommunicationCreateEditBloc {
         .collection(NoticiaModel.collection)
         .document(event.noticiaId);
     ref.snapshots().listen((DocumentSnapshot snap) {
-      var noticia = NoticiaModel.fromFirestore(snap);
+      var noticia = NoticiaModel(id: snap.documentID).fromMap(snap.data);
       currentState.updatefromModel(noticia);
       _initialStateController.sink.add(currentState);
     });

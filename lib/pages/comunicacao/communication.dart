@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/models/noticias_model.dart';
+import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/communication_create_edit.dart';
 import 'package:provider/provider.dart';
 
@@ -93,7 +93,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 6),
-                child: Text("# ${noticia.dataPublicacao?.toDate()}"),
+                child: Text("# ${noticia.dataPublicacao}"),
               ),
               MarkdownBody(
                 data: noticia.conteudoMarkdown,

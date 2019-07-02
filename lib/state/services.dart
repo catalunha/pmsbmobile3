@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:math';
 import 'package:meta/meta.dart';
 import 'package:mime/mime.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pmsbmibile3/models/models.dart';
@@ -12,7 +11,7 @@ class DatabaseService {
 
   Future<UsuarioModel> getUsuario(String id) async {
     var snap = await _firestore.collection(UsuarioModel.collection).document(id).get();
-    return UsuarioModel.fromFirestore(snap);
+    return UsuarioModel(id: snap.documentID).fromMap(snap.data);
   }
 
   Stream<UsuarioModel> streamUsuario(String id) {
@@ -20,7 +19,7 @@ class DatabaseService {
         .collection(UsuarioModel.collection)
         .document(id)
         .snapshots()
-        .map((snap) => UsuarioModel.fromFirestore(snap));
+        .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data));
   }
 
   Stream<List<NoticiaUsuarioModel>> streamNoticiasUsuarios({
@@ -33,12 +32,13 @@ class DatabaseService {
         .where("visualizada", isEqualTo: visualizada)
         .snapshots()
         .map((snap) => snap.documents
-            .map((doc) => NoticiaUsuarioModel.fromFirestore(doc))
+            .map((doc) => NoticiaUsuarioModel().fromMap(doc.data))
             .toList());
   }
 
-  Stream<NoticiaModel> streamNoticiaByDocumentReference(DocumentReference ref) {
-    return ref.snapshots().where((snap)=>snap.exists).map((doc) => NoticiaModel.fromFirestore(doc));
+  Stream<NoticiaModel> streamNoticiaById(String id) {
+    var ref = _firestore.collection(NoticiaModel.collection).document(id);
+    return ref.snapshots().where((snap)=>snap.exists).map((doc) => NoticiaModel().fromMap(doc.data));
   }
 
   Stream<List<Future<NoticiaModel>>> streamNoticias(
@@ -50,7 +50,7 @@ class DatabaseService {
         .snapshots()
         .map((snap) => snap.documents
             .map((docSnap) async =>
-                NoticiaModel.fromFirestore(await docSnap['noticia'].get()))
+                NoticiaModel().fromMap(await docSnap['noticia'].get().data))
             .toList());
   }
 
@@ -114,7 +114,7 @@ class DatabaseService {
         userId,
         nome,
       );
-      conteudo = arquivoUsuario.ref;
+      conteudo = arquivoUsuario.id;
     }
     var ref = _firestore.collection(VariavelUsuarioModel.collection).document("${userId}_$variavelId");
     ref.get().then((snap){
@@ -127,7 +127,7 @@ class DatabaseService {
     });
   }
 
-  Future<ArquivoUsuarioModel> uploadFile(
+  Future<ArquivoModel> uploadFile(
     File file,
     String filename,
     String userId,
@@ -150,8 +150,8 @@ class DatabaseService {
     if (_uploadTask.isCanceled) {
       return null;
     }
-    var doc = _firestore.collection(ArquivoUsuarioModel.collection).document();
-    var arquivo = ArquivoUsuarioModel(
+    var doc = _firestore.collection(ArquivoModel.collection).document();
+    var arquivo = ArquivoModel(
       contentType: fileContentType,
       titulo: titulo,
       userId: userId,
@@ -159,7 +159,6 @@ class DatabaseService {
       url: url,
     );
     doc.setData(arquivo.toMap());
-    arquivo.ref = doc;
     arquivo.id = doc.documentID;
     return arquivo;
   }

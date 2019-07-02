@@ -4,27 +4,37 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
-import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:pmsbmibile3/models/models.dart';
 
 class NoticiasNaoVisualizadasBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var db = Provider.of<DatabaseService>(context);
-    var userRepository = Provider.of<UserRepository>(context);
-    if (userRepository.user != null) {
-      var userId;
-      userId = userRepository.user.uid;
-      return Container(
-        child: StreamProvider<List<NoticiaUsuarioModel>>.value(
-          // lista de documentos em /noticias_usuarios não visualizados
-          stream: db.streamNoticiasUsuarios(userId: userId, visualizada: false),
-          child: ListaNoticiasUsuarios(),
-        ),
-      );
-    } else {
-      return CircularProgressIndicator();
-    }
+    var authBloc = Provider.of<AuthBloc>(context);
+
+    return StreamBuilder(
+      stream: authBloc.userId,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("ERRO"),
+          );
+        }
+        if (!snapshot.hasData) {
+          Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Container(
+          child: StreamProvider<List<NoticiaUsuarioModel>>.value(
+            // lista de documentos em /noticias_usuarios não visualizados
+            stream: db.streamNoticiasUsuarios(
+                userId: snapshot.data, visualizada: false),
+            child: ListaNoticiasUsuarios(),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -34,7 +44,7 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
     var authBloc = Provider.of<AuthBloc>(context);
 
     return DefaultScaffold(
-      title: StreamBuilder<PerfilUsuarioModel>(
+      title: StreamBuilder<UsuarioModel>(
         stream: authBloc.perfil,
         builder: (context, snap) {
           if (snap.hasData) {
@@ -54,20 +64,30 @@ class NoticiasVisualizadasBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var db = Provider.of<DatabaseService>(context);
-    var userRepository = Provider.of<UserRepository>(context);
-    if (userRepository.user != null) {
-      var userId;
-      userId = userRepository.user.uid;
-      return Container(
-        child: StreamProvider<List<NoticiaUsuarioModel>>.value(
-          // lista de documentos em /noticias_usuarios não visualizados
-          stream: db.streamNoticiasUsuarios(userId: userId, visualizada: true),
-          child: ListaNoticiasUsuarios(),
-        ),
-      );
-    } else {
-      return CircularProgressIndicator();
-    }
+    var authBloc = Provider.of<AuthBloc>(context);
+
+    return StreamBuilder(
+      stream: authBloc.userId,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("ERRO"),
+          );
+        }
+        if (!snapshot.hasData) {
+          Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Container(
+          child: StreamProvider<List<NoticiaUsuarioModel>>.value(
+            // lista de documentos em /noticias_usuarios não visualizados
+            stream: db.streamNoticiasUsuarios(userId: snapshot.data, visualizada: true),
+            child: ListaNoticiasUsuarios(),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -86,7 +106,7 @@ class NoticiasVisualizadasPage extends StatelessWidget {
 class ListaNoticiasUsuarios extends StatelessWidget {
   Widget _card(BuildContext context, NoticiaUsuarioModel noticiaUsuario) {
     var db = Provider.of<DatabaseService>(context);
-    if (noticiaUsuario == null){
+    if (noticiaUsuario == null) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -108,7 +128,7 @@ class ListaNoticiasUsuarios extends StatelessWidget {
         children: <Widget>[
           Divider(),
           StreamProvider<NoticiaModel>.value(
-            stream: db.streamNoticiaByDocumentReference(noticiaUsuario.noticia),
+            stream: db.streamNoticiaById(noticiaUsuario.noticiaId),
             child: NoticiaTile(),
           ),
           if (!noticiaUsuario.visualizada)
