@@ -3,14 +3,14 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 
 class QuestionarioHomePage extends StatelessWidget {
   List<String> _questionarios = [
-    "questionarios 001",
-    "questionarios 002",
-    "questionarios 003",
-    "questionarios 004",
-    "questionarios 005",
-    "questionarios 006",
-    "questionarios 007",
-    "questionarios 008"
+    "RS 01 - questionarios 001",
+    "RS 01 - questionarios 002",
+    "RS 01 - questionarios 003",
+    "RS 01 - questionarios 004",
+    "RS 01 - questionarios 005",
+    "RS 01 - questionarios 006",
+    "RS 01 - questionarios 007",
+    "RS 01 - questionarios 008"
   ];
 
   String _eixo = "#eixo_exemplo";
@@ -24,16 +24,34 @@ class QuestionarioHomePage extends StatelessWidget {
                 ? new ListView.separated(
                     itemCount: _questionarios.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(_questionarios[index]),
-                        trailing: IconButton(
-                          icon: Icon(Icons.remove_red_eye),
-                          onPressed: () {
-                            //abrir pagina de lista de produtos
-                            Navigator.pushNamed(context, '/produto/lista');
-                          },
-                        ),
-                      );
+                      return Card(
+                          elevation: 10,
+                          child: Column(
+                            //mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                title: Text(_questionarios[index]),
+                              ),
+                              ButtonTheme.bar(
+                                child: ButtonBar(
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon: Icon(Icons.list),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () {
+                                        // Editar questionario da lista
+                                        Navigator.pushNamed(context,
+                                            '/questionario/adicionar_editar');
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ));
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         new Divider(),
@@ -46,14 +64,16 @@ class QuestionarioHomePage extends StatelessWidget {
   // estrutura de body's
 
   _bodyPastas(context) {
-    return Container(child: Center(child: Text("Em construção",style: TextStyle(fontSize: 18))));
+    return Container(
+        child: Center(
+            child: Text("Em construção", style: TextStyle(fontSize: 18))));
   }
 
   _bodyTodos(context) {
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(top: 15, bottom: 15),
           child: Text(
             "Eixo - $_eixo",
             style: TextStyle(fontSize: 16, color: Colors.blue),
@@ -90,6 +110,7 @@ class QuestionarioHomePage extends StatelessWidget {
             child: Icon(Icons.add),
             onPressed: () {
               // Adicionar novo questionario a lista
+              Navigator.pushNamed(context, '/questionario/adicionar_editar');
             },
           ),
         ));

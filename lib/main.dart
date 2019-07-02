@@ -28,8 +28,10 @@ class MyApp extends StatelessWidget {
               "/perfil": (context) => PerfilPage(),
               "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),
               "/perfil/configuracao":(context)=> ConfiguracaoPage(),
-
+              //questionario
               "/questionario/home":(context) => QuestionarioHomePage(),
+              "/questionario/adicionar_editar": (context) => AdicionarEditarQuestionarioPage(),
+              
               "/pergunta/home":(context) => PerguntaHomePage(),
               "/aplicacao/home":(context) => AplicacaoHomePage(),
               "/resposta/home":(context) => RespostaHomePage(),
