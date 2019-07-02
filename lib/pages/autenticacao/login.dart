@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:pmsbmibile3/state/user_repository.dart';
 
-class LoginData {
-  String password;
-  String email;
-}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,13 +11,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  LoginData _data = LoginData();
-  UserRepository userRepository;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    userRepository = Provider.of<UserRepository>(context);
+    var authBloc = Provider.of<AuthBloc>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -50,7 +45,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           onSaved: (email) {
-                            _data.email = email;
+                            authBloc.dispatch(UpdateEmailAuthBlocEvent(email));
                           },
                           decoration: InputDecoration(
                             hintText: "Informe seu email",
@@ -63,7 +58,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           onSaved: (password) {
-                            _data.password = password;
+                            authBloc.dispatch(UpdatePasswordAuthBlocEvent(password));
                           },
                           obscureText: true,
                           decoration: InputDecoration(
@@ -84,7 +79,7 @@ class LoginPageState extends State<LoginPage> {
                           child: Text("Acessar com email e senha"),
                           onPressed: () {
                             _formKey.currentState.save();
-                            userRepository.signIn(_data.email, _data.password);
+                            authBloc.dispatch(LoginAuthBlocEvent());
                           },
                         ),
                       ),

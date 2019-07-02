@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/circle_image.dart';
-import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/state/services.dart';
-import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:provider/provider.dart';
 
 var db = DatabaseService();
@@ -17,10 +16,15 @@ class DefaultDrawer extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            StreamBuilder<PerfilUsuarioModel>(
+            StreamBuilder<UsuarioModel>(
               stream: authBloc.perfil,
               builder: (context, snap) {
-                if (snap.data == null)
+                if (snap.hasError) {
+                  return Center(
+                    child: Text("Erro"),
+                  );
+                }
+                if (!snap.hasData)
                   return Center(
                     child: CircularProgressIndicator(),
                   );
@@ -152,8 +156,7 @@ class DefaultDrawer extends StatelessWidget {
 class DefaultEndDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserRepository userRepository = Provider.of<UserRepository>(context);
-
+    var authBloc = Provider.of<AuthBloc>(context);
     return Drawer(
       child: SafeArea(
         child: ListView(
@@ -185,9 +188,7 @@ class DefaultEndDrawer extends StatelessWidget {
             ListTile(
               title: Text('Sair'),
               onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, "/", (Route<dynamic> route) => false);
-                userRepository.signOut();
+                authBloc.dispatch(LogoutAuthBlocEvent());
               },
             ),
           ],
