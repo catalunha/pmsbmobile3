@@ -4,20 +4,21 @@ import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ConteudoVariavelUsuarioBloc{
-  BehaviorSubject<DocumentReference> _arquivo = BehaviorSubject<DocumentReference>();
+  BehaviorSubject<String> _arquivoIdController = BehaviorSubject<String>();
   BehaviorSubject<ArquivoModel> _streamArquivo = BehaviorSubject<ArquivoModel>();
   Stream<ArquivoModel> get arquivo => _streamArquivo.stream;
-  Function get setArquivoReference => _arquivo.sink.add;
+  Function get setArquivoId => _arquivoIdController.sink.add;
 
   ConteudoVariavelUsuarioBloc(){
-    _arquivo.listen(getArquivo);
+    _arquivoIdController.listen(getArquivo);
   }
-  void getArquivo(DocumentReference ref){
+  void getArquivo(String arquivoId){
     ArquivoModel convert(DocumentSnapshot snap) {
       return ArquivoModel(id: snap.documentID).fromMap({
         ...snap.data,
       });
     }
+    var ref = Firestore.instance.collection(ArquivoModel.collection).document(arquivoId);
     ref.snapshots().map(convert).pipe(_streamArquivo);
   }
 
