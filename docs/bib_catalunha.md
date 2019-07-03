@@ -26,3 +26,4 @@ https://www.youtube.com/channel/UCwXdFgeE9KYzlDdR7TG9cMw
 # Channel Firebase
 https://www.youtube.com/channel/UCP4bf6IHJJQehibu6ai__cg
 
+{% gist 7875973a9919f738fe5447d4bf2c2388 %}
