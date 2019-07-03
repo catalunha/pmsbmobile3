@@ -47,12 +47,14 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
       title: StreamBuilder<UsuarioModel>(
         stream: authBloc.perfil,
         builder: (context, snap) {
-          if (snap.hasData) {
-            var perfil = snap.data;
-            return Text("Ola, ${perfil.nomeProjeto}");
-          } else {
-            return Text("Ola, estranho");
+          if(snap.hasError){
+            return Text("ERROR");
           }
+          if(!snap.hasData){
+            return Text("SEM DADOS");
+          }
+          var perfil = snap.data;
+          return Text("Ola, ${perfil.safeNomeProjeto}");
         },
       ),
       body: NoticiasNaoVisualizadasBody(),
