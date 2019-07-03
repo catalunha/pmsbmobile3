@@ -4,12 +4,9 @@ import 'package:file_picker/file_picker.dart';
 
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/state/services.dart';
-import 'package:pmsbmibile3/state/user_repository.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-class FormData {
-  String conteudo = "";
-}
-
+import 'package:pmsbmibile3/pages/perfil/editar_variavel_bloc.dart';
 
 class PerfilEditarVariavelPage extends StatefulWidget {
   @override
@@ -19,8 +16,7 @@ class PerfilEditarVariavelPage extends StatefulWidget {
 }
 
 class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FormData _formData = FormData();
+  final EditarVariavelBloc bloc = EditarVariavelBloc(DatabaseService());
 
   @override
   Widget build(BuildContext context) {
@@ -28,63 +24,66 @@ class PerfilEditarVariavelState extends State<PerfilEditarVariavelPage> {
 
     final String administradorVariavelId =
         ModalRoute.of(context).settings.arguments;
-    return StreamProvider<AdministradorVariavelModel>.value(
-      stream: db.streamAdministradorVariavelById(administradorVariavelId),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Editar Item do Perfil"),
-        ),
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-          child: Consumer<AdministradorVariavelModel>(
-            builder: (BuildContext context,
-                AdministradorVariavelModel administradorVariavel, Widget child) {
-              if (administradorVariavel == null) {
-                return child;
-              }
-              if (administradorVariavel.tipo == "valor") {
-                return VariavelFormularioValor(
-                  formKey: _formKey,
-                  formData: _formData,
-                  administradorVariavel: administradorVariavel,
-                );
-              } else if (administradorVariavel.tipo == "arquivo") {
-                return VariavelFormularioArquivo(
-                  formKey: _formKey,
-                  formData: _formData,
-                  administradorVariavel: administradorVariavel,
-                );
-              }
-            },
-            child: Center(
+
+    return StreamBuilder<bool>(
+      stream: bloc.isSalvando,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERRO");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        if (snapshot.data) {
+          return Scaffold(
+            body: Center(
               child: CircularProgressIndicator(),
             ),
-          ),
-        ),
-        floatingActionButton: Consumer2<AdministradorVariavelModel, UserRepository>(
-          builder: (context, administradorVariavel, userRepository, child) {
-            if (administradorVariavel == null || userRepository == null) {
-              return child;
-            }
-            return FloatingActionButton(
-              child: Icon(Icons.save),
-              onPressed: () async {
-                _formKey.currentState.save();
-                await db.updateVariavelUsuario(
-                  userId: userRepository.user.uid,
-                  variavelId: administradorVariavel.id,
-                  tipo: administradorVariavel.tipo,
-                  nome: administradorVariavel.nome,
-                  conteudo: _formData.conteudo,
-                );
+          );
+        }
 
-                Navigator.pop(context);
-              },
-            );
-          },
-          child: Icon(Icons.block),
-        ),
-      ),
+        return Provider<EditarVariavelBloc>.value(
+          value: bloc,
+          child: StreamProvider<AdministradorVariavelModel>.value(
+            stream: db.streamAdministradorVariavelById(administradorVariavelId),
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text("Editar Item do Perfil"),
+              ),
+              body: Container(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                child: Consumer<AdministradorVariavelModel>(
+                  builder: (BuildContext context,
+                      AdministradorVariavelModel administradorVariavel,
+                      Widget child) {
+                    if (administradorVariavel == null) {
+                      return child;
+                    }
+                    bloc.disptach(UpdateVariavelIdEditarVariavelBlocEvent(
+                        administradorVariavelId));
+                    bloc.disptach(UpdateTipoEditarVariavelBlocEvent(
+                        administradorVariavel.tipo));
+                    bloc.disptach(UpdateNomeEditarVariavelBlocEvent(administradorVariavel.nome));
+                    if (administradorVariavel.tipo == "valor") {
+                      return VariavelFormularioValor(
+                        administradorVariavel: administradorVariavel,
+                      );
+                    } else if (administradorVariavel.tipo == "arquivo") {
+                      return VariavelFormularioArquivo(
+                        administradorVariavel: administradorVariavel,
+                      );
+                    }
+                  },
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+              floatingActionButton: SaveButton(),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -102,115 +101,161 @@ class VariavelUsuarioFormulario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var db = Provider.of<DatabaseService>(context);
+    final authBloc = Provider.of<AuthBloc>(context);
 
-    return Consumer<UserRepository>(
-      builder: (context, userRepository, builderChild) {
-        if (userRepository.user == null) {
-          return builderChild;
-        } else {
-          return StreamProvider<VariavelUsuarioModel>.value(
-            stream: db.streamVarivelUsuarioByNomeAndUserId(
-                userId: userRepository.user.uid,
-                variavelId: administradorVariavel.id,
-            ),
-            child: child,
-          );
+    return StreamBuilder<String>(
+      stream: authBloc.userId,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERRO");
         }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        final String userId = snapshot.data;
+        return StreamProvider<VariavelUsuarioModel>.value(
+          stream: db.streamVarivelUsuarioByNomeAndUserId(
+            userId: userId,
+            variavelId: administradorVariavel.id,
+          ),
+          child: child,
+        );
       },
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }
 
 class VariavelFormularioArquivo extends StatelessWidget {
   final AdministradorVariavelModel administradorVariavel;
-  final GlobalKey<FormState> formKey;
-  final FormData formData;
 
   const VariavelFormularioArquivo({
     Key key,
     this.administradorVariavel,
-    this.formKey,
-    this.formData,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of<EditarVariavelBloc>(context);
     return VariavelUsuarioFormulario(
       administradorVariavel: administradorVariavel,
-      child: Form(
-        key: formKey,
-        child: ListView(
-          children: <Widget>[
-            Text(
-              administradorVariavel.nome,
-              style: TextStyle(fontWeight: FontWeight.bold),
+      child: ListView(
+        children: <Widget>[
+          Text(
+            administradorVariavel.nome,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text("nada preenchido"),
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Row(
+              children: <Widget>[
+                Text("Selecione o arquivo"),
+                InkWell(
+                  child: Icon(Icons.attach_file),
+                  onTap: () async {
+                    String filePath =
+                        await FilePicker.getFilePath(type: FileType.ANY);
+                    bloc.disptach(
+                        UpdateConteudoEditarVariavelBlocEvent(filePath));
+                  },
+                ),
+              ],
             ),
-            Text("nada preenchido"),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: <Widget>[
-                  Text("Selecione o arquivo"),
-                  InkWell(
-                    child: Icon(Icons.attach_file),
-                    onTap: () async {
-                      String filePath =
-                          await FilePicker.getFilePath(type: FileType.ANY);
-                      formData.conteudo = filePath;
-                    },
-                  ),
-                ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VariavelFormularioValor extends StatefulWidget {
+  final AdministradorVariavelModel administradorVariavel;
+
+  VariavelFormularioValor({
+    Key key,
+    this.administradorVariavel,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return VariavelFormularioValorState();
+  }
+}
+
+class VariavelFormularioValorState extends State<VariavelFormularioValor> {
+  final _textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<EditarVariavelBloc>(context);
+    return VariavelUsuarioFormulario(
+      administradorVariavel: widget.administradorVariavel,
+      child: Consumer<VariavelUsuarioModel>(
+        builder: (context, variavelUsuario, child) {
+          if(variavelUsuario == null){
+            return child;
+          }
+          if (_textEditingController.text.isEmpty) {
+            _textEditingController.text = variavelUsuario.conteudo;
+          }
+          return ListView(
+            children: <Widget>[
+              Text(
+                widget.administradorVariavel.nome,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              TextField(
+                controller: _textEditingController,
+                onChanged: (conteudo) {
+                  bloc.disptach(
+                      UpdateConteudoEditarVariavelBlocEvent(conteudo));
+                },
+              ),
+            ],
+          );
+        },
+        child: Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );
   }
 }
 
-class VariavelFormularioValor extends StatelessWidget {
-  final AdministradorVariavelModel administradorVariavel;
-  final GlobalKey<FormState> formKey;
-  final FormData formData;
-
-  VariavelFormularioValor({
-    Key key,
-    this.administradorVariavel,
-    this.formKey,
-    this.formData,
-  }) : super(key: key);
-
-  void valurOnSave(String valor) {
-    formData.conteudo = valor;
-  }
-
+class SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return VariavelUsuarioFormulario(
-      administradorVariavel: administradorVariavel,
-      child: Consumer<VariavelUsuarioModel>(
-        builder: (context, variavelUsuario, child) {
-          return Form(
-            key: formKey,
-            child: ListView(
-              children: <Widget>[
-                Text(
-                  administradorVariavel.nome,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextFormField(
-                  onSaved: valurOnSave,
-                  initialValue: variavelUsuario?.conteudo,
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+    final authBloc = Provider.of<AuthBloc>(context);
+    final bloc = Provider.of<EditarVariavelBloc>(context);
+
+    return StreamBuilder<String>(
+      stream: authBloc.userId,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERRO");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        final String userId = snapshot.data;
+
+        return Consumer<AdministradorVariavelModel>(
+          builder: (context, administradorVariavel, child) {
+            if (administradorVariavel == null) {
+              return child;
+            }
+            return FloatingActionButton(
+              child: Icon(Icons.save),
+              onPressed: () {
+                bloc.disptach(UpdateUserIdEditarVariavelBlocEvent(userId));
+                bloc.disptach(SaveEditarVariavelBlocEvent());
+                //Navigator.pop(context);
+              },
+            );
+          },
+          child: Icon(Icons.block),
+        );
+      },
     );
   }
 }
