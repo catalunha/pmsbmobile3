@@ -10,6 +10,19 @@ import 'package:pmsbmibile3/state/upload_bloc.dart';
 
 class ConfiguracaoEvent {}
 
+class ConfiguracaoUpdateNomeProjetoEvent extends ConfiguracaoEvent {
+  final String nomeProjeto;
+
+  ConfiguracaoUpdateNomeProjetoEvent(this.nomeProjeto);
+}
+
+class UpdateSetorCensitarioConfiguracaoUpdateNomeProjetoEvent extends ConfiguracaoEvent{
+  final String setorId;
+  final String setorNome;
+
+  UpdateSetorCensitarioConfiguracaoUpdateNomeProjetoEvent(this.setorId, this.setorNome);
+}
+
 class ConfiguracaoUpdateEmailEvent extends ConfiguracaoEvent {
   final String email;
 
@@ -22,9 +35,13 @@ class ConfiguracaoUpdateUserIdEvent extends ConfiguracaoEvent {
   ConfiguracaoUpdateUserIdEvent(this.userId);
 }
 
-class ConfiguracaoSaveEvent extends ConfiguracaoEvent{
+class ConfiguracaoUpdateCelularEvent extends ConfiguracaoEvent {
+  final String celular;
 
+  ConfiguracaoUpdateCelularEvent(this.celular);
 }
+
+class ConfiguracaoSaveEvent extends ConfiguracaoEvent {}
 
 class ConfiguracaoBlocState {
   UsuarioModel currentPerfilUsuario;
@@ -32,13 +49,17 @@ class ConfiguracaoBlocState {
   String nomeProjeto;
   String numeroCelular;
   String email;
+  String setorCensitarioId;
+  String setorCensitarioNome;
+  String eixoAtualId;
+  String eixoAtualNome;
 
   String filePath;
   dynamic imagemPerfil;
   String imagemPerfilUrl;
 
   @override
-  String toString() => "$nomeProjeto, $numeroCelular, $filePath";
+  String toString() => "$email $nomeProjeto, $numeroCelular, $filePath";
 }
 
 class ConfiguracaoBloc {
@@ -47,12 +68,12 @@ class ConfiguracaoBloc {
 
   final _inputController = BehaviorSubject<ConfiguracaoEvent>();
   final _outputController = BehaviorSubject<ConfiguracaoBlocState>();
+
   Stream<ConfiguracaoBlocState> get state => _outputController.stream;
 
   Function get dispatch => _inputController.sink.add;
 
-  BehaviorSubject<UsuarioModel> _perfil =
-      BehaviorSubject<UsuarioModel>();
+  BehaviorSubject<UsuarioModel> _perfil = BehaviorSubject<UsuarioModel>();
 
   Stream<UsuarioModel> get perfil => _perfil.stream;
 
@@ -62,18 +83,6 @@ class ConfiguracaoBloc {
       BehaviorSubject<List<SetorCensitarioModel>>();
 
   Stream<List<SetorCensitarioModel>> get setores => _setoresCensitarios.stream;
-
-  //numero celular
-  BehaviorSubject<String> _numeroCelular = BehaviorSubject<String>();
-
-  get numeroCelular => _numeroCelular.stream;
-
-  Function get updateNumeroCelular => _numeroCelular.sink.add;
-
-  //nome projeto
-  BehaviorSubject<String> _nomeProjeto = BehaviorSubject<String>();
-
-  Function get updateNomeProjeto => _nomeProjeto.sink.add;
 
   //imagem perfil
   BehaviorSubject<String> _imagemPerfil = BehaviorSubject<String>();
@@ -109,8 +118,6 @@ class ConfiguracaoBloc {
 
     //update state
     _perfil.stream.listen(perfilUpdateConfiguracaoBlocState);
-    _numeroCelular.listen(numeroCelularUpdateState);
-    _nomeProjeto.listen(nomeProjetoUpdateState);
     _imagemPerfil.listen(_imagemPerfilUpload);
     uploadBloc.arquivo
         .listen(_imagemPerfilUpdateState); //update informação do perfil
@@ -134,19 +141,17 @@ class ConfiguracaoBloc {
         .pipe(_perfil);
   }
 
-  void numeroCelularUpdateState(String numeroCelular) {
-    formState.numeroCelular = numeroCelular;
-  }
-
-  void nomeProjetoUpdateState(String nomeProjeto) {
-    formState.nomeProjeto = nomeProjeto;
-  }
 
   void perfilUpdateConfiguracaoBlocState(UsuarioModel perfil) {
     formState.numeroCelular = perfil.celular;
     formState.nomeProjeto = perfil.nomeProjeto;
     formState.imagemPerfilUrl = perfil.imagemPerfilUrl;
     formState.imagemPerfil = perfil.imagemPerfilId;
+    formState.setorCensitarioNome = perfil.setorCensitarioNome;
+    formState.setorCensitarioId = perfil.setorCensitarioId;
+    formState.eixoAtualId = perfil.eixoAtualId;
+    formState.eixoAtualNome = perfil.eixoAtualNome;
+    dispatch(ConfiguracaoSaveEvent());
   }
 
   bool processConfiguracaoBlocState(String userId) {
@@ -161,6 +166,8 @@ class ConfiguracaoBloc {
         imagemPerfilId: formState.imagemPerfil,
         imagemPerfilUrl: formState.imagemPerfilUrl,
         email: formState.email,
+        setorCensitarioId: formState.setorCensitarioId,
+        setorCensitarioNome: formState.setorCensitarioNome,
       ).toMap(),
     }, merge: true);
     return true;
@@ -169,10 +176,10 @@ class ConfiguracaoBloc {
   void dispose() {
     _perfil.close();
     _processForm.close();
-    _nomeProjeto.close();
     _setoresCensitarios.close();
     _eixos.close();
     _inputController.close();
+    _outputController.close();
   }
 
   //upload file
@@ -199,8 +206,13 @@ class ConfiguracaoBloc {
     if (event is ConfiguracaoSaveEvent) {
       processConfiguracaoBlocState(formState.userId);
     }
-
-
+    if (event is ConfiguracaoUpdateNomeProjetoEvent) {
+      formState.nomeProjeto = event.nomeProjeto;
+    }
+    if(event is UpdateSetorCensitarioConfiguracaoUpdateNomeProjetoEvent){
+      formState.setorCensitarioId = event.setorId;
+      formState.setorCensitarioNome = event.setorNome;
+    }
     _outputController.sink.add(formState);
   }
 }
