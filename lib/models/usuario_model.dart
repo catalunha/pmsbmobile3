@@ -57,6 +57,7 @@ class UsuarioModel extends FirestoreModel{
     return "https://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png";
   }
 
+  String get safeNomeProjeto => nomeProjeto != null? nomeProjeto : "estranho";
   List<String> rotasApp;
 
   UsuarioModel({
