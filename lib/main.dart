@@ -32,7 +32,12 @@ class MyApp extends StatelessWidget {
               "/questionario/home":(context) => QuestionarioHomePage(),
               "/pergunta/home":(context) => PerguntaHomePage(),
               "/aplicacao/home":(context) => AplicacaoHomePage(),
+
+              //resposta
               "/resposta/home":(context) => RespostaHomePage(),
+              "/resposta/questionario_resposta":(context) => QuestionarioRespostaPage(),
+              "/resposta/resposta_questionario":(context) => RespostaQuestionarioPage(),
+
               "/sintese/home":(context) => SinteseHomePage(),
 
               //produto
