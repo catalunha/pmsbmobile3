@@ -1,0 +1,16 @@
+{
+  "Usuario": {
+    "nome": "nome-valor",
+    "celular": "celular-valor",
+    "listaPossivelEixoAtual": [
+      {
+        "eixoId": "eixoId-valor1",
+        "eixoNome": "eixoNome-valor1"
+      },
+      {
+        "eixoId": "eixoId-valor2",
+        "eixoNome": "eixoNome-valor2"
+      }
+    ]
+  }
+}
