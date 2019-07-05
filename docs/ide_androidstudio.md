@@ -24,3 +24,8 @@ Documentação.
 
 ### CTRL + ( + ou - )
 Expande e agrupa codigo em bloco.
+
+### CTRL + d
+Duplicar linha
+
+### 
