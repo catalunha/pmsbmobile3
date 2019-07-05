@@ -21,3 +21,12 @@ class NoticiaModel{
 }
 ...
 ~~~
+
+# Auto-Generation for json
+Alguns geradores de codigo e visualizadores ajudam:
+http://jsonviewer.stack.hu/
+https://javiercbk.github.io/json_to_dart/
+Teste com:
+~~~json
+{"palavra":"a","frase":"Oi tudo bem"}
+~~~
