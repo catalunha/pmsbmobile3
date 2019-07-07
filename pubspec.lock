@@ -35,7 +35,7 @@ packages:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.0+2"
+    version: "0.12.6"
   collection:
     dependency: transitive
     description:
@@ -92,6 +92,24 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  firestore_wrapper:
+    dependency: transitive
+    description:
+      path: "packages/firestore_wrapper"
+      ref: HEAD
+      resolved-ref: "21db673fddd6a2060e04679889736ecbf3016ade"
+      url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
+    source: git
+    version: "0.0.1"
+  firestore_wrapper_flutter:
+    dependency: "direct main"
+    description:
+      path: "packages/firestore_wrapper_flutter"
+      ref: HEAD
+      resolved-ref: "21db673fddd6a2060e04679889736ecbf3016ade"
+      url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
+    source: git
+    version: "0.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
