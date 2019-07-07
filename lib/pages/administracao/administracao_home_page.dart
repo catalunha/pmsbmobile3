@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'administracao_home_page_bloc.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 
 class AdministracaoHomePage extends StatelessWidget {
-  final bloc = AdministracaoHomePageBloc();
+  final bloc = AdministracaoHomePageBloc(Boostrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {

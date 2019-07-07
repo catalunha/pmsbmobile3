@@ -3,9 +3,10 @@ import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
 import 'administracao_perfil_page_bloc.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 
 class AdministracaoPerfilPage extends StatelessWidget {
-  final bloc = AdministracaoPerfilPageBloc();
+  final bloc = AdministracaoPerfilPageBloc(Boostrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {
