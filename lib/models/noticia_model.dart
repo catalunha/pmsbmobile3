@@ -40,8 +40,8 @@ class NoticiaModel extends FirestoreModel{
     if(map.containsKey("dataPublicacao")) dataPublicacao = map["dataPublicacao"];
     if(map.containsKey("dataCriacao")) dataCriacao = map["dataCriacao"];
     if(map.containsKey("conteudoMarkdown")) conteudoMarkdown = map["conteudoMarkdown"];
-    if(map.containsKey("destinatarios")){
-      assert(map["destinatarios"].runtimeType == List);
+    if(map.containsKey("destinatarios") && map["destinatarios"].runtimeType == List){
+      //assert(map["destinatarios"].runtimeType == List);
       destinatarios = List<Destinatario>();
       var lista = map["destinatarios"] as List<Map<String, dynamic>>;
       for (int index = 0; index < lista.length; index++){
