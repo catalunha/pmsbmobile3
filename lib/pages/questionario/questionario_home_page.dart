@@ -37,7 +37,11 @@ class QuestionarioHomePage extends StatelessWidget {
                                   children: <Widget>[
                                     IconButton(
                                       icon: Icon(Icons.list),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        // Listar paginas de perguntas
+                                        Navigator.pushNamed(context,
+                                            '/pergunta/home');
+                                      },
                                     ),
                                     IconButton(
                                       icon: Icon(Icons.edit),

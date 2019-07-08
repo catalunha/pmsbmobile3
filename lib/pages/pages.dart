@@ -27,6 +27,11 @@ export 'package:pmsbmibile3/pages/produto/edit_visual.dart';
 
 //pergunta
 export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/criar_pergunta_tipo_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page.dart';
+
+
 
 //questionario
 export 'package:pmsbmibile3/pages/questionario/questionario_home_page.dart';

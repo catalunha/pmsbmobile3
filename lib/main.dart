@@ -32,7 +32,13 @@ class MyApp extends StatelessWidget {
               "/questionario/home":(context) => QuestionarioHomePage(),
               "/questionario/adicionar_editar": (context) => AdicionarEditarQuestionarioPage(),
               
+              //pergunta
               "/pergunta/home":(context) => PerguntaHomePage(),
+              "/pergunta/criar_pergunta":(context) => CriarPerguntaTipoPage(),
+              "/pergunta/criar_editar":(context) => EditarApagarPerguntaPage(),
+              "/pergunta/selecionar_requisito":(context) => SelecionarQuequisitoPerguntaPage(),
+              
+              //home
               "/aplicacao/home":(context) => AplicacaoHomePage(),
               "/resposta/home":(context) => RespostaHomePage(),
               "/sintese/home":(context) => SinteseHomePage(),
