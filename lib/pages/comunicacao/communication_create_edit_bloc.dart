@@ -64,7 +64,7 @@ class CommunicationCreateEditState {
       userId: userId,
       titulo: titulo,
       conteudoMarkdown: conteudoMarkdown,
-      dataPublicacao: dataPublicacao.toDate(),
+      dataPublicacao: dataPublicacao?.toDate(),
     );
   }
 }
