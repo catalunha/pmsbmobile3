@@ -1,16 +1,206 @@
 {
+  "Cargo": {
+    "nome": "nome-valor"
+  },
+  "Eixo": {
+    "nome": "nome-valor"
+  },
+  "SetorCensitario": {
+    "nome": "nome-valor"
+  },
   "Usuario": {
     "nome": "nome-valor",
     "celular": "celular-valor",
-    "listaPossivelEixoAtual": [
+    "foto": "foto-valor-base64",
+    "rotas": [
+      "rotas-valor01"
+    ],
+    "setorCensitario": {
+      "setorCensitario": "SetorCensitarioID",
+      "nome": "SetorCensitario_nome"
+    },
+    "cargo": {
+      "cargoID": "CargoID",
+      "nome": "Cargo_nome"
+    },
+    "eixoAtual": {
+      "eixoID": "EixoID",
+      "nome": "Eixo_nome"
+    },
+    "eixo": {
+      "eixoID": "EixoID",
+      "nome": "Eixo_nome"
+    },
+    "eixos": [
       {
-        "eixoId": "eixoId-valor1",
-        "eixoNome": "eixoNome-valor1"
+        "eixoID": "EixoIDRS",
+        "nome": "nome-valor"
       },
       {
-        "eixoId": "eixoId-valor2",
-        "eixoNome": "eixoNome-valor2"
+        "eixoID": "EixoIDAA",
+        "nome": "nome-valor"
       }
     ]
+  },
+  "Noticia": {
+    "titulo": "titulo-valor",
+    "editor": "UsuarioID",
+    "distribuida": false,
+    "publicar": "2019-01-01 00:00:00",
+    "destinatarios": [
+      "UsuarioID"
+    ],
+    "conteudoMarkdown": "conteudoMarkdown-valor"
+  },
+  "UsuarioNoticia": {
+    "_comment": "ID do doc: Usuario__Noticia ? ",
+    "visualizada": false,
+    "usuario": "UsuarioID",
+    "noticia": "NoticiaID"
+  },
+  "UsuarioPerfil": {
+    "_comment": "ID do doc: Usuario__Perfil ? ",
+    "usuario": "UsuarioID",
+    "perfil": {
+      "PerfilID": "PerfilID",
+      "nome": "nome-valor",
+      "tipo": "tipo-valor"
+    },
+    "valor": "texto ou TxtNumero. Se arquivo id para UsuarioArquivo."
+  },
+  "UsuarioArquivo": {
+    "usuario": "UsuarioID",
+    "contentType": "contentType-valor",
+    "storagePath": "storagePath-valor",
+    "url": "url-valor"
+  },
+  "Perfil": {
+    "nome": "nome-valor",
+    "tipo": "tipo-valor"
+  },
+  "Questionario": {
+    "questionarioUid": "uid-valor",
+    "nome": "nome-valor",
+    "eixo": {
+      "eixoID": "EixoID",
+      "nome": "Eixo_nome"
+    },
+    "editor": {
+      "usuarioID": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "modificado": "data-valor"
+  },
+  "PerguntaTipo": {
+    "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla",
+    "referencia": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla"
+  },
+  "Pergunta": {
+    "perguntaUid": "uid-valor",
+    "questionario": {
+      "questionarioUid": "Questionario_questionarioUid",
+      "nome": "Questionario_nome"
+    },
+    "ordem": 0,
+    "perguntaTipo": {
+      "perguntaTipoID": "PerguntaTipoID",
+      "nome": "PerguntaTipo_nome",
+      "referencia": "PerguntaTipo_referencia"
+    },
+    "titulo": "titulo-valor",
+    "textoMarkdown": "texto-valor",
+    "requisito": [
+      {
+        "requisitoUid": "requisitoUid",
+        "questionario": "Questionario_questionarioUid",
+        "pergunta": "Pergunta_perguntaUid",
+        "escolha": "Pergunta_escolha_escolhaUid"
+      }
+    ],
+    "escolha": [
+      {
+        "escolhaUid": "escolhaUid",
+        "ordem": 0,
+        "nome": "nome-valor",
+        "marcada": false
+      }
+    ]
+  },
+  "QuestionarioAplicado": {
+    "questionarioUid": "Questionario_questionarioUid",
+    "nome": "nome-valor",
+    "eixo": {
+      "eixoID": "EixoID",
+      "nome": "Eixo_nome"
+    },
+    "editor": {
+      "usuarioID": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "modificado": "data-valor",
+    "aplicador": {
+      "usuarioID": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "setorCensitario": {
+      "setorCensitarioID": "SetorCensitarioID",
+      "nome": "SetorCensitario_nome"
+    },
+    "referencia": "Local ou Pessoa ou Momento da aplicação"
+  },
+  "Resposta": {
+    "questionarioUid": {
+      "questionarioUid": "QuestionarioAplicado_questionarioUid",
+      "nome": "QuestionarioAplicado_nome"
+    },
+    "perguntaUid": "Pergunta_perguntaUid",
+    "ordem": "idem",
+    "tipo": "idem",
+    "titulo": "idem",
+    "textoMarkdown": "idem",
+    "requisito": [
+      {
+        "requisitoUid": "requisitoUid",
+        "questionario": "Questionario_questionarioUid",
+        "questionarioAplicado": "QuestionarioAplicadoID",
+        "pergunta": "Resposta_perguntaUid",
+        "escolha": "Resposta_escolha_escolhaUid"
+      }
+    ],
+    "escolha": [
+      {
+        "escolhaUid": "escolhaUid",
+        "ordem": 0,
+        "nome": "nome-valor",
+        "marcada": false
+      }
+    ],
+    "respostaTexto": {
+      "valor": "respostaTexto-valor",
+      "observacao": "observacao-valor"
+    },
+    "respostaNumero": {
+      "valor": "respostaNumero",
+      "observacao": "observacao-valor"
+    },
+    "respostaImagem": {
+      "respostaImagemID": "RespostaArquivoID",
+      "observacao": "observacao-valor"
+    },
+    "respostaArquivo": {
+      "respostaArquivoID": "RespostaArquivoID",
+      "observacao": "observacao-valor"
+    },
+    "respostaCoordenada": {
+      "latitude": "respostaCoordenada",
+      "longitude": "respostaCoordenada",
+      "observacao": "observacao-valor"
+    }
+  },
+  "RespostaArquivo": {
+    "proprietario": "Resposta/RespostaID",
+    "contentType": "contentType-valor",
+    "storagePath": "storagePath-valor",
+    "url": "url-valor"
   }
 }
