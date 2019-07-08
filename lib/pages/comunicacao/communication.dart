@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/communication_create_edit.dart';
@@ -14,7 +15,7 @@ class CommunicationPage extends StatefulWidget {
 }
 
 class _CommunicationPageState extends State<CommunicationPage> {
-  final bloc = CommunicationBloc();
+  final bloc = CommunicationBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {

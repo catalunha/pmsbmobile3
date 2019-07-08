@@ -1,8 +1,8 @@
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class CommunicationEvent{
@@ -16,15 +16,15 @@ class DeleteCommunicationEvent extends CommunicationEvent{
 
 
 class CommunicationBloc {
-  final _firestore = Firestore.instance;
-  final _authBloc = AuthBloc(AuthApiMobile());
+  final fsw.Firestore _firestore;
+  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
   final _noticiasController = BehaviorSubject<List<NoticiaModel>>();
   final _inputController = BehaviorSubject<CommunicationEvent>();
   Function get dispatch => _inputController.sink.add;
 
   Stream<List<NoticiaModel>> get noticias => _noticiasController.stream;
 
-  CommunicationBloc() {
+  CommunicationBloc(this._firestore) {
     _authBloc.userId.listen(_getNoticiasDoUsuario);
     _inputController.stream.listen(_mapInputToEvent);
   }
@@ -49,7 +49,7 @@ class CommunicationBloc {
 
   void _mapInputToEvent(CommunicationEvent event) {
     if(event is DeleteCommunicationEvent){
-      Firestore.instance.collection(NoticiaModel.collection).document(event.noticiaId).delete();
+      _firestore.collection(NoticiaModel.collection).document(event.noticiaId).delete();
     }
   }
 }

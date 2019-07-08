@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/product_visual.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider.value(
-      value: AuthBloc(AuthApiMobile()),
+      value: AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore),
       child: Provider<DatabaseService>.value(
         value: DatabaseService(),
         child: MaterialApp(

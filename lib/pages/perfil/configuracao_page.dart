@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
@@ -15,7 +16,7 @@ class ConfiguracaoPage extends StatefulWidget {
 }
 
 class ConfiguracaoState extends State<ConfiguracaoPage> {
-  final bloc = ConfiguracaoBloc();
+  final bloc = ConfiguracaoBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {

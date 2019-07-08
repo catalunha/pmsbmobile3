@@ -6,7 +6,7 @@ import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 
 class AdministracaoPerfilPage extends StatelessWidget {
-  final bloc = AdministracaoPerfilPageBloc(Boostrap.instance.firestore);
+  final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {

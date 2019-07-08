@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
@@ -146,7 +147,7 @@ class ItemListaAdministradorVariavel extends StatelessWidget {
 
 class ConteudoVariavelUsuario extends StatelessWidget {
   final VariavelUsuarioModel variavelUsuario;
-  final bloc = ConteudoVariavelUsuarioBloc();
+  final bloc = ConteudoVariavelUsuarioBloc(Bootstrap.instance.firestore);
 
   ConteudoVariavelUsuario({
     Key key,

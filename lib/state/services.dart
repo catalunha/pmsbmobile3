@@ -3,11 +3,13 @@ import 'dart:io';
 import 'dart:math';
 import 'package:meta/meta.dart';
 import 'package:mime/mime.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/models.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+
 class DatabaseService {
-  final Firestore _firestore = Firestore.instance;
+  final fsw.Firestore _firestore = Bootstrap.instance.firestore;
 
   Future<UsuarioModel> getUsuario(String id) async {
     var snap = await _firestore.collection(UsuarioModel.collection).document(id).get();

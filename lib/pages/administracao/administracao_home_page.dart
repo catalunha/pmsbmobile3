@@ -5,7 +5,7 @@ import 'administracao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 
 class AdministracaoHomePage extends StatelessWidget {
-  final bloc = AdministracaoHomePageBloc(Boostrap.instance.firestore);
+  final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {

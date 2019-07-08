@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/eixo_model.dart';
 import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/state/upload_bloc.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class ConfiguracaoEvent {}
 
@@ -63,8 +64,9 @@ class ConfiguracaoBlocState {
 }
 
 class ConfiguracaoBloc {
+  final fsw.Firestore _firestore;
   final formState = ConfiguracaoBlocState();
-  final uploadBloc = UploadBloc();
+  final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
 
   final _inputController = BehaviorSubject<ConfiguracaoEvent>();
   final _outputController = BehaviorSubject<ConfiguracaoBlocState>();
@@ -94,7 +96,7 @@ class ConfiguracaoBloc {
 
   get processForm => _processForm.sink.add;
 
-  ConfiguracaoBloc() {
+  ConfiguracaoBloc(this._firestore) {
     _inputController.stream.listen(_handleInputEvent);
 
     //retorna somente id do usuario caso esteja logado
@@ -106,7 +108,7 @@ class ConfiguracaoBloc {
     });
 
     //pega lista de eixos
-    Firestore.instance
+    _firestore
         .collection(SetorCensitarioModel.collection)
         .snapshots()
         .map((snap) {
@@ -123,7 +125,7 @@ class ConfiguracaoBloc {
         .listen(_imagemPerfilUpdateState); //update informação do perfil
   }
 
-  UsuarioModel perfilSnapToInstance(DocumentSnapshot snap) {
+  UsuarioModel perfilSnapToInstance(fsw.DocumentSnapshot snap) {
     var user = UsuarioModel().fromMap({
       "id": snap.documentID,
       ...snap.data,
@@ -132,7 +134,7 @@ class ConfiguracaoBloc {
   }
 
   void setUpUser(String userId) {
-    Firestore.instance
+    _firestore
         .collection(UsuarioModel.collection)
         .document(userId)
         .snapshots()
@@ -155,7 +157,7 @@ class ConfiguracaoBloc {
   }
 
   bool processConfiguracaoBlocState(String userId) {
-    Firestore.instance
+    _firestore
         .collection(UsuarioModel.collection)
         .document(userId)
         .setData({
@@ -190,7 +192,7 @@ class ConfiguracaoBloc {
 
   void _imagemPerfilUpdateState(ArquivoModel arquivo) {
     formState.imagemPerfilUrl = arquivo.url;
-    formState.imagemPerfil = Firestore.instance
+    formState.imagemPerfil = _firestore
         .collection(ArquivoModel.collection)
         .document(arquivo.id);
   }

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/api/auth_api.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 enum AuthStatus {
   Uninitialized,
@@ -34,6 +34,7 @@ class AuthBlocState {
 }
 
 class AuthBloc {
+  final fsw.Firestore _firestore;
   final _state = AuthBlocState();
   final AuthApi _authApi;
   final _userId = BehaviorSubject<String>();
@@ -52,7 +53,7 @@ class AuthBloc {
   final _inputController = BehaviorSubject<AuthBlocEvent>();
   Function get dispatch => _inputController.sink.add;
 
-  AuthBloc(this._authApi) : assert(_authApi != null) {
+  AuthBloc(this._authApi, this._firestore) : assert(_authApi != null) {
     _statusController.sink.add(AuthStatus.Unauthenticated);
     var stream = _authApi.onUserIdChange.where((userId) => userId != null);
     stream.listen(_getPerfilUsuarioFromFirebaseUser);
@@ -72,7 +73,7 @@ class AuthBloc {
 
   void _getPerfilUsuarioFromFirebaseUser(String userId) {
     final perfilRef =
-        Firestore.instance.collection(UsuarioModel.collection).document(userId);
+        _firestore.collection(UsuarioModel.collection).document(userId);
 
     final perfilStream = perfilRef.snapshots().map((perfilSnap) =>
         UsuarioModel()

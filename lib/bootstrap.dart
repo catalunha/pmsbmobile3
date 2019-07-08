@@ -1,11 +1,9 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:firestore_wrapper_flutter/firestore_wrapper_flutter.dart';
 
-import 'package:firestore_wrapper_flutter/firestore_wrapper_flutter.dart'
-    show Firestore;
-
-class Boostrap {
-  static final Boostrap instance = Boostrap(Firestore());
+class Bootstrap {
+  static final Bootstrap instance = Bootstrap(Firestore());
   final fsw.Firestore firestore;
 
-  Boostrap(this.firestore);
+  Bootstrap(this.firestore);
 }

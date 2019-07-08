@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' show TimeOfDay;
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
@@ -69,7 +70,7 @@ class CommunicationCreateEditState {
 }
 
 class CommunicationCreateEditBloc {
-  final _authBloc = AuthBloc(AuthApiMobile());
+  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
   final currentState = CommunicationCreateEditState();
 
   final _inputController = BehaviorSubject<CommunicationCreateEditEvent>();
