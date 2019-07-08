@@ -97,7 +97,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                 child: Text("# ${noticia.dataPublicacao}"),
               ),
               MarkdownBody(
-                data: noticia.conteudoMarkdown,
+                data: "${noticia.conteudoMarkdown}",
               ),
               Divider(),
               ButtonTheme.bar(
