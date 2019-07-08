@@ -24,13 +24,14 @@ class _RespostaHomePageState extends State<RespostaHomePage> {
                   ? new ListView.separated(
                       itemCount: _respostasetores.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return  ListTile(
+                        return ListTile(
                           title: Text(_respostasetores[index]),
                           trailing: IconButton(
                             icon: Icon(Icons.remove_red_eye),
                             onPressed: () {
                               //abrir pagina de lista de questionarios com respostas
-                              Navigator.pushNamed(context, "/resposta/questionario_resposta");
+                              Navigator.pushNamed(
+                                  context, "/resposta/questionario_resposta");
                             },
                           ),
                         );

@@ -9,10 +9,12 @@ class QuestionarioRespostaPage extends StatefulWidget {
 }
 
 class _QuestionarioRespostaPageState extends State<QuestionarioRespostaPage> {
-  List<String> _questionariosresposta = ["Questionário de resposta 01",
-  "Questionário de resposta 02",
-  "Questionário de resposta 03",
-  "Questionário de resposta 04"];
+  List<String> _questionariosresposta = [
+    "Questionário de resposta 01",
+    "Questionário de resposta 02",
+    "Questionário de resposta 03",
+    "Questionário de resposta 04"
+  ];
 
   String _eixo = "eixo exemplo";
   String _setor = "setor exemplo";
@@ -24,17 +26,42 @@ class _QuestionarioRespostaPageState extends State<QuestionarioRespostaPage> {
                   ? new ListView.separated(
                       itemCount: _questionariosresposta.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          title: Text(_questionariosresposta[index]),
-                          trailing: IconButton(
-                            icon: Icon(Icons.remove_red_eye),
-                            onPressed: () {
-                              //abrir pagina que lista resposta de um questionário
-                              Navigator.pushNamed(
-                                  context, "/resposta/resposta_questionario");
-                            },
-                          ),
-                        );
+                        return Card(
+                            elevation: 10,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  title: Text(_questionariosresposta[index]),
+                                ),
+                                ButtonTheme.bar(
+                                  child: ButtonBar(
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.print),
+                                        onPressed: () {
+                                          // Gerar pdf do questionário e imprimir
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.insert_drive_file),
+                                        onPressed: () {
+                                          // Gerar CSV do questionário
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.remove_red_eye),
+                                        onPressed: () {
+                                          // Abrir questionário
+                                          Navigator.pushNamed(context,
+                                              "/resposta/resposta_questionario");
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ));
                       },
                       separatorBuilder: (BuildContext context, int index) =>
                           new Divider(),
@@ -56,7 +83,7 @@ class _QuestionarioRespostaPageState extends State<QuestionarioRespostaPage> {
         Padding(
           padding: EdgeInsets.only(top: 10),
           child: Text(
-            "Eixo : $_setor",
+            "Setor : $_setor",
             style: TextStyle(fontSize: 16, color: Colors.blue),
           ),
         ),
