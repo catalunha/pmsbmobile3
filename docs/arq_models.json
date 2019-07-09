@@ -153,10 +153,6 @@
       "questionarioAplicadoID": "QuestionarioAplicado_questionarioID",
       "nome": "QuestionarioAplicado_nome"
     },
-    "questionarioUid": {
-      "questionarioUid": "QuestionarioAplicado_questionarioUid",
-      "nome": "QuestionarioAplicado_nome"
-    },
     "perguntaUid": "Pergunta_perguntaID",
     "ordem": "idem",
     "perguntaTipo": "idem",
@@ -165,7 +161,7 @@
     "requisito": [
       {
         "requisitoUid": "uid-valor",
-        "questionario": "Questionario_questionarioUid",
+        "questionario": "Questionario_questionarioUid. Sai e fica apenas o questionarioAplicado",
         "questionarioAplicado": "QuestionarioAplicadoID",
         "pergunta": "Pergunta_perguntaUid",
         "escolha": "Pergunta_perguntaUid_escolha_escolhaUid"
