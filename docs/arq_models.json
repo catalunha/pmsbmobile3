@@ -45,22 +45,23 @@
   },
   "Noticia": {
     "titulo": "titulo-valor",
+    "conteudoMarkdown": "conteudoMarkdown-valor",
     "editor": "UsuarioID",
     "distribuida": false,
-    "publicar": "2019-01-01 00:00:00",
+    "datapublicacao": "2019-01-01 00:00:00",
+    "_comment": "UI listar: todos(),eixo[x],cargos[],usuario{xx}",
     "destinatarios": [
       "UsuarioID"
-    ],
-    "conteudoMarkdown": "conteudoMarkdown-valor"
+    ]
   },
   "UsuarioNoticia": {
-    "_comment": "ID do doc: Usuario__Noticia ? ",
+    "_comment": "ID formado por: Usuario__Noticia ? ",
     "usuario": "UsuarioID",
     "noticia": "NoticiaID",
     "visualizada": false
   },
   "UsuarioPerfil": {
-    "_comment": "ID do doc: Usuario__Perfil ? ",
+    "_comment": "ID formado por: Usuario__Perfil ? ",
     "usuario": "UsuarioID",
     "perfil": {
       "perfilID": "PerfilID",
@@ -124,7 +125,6 @@
         "escolhaUid": "uid-valor",
         "ordem": 0,
         "nome": "nome-valor",
-        "marcada": false
       }
     ]
   },
@@ -135,11 +135,11 @@
       "id": "EixoID",
       "nome": "Eixo_nome"
     },
-    "editou": {
+    "editor": {
       "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
-    "modificado": "data-valor",
+    "datamodificacao": "data-valor",
     "aplicador": {
       "id": "UsuarioID",
       "nome": "Usuario_nome"
@@ -148,7 +148,7 @@
       "id": "SetorCensitarioID",
       "nome": "SetorCensitario_nome"
     },
-    "referencia": "Local ou Pessoa ou Momento da aplicação"
+    "referencia": "Local ou Pessoa ou Momento da aplicação."
   },
   "Resposta": {
     "questionarioUid": {
