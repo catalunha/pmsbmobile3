@@ -60,11 +60,11 @@
     "noticia": "NoticiaID",
     "visualizada": false
   },
-  "UsuarioPerfil": {
-    "_comment": "ID formado por: Usuario__Perfil ? ",
+  "UsuarioInformacao": {
+    "_comment": "ID formado por: Usuario__Informacao ? ",
     "usuario": "UsuarioID",
-    "perfil": {
-      "perfilID": "PerfilID",
+    "informacao": {
+      "informacaoID": "InformacaoID",
       "nome": "nome-valor",
       "contentType": "contentType-valor"
     },
@@ -76,7 +76,7 @@
     "storagePath": "storagePath-valor",
     "url": "url-valor"
   },
-  "Perfil": {
+  "Informacao": {
     "nome": "nome-valor",
     "contentType": "contentType-valor"
   },
@@ -169,7 +169,7 @@
         "escolha": "Resposta_escolha_escolhaUid"
       }
     ],
-    "escolha": [
+    "respostaEscolha": [
       {
         "escolhaUid": "uid-valor",
         "ordem": 0,
@@ -211,11 +211,11 @@
       "id": "EixoID",
       "nome": "Eixo_nome"
     },
-    "editou": {
+    "editor": {
       "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
-    "modificado": "data-valor",
+    "datamodificacao": "data-valor",
     "editando": false,
     "setorCensitario": {
       "id": "SetorCensitarioID",
