@@ -374,7 +374,7 @@ class _CommunicationCreateEditState extends State<CommunicationCreateEdit> {
               ? FloatingActionButton(
                   onPressed: () {
                     //TODO: remover o pop?
-                    //Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                     bloc.dispatch(SaveEvent());
                   },
                   child: Icon(Icons.thumb_up),

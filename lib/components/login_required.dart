@@ -1,6 +1,6 @@
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/state/user_repository.dart';
 import 'package:pmsbmibile3/pages/autenticacao/login.dart';
 import 'package:pmsbmibile3/pages/geral/splash.dart';
 import 'package:pmsbmibile3/pages/geral/loading.dart';
@@ -20,23 +20,30 @@ class LoginRequired extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserRepository>(
-      builder: (context, userRepository, consumerChild) {
-        if (userRepository == null) {
-          return consumerChild;
+    final bloc = Provider.of<AuthBloc>(context);
+
+    return StreamBuilder<AuthStatus>(
+      stream: bloc.status,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("ERROR"),
+          );
         }
-        switch (userRepository.status) {
-          case Status.Uninitialized:
+        if (!snapshot.hasData) {
+          return loadingPage;
+        }
+        switch (snapshot.data) {
+          case AuthStatus.Uninitialized:
             return splashPage;
-          case Status.Unauthenticated:
+          case AuthStatus.Unauthenticated:
             return loginPage;
-          case Status.Authenticating:
+          case AuthStatus.Authenticating:
             return loadingPage;
-          case Status.Authenticated:
+          case AuthStatus.Authenticated:
             return child;
         }
       },
-      child: loadingPage,
     );
   }
 }

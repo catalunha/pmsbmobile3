@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
-import 'package:pmsbmibile3/models/variaveis_usuarios_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
 import 'administracao_perfil_page_bloc.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 
 class AdministracaoPerfilPage extends StatelessWidget {
-  final bloc = AdministracaoPerfilPageBloc();
+  final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,9 @@ class AdministracaoPerfilPage extends StatelessWidget {
   }
 
   Widget _body() {
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
-          print(snapshot.data);
           if (snapshot.hasError) {
             return Center(
               child: Text("Error"),
@@ -51,7 +51,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                     Expanded(
                         flex: 3,
                         child: SquareImage(
-                          image: NetworkImage(snapshot.data.safeImagePerfilUrl),
+                          image: NetworkImage(snapshot.data.safeImagemPerfilUrl),
                         )),
                     Expanded(
                       flex: 5,
@@ -63,7 +63,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                             Text("Nome: ${snapshot.data.nomeProjeto}"),
                             Text("Celular: ${snapshot.data.celular}"),
                             Text("Email: ${snapshot.data.email}"),
-                            Text("Eixo: ${snapshot.data.eixo}"),
+                            Text("Eixo: ${snapshot.data.eixoNome}"),
                           ],
                         ),
                       ),

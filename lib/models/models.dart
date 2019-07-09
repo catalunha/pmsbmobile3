@@ -1,7 +1,14 @@
-export 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
-export 'package:pmsbmibile3/models/variaveis_usuarios_model.dart';
-export 'package:pmsbmibile3/models/administrador_variaveis_model.dart';
-export 'package:pmsbmibile3/models/usuarios_model.dart';
-export 'package:pmsbmibile3/models/noticias_model.dart';
-export 'package:pmsbmibile3/models/noticias_usuarios_model.dart';
-export 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
+export 'package:pmsbmibile3/models/variavel_usuario_model.dart';
+export 'package:pmsbmibile3/models/administrador_variavel_model.dart';
+export 'package:pmsbmibile3/models/usuario_model.dart';
+export 'package:pmsbmibile3/models/noticia_model.dart';
+export 'package:pmsbmibile3/models/noticia_usuario_model.dart';
+export 'package:pmsbmibile3/models/setor_censitario_model.dart';
+export 'package:pmsbmibile3/models/rota_model.dart';
+export 'package:pmsbmibile3/models/pergunta_model.dart';
+export 'package:pmsbmibile3/models/eixo_model.dart';
+export 'package:pmsbmibile3/models/cargo_model.dart';
+export 'package:pmsbmibile3/models/questionario_model.dart';
+export 'package:pmsbmibile3/models/arquivo_model.dart';
+
+

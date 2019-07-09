@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
-import 'package:pmsbmibile3/models/perfis_usuarios_model.dart';
-import 'package:pmsbmibile3/models/setores_censitarios_model.dart';
+import 'package:pmsbmibile3/models/arquivo_model.dart';
+import 'package:pmsbmibile3/models/setor_censitario_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -15,7 +16,7 @@ class ConfiguracaoPage extends StatefulWidget {
 }
 
 class ConfiguracaoState extends State<ConfiguracaoPage> {
-  final bloc = ConfiguracaoBloc();
+  final bloc = ConfiguracaoBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {
@@ -66,42 +67,67 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
 class SelecionarEixo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of<ConfiguracaoBloc>(context);
     return InkWell(
       onTap: () {
-        showDialog(context: context, builder: (context) => OpcoesEixo());
+        showDialog(context: context, builder: (context) => OpcoesEixo(bloc));
       },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text("Escolha o Eixo para sua visibilidade"),
-            Icon(Icons.search),
-          ],
-        ),
+      child: StreamBuilder<ConfiguracaoBlocState>(
+        stream: bloc.state,
+        builder: (context, snapshot) {
+          if(snapshot.hasError){
+            return Text("ERRO");
+          }
+          if(!snapshot.hasData){
+            return Text("SEM DADOS");
+          }
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Escolha o Eixo: ${snapshot.data.eixoAtualNome}"),
+                Icon(Icons.search),
+              ],
+            ),
+          );
+        }
       ),
     );
   }
 }
 
 class OpcoesEixo extends StatelessWidget {
+  final ConfiguracaoBloc bloc;
+  OpcoesEixo(this.bloc);
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      children: <Widget>[
-        SimpleDialogOption(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text("Eixo 1"),
-        ),
-        SimpleDialogOption(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text("Eixo 2"),
-        ),
-      ],
+    return StreamBuilder<UsuarioModel>(
+      stream: bloc.perfil,
+      builder: (context, snapshot) {
+        if(snapshot.hasError){
+          return Text("ERRO");
+        }
+        if(!snapshot.hasData){
+          return Text("SEM DADOS");
+        }
+        var lista = [];
+        if(snapshot.data.listaPossivelEixoAtual != null){
+          lista = snapshot.data.listaPossivelEixoAtual;
+        }
+
+        //snapshot.data.listaPossivelEixoAtual
+        return SimpleDialog(
+          children: lista.map((eixo){
+            return SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("${eixo.eixoNome}"),
+            );
+          }).toList(),
+        );
+      }
     );
   }
 }
@@ -116,15 +142,26 @@ class SelecionarSetorCensitario extends StatelessWidget {
             context: context,
             builder: (context) => OpcoesSetorCensitario(bloc));
       },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text("Escolha o Setor Censitário"),
-            Icon(Icons.search),
-          ],
-        ),
+      child: StreamBuilder<ConfiguracaoBlocState>(
+        stream: bloc.state,
+        builder: (context, snapshot) {
+          if(snapshot.hasError){
+            return Text("ERRO");
+          }
+          if(!snapshot.hasData){
+            return Text("SEM DADOS");
+          }
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Escolha o Setor Censitário: ${snapshot.data.setorCensitarioNome}"),
+                Icon(Icons.search),
+              ],
+            ),
+          );
+        }
       ),
     );
   }
@@ -146,6 +183,7 @@ class OpcoesSetorCensitario extends StatelessWidget {
                 .map(
                   (setor) => SimpleDialogOption(
                         onPressed: () {
+                          bloc.dispatch(UpdateSetorCensitarioConfiguracaoUpdateNomeProjetoEvent(setor.id, setor.nome));
                           Navigator.pop(context);
                         },
                         child: Text(setor.nome),
@@ -200,7 +238,6 @@ class OpcoesTema extends StatelessWidget {
   }
 }
 
-
 class AtualizarEmail extends StatefulWidget {
   @override
   AtualizarEmailState createState() => AtualizarEmailState();
@@ -212,7 +249,7 @@ class AtualizarEmailState extends State<AtualizarEmail> {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           if (_controller.text == null || _controller.text.isEmpty) {
@@ -233,20 +270,20 @@ class AtualizarEmailState extends State<AtualizarEmail> {
   }
 }
 
-class AtualizarNumeroCelular extends StatefulWidget{
+class AtualizarNumeroCelular extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return AtualizarNumeroCelularState();
   }
-
 }
 
 class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
   final _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           if (_controller.text == null || _controller.text.isEmpty) {
@@ -258,7 +295,9 @@ class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
               Text("Atualizar numero celular"),
               TextField(
                 controller: _controller,
-                onChanged: bloc.updateNumeroCelular,
+                onChanged: (celular){
+                  bloc.dispatch(ConfiguracaoUpdateCelularEvent(celular));
+                },
               ),
             ],
           );
@@ -273,12 +312,13 @@ class AtualizarNomeNoProjeto extends StatefulWidget {
   }
 }
 
-class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto>{
+class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
   final _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           if (_controller.text == null || _controller.text.isEmpty) {
@@ -290,7 +330,9 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto>{
               Text("Atualizar nome no projeto"),
               TextField(
                 controller: _controller,
-                onChanged: bloc.updateNomeProjeto,
+                onChanged: (nomeProjeto){
+                  bloc.dispatch(ConfiguracaoUpdateNomeProjetoEvent(nomeProjeto));
+                },
               ),
             ],
           );
@@ -302,7 +344,7 @@ class AtualizarImagemPerfil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoBloc>(context);
-    return StreamBuilder<PerfilUsuarioModel>(
+    return StreamBuilder<UsuarioModel>(
         stream: bloc.perfil,
         builder: (context, snapshot) {
           var perfil = snapshot.data;
@@ -323,7 +365,7 @@ class AtualizarImagemPerfil extends StatelessWidget {
                     Spacer(
                       flex: 2,
                     ),
-                    StreamBuilder<ArquivoUsuarioModel>(
+                    StreamBuilder<ArquivoModel>(
                         stream: bloc.uploadBloc.arquivo,
                         builder: (context, snapshot) {
                           return Expanded(

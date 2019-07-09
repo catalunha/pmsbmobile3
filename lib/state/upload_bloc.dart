@@ -1,22 +1,24 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime/mime.dart';
+import 'package:pmsbmibile3/api/auth_api_mobile.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/arquivos_usuarios_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 class BlocState {
   String userId;
   StorageUploadTask currentUploadTask;
 }
 
 class UploadBloc {
+  final fsw.Firestore _firestore;
   final blocState = BlocState();
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  final AuthBloc _authBloc = AuthBloc();
+  final AuthBloc _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
   final _filePath = BehaviorSubject<String>();
 
@@ -29,11 +31,11 @@ class UploadBloc {
 
   Observable<bool> uploadTasks;
 
-  final _arquivo = BehaviorSubject<ArquivoUsuarioModel>();
-  Stream<ArquivoUsuarioModel> get arquivo => _arquivo.stream;
-  StreamSubscription<ArquivoUsuarioModel> _arquivoSubscriptio;
+  final _arquivo = BehaviorSubject<ArquivoModel>();
+  Stream<ArquivoModel> get arquivo => _arquivo.stream;
+  StreamSubscription<ArquivoModel> _arquivoSubscriptio;
 
-  UploadBloc() {
+  UploadBloc(this._firestore) {
     _authBloc.userId.listen((userId) => blocState.userId = userId);
 
     uploadTasks = Observable.combineLatest2(
@@ -41,7 +43,7 @@ class UploadBloc {
       _filePath.stream.where((String filePath) => filePath != null),
       _uploadFromPathHandler,
     );
-    uploadTasks.listen((_) => print("uploadTask iniciada"));
+    //uploadTasks.listen((_) => print("uploadTask iniciada"));
     _events.stream.listen(_handleStorageTaskEvent);
   }
 
@@ -79,8 +81,8 @@ class UploadBloc {
 
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
     _uploadSucess() async {
-      var ref = Firestore.instance.collection(ArquivoUsuarioModel.collection);
-      var arquivo = ArquivoUsuarioModel(
+      var ref = _firestore.collection(ArquivoModel.collection);
+      var arquivo = ArquivoModel(
         userId: blocState.userId,
         contentType: storageTaskEvent.snapshot.storageMetadata.contentType,
         storagePath: storageTaskEvent.snapshot.storageMetadata.path,
@@ -92,7 +94,7 @@ class UploadBloc {
       doc.setData(arquivo.toMap());
       doc
           .snapshots()
-          .map((snap) => ArquivoUsuarioModel.fromMap({
+          .map((snap) => ArquivoModel().fromMap({
                 "id": doc.documentID,
                 ...snap.data,
               }))
