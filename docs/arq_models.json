@@ -9,9 +9,10 @@
     "nome": "nome-valor"
   },
   "Usuario": {
+    "_comment": "mesmo ID do userID do authentication(email/senha)",
     "nome": "nome-valor",
     "celular": "celular-valor",
-    "foto": "foto-valor-base64",
+    "foto": "UsuarioArquivoID",
     "rotas": [
       "rotas-valor01"
     ],
