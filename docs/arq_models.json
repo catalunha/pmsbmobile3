@@ -16,7 +16,7 @@
       "rotas-valor01"
     ],
     "setorCensitario": {
-      "setorCensitario": "SetorCensitarioID",
+      "setorCensitarioID": "SetorCensitarioID",
       "nome": "SetorCensitario_nome"
     },
     "cargo": {
@@ -33,11 +33,11 @@
     },
     "eixos": [
       {
-        "eixoID": "EixoIDRS",
+        "eixoID": "EixoID -> RS",
         "nome": "nome-valor"
       },
       {
-        "eixoID": "EixoIDAA",
+        "eixoID": "EixoID -> AA",
         "nome": "nome-valor"
       }
     ]
@@ -54,19 +54,19 @@
   },
   "UsuarioNoticia": {
     "_comment": "ID do doc: Usuario__Noticia ? ",
-    "visualizada": false,
     "usuario": "UsuarioID",
-    "noticia": "NoticiaID"
+    "noticia": "NoticiaID",
+    "visualizada": false
   },
   "UsuarioPerfil": {
     "_comment": "ID do doc: Usuario__Perfil ? ",
     "usuario": "UsuarioID",
     "perfil": {
-      "PerfilID": "PerfilID",
+      "perfilID": "PerfilID",
       "nome": "nome-valor",
-      "tipo": "tipo-valor"
+      "contentType": "contentType-valor"
     },
-    "valor": "texto ou TxtNumero. Se arquivo id para UsuarioArquivo."
+    "valor": "Alfanumerico. Se arquivo id para UsuarioArquivo."
   },
   "UsuarioArquivo": {
     "usuario": "UsuarioID",
@@ -76,20 +76,21 @@
   },
   "Perfil": {
     "nome": "nome-valor",
-    "tipo": "tipo-valor"
+    "contentType": "contentType-valor"
   },
   "Questionario": {
     "questionarioUid": "uid-valor",
     "nome": "nome-valor",
     "eixo": {
-      "eixoID": "EixoID",
+      "id": "EixoID",
       "nome": "Eixo_nome"
     },
-    "editor": {
-      "usuarioID": "UsuarioID",
+    "editou": {
+      "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
-    "modificado": "data-valor"
+    "modificado": "data-valor",
+    "editando": false
   },
   "PerguntaTipo": {
     "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla",
@@ -111,15 +112,15 @@
     "textoMarkdown": "texto-valor",
     "requisito": [
       {
-        "requisitoUid": "requisitoUid",
+        "requisitoUid": "uid-valor",
         "questionario": "Questionario_questionarioUid",
         "pergunta": "Pergunta_perguntaUid",
-        "escolha": "Pergunta_escolha_escolhaUid"
+        "escolha": "Pergunta_escolha_uid"
       }
     ],
     "escolha": [
       {
-        "escolhaUid": "escolhaUid",
+        "escolhaUid": "uid-valor",
         "ordem": 0,
         "nome": "nome-valor",
         "marcada": false
@@ -130,20 +131,20 @@
     "questionarioUid": "Questionario_questionarioUid",
     "nome": "nome-valor",
     "eixo": {
-      "eixoID": "EixoID",
+      "id": "EixoID",
       "nome": "Eixo_nome"
     },
-    "editor": {
-      "usuarioID": "UsuarioID",
+    "editou": {
+      "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
     "modificado": "data-valor",
     "aplicador": {
-      "usuarioID": "UsuarioID",
+      "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
     "setorCensitario": {
-      "setorCensitarioID": "SetorCensitarioID",
+      "id": "SetorCensitarioID",
       "nome": "SetorCensitario_nome"
     },
     "referencia": "Local ou Pessoa ou Momento da aplicação"
@@ -155,12 +156,12 @@
     },
     "perguntaUid": "Pergunta_perguntaUid",
     "ordem": "idem",
-    "tipo": "idem",
+    "perguntaTipo": "idem",
     "titulo": "idem",
     "textoMarkdown": "idem",
     "requisito": [
       {
-        "requisitoUid": "requisitoUid",
+        "requisitoUid": "uid-valor",
         "questionario": "Questionario_questionarioUid",
         "questionarioAplicado": "QuestionarioAplicadoID",
         "pergunta": "Resposta_perguntaUid",
@@ -169,10 +170,10 @@
     ],
     "escolha": [
       {
-        "escolhaUid": "escolhaUid",
+        "escolhaUid": "uid-valor",
         "ordem": 0,
         "nome": "nome-valor",
-        "marcada": false
+        "marcada": true
       }
     ],
     "respostaTexto": {
@@ -198,7 +199,42 @@
     }
   },
   "RespostaArquivo": {
-    "proprietario": "Resposta/RespostaID",
+    "proprietario": "Resposta/respostaID",
+    "contentType": "contentType-valor",
+    "storagePath": "storagePath-valor",
+    "url": "url-valor"
+  },
+  "Produto": {
+    "nome": "nome-valor",
+    "eixo": {
+      "id": "EixoID",
+      "nome": "Eixo_nome"
+    },
+    "editou": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "modificado": "data-valor",
+    "editando": false,
+    "setorCensitario": {
+      "id": "SetorCensitarioID",
+      "nome": "SetorCensitario_nome"
+    },
+    "textoMarkdown": "textoMarkdown-valor",
+    "historico": "historico-valor",
+    "observacao": "observacao-valor",
+    "arquivos": [
+      {
+        "arquivoUid": "arquivoUid",
+        "titulo": "titulo-valor",
+        "rascunhoArquivoID": "ProdutoArquivoID",
+        "editadoArquivoID": "ProdutoArquivoID",
+        "incorporarEditado": false
+      }
+    ]
+  },
+  "ProdutoArquivo": {
+    "proprietario": "Produto/produtoID",
     "contentType": "contentType-valor",
     "storagePath": "storagePath-valor",
     "url": "url-valor"
