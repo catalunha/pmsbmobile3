@@ -48,7 +48,7 @@
     "conteudoMarkdown": "conteudoMarkdown-valor",
     "editor": "UsuarioID",
     "distribuida": false,
-    "datapublicacao": "2019-01-01 00:00:00",
+    "dataPublicacao": "2019-01-01 00:00:00",
     "_comment": "UI listar: todos(),eixo[x],cargos[],usuario{xx}",
     "destinatarios": [
       "UsuarioID"
@@ -80,8 +80,8 @@
     "nome": "nome-valor",
     "contentType": "contentType-valor"
   },
+
   "Questionario": {
-    "questionarioUid": "uid-valor",
     "nome": "nome-valor",
     "eixo": {
       "id": "EixoID",
@@ -94,29 +94,30 @@
     "modificado": "data-valor",
     "editando": false
   },
+
   "PerguntaTipo": {
-    "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla",
-    "referencia": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla"
+    "_comment": "o ID pode ser a referencia eventido tipos de perguntas com a mesma referencia",
+    "nome": "Texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla",
+    "_id": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla"
   },
+
   "Pergunta": {
-    "perguntaUid": "uid-valor",
     "questionario": {
-      "questionarioUid": "Questionario_questionarioUid",
+      "questionarioID": "QuestionarioID",
       "nome": "Questionario_nome"
     },
     "ordem": 0,
     "perguntaTipo": {
       "perguntaTipoID": "PerguntaTipoID",
-      "nome": "PerguntaTipo_nome",
-      "referencia": "PerguntaTipo_referencia"
+      "nome": "PerguntaTipo_nome"
     },
     "titulo": "titulo-valor",
     "textoMarkdown": "texto-valor",
     "requisito": [
       {
         "requisitoUid": "uid-valor",
-        "questionario": "Questionario_questionarioUid",
-        "pergunta": "Pergunta_perguntaUid",
+        "questionario": "QuestionarioID",
+        "pergunta": "Pergunta_perguntaID",
         "escolha": "Pergunta_escolha_uid"
       }
     ],
@@ -124,12 +125,13 @@
       {
         "escolhaUid": "uid-valor",
         "ordem": 0,
-        "nome": "nome-valor",
+        "nome": "nome-valor"
       }
     ]
   },
+
   "QuestionarioAplicado": {
-    "questionarioUid": "Questionario_questionarioUid",
+    "questionarioID": "QuestionarioID",
     "nome": "nome-valor",
     "eixo": {
       "id": "EixoID",
@@ -139,7 +141,7 @@
       "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
-    "datamodificacao": "data-valor",
+    "dataModificacao": "data-valor",
     "aplicador": {
       "id": "UsuarioID",
       "nome": "Usuario_nome"
@@ -150,12 +152,13 @@
     },
     "referencia": "Local ou Pessoa ou Momento da aplicação."
   },
+
   "Resposta": {
-    "questionarioUid": {
-      "questionarioUid": "QuestionarioAplicado_questionarioUid",
+    "questionario": {
+      "questionarioID": "QuestionarioAplicado_questionarioID",
       "nome": "QuestionarioAplicado_nome"
     },
-    "perguntaUid": "Pergunta_perguntaUid",
+    "perguntaID": "PerguntaID",
     "ordem": "idem",
     "perguntaTipo": "idem",
     "titulo": "idem",
@@ -190,21 +193,30 @@
       "observacao": "observacao-valor"
     },
     "respostaArquivo": {
-      "respostaArquivoID": "RespostaArquivoID",
-      "observacao": "observacao-valor"
+      "observacao": "observacao-valor",
+      "arquivos": [
+        "RespostaArquivoID",
+        "RespostaArquivoID"
+      ]
     },
-    "respostaCoordenada": {
-      "latitude": "respostaCoordenada",
-      "longitude": "respostaCoordenada",
-      "observacao": "observacao-valor"
+    "respostaCoordenada":{
+      "observacao": "observacao-valor",
+      "coordenadas":[
+        {
+          "latitude": "respostaCoordenada",
+          "longitude": "respostaCoordenada",
+        }
+      ]
     }
   },
+
   "RespostaArquivo": {
     "proprietario": "Resposta/respostaID",
     "contentType": "contentType-valor",
     "storagePath": "storagePath-valor",
     "url": "url-valor"
   },
+
   "Produto": {
     "nome": "nome-valor",
     "eixo": {
