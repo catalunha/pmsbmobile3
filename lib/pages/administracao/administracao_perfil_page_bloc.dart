@@ -17,7 +17,7 @@ class AdministracaoPerfilPageState {
 
 class AdministracaoPerfilPageBloc {
   final fw.Firestore _firestore;
-  AdministracaoPerfilPageState currentState = AdministracaoPerfilPageState();
+  final AdministracaoPerfilPageState currentState = AdministracaoPerfilPageState();
 
   final _inputController = BehaviorSubject<AdministracaoPerfilPageEvent>();
 
