@@ -215,6 +215,7 @@ class DefaultScaffold extends StatelessWidget {
   final Widget floatingActionButton;
   final Widget title;
   final Widget actions;
+  final Widget bottom;
   final Color backgroundColor;
 
   const DefaultScaffold(
@@ -223,7 +224,8 @@ class DefaultScaffold extends StatelessWidget {
       this.floatingActionButton,
       this.title,
       this.actions,
-      this.backgroundColor})
+      this.backgroundColor,
+      this.bottom})
       : super(key: key);
 
   Widget _appBarBuild(BuildContext context) {
@@ -235,6 +237,7 @@ class DefaultScaffold extends StatelessWidget {
       //leading: Text("leading"),
       centerTitle: true,
       title: title,
+      bottom: bottom,
     );
   }
 

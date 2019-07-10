@@ -23,23 +23,29 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (context) => HomePage(),
-
             //perfil
             "/perfil": (context) => PerfilPage(),
             "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),
             "/perfil/configuracao": (context) => ConfiguracaoPage(),
-
+            //questionario
             "/questionario/home": (context) => QuestionarioHomePage(),
+            "/questionario/adicionar_editar": (context) =>
+                AdicionarEditarQuestionarioPage(),
+
+            //pergunta
             "/pergunta/home": (context) => PerguntaHomePage(),
+            "/pergunta/criar_pergunta": (context) => CriarPerguntaTipoPage(),
+            "/pergunta/criar_editar": (context) => EditarApagarPerguntaPage(),
+            "/pergunta/selecionar_requisito": (context) =>
+                SelecionarQuequisitoPerguntaPage(),
+            "/pergunta/criar_ordenar_escolha": (context) =>
+                CriarOrdenarEscolha(),
+            "/pergunta/editar_apagar_escolha": (context) =>
+                EditarApagarEscolhaPage(),
+
+            //home
             "/aplicacao/home": (context) => AplicacaoHomePage(),
-
-            //resposta
             "/resposta/home": (context) => RespostaHomePage(),
-            "/resposta/questionario_resposta": (context) =>
-                QuestionarioRespostaPage(),
-            "/resposta/resposta_questionario": (context) =>
-                RespostaQuestionarioPage(),
-
             "/sintese/home": (context) => SinteseHomePage(),
 
             //produto
