@@ -45,13 +45,13 @@ class Perfil {
 
   Perfil({this.perfilID, this.nome, this.tipo});
 
-  Perfil.fromMap(Map<String, dynamic> map) {
+  Perfil.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('perfilID')) perfilID = map['perfilID'];
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('tipo')) tipo = map['tipo'];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<dynamic, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (perfilID != null) data['perfilID'] = this.perfilID;
     if (nome != null) data['nome'] = this.nome;

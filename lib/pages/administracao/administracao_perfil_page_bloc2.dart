@@ -71,27 +71,27 @@ class AdministracaoPerfilPageBloc {
       });
 
       print('>>>>>> iniciando leitura de UsuarioPerfil');
-
-      _firestore
-          .collection(UsuarioPerfil.collection)
-          .document('fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2_K3gvgZG2rYdjJdRCpv7K')
-          .get()
-          .then((doc) {
-        if (doc.exists) {
-          print('>>> Doc UsuarioPerfil Existe');
-        } else {
-          print('>>> Doc UsuarioPerfil NAO-Existe');
-        }
-      });
-
-      _firestore
-          .collection(UsuarioPerfil.collection)
-          .where("userId", isEqualTo: event.usuarioId)
-          .snapshots()
-          .map((snapDocs) => snapDocs.documents)
-          .map((doc) {
-        print(doc.toString());
-      });
+//
+//      _firestore
+//          .collection(UsuarioPerfil.collection)
+//          .document('fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2_K3gvgZG2rYdjJdRCpv7K')
+//          .get()
+//          .then((doc) {
+//        if (doc.exists) {
+//          print('>>> Doc UsuarioPerfil Existe');
+//        } else {
+//          print('>>> Doc UsuarioPerfil NAO-Existe');
+//        }
+//      });
+//
+//      _firestore
+//          .collection(UsuarioPerfil.collection)
+//          .where("userId", isEqualTo: event.usuarioId)
+//          .snapshots()
+//          .map((snapDocs) => snapDocs.documents)
+//          .map((doc) {
+//        print(doc.toString());
+//      });
 
       //variaveis usuario
 //      _firestore
