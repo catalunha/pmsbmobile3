@@ -52,22 +52,31 @@ class _EditarApagarEscolhaPageState extends State<EditarApagarEscolhaPage> {
     );
   }
 
+  _listaTitulos() {
+    return Column(
+      children: <Widget>[
+        _textoTopo("Eixo: $_eixo"),
+        _textoTopo("RS 01 - Questionarios de ..."),
+        _textoTopo("Pergunta tipo escolha unica"),
+        _textoTopo("Edição das escolhas"),
+        Padding(padding: EdgeInsets.all(5)),
+        Divider(color: Colors.black, height: 5),
+      ],
+    );
+  }
+
   _body() {
     return Container(
-        child: Column(children: <Widget>[
-      _textoTopo("Eixo: $_eixo"),
-      _textoTopo("RS 01 - Questionarios de ..."),
-      _textoTopo("Pergunta tipo escolha unica"),
-      _textoTopo("Edição das escolhas"),
+        child: ListView(children: <Widget>[
       Padding(padding: EdgeInsets.all(5)),
-      Divider(color: Colors.black, height: 5),
+      _listaTitulos(),
       Padding(
           padding: EdgeInsets.all(5.0),
           child: Text(
             "Titulo da escolha:",
             style: TextStyle(fontSize: 15, color: Colors.blue),
           )),
-      _areaTexto(),
+      SafeArea(child: _areaTexto()),
       _botaoDeletar()
     ]));
   }
