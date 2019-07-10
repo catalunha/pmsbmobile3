@@ -12,7 +12,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var usuarioId = ModalRoute.of(context).settings.arguments;
     if (usuarioId != null) {
-      bloc.dispatch(UpdateUsuarioIdEvent(usuarioId));
+      bloc.administracaoPerfilPageEventSink(UpdateUsuarioIdEvent(usuarioId));
     }
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +29,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
 
   Widget _body() {
     return StreamBuilder<UsuarioModel>(
-        stream: bloc.perfil,
+        stream: bloc.usuarioModelStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -60,6 +60,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            Text("ID: ${snapshot.data.id.substring(0,10)}"),
                             Text("Nome: ${snapshot.data.nomeProjeto}"),
                             Text("Celular: ${snapshot.data.celular}"),
                             Text("Email: ${snapshot.data.email}"),
@@ -78,7 +79,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     )),
                 StreamBuilder<List<VariavelUsuarioModel>>(
-                    stream: bloc.variaveis,
+                    stream: bloc.variavelUsuarioModelStream,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Center(
