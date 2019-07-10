@@ -56,25 +56,25 @@
     "noticia": "NoticiaID",
     "visualizada": false
   },
-  "UsuarioInformacao": {
-    "ID": "ID formado por: Usuario__Informacao",
+  "UsuarioPerfil": {
+    "ID": "ID formado por: UsuarioID_PerfilID",
     "usuario": "UsuarioID",
-    "informacao": {
-      "informacaoID": "InformacaoID",
+    "perfilID": {
+      "ID": "PerfilID",
       "nome": "nome-valor",
       "contentType": "contentType-valor"
     },
-    "valor": "Alfanumerico. Se arquivo id para UsuarioArquivo."
+    "conteudo": "Alfanumerico. Se arquivo id para UsuarioArquivo."
   },
   "UsuarioArquivo": {
     "usuario": "UsuarioID",
-    "contentType": "contentType-valor",
+    "tipo": "contentType-valor",
     "storagePath": "storagePath-valor",
     "url": "url-valor"
   },
-  "Informacao": {
+  "Perfil": {
     "nome": "nome-valor",
-    "contentType": "contentType-valor"
+    "tipo": "contentType-valor"
   },
   "PerguntaTipo": {
     "ID": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla",
@@ -199,7 +199,7 @@
     },
     "RespostaArquivo": {
       "proprietario": "Resposta/respostaID",
-      "contentType": "contentType-valor",
+      "tipo": "contentType-valor",
       "storagePath": "storagePath-valor",
       "url": "url-valor"
     },
@@ -234,7 +234,7 @@
     },
     "ProdutoArquivo": {
       "proprietario": "Produto/produtoID",
-      "contentType": "contentType-valor",
+      "tipo": "contentType-valor",
       "storagePath": "storagePath-valor",
       "url": "url-valor"
     }
