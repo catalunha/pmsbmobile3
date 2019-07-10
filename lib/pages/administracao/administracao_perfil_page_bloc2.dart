@@ -26,7 +26,7 @@ class AdministracaoPerfilPageBloc {
   final _administracaoPerfilPageEventController = BehaviorSubject<AdministracaoPerfilPageEvent>();
 
   Stream<AdministracaoPerfilPageEvent> get administracaoPerfilPageEventStream =>
-    _administracaoPerfilPageEventController.stream;
+      _administracaoPerfilPageEventController.stream;
 
   Function get administracaoPerfilPageEventSink => _administracaoPerfilPageEventController.sink.add;
 
@@ -56,30 +56,42 @@ class AdministracaoPerfilPageBloc {
   }
 
   void _mapEventToState(AdministracaoPerfilPageEvent event) {
-    if(event is UpdateUsuarioIdEvent) {
+    if (event is UpdateUsuarioIdEvent) {
       currentState.usuarioId = event.usuarioId;
       //perfil usuario
       print('>>>>>> iniciando leitura de Usuario');
       print('event.usuarioId: ${event.usuarioId}');
       _firestore
-        .collection(UsuarioModel.collection)
-        .document(event.usuarioId)
-        .snapshots()
-        .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
-        .listen((usuario) {
+          .collection(UsuarioModel.collection)
+          .document(event.usuarioId)
+          .snapshots()
+          .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
+          .listen((usuario) {
         usuarioModelSink(usuario);
       });
 
       print('>>>>>> iniciando leitura de UsuarioPerfil');
 
       _firestore
-        .collection(UsuarioPerfil.collection)
-        .document('fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2_K3gvgZG2rYdjJdRCpv7K').get().then((doc){
-          if(doc.exists) {
-            print('Existe');
-          }
+          .collection(UsuarioPerfil.collection)
+          .document('fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2_K3gvgZG2rYdjJdRCpv7K')
+          .get()
+          .then((doc) {
+        if (doc.exists) {
+          print('>>> Doc UsuarioPerfil Existe');
+        } else {
+          print('>>> Doc UsuarioPerfil NAO-Existe');
+        }
       });
 
+      _firestore
+          .collection(UsuarioPerfil.collection)
+          .where("userId", isEqualTo: event.usuarioId)
+          .snapshots()
+          .map((snapDocs) => snapDocs.documents)
+          .map((doc) {
+        print(doc.toString());
+      });
 
       //variaveis usuario
 //      _firestore
@@ -90,7 +102,6 @@ class AdministracaoPerfilPageBloc {
 //        .listen((usuarioperfil) {
 //        print(usuarioperfil.toString());
 //      });
-
 
 //      final dados = _firestore
 //          .collection(UsuarioPerfil.collection);
@@ -113,20 +124,19 @@ class AdministracaoPerfilPageBloc {
 //        variavelUsuarioModelDispatch(variavelUsuarioModelList);
 //      });
 
-//      //versao dev alterada para UsuarioPerfil
-//      //variaveis usuario
-//      _firestore
-//        .collection(VariavelUsuarioModel.collection)
-//        .where("usuario", isEqualTo: event.usuarioId)
-//        .snapshots()
-//        .map((snapDocs) => snapDocs.documents
-//        .map((doc) => UsuarioPerfil(id: doc.documentID).fromMap(doc.data))
-//        .toList())
-//        .listen((List<UsuarioPerfil> variavelUsuarioModelList) {
-//        variavelUsuarioModelDispatch(variavelUsuarioModelList);
-//      });
+      //versao dev alterada para UsuarioPerfil
+      //variaveis usuario
+      _firestore
+        .collection(UsuarioPerfil.collection)
+        .where("usuario", isEqualTo: event.usuarioId)
+        .snapshots()
+        .map((snapDocs) => snapDocs.documents
+        .map((doc) => UsuarioPerfil(id: doc.documentID).fromMap(doc.data))
+        .toList())
+        .listen((List<UsuarioPerfil> variavelUsuarioModelList) {
+        variavelUsuarioModelDispatch(variavelUsuarioModelList);
+      });
 
-
-      }
-      }
+    }
+  }
 }
