@@ -86,38 +86,48 @@ class DefaultDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Home'),
+              trailing: Icon(Icons.home),
               onTap: () {
                 Navigator.pushReplacementNamed(context, "/");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Questionarios'),
+              trailing: Icon(Icons.assignment),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/questionario/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Perguntas'),
+              trailing: Icon(Icons.chat_bubble),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/pergunta/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Aplicação'),
+              trailing: Icon(Icons.directions_walk,),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/aplicacao/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Respostas'),
+              trailing: Icon(Icons.chat),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/resposta/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Síntese'),
               onTap: () {
@@ -125,6 +135,7 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/sintese/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Produto'),
               onTap: () {
@@ -132,6 +143,7 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/produto');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Comunicação'),
               onTap: () {
@@ -139,13 +151,21 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/comunicacao');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Administração'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/administracao/home');
-              },
+              }
             ),
+            Divider(color: Colors.black45,),
+        ListTile(
+          title: Text('Controle'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, '/controle/home');
+          },)
           ],
         ),
       ),
