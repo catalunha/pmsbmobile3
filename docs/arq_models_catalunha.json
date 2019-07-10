@@ -60,7 +60,7 @@
     "ID": "ID formado por: UsuarioID_PerfilID",
     "usuarioID": "UsuarioID",
     "perfilID": {
-      "ID": "PerfilID",
+      "id": "PerfilID",
       "nome": "nome-valor",
       "contentType": "contentType-valor"
     },
