@@ -58,7 +58,7 @@
   },
   "UsuarioPerfil": {
     "ID": "ID formado por: UsuarioID_PerfilID",
-    "usuarioID": "UsuarioID",
+    "usuario": "UsuarioID",
     "perfilID": {
       "id": "PerfilID",
       "nome": "nome-valor",
@@ -68,13 +68,13 @@
   },
   "UsuarioArquivo": {
     "usuario": "UsuarioID",
-    "tipo": "contentType-valor",
+    "contentType": "contentType-valor",
     "storagePath": "storagePath-valor",
     "url": "url-valor"
   },
   "Perfil": {
     "nome": "nome-valor",
-    "tipo": "contentType-valor"
+    "contentType": "contentType-valor"
   },
   "PerguntaTipo": {
     "ID": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla",
@@ -199,7 +199,7 @@
     },
     "RespostaArquivo": {
       "proprietario": "Resposta/respostaID",
-      "tipo": "contentType-valor",
+      "contentType": "contentType-valor",
       "storagePath": "storagePath-valor",
       "url": "url-valor"
     },
@@ -234,7 +234,7 @@
     },
     "ProdutoArquivo": {
       "proprietario": "Produto/produtoID",
-      "tipo": "contentType-valor",
+      "contentType": "contentType-valor",
       "storagePath": "storagePath-valor",
       "url": "url-valor"
     }
