@@ -61,8 +61,8 @@ class _ProductPageState extends State<ProductPage> {
       body: _body(context),
       title: Text("Produto em edição"),
     );
-    /** 
-   
-    */
+    /**
+
+     */
   }
 }
