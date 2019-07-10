@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
             "/perfil/configuracao":(context)=> ConfiguracaoPage(),
 
             "/questionario/home":(context) => QuestionarioHomePage(),
+            "/questionario/form":(context) => QuestionarioFormPage(),
             "/pergunta/home":(context) => PerguntaHomePage(),
             "/aplicacao/home":(context) => AplicacaoHomePage(),
             "/resposta/home":(context) => RespostaHomePage(),

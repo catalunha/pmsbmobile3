@@ -1,6 +1,6 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 
-class Questionario extends FirestoreModel{
+class QuestionarioModel extends FirestoreModel{
   static final String collection = "Questionario";
 
   String userId;
@@ -15,7 +15,7 @@ class Questionario extends FirestoreModel{
 
   String eixoNome;
 
-  Questionario({
+  QuestionarioModel({
     String id,
     this.userId,
     this.usuarioNomeProjeto,
@@ -26,14 +26,17 @@ class Questionario extends FirestoreModel{
   }) : super(id);
 
   @override
-  Questionario fromMap(Map<String, dynamic> map) {
-    return null;
+  QuestionarioModel fromMap(Map<String, dynamic> map) {
+    nome = map["nome"];
+    userId = map["userId"];
+    return this;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-
-    };
+    final data = Map<String, dynamic>();
+    if(nome != null) data['nome'] = nome;
+    if(userId != null) data['userId'] = userId;
+    return data;
   }
 }

@@ -30,6 +30,7 @@ export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
 
 //questionario
 export 'package:pmsbmibile3/pages/questionario/questionario_home_page.dart';
+export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
 
 //aplicação
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page.dart';
