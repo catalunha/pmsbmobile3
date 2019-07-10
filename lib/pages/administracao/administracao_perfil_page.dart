@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
+import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
+
+//import 'administracao_perfil_page_bloc.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,7 +22,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.red,
         centerTitle: true,
-        title: Text("Visualizar dados e perfil"),
+        title: Text("Visualizar dados e perfil2"),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -51,7 +54,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: SquareImage(
                         image: NetworkImage(snapshot.data.safeImagemPerfilUrl),
                       )),
@@ -82,8 +85,8 @@ class AdministracaoPerfilPage extends StatelessWidget {
             Padding(padding: EdgeInsets.all(10)),
             Expanded(
               flex: 6,
-              child: StreamBuilder<List<VariavelUsuarioModel>>(
-                  stream: bloc.variavelUsuarioModelStream,
+              child: StreamBuilder<List<UsuarioPerfil>>(
+                  stream: bloc.usuarioPerfilModelStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(
@@ -99,7 +102,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                       children: <Widget>[
                         // ignore: sdk_version_ui_as_code
                         ...snapshot.data.map((variavel) {
-                          if (variavel.tipo == 'arquivo') {
+                          if (variavel.perfilID.contentType != 'text/plain') {
                             return Card(
                                 child: InkWell(
                                     onTap: () {
@@ -107,21 +110,20 @@ class AdministracaoPerfilPage extends StatelessWidget {
                                     },
                                     child: ListTile(
                                       title: Text(
-                                        "${variavel.nome}:",
+                                        "${variavel.perfilID.nome}:",
                                         style: TextStyle(fontSize: 14),
                                       ),
                                       subtitle: Text(
 //                                        "${variavel.conteudo}",
-                                      "CLIQUE AQUI PARA VER O ARQUIVO",
-                                        style: TextStyle(fontSize: 16,color: Colors.blue),
+                                        "CLIQUE AQUI PARA VER O ARQUIVO",
+                                        style: TextStyle(fontSize: 16, color: Colors.blue),
                                       ),
                                     )));
                           } else {
-
-                          return Card(
-                            child: ListTile(
+                            return Card(
+                                child: ListTile(
                               title: Text(
-                                ">>${variavel.nome}:",
+                                ">>${variavel.perfilID.nome}:",
                                 style: TextStyle(fontSize: 14),
                               ),
                               subtitle: Text(
