@@ -58,7 +58,7 @@
   },
   "UsuarioPerfil": {
     "ID": "ID formado por: UsuarioID_PerfilID",
-    "usuario": "UsuarioID",
+    "usuarioID": "UsuarioID",
     "perfilID": {
       "ID": "PerfilID",
       "nome": "nome-valor",
