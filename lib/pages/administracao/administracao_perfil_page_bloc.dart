@@ -17,20 +17,18 @@ class AdministracaoPerfilPageState {
 
 class AdministracaoPerfilPageBloc {
   final fw.Firestore _firestore;
+
+
   final AdministracaoPerfilPageState currentState = AdministracaoPerfilPageState();
 
   final _inputController = BehaviorSubject<AdministracaoPerfilPageEvent>();
-
   Stream<AdministracaoPerfilPageEvent> get input => _inputController.stream;
-
   Function get dispatch => _inputController.sink.add;
 
   final _perfilController = BehaviorSubject<UsuarioModel>();
-
   Stream<UsuarioModel> get perfil => _perfilController.stream;
 
   final _variaveisController = BehaviorSubject<List<VariavelUsuarioModel>>();
-
   Stream<List<VariavelUsuarioModel>> get variaveis =>
       _variaveisController.stream;
 

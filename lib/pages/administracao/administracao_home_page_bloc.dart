@@ -4,22 +4,23 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
 class AdministracaoHomePageBloc {
   final fw.Firestore _firestore;
-  final _usuariosController = BehaviorSubject<List<UsuarioModel>>();
 
-  Stream<List<UsuarioModel>> get usuarios => _usuariosController.stream;
+  final usuarioModelListController = BehaviorSubject<List<UsuarioModel>>();
+
+  Stream<List<UsuarioModel>> get usuarioModelListStream =>
+      usuarioModelListController.stream;
 
   AdministracaoHomePageBloc(this._firestore) {
-    final ref = _firestore.collection(UsuarioModel.collection);
-    ref.snapshots().map(_snapshotToPerfilList).pipe(_usuariosController);
-  }
-
-  List<UsuarioModel> _snapshotToPerfilList(fw.QuerySnapshot listaPerfil) {
-    return listaPerfil.documents
-        .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
-        .toList();
+    _firestore
+        .collection(UsuarioModel.collection)
+        .snapshots()
+        .map((listaPerfil) => listaPerfil.documents
+            .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
+            .toList())
+        .pipe(usuarioModelListController);
   }
 
   void dispose() {
-    _usuariosController.close();
+    usuarioModelListController.close();
   }
 }

@@ -17,12 +17,12 @@ class AdministracaoHomePage extends StatelessWidget {
       ),
       body: Container(
         child: StreamBuilder<List<UsuarioModel>>(
-            stream: bloc.usuarios,
+            stream: bloc.usuarioModelListStream,
             initialData: [],
             builder: (context, snapshot) {
               return ListView(
                 children: snapshot.data
-                    .map((usuario) => PerfilUsuarioItem(usuario))
+                    .map((usuario) => ItemListView(usuario))
                     .toList(),
               );
             }),
@@ -31,14 +31,13 @@ class AdministracaoHomePage extends StatelessWidget {
   }
 }
 
-class PerfilUsuarioItem extends StatelessWidget {
+class ItemListView extends StatelessWidget {
   final UsuarioModel usuario;
 
-  PerfilUsuarioItem(this.usuario);
+  ItemListView(this.usuario);
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, "/administracao/perfil",
@@ -51,7 +50,7 @@ class PerfilUsuarioItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: SquareImage(
                     image: NetworkImage(usuario.safeImagemPerfilUrl),
                   )),
@@ -62,11 +61,11 @@ class PerfilUsuarioItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Text("ID: ${usuario.id}"),
                       Text("Nome: ${usuario.nomeProjeto}"),
                       Text("Celular: ${usuario.celular}"),
                       Text("Email: ${usuario.email}"),
-                      Text(
-                          "Eixo: ${usuario.eixoNome != null ? usuario.eixoNome : "nada"}"),
+                      Text("Eixo: ${usuario.eixoNome}"),
                     ],
                   ),
                 ),
