@@ -30,6 +30,8 @@ export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
 export 'package:pmsbmibile3/pages/pergunta/criar_pergunta_tipo_page.dart';
 export 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page.dart';
 export 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/criar_ordenar_escolha.dart';
+export 'package:pmsbmibile3/pages/pergunta/editar_apagar_escolha.dart';
 
 
 

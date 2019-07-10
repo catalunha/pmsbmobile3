@@ -203,6 +203,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   // SELECIONAR ESCOLHA
+                  Navigator.pushNamed(context, "/pergunta/criar_ordenar_escolha"); 
                 }),
           )),
           Padding(padding: EdgeInsets.all(10)),
