@@ -60,6 +60,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            Text("ID: ${snapshot.data.id.substring(0,10)}"),
                             Text("Nome: ${snapshot.data.nomeProjeto}"),
                             Text("Celular: ${snapshot.data.celular}"),
                             Text("Email: ${snapshot.data.email}"),

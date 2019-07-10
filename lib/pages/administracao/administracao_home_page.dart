@@ -61,7 +61,7 @@ class ItemListView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("ID: ${usuario.id}"),
+                      Text("ID: ${usuario.id.substring(0,10)}"),
                       Text("Nome: ${usuario.nomeProjeto}"),
                       Text("Celular: ${usuario.celular}"),
                       Text("Email: ${usuario.email}"),
