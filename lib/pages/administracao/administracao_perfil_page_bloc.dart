@@ -37,6 +37,8 @@ class AdministracaoPerfilPageBloc {
 
   Stream<UsuarioModel> get usuarioModelStream => _usuarioModelController.stream;
 
+  Function get usuarioModelSink => _usuarioModelController.sink.add;
+
   // VariavelUsuarioModel
   final _variavelUsuarioModelController =
       BehaviorSubject<List<VariavelUsuarioModel>>();
@@ -44,6 +46,10 @@ class AdministracaoPerfilPageBloc {
   Stream<List<VariavelUsuarioModel>> get variavelUsuarioModelStream =>
       _variavelUsuarioModelController.stream;
 
+  Function get variavelUsuarioModelSink =>
+      _variavelUsuarioModelController.sink.add;
+
+  //Construtor da classe
   AdministracaoPerfilPageBloc(this._firestore) {
     administracaoPerfilPageEventStream.listen(_mapEventToState);
   }
@@ -58,25 +64,25 @@ class AdministracaoPerfilPageBloc {
     if (event is UpdateUsuarioIdEvent) {
       currentState.usuarioId = event.usuarioId;
       //perfil usuario
-      var userRef = _firestore
+      _firestore
           .collection(UsuarioModel.collection)
-          .document(event.usuarioId);
-      userRef.snapshots().map((snap) {
-        return UsuarioModel().fromMap({"id": snap.documentID, ...snap.data});
-      }).listen((usuario) {
-        _usuarioModelController.sink.add(usuario);
+          .document(event.usuarioId)
+          .snapshots()
+          .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
+          .listen((usuario) {
+        usuarioModelSink(usuario);
       });
 
       //variaveis usuario
-      var variaveisRef = _firestore
+      _firestore
           .collection(VariavelUsuarioModel.collection)
-          .where("userId", isEqualTo: event.usuarioId);
-      variaveisRef.snapshots().map((snapDocs) {
-        return snapDocs.documents
-            .map((doc) => VariavelUsuarioModel.fromMap(doc.data))
-            .toList();
-      }).listen((List<VariavelUsuarioModel> variaveis) {
-        _variavelUsuarioModelController.sink.add(variaveis);
+          .where("userId", isEqualTo: event.usuarioId)
+          .snapshots()
+          .map((snapDocs) => snapDocs.documents
+              .map((doc) => VariavelUsuarioModel.fromMap(doc.data))
+              .toList())
+          .listen((List<VariavelUsuarioModel> variavelUsuarioModelList) {
+        variavelUsuarioModelSink(variavelUsuarioModelList);
       });
     }
   }
