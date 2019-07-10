@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
 
             //administração
             "/administracao/home": (context) => AdministracaoHomePage(),
+//            "/administracao/perfil": (context) => AdministracaoPerfilPage(),
             "/administracao/perfil": (context) => AdministracaoPerfilPage(),
 
             //controle

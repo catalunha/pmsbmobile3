@@ -53,7 +53,8 @@ export 'package:pmsbmibile3/pages/sintese/sintese_home_page.dart';
 
 //administracao
 export 'package:pmsbmibile3/pages/administracao/administracao_home_page.dart';
-export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page.dart';
+//export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page.dart';
+export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page2.dart';
 
 //controle
 export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
