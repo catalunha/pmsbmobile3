@@ -2,10 +2,11 @@ import 'package:validators/validators.dart';
 import 'package:pmsbmibile3/models/base_model.dart';
 
 class UsuarioModel extends FirestoreModel {
+  static final String collection = "Usuario2";
   String nome;
   String celular;
   String email;
-  Foto foto;
+  UsuarioArquivoID usuarioArquivoID;
   List<String> rotas;
   SetorCensitarioID setorCensitarioID;
   CargoID cargoID;
@@ -18,7 +19,7 @@ class UsuarioModel extends FirestoreModel {
       this.nome,
       this.celular,
       this.email,
-      this.foto,
+      this.usuarioArquivoID,
       this.rotas,
       this.setorCensitarioID,
       this.cargoID,
@@ -32,8 +33,10 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('celular')) celular = map['celular'];
     if (map.containsKey('email')) email = map['email'];
-    if (map.containsKey('foto')) {
-      foto = map['foto'] != null ? new Foto.fromMap(map['foto']) : null;
+    if (map.containsKey('usuarioArquivoID')) {
+      usuarioArquivoID = map['UsuarioArquivoID'] != null
+          ? new UsuarioArquivoID.fromMap(map['UsuarioArquivoID'])
+          : null;
     }
     if (map.containsKey('rotas')) rotas = map['rotas'].cast<String>();
     if (map.containsKey('setorCensitarioID')) {
@@ -67,8 +70,8 @@ class UsuarioModel extends FirestoreModel {
     if (nome != null) data['nome'] = this.nome;
     if (celular != null) data['celular'] = this.celular;
     if (email != null) data['email'] = this.email;
-    if (this.foto != null) {
-      data['foto'] = this.foto.toMap();
+    if (this.usuarioArquivoID != null) {
+      data['UsuarioArquivoID'] = this.usuarioArquivoID.toMap();
     }
     if (rotas != null) data['rotas'] = this.rotas;
     if (this.setorCensitarioID != null) {
@@ -90,13 +93,13 @@ class UsuarioModel extends FirestoreModel {
   }
 }
 
-class Foto {
+class UsuarioArquivoID {
   String id;
   String url;
 
-  Foto({this.id, this.url});
+  UsuarioArquivoID({this.id, this.url});
 
-  Foto.fromMap(Map<dynamic, dynamic> map) {
+  UsuarioArquivoID.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('url')) url = map['url'];
   }
@@ -146,7 +149,6 @@ class CargoID {
     return data;
   }
 }
-
 
 class EixoID {
   String id;
