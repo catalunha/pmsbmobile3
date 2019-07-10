@@ -27,13 +27,20 @@ class MyApp extends StatelessWidget {
             //perfil
             "/perfil": (context) => PerfilPage(),
             "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),
-            "/perfil/configuracao":(context)=> ConfiguracaoPage(),
+            "/perfil/configuracao": (context) => ConfiguracaoPage(),
 
-            "/questionario/home":(context) => QuestionarioHomePage(),
-            "/pergunta/home":(context) => PerguntaHomePage(),
-            "/aplicacao/home":(context) => AplicacaoHomePage(),
-            "/resposta/home":(context) => RespostaHomePage(),
-            "/sintese/home":(context) => SinteseHomePage(),
+            "/questionario/home": (context) => QuestionarioHomePage(),
+            "/pergunta/home": (context) => PerguntaHomePage(),
+            "/aplicacao/home": (context) => AplicacaoHomePage(),
+
+            //resposta
+            "/resposta/home": (context) => RespostaHomePage(),
+            "/resposta/questionario_resposta": (context) =>
+                QuestionarioRespostaPage(),
+            "/resposta/resposta_questionario": (context) =>
+                RespostaQuestionarioPage(),
+
+            "/sintese/home": (context) => SinteseHomePage(),
 
             //produto
             "/produto": (context) => ProductPage(),
@@ -49,8 +56,8 @@ class MyApp extends StatelessWidget {
             "/comunicacao/criar_editar": (context) => CommunicationCreateEdit(),
 
             //administração
-            "/administracao/home":(context) => AdministracaoHomePage(),
-            "/administracao/perfil":(context) => AdministracaoPerfilPage(),
+            "/administracao/home": (context) => AdministracaoHomePage(),
+            "/administracao/perfil": (context) => AdministracaoPerfilPage(),
           },
         ),
       ),
