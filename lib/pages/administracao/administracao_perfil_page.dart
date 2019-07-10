@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdministracaoPerfilPage extends StatelessWidget {
   final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
@@ -75,7 +76,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  "Perfil do usuario:",
+                  "Documentos do usuario:",
                   style: TextStyle(fontSize: 16),
                 )),
             Padding(padding: EdgeInsets.all(10)),
@@ -96,18 +97,39 @@ class AdministracaoPerfilPage extends StatelessWidget {
                     }
                     return ListView(
                       children: <Widget>[
+                        // ignore: sdk_version_ui_as_code
                         ...snapshot.data.map((variavel) {
+                          if (variavel.tipo == 'arquivo') {
+                            return Card(
+                                child: InkWell(
+                                    onTap: () {
+                                      launch(variavel.conteudo);
+                                    },
+                                    child: ListTile(
+                                      title: Text(
+                                        "${variavel.nome}:",
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      subtitle: Text(
+//                                        "${variavel.conteudo}",
+                                      "CLIQUE AQUI PARA VER O ARQUIVO",
+                                        style: TextStyle(fontSize: 16,color: Colors.blue),
+                                      ),
+                                    )));
+                          } else {
+
                           return Card(
-                              child: ListTile(
-                            title: Text(
-                              "${variavel.nome}:",
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            subtitle: Text(
-                              "${variavel.conteudo}",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ));
+                            child: ListTile(
+                              title: Text(
+                                ">>${variavel.nome}:",
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              subtitle: Text(
+                                "${variavel.conteudo}",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ));
+                          }
                         }).toList()
                       ],
                     );
