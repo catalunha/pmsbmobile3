@@ -46,7 +46,7 @@ class AdministracaoPerfilPageBloc {
   Stream<List<VariavelUsuarioModel>> get variavelUsuarioModelStream =>
       _variavelUsuarioModelController.stream;
 
-  Function get variavelUsuarioModelSink =>
+  Function get variavelUsuarioModelDispatch =>
       _variavelUsuarioModelController.sink.add;
 
   //Construtor da classe
@@ -82,7 +82,7 @@ class AdministracaoPerfilPageBloc {
               .map((doc) => VariavelUsuarioModel.fromMap(doc.data))
               .toList())
           .listen((List<VariavelUsuarioModel> variavelUsuarioModelList) {
-        variavelUsuarioModelSink(variavelUsuarioModelList);
+        variavelUsuarioModelDispatch(variavelUsuarioModelList);
       });
     }
   }
