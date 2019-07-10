@@ -63,7 +63,7 @@ class _RespostaHomePageState extends State<RespostaHomePage> {
     return DefaultScaffold(
       backgroundColor: Colors.red,
       body: _body(context),
-      title: Text("Áreas com resposta"),
+      title: Text("Setores com resposta"),
     );
   }
 }
