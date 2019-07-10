@@ -75,7 +75,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  "Perfil do usuario:",
+                  "Documentos do usuario:",
                   style: TextStyle(fontSize: 16),
                 )),
             Padding(padding: EdgeInsets.all(10)),
