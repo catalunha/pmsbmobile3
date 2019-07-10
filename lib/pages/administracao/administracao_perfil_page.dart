@@ -12,7 +12,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var usuarioId = ModalRoute.of(context).settings.arguments;
     if (usuarioId != null) {
-      bloc.dispatch(UpdateUsuarioIdEvent(usuarioId));
+      bloc.administracaoPerfilPageEventSink(UpdateUsuarioIdEvent(usuarioId));
     }
     return Scaffold(
       appBar: AppBar(

@@ -18,22 +18,34 @@ class AdministracaoPerfilPageState {
 class AdministracaoPerfilPageBloc {
   final fw.Firestore _firestore;
 
+  // Estados da Página
+  final AdministracaoPerfilPageState currentState =
+      AdministracaoPerfilPageState();
 
-  final AdministracaoPerfilPageState currentState = AdministracaoPerfilPageState();
+  // Eventos da Página
+  final _administracaoPerfilPageEventController =
+      BehaviorSubject<AdministracaoPerfilPageEvent>();
 
-  final _administracaoPerfilPageEventController = BehaviorSubject<AdministracaoPerfilPageEvent>();
-  Stream<AdministracaoPerfilPageEvent> get input => _administracaoPerfilPageEventController.stream;
-  Function get dispatch => _administracaoPerfilPageEventController.sink.add;
+  Stream<AdministracaoPerfilPageEvent> get administracaoPerfilPageEventStream =>
+      _administracaoPerfilPageEventController.stream;
 
+  Function get administracaoPerfilPageEventSink =>
+      _administracaoPerfilPageEventController.sink.add;
+
+  // UsuarioModel
   final _usuarioModelController = BehaviorSubject<UsuarioModel>();
+
   Stream<UsuarioModel> get usuarioModelStream => _usuarioModelController.stream;
 
-  final _variavelUsuarioModelController = BehaviorSubject<List<VariavelUsuarioModel>>();
+  // VariavelUsuarioModel
+  final _variavelUsuarioModelController =
+      BehaviorSubject<List<VariavelUsuarioModel>>();
+
   Stream<List<VariavelUsuarioModel>> get variavelUsuarioModelStream =>
       _variavelUsuarioModelController.stream;
 
   AdministracaoPerfilPageBloc(this._firestore) {
-    input.listen(_mapEventToState);
+    administracaoPerfilPageEventStream.listen(_mapEventToState);
   }
 
   void dispose() {
@@ -50,8 +62,7 @@ class AdministracaoPerfilPageBloc {
           .collection(UsuarioModel.collection)
           .document(event.usuarioId);
       userRef.snapshots().map((snap) {
-        return UsuarioModel().fromMap(
-            {"id": snap.documentID, ...snap.data});
+        return UsuarioModel().fromMap({"id": snap.documentID, ...snap.data});
       }).listen((usuario) {
         _usuarioModelController.sink.add(usuario);
       });
