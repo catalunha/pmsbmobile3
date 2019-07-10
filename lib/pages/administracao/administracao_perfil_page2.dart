@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
+
 //import 'administracao_perfil_page_bloc.dart';
 import 'administracao_perfil_page_bloc2.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -85,9 +86,8 @@ class AdministracaoPerfilPage extends StatelessWidget {
             Expanded(
               flex: 6,
               child: StreamBuilder<List<UsuarioPerfil>>(
-                  stream: bloc.variavelUsuarioModelStream,
+                  stream: bloc.usuarioPerfilModelStream,
                   builder: (context, snapshot) {
-                    print(snapshot.toString());
                     if (snapshot.hasError) {
                       return Center(
                         child: Text("Erro"),
@@ -102,7 +102,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                       children: <Widget>[
                         // ignore: sdk_version_ui_as_code
                         ...snapshot.data.map((variavel) {
-                          if (variavel.perfil.tipo == 'arquivo') {
+                          if (variavel.perfilID.contentType != 'text/plain') {
                             return Card(
                                 child: InkWell(
                                     onTap: () {
@@ -110,21 +110,20 @@ class AdministracaoPerfilPage extends StatelessWidget {
                                     },
                                     child: ListTile(
                                       title: Text(
-                                        "${variavel.perfil.nome}:",
+                                        "${variavel.perfilID.nome}:",
                                         style: TextStyle(fontSize: 14),
                                       ),
                                       subtitle: Text(
 //                                        "${variavel.conteudo}",
-                                      "CLIQUE AQUI PARA VER O ARQUIVO",
-                                        style: TextStyle(fontSize: 16,color: Colors.blue),
+                                        "CLIQUE AQUI PARA VER O ARQUIVO",
+                                        style: TextStyle(fontSize: 16, color: Colors.blue),
                                       ),
                                     )));
                           } else {
-
-                          return Card(
-                            child: ListTile(
+                            return Card(
+                                child: ListTile(
                               title: Text(
-                                ">>${variavel.perfil.nome}:",
+                                ">>${variavel.perfilID.nome}:",
                                 style: TextStyle(fontSize: 14),
                               ),
                               subtitle: Text(

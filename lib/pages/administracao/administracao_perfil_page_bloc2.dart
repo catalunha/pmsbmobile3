@@ -20,15 +20,18 @@ class AdministracaoPerfilPageBloc {
   final fw.Firestore _firestore;
 
   // Estados da Página
-  final AdministracaoPerfilPageState currentState = AdministracaoPerfilPageState();
+  final AdministracaoPerfilPageState currentState =
+      AdministracaoPerfilPageState();
 
   // Eventos da Página
-  final _administracaoPerfilPageEventController = BehaviorSubject<AdministracaoPerfilPageEvent>();
+  final _administracaoPerfilPageEventController =
+      BehaviorSubject<AdministracaoPerfilPageEvent>();
 
   Stream<AdministracaoPerfilPageEvent> get administracaoPerfilPageEventStream =>
       _administracaoPerfilPageEventController.stream;
 
-  Function get administracaoPerfilPageEventSink => _administracaoPerfilPageEventController.sink.add;
+  Function get administracaoPerfilPageEventSink =>
+      _administracaoPerfilPageEventController.sink.add;
 
   // UsuarioModel
   final _usuarioModelController = BehaviorSubject<UsuarioModel>();
@@ -38,11 +41,14 @@ class AdministracaoPerfilPageBloc {
   Function get usuarioModelSink => _usuarioModelController.sink.add;
 
   // UsuarioPerfil
-  final _variavelUsuarioModelController = BehaviorSubject<List<UsuarioPerfil>>();
+  final _usuarioPerfilModelController =
+      BehaviorSubject<List<UsuarioPerfil>>();
 
-  Stream<List<UsuarioPerfil>> get variavelUsuarioModelStream => _variavelUsuarioModelController.stream;
+  Stream<List<UsuarioPerfil>> get usuarioPerfilModelStream =>
+      _usuarioPerfilModelController.stream;
 
-  Function get variavelUsuarioModelDispatch => _variavelUsuarioModelController.sink.add;
+  Function get usuarioPerfilModelSink =>
+      _usuarioPerfilModelController.sink.add;
 
   //Construtor da classe
   AdministracaoPerfilPageBloc(this._firestore) {
@@ -52,91 +58,34 @@ class AdministracaoPerfilPageBloc {
   void dispose() {
     _usuarioModelController.close();
     _administracaoPerfilPageEventController.close();
-    _variavelUsuarioModelController.close();
+    _usuarioPerfilModelController.close();
   }
 
   void _mapEventToState(AdministracaoPerfilPageEvent event) {
     if (event is UpdateUsuarioIdEvent) {
+      // Atualizar State with Event
       currentState.usuarioId = event.usuarioId;
-      //perfil usuario
-      print('>>>>>> iniciando leitura de Usuario');
-      print('event.usuarioId: ${event.usuarioId}');
+      //Usar State UsuarioModel
       _firestore
           .collection(UsuarioModel.collection)
-          .document(event.usuarioId)
+          .document(currentState.usuarioId)
           .snapshots()
           .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
           .listen((usuario) {
         usuarioModelSink(usuario);
       });
 
-      print('>>>>>> iniciando leitura de UsuarioPerfil');
-//
-//      _firestore
-//          .collection(UsuarioPerfil.collection)
-//          .document('fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2_K3gvgZG2rYdjJdRCpv7K')
-//          .get()
-//          .then((doc) {
-//        if (doc.exists) {
-//          print('>>> Doc UsuarioPerfil Existe');
-//        } else {
-//          print('>>> Doc UsuarioPerfil NAO-Existe');
-//        }
-//      });
-//
-//      _firestore
-//          .collection(UsuarioPerfil.collection)
-//          .where("userId", isEqualTo: event.usuarioId)
-//          .snapshots()
-//          .map((snapDocs) => snapDocs.documents)
-//          .map((doc) {
-//        print(doc.toString());
-//      });
-
-      //variaveis usuario
-//      _firestore
-//        .collection(UsuarioPerfil.collection)
-//        .document('fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2_K3gvgZG2rYdjJdRCpv7K')
-//        .snapshots()
-//        .map((snap) => UsuarioPerfil(id: snap.documentID).fromMap(snap.data))
-//        .listen((usuarioperfil) {
-//        print(usuarioperfil.toString());
-//      });
-
-//      final dados = _firestore
-//          .collection(UsuarioPerfil.collection);
-//      dados.
-//        .document('fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2_K3gvgZG2rYdjJdRCpv7K').snapshots().map((doc)=>print(doc.data['conteudo']));
-//      print('dados.documentID: ${dados.documentID}');
-
-//          .where("usuario", isEqualTo: event.usuarioId)
-//          .snapshots()
-//          .map((dados) {
-//        return print('>>>>');
-//      });
-//      print(dados.snapshots().toString());
-
-//          .snapshots()
-//          .map((snapDocs) => snapDocs.documents
-//              .map((doc) => UsuarioPerfil(id:doc.documentID).fromMap(doc.data))
-//              .toList())
-//          .listen((List<UsuarioPerfil> variavelUsuarioModelList) {
-//        variavelUsuarioModelDispatch(variavelUsuarioModelList);
-//      });
-
-      //versao dev alterada para UsuarioPerfil
-      //variaveis usuario
+      //Usar State UsuarioPerfil
       _firestore
-        .collection(UsuarioPerfil.collection)
-        .where("usuario", isEqualTo: event.usuarioId)
-        .snapshots()
-        .map((snapDocs) => snapDocs.documents
-        .map((doc) => UsuarioPerfil(id: doc.documentID).fromMap(doc.data))
-        .toList())
-        .listen((List<UsuarioPerfil> variavelUsuarioModelList) {
-        variavelUsuarioModelDispatch(variavelUsuarioModelList);
+          .collection(UsuarioPerfil.collection)
+          .where("usuarioID", isEqualTo: currentState.usuarioId)
+          .snapshots()
+          .map((snapDocs) => snapDocs.documents
+              .map((doc) => UsuarioPerfil(id: doc.documentID).fromMap(doc.data))
+              .toList())
+          .listen((List<UsuarioPerfil> usuarioPerfilModelList) {
+        usuarioPerfilModelSink(usuarioPerfilModelList);
       });
-
     }
   }
 }
