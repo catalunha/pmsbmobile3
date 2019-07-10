@@ -65,6 +65,7 @@ class UsuarioModel extends FirestoreModel {
     return this;
   }
 
+  @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (nome != null) data['nome'] = this.nome;
