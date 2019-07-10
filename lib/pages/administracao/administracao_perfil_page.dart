@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
-
-//import 'administracao_perfil_page_bloc.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:url_launcher/url_launcher.dart';
