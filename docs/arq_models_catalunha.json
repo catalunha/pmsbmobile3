@@ -9,7 +9,7 @@
     "nome": "nome-valor"
   },
   "Usuario": {
-    "_comment": "mesmo ID do userID do authentication(email/senha)",
+    "ID": "mesmo ID do userID do authentication(email/senha)",
     "nome": "nome-valor",
     "celular": "celular-valor",
     "email": "email-valor",
@@ -19,28 +19,24 @@
     ],
     "setorCensitario": {
       "setorCensitarioID": "SetorCensitarioID",
-      "nome": "SetorCensitario_nome"
+      "nome": "SetorCensitarioID$nome"
     },
     "cargo": {
       "cargoID": "CargoID",
-      "nome": "Cargo_nome"
+      "nome": "CargoID$nome"
     },
     "eixoAtual": {
       "eixoID": "EixoID",
-      "nome": "Eixo_nome"
+      "nome": "EixoID$nome"
     },
     "eixo": {
       "eixoID": "EixoID",
-      "nome": "Eixo_nome"
+      "nome": "EixoID$nome"
     },
     "eixos": [
       {
-        "eixoID": "EixoID -> RS",
-        "nome": "nome-valor"
-      },
-      {
-        "eixoID": "EixoID -> AA",
-        "nome": "nome-valor"
+        "eixoID": "EixoID",
+        "nome": "EixoID$nome"
       }
     ]
   },
@@ -50,19 +46,18 @@
     "editor": "UsuarioID",
     "distribuida": false,
     "datapublicacao": "2019-01-01 00:00:00",
-    "_comment": "UI listar: todos(),eixo[x],cargos[],usuario{xx}",
     "destinatarios": [
       "UsuarioID"
     ]
   },
   "UsuarioNoticia": {
-    "_comment": "ID formado por: Usuario__Noticia ? ",
+    "ID": "ID formado por: Usuario__Noticia",
     "usuario": "UsuarioID",
     "noticia": "NoticiaID",
     "visualizada": false
   },
   "UsuarioInformacao": {
-    "_comment": "ID formado por: Usuario__Informacao ? ",
+    "ID": "ID formado por: Usuario__Informacao",
     "usuario": "UsuarioID",
     "informacao": {
       "informacaoID": "InformacaoID",
@@ -83,40 +78,38 @@
   },
   "PerguntaTipo": {
     "ID": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla",
-    "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla",
+    "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla"
   },
   "Questionario": {
     "nome": "nome-valor",
     "eixo": {
       "id": "EixoID",
-      "nome": "Eixo_nome"
+      "nome": "EixoID$nome"
     },
     "editou": {
       "id": "UsuarioID",
-      "nome": "Usuario_nome"
+      "nome": "UsuarioID$nome"
     },
     "modificado": "data-valor",
     "editando": false
   },
   "Pergunta": {
     "questionario": {
-      "questionarioID": "Questionario/questionarioID",
-      "nome": "Questionario/questionarioID$nome"
+      "questionarioID": "QuestionarioID",
+      "nome": "QuestionarioID$nome"
     },
     "ordem": 0,
     "perguntaTipo": {
       "perguntaTipoID": "PerguntaTipoID",
-      "nome": "PerguntaTipo_nome",
-      "referencia": "PerguntaTipo_referencia"
+      "nome": "PerguntaTipoID$nome",
     },
     "titulo": "titulo-valor",
     "textoMarkdown": "texto-valor",
     "requisito": [
       {
         "requisitoUid": "uid-valor",
-        "questionario": "QuestionarioID",
         "pergunta": "PerguntaID",
-        "escolha": "Pergunta/escolhaID$escolha_escolhaUid"
+        "escolha": "PerguntaID$escolha#escolhaUid"
       }
     ],
     "escolha": [
@@ -128,7 +121,7 @@
     ]
   },
   "QuestionarioAplicado": {
-    "questionarioID": "Questionario/questionarioID",
+    "questionarioID": "QuestionarioID",
     "nome": "nome-valor",
     "eixo": {
       "id": "EixoID",
@@ -150,8 +143,8 @@
     "referencia": "Local ou Pessoa ou Momento da aplicação."
   },
   "Resposta": {
-    "questionarioAplicadoID": {
-      "questionarioAplicadoID": "QuestionarioAplicadoID",
+    "questionarioD": {
+      "questionarioID": "QuestionarioAplicadoID",
       "nome": "QuestionarioAplicadoID$nome",
       "referencia": "QuestionarioAplicadoID$referencia"
     },
@@ -163,10 +156,8 @@
     "requisito": [
       {
         "requisitoUid": "uid-valor",
-        "questionarioID": "QuestionarioID. Sai e fica apenas o questionarioAplicado",
-        "questionarioAplicadoID": "QuestionarioAplicadoID",
         "pergunta": "PerguntaID",
-        "escolha": "Pergunta/escolhaID$escolha#escolhaUid"
+        "escolha": "PerguntaID$escolha#escolhaUid"
       }
     ],
     "Escolha": [
