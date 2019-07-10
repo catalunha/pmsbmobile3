@@ -21,21 +21,21 @@
       "setorCensitarioID": "SetorCensitarioID",
       "nome": "SetorCensitarioID$nome"
     },
-    "cargo": {
-      "cargoID": "CargoID",
+    "cargoID": {
+      "id": "CargoID",
       "nome": "CargoID$nome"
     },
-    "eixoAtual": {
-      "eixoID": "EixoID",
+    "eixoIDAtual": {
+      "id": "EixoID",
       "nome": "EixoID$nome"
     },
-    "eixo": {
-      "eixoID": "EixoID",
+    "eixoID": {
+      "id": "EixoID",
       "nome": "EixoID$nome"
     },
-    "eixos": [
+    "eixoIDPossiveis": [
       {
-        "eixoID": "EixoID",
+        "id": "EixoID",
         "nome": "EixoID$nome"
       }
     ]
@@ -58,7 +58,7 @@
   },
   "UsuarioPerfil": {
     "ID": "ID formado por: UsuarioID_PerfilID",
-    "usuario": "UsuarioID",
+    "usuarioID": "UsuarioID",
     "perfilID": {
       "id": "PerfilID",
       "nome": "nome-valor",
@@ -67,8 +67,9 @@
     "conteudo": "Alfanumerico. Se arquivo id para UsuarioArquivo."
   },
   "UsuarioArquivo": {
+    "_comment": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basico_sobre_HTTP/MIME_types/Complete_list_of_MIME_types",
     "usuario": "UsuarioID",
-    "contentType": "contentType-valor",
+    "contentType": "text/plain | application/pdf | image/png | image/svg+xml | image/jpeg | application/msword | text/csv | text/html | application/json ",
     "storagePath": "storagePath-valor",
     "url": "url-valor"
   },
@@ -82,11 +83,11 @@
   },
   "Questionario": {
     "nome": "nome-valor",
-    "eixo": {
+    "eixoID": {
       "id": "EixoID",
       "nome": "EixoID$nome"
     },
-    "editou": {
+    "UsuarioID": {
       "id": "UsuarioID",
       "nome": "UsuarioID$nome"
     },
@@ -94,13 +95,13 @@
     "editando": false
   },
   "Pergunta": {
-    "questionario": {
-      "questionarioID": "QuestionarioID",
+    "questionarioID": {
+      "id": "QuestionarioID",
       "nome": "QuestionarioID$nome"
     },
     "ordem": 0,
-    "perguntaTipo": {
-      "perguntaTipoID": "PerguntaTipoID",
+    "perguntaTipoID": {
+      "id": "PerguntaTipoID",
       "nome": "PerguntaTipoID$nome",
     },
     "titulo": "titulo-valor",
@@ -123,28 +124,28 @@
   "QuestionarioAplicado": {
     "questionarioID": "QuestionarioID",
     "nome": "nome-valor",
-    "eixo": {
+    "eixoID": {
       "id": "EixoID",
       "nome": "Eixo_nome"
     },
-    "editor": {
+    "usuarioID": {
       "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
     "datamodificacao": "data-valor",
-    "aplicador": {
+    "usuarioIDAplicador": {
       "id": "UsuarioID",
       "nome": "Usuario_nome"
     },
-    "setorCensitario": {
+    "setorCensitarioID": {
       "id": "SetorCensitarioID",
       "nome": "SetorCensitario_nome"
     },
     "referencia": "Local ou Pessoa ou Momento da aplicação."
   },
   "Resposta": {
-    "questionarioD": {
-      "questionarioID": "QuestionarioAplicadoID",
+    "questionarioAplicadoID": {
+      "id": "QuestionarioAplicadoID",
       "nome": "QuestionarioAplicadoID$nome",
       "referencia": "QuestionarioAplicadoID$referencia"
     },
@@ -205,17 +206,17 @@
     },
     "Produto": {
       "nome": "nome-valor",
-      "eixo": {
+      "eixoID": {
         "id": "EixoID",
         "nome": "Eixo_nome"
       },
-      "editor": {
+      "UsuarioID": {
         "id": "UsuarioID",
         "nome": "Usuario_nome"
       },
       "datamodificacao": "data-valor",
       "editando": false,
-      "setorCensitario": {
+      "setorCensitarioID": {
         "id": "SetorCensitarioID",
         "nome": "SetorCensitario_nome"
       },
