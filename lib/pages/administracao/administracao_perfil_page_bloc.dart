@@ -21,25 +21,25 @@ class AdministracaoPerfilPageBloc {
 
   final AdministracaoPerfilPageState currentState = AdministracaoPerfilPageState();
 
-  final _inputController = BehaviorSubject<AdministracaoPerfilPageEvent>();
-  Stream<AdministracaoPerfilPageEvent> get input => _inputController.stream;
-  Function get dispatch => _inputController.sink.add;
+  final _administracaoPerfilPageEventController = BehaviorSubject<AdministracaoPerfilPageEvent>();
+  Stream<AdministracaoPerfilPageEvent> get input => _administracaoPerfilPageEventController.stream;
+  Function get dispatch => _administracaoPerfilPageEventController.sink.add;
 
-  final _perfilController = BehaviorSubject<UsuarioModel>();
-  Stream<UsuarioModel> get perfil => _perfilController.stream;
+  final _usuarioModelController = BehaviorSubject<UsuarioModel>();
+  Stream<UsuarioModel> get usuarioModelStream => _usuarioModelController.stream;
 
-  final _variaveisController = BehaviorSubject<List<VariavelUsuarioModel>>();
-  Stream<List<VariavelUsuarioModel>> get variaveis =>
-      _variaveisController.stream;
+  final _variavelUsuarioModelController = BehaviorSubject<List<VariavelUsuarioModel>>();
+  Stream<List<VariavelUsuarioModel>> get variavelUsuarioModelStream =>
+      _variavelUsuarioModelController.stream;
 
   AdministracaoPerfilPageBloc(this._firestore) {
     input.listen(_mapEventToState);
   }
 
   void dispose() {
-    _perfilController.close();
-    _inputController.close();
-    _variaveisController.close();
+    _usuarioModelController.close();
+    _administracaoPerfilPageEventController.close();
+    _variavelUsuarioModelController.close();
   }
 
   void _mapEventToState(AdministracaoPerfilPageEvent event) {
@@ -53,7 +53,7 @@ class AdministracaoPerfilPageBloc {
         return UsuarioModel().fromMap(
             {"id": snap.documentID, ...snap.data});
       }).listen((usuario) {
-        _perfilController.sink.add(usuario);
+        _usuarioModelController.sink.add(usuario);
       });
 
       //variaveis usuario
@@ -65,7 +65,7 @@ class AdministracaoPerfilPageBloc {
             .map((doc) => VariavelUsuarioModel.fromMap(doc.data))
             .toList();
       }).listen((List<VariavelUsuarioModel> variaveis) {
-        _variaveisController.sink.add(variaveis);
+        _variavelUsuarioModelController.sink.add(variaveis);
       });
     }
   }

@@ -29,7 +29,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
 
   Widget _body() {
     return StreamBuilder<UsuarioModel>(
-        stream: bloc.perfil,
+        stream: bloc.usuarioModelStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -78,7 +78,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     )),
                 StreamBuilder<List<VariavelUsuarioModel>>(
-                    stream: bloc.variaveis,
+                    stream: bloc.variavelUsuarioModelStream,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Center(
