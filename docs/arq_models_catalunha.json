@@ -8,17 +8,24 @@
   "SetorCensitario": {
     "nome": "nome-valor"
   },
+  "Rota": {
+    "url": "nome-valor"
+  },
   "Usuario": {
     "ID": "mesmo ID do userID do authentication(email/senha)",
     "nome": "nome-valor",
     "celular": "celular-valor",
     "email": "email-valor",
+    "ativo":true,
     "usuarioArquivoID": {
       "id": "UsuarioArquivoID",
       "url": "url-valor"
     },
-    "rotas": [
-      "rotas-valor01"
+    "rotaID": [
+      {
+        "id": "rotaID",
+        "url": "rotaID$url"
+      }
     ],
     "setorCensitarioID": {
       "id": "SetorCensitarioID",

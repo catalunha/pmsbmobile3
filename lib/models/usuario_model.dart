@@ -6,8 +6,9 @@ class UsuarioModel extends FirestoreModel {
   String nome;
   String celular;
   String email;
+  bool ativo;
   UsuarioArquivoID usuarioArquivoID;
-  List<String> rotas;
+  List<RotaID> rotaID;
   SetorCensitarioID setorCensitarioID;
   CargoID cargoID;
   EixoID eixoIDAtual;
@@ -19,8 +20,9 @@ class UsuarioModel extends FirestoreModel {
       this.nome,
       this.celular,
       this.email,
+      this.ativo,
       this.usuarioArquivoID,
-      this.rotas,
+      this.rotaID,
       this.setorCensitarioID,
       this.cargoID,
       this.eixoIDAtual,
@@ -33,12 +35,18 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('celular')) celular = map['celular'];
     if (map.containsKey('email')) email = map['email'];
+    if (map.containsKey('ativo')) ativo = map['ativo'];
     if (map.containsKey('usuarioArquivoID')) {
       usuarioArquivoID = map['usuarioArquivoID'] != null
           ? new UsuarioArquivoID.fromMap(map['usuarioArquivoID'])
           : null;
     }
-    if (map.containsKey('rotas')) rotas = map['rotas']?.cast<String>();
+    if (map.containsKey('rotaID') && (map['rotaID'] != null)) {
+      rotaID = new List<RotaID>();
+      map['rotaID'].forEach((v) {
+        rotaID.add(new RotaID.fromMap(v));
+      });
+    }
     if (map.containsKey('setorCensitarioID')) {
       setorCensitarioID = map['setorCensitarioID'] != null
           ? new SetorCensitarioID.fromMap(map['setorCensitarioID'])
@@ -71,10 +79,13 @@ class UsuarioModel extends FirestoreModel {
     if (nome != null) data['nome'] = this.nome;
     if (celular != null) data['celular'] = this.celular;
     if (email != null) data['email'] = this.email;
+    if (ativo != null) data['ativo'] = this.ativo;
     if (this.usuarioArquivoID != null) {
       data['usuarioArquivoID'] = this.usuarioArquivoID.toMap();
     }
-    if (rotas != null) data['rotas'] = this.rotas;
+    if (this.rotaID != null) {
+      data['rotaID'] = this.rotaID.map((v) => v.toMap()).toList();
+    }
     if (this.setorCensitarioID != null) {
       data['setorCensitarioID'] = this.setorCensitarioID.toMap();
     }
@@ -101,6 +112,25 @@ class UsuarioArquivoID {
   UsuarioArquivoID({this.id, this.url});
 
   UsuarioArquivoID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('url')) url = map['url'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (url != null) data['url'] = this.url;
+    return data;
+  }
+}
+
+class RotaID {
+  String id;
+  String url;
+
+  RotaID({this.id, this.url});
+
+  RotaID.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('url')) url = map['url'];
   }

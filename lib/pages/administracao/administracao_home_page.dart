@@ -23,7 +23,7 @@ class AdministracaoHomePage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
-                  child: Text("Erro"),
+                  child: Text("Erro. Na leitura de usuarios."),
                 );
               }
               if (!snapshot.hasData) {
