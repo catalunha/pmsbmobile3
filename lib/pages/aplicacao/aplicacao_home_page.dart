@@ -1,16 +1,142 @@
 import 'package:flutter/material.dart';
 
-class AplicacaoHomePage extends StatelessWidget{
+class AplicacaoHomePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+  _AplicacaoHomePageState createState() => _AplicacaoHomePageState();
+}
+
+class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
+  List<String> _questionarioaplicado = [
+    "Questionário 01",
+    "Questionário 02",
+    "Questionário 03",
+    "Questionário 04"
+  ];
+
+  String _eixo = "eixo exemplo";
+  String _setor = "setor exemplo";
+
+  _cardText(String text) {
+    return Padding(
+        padding: EdgeInsets.only(top: 10, left: 5),
         child: Text(
-          "Aplicações Home",
-          style: Theme.of(context).textTheme.display1,
+          text,
+          style: TextStyle(fontSize: 15),
+        ));
+  }
+
+  _cardQuestionarioAplicado(index) {
+    return Card(
+        elevation: 10,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _cardText("Questionario: ${_questionarioaplicado[index]}"),
+            _cardText("Local: #local_exemplo"),
+            _cardText("Requisitos: #questionario01 => #local"),
+            ButtonTheme.bar(
+              child: ButtonBar(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.record_voice_over),
+                    onPressed: () {
+                      //
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.person_add),
+                    onPressed: () {
+                      //
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      // Abrir questionário
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+
+  _listaQuestionarioAplicado() {
+    return Builder(
+        builder: (BuildContext context) => new Container(
+              child: _questionarioaplicado.length >= 0
+                  ? new ListView.separated(
+                      itemCount: _questionarioaplicado.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _cardQuestionarioAplicado(index);
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          new Divider(),
+                    )
+                  : new Container(),
+            ));
+  }
+
+  _bodyTodos() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Text(
+            "Eixo : $_eixo",
+            style: TextStyle(fontSize: 16, color: Colors.blue),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Text(
+            "Setor censitário: $_setor",
+            style: TextStyle(fontSize: 16, color: Colors.blue),
+          ),
+        ),
+        Expanded(child: _listaQuestionarioAplicado())
+      ],
+    );
+  }
+
+  _bodyArvore() {
+    return Container(
+      child: Center(
+        child: Text(
+          "Em construção",
+          style: TextStyle(fontSize: 20),
         ),
       ),
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: "Todos"),
+              Tab(text: "Arvore"),
+            ],
+          ),
+          title: Text('Aplicando questionario'),
+        ),
+        body: TabBarView(
+          children: [
+            _bodyTodos(),
+            _bodyArvore(),
+          ],
+        ),
+      ),
+    );
+  }
 }
