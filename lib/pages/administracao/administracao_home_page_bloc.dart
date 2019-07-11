@@ -13,6 +13,7 @@ class AdministracaoHomePageBloc {
   AdministracaoHomePageBloc(this._firestore) {
     _firestore
         .collection(UsuarioModel.collection)
+        .where("ativo", isEqualTo: true)
         .snapshots()
         .map((listaPerfil) => listaPerfil.documents
             .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
