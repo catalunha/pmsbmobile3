@@ -46,7 +46,13 @@ class MyApp extends StatelessWidget {
 
             //home
             "/aplicacao/home": (context) => AplicacaoHomePage(),
+
+            //resposta
             "/resposta/home": (context) => RespostaHomePage(),
+            "/resposta/resposta_questionario": (context) => RespostaQuestionarioPage(),
+            "/resposta/questionario_resposta": (context) => QuestionarioRespostaPage(),
+
+            //sintese
             "/sintese/home": (context) => SinteseHomePage(),
 
             //produto
