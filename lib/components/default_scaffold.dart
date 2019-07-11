@@ -130,6 +130,7 @@ class DefaultDrawer extends StatelessWidget {
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Síntese'),
+              trailing: Icon(Icons.equalizer),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/sintese/home');
@@ -138,6 +139,7 @@ class DefaultDrawer extends StatelessWidget {
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Produto'),
+              trailing: Icon(Icons.chrome_reader_mode),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/produto');
@@ -146,6 +148,7 @@ class DefaultDrawer extends StatelessWidget {
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Comunicação'),
+              trailing: Icon(Icons.contact_mail),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/comunicacao');
@@ -154,6 +157,7 @@ class DefaultDrawer extends StatelessWidget {
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Administração'),
+                trailing: Icon(Icons.business_center),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/administracao/home');
@@ -162,6 +166,7 @@ class DefaultDrawer extends StatelessWidget {
             Divider(color: Colors.black45,),
         ListTile(
           title: Text('Controle'),
+          trailing: Icon(Icons.control_point),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushNamed(context, '/controle/home');
