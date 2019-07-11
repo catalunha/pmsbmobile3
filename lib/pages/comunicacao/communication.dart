@@ -3,7 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-import 'package:pmsbmibile3/pages/comunicacao/communication_create_edit.dart';
+// import 'package:pmsbmibile3/pages/comunicacao/communication_create_edit.dart';
 import 'package:provider/provider.dart';
 
 import 'communication_bloc.dart';
