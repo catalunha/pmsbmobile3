@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-
-//import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/models/usuario_model2.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'administracao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 
@@ -22,16 +20,6 @@ class AdministracaoHomePage extends StatelessWidget {
             stream: bloc.usuarioModelListStream,
             initialData: [],
             builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Erro"),
-                );
-              }
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
               return ListView(
                 children: snapshot.data
                     .map((usuario) => ItemListView(usuario))
@@ -64,7 +52,7 @@ class ItemListView extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: SquareImage(
-                    image: NetworkImage(usuario.usuarioArquivoID.url),
+                    image: NetworkImage(usuario.safeImagemPerfilUrl),
                   )),
               Expanded(
                 flex: 5,
@@ -73,11 +61,11 @@ class ItemListView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("ID: ${usuario.id.substring(0, 5)}"),
-                      Text("Nome: ${usuario.nome}"),
+                      Text("ID: ${usuario.id.substring(0,10)}"),
+                      Text("Nome: ${usuario.nomeProjeto}"),
                       Text("Celular: ${usuario.celular}"),
                       Text("Email: ${usuario.email}"),
-                      Text("Eixo: ${usuario.eixoIDAtual.nome}"),
+                      Text("Eixo: ${usuario.eixoNome}"),
                     ],
                   ),
                 ),
