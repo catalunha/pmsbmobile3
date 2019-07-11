@@ -1,20 +1,19 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 
-/// id da rota representa a rota do app
-/// exemplo: /administracao/home
-class RotaModel extends FirestoreModel{
-  static final String collection = "Rota";
-  RotaModel(String id):super(id);
+class Rota extends FirestoreModel {
+  static final String collection = "Eixo";
+  String url;
 
-  @override
-  Map<String, dynamic> toMap() {
-    return {"id":this.id};
+  Rota({String id, this.url}) : super(id);
+
+  Rota fromMap(Map<String, dynamic> map) {
+    if (map.containsKey('url')) url = map['url'];
+    return this;
   }
 
-  @override
-  RotaModel fromMap(Map<String, dynamic> map) {
-    assert(map['id'] != null);
-    id = map['id'];
-    return this;
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (url != null) data['url'] = this.url;
+    return data;
   }
 }
