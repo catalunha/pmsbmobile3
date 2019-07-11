@@ -34,11 +34,11 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('celular')) celular = map['celular'];
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('usuarioArquivoID')) {
-      usuarioArquivoID = map['UsuarioArquivoID'] != null
-          ? new UsuarioArquivoID.fromMap(map['UsuarioArquivoID'])
+      usuarioArquivoID = map['usuarioArquivoID'] != null
+          ? new UsuarioArquivoID.fromMap(map['usuarioArquivoID'])
           : null;
     }
-    if (map.containsKey('rotas')) rotas = map['rotas'].cast<String>();
+    if (map.containsKey('rotas')) rotas = map['rotas']?.cast<String>();
     if (map.containsKey('setorCensitarioID')) {
       setorCensitarioID = map['setorCensitarioID'] != null
           ? new SetorCensitarioID.fromMap(map['setorCensitarioID'])
@@ -72,7 +72,7 @@ class UsuarioModel extends FirestoreModel {
     if (celular != null) data['celular'] = this.celular;
     if (email != null) data['email'] = this.email;
     if (this.usuarioArquivoID != null) {
-      data['UsuarioArquivoID'] = this.usuarioArquivoID.toMap();
+      data['usuarioArquivoID'] = this.usuarioArquivoID.toMap();
     }
     if (rotas != null) data['rotas'] = this.rotas;
     if (this.setorCensitarioID != null) {

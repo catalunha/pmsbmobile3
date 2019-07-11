@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
+
 //import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model2.dart';
 import 'administracao_home_page_bloc.dart';
@@ -72,7 +73,7 @@ class ItemListView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("ID: ${usuario.id.substring(0,5)}"),
+                      Text("ID: ${usuario.id.substring(0, 5)}"),
                       Text("Nome: ${usuario.nome}"),
                       Text("Celular: ${usuario.celular}"),
                       Text("Email: ${usuario.email}"),
