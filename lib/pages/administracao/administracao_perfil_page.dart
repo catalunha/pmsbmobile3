@@ -53,7 +53,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                   Expanded(
                       flex: 2,
                       child: SquareImage(
-                        image: NetworkImage(snapshot.data.safeImagemPerfilUrl),
+                        image: NetworkImage(snapshot.data.usuarioArquivoID.url),
                       )),
                   Expanded(
                       flex: 5,
@@ -63,10 +63,10 @@ class AdministracaoPerfilPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text("ID: ${snapshot.data.id.substring(0, 10)}"),
-                            Text("Nome: ${snapshot.data.nomeProjeto}"),
+                            Text("Nome: ${snapshot.data.nome}"),
                             Text("Celular: ${snapshot.data.celular}"),
                             Text("Email: ${snapshot.data.email}"),
-                            Text("Eixo: ${snapshot.data.eixoNome}"),
+                            Text("Eixo: ${snapshot.data.eixoIDAtual.nome}"),
                           ],
                         ),
                       ))

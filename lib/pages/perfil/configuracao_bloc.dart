@@ -146,30 +146,30 @@ class ConfiguracaoBloc {
 
   void perfilUpdateConfiguracaoBlocState(UsuarioModel perfil) {
     formState.numeroCelular = perfil.celular;
-    formState.nomeProjeto = perfil.nomeProjeto;
-    formState.imagemPerfilUrl = perfil.imagemPerfilUrl;
-    formState.imagemPerfil = perfil.imagemPerfilId;
-    formState.setorCensitarioNome = perfil.setorCensitarioNome;
-    formState.setorCensitarioId = perfil.setorCensitarioId;
-    formState.eixoAtualId = perfil.eixoAtualId;
-    formState.eixoAtualNome = perfil.eixoAtualNome;
+    formState.nomeProjeto = perfil.nome;
+    formState.imagemPerfilUrl = perfil.usuarioArquivoID.url;
+    formState.imagemPerfil = perfil.usuarioArquivoID.id;
+    formState.setorCensitarioNome = perfil.setorCensitarioID.nome;
+    formState.setorCensitarioId = perfil.setorCensitarioID.id;
+    formState.eixoAtualId = perfil.eixoIDAtual.id;
+    formState.eixoAtualNome = perfil.eixoIDAtual.nome;
     dispatch(ConfiguracaoSaveEvent());
   }
 
   bool processConfiguracaoBlocState(String userId) {
+    UsuarioArquivoID usuarioArquivoID=UsuarioArquivoID(id:formState.imagemPerfil,url: formState.imagemPerfilUrl);
+    SetorCensitarioID setorCensitarioID=SetorCensitarioID(id:formState.setorCensitarioId,nome:formState.setorCensitarioNome);
     _firestore
         .collection(UsuarioModel.collection)
         .document(userId)
         .setData({
       ...UsuarioModel(
         id: userId,
-        nomeProjeto: formState.nomeProjeto,
+        nome: formState.nomeProjeto,
         celular: formState.numeroCelular,
-        imagemPerfilId: formState.imagemPerfil,
-        imagemPerfilUrl: formState.imagemPerfilUrl,
+        usuarioArquivoID: usuarioArquivoID,
         email: formState.email,
-        setorCensitarioId: formState.setorCensitarioId,
-        setorCensitarioNome: formState.setorCensitarioNome,
+        setorCensitarioID: setorCensitarioID,
       ).toMap(),
     }, merge: true);
     return true;

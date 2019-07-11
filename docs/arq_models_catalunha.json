@@ -13,12 +13,15 @@
     "nome": "nome-valor",
     "celular": "celular-valor",
     "email": "email-valor",
-    "foto": "UsuarioArquivoID",
+    "usuarioArquivoID": {
+      "id": "UsuarioArquivoID",
+      "url": "url-valor"
+    },
     "rotas": [
       "rotas-valor01"
     ],
-    "setorCensitario": {
-      "setorCensitarioID": "SetorCensitarioID",
+    "setorCensitarioID": {
+      "id": "SetorCensitarioID",
       "nome": "SetorCensitarioID$nome"
     },
     "cargoID": {
@@ -33,7 +36,7 @@
       "id": "EixoID",
       "nome": "EixoID$nome"
     },
-    "eixoIDPossiveis": [
+    "eixoIDAcesso": [
       {
         "id": "EixoID",
         "nome": "EixoID$nome"
@@ -64,13 +67,18 @@
       "nome": "nome-valor",
       "contentType": "contentType-valor"
     },
-    "conteudo": "Alfanumerico. Se arquivo id para UsuarioArquivo."
+    "alfanumerico": "alfanumerico-valor",
+    "usuarioArquivoID": {
+      "id": "UsuarioArquivoID",
+      "url": "url-valor"
+    }
   },
   "UsuarioArquivo": {
     "_comment": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basico_sobre_HTTP/MIME_types/Complete_list_of_MIME_types",
-    "usuario": "UsuarioID",
-    "contentType": "text/plain | application/pdf | image/png | image/svg+xml | image/jpeg | application/msword | text/csv | text/html | application/json ",
+    "usuarioID": "UsuarioID",
+    "contentType": "alfanumerico | text/plain | application/pdf | image/png | image/svg+xml | image/jpeg | application/msword | text/csv | text/html | application/json ",
     "storagePath": "storagePath-valor",
+    "titulo": "titulo-valor",
     "url": "url-valor"
   },
   "Perfil": {
@@ -102,7 +110,7 @@
     "ordem": 0,
     "perguntaTipoID": {
       "id": "PerguntaTipoID",
-      "nome": "PerguntaTipoID$nome",
+      "nome": "PerguntaTipoID$nome"
     },
     "titulo": "titulo-valor",
     "textoMarkdown": "texto-valor",
@@ -203,40 +211,41 @@
       "contentType": "contentType-valor",
       "storagePath": "storagePath-valor",
       "url": "url-valor"
-    },
-    "Produto": {
-      "nome": "nome-valor",
-      "eixoID": {
-        "id": "EixoID",
-        "nome": "Eixo_nome"
-      },
-      "UsuarioID": {
-        "id": "UsuarioID",
-        "nome": "Usuario_nome"
-      },
-      "datamodificacao": "data-valor",
-      "editando": false,
-      "setorCensitarioID": {
-        "id": "SetorCensitarioID",
-        "nome": "SetorCensitario_nome"
-      },
-      "textoMarkdown": "textoMarkdown-valor",
-      "historico": "historico-valor",
-      "observacao": "observacao-valor",
-      "arquivos": [
-        {
-          "arquivoUid": "arquivoUid",
-          "titulo": "titulo-valor",
-          "rascunhoArquivoID": "ProdutoArquivoID",
-          "editadoArquivoID": "ProdutoArquivoID",
-          "incorporarEditado": false
-        }
-      ]
-    },
-    "ProdutoArquivo": {
-      "proprietario": "Produto/produtoID",
-      "contentType": "contentType-valor",
-      "storagePath": "storagePath-valor",
-      "url": "url-valor"
     }
+  },
+  "Produto": {
+    "nome": "nome-valor",
+    "eixoID": {
+      "id": "EixoID",
+      "nome": "Eixo_nome"
+    },
+    "UsuarioID": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "datamodificacao": "data-valor",
+    "editando": false,
+    "setorCensitarioID": {
+      "id": "SetorCensitarioID",
+      "nome": "SetorCensitario_nome"
+    },
+    "textoMarkdown": "textoMarkdown-valor",
+    "historico": "historico-valor",
+    "observacao": "observacao-valor",
+    "arquivos": [
+      {
+        "arquivoUid": "arquivoUid",
+        "titulo": "titulo-valor",
+        "rascunhoArquivoID": "ProdutoArquivoID",
+        "editadoArquivoID": "ProdutoArquivoID",
+        "incorporarEditado": false
+      }
+    ]
+  },
+  "ProdutoArquivo": {
+    "proprietario": "Produto/produtoID",
+    "contentType": "contentType-valor",
+    "storagePath": "storagePath-valor",
+    "url": "url-valor"
   }
+}

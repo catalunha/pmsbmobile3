@@ -1,4 +1,4 @@
-import 'package:validators/validators.dart';
+// import 'package:validators/validators.dart';
 import 'package:pmsbmibile3/models/base_model.dart';
 
 class Perfil extends FirestoreModel {

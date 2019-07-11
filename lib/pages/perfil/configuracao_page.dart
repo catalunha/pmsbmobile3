@@ -111,9 +111,9 @@ class OpcoesEixo extends StatelessWidget {
         if(!snapshot.hasData){
           return Text("SEM DADOS");
         }
-        var lista = [];
-        if(snapshot.data.listaPossivelEixoAtual != null){
-          lista = snapshot.data.listaPossivelEixoAtual;
+        var lista = List<EixoID>();
+        if(snapshot.data.eixoIDAcesso != null){
+          lista = snapshot.data.eixoIDAcesso;
         }
 
         //snapshot.data.listaPossivelEixoAtual
@@ -123,7 +123,7 @@ class OpcoesEixo extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("${eixo.eixoNome}"),
+              child: Text("${eixo.nome}"),
             );
           }).toList(),
         );
@@ -322,7 +322,7 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
         stream: bloc.perfil,
         builder: (context, snapshot) {
           if (_controller.text == null || _controller.text.isEmpty) {
-            _controller.text = snapshot.data?.nomeProjeto;
+            _controller.text = snapshot.data?.nome;
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,8 +349,8 @@ class AtualizarImagemPerfil extends StatelessWidget {
         builder: (context, snapshot) {
           var perfil = snapshot.data;
           dynamic image = FlutterLogo();
-          if (snapshot.data?.imagemPerfilUrl != null) {
-            image = SquareImage(image: NetworkImage(perfil.imagemPerfilUrl));
+          if (snapshot.data.usuarioArquivoID.url != null) {
+            image = SquareImage(image: NetworkImage(perfil.usuarioArquivoID.url));
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

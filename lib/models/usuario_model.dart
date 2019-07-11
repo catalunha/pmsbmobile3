@@ -1,144 +1,171 @@
-import 'package:validators/validators.dart';
+// import 'package:validators/validators.dart';
 import 'package:pmsbmibile3/models/base_model.dart';
-
-/// classe representa as possibilidade de eixos para o usuario não é mapeada para documentos de uma collection
-class PossivelEixoAtual {
-  final String eixoId;
-  final String eixoNome;
-
-  PossivelEixoAtual({
-    String eixoId,
-    String eixoNome,
-  })  : assert(eixoId != null),
-        assert(eixoNome != null),
-        this.eixoId = eixoId,
-        this.eixoNome = eixoNome;
-}
 
 class UsuarioModel extends FirestoreModel {
   static final String collection = "Usuario";
-
-  String nomeCompleto;
-
-  String nomeProjeto;
-
-  String email;
-
+  String nome;
   String celular;
+  String email;
+  UsuarioArquivoID usuarioArquivoID;
+  List<String> rotas;
+  SetorCensitarioID setorCensitarioID;
+  CargoID cargoID;
+  EixoID eixoIDAtual;
+  EixoID eixoID;
+  List<EixoID> eixoIDAcesso;
 
-  String cargoId;
-
-  String cargoNome; //campo duplicado
-
-  String eixoId;
-
-  String eixoNome; // campo duplicado
-
-  String eixoAtualId;
-
-  String eixoAtualNome; // campo duplicado
-
-  List<PossivelEixoAtual> listaPossivelEixoAtual = [];
-
-  String setorCensitarioId;
-
-  String setorCensitarioNome;
-
-  String imagemPerfilId; //Arquivo
-
-  String imagemPerfilUrl; //campo duplicado
-
-  String get safeImagemPerfilUrl {
-    if (isURL(imagemPerfilUrl)) return imagemPerfilUrl;
-    return "https://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png";
-  }
-
-  String get safeNomeProjeto => nomeProjeto != null ? nomeProjeto : "estranho";
-  List<String> rotasApp;
-
-  UsuarioModel({
-    String id,
-    this.nomeCompleto,
-    this.nomeProjeto,
-    this.email,
-    this.celular,
-    this.cargoId,
-    this.cargoNome,
-    this.eixoId,
-    this.eixoNome,
-    this.eixoAtualId,
-    this.eixoAtualNome,
-    this.listaPossivelEixoAtual,
-    this.setorCensitarioId,
-    this.setorCensitarioNome,
-    this.imagemPerfilId,
-    this.imagemPerfilUrl,
-    this.rotasApp,
-  }) : super(id);
+  UsuarioModel(
+      {String id,
+      this.nome,
+      this.celular,
+      this.email,
+      this.usuarioArquivoID,
+      this.rotas,
+      this.setorCensitarioID,
+      this.cargoID,
+      this.eixoIDAtual,
+      this.eixoID,
+      this.eixoIDAcesso})
+      : super(id);
 
   @override
   UsuarioModel fromMap(Map<String, dynamic> map) {
-    if (map.containsKey("id")) id = map["id"];
-    if (map.containsKey("nomeCompleto")) nomeCompleto = map["nomeCompleto"];
-    if (map.containsKey("nomeProjeto")) nomeProjeto = map["nomeProjeto"];
-    if (map.containsKey("email")) email = map["email"];
-    if (map.containsKey("celular")) celular = map["celular"];
-    if (map.containsKey("cargoId")) cargoId = map["cargoId"];
-    if (map.containsKey("eixoNome")) eixoNome = map["eixoNome"];
-    if (map.containsKey("eixoAtualId")) eixoAtualId = map["eixoAtualId"];
-    if (map.containsKey("eixoAtualNome")) eixoAtualNome = map["eixoAtualNome"];
-
-    if (map.containsKey("setorCensitarioId"))
-      setorCensitarioId = map["setorCensitarioId"];
-    if (map.containsKey("setorCensitarioNome"))
-      setorCensitarioNome = map["setorCensitarioNome"];
-    if (map.containsKey("imagemPerfilId"))
-      imagemPerfilId = map["imagemPerfilId"];
-    if (map.containsKey("imagemPerfilUrl"))
-      imagemPerfilUrl = map["imagemPerfilUrl"];
-    if (map.containsKey("rotasApp")) rotasApp = map["rotasApp"];
-
-    if (map.containsKey("listaPossivelEixoAtual")) {
-      if (map["listaPossivelEixoAtual"] is List) {
-        listaPossivelEixoAtual = List<PossivelEixoAtual>();
-        List<dynamic> possiveisEixos =
-            map["listaPossivelEixoAtual"];
-        for (int index = 0; index < possiveisEixos.length; index++) {
-          if (possiveisEixos[index].containsKey("eixoId") &&
-              possiveisEixos[index].containsKey("eixoNome")) {
-            listaPossivelEixoAtual.add(PossivelEixoAtual(
-              eixoId: possiveisEixos[index]["eixoId"],
-              eixoNome: possiveisEixos[index]["eixoNome"],
-            ));
-          }
-        }
-      }
+    if (map.containsKey('nome')) nome = map['nome'];
+    if (map.containsKey('celular')) celular = map['celular'];
+    if (map.containsKey('email')) email = map['email'];
+    if (map.containsKey('usuarioArquivoID')) {
+      usuarioArquivoID = map['usuarioArquivoID'] != null
+          ? new UsuarioArquivoID.fromMap(map['usuarioArquivoID'])
+          : null;
     }
-
+    if (map.containsKey('rotas')) rotas = map['rotas']?.cast<String>();
+    if (map.containsKey('setorCensitarioID')) {
+      setorCensitarioID = map['setorCensitarioID'] != null
+          ? new SetorCensitarioID.fromMap(map['setorCensitarioID'])
+          : null;
+    }
+    if (map.containsKey('cargoID')) {
+      cargoID =
+          map['cargoID'] != null ? new CargoID.fromMap(map['cargoID']) : null;
+    }
+    if (map.containsKey('eixoIDAtual')) {
+      eixoIDAtual = map['eixoIDAtual'] != null
+          ? new EixoID.fromMap(map['eixoIDAtual'])
+          : null;
+    }
+    if (map.containsKey('eixoID')) {
+      eixoID = map['eixoID'] != null ? new EixoID.fromMap(map['eixoID']) : null;
+    }
+    if (map.containsKey('eixoIDAcesso') && (map['eixoIDAcesso'] != null)) {
+      eixoIDAcesso = new List<EixoID>();
+      map['eixoIDAcesso'].forEach((v) {
+        eixoIDAcesso.add(new EixoID.fromMap(v));
+      });
+    }
     return this;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      if (nomeCompleto != null) "nomeCompleto": nomeCompleto,
-      if (nomeProjeto != null) "nomeProjeto": nomeProjeto,
-      if (email != null) "email": email,
-      if (celular != null) "celular": celular,
-      if (cargoId != null) "cargoId": cargoId,
-      if (cargoNome != null) "cargoNome": cargoNome,
-      if (eixoId != null) "eixoId": eixoId,
-      if (eixoNome != null) "eixoNome": eixoNome,
-      if (eixoAtualId != null) "eixoAtualId": eixoAtualId,
-      if (eixoAtualNome != null) "eixoAtualNome": eixoAtualNome,
-      if (listaPossivelEixoAtual != null)
-        "listaPossivelEixoAtual": listaPossivelEixoAtual,
-      if (setorCensitarioId != null) "setorCensitarioId": setorCensitarioId,
-      if (setorCensitarioNome != null)
-        "setorCensitarioNome": setorCensitarioNome,
-      if (imagemPerfilId != null) "imagemPerfilId": imagemPerfilId,
-      if (imagemPerfilUrl != null) "imagemPerfilUrl": imagemPerfilUrl,
-      if (rotasApp != null) "rotasApp": rotasApp,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (nome != null) data['nome'] = this.nome;
+    if (celular != null) data['celular'] = this.celular;
+    if (email != null) data['email'] = this.email;
+    if (this.usuarioArquivoID != null) {
+      data['usuarioArquivoID'] = this.usuarioArquivoID.toMap();
+    }
+    if (rotas != null) data['rotas'] = this.rotas;
+    if (this.setorCensitarioID != null) {
+      data['setorCensitarioID'] = this.setorCensitarioID.toMap();
+    }
+    if (this.cargoID != null) {
+      data['cargoID'] = this.cargoID.toMap();
+    }
+    if (this.eixoIDAtual != null) {
+      data['eixoIDAtual'] = this.eixoIDAtual.toMap();
+    }
+    if (this.eixoID != null) {
+      data['eixoID'] = this.eixoID.toMap();
+    }
+    if (this.eixoIDAcesso != null) {
+      data['eixoIDAcesso'] = this.eixoIDAcesso.map((v) => v.toMap()).toList();
+    }
+    return data;
+  }
+}
+
+class UsuarioArquivoID {
+  String id;
+  String url;
+
+  UsuarioArquivoID({this.id, this.url});
+
+  UsuarioArquivoID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('url')) url = map['url'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (url != null) data['url'] = this.url;
+    return data;
+  }
+}
+
+class SetorCensitarioID {
+  String id;
+  String nome;
+
+  SetorCensitarioID({this.id, this.nome});
+
+  SetorCensitarioID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('nome')) nome = map['nome'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (nome != null) data['nome'] = this.nome;
+    return data;
+  }
+}
+
+class CargoID {
+  String id;
+  String nome;
+
+  CargoID({this.id, this.nome});
+
+  CargoID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('nome')) nome = map['nome'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (nome != null) data['nome'] = this.nome;
+    return data;
+  }
+}
+
+class EixoID {
+  String id;
+  String nome;
+
+  EixoID({this.id, this.nome});
+
+  EixoID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('nome')) nome = map['nome'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (nome != null) data['nome'] = this.nome;
+    return data;
   }
 }

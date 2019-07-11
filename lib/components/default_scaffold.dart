@@ -46,11 +46,11 @@ class DefaultDrawer extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               flex: 4,
-                              child: snap.data.imagemPerfilUrl == null
+                              child: snap.data.usuarioArquivoID.url == null
                                   ? Icon(Icons.people, size: 75)
                                   : CircleImage(
                                       image: NetworkImage(
-                                          snap.data.imagemPerfilUrl),
+                                          snap.data.usuarioArquivoID.url),
                                     ),
                             ),
                             Expanded(
@@ -62,7 +62,7 @@ class DefaultDrawer extends StatelessWidget {
                                   children: <Widget>[
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8),
-                                      child: Text("${snap.data.nomeProjeto}"),
+                                      child: Text("${snap.data.nome}"),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8),
