@@ -17,7 +17,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Visualizar dados e perfil2"),
       ),

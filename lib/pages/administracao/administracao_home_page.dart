@@ -12,7 +12,7 @@ class AdministracaoHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Administração"),
       ),
