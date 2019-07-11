@@ -6,21 +6,18 @@ class SetorCensitarioModel extends FirestoreModel{
 
   String nome;
 
-  String setorSuperiorId;
-
-  SetorCensitarioModel({this.nome, this.setorSuperiorId, String id}) : super(id);
+  SetorCensitarioModel({String id,this.nome}) : super(id);
 
   @override
   SetorCensitarioModel fromMap(Map<String, dynamic> map) {
-    if(map.containsKey("id")) id = map['id'];
     if(map.containsKey("nome")) nome = map["nome"];
-    if(map.containsKey("setorSuperiorId")) setorSuperiorId = map["setorSuperiorId"];
     return this;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {"nome":nome, "setorSuperiorId":setorSuperiorId};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (nome != null) data['nome'] = this.nome;
+    return data;
   }
 }
-
