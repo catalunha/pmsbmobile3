@@ -24,6 +24,12 @@ class UpdateSetorCensitarioEvent extends ConfiguracaoPageEvent {
 
   UpdateSetorCensitarioEvent(this.setorId, this.setorNome);
 }
+class UpdateEixoIDAtualEvent extends ConfiguracaoPageEvent {
+  final String eixoId;
+  final String eixoNome;
+
+  UpdateEixoIDAtualEvent(this.eixoId, this.eixoNome);
+}
 
 class UpdateEmailEvent extends ConfiguracaoPageEvent {
   final String email;
@@ -194,8 +200,11 @@ class ConfiguracaoPageBloc {
         id: configuracaoPageState.imagemPerfil,
         url: configuracaoPageState.imagemPerfilUrl);
     SetorCensitarioID setorCensitarioID = SetorCensitarioID(
-        id: configuracaoPageState.setorCensitarioIDId,
-        nome: configuracaoPageState.setorCensitarioIDnome);
+      id: configuracaoPageState.setorCensitarioIDId,
+      nome: configuracaoPageState.setorCensitarioIDnome);
+    EixoID eixoIDAtual = EixoID(
+      id: configuracaoPageState.eixoIDAtualId,
+      nome: configuracaoPageState.eixoIDAtualNome);
     _firestore.collection(UsuarioModel.collection).document(usuarioID).setData({
       ...UsuarioModel(
         id: usuarioID,
@@ -204,6 +213,7 @@ class ConfiguracaoPageBloc {
         usuarioArquivoID: usuarioArquivoID,
         email: configuracaoPageState.email,
         setorCensitarioID: setorCensitarioID,
+        eixoIDAtual: eixoIDAtual,
       ).toMap(),
     }, merge: true);
     return true;
@@ -243,6 +253,10 @@ class ConfiguracaoPageBloc {
     if (event is UpdateSetorCensitarioEvent) {
       configuracaoPageState.setorCensitarioIDId = event.setorId;
       configuracaoPageState.setorCensitarioIDnome = event.setorNome;
+    }
+    if (event is UpdateEixoIDAtualEvent) {
+      configuracaoPageState.eixoIDAtualId = event.eixoId;
+      configuracaoPageState.eixoIDAtualNome = event.eixoNome;
     }
     print('8');
     _configuracaoPageStateController.sink.add(configuracaoPageState);

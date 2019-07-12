@@ -120,6 +120,9 @@ class OpcoesEixo extends StatelessWidget {
             children: lista.map((eixo) {
               return SimpleDialogOption(
                 onPressed: () {
+                  bloc.configuracaoPageEventSink(
+                    UpdateEixoIDAtualEvent(
+                      eixo.id, eixo.nome));
                   Navigator.pop(context);
                 },
                 child: Text("${eixo.nome}"),
