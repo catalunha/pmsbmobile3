@@ -3,6 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
+/// Class base Eventos da Pagina ConfiguracaoPage
 class AdministracaoPerfilPageEvent {}
 
 class UpdateUsuarioIdEvent extends AdministracaoPerfilPageEvent {
@@ -11,10 +12,12 @@ class UpdateUsuarioIdEvent extends AdministracaoPerfilPageEvent {
   UpdateUsuarioIdEvent(this.usuarioId);
 }
 
+/// Class base Estado da Pagina ConfiguracaoPage
 class AdministracaoPerfilPageState {
   String usuarioId;
 }
 
+/// class Bloc para AdministracaoPerfilPage
 class AdministracaoPerfilPageBloc {
   final fw.Firestore _firestore;
 
@@ -40,14 +43,12 @@ class AdministracaoPerfilPageBloc {
   Function get usuarioModelSink => _usuarioModelController.sink.add;
 
   // UsuarioPerfil
-  final _usuarioPerfilModelController =
-      BehaviorSubject<List<UsuarioPerfil>>();
+  final _usuarioPerfilModelController = BehaviorSubject<List<UsuarioPerfil>>();
 
   Stream<List<UsuarioPerfil>> get usuarioPerfilModelStream =>
       _usuarioPerfilModelController.stream;
 
-  Function get usuarioPerfilModelSink =>
-      _usuarioPerfilModelController.sink.add;
+  Function get usuarioPerfilModelSink => _usuarioPerfilModelController.sink.add;
 
   //Construtor da classe
   AdministracaoPerfilPageBloc(this._firestore) {
