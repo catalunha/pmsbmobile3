@@ -127,6 +127,7 @@ class ConfiguracaoPageBloc {
   ConfiguracaoPageBloc(this._firestore) {
     configuracaoPageEventStream.listen(_mapEventToState);
 
+
     //retorna somente id do usuario caso esteja logado
     FirebaseAuth.instance.onAuthStateChanged
         .where((user) => user != null)
