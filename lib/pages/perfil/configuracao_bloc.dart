@@ -24,6 +24,7 @@ class UpdateSetorCensitarioEvent extends ConfiguracaoPageEvent {
 
   UpdateSetorCensitarioEvent(this.setorId, this.setorNome);
 }
+
 class UpdateEixoIDAtualEvent extends ConfiguracaoPageEvent {
   final String eixoId;
   final String eixoNome;
@@ -120,13 +121,12 @@ class ConfiguracaoPageBloc {
   Function get updateImagemPerfil => _imagemPerfil.sink.add;
 
   //form
-  StreamController<bool> _processForm = BehaviorSubject<bool>();
-
-  get processForm => _processForm.sink.add;
+//  StreamController<bool> _processForm = BehaviorSubject<bool>();
+//
+//  get processForm => _processForm.sink.add;
 
   ConfiguracaoPageBloc(this._firestore) {
     configuracaoPageEventStream.listen(_mapEventToState);
-
 
     //retorna somente id do usuario caso esteja logado
     FirebaseAuth.instance.onAuthStateChanged
@@ -160,7 +160,7 @@ class ConfiguracaoPageBloc {
 
   void dispose() {
     _usuarioModelController.close();
-    _processForm.close();
+//    _processForm.close();
     _setorCensitarioModelListController.close();
     _eixoModelListController.close();
     _configuracaoPageEventController.close();
@@ -201,11 +201,11 @@ class ConfiguracaoPageBloc {
         id: configuracaoPageState.imagemPerfil,
         url: configuracaoPageState.imagemPerfilUrl);
     SetorCensitarioID setorCensitarioID = SetorCensitarioID(
-      id: configuracaoPageState.setorCensitarioIDId,
-      nome: configuracaoPageState.setorCensitarioIDnome);
+        id: configuracaoPageState.setorCensitarioIDId,
+        nome: configuracaoPageState.setorCensitarioIDnome);
     EixoID eixoIDAtual = EixoID(
-      id: configuracaoPageState.eixoIDAtualId,
-      nome: configuracaoPageState.eixoIDAtualNome);
+        id: configuracaoPageState.eixoIDAtualId,
+        nome: configuracaoPageState.eixoIDAtualNome);
     _firestore.collection(UsuarioModel.collection).document(usuarioID).setData({
       ...UsuarioModel(
         id: usuarioID,
@@ -222,6 +222,7 @@ class ConfiguracaoPageBloc {
 
   //upload file
   void _imagemPerfilUpload(String filepath) {
+    print('>>>>> filepath: $filepath');
     configuracaoPageState.filePath = filepath;
     uploadBloc.uploadFromPath(configuracaoPageState.filePath);
   }
