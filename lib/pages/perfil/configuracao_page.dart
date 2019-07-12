@@ -52,7 +52,7 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: RaisedButton(
-                  onPressed: () => bloc.configuracaoPageEventSink(ConfiguracaoSaveEvent()),
+                  onPressed: () => bloc.configuracaoPageEventSink(SaveStateToFirebaseEvent()),
                   child: Text("salvar"),
                 ),
               ),
@@ -73,7 +73,7 @@ class SelecionarEixo extends StatelessWidget {
         showDialog(context: context, builder: (context) => OpcoesEixo(bloc));
       },
       child: StreamBuilder<ConfiguracaoPageState>(
-          stream: bloc.state,
+          stream: bloc.configuracaoPageStateStream,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("ERRO");
@@ -86,7 +86,7 @@ class SelecionarEixo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Escolha o Eixo: ${snapshot.data.eixoAtualNome}"),
+                  Text("Escolha o Eixo: ${snapshot.data.eixoIDAtualNome}"),
                   Icon(Icons.search),
                 ],
               ),
@@ -141,7 +141,7 @@ class SelecionarSetorCensitario extends StatelessWidget {
             builder: (context) => OpcoesSetorCensitario(bloc));
       },
       child: StreamBuilder<ConfiguracaoPageState>(
-          stream: bloc.state,
+          stream: bloc.configuracaoPageStateStream,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("ERRO");
@@ -155,7 +155,7 @@ class SelecionarSetorCensitario extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                      "Escolha o Setor Censitário: ${snapshot.data.setorCensitarioNome}"),
+                      "Escolha o Setor Censitário: ${snapshot.data.setorCensitarioIDnome}"),
                   Icon(Icons.search),
                 ],
               ),
@@ -348,6 +348,11 @@ class AtualizarImagemPerfil extends StatelessWidget {
     return StreamBuilder<UsuarioModel>(
         stream: bloc.usuarioModelStream,
         builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           var perfil = snapshot.data;
           dynamic image = FlutterLogo();
           if (snapshot.data.usuarioArquivoID.url != null) {
