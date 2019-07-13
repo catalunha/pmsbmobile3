@@ -90,6 +90,10 @@
       "id": "EixoID",
       "nome": "Eixo_nome"
     },
+    "criou": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
     "editou": {
       "id": "UsuarioID",
       "nome": "Usuario_nome"
