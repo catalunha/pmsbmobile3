@@ -40,6 +40,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
                   IconButton(
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
+                      Navigator.pushNamed(context, '/aplicacao/pendencias');
                       //
                     },
                   ),

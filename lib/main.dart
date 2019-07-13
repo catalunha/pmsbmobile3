@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
 
             //home
             "/aplicacao/home": (context) => AplicacaoHomePage(),
+            "/aplicacao/pendencias": (context) => PendenciasPage(),
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),

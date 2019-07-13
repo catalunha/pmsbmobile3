@@ -42,6 +42,7 @@ export 'package:pmsbmibile3/pages/questionario/adicionar_editar_questionario_pag
 
 //aplicação
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/pendencias_page.dart';
 
 //resposta
 export 'package:pmsbmibile3/pages/resposta/resposta_home_page.dart';
