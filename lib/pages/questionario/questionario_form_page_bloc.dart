@@ -1,9 +1,11 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 
 class QuestionarioFormPageBlocEvent {}
+
+class DeleteQuestionarioFormPageBlocEvent
+    extends QuestionarioFormPageBlocEvent {}
 
 class UpdateNomeQuestionarioFormPageBlocEvent
     extends QuestionarioFormPageBlocEvent {
@@ -19,11 +21,19 @@ class UpdateIdQuestionarioFormPageBlocEvent
   UpdateIdQuestionarioFormPageBlocEvent(this.id);
 }
 
-class UpdateUserIdQuestionarioFormPageBlocEvent
+class UpdateUserInfoQuestionarioFormPageBlocEvent
     extends QuestionarioFormPageBlocEvent {
   final String userId;
+  final String userName;
+  final String eixoAtualID;
+  final String eixoAtualNome;
 
-  UpdateUserIdQuestionarioFormPageBlocEvent(this.userId);
+  UpdateUserInfoQuestionarioFormPageBlocEvent(
+    this.userId,
+    this.userName,
+    this.eixoAtualID,
+    this.eixoAtualNome,
+  );
 }
 
 class SaveQuestionarioFormPageBlocEvent extends QuestionarioFormPageBlocEvent {}
@@ -33,6 +43,13 @@ class QuestionarioFormPageBlocState {
   String nome;
   String userId;
   String userName;
+  String eixoAtualID;
+  String eixoAtualNome;
+
+  @override
+  String toString() {
+    return "{$id, $nome, $userId, $userName, $eixoAtualID, $eixoAtualID}";
+  }
 }
 
 class QuestionarioFormPageBloc {
@@ -61,28 +78,23 @@ class QuestionarioFormPageBloc {
     if (event is UpdateNomeQuestionarioFormPageBlocEvent) {
       _state.nome = event.nome;
     }
-    if (event is UpdateUserIdQuestionarioFormPageBlocEvent) {
+    if (event is UpdateUserInfoQuestionarioFormPageBlocEvent) {
       _state.userId = event.userId;
-      final userRef = _firestore
-          .collection(UsuarioModel.collection)
-          .document(_state.userId);
-      userRef.get().then((usuarioSnap) {
-        print(usuarioSnap.data);
-        final usuario =
-            UsuarioModel(id: usuarioSnap.documentID).fromMap(usuarioSnap.data);
-        print(usuario.nomeProjeto);
-        _state.userName = usuario.nomeProjeto;
-      });
+      _state.userName = event.userName;
+      _state.eixoAtualID = event.eixoAtualID;
+      _state.eixoAtualNome = event.eixoAtualNome;
     }
     if (event is UpdateIdQuestionarioFormPageBlocEvent) {
       _state.id = event.id;
-      final colRef = _firestore.collection(QuestionarioModel.collection);
-      final docRef = colRef.document(_state.id);
-      docRef.get().then((docSnap) {
-        final modelInstance =
-            QuestionarioModel(id: docSnap.documentID).fromMap(docSnap.data);
-        _instanceOutputController.add(modelInstance);
-      });
+      if (_state.id != null) {
+        final colRef = _firestore.collection(QuestionarioModel.collection);
+        final docRef = colRef.document(_state.id);
+        docRef.get().then((docSnap) {
+          final modelInstance =
+              QuestionarioModel(id: docSnap.documentID).fromMap(docSnap.data);
+          _instanceOutputController.add(modelInstance);
+        });
+      }
     }
 
     if (event is SaveQuestionarioFormPageBlocEvent) {
@@ -91,11 +103,24 @@ class QuestionarioFormPageBloc {
       final modelInstance = QuestionarioModel(
         id: _state.id,
         nome: _state.nome,
-        userId: _state.userId,
-        usuarioNomeProjeto: _state.userName,
+        criou: _state.id == null
+            ? UsuarioCriou(id: _state.userId, nome: _state.userName)
+            : null,
+        editou: UsuarioEditou(id: _state.userId, nome: _state.userName),
+        eixo: Eixo(id: _state.eixoAtualID, nome: _state.eixoAtualNome),
+        criado: _state.id == null ? DateTime.now() : null,
+        modificado: DateTime.now(),
+        editando: false,
       );
-      print(modelInstance.toMap());
+
       docRef.setData(modelInstance.toMap(), merge: true);
+    }
+
+    if (event is DeleteQuestionarioFormPageBlocEvent) {
+      _firestore
+          .collection(QuestionarioModel.collection)
+          .document(_state.id)
+          .delete();
     }
   }
 }
