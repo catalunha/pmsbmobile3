@@ -2,22 +2,21 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/bootstrap.dart' as fsw;
+import 'dart:async';
 
 class QuestionarioHomePageEvent {}
 
-class DeleteQuestionarioHomePageEvent extends QuestionarioHomePageEvent {
-  final String questionarioId;
-
-  DeleteQuestionarioHomePageEvent(this.questionarioId);
-}
-
-class UpdateUserIdQuestionarioHomePageBlocEvent extends QuestionarioHomePageEvent{
+class UpdateUserInfoQuestionarioHomePageBlocEvent
+    extends QuestionarioHomePageEvent {
   final String userId;
-  UpdateUserIdQuestionarioHomePageBlocEvent(this.userId);
+  final String eixoAtualID;
+
+  UpdateUserInfoQuestionarioHomePageBlocEvent(this.userId, this.eixoAtualID);
 }
 
-class QuestionarioHomePageBlocState{
+class QuestionarioHomePageBlocState {
   String userId;
+  String eixoAtualID;
 }
 
 class QuestionarioHomePageBloc {
@@ -33,30 +32,33 @@ class QuestionarioHomePageBloc {
   Stream<List<QuestionarioModel>> get questionarios =>
       _questionariosController.stream;
 
+  StreamSubscription<List<QuestionarioModel>> _questionarioSubscription;
+
   void dispose() {
-    _inputController.close();
-    _questionariosController.close();
+    _inputController?.close();
+    _questionariosController?.close();
+    _questionarioSubscription?.cancel();
   }
 
-  QuestionarioHomePageBloc(this._firestore) {}
+  QuestionarioHomePageBloc(this._firestore) {
+    _inputController.listen(_handleInput);
+  }
 
-  void _handleInput(QuestionarioHomePageEvent event) {
-    if(event is UpdateUserIdQuestionarioHomePageBlocEvent){
+  void _handleInput(QuestionarioHomePageEvent event) async {
+    if (event is UpdateUserInfoQuestionarioHomePageBlocEvent) {
       _state.userId = event.userId;
-      //TODO: adiciona logica de filtragem por eixo mostrando somente questionarios de somente do eixoAtual do usuario
-      final ref = _firestore.collection(QuestionarioModel.collection);
+      _state.eixoAtualID = event.eixoAtualID;
+
+      final ref = _firestore.collection(QuestionarioModel.collection).where("eixo.id", isEqualTo: _state.eixoAtualID);
       final snap = ref.snapshots();
       final snapList = snap.map((q) => q.documents
           .map((d) => QuestionarioModel(id: d.documentID).fromMap(d.data))
           .toList());
-      snapList.pipe(_questionariosController);
-      _inputController.listen(_handleInput);
-    }
-    if (event is DeleteQuestionarioHomePageEvent) {
-      _firestore
-          .collection(QuestionarioModel.collection)
-          .document(event.questionarioId)
-          .delete();
+      if (_questionarioSubscription != null) {
+        await _questionarioSubscription.cancel();
+      }
+      _questionarioSubscription =
+          snapList.listen((data) => _questionariosController.add(data));
     }
   }
 }
