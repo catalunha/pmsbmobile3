@@ -38,7 +38,6 @@ export 'package:pmsbmibile3/pages/pergunta/editar_apagar_escolha_page.dart';
 //questionario
 export 'package:pmsbmibile3/pages/questionario/questionario_home_page.dart';
 export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
-export 'package:pmsbmibile3/pages/questionario/adicionar_editar_questionario_page.dart';
 
 
 //aplicação
