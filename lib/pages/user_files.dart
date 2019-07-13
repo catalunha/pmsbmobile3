@@ -52,7 +52,7 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
 
   _itemSelecionado(String name, String path) {
     return ListTile(
-      leading: Checkbox(value:false),
+      leading: Checkbox(value:false,onChanged: null,),
       trailing: IconButton(icon: Icon(Icons.delete),onPressed: (){
         //apagar esse arquivo/imagem da lista do firebase
       },),

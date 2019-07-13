@@ -9,6 +9,7 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+
 class BlocState {
   String userId;
   StorageUploadTask currentUploadTask;
@@ -18,7 +19,8 @@ class UploadBloc {
   final fsw.Firestore _firestore;
   final blocState = BlocState();
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  final AuthBloc _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final AuthBloc _authBloc =
+      AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
   final _filePath = BehaviorSubject<String>();
 
@@ -32,6 +34,7 @@ class UploadBloc {
   Observable<bool> uploadTasks;
 
   final _arquivo = BehaviorSubject<ArquivoModel>();
+
   Stream<ArquivoModel> get arquivo => _arquivo.stream;
   StreamSubscription<ArquivoModel> _arquivoSubscriptio;
 
@@ -94,10 +97,7 @@ class UploadBloc {
       doc.setData(arquivo.toMap());
       doc
           .snapshots()
-          .map((snap) => ArquivoModel().fromMap({
-                "id": doc.documentID,
-                ...snap.data,
-              }))
+          .map((snap) => ArquivoModel(id: doc.documentID).fromMap(snap.data))
           .pipe(_arquivo);
     }
 

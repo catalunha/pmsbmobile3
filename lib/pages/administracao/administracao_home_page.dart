@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
+
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'administracao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -11,18 +12,28 @@ class AdministracaoHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Administração"),
       ),
       body: Container(
         child: StreamBuilder<List<UsuarioModel>>(
-            stream: bloc.usuarios,
+            stream: bloc.usuarioModelListStream,
             initialData: [],
             builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Erro. Na leitura de usuarios."),
+                );
+              }
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return ListView(
                 children: snapshot.data
-                    .map((usuario) => PerfilUsuarioItem(usuario))
+                    .map((usuario) => ItemListView(usuario))
                     .toList(),
               );
             }),
@@ -31,14 +42,13 @@ class AdministracaoHomePage extends StatelessWidget {
   }
 }
 
-class PerfilUsuarioItem extends StatelessWidget {
+class ItemListView extends StatelessWidget {
   final UsuarioModel usuario;
 
-  PerfilUsuarioItem(this.usuario);
+  ItemListView(this.usuario);
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, "/administracao/perfil",
@@ -51,9 +61,9 @@ class PerfilUsuarioItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: SquareImage(
-                    image: NetworkImage(usuario.safeImagemPerfilUrl),
+                    image: NetworkImage(usuario.usuarioArquivoID.url),
                   )),
               Expanded(
                 flex: 5,
@@ -62,11 +72,11 @@ class PerfilUsuarioItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Nome: ${usuario.nomeProjeto}"),
+                      Text("ID: ${usuario.id.substring(0, 5)}"),
+                      Text("Nome: ${usuario.nome}"),
                       Text("Celular: ${usuario.celular}"),
                       Text("Email: ${usuario.email}"),
-                      Text(
-                          "Eixo: ${usuario.eixoNome != null ? usuario.eixoNome : "nada"}"),
+                      Text("Eixo: ${usuario.eixoIDAtual.nome}"),
                     ],
                   ),
                 ),

@@ -54,7 +54,7 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
             return Text("SEM DADOS");
           }
           var perfil = snap.data;
-          return Text("Ola, ${perfil.safeNomeProjeto}");
+          return Text("Ola, ${perfil.nome}");
         },
       ),
       body: NoticiasNaoVisualizadasBody(),

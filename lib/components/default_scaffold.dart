@@ -46,11 +46,11 @@ class DefaultDrawer extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               flex: 4,
-                              child: snap.data.imagemPerfilUrl == null
+                              child: snap.data.usuarioArquivoID.url == null
                                   ? Icon(Icons.people, size: 75)
                                   : CircleImage(
                                       image: NetworkImage(
-                                          snap.data.imagemPerfilUrl),
+                                          snap.data.usuarioArquivoID.url),
                                     ),
                             ),
                             Expanded(
@@ -62,7 +62,7 @@ class DefaultDrawer extends StatelessWidget {
                                   children: <Widget>[
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8),
-                                      child: Text("${snap.data.nomeProjeto}"),
+                                      child: Text("${snap.data.nome}"),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8),
@@ -86,66 +86,91 @@ class DefaultDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Home'),
+              trailing: Icon(Icons.home),
               onTap: () {
                 Navigator.pushReplacementNamed(context, "/");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Questionarios'),
+              trailing: Icon(Icons.assignment),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/questionario/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Perguntas'),
+              trailing: Icon(Icons.chat_bubble),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/pergunta/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Aplicação'),
+              trailing: Icon(Icons.directions_walk,),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/aplicacao/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Respostas'),
+              trailing: Icon(Icons.chat),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/resposta/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Síntese'),
+              trailing: Icon(Icons.equalizer),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/sintese/home');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Produto'),
+              trailing: Icon(Icons.chrome_reader_mode),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/produto');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Comunicação'),
+              trailing: Icon(Icons.contact_mail),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/comunicacao');
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Administração'),
+                trailing: Icon(Icons.business_center),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/administracao/home');
-              },
+              }
             ),
+            Divider(color: Colors.black45,),
+        ListTile(
+          title: Text('Controle'),
+          trailing: Icon(Icons.control_point),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pushNamed(context, '/controle/home');
+          },)
           ],
         ),
       ),
@@ -215,6 +240,7 @@ class DefaultScaffold extends StatelessWidget {
   final Widget floatingActionButton;
   final Widget title;
   final Widget actions;
+  final Widget bottom;
   final Color backgroundColor;
 
   const DefaultScaffold(
@@ -223,7 +249,8 @@ class DefaultScaffold extends StatelessWidget {
       this.floatingActionButton,
       this.title,
       this.actions,
-      this.backgroundColor})
+      this.backgroundColor,
+      this.bottom})
       : super(key: key);
 
   Widget _appBarBuild(BuildContext context) {
@@ -235,6 +262,7 @@ class DefaultScaffold extends StatelessWidget {
       //leading: Text("leading"),
       centerTitle: true,
       title: title,
+      bottom: bottom,
     );
   }
 

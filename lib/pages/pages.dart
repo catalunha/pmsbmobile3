@@ -27,16 +27,27 @@ export 'package:pmsbmibile3/pages/produto/edit_visual.dart';
 
 //pergunta
 export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/criar_pergunta_tipo_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/criar_ordenar_escolha_page.dart';
+export 'package:pmsbmibile3/pages/pergunta/editar_apagar_escolha_page.dart';
+
+
 
 //questionario
 export 'package:pmsbmibile3/pages/questionario/questionario_home_page.dart';
 export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
+export 'package:pmsbmibile3/pages/questionario/adicionar_editar_questionario_page.dart';
+
 
 //aplicação
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page.dart';
 
 //resposta
 export 'package:pmsbmibile3/pages/resposta/resposta_home_page.dart';
+export 'package:pmsbmibile3/pages/resposta/questionario_resposta_page.dart';
+export 'package:pmsbmibile3/pages/resposta/resposta_questionario_page.dart';
 
 //sintese
 export 'package:pmsbmibile3/pages/sintese/sintese_home_page.dart';
@@ -44,3 +55,6 @@ export 'package:pmsbmibile3/pages/sintese/sintese_home_page.dart';
 //administracao
 export 'package:pmsbmibile3/pages/administracao/administracao_home_page.dart';
 export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page.dart';
+
+//controle
+export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';

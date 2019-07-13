@@ -23,18 +23,37 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (context) => HomePage(),
-
             //perfil
             "/perfil": (context) => PerfilPage(),
             "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),
-            "/perfil/configuracao":(context)=> ConfiguracaoPage(),
-
-            "/questionario/home":(context) => QuestionarioHomePage(),
+            "/perfil/configuracao": (context) => ConfiguracaoPage(),
+            //questionario
+            "/questionario/home": (context) => QuestionarioHomePage(),
             "/questionario/form":(context) => QuestionarioFormPage(),
-            "/pergunta/home":(context) => PerguntaHomePage(),
-            "/aplicacao/home":(context) => AplicacaoHomePage(),
-            "/resposta/home":(context) => RespostaHomePage(),
-            "/sintese/home":(context) => SinteseHomePage(),
+            "/questionario/adicionar_editar": (context) =>
+                AdicionarEditarQuestionarioPage(),
+
+            //pergunta
+            "/pergunta/home": (context) => PerguntaHomePage(),
+            "/pergunta/criar_pergunta": (context) => CriarPerguntaTipoPage(),
+            "/pergunta/criar_editar": (context) => EditarApagarPerguntaPage(),
+            "/pergunta/selecionar_requisito": (context) =>
+                SelecionarQuequisitoPerguntaPage(),
+            "/pergunta/criar_ordenar_escolha": (context) =>
+                CriarOrdenarEscolha(),
+            "/pergunta/editar_apagar_escolha": (context) =>
+                EditarApagarEscolhaPage(),
+
+            //home
+            "/aplicacao/home": (context) => AplicacaoHomePage(),
+
+            //resposta
+            "/resposta/home": (context) => RespostaHomePage(),
+            "/resposta/resposta_questionario": (context) => RespostaQuestionarioPage(),
+            "/resposta/questionario_resposta": (context) => QuestionarioRespostaPage(),
+
+            //sintese
+            "/sintese/home": (context) => SinteseHomePage(),
 
             //produto
             "/produto": (context) => ProductPage(),

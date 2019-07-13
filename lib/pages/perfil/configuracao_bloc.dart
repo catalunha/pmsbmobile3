@@ -9,212 +9,259 @@ import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/state/upload_bloc.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
-class ConfiguracaoEvent {}
+/// Class base Eventos da Pagina ConfiguracaoPage
+class ConfiguracaoPageEvent {}
 
-class ConfiguracaoUpdateNomeProjetoEvent extends ConfiguracaoEvent {
+class UpdateNomeEvent extends ConfiguracaoPageEvent {
   final String nomeProjeto;
 
-  ConfiguracaoUpdateNomeProjetoEvent(this.nomeProjeto);
+  UpdateNomeEvent(this.nomeProjeto);
 }
 
-class UpdateSetorCensitarioConfiguracaoUpdateNomeProjetoEvent extends ConfiguracaoEvent{
+class UpdateSetorCensitarioEvent extends ConfiguracaoPageEvent {
   final String setorId;
   final String setorNome;
 
-  UpdateSetorCensitarioConfiguracaoUpdateNomeProjetoEvent(this.setorId, this.setorNome);
+  UpdateSetorCensitarioEvent(this.setorId, this.setorNome);
 }
 
-class ConfiguracaoUpdateEmailEvent extends ConfiguracaoEvent {
+class UpdateEixoIDAtualEvent extends ConfiguracaoPageEvent {
+  final String eixoId;
+  final String eixoNome;
+
+  UpdateEixoIDAtualEvent(this.eixoId, this.eixoNome);
+}
+
+class UpdateEmailEvent extends ConfiguracaoPageEvent {
   final String email;
 
-  ConfiguracaoUpdateEmailEvent(this.email);
+  UpdateEmailEvent(this.email);
 }
 
-class ConfiguracaoUpdateUserIdEvent extends ConfiguracaoEvent {
-  final String userId;
+class UpdateUsuarioIDEvent extends ConfiguracaoPageEvent {
+  final String usuarioID;
 
-  ConfiguracaoUpdateUserIdEvent(this.userId);
+  UpdateUsuarioIDEvent(this.usuarioID);
 }
 
-class ConfiguracaoUpdateCelularEvent extends ConfiguracaoEvent {
+class UpdateCelularEvent extends ConfiguracaoPageEvent {
   final String celular;
 
-  ConfiguracaoUpdateCelularEvent(this.celular);
+  UpdateCelularEvent(this.celular);
 }
 
-class ConfiguracaoSaveEvent extends ConfiguracaoEvent {}
+class SaveStateToFirebaseEvent extends ConfiguracaoPageEvent {}
 
-class ConfiguracaoBlocState {
-  UsuarioModel currentPerfilUsuario;
-  String userId;
-  String nomeProjeto;
-  String numeroCelular;
+/// Class base Estado da Pagina ConfiguracaoPage
+class ConfiguracaoPageState {
+  String usuarioID;
+  String nome;
+  String celular;
   String email;
-  String setorCensitarioId;
-  String setorCensitarioNome;
-  String eixoAtualId;
-  String eixoAtualNome;
+  String setorCensitarioIDId;
+  String setorCensitarioIDnome;
+  String eixoIDAtualId;
+  String eixoIDAtualNome;
 
   String filePath;
   dynamic imagemPerfil;
   String imagemPerfilUrl;
 
   @override
-  String toString() => "$email $nomeProjeto, $numeroCelular, $filePath";
+  String toString() => "$email $nome, $celular, $filePath";
 }
 
-class ConfiguracaoBloc {
+/// class Bloc para ConfiguracaoPage
+class ConfiguracaoPageBloc {
   final fsw.Firestore _firestore;
-  final formState = ConfiguracaoBlocState();
-  final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
 
-  final _inputController = BehaviorSubject<ConfiguracaoEvent>();
-  final _outputController = BehaviorSubject<ConfiguracaoBlocState>();
+  // Estados da Página
+  final ConfiguracaoPageState configuracaoPageState = ConfiguracaoPageState();
+  final _configuracaoPageStateController =
+      BehaviorSubject<ConfiguracaoPageState>();
 
-  Stream<ConfiguracaoBlocState> get state => _outputController.stream;
+  Stream<ConfiguracaoPageState> get configuracaoPageStateStream =>
+      _configuracaoPageStateController.stream;
 
-  Function get dispatch => _inputController.sink.add;
+  // Eventos da Página
+  final _configuracaoPageEventController =
+      BehaviorSubject<ConfiguracaoPageEvent>();
 
-  BehaviorSubject<UsuarioModel> _perfil = BehaviorSubject<UsuarioModel>();
+  Stream<ConfiguracaoPageEvent> get configuracaoPageEventStream =>
+      _configuracaoPageEventController.stream;
 
-  Stream<UsuarioModel> get perfil => _perfil.stream;
+  Function get configuracaoPageEventSink =>
+      _configuracaoPageEventController.sink.add;
 
-  BehaviorSubject<List<EixoModel>> _eixos = BehaviorSubject<List<EixoModel>>();
+  // UsuarioModel
+  BehaviorSubject<UsuarioModel> _usuarioModelController =
+      BehaviorSubject<UsuarioModel>();
 
-  BehaviorSubject<List<SetorCensitarioModel>> _setoresCensitarios =
+  Stream<UsuarioModel> get usuarioModelStream => _usuarioModelController.stream;
+
+  Function get usuarioModelSink => _usuarioModelController.sink.add;
+
+  // EixoModel
+  BehaviorSubject<List<EixoModel>> _eixoModelListController =
+      BehaviorSubject<List<EixoModel>>();
+
+// SetorCensitarioModel
+  BehaviorSubject<List<SetorCensitarioModel>>
+      _setorCensitarioModelListController =
       BehaviorSubject<List<SetorCensitarioModel>>();
 
-  Stream<List<SetorCensitarioModel>> get setores => _setoresCensitarios.stream;
+  Stream<List<SetorCensitarioModel>> get setorCensitarioModelListStream =>
+      _setorCensitarioModelListController.stream;
 
-  //imagem perfil
+  //Imagem usuario.
+  final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
+
   BehaviorSubject<String> _imagemPerfil = BehaviorSubject<String>();
 
   Function get updateImagemPerfil => _imagemPerfil.sink.add;
 
   //form
-  StreamController<bool> _processForm = BehaviorSubject<bool>();
+//  StreamController<bool> _processForm = BehaviorSubject<bool>();
+//
+//  get processForm => _processForm.sink.add;
 
-  get processForm => _processForm.sink.add;
-
-  ConfiguracaoBloc(this._firestore) {
-    _inputController.stream.listen(_handleInputEvent);
+  ConfiguracaoPageBloc(this._firestore) {
+    configuracaoPageEventStream.listen(_mapEventToState);
 
     //retorna somente id do usuario caso esteja logado
     FirebaseAuth.instance.onAuthStateChanged
         .where((user) => user != null)
         .map((user) => user.uid)
-        .listen((userId) {
-      dispatch(ConfiguracaoUpdateUserIdEvent(userId));
+        .listen((usuarioID) {
+      configuracaoPageEventSink(UpdateUsuarioIDEvent(usuarioID));
     });
-
-    //pega lista de eixos
-    _firestore
-        .collection(SetorCensitarioModel.collection)
-        .snapshots()
-        .map((snap) {
-      return snap.documents
-          .map((doc) =>
-              SetorCensitarioModel(id: doc.documentID).fromMap(doc.data))
-          .toList();
-    }).pipe(_setoresCensitarios);
-
     //update state
-    _perfil.stream.listen(perfilUpdateConfiguracaoBlocState);
+//    usuarioModelStream.listen(perfilUpdateConfiguracaoBlocState);
+
+    //pega lista de SetorCensitarioModel
+    pullSetorCensitario();
+
     _imagemPerfil.listen(_imagemPerfilUpload);
     uploadBloc.arquivo
         .listen(_imagemPerfilUpdateState); //update informação do perfil
   }
 
-  UsuarioModel perfilSnapToInstance(fsw.DocumentSnapshot snap) {
-    var user = UsuarioModel().fromMap({
-      "id": snap.documentID,
-      ...snap.data,
-    });
-    return user;
+  void pullSetorCensitario() {
+    //pega lista de SetorCensitarioModel
+    _firestore
+        .collection(SetorCensitarioModel.collection)
+        .snapshots()
+        .map((snap) => snap.documents
+            .map((doc) =>
+                SetorCensitarioModel(id: doc.documentID).fromMap(doc.data))
+            .toList())
+        .pipe(_setorCensitarioModelListController);
   }
 
-  void setUpUser(String userId) {
+  void dispose() {
+    _usuarioModelController.close();
+//    _processForm.close();
+    _setorCensitarioModelListController.close();
+    _eixoModelListController.close();
+    _configuracaoPageEventController.close();
+    _configuracaoPageStateController.close();
+  }
+
+  void pullUsuarioModel(String usuarioID) {
+    print('2');
     _firestore
         .collection(UsuarioModel.collection)
-        .document(userId)
+        .document(usuarioID)
         .snapshots()
         .where((snap) => snap.exists)
-        .map(perfilSnapToInstance)
-        .pipe(_perfil);
+        .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
+        .pipe(_usuarioModelController);
+    print('3');
+    usuarioModelStream.listen(upDateConfiguracaoPageStateUsuarioModel);
+    print('4');
   }
 
-
-  void perfilUpdateConfiguracaoBlocState(UsuarioModel perfil) {
-    formState.numeroCelular = perfil.celular;
-    formState.nomeProjeto = perfil.nomeProjeto;
-    formState.imagemPerfilUrl = perfil.imagemPerfilUrl;
-    formState.imagemPerfil = perfil.imagemPerfilId;
-    formState.setorCensitarioNome = perfil.setorCensitarioNome;
-    formState.setorCensitarioId = perfil.setorCensitarioId;
-    formState.eixoAtualId = perfil.eixoAtualId;
-    formState.eixoAtualNome = perfil.eixoAtualNome;
-    dispatch(ConfiguracaoSaveEvent());
+  void upDateConfiguracaoPageStateUsuarioModel(UsuarioModel perfil) {
+    print('5');
+    configuracaoPageState.celular = perfil.celular;
+    configuracaoPageState.nome = perfil.nome;
+    configuracaoPageState.setorCensitarioIDId = perfil.setorCensitarioID.id;
+    configuracaoPageState.setorCensitarioIDnome = perfil.setorCensitarioID.nome;
+    configuracaoPageState.eixoIDAtualId = perfil.eixoIDAtual.id;
+    configuracaoPageState.eixoIDAtualNome = perfil.eixoIDAtual.nome;
+    configuracaoPageState.imagemPerfilUrl = perfil.usuarioArquivoID.url;
+    configuracaoPageState.imagemPerfil = perfil.usuarioArquivoID.id;
+    print('6');
+    _configuracaoPageStateController.sink.add(configuracaoPageState);
+    print('6a');
   }
 
-  bool processConfiguracaoBlocState(String userId) {
-    _firestore
-        .collection(UsuarioModel.collection)
-        .document(userId)
-        .setData({
+  bool SaveStateToFirebase(String usuarioID) {
+    UsuarioArquivoID usuarioArquivoID = UsuarioArquivoID(
+        id: configuracaoPageState.imagemPerfil,
+        url: configuracaoPageState.imagemPerfilUrl);
+    SetorCensitarioID setorCensitarioID = SetorCensitarioID(
+        id: configuracaoPageState.setorCensitarioIDId,
+        nome: configuracaoPageState.setorCensitarioIDnome);
+    EixoID eixoIDAtual = EixoID(
+        id: configuracaoPageState.eixoIDAtualId,
+        nome: configuracaoPageState.eixoIDAtualNome);
+    _firestore.collection(UsuarioModel.collection).document(usuarioID).setData({
       ...UsuarioModel(
-        id: userId,
-        nomeProjeto: formState.nomeProjeto,
-        celular: formState.numeroCelular,
-        imagemPerfilId: formState.imagemPerfil,
-        imagemPerfilUrl: formState.imagemPerfilUrl,
-        email: formState.email,
-        setorCensitarioId: formState.setorCensitarioId,
-        setorCensitarioNome: formState.setorCensitarioNome,
+        id: usuarioID,
+        nome: configuracaoPageState.nome,
+        celular: configuracaoPageState.celular,
+        usuarioArquivoID: usuarioArquivoID,
+        email: configuracaoPageState.email,
+        setorCensitarioID: setorCensitarioID,
+        eixoIDAtual: eixoIDAtual,
       ).toMap(),
     }, merge: true);
     return true;
   }
 
-  void dispose() {
-    _perfil.close();
-    _processForm.close();
-    _setoresCensitarios.close();
-    _eixos.close();
-    _inputController.close();
-    _outputController.close();
-  }
-
   //upload file
   void _imagemPerfilUpload(String filepath) {
-    formState.filePath = filepath;
-    uploadBloc.uploadFromPath(formState.filePath);
+    print('>>>>> filepath: $filepath');
+    configuracaoPageState.filePath = filepath;
+    uploadBloc.uploadFromPath(configuracaoPageState.filePath);
   }
 
   void _imagemPerfilUpdateState(ArquivoModel arquivo) {
-    formState.imagemPerfilUrl = arquivo.url;
-    formState.imagemPerfil = _firestore
-        .collection(ArquivoModel.collection)
-        .document(arquivo.id);
+    configuracaoPageState.imagemPerfilUrl = arquivo.url;
+    configuracaoPageState.imagemPerfil =
+        _firestore.collection(ArquivoModel.collection).document(arquivo.id);
   }
 
-  void _handleInputEvent(ConfiguracaoEvent event) {
-    if (event is ConfiguracaoUpdateEmailEvent) {
-      formState.email = event.email;
+  void _mapEventToState(ConfiguracaoPageEvent event) {
+    // if (event is UpdateEmailEvent) {
+    //   pageState.email = event.email;
+    // }
+    if (event is UpdateUsuarioIDEvent) {
+      print('1');
+      configuracaoPageState.usuarioID = event.usuarioID;
+      pullUsuarioModel(event.usuarioID);
+      print('7');
     }
-    if (event is ConfiguracaoUpdateUserIdEvent) {
-      formState.userId = event.userId;
-      setUpUser(event.userId);
+    if (event is SaveStateToFirebaseEvent) {
+      SaveStateToFirebase(configuracaoPageState.usuarioID);
     }
-    if (event is ConfiguracaoSaveEvent) {
-      processConfiguracaoBlocState(formState.userId);
+    if (event is UpdateNomeEvent) {
+      configuracaoPageState.nome = event.nomeProjeto;
     }
-    if (event is ConfiguracaoUpdateNomeProjetoEvent) {
-      formState.nomeProjeto = event.nomeProjeto;
+    if (event is UpdateCelularEvent) {
+      configuracaoPageState.celular = event.celular;
     }
-    if(event is UpdateSetorCensitarioConfiguracaoUpdateNomeProjetoEvent){
-      formState.setorCensitarioId = event.setorId;
-      formState.setorCensitarioNome = event.setorNome;
+    if (event is UpdateSetorCensitarioEvent) {
+      configuracaoPageState.setorCensitarioIDId = event.setorId;
+      configuracaoPageState.setorCensitarioIDnome = event.setorNome;
     }
-    _outputController.sink.add(formState);
+    if (event is UpdateEixoIDAtualEvent) {
+      configuracaoPageState.eixoIDAtualId = event.eixoId;
+      configuracaoPageState.eixoIDAtualNome = event.eixoNome;
+    }
+    print('8');
+    _configuracaoPageStateController.sink.add(configuracaoPageState);
+    print('9');
   }
 }

@@ -1,8 +1,9 @@
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/variavel_usuario_model.dart';
+import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
+/// Class base Eventos da Pagina ConfiguracaoPage
 class AdministracaoPerfilPageEvent {}
 
 class UpdateUsuarioIdEvent extends AdministracaoPerfilPageEvent {
@@ -11,63 +12,79 @@ class UpdateUsuarioIdEvent extends AdministracaoPerfilPageEvent {
   UpdateUsuarioIdEvent(this.usuarioId);
 }
 
+/// Class base Estado da Pagina ConfiguracaoPage
 class AdministracaoPerfilPageState {
   String usuarioId;
 }
 
+/// class Bloc para AdministracaoPerfilPage
 class AdministracaoPerfilPageBloc {
   final fw.Firestore _firestore;
-  final AdministracaoPerfilPageState currentState = AdministracaoPerfilPageState();
 
-  final _inputController = BehaviorSubject<AdministracaoPerfilPageEvent>();
+  // Estados da Página
+  final AdministracaoPerfilPageState currentState =
+      AdministracaoPerfilPageState();
 
-  Stream<AdministracaoPerfilPageEvent> get input => _inputController.stream;
+  // Eventos da Página
+  final _administracaoPerfilPageEventController =
+      BehaviorSubject<AdministracaoPerfilPageEvent>();
 
-  Function get dispatch => _inputController.sink.add;
+  Stream<AdministracaoPerfilPageEvent> get administracaoPerfilPageEventStream =>
+      _administracaoPerfilPageEventController.stream;
 
-  final _perfilController = BehaviorSubject<UsuarioModel>();
+  Function get administracaoPerfilPageEventSink =>
+      _administracaoPerfilPageEventController.sink.add;
 
-  Stream<UsuarioModel> get perfil => _perfilController.stream;
+  // UsuarioModel
+  final _usuarioModelController = BehaviorSubject<UsuarioModel>();
 
-  final _variaveisController = BehaviorSubject<List<VariavelUsuarioModel>>();
+  Stream<UsuarioModel> get usuarioModelStream => _usuarioModelController.stream;
 
-  Stream<List<VariavelUsuarioModel>> get variaveis =>
-      _variaveisController.stream;
+  Function get usuarioModelSink => _usuarioModelController.sink.add;
 
+  // UsuarioPerfil
+  final _usuarioPerfilModelController = BehaviorSubject<List<UsuarioPerfil>>();
+
+  Stream<List<UsuarioPerfil>> get usuarioPerfilModelStream =>
+      _usuarioPerfilModelController.stream;
+
+  Function get usuarioPerfilModelSink => _usuarioPerfilModelController.sink.add;
+
+  //Construtor da classe
   AdministracaoPerfilPageBloc(this._firestore) {
-    input.listen(_mapEventToState);
+    administracaoPerfilPageEventStream.listen(_mapEventToState);
   }
 
   void dispose() {
-    _perfilController.close();
-    _inputController.close();
-    _variaveisController.close();
+    _usuarioModelController.close();
+    _administracaoPerfilPageEventController.close();
+    _usuarioPerfilModelController.close();
   }
 
   void _mapEventToState(AdministracaoPerfilPageEvent event) {
     if (event is UpdateUsuarioIdEvent) {
+      // Atualizar State with Event
       currentState.usuarioId = event.usuarioId;
-      //perfil usuario
-      var userRef = _firestore
+      //Usar State UsuarioModel
+      _firestore
           .collection(UsuarioModel.collection)
-          .document(event.usuarioId);
-      userRef.snapshots().map((snap) {
-        return UsuarioModel().fromMap(
-            {"id": snap.documentID, ...snap.data});
-      }).listen((usuario) {
-        _perfilController.sink.add(usuario);
+          .document(currentState.usuarioId)
+          .snapshots()
+          .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
+          .listen((usuario) {
+        usuarioModelSink(usuario);
       });
 
-      //variaveis usuario
-      var variaveisRef = _firestore
-          .collection(VariavelUsuarioModel.collection)
-          .where("userId", isEqualTo: event.usuarioId);
-      variaveisRef.snapshots().map((snapDocs) {
-        return snapDocs.documents
-            .map((doc) => VariavelUsuarioModel.fromMap(doc.data))
-            .toList();
-      }).listen((List<VariavelUsuarioModel> variaveis) {
-        _variaveisController.sink.add(variaveis);
+      //Usar State UsuarioPerfil
+      _firestore
+          .collection(UsuarioPerfil.collection)
+          .where("usuarioID", isEqualTo: currentState.usuarioId)
+          .snapshots()
+          .map((snapDocs) => snapDocs.documents
+              .map((doc) => UsuarioPerfil(id: doc.documentID).fromMap(doc.data))
+              .toList())
+          .listen((List<UsuarioPerfil> usuarioPerfilModelList) {
+        usuarioPerfilModelSink(usuarioPerfilModelList);
       });
     }
   }
