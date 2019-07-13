@@ -76,8 +76,8 @@ class AuthBloc {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     final perfilStream = perfilRef.snapshots().map((perfilSnap) =>
-        UsuarioModel()
-            .fromMap({"id": perfilSnap.documentID, ...perfilSnap.data}));
+        UsuarioModel(id: perfilSnap.documentID)
+            .fromMap(perfilSnap.data));
     if (_perfilSubscription != null) {
       _perfilSubscription.cancel().then((_) {
         _perfilSubscription = perfilStream.listen(_pipPerfil);
