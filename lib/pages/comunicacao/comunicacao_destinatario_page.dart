@@ -66,7 +66,7 @@ class _ComunicacaoDestinatariosPageState
                   return Card(
                       child: InkWell(
                           onTap: () {
-                            null;
+                            // null;
                           },
                           child: ListTile(
                             title: Text(

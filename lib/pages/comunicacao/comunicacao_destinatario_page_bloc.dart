@@ -29,7 +29,7 @@ class UpDateUsuarioIDEvent extends ComunicacaoDestinatarioPageEvent {
 }
 
 class ComunicacaoDestinatarioPageState {
-  List<Cargo> cargoList=List<Cargo>();
+  List<Cargo> cargoList = List<Cargo>();
   Map<String, Cargo> cargoMap;
   List<Eixo> eixoList;
   List<Usuario> usuarioList;
@@ -120,12 +120,27 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _pushCargoModeltoState() {
-    print('_pushCargoModeltoState executando ....');
-    _firestore.collection(CargoModel.collection).snapshots().map(
-        (querySnapshot) => querySnapshot.documents.map((documentSnapshot) =>
-            comunicacaoDestinatarioPageEventSink(
-                UpDateCargoIDEvent(documentSnapshot.documentID))));
+    // print('_pushCargoModeltoState executando ....');
+    // _firestore.
+    // collection(CargoModel.collection).
+    // snapshots().map(
+    //     (querySnapshot) => querySnapshot.documents.map((documentSnapshot) =>
+    //         comunicacaoDestinatarioPageEventSink(
+    //             UpDateCargoIDEvent(documentSnapshot.documentID))));
+    // print('_pushCargoModeltoState fim ....');
+    // print('_pushCargoModeltoState executando ....');
+    // _firestore
+    //     .collection(CargoModel.collection)
+    //     .snapshots()
+    //     .map((querySnapshot) => querySnapshot.documents.map((doc)=>doc.documentID).toList()).listen((id));
+            // .map((documentSnapshot) => comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent(documentSnapshot.documentID))));
+        // .toList()
+        // .then((id) => comunicacaoDestinatarioPageEventSink(
+        //     UpDateCargoIDEvent(id.toString())));
+    // .listen((id) =>
+    //     comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent(id.toString())));
     print('_pushCargoModeltoState fim ....');
+
   }
 
   _mapEventToState(ComunicacaoDestinatarioPageEvent event) {
