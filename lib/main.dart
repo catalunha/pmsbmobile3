@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page.dart';
+import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
 import 'package:pmsbmibile3/pages/produto/product_visual.dart';
 import 'package:provider/provider.dart';
@@ -46,11 +48,16 @@ class MyApp extends StatelessWidget {
 
             //home
             "/aplicacao/home": (context) => AplicacaoHomePage(),
+            "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
+            "/aplicacao/aplicando_pergunta": (context) =>
+                AplicacaoPerguntaPage(),
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),
-            "/resposta/resposta_questionario": (context) => RespostaQuestionarioPage(),
-            "/resposta/questionario_resposta": (context) => QuestionarioRespostaPage(),
+            "/resposta/resposta_questionario": (context) =>
+                RespostaQuestionarioPage(),
+            "/resposta/questionario_resposta": (context) =>
+                QuestionarioRespostaPage(),
 
             //sintese
             "/sintese/home": (context) => SinteseHomePage(),
