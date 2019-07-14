@@ -1,8 +1,10 @@
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -28,6 +30,7 @@ class UpDateUsuarioIDEvent extends ComunicacaoDestinatarioPageEvent {
 
 class ComunicacaoDestinatarioPageState {
   List<Cargo> cargoList;
+  Map<String, Cargo> cargoMap;
   List<Eixo> eixoList;
   List<Usuario> usuarioList;
   List<String> destinatarioList;
@@ -54,6 +57,8 @@ class Usuario {
 }
 
 class ComunicacaoDestinatarioPageBloc {
+  final fw.Firestore _firestore;
+
   // Eventos da página
   final _comunicacaoDestinatarioPageEventController =
       BehaviorSubject<ComunicacaoDestinatarioPageEvent>();
@@ -71,15 +76,54 @@ class ComunicacaoDestinatarioPageBloc {
       get comunicacaoDestinatarioPageStateStream =>
           _comunicacaoDestinatarioPageStateController.stream;
 
-  ComunicacaoDestinatarioPageBloc() {
+  //Cargo
+  final _cargoModelListController = BehaviorSubject<List<CargoModel>>();
+  Stream<List<CargoModel>> get cargoModelListStream =>
+      _cargoModelListController.stream;
+
+  ComunicacaoDestinatarioPageBloc(this._firestore) {
+    print('ComunicacaoDestinatarioPageBloc instanciada ....');
     comunicacaoDestinatarioPageEventStream.listen(_mapEventToState);
+    comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent('teste'));
+    var a = _firestore
+        .collection(UsuarioModel.collection)
+        .document("Ln1UIA7iF3bfoh8OnWEBvRrlAwG3")
+        .documentID;
+    print('elennn: ${a}');
+
+    // Firestore.instance
+    _firestore
+        .collection(UsuarioModel.collection)
+        .where("ativo", isEqualTo: true)
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.documents
+            .map((documentSnapshot) => print(documentSnapshot.documentID)));
+
+    //push cargos from firestores
+    // _pushCargoModeltoState();
+    _firestore.collection(CargoModel.collection).snapshots().map(
+        (querySnapshot) => querySnapshot.documents.map((documentSnapshot) =>
+            comunicacaoDestinatarioPageEventSink(
+                UpDateCargoIDEvent(documentSnapshot.documentID))));
   }
   void dispose() {
     _comunicacaoDestinatarioPageEventController.close();
     _comunicacaoDestinatarioPageStateController.close();
+    _cargoModelListController.close();
+  }
+
+  _pushCargoModeltoState() {
+    print('_pushCargoModeltoState executando ....');
+    _firestore.collection(CargoModel.collection).snapshots().map(
+        (querySnapshot) => querySnapshot.documents.map((documentSnapshot) =>
+            comunicacaoDestinatarioPageEventSink(
+                UpDateCargoIDEvent(documentSnapshot.documentID))));
+    print('_pushCargoModeltoState fim ....');
   }
 
   _mapEventToState(ComunicacaoDestinatarioPageEvent event) {
+    print('Mapeou um evento....');
+
     if (event is UpDateCargoIDEvent) {
       print('evento de cargo ${event.cargoID}');
     }
