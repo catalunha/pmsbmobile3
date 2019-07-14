@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/pages/produto/product_visual.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/state/services.dart';
@@ -69,6 +68,9 @@ class MyApp extends StatelessWidget {
             //administração
             "/administracao/home":(context) => AdministracaoHomePage(),
             "/administracao/perfil":(context) => AdministracaoPerfilPage(),
+
+            //controle
+            "/controle/home": (context) => ControleHomePage(),
           },
         ),
       ),
