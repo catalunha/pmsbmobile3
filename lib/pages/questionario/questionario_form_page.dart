@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 class QuestionarioFormPage extends StatelessWidget {
   final bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore);
+  String _questionarioId;
 
   Widget _btnApagar(BuildContext context) {
     return StreamBuilder<QuestionarioModel>(
@@ -45,7 +46,7 @@ class QuestionarioFormPage extends StatelessWidget {
     return StreamBuilder<QuestionarioModel>(
         stream: bloc.instance,
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.active) {
+          if (snapshot.connectionState != ConnectionState.active && _questionarioId != null) {
             return Center(
               child: CircularProgressIndicator(),
             );
@@ -76,8 +77,8 @@ class QuestionarioFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //manda id do questionario se existir ou null no caso de settings.arguments = null
-    final String questionarioId = ModalRoute.of(context).settings.arguments;
-    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(questionarioId));
+    _questionarioId = ModalRoute.of(context).settings.arguments;
+    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(_questionarioId));
 
     //manda o id do usuario atual
     final authBloc = Provider.of<AuthBloc>(context);
@@ -98,7 +99,7 @@ class QuestionarioFormPage extends StatelessWidget {
               icon: new Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Text((questionarioId != null ? "Editar" : "Adicionar") +
+            title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
                 " Questionario")),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.thumb_up),
