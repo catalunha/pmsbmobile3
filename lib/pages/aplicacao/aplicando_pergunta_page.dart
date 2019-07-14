@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_escolha_unica.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_coordenada.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_imagem.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class AplicacaoPerguntaPage extends StatefulWidget {
 }
 
 class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
+  
   List<String> _listaPergunta = [
     "texto",
     "imagem",
@@ -19,17 +22,14 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     "escolha multipla"
   ];
 
-
-
   var _indice = 0;
 
-  var _aplicadorpergunta = PerguntaEscolhaMultiplaWidget(listaOpcoes:perguntasquesitoescolhamultipla);
+  var _aplicadorpergunta = PerguntaWigdetCoordenada();
 
   String _eixo = "eixo exemplo";
   String _questionario = "questionarios exemplo";
   String _local = "local exemplo";
   String _setor = "setor exemplo";
-
 
   _botoes() {
     return Row(
@@ -110,17 +110,16 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     return ListView(
       children: <Widget>[
         _listaDadosSuperior(),
-        Divider(height: 50,indent: 5, color: Colors.black54),
+        Divider(height: 50, indent: 5, color: Colors.black54),
         Padding(
             padding: EdgeInsets.all(5),
-            child: Card(
-                elevation: 10,
-                child: ListTile(
-                    title: Text("Titulo da pergunta:"),
-                    subtitle: Text(
-                        "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - ")))),
-        
+            child: ListTile(
+                title: Text("Titulo da pergunta:"),
+                subtitle: Text(
+                    "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - "))),
+        Divider(color: Colors.black54),
         _aplicadorpergunta,
+        Padding(padding: EdgeInsets.all(5)),
         _botoes()
       ],
     );

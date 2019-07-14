@@ -60,14 +60,3 @@ class _PerguntaEscolhaUnicaWidgetState
     ]));
   }
 }
-
-/**
- * for (var i = 0; i < widget.listaOpcoes.length; i++)
-        RadioListTile(
-          groupValue: _value2,
-          onChanged: _setvalue2,
-          value: widget.listaOpcoes[i]['checkbox'],
-          title: new Text('${widget.listaOpcoes[i]['pergunta']}'),
-          controlAffinity: ListTileControlAffinity.trailing,
-        ),
- */

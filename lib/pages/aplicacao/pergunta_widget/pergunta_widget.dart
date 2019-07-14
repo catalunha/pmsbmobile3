@@ -2,4 +2,6 @@ export 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_text
 export 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_numero.dart';
 export 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_escolha_unica.dart';
 export 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_escolha_multipla.dart';
+export 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_imagem.dart';
+export 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_coordenada.dart';
 
