@@ -66,11 +66,11 @@ class _ComunicacaoDestinatariosPageState
                   return Card(
                       child: InkWell(
                           onTap: () {
-                            // null;
+                            bloc.comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent(variavel.id));
                           },
                           child: ListTile(
                             title: Text(
-                              "# ${variavel?.id}:",
+                              "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
                               style: TextStyle(fontSize: 14),
                             ),
                             // subtitle: Text(
@@ -87,7 +87,81 @@ class _ComunicacaoDestinatariosPageState
         });
   }
 
-  _eixoBody() => Text('222222aaaaa');
+  _eixoBody() {
+        return StreamBuilder<ComunicacaoDestinatarioPageState>(
+        stream: bloc.comunicacaoDestinatarioPageStateStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Erro.');
+          }
+          if (!snapshot.hasData) {
+            return Text('Sem dados.');
+          }
+          if (snapshot.hasData) {
+            //  var cargoList = List<Cargo>();
+            var eixoList = snapshot.data.eixoList;
+            return ListView(
+              children: <Widget>[
+                ...eixoList.map((variavel) {
+                  return Card(
+                      child: InkWell(
+                          onTap: () {
+                          },
+                          child: ListTile(
+                            title: Text(
+                              "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            // subtitle: Text(
+                            //   "## ${variavel?.nome}",
+                            //   "CLIQUE AQUI PARA VER O ARQUIVO",
+                            //   style:
+                            //       TextStyle(fontSize: 16, color: Colors.blue),
+                            // ),
+                          )));
+                }).toList()
+              ],
+            );
+          }
+        });
+  }
 
-  _usuarioBody() => Text('3333333333aaaa');
+  _usuarioBody() {
+        return StreamBuilder<ComunicacaoDestinatarioPageState>(
+        stream: bloc.comunicacaoDestinatarioPageStateStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Erro.');
+          }
+          if (!snapshot.hasData) {
+            return Text('Sem dados.');
+          }
+          if (snapshot.hasData) {
+            //  var cargoList = List<Cargo>();
+            var usuarioList = snapshot.data.usuarioList;
+            return ListView(
+              children: <Widget>[
+                ...usuarioList.map((variavel) {
+                  return Card(
+                      child: InkWell(
+                          onTap: () {
+                          },
+                          child: ListTile(
+                            title: Text(
+                              "# ${variavel.id}-${variavel.nome}-${variavel.eixo}-${variavel.cargo}-${variavel.checked}",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            // subtitle: Text(
+                            //   "## ${variavel?.nome}",
+                            //   "CLIQUE AQUI PARA VER O ARQUIVO",
+                            //   style:
+                            //       TextStyle(fontSize: 16, color: Colors.blue),
+                            // ),
+                          )));
+                }).toList()
+              ],
+            );
+          }
+        });
+  }
 }
