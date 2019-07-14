@@ -56,6 +56,7 @@ class Usuario {
   String cargo;
   String eixo;
   bool checked = false;
+  int valor = 0;
   Usuario({this.id, this.nome, this.cargo, this.eixo});
 }
 
@@ -106,9 +107,6 @@ class ComunicacaoDestinatarioPageBloc {
     comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
     _comunicacaoDestinatarioPageStateController.sink
         .add(comunicacaoDestinatarioPageState);
-
-
-
 
     // var a = _firestore
     //     .collection(UsuarioModel.collection)
@@ -185,30 +183,86 @@ class ComunicacaoDestinatarioPageBloc {
     }
     if (event is UpDateEixoIDEvent) {
       print('evento de eixo: ${event.eixoID}');
+      _updateEixoModeltoState(event.eixoID);
     }
     if (event is UpDateUsuarioIDEvent) {
       print('evento de usuario: ${event.usuarioID}');
+      _updateUsuarioModeltoState(event.usuarioID);
     }
     _comunicacaoDestinatarioPageStateController.sink
         .add(comunicacaoDestinatarioPageState);
   }
 
   _updateCargoModeltoState(String id) {
-      print('processando cargo: ${id}');
+    print('processando cargo: ${id}');
     // Cargo cargoID = Cargo(id: id);
     // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
     // comunicacaoDestinatarioPageState.cargoList.add(cargoID);
-    List<Cargo> cargo = comunicacaoDestinatarioPageState.cargoList;
-    for (var item in cargo) {
-      if (item.id==id) {
-        item.checked=!item.checked;
+    bool marcou = false;
+    for (var item in comunicacaoDestinatarioPageState.cargoList) {
+      if (item.id == id) {
+        item.checked = !item.checked;
+        marcou = item.checked;
       }
     }
-    List<Usuario> usuario = comunicacaoDestinatarioPageState.usuarioList;
-    for (var item in usuario) {
-      if (item.cargo==id) {
-        item.checked=!item.checked;
+    for (var item in comunicacaoDestinatarioPageState.usuarioList) {
+      if (item.cargo == id) {
+        item.valor = marcou ? ++item.valor : --item.valor;
+        item.checked = item.valor > 0 ? true : false;
+        item.valor = item.valor < 0 ? 0 : item.valor;
       }
+    }
+  }
+
+  _updateEixoModeltoState(String id) {
+    print('processando eixo: ${id}');
+    // Cargo cargoID = Cargo(id: id);
+    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
+    // comunicacaoDestinatarioPageState.cargoList.add(cargoID);
+    bool marcou = false;
+    for (var item in comunicacaoDestinatarioPageState.eixoList) {
+      if (item.id == id) {
+        item.checked = !item.checked;
+        marcou = item.checked;
+      }
+    }
+    for (var item in comunicacaoDestinatarioPageState.usuarioList) {
+      if (item.eixo == id) {
+        item.valor = marcou ? ++item.valor : --item.valor;
+        item.checked = item.valor > 0 ? true : false;
+        item.valor = item.valor < 0 ? 0 : item.valor;
+      }
+    }
+  }
+
+  _updateUsuarioModeltoState(String id) {
+    print('processando eixo: ${id}');
+    // Cargo cargoID = Cargo(id: id);
+    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
+    // comunicacaoDestinatarioPageState.cargoList.add(cargoID);
+    for (var item in comunicacaoDestinatarioPageState.usuarioList) {
+      if (item.id == id) {
+        item.checked = !item.checked;
+        item.valor = 0;
+      }
+    }
+    for (var cargo in comunicacaoDestinatarioPageState.cargoList) {
+      bool marcouCargo = false;
+      for (var usuario in comunicacaoDestinatarioPageState.usuarioList) {
+        if (cargo.id == usuario.cargo) {
+          marcouCargo = usuario.checked ? true : marcouCargo;
+        }
+      }
+      cargo.checked = marcouCargo ? cargo.checked : false;
+    }
+    for (var eixo in comunicacaoDestinatarioPageState.eixoList) {
+      bool marcouEixo = false;
+      for (var usuario in comunicacaoDestinatarioPageState.usuarioList) {
+        if (eixo.id == usuario.eixo) {
+          marcouEixo = usuario.checked ? true : marcouEixo;
+        }
+      }
+      eixo.checked = marcouEixo ? eixo.checked : false;
     }
   }
 }

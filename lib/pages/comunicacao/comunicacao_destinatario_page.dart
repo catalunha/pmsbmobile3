@@ -64,9 +64,11 @@ class _ComunicacaoDestinatariosPageState
               children: <Widget>[
                 ...cargoList.map((variavel) {
                   return Card(
+                      color: variavel.checked ? Colors.yellowAccent : null,
                       child: InkWell(
                           onTap: () {
-                            bloc.comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent(variavel.id));
+                            bloc.comunicacaoDestinatarioPageEventSink(
+                                UpDateCargoIDEvent(variavel.id));
                           },
                           child: ListTile(
                             title: Text(
@@ -88,7 +90,7 @@ class _ComunicacaoDestinatariosPageState
   }
 
   _eixoBody() {
-        return StreamBuilder<ComunicacaoDestinatarioPageState>(
+    return StreamBuilder<ComunicacaoDestinatarioPageState>(
         stream: bloc.comunicacaoDestinatarioPageStateStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -104,14 +106,18 @@ class _ComunicacaoDestinatariosPageState
               children: <Widget>[
                 ...eixoList.map((variavel) {
                   return Card(
+                      color: variavel.checked ? Colors.yellowAccent : null,
                       child: InkWell(
                           onTap: () {
+                            bloc.comunicacaoDestinatarioPageEventSink(
+                                UpDateEixoIDEvent(variavel.id));
                           },
                           child: ListTile(
                             title: Text(
                               "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
                               style: TextStyle(fontSize: 14),
                             ),
+
                             // subtitle: Text(
                             //   "## ${variavel?.nome}",
                             //   "CLIQUE AQUI PARA VER O ARQUIVO",
@@ -127,7 +133,7 @@ class _ComunicacaoDestinatariosPageState
   }
 
   _usuarioBody() {
-        return StreamBuilder<ComunicacaoDestinatarioPageState>(
+    return StreamBuilder<ComunicacaoDestinatarioPageState>(
         stream: bloc.comunicacaoDestinatarioPageStateStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -143,12 +149,15 @@ class _ComunicacaoDestinatariosPageState
               children: <Widget>[
                 ...usuarioList.map((variavel) {
                   return Card(
+                      color: variavel.checked ? Colors.greenAccent : null,
                       child: InkWell(
                           onTap: () {
+                            bloc.comunicacaoDestinatarioPageEventSink(
+                                UpDateUsuarioIDEvent(variavel.id));
                           },
                           child: ListTile(
                             title: Text(
-                              "# ${variavel.id}-${variavel.nome}-${variavel.eixo}-${variavel.cargo}-${variavel.checked}",
+                              "# ${variavel.id}-${variavel.nome}-${variavel.eixo}-${variavel.cargo}-${variavel.checked}-${variavel.valor}",
                               style: TextStyle(fontSize: 14),
                             ),
                             // subtitle: Text(
