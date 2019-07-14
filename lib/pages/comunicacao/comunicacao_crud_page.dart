@@ -215,40 +215,66 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
 
   _eixos(context) {
     var result = List<dynamic>();
-    return Padding(
-      padding: EdgeInsets.all(5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          new Flexible(
-            child: TextField(
-              obscureText: true,
-              enabled: false,
-              // keyboardType: TextInputType.datetime,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  //labelText: '${_datestring}',
-                  hintText: ""),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.check_box),
-            onPressed: () async {
-              result = await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) {
-                return ComunicacaoDestinatariosPage();
-              }));
-              print('>>>> Retorno ${result}');
-            },
-          ),
-          // ListView.builder(
-          //     itemCount: result.length,
-          //     itemBuilder: (BuildContext ctxt, int index) {
-          //       return new Text(result[index]);
-          //     }),
-        ],
-      ),
+    List<String> litems = ["1", "2", "Third", "4"];
+    return Column(
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.check_box),
+          onPressed: () async {
+            result = await Navigator.push(context,
+                MaterialPageRoute(builder: (context) {
+              return ComunicacaoDestinatariosPage();
+            }));
+            print('>>>> Retorno ${result}');
+          },
+        ),
+        Column(
+            children: litems
+                .map((item) => Card(
+                      child: Column(
+                        children: <Widget>[
+                          Text('$item'),
+                        ],
+                      ),
+                    ))
+                .toList()),
+      ],
     );
+
+    // return Padding(
+    //   padding: EdgeInsets.all(5.0),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //     children: <Widget>[
+    //       new Flexible(
+    //         child: TextField(
+    //           obscureText: true,
+    //           enabled: false,
+    //           // keyboardType: TextInputType.datetime,
+    //           decoration: InputDecoration(
+    //               border: OutlineInputBorder(),
+    //               //labelText: '${_datestring}',
+    //               hintText: ""),
+    //         ),
+    //       ),
+    //       IconButton(
+    //         icon: Icon(Icons.check_box),
+    //         onPressed: () async {
+    //           result = await Navigator.push(context,
+    //               MaterialPageRoute(builder: (context) {
+    //             return ComunicacaoDestinatariosPage();
+    //           }));
+    //           print('>>>> Retorno ${result}');
+    //         },
+    //       ),
+    //       // ListView.builder(
+    //       //     itemCount: result.length,
+    //       //     itemBuilder: (BuildContext ctxt, int index) {
+    //       //       return new Text(result[index]);
+    //       //     }),
+    //     ],
+    //   ),
+    // );
   }
 
   _bodyDados(context) {
