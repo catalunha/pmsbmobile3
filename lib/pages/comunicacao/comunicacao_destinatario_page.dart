@@ -37,7 +37,7 @@ class _ComunicacaoDestinatariosPageState
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context,bloc.comunicacaoDestinatarioPageState.usuarioList);
             },
             child: Icon(Icons.check),
           ),

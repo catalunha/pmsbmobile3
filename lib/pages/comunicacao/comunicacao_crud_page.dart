@@ -183,7 +183,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                             SimpleDialogOption(
                               onPressed: () {
                                 Navigator.pop(context);
-
                               },
                               child: Text("CANCELAR EXCLUSÃO"),
                             ),
@@ -196,7 +195,8 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                                 bloc.comunicacaoCRUDPageEventSink(
                                     DeleteNoticiaIDEvent());
                                 Navigator.pushNamed(
-                                    context, '/comunicacao/home_page');                              },
+                                    context, '/comunicacao/home_page');
+                              },
                               child: Text("sim"),
                             ),
                           ],
@@ -214,6 +214,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
   }
 
   _eixos(context) {
+    var result = List<dynamic>();
     return Padding(
       padding: EdgeInsets.all(5.0),
       child: Row(
@@ -232,12 +233,19 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
           ),
           IconButton(
             icon: Icon(Icons.check_box),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+            onPressed: () async {
+              result = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) {
                 return ComunicacaoDestinatariosPage();
               }));
+              print('>>>> Retorno ${result}');
             },
           ),
+          // ListView.builder(
+          //     itemCount: result.length,
+          //     itemBuilder: (BuildContext ctxt, int index) {
+          //       return new Text(result[index]);
+          //     }),
         ],
       ),
     );
