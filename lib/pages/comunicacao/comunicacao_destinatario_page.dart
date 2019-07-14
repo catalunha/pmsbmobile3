@@ -10,7 +10,7 @@ class ComunicacaoDestinatariosPage extends StatefulWidget {
 
 class _ComunicacaoDestinatariosPageState
     extends State<ComunicacaoDestinatariosPage> {
-        final bloc = ComunicacaoDestinatarioPageBloc(Bootstrap.instance.firestore);
+  final bloc = ComunicacaoDestinatarioPageBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +47,47 @@ class _ComunicacaoDestinatariosPageState
     );
   }
 
-  Text _cargoBody() => Text('1111111aaaaaa');
+  _cargoBody() {
+    return StreamBuilder<ComunicacaoDestinatarioPageState>(
+        stream: bloc.comunicacaoDestinatarioPageStateStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Erro.');
+          }
+          if (!snapshot.hasData) {
+            return Text('Sem dados.');
+          }
+          if (snapshot.hasData) {
+            //  var cargoList = List<Cargo>();
+            var cargoList = snapshot.data.cargoList;
+            return ListView(
+              children: <Widget>[
+                ...cargoList.map((variavel) {
+                  return Card(
+                      child: InkWell(
+                          onTap: () {
+                            null;
+                          },
+                          child: ListTile(
+                            title: Text(
+                              "# ${variavel?.id}:",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            // subtitle: Text(
+                            //   "## ${variavel?.nome}",
+                            //   "CLIQUE AQUI PARA VER O ARQUIVO",
+                            //   style:
+                            //       TextStyle(fontSize: 16, color: Colors.blue),
+                            // ),
+                          )));
+                }).toList()
+              ],
+            );
+          }
+        });
+  }
 
-  Text _eixoBody() => Text('222222aaaaa');
+  _eixoBody() => Text('222222aaaaa');
 
-  Text _usuarioBody() => Text('3333333333aaaa');
+  _usuarioBody() => Text('3333333333aaaa');
 }

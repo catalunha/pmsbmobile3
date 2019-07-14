@@ -29,7 +29,7 @@ class UpDateUsuarioIDEvent extends ComunicacaoDestinatarioPageEvent {
 }
 
 class ComunicacaoDestinatarioPageState {
-  List<Cargo> cargoList;
+  List<Cargo> cargoList=List<Cargo>();
   Map<String, Cargo> cargoMap;
   List<Eixo> eixoList;
   List<Usuario> usuarioList;
@@ -84,27 +84,34 @@ class ComunicacaoDestinatarioPageBloc {
   ComunicacaoDestinatarioPageBloc(this._firestore) {
     print('ComunicacaoDestinatarioPageBloc instanciada ....');
     comunicacaoDestinatarioPageEventStream.listen(_mapEventToState);
-    comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent('teste'));
-    var a = _firestore
-        .collection(UsuarioModel.collection)
-        .document("Ln1UIA7iF3bfoh8OnWEBvRrlAwG3")
-        .documentID;
-    print('elennn: ${a}');
+    comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent('teste3'));
+    comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent('teste4'));
+    comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent('teste5'));
+    // var a = _firestore
+    //     .collection(UsuarioModel.collection)
+    //     .document("Ln1UIA7iF3bfoh8OnWEBvRrlAwG3")
+    //     .documentID;
+    // print('elennn: ${a}');
 
-    // Firestore.instance
-    _firestore
-        .collection(UsuarioModel.collection)
-        .where("ativo", isEqualTo: true)
-        .snapshots()
-        .map((querySnapshot) => querySnapshot.documents
-            .map((documentSnapshot) => print(documentSnapshot.documentID)));
+    // // Firestore.instance
+    // _firestore
+    //     .collection(UsuarioModel.collection)
+    //     .where("ativo", isEqualTo: true)
+    //     .snapshots()
+    //     .map((querySnapshot) => querySnapshot.documents
+    //         .map((documentSnapshot) => print(documentSnapshot.documentID)));
 
     //push cargos from firestores
-    // _pushCargoModeltoState();
-    _firestore.collection(CargoModel.collection).snapshots().map(
-        (querySnapshot) => querySnapshot.documents.map((documentSnapshot) =>
-            comunicacaoDestinatarioPageEventSink(
-                UpDateCargoIDEvent(documentSnapshot.documentID))));
+    _pushCargoModeltoState();
+    // _firestore.collection(CargoModel.collection).snapshots().map(
+    //     (querySnapshot) => querySnapshot.documents.map((documentSnapshot) =>
+    //         comunicacaoDestinatarioPageEventSink(
+    //             UpDateCargoIDEvent(documentSnapshot.documentID))));
+    // // _firestore
+    // Firestore.instance
+    //     .collection(CargoModel.collection)
+    //     .snapshots()
+    //     .listen((oque) => oque.documents.map((doc) => print(doc.documentID)));
   }
   void dispose() {
     _comunicacaoDestinatarioPageEventController.close();
@@ -122,16 +129,30 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _mapEventToState(ComunicacaoDestinatarioPageEvent event) {
-    print('Mapeou um evento....');
+    print('Mapeou um evento....${event.toString()}');
+    // Cargo cargo = Cargo(id: 'teste');
+    // print('${cargo.runtimeType} = ${cargo.id}');
+    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
+    // comunicacaoDestinatarioPageState.cargoList.add(cargo);
 
     if (event is UpDateCargoIDEvent) {
-      print('evento de cargo ${event.cargoID}');
+      print('evento de cargo: ${event.cargoID}');
+      _updateCargoModeltoState(event.cargoID);
     }
     if (event is UpDateEixoIDEvent) {
-      print('evento de eixo ${event.eixoID}');
+      print('evento de eixo: ${event.eixoID}');
     }
     if (event is UpDateUsuarioIDEvent) {
-      print('evento de usuario ${event.usuarioID}');
+      print('evento de usuario: ${event.usuarioID}');
     }
+    _comunicacaoDestinatarioPageStateController.sink
+        .add(comunicacaoDestinatarioPageState);
+  }
+
+  _updateCargoModeltoState(String id) {
+    Cargo cargoID = Cargo(id: id);
+    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
+
+    comunicacaoDestinatarioPageState.cargoList.add(cargoID);
   }
 }
