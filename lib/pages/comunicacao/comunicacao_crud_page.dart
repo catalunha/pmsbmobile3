@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/pages/area_checked_list.dart';
+import 'package:pmsbmibile3/pages/comunicacao/comunicacao_destinatario_page.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
@@ -107,12 +107,12 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     }
   }
 
-  _ajustarTempoAux(tempo) {
-    if (tempo > 9) {
-      return tempo;
-    }
-    return "0$tempo";
-  }
+  // _ajustarTempoAux(tempo) {
+  //   if (tempo > 9) {
+  //     return tempo;
+  //   }
+  //   return "0$tempo";
+  // }
 
   _dataHorarioNoticia(context) {
     return Padding(
@@ -213,35 +213,35 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     ));
   }
 
-  // _eixos(context) {
-  //   return Padding(
-  //     padding: EdgeInsets.all(5.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //       children: <Widget>[
-  //         new Flexible(
-  //           child: TextField(
-  //             obscureText: true,
-  //             enabled: false,
-  //             // keyboardType: TextInputType.datetime,
-  //             decoration: InputDecoration(
-  //                 border: OutlineInputBorder(),
-  //                 //labelText: '${_datestring}',
-  //                 hintText: ""),
-  //           ),
-  //         ),
-  //         IconButton(
-  //           icon: Icon(Icons.check_box),
-  //           onPressed: () {
-  //             Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //               return AreaCheckedList();
-  //             }));
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  _eixos(context) {
+    return Padding(
+      padding: EdgeInsets.all(5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          new Flexible(
+            child: TextField(
+              obscureText: true,
+              enabled: false,
+              // keyboardType: TextInputType.datetime,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  //labelText: '${_datestring}',
+                  hintText: ""),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.check_box),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ComunicacaoDestinatariosPage();
+              }));
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   _bodyDados(context) {
     return SafeArea(
@@ -255,7 +255,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             _texto("Data / Hora da notícia:"),
             _dataHorarioNoticia(context),
             _texto("Escolha o(s) destinatário(s):"),
-            // _eixos(context),
+            _eixos(context),
             Divider(),
             _botaoDeletarDocumento()
           ],
