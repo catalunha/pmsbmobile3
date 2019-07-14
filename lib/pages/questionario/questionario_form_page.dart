@@ -6,40 +6,22 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 
-class QuestionarioFormPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return QuestionarioFormPageState();
-  }
-}
-
-class QuestionarioFormPageState extends State<QuestionarioFormPage> {
+class QuestionarioFormPage extends StatelessWidget {
   final bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore);
 
-  _body(context) {
-    return ListView(
-      children: <Widget>[
-        Padding(padding: EdgeInsets.all(5.0)),
-        Center(
-          child: EixoAtualUsuario(),
-        ),
-        Padding(padding: EdgeInsets.all(5.0)),
-        Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Text(
-              "Titulo do questionario:",
-              style: TextStyle(fontSize: 15, color: Colors.blue),
-            )),
-        Padding(
-          padding: EdgeInsets.all(5.0),
-          child: NomeFormItem(),
-        ),
-        SafeArea(
+  Widget _btnApagar(BuildContext context) {
+    return StreamBuilder<QuestionarioModel>(
+        stream: bloc.instance,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+          return SafeArea(
             child: Row(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.all(5.0),
-                child: RaisedButton(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: RaisedButton(
                     color: Colors.red,
                     onPressed: () {
                       bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
@@ -50,11 +32,45 @@ class QuestionarioFormPageState extends State<QuestionarioFormPage> {
                         Text('Apagar', style: TextStyle(fontSize: 20)),
                         Icon(Icons.delete)
                       ],
-                    ))),
-          ],
-        ))
-      ],
-    );
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  _body(context) {
+    return StreamBuilder<QuestionarioModel>(
+        stream: bloc.instance,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.active) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.all(5.0)),
+              Center(
+                child: EixoAtualUsuario(),
+              ),
+              Padding(padding: EdgeInsets.all(5.0)),
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "Titulo do questionario:",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: NomeFormItem(),
+              ),
+              _btnApagar(context),
+            ],
+          );
+        });
   }
 
   @override
