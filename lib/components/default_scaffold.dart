@@ -151,7 +151,7 @@ class DefaultDrawer extends StatelessWidget {
               trailing: Icon(Icons.contact_mail),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/comunicacao');
+                Navigator.pushNamed(context, '/comunicacao/home_page');
               },
             ),
             Divider(color: Colors.black45,),
