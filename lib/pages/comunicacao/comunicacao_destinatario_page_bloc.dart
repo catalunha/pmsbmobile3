@@ -87,28 +87,6 @@ class ComunicacaoDestinatarioPageBloc {
   ComunicacaoDestinatarioPageBloc(this._firestore) {
     print('ComunicacaoDestinatarioPageBloc instanciada ....');
     comunicacaoDestinatarioPageEventStream.listen(_mapEventToState);
-
-    // Cargo cargoX = Cargo(id: 'cargo1', nome: 'cargo01');
-    // comunicacaoDestinatarioPageState.cargoList.add(cargoX);
-    // cargoX = Cargo(id: 'cargo2', nome: 'cargo02');
-    // comunicacaoDestinatarioPageState.cargoList.add(cargoX);
-    // Eixo eixox = Eixo(id: 'eixo1', nome: 'eixo01');
-    // comunicacaoDestinatarioPageState.eixoList.add(eixox);
-    // eixox = Eixo(id: 'eixo2', nome: 'eixo02');
-    // comunicacaoDestinatarioPageState.eixoList.add(eixox);
-    // Usuario usuariox = Usuario(
-    //     id: 'usuario1', nome: 'usuario01', eixo: 'eixo1', cargo: 'cargo1');
-    // comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
-    // usuariox = Usuario(
-    //     id: 'usuario2', nome: 'usuario02', eixo: 'eixo2', cargo: 'cargo2');
-    // comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
-    // usuariox = Usuario(
-    //     id: 'usuario3', nome: 'usuario03', eixo: 'eixo1', cargo: 'cargo2');
-    // comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
-    // _comunicacaoDestinatarioPageStateController.sink
-    //     .add(comunicacaoDestinatarioPageState);
-    //push cargos from firestores
-    // pushCargoModeltoState();
     _firestore
         .collection(CargoModel.collection)
         .where('celular', isEqualTo: "999")
@@ -150,8 +128,6 @@ class ComunicacaoDestinatarioPageBloc {
                   nome: documentSnapshot.data['nome'],
                   cargo: cargoMap['id'],
                   eixo: eixoMap['id']));
-              // return comunicacaoDestinatarioPageEventSink(
-              //     UpDateCargoIDEvent(documentSnapshot.documentID));
             }));
     _comunicacaoDestinatarioPageStateController.sink
         .add(comunicacaoDestinatarioPageState);
@@ -181,9 +157,7 @@ class ComunicacaoDestinatarioPageBloc {
 
   _updateCargoModeltoState(String id) {
     print('processando cargo: ${id}');
-    // Cargo cargoID = Cargo(id: id);
-    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
-    // comunicacaoDestinatarioPageState.cargoList.add(cargoID);
+
     bool marcou = false;
     for (var item in comunicacaoDestinatarioPageState.cargoList) {
       if (item.id == id) {
@@ -202,9 +176,6 @@ class ComunicacaoDestinatarioPageBloc {
 
   _updateEixoModeltoState(String id) {
     print('processando eixo: ${id}');
-    // Cargo cargoID = Cargo(id: id);
-    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
-    // comunicacaoDestinatarioPageState.cargoList.add(cargoID);
     bool marcou = false;
     for (var item in comunicacaoDestinatarioPageState.eixoList) {
       if (item.id == id) {
@@ -223,9 +194,6 @@ class ComunicacaoDestinatarioPageBloc {
 
   _updateUsuarioModeltoState(String id) {
     print('processando eixo: ${id}');
-    // Cargo cargoID = Cargo(id: id);
-    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
-    // comunicacaoDestinatarioPageState.cargoList.add(cargoID);
     for (var item in comunicacaoDestinatarioPageState.usuarioList) {
       if (item.id == id) {
         item.checked = !item.checked;
