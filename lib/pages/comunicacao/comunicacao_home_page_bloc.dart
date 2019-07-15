@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -19,6 +21,17 @@ class ComunicacaoHomePageBloc {
 
   ComunicacaoHomePageBloc(this._firestore) {
     _authBloc.userId.listen(_getNoticiasDoUsuario);
+    print('Deletando...');
+    _firestore.collection(UsuarioModel.collection).snapshots().listen(
+        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
+                print('>>${documentSnapshot.documentID}');
+              if (documentSnapshot.data['celular'].toString() == '999') {
+                print('>.>${documentSnapshot.documentID}');
+                // documentSnapshot.reference.delete(); // nao funciona.
+                // _firestore.collection(UsuarioModel.collection).document(documentSnapshot.documentID).delete();
+              }
+            }));
+    print('Deletou...');
   }
 
   void _getNoticiasDoUsuario(String userId) {
