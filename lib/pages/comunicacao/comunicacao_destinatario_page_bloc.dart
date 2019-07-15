@@ -88,66 +88,73 @@ class ComunicacaoDestinatarioPageBloc {
     print('ComunicacaoDestinatarioPageBloc instanciada ....');
     comunicacaoDestinatarioPageEventStream.listen(_mapEventToState);
 
-    Cargo cargoX = Cargo(id: 'cargo1', nome: 'cargo01');
-    comunicacaoDestinatarioPageState.cargoList.add(cargoX);
-    cargoX = Cargo(id: 'cargo2', nome: 'cargo02');
-    comunicacaoDestinatarioPageState.cargoList.add(cargoX);
-    Eixo eixox = Eixo(id: 'eixo1', nome: 'eixo01');
-    comunicacaoDestinatarioPageState.eixoList.add(eixox);
-    eixox = Eixo(id: 'eixo2', nome: 'eixo02');
-    comunicacaoDestinatarioPageState.eixoList.add(eixox);
-    Usuario usuariox = Usuario(
-        id: 'usuario1', nome: 'usuario01', eixo: 'eixo1', cargo: 'cargo1');
-    comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
-    usuariox = Usuario(
-        id: 'usuario2', nome: 'usuario02', eixo: 'eixo2', cargo: 'cargo2');
-    comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
-    usuariox = Usuario(
-        id: 'usuario3', nome: 'usuario03', eixo: 'eixo1', cargo: 'cargo2');
-    comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
-    _comunicacaoDestinatarioPageStateController.sink
-        .add(comunicacaoDestinatarioPageState);
-
-    // var a = _firestore
-    //     .collection(UsuarioModel.collection)
-    //     .document("Ln1UIA7iF3bfoh8OnWEBvRrlAwG3")
-    //     .documentID;
-    // print('elennn: ${a}');
-
-    // // Firestore.instance
-    // print('>>>>>>>> RESOLVENDO +++++++ ');
-
-    // _firestore
-    //     .collection(UsuarioModel.collection)
-    //     .snapshots()
-    //     .map((querySnapshot) {
-    //   return querySnapshot.documents;
-    // }).listen((doc) {
-    //   print(doc);
-    //   print('listando');
-    // });
-    // print('>>>>>>>> RESOLVENDO -------');
-
-    // // // Firestore.instance
-    // _firestore
-    //     .collection(UsuarioModel.collection)
-    //     .snapshots()
-    //     .map((querySnapshot) => querySnapshot.documents
-    //         .map((documentSnapshot) => print(documentSnapshot.documentID)));
-
+    // Cargo cargoX = Cargo(id: 'cargo1', nome: 'cargo01');
+    // comunicacaoDestinatarioPageState.cargoList.add(cargoX);
+    // cargoX = Cargo(id: 'cargo2', nome: 'cargo02');
+    // comunicacaoDestinatarioPageState.cargoList.add(cargoX);
+    // Eixo eixox = Eixo(id: 'eixo1', nome: 'eixo01');
+    // comunicacaoDestinatarioPageState.eixoList.add(eixox);
+    // eixox = Eixo(id: 'eixo2', nome: 'eixo02');
+    // comunicacaoDestinatarioPageState.eixoList.add(eixox);
+    // Usuario usuariox = Usuario(
+    //     id: 'usuario1', nome: 'usuario01', eixo: 'eixo1', cargo: 'cargo1');
+    // comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
+    // usuariox = Usuario(
+    //     id: 'usuario2', nome: 'usuario02', eixo: 'eixo2', cargo: 'cargo2');
+    // comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
+    // usuariox = Usuario(
+    //     id: 'usuario3', nome: 'usuario03', eixo: 'eixo1', cargo: 'cargo2');
+    // comunicacaoDestinatarioPageState.usuarioList.add(usuariox);
+    // _comunicacaoDestinatarioPageStateController.sink
+    //     .add(comunicacaoDestinatarioPageState);
     //push cargos from firestores
     // pushCargoModeltoState();
     _firestore
-    .collection(CargoModel.collection)
-    .snapshots()
-    .listen((querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) =>
-            comunicacaoDestinatarioPageEventSink(
-                UpDateCargoIDEvent(documentSnapshot.documentID))));
-    // // _firestore
-    // Firestore.instance
-    //     .collection(CargoModel.collection)
-    //     .snapshots()
-    //     .listen((oque) => oque.documents.map((doc) => print(doc.documentID)));
+        .collection(CargoModel.collection)
+        .where('celular', isEqualTo: "999")
+        .snapshots()
+        .listen((querySnapshot) =>
+            querySnapshot.documents.forEach((documentSnapshot) {
+              documentSnapshot.reference.delete();
+            }));
+    _firestore.collection(CargoModel.collection).snapshots().listen(
+        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
+              comunicacaoDestinatarioPageState.cargoList.add(Cargo(
+                  id: documentSnapshot.documentID,
+                  nome: documentSnapshot.data['nome']));
+              // return comunicacaoDestinatarioPageEventSink(
+              //     UpDateCargoIDEvent(documentSnapshot.documentID));
+            }));
+    _firestore.collection(EixoModel.collection).snapshots().listen(
+        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
+              comunicacaoDestinatarioPageState.eixoList.add(Eixo(
+                  id: documentSnapshot.documentID,
+                  nome: documentSnapshot.data['nome']));
+              // return comunicacaoDestinatarioPageEventSink(
+              //     UpDateCargoIDEvent(documentSnapshot.documentID));
+            }));
+    _firestore.collection(UsuarioModel.collection).snapshots().listen(
+        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
+              Map<dynamic, dynamic> cargoMap = Map();
+              Map<dynamic, dynamic> eixoMap = Map();
+
+              cargoMap = documentSnapshot.data['cargoID'] == null
+                  ? {"id": "null", "nome": "null"}
+                  : documentSnapshot.data['cargoID'];
+              eixoMap = documentSnapshot.data['eixoID'] == null
+                  ? {"id": "null", "nome": "null"}
+                  : documentSnapshot.data['eixoID'];
+
+              comunicacaoDestinatarioPageState.usuarioList.add(Usuario(
+                  id: documentSnapshot.documentID,
+                  nome: documentSnapshot.data['nome'],
+                  cargo: cargoMap['id'],
+                  eixo: eixoMap['id']));
+              // return comunicacaoDestinatarioPageEventSink(
+              //     UpDateCargoIDEvent(documentSnapshot.documentID));
+            }));
+    _comunicacaoDestinatarioPageStateController.sink
+        .add(comunicacaoDestinatarioPageState);
   }
   void dispose() {
     _comunicacaoDestinatarioPageEventController.close();
@@ -155,46 +162,10 @@ class ComunicacaoDestinatarioPageBloc {
     _cargoModelListController.close();
   }
 
-  pushCargoModeltoState() {
-    print('_pushCargoModeltoState executando ....');
-    // _firestore
-    //     .collection(CargoModel.collection)
-    //     .snapshots()
-    //     .map((querySnapshot) => querySnapshot.documents.map((docSnapshot) {
-    //           Cargo cargoID = Cargo(id: docSnapshot.documentID,nome:docSnapshot.data['nome']);
-    //           return comunicacaoDestinatarioPageState.cargoList.add(cargoID);
-    //         })).listen((_)=>_comunicacaoDestinatarioPageStateController.sink.add());
-    // _firestore.
-    // collection(CargoModel.collection).
-    // snapshots().map(
-    //     (querySnapshot) => querySnapshot.documents.map((documentSnapshot) =>
-    //         comunicacaoDestinatarioPageEventSink(
-    //             UpDateCargoIDEvent(documentSnapshot.documentID))));
-    // print('_pushCargoModeltoState fim ....');
-    // print('_pushCargoModeltoState executando ....');
-    // _firestore
-    //     .collection(CargoModel.collection)
-    //     .snapshots()
-    //     .map((querySnapshot) => querySnapshot.documents.map((doc)=>doc.documentID).toList()).listen((id));
-    // .map((documentSnapshot) => comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent(documentSnapshot.documentID))));
-    // .toList()
-    // .then((id) => comunicacaoDestinatarioPageEventSink(
-    //     UpDateCargoIDEvent(id.toString())));
-    // .listen((id) =>
-    //     comunicacaoDestinatarioPageEventSink(UpDateCargoIDEvent(id.toString())));
-    print('_pushCargoModeltoState fim ....');
-  }
-
   _mapEventToState(ComunicacaoDestinatarioPageEvent event) {
-    print('Mapeou um evento....${event.toString()}');
-    // Cargo cargo = Cargo(id: 'teste');
-    // print('${cargo.runtimeType} = ${cargo.id}');
-    // comunicacaoDestinatarioPageState.cargoList = List<Cargo>();
-    // comunicacaoDestinatarioPageState.cargoList.add(cargo);
-
     if (event is UpDateCargoIDEvent) {
       print('evento de cargo: ${event.cargoID}');
-      // _updateCargoModeltoState(event.cargoID);
+      _updateCargoModeltoState(event.cargoID);
     }
     if (event is UpDateEixoIDEvent) {
       print('evento de eixo: ${event.eixoID}');
