@@ -66,9 +66,8 @@
     ]
   },
   "UsuarioNoticia": {
-    "ID": "ID formado por: Usuario__Noticia",
-    "usuario": "UsuarioID",
-    "noticia": "NoticiaID",
+    "usuarioID": "UsuarioID",
+    "noticiaID": "NoticiaID",
     "visualizada": false
   },
   "UsuarioPerfil": {
