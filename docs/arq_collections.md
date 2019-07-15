@@ -1,4 +1,15 @@
-# Coleções Uteis
+# Coleções associadas aos modelos
+
+- Perfil
+- Pergunta
+- Questionario
+- Rota
+- SetorCensitario
+- Usuario
+- UsuarioArquivo
+- UsuarioPerfil
 
 
-# Coleções
+# Coleções de teste
+
+As demais.
