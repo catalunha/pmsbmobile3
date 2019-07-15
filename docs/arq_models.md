@@ -1,8 +1,6 @@
 # Models
 Este arquivo descreve algumas regras para a construção de modelos do projeto
 
-![](https://github.com/catalunha/pmsbmobile3/blob/dev/docs/arq_requisitos.svg)
-
 ## Herança do Model
 Todos os modelos devem herda da classe Model que reside em models/base_model.dart
 
