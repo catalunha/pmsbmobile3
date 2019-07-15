@@ -13,6 +13,7 @@ class ComunicacaoCRUDPage extends StatefulWidget {
 
 class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
   final bloc = ComunicacaoCRUDPageBloc();
+  var result = List<Map<String, dynamic>>();
 
   //Dados do formulario
   bool showFab;
@@ -214,30 +215,41 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
   }
 
   _eixos(context) {
-    var result = List<dynamic>();
-    List<String> litems = ["1", "2", "Third", "4"];
+    // List<Map<String, dynamic>> litems = [
+    //   {'id': '1', 'nome': 'um'},
+    //   {'id': '2', 'nome': 'dois'},
+    // ];
     return Column(
       children: <Widget>[
         IconButton(
           icon: Icon(Icons.check_box),
           onPressed: () async {
-            result = await Navigator.push(context,
+            var destinatarioList = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
               return ComunicacaoDestinatariosPage();
             }));
-            print('>>>> Retorno ${result}');
+            if (destinatarioList != null) {
+              bloc.comunicacaoCRUDPageEventSink(
+                  UpdateDestinatarioListEvent(destinatarioList));
+            }
+            // print('>>>> Retorno ${result}');
           },
         ),
-        Column(
-            children: litems
-                .map((item) => Card(
-                      child: Column(
-                        children: <Widget>[
-                          Text('$item'),
-                        ],
-                      ),
-                    ))
-                .toList()),
+        StreamBuilder<ComunicacaoCRUDPageState>(
+            stream: bloc.comunicacaoCRUDPageStateStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text('Sem destinatarios');
+              }
+              if (snapshot.data.destinatarioListMap == null) {
+                return Text('destinatarios vazia');
+              } else {
+                return Column(
+                    children: snapshot.data.destinatarioListMap
+                        .map((item) => Text('${item['nome']}'))
+                        .toList());
+              }
+            })
       ],
     );
 
@@ -430,7 +442,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       length: 3,
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.red,
+            // backgroundColor: Colors.red,
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),

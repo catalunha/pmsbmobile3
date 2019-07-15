@@ -21,7 +21,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
     return Provider<ComunicacaoHomePageBloc>.value(
       value: bloc,
       child: DefaultScaffold(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         title: Text("Comunicação"),
         body: _body(context),
         floatingActionButton: FloatingActionButton(

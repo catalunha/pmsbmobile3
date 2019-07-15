@@ -221,11 +221,11 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   List<Map<String, dynamic>> destinatarioList() {
-    List<Map<String, dynamic>> destinatarioList;
+    List<Map<String, dynamic>> destinatarioList=[];
     for (var usuario in comunicacaoDestinatarioPageState.usuarioList) {
       if (usuario.checked) {
         destinatarioList
-            .add({'usuarioID': '${usuario.id}', '${usuario.nome}': ''});
+            .add({'usuarioID': '${usuario.id}', 'nome':'${usuario.nome}'},);
       }
     }
     return destinatarioList;
