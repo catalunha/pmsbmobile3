@@ -58,10 +58,11 @@
     },
     "distribuida": false,
     "publicar": "2019-01-01 00:00:00",
-    "usuarioIDDestino": [{
-      "id": "UsuarioID",
-      "nome": "nome-valor"
-    }
+    "usuarioIDDestino": [
+      {
+        "id": "UsuarioID",
+        "nome": "nome-valor"
+      }
     ]
   },
   "UsuarioNoticia": {
