@@ -60,10 +60,10 @@ class MyApp extends StatelessWidget {
             "/produto/editar_visual": (context) => EditVisual(),
 
             //comunicacao
-            "/comunicacao": (context) => CommunicationPage(),
+            "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
             "/noticias/noticias_visualizadas": (context) =>
                 NoticiasVisualizadasPage(),
-            "/comunicacao/criar_editar": (context) => CommunicationCreateEdit(),
+            "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
             //administração
             "/administracao/home":(context) => AdministracaoHomePage(),
