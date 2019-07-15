@@ -21,17 +21,6 @@ class ComunicacaoHomePageBloc {
 
   ComunicacaoHomePageBloc(this._firestore) {
     _authBloc.userId.listen(_getNoticiasDoUsuario);
-    print('Deletando...');
-    _firestore.collection(UsuarioModel.collection).snapshots().listen(
-        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
-                print('>>${documentSnapshot.documentID}');
-              if (documentSnapshot.data['celular'].toString() == '999') {
-                print('>.>${documentSnapshot.documentID}');
-                // documentSnapshot.reference.delete(); // nao funciona.
-                // _firestore.collection(UsuarioModel.collection).document(documentSnapshot.documentID).delete();
-              }
-            }));
-    print('Deletou...');
   }
 
   void _getNoticiasDoUsuario(String userId) {
