@@ -87,14 +87,7 @@ class ComunicacaoDestinatarioPageBloc {
   ComunicacaoDestinatarioPageBloc(this._firestore) {
     print('ComunicacaoDestinatarioPageBloc instanciada ....');
     comunicacaoDestinatarioPageEventStream.listen(_mapEventToState);
-    _firestore
-        .collection(CargoModel.collection)
-        .where('celular', isEqualTo: "999")
-        .snapshots()
-        .listen((querySnapshot) =>
-            querySnapshot.documents.forEach((documentSnapshot) {
-              documentSnapshot.reference.delete();
-            }));
+
     _firestore.collection(CargoModel.collection).snapshots().listen(
         (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
               comunicacaoDestinatarioPageState.cargoList.add(Cargo(
