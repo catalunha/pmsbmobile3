@@ -40,8 +40,10 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
                   IconButton(
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/aplicacao/visualizar_respostas');
+                      Navigator.pushNamed(context,'/aplicacao/definir_requisitos');
                       //'/aplicacao/pendencias'
+                      //'/aplicacao/visualizar_respostas'
+                      //'/aplicacao/definir_requisitos'
                     },
                   ),
                   IconButton(

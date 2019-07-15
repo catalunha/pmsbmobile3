@@ -30,7 +30,7 @@ class _VisualizarRespostasPageState extends State<VisualizarRespostasPage> {
   VisualizarRespModelTemp visualizarRespModelTemp =
       new VisualizarRespModelTemp("", "", "resposta conforme tipo");
 
-  _body(BuildContext context) {
+  _bodyTodos(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,10 +100,14 @@ class _VisualizarRespostasPageState extends State<VisualizarRespostasPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultScaffold(
-      backgroundColor: Colors.red,
-      body: _body(context),
-      title: Text("Visualizando Respostas"),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        actions: <Widget>[],
+        centerTitle: true,
+        title: Text("Pendências"),
+      ),
+      body: _bodyTodos(context),
     );
   }
 }

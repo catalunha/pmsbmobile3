@@ -34,8 +34,7 @@ class _PendenciasPageState extends State<PendenciasPage> {
                           title: Text(_tipoperguntas[index]),
                           trailing: IconButton(
                             icon: Icon(Icons.check),
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                           ),
                         );
                       },
@@ -84,10 +83,14 @@ class _PendenciasPageState extends State<PendenciasPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultScaffold(
-      backgroundColor: Colors.red,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        actions: <Widget>[],
+        centerTitle: true,
+        title: Text("Pendências"),
+      ),
       body: _bodyTodos(context),
-      title: Text("Pendências"),
     );
   }
 }

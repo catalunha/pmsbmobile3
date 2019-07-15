@@ -44,6 +44,7 @@ export 'package:pmsbmibile3/pages/questionario/adicionar_editar_questionario_pag
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page.dart';
 export 'package:pmsbmibile3/pages/aplicacao/pendencias_page.dart';
 export 'package:pmsbmibile3/pages/aplicacao/visuaizar_respostas_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/definir_requisitos_page.dart';
 
 //resposta
 export 'package:pmsbmibile3/pages/resposta/resposta_home_page.dart';
