@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 
-class PerguntaWigdetImagem extends StatefulWidget {
+class PerguntaWigdetImagemArquivo extends StatefulWidget {
   @override
-  _PerguntaWigdetImagemState createState() => _PerguntaWigdetImagemState();
+  _PerguntaWigdetImagemArquivoState createState() => _PerguntaWigdetImagemArquivoState();
 }
 
-class _PerguntaWigdetImagemState extends State<PerguntaWigdetImagem> {
+class _PerguntaWigdetImagemArquivoState extends State<PerguntaWigdetImagemArquivo> {
   final key = new GlobalKey<ScaffoldState>();
   String _fileName;
 
@@ -28,7 +28,7 @@ class _PerguntaWigdetImagemState extends State<PerguntaWigdetImagem> {
   }
 
   void _openUserFilesFirebaseList() async {
-    if (_pickingType != FileType.IMAGE || _hasValidMime) {
+    if (_pickingType != FileType.ANY || _hasValidMime) {
       try {
         _paths.addAll(await FilePicker.getMultiFilePath(
             type: _pickingType, fileExtension: _extension));

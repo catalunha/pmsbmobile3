@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 TextEditingController respostaTextoController = new TextEditingController();
 
-Widget perguntaTipoTexto(BuildContext context) {
+Widget perguntaTipoTexto() {
   return Column(children: <Widget>[
     Padding(
         padding: EdgeInsets.all(5),

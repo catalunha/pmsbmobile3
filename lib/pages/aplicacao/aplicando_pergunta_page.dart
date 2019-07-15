@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_escolha_unica.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_coordenada.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_imagem.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
   @override
@@ -11,20 +8,64 @@ class AplicacaoPerguntaPage extends StatefulWidget {
 }
 
 class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
-  
-  List<String> _listaPergunta = [
-    "texto",
-    "imagem",
-    "arquivo",
-    "numero",
-    "coordenada",
-    "escolha unica",
-    "escolha multipla"
+  List<Map<String, dynamic>> _listaPergunta = [
+    {
+      "tipo": "escolha_unica",
+      'parametros': perguntasquesitoescolhaunica,
+      'titulo': "Pergunta escolha unica",
+      "texto":
+          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
+    },
+    {
+      "tipo": "escolha_multipla",
+      'parametros': perguntasquesitoescolhaunica,
+      'titulo': "Pergunta escolha_multipla",
+      "texto":
+          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
+    },
+    {
+      "tipo": "imagem",
+      'parametros': null,
+      'titulo': "Pergunta imagem",
+      "texto":
+          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
+    },
+    {
+      "tipo": "arquivo",
+      'parametros': null,
+      'titulo': "Pergunta arquivo",
+      "texto":
+          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
+    },
+    {
+      "tipo": "texto",
+      'parametros': null,
+      'titulo': "Pergunta texto",
+      "texto":
+          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
+    },
+    {
+      "tipo": "numero",
+      'parametros': null,
+      'titulo': "Pergunta numero",
+      "texto":
+          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
+    },
+    {
+      "tipo": "coordenada",
+      'parametros': null,
+      'titulo': "Pergunta coordenada",
+      "texto":
+          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
+    }
   ];
+
+  MapaPerguntasWidget mapaTipoPergunta = MapaPerguntasWidget();
 
   var _indice = 0;
 
-  var _aplicadorpergunta = PerguntaWigdetCoordenada();
+  var perguntaref;
+  var _aplicadorpergunta;
 
   String _eixo = "eixo exemplo";
   String _questionario = "questionarios exemplo";
@@ -42,6 +83,13 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                     color: Colors.green,
                     onPressed: () {
                       // Pular pra proxima pergunta
+                      setState(() {
+                        if (_indice + 1 >= _listaPergunta.length) {
+                          _indice = 0;
+                        } else {
+                          _indice = _indice + 1;
+                        }
+                      });
                       print("VALOR ${_aplicadorpergunta}");
                     },
                     child: Row(
@@ -75,28 +123,28 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 5),
+          padding: EdgeInsets.only(top: 2),
           child: Text(
             "Eixo - $_eixo",
             style: TextStyle(fontSize: 16, color: Colors.blue),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 5),
+          padding: EdgeInsets.only(top: 2),
           child: Text(
             "Setor - $_setor",
             style: TextStyle(fontSize: 16, color: Colors.blue),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 5),
+          padding: EdgeInsets.only(top: 2),
           child: Text(
             "Questionario - $_questionario",
             style: TextStyle(fontSize: 16, color: Colors.blue),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 5, bottom: 5),
+          padding: EdgeInsets.only(top: 2, bottom: 5),
           child: Text(
             "Local - $_local",
             style: TextStyle(fontSize: 16, color: Colors.blue),
@@ -107,6 +155,9 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
   }
 
   Widget _body() {
+    perguntaref = _listaPergunta[_indice]['tipo'];
+    _aplicadorpergunta = mapaTipoPergunta.getWigetPergunta(tipo: perguntaref, entrada: _listaPergunta[_indice]['parametros']);
+    
     return ListView(
       children: <Widget>[
         _listaDadosSuperior(),
@@ -114,9 +165,8 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         Padding(
             padding: EdgeInsets.all(5),
             child: ListTile(
-                title: Text("Titulo da pergunta:"),
-                subtitle: Text(
-                    "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - "))),
+                title: Text(_listaPergunta[_indice]['titulo']),
+                subtitle: Text(_listaPergunta[_indice]['texto']))),
         Divider(color: Colors.black54),
         _aplicadorpergunta,
         Padding(padding: EdgeInsets.all(5)),

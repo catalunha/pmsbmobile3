@@ -17,19 +17,10 @@ class _PerguntaWigdetCoordenadaState extends State<PerguntaWigdetCoordenada> {
   List<Coordenada> _listaLocalizao = List<Coordenada>();
 
   final key = new GlobalKey<ScaffoldState>();
-  String _fileName;
-  String _path;
-  Map<String, String> _paths = Map<String, String>();
-  String _extension;
-  bool _multiPick = true;
-  bool _hasValidMime = true;
-  FileType _pickingType;
-  TextEditingController _controller = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() => _extension = _controller.text);
   }
 
   _salvarLocalizacao() async {
@@ -41,36 +32,13 @@ class _PerguntaWigdetCoordenadaState extends State<PerguntaWigdetCoordenada> {
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         var error = 'Permission denied';
+        print("ERROR: ${e.code} ");
       }
       currentLocation = null;
     }
   }
 
-  void _openUserFilesFirebaseList() async {
-    if (_pickingType != FileType.IMAGE || _hasValidMime) {
-      try {
-        if (_multiPick) {
-          //_path = null;
-          _paths.addAll(await FilePicker.getMultiFilePath(
-              type: _pickingType, fileExtension: _extension));
-        } else {
-          //_paths = null;
-          _paths.addAll(await FilePicker.getMultiFilePath(
-              type: _pickingType, fileExtension: _extension));
-        }
-      } on PlatformException catch (e) {
-        print("Unsupported operation" + e.toString());
-      }
-      if (!mounted) return;
-      setState(() {
-        _fileName = _path != null
-            ? _path.split('/').last
-            : _paths != null ? _paths.keys.toString() : '...';
-      });
-    }
-  }
-
-  _itemSelecionado(Coordenada coordenada, int index) {
+  _listTileCoordenada(Coordenada coordenada, int index) {
 
     return ListTile(
       leading: Icon(Icons.location_on),
@@ -87,11 +55,11 @@ class _PerguntaWigdetCoordenadaState extends State<PerguntaWigdetCoordenada> {
     );
   }
 
-  Widget makeRadioTiles() {
+  Widget makeList() {
     Set<Widget> list = new Set<Widget>();
 
     for (int i = 0; i < _listaLocalizao.length; i++) {
-      list.add(_itemSelecionado(_listaLocalizao[i],i));
+      list.add(_listTileCoordenada(_listaLocalizao[i],i));
     }
 
     Column column = new Column(
@@ -112,7 +80,7 @@ class _PerguntaWigdetCoordenadaState extends State<PerguntaWigdetCoordenada> {
               _salvarLocalizacao();
             },
           )),
-      _path != null || _paths != null ? makeRadioTiles() : Container()
+      _listaLocalizao != null || _listaLocalizao != null ? makeList() : Container()
     ]));
   }
 }

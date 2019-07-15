@@ -11,9 +11,9 @@ List<Map<String, dynamic>> perguntasquesitoescolhamultipla = [
 ];
 
 class PerguntaEscolhaMultiplaWidget extends StatefulWidget {
-  final List listaOpcoes;
+  final List entrada;
 
-  const PerguntaEscolhaMultiplaWidget({Key key, @required this.listaOpcoes})
+  const PerguntaEscolhaMultiplaWidget({Key key, @required this.entrada,})
       : super(key: key);
 
   @override
@@ -26,18 +26,18 @@ class _PerguntaEscolhaMultiplaWidgetState
   Widget makeRadioTiles() {
     List<Widget> list = new List<Widget>();
 
-    for (int i = 0; i < widget.listaOpcoes.length; i++) {
+    for (int i = 0; i < widget.entrada.length; i++) {
       list.add(new CheckboxListTile(
-        value: widget.listaOpcoes[i]['checkbox'],
+        value: widget.entrada[i]['checkbox'],
         onChanged: (bool value) {
           setState(() {
-            widget.listaOpcoes[i]['checkbox'] = value;
+            widget.entrada[i]['checkbox'] = value;
           });
         },
         activeColor: Colors.green,
         controlAffinity: ListTileControlAffinity.trailing,
         // dependendo de como o valor for recebido alterar essa parte o codigo
-        title: new Text(widget.listaOpcoes[i]['pergunta']),
+        title: new Text(widget.entrada[i]['pergunta']),
       ));
     }
 
@@ -51,7 +51,7 @@ class _PerguntaEscolhaMultiplaWidgetState
   Widget build(BuildContext context) {
     return Container(
         child: Column(children: <Widget>[
-      Padding(padding: EdgeInsets.all(5), child: Text("Selecione uma opcao:")),
+      Padding(padding: EdgeInsets.all(5), child: Text("Selecione as opçoes:")),
       makeRadioTiles()
     ]));
   }

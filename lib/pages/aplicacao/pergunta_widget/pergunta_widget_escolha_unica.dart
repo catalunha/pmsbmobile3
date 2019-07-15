@@ -14,7 +14,7 @@ class PerguntaEscolhaUnicaWidget extends StatefulWidget {
   final List listaOpcoes;
 
   const PerguntaEscolhaUnicaWidget(
-      {Key key, @required this.listaOpcoes = null, this.valor = 0})
+      {Key key, @required this.listaOpcoes, this.valor = 0})
       : super(key: key);
 
   @override
