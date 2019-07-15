@@ -19,7 +19,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
       appBar: AppBar(
         // backgroundColor: Colors.red,
         centerTitle: true,
-        title: Text("Visualizar dados e perfil2"),
+        title: Text("Visualizar dados e perfil"),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 12),
