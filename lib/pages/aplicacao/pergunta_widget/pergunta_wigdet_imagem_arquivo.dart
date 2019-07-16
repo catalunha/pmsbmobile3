@@ -20,6 +20,8 @@ class PerguntaWigdetImagemArquivo extends StatefulWidget {
 
 class _PerguntaWigdetImagemArquivoState
     extends State<PerguntaWigdetImagemArquivo> {
+
+  //o objeto ArquivoLocalListModel tem um metodo 'arquivos.getListaFormatoFirebase( )' que vai retornar a lista de arquivos de acordo com o formato que vai ser enviado ao firebase
   ArquivoLocalListModel arquivos = new ArquivoLocalListModel();
 
   String _mensageaquivo = "Adicionar um novo arquivo :";

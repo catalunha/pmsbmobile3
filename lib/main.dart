@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page.dart';
 import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page.dart';
+import 'package:pmsbmibile3/pages/aplicacao/visuaizar_respostas_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
 import 'package:pmsbmibile3/pages/produto/product_visual.dart';
 import 'package:provider/provider.dart';
@@ -46,11 +47,13 @@ class MyApp extends StatelessWidget {
             "/pergunta/editar_apagar_escolha": (context) =>
                 EditarApagarEscolhaPage(),
 
-            //home
+            //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
             "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
-            "/aplicacao/aplicando_pergunta": (context) =>
-                AplicacaoPerguntaPage(),
+            "/aplicacao/aplicando_pergunta": (context) => AplicacaoPerguntaPage(),
+            "/aplicacao/pendencias": (context) => PendenciasPage(),
+            "/aplicacao/visualizar_respostas": (context) =>  VisualizarRespostasPage(),
+            "/aplicacao/definir_requisitos": (context) => DefinirRequisistosPage(),
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),

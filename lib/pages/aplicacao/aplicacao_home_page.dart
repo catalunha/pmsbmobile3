@@ -41,12 +41,16 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
                       Navigator.pushNamed(context, "/aplicacao/aplicando_pergunta");
+                      //Navigator.pushNamed(context,'/aplicacao/definir_requisitos');
+                      //'/aplicacao/pendencias'
+                      //'/aplicacao/visualizar_respostas'
+                      //'/aplicacao/definir_requisitos'
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.person_add),
                     onPressed: () {
-                      //
+                       Navigator.pushNamed(context, "/aplicacao/pendencias");
                     },
                   ),
                   IconButton(
