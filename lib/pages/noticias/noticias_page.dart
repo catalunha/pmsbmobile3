@@ -175,7 +175,7 @@ class NoticiaTile extends StatelessWidget {
         if (noticia != null) {
           return MarkdownBody(
             //TODO: replace all deve ir para bloc
-            data: noticia.conteudoMarkdown.replaceAll("\\n", "\n"),
+            data: noticia.textoMarkdown.replaceAll("\\n", "\n"),
           );
         } else {
           return Center(

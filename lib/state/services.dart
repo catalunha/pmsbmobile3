@@ -30,7 +30,7 @@ class DatabaseService {
   }) {
     return _firestore
         .collection(NoticiaUsuarioModel.collection)
-        .where("userId", isEqualTo: userId)
+        .where("usuarioID", isEqualTo: userId)
         .where("visualizada", isEqualTo: visualizada)
         .snapshots()
         .map((snap) => snap.documents

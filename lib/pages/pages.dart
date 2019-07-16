@@ -14,9 +14,9 @@ export 'package:pmsbmibile3/pages/geral/loading.dart';
 export 'package:pmsbmibile3/pages/geral/splash.dart';
 
 //comunicação
-export 'package:pmsbmibile3/pages/comunicacao/communication.dart';
-export 'package:pmsbmibile3/pages/comunicacao/communication_create_edit.dart';
-export 'package:pmsbmibile3/pages/comunicacao/modal_filter_list.dart';
+export 'package:pmsbmibile3/pages/comunicacao/comunicacao_home_page.dart';
+export 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page.dart';
+// export 'package:pmsbmibile3/pages/comunicacao/modal_filter_list.dart';
 
 //produto
 export 'package:pmsbmibile3/pages/produto/product.dart';
@@ -35,7 +35,7 @@ export 'package:pmsbmibile3/pages/pergunta/editar_apagar_escolha_page.dart';
 
 //questionario
 export 'package:pmsbmibile3/pages/questionario/questionario_home_page.dart';
-export 'package:pmsbmibile3/pages/questionario/adicionar_editar_questionario_page.dart';
+export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
 
 
 //aplicação

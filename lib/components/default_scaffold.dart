@@ -100,6 +100,7 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/questionario/home');
               },
             ),
+            /**
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Perguntas'),
@@ -109,6 +110,7 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/pergunta/home');
               },
             ),
+            */
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Aplicação'),
@@ -151,7 +153,7 @@ class DefaultDrawer extends StatelessWidget {
               trailing: Icon(Icons.contact_mail),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/comunicacao');
+                Navigator.pushNamed(context, '/comunicacao/home_page');
               },
             ),
             Divider(color: Colors.black45,),

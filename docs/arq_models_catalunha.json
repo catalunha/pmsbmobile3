@@ -16,7 +16,7 @@
     "nome": "nome-valor",
     "celular": "celular-valor",
     "email": "email-valor",
-    "ativo":true,
+    "ativo": true,
     "usuarioArquivoID": {
       "id": "UsuarioArquivoID",
       "url": "url-valor"
@@ -52,18 +52,22 @@
   },
   "Noticia": {
     "titulo": "titulo-valor",
-    "conteudoMarkdown": "conteudoMarkdown-valor",
-    "editor": "UsuarioID",
+    "textoMarkdown": "textoMarkdown-valor",
+    "usuarioIDEditor": {
+      "id": "UsuarioID"
+    },
     "distribuida": false,
-    "datapublicacao": "2019-01-01 00:00:00",
-    "destinatarios": [
-      "UsuarioID"
+    "publicar": "2019-01-01 00:00:00",
+    "usuarioIDDestino": [
+      {
+        "id": "UsuarioID",
+        "nome": "nome-valor"
+      }
     ]
   },
   "UsuarioNoticia": {
-    "ID": "ID formado por: Usuario__Noticia",
-    "usuario": "UsuarioID",
-    "noticia": "NoticiaID",
+    "usuarioID": "UsuarioID",
+    "noticiaID": "NoticiaID",
     "visualizada": false
   },
   "UsuarioPerfil": {
