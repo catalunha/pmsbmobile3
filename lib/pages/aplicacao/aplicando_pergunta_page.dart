@@ -8,51 +8,51 @@ class AplicacaoPerguntaPage extends StatefulWidget {
 }
 
 class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
-  List<Map<String, dynamic>> _listaPergunta = [
+  List<Map<dynamic, dynamic>> _listaPergunta = [
     {
-      "tipo": "escolha_unica",
+      "tipo": TipoPergunta.UnicaEscolha,
       'parametros': perguntasquesitoescolhaunica,
       'titulo': "Pergunta escolha unica",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": "escolha_multipla",
+      "tipo": TipoPergunta.MultiplaEscolha,
       'parametros': perguntasquesitoescolhaunica,
       'titulo': "Pergunta escolha_multipla",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": "imagem",
+      "tipo": TipoPergunta.Imagem,
       'parametros': null,
       'titulo': "Pergunta imagem",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": "arquivo",
+      "tipo": TipoPergunta.Arquivo,
       'parametros': null,
       'titulo': "Pergunta arquivo",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": "texto",
+      "tipo": TipoPergunta.Texto,
       'parametros': null,
       'titulo': "Pergunta texto",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": "numero",
+      "tipo": TipoPergunta.Numero,
       'parametros': null,
       'titulo': "Pergunta numero",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": "coordenada",
+      "tipo": TipoPergunta.Coordenada,
       'parametros': null,
       'titulo': "Pergunta coordenada",
       "texto":

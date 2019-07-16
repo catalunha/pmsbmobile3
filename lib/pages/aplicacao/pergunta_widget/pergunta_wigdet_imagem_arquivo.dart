@@ -1,94 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pmsbmibile3/models/arquivo_local_model.dart';
+
+enum ArquivoTipo { image, aplication }
+
 
 class PerguntaWigdetImagemArquivo extends StatefulWidget {
+  final ArquivoTipo arquivoTipo;
+
+  PerguntaWigdetImagemArquivo({Key key, @required this.arquivoTipo})
+      : super(key: key);
+
   @override
-  _PerguntaWigdetImagemArquivoState createState() => _PerguntaWigdetImagemArquivoState();
+  _PerguntaWigdetImagemArquivoState createState() =>
+      _PerguntaWigdetImagemArquivoState();
 }
 
-class _PerguntaWigdetImagemArquivoState extends State<PerguntaWigdetImagemArquivo> {
-  final key = new GlobalKey<ScaffoldState>();
-  String _fileName;
+class _PerguntaWigdetImagemArquivoState
+    extends State<PerguntaWigdetImagemArquivo> {
+  ArquivoLocalListModel arquivos = new ArquivoLocalListModel();
 
-  String _path;
-  // map de lista de arquivos contendo {chave<nome do arquivo>:path<endereco do arquivo>}
-  Map<String, String> _paths = Map<String, String>();
+  String _mensageaquivo = "Adicionar um novo arquivo :";
+  String _mensageimagem = "Adicionar uma nova imagem :";
 
-  String _extension;
-  bool _multiPick = true;
-  bool _hasValidMime = true;
-  FileType _pickingType;
-  TextEditingController _controller = new TextEditingController();
+  FileType _pickingType = FileType.ANY;
+
+  var newfilepath;
+  var file;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() => _extension = _controller.text);
   }
 
-  void _openUserFilesFirebaseList() async {
-    if (_pickingType != FileType.ANY || _hasValidMime) {
-      try {
-        _paths.addAll(await FilePicker.getMultiFilePath(
-            type: _pickingType, fileExtension: _extension));
-
-        /**
-         if (_multiPick) {
-          //_path = null;
-
-          _paths = await FilePicker.getMultiFilePath(
-              type: _pickingType, fileExtension: _extension);
-        } else {
-          //_paths = null;
-
-          _paths.addAll(await FilePicker.getMultiFilePath(
-              type: _pickingType, fileExtension: _extension));
-        }
-
-         */
-
-      } on PlatformException catch (e) {
-        print("Unsupported operation" + e.toString());
+  void _selecionarNovosArquivos() async {
+    newfilepath = null;
+    try {
+      newfilepath = await FilePicker.getMultiFilePath(type: _pickingType);
+      if (newfilepath != null) {
+        setState(() {
+          arquivos.setNovosArquivo(newfilepath);
+        });
       }
-      if (!mounted) return;
-      setState(() {
-        _fileName = _path != null
-            ? _path.split('/').last
-            : _paths != null ? _paths.keys.toString() : '...';
-      });
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
     }
+    //if (!mounted) return;
   }
 
-  _itemSelecionado(index) {
-    final bool isMultiPath = _paths != null && _paths.isNotEmpty;
-    final String name =
-        (isMultiPath ? _paths.keys.toList()[index] : _fileName ?? '...');
-    final path = isMultiPath ? _paths.values.toList()[index].toString() : _path;
-    print('--- ---- --- $_paths');
+  _listTileArquivo(ArquivoLocalModel arquivo) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: AssetImage(path),
+        backgroundImage: AssetImage(arquivo.endereco),
       ),
       trailing: IconButton(
         icon: Icon(Icons.delete),
         onPressed: () {
           //apagar esta imagem
           setState(() {
-            _paths.remove(name);
+            arquivos.removerArquivoLista(arquivo);
           });
         },
       ),
-      title: Text(name),
+      title: Text(arquivo.nome),
       subtitle: Text("Tipo: Imagem"),
     );
   }
 
   Widget makeRadioTiles() {
     Set<Widget> list = new Set<Widget>();
+    var lista = arquivos.getListaAquivos();
 
-    for (int i = 0; i < _paths.length; i++) {
-      list.add(_itemSelecionado(i));
+    for (int i = 0; i < lista.length; i++) {
+      list.add(_listTileArquivo(arquivos.getArquivoPorIndex(i)));
     }
 
     Column column = new Column(
@@ -102,14 +88,14 @@ class _PerguntaWigdetImagemArquivoState extends State<PerguntaWigdetImagemArquiv
     return Container(
         child: Column(children: <Widget>[
       ListTile(
-          title: Text("Selecione as imagens"),
+          title: Text("${widget.arquivoTipo == ArquivoTipo.aplication ? _mensageaquivo: _mensageimagem}"),
           trailing: IconButton(
-            icon: Icon(Icons.camera_alt),
+            icon: Icon(Icons.add),
             onPressed: () {
-              _openUserFilesFirebaseList();
+              _selecionarNovosArquivos();
             },
           )),
-      _path != null || _paths != null ? makeRadioTiles() : Container()
+      makeRadioTiles()
     ]));
   }
 }
