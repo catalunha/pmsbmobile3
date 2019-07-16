@@ -50,11 +50,20 @@
       }
     ]
   },
+  "UsuarioArquivo": {
+    "_comment": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basico_sobre_HTTP/MIME_types/Complete_list_of_MIME_types",
+    "usuarioID": "UsuarioID",
+    "contentType": "text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
+    "storagePath": "storagePath-valor",
+    "titulo": "titulo-valor",
+    "url": "url-valor"
+  },
   "Noticia": {
     "titulo": "titulo-valor",
     "textoMarkdown": "textoMarkdown-valor",
     "usuarioIDEditor": {
-      "id": "UsuarioID"
+      "id": "UsuarioID",
+      "nome": "UsuarioIDNome"
     },
     "distribuida": false,
     "publicar": "2019-01-01 00:00:00",
@@ -70,31 +79,28 @@
     "noticiaID": "NoticiaID",
     "visualizada": false
   },
+  "Perfil": {
+    "nome": "nome-valor",
+    "_comment": "serão: text | image | application | audio | video ",
+    "contentType": "contentType-valor"
+  },
   "UsuarioPerfil": {
-    "ID": "ID formado por: UsuarioID_PerfilID",
-    "usuarioID": "UsuarioID",
+    "usuarioID": {
+      "id": "UsuarioID",
+      "nome": "UsuarioIDNome"
+    },
     "perfilID": {
       "id": "PerfilID",
       "nome": "nome-valor",
       "contentType": "contentType-valor"
     },
-    "alfanumerico": "alfanumerico-valor",
+    "_comment": "quando criar o perfil nao criar o campo textPlain ou usuarioArquivoID. nao os dois",
+    "_comment2": "quanto o usuario editar o perfil é que cria estes campos dependendo da situação",
+    "textPlain": "textPlain-valor",
     "usuarioArquivoID": {
       "id": "UsuarioArquivoID",
       "url": "url-valor"
     }
-  },
-  "UsuarioArquivo": {
-    "_comment": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basico_sobre_HTTP/MIME_types/Complete_list_of_MIME_types",
-    "usuarioID": "UsuarioID",
-    "contentType": "alfanumerico | text/plain | application/pdf | image/png | image/svg+xml | image/jpeg | application/msword | text/csv | text/html | application/json ",
-    "storagePath": "storagePath-valor",
-    "titulo": "titulo-valor",
-    "url": "url-valor"
-  },
-  "Perfil": {
-    "nome": "nome-valor",
-    "contentType": "contentType-valor"
   },
   "PerguntaTipo": {
     "ID": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla",

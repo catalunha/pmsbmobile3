@@ -74,16 +74,16 @@ class ComunicacaoCRUDPageState {
     titulo = noticiaModel.titulo;
     textoMarkdown = noticiaModel.textoMarkdown;
     publicar = noticiaModel.publicar;
-    print('>>> noticiaModel.id >>> ${noticiaModel.id}');
-    print(
-        '>>> noticiaModel.usuarioIDDestino >>> ${noticiaModel.usuarioIDDestino}');
+    // print('>>> noticiaModel.id >>> ${noticiaModel.id}');
+    // print(
+    //     '>>> noticiaModel.usuarioIDDestino >>> ${noticiaModel.usuarioIDDestino}');
     destinatarioListMap =
         noticiaModel.usuarioIDDestino.map((v) => v.toMap()).toList();
   }
 
   NoticiaModel toNoticiaModel() {
     List<Destinatario> usuarioIDDestino = [];
-    print('>>>>>> ${destinatarioListMap}');
+    // print('>>>>>> ${destinatarioListMap}');
     // destinatarioListMap.map((item) => destinatarioList.add(item['usuarioID']));
     destinatarioListMap.forEach((item) {
       // // print(item['usuarioID']);
