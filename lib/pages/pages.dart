@@ -34,8 +34,6 @@ export 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page.da
 export 'package:pmsbmibile3/pages/pergunta/criar_ordenar_escolha_page.dart';
 export 'package:pmsbmibile3/pages/pergunta/editar_apagar_escolha_page.dart';
 
-
-
 //questionario
 export 'package:pmsbmibile3/pages/questionario/questionario_home_page.dart';
 export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
@@ -43,6 +41,12 @@ export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
 
 //aplicação
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page.dart';
+
+export 'package:pmsbmibile3/pages/aplicacao/pendencias_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/visuaizar_respostas_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/definir_requisitos_page.dart';
 
 //resposta
 export 'package:pmsbmibile3/pages/resposta/resposta_home_page.dart';

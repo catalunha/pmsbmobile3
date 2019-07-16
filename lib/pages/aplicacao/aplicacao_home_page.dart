@@ -15,7 +15,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
 
   String _eixo = "eixo exemplo";
   String _setor = "setor exemplo";
-
+  
   _cardText(String text) {
     return Padding(
         padding: EdgeInsets.only(top: 10, left: 5),
@@ -40,19 +40,24 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
                   IconButton(
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
-                      //
+                      Navigator.pushNamed(context, "/aplicacao/aplicando_pergunta");
+                      //Navigator.pushNamed(context,'/aplicacao/definir_requisitos');
+                      //'/aplicacao/pendencias'
+                      //'/aplicacao/visualizar_respostas'
+                      //'/aplicacao/definir_requisitos'
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.person_add),
                     onPressed: () {
-                      //
+                       Navigator.pushNamed(context, "/aplicacao/pendencias");
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       // Abrir questionário
+                      Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
                     },
                   ),
                 ],

@@ -21,6 +21,13 @@ abstract class Pergunta extends FirestoreModel{
     this.tipo,
   }): super(id);
 }
+
+class Coordenada{
+  Coordenada({this.lat, this.long});
+  num lat;
+  num long;
+}
+
 /*
 class PerguntaUnicaEscolha extends Pergunta{
   List<String> listaPossivelEscolha;

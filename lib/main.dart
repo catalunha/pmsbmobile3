@@ -44,13 +44,20 @@ class MyApp extends StatelessWidget {
             "/pergunta/editar_apagar_escolha": (context) =>
                 EditarApagarEscolhaPage(),
 
-            //home
+            //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
+            "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
+            "/aplicacao/aplicando_pergunta": (context) => AplicacaoPerguntaPage(),
+            "/aplicacao/pendencias": (context) => PendenciasPage(),
+            "/aplicacao/visualizar_respostas": (context) =>  VisualizarRespostasPage(),
+            "/aplicacao/definir_requisitos": (context) => DefinirRequisistosPage(),
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),
-            "/resposta/resposta_questionario": (context) => RespostaQuestionarioPage(),
-            "/resposta/questionario_resposta": (context) => QuestionarioRespostaPage(),
+            "/resposta/resposta_questionario": (context) =>
+                RespostaQuestionarioPage(),
+            "/resposta/questionario_resposta": (context) =>
+                QuestionarioRespostaPage(),
 
             //sintese
             "/sintese/home": (context) => SinteseHomePage(),
