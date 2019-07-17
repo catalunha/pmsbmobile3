@@ -265,7 +265,7 @@ class AtualizarEmailState extends State<AtualizarEmail> {
               TextField(
                 controller: _controller,
                 onChanged: (email) =>
-                    bloc.configuracaoPageEventSink(UpdateEmailEvent(email)),
+                    bloc.configuracaoPageEventSink(UpdateEmailEvent(_controller.text)),
               ),
             ],
           );
