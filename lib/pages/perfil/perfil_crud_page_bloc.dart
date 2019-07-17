@@ -56,7 +56,7 @@ class PerfilCRUDPageBloc {
   }
 
   void _mapEventToState(PerfilCRUDPageEvent event) {
-    if (event is UpDateUsuarioPerfilIDEvent)  {
+    if (event is UpDateUsuarioPerfilIDEvent) {
       perfilCRUDPageState.usuarioPerfilID = event.usuarioPerfilID;
       _firestore
           .collection(UsuarioPerfilModel.collection)
@@ -65,7 +65,12 @@ class PerfilCRUDPageBloc {
           .map((snapDocs) => UsuarioPerfilModel(id: snapDocs.documentID)
               .fromMap(snapDocs.data))
           .pipe(_usuarioPerfilModelController);
+      usuarioPerfilModelStream.listen((usuarioPerfilModel) {
+        print('>> usuarioPerfilModel >> ${usuarioPerfilModel}');
+        perfilCRUDPageState.textPlain = usuarioPerfilModel.textPlain;
+      });
     }
+
     if (event is UpDateTextPlainEvent) {
       perfilCRUDPageState.textPlain = event.textPlain;
       // print(

@@ -50,8 +50,13 @@ class PerfilPage extends StatelessWidget {
           : Colors.white,
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, "/perfil/crud",
-              arguments: usuarioPerfil.id);
+          if (usuarioPerfil.perfilID.contentType == 'text') {
+            Navigator.pushNamed(context, "/perfil/crudtext",
+                arguments: usuarioPerfil.id);
+          } else {
+            Navigator.pushNamed(context, "/perfil/crudarq",
+                arguments: usuarioPerfil.id);
+          }
         },
         child: ListTile(
           title: Text('${usuarioPerfil.perfilID.nome}'),
@@ -60,7 +65,7 @@ class PerfilPage extends StatelessWidget {
               : usuarioPerfil.usuarioArquivoID != null
                   ? Text('Arquivo anexado com sucesso.')
                   : Text('Informe o que se pede.'),
-          trailing: Icon(Icons.edit),
+          trailing: usuarioPerfil.perfilID.contentType == 'text' ? Icon(Icons.edit):Icon(Icons.art_track),
         ),
       ),
     );
