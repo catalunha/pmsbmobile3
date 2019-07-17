@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model2.dart';
@@ -23,7 +26,8 @@ class PerfilCRUDArqPage extends StatefulWidget {
 }
 
 class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
-  String newfilepath;
+  String arquivoPath;
+  File imagem;
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +88,10 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
               trailing: IconButton(
                   icon: Icon(Icons.file_download),
                   onPressed: () async {
-                    var filepath =
-                        await FilePicker.getFilePath(type: FileType.IMAGE);
+                    await _selecionarNovosArquivos();
                     bloc.perfilCRUDArqPageEventSink(
-                        UpDateArquivoLocalEvent(filepath));
+                        UpDateArquivoPathEvent(arquivoPath));
+                    print('>> arquivoPath 2 >> ${arquivoPath}');
                   }),
             ),
           ),
@@ -97,10 +101,9 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
               trailing: IconButton(
                   icon: Icon(Icons.file_download),
                   onPressed: () async {
-                    // var filepath =
-                    //     await ImagePicker.pickImage(source: ImageSource.camera);
-                    // bloc.perfilCRUDArqPageEventSink(
-                    //     UpDateArquivoLocalEvent(filepath));
+                    await _selecionarNovaImagem();
+                    bloc.perfilCRUDArqPageEventSink(UpDateImagemEvent(imagem));
+                    print('>> camera 2 >> ${imagem.path}');
                   }),
             ),
           ),
@@ -114,18 +117,20 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
                 );
               }
               dynamic imageNova = FlutterLogo();
-              print('snapshot.data.arquivoLocal ${snapshot.data.arquivoLocal}');
-              if (snapshot.data.arquivoLocal != null) {
-                // imageNova = AssetImage(snapshot.data.arquivoLocal);
+              print(
+                  'snapshot.data.arquivoPath 1 ${snapshot.data.arquivo?.path}');
+              if (snapshot.data.arquivo != null) {
+                // imageNova = AssetImage(snapshot.data.arquivoPath);
                 imageNova = SquareImage(
-                  image: AssetImage(snapshot.data.arquivoLocal),
+                  image: AssetImage(snapshot.data.arquivo.path),
                 );
-                print('>> imageNova >>${imageNova}');
+                print(
+                    'snapshot.data.arquivoLocal 2 ${snapshot.data.arquivo?.path}');
               }
               return Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text('Nova imagem'),
+                    title: Text('Nova imagem: ${snapshot.data.arquivo?.path}'),
                   ),
                   Row(
                     children: <Widget>[
@@ -146,102 +151,14 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
               // return Text('...');
             },
           ),
-
-          // Row(
-          //   children: <Widget>[
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //     Expanded(
-          //       flex: 6,
-          //       child: FlutterLogo(),
-          //     ),
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //   ],
-          // ),
-          // Row(
-          //   children: <Widget>[
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //     Expanded(
-          //       flex: 96,
-          //       child: SquareImage(
-          //         image: NetworkImage(
-          //             // 'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/catalunha2.JPG?alt=media&token=cd0ed0da-3c59-46a8-b107-ab5a1c82f326'),
-          //             'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/cpf-1-not1397.jpg?alt=media&token=a0e520ca-5f6e-48bf-96e4-1448caa01b9e'),
-          //       ),
-          //     ),
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //   ],
-          // ),
-          // Row(
-          //   children: <Widget>[
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //     Expanded(
-          //       flex: 96,
-          //       child: Image.network(
-          //           'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/cpf-1-not1397.jpg?alt=media&token=a0e520ca-5f6e-48bf-96e4-1448caa01b9e'),
-          //     ),
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //   ],
-          // )
-          // Row(
-          //   children: <Widget>[
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //     Expanded(
-          //       flex: 6,
-          //       child: Image.asset(
-          //         'assets/images/logos/Splash_PMSB.png',
-          //         // '/storage/emulated/0/DCIM/Camera/20190717_102238.jpg',
-          //         // '/storage/emulated/0/DCIM/Camera/20190711_194559.jpg',
-          //         width: 100,
-          //       ),
-          //     ),
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //   ],
-          // ),
-          // ListTile(
-          //     leading: CircleAvatar(
-          //   backgroundImage: AssetImage(
-          //       '/storage/emulated/0/DCIM/Camera/20190717_073039.jpg'),
-          // )),
-          // Row(
-          //   children: <Widget>[
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //     Expanded(
-          //       flex: 96,
-          //       child: SquareImage(
-          //         image: AssetImage(
-          //             // '/storage/emulated/0/DCIM/Camera/20190717_073039.jpg'),
-          //             '/storage/emulated/0/DCIM/Camera/20190711_194559.jpg'),
-          //             // '/storage/emulated/0/DCIM/Camera/20190709_141433.jpg'),
-          //       ),
-          //     ),
-          //     Spacer(
-          //       flex: 2,
-          //     ),
-          //   ],
-          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // bloc.perfilCRUDPageEventSink(SaveStateToFirebaseEvent());
+          bloc.perfilCRUDArqPageEventSink(UpLoadEvent());
+          Navigator.pop(context);
+
+          print('>>>> >>>>> enviar');
           // Navigator.pop(context);
         },
         child: Icon(Icons.check),
@@ -249,15 +166,127 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
     );
   }
 
-  void _selecionarNovosArquivos() async {
+  Future<String> _selecionarNovosArquivos() async {
     try {
-      newfilepath = await FilePicker.getFilePath(type: FileType.ANY);
-      if (newfilepath != null) {
-        print('>> newfilepath 1 >> ${newfilepath}');
+      arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
+      if (arquivoPath != null) {
+        print('>> newfilepath 1 >> ${arquivoPath}');
+        return arquivoPath;
       }
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     }
-    //if (!mounted) return;
   }
+
+  Future<File> _selecionarNovaImagem() async {
+    imagem = null;
+    try {
+      imagem = await ImagePicker.pickImage(source: ImageSource.camera);
+      if (imagem != null) {
+        print('>> camera 1 >> ${imagem}');
+        return imagem;
+
+      }
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+  }
+}
+
+class Lixo {
+  // Row(
+  //   children: <Widget>[
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //     Expanded(
+  //       flex: 6,
+  //       child: FlutterLogo(),
+  //     ),
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //   ],
+  // ),
+  // Row(
+  //   children: <Widget>[
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //     Expanded(
+  //       flex: 96,
+  //       child: SquareImage(
+  //         image: NetworkImage(
+  //             // 'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/catalunha2.JPG?alt=media&token=cd0ed0da-3c59-46a8-b107-ab5a1c82f326'),
+  //             'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/cpf-1-not1397.jpg?alt=media&token=a0e520ca-5f6e-48bf-96e4-1448caa01b9e'),
+  //       ),
+  //     ),
+  //     Spacer(
+  //       flex:ressed: () async {
+  //   var filepath =
+  //       await FilePicker.getFilePath(type: FileType.IMAGE);
+  //   bloc.perfilCRUDArqPageEventSink(
+  //       UpDateArquivoLocalEvent(filepath));
+  // } 2,
+  //     ),
+  //   ],
+  // ),
+  // Row(
+  //   children: <Widget>[
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //     Expanded(
+  //       flex: 96,
+  //       child: Image.network(
+  //           'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/cpf-1-not1397.jpg?alt=media&token=a0e520ca-5f6e-48bf-96e4-1448caa01b9e'),
+  //     ),
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //   ],
+  // )
+  // Row(
+  //   children: <Widget>[
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //     Expanded(
+  //       flex: 6,
+  //       child: Image.asset(
+  //         'assets/images/logos/Splash_PMSB.png',
+  //         // '/storage/emulated/0/DCIM/Camera/20190717_102238.jpg',
+  //         // '/storage/emulated/0/DCIM/Camera/20190711_194559.jpg',
+  //         width: 100,
+  //       ),
+  //     ),
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //   ],
+  // ),
+  // ListTile(
+  //     leading: CircleAvatar(
+  //   backgroundImage: AssetImage(
+  //       '/storage/emulated/0/DCIM/Camera/20190717_073039.jpg'),
+  // )),
+  // Row(
+  //   children: <Widget>[
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //     Expanded(
+  //       flex: 96,
+  //       child: SquareImage(
+  //         image: AssetImage(
+  //             // '/storage/emulated/0/DCIM/Camera/20190717_073039.jpg'),
+  //             '/storage/emulated/0/DCIM/Camera/20190711_194559.jpg'),
+  //             // '/storage/emulated/0/DCIM/Camera/20190709_141433.jpg'),
+  //       ),
+  //     ),
+  //     Spacer(
+  //       flex: 2,
+  //     ),
+  //   ],
+  // ),
 }

@@ -16,43 +16,34 @@ class BlocState {
 }
 
 class UploadBloc {
-  // Database
   final fsw.Firestore _firestore;
-
-  // Storage
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-
-  //Estado
   final blocState = BlocState();
-
-  //Autenticacao
+  final FirebaseStorage _storage = FirebaseStorage.instance;
   final AuthBloc _authBloc =
       AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
-  //String File Path
-  final _filePathController = BehaviorSubject<String>();
-  Function get uploadFromPath => _filePathController.sink.add;
+  final _filePath = BehaviorSubject<String>();
 
-  //Event StorageTaks
+  Function get uploadFromPath => _filePath.sink.add;
+
   final _events = BehaviorSubject<StorageTaskEvent>();
   StreamSubscription<StorageTaskEvent> _eventsSubscription;
+
   BehaviorSubject<StorageTaskEvent> get events => _events.stream;
 
-  //
   Observable<bool> uploadTasks;
 
-  // ArquivoModel
-  final _arquivoModelController = BehaviorSubject<ArquivoModel>();
-  Stream<ArquivoModel> get arquivo => _arquivoModelController.stream;
-  StreamSubscription<ArquivoModel> _arquivoModelControllerSubscriptio;
+  final _arquivo = BehaviorSubject<ArquivoModel>();
 
-  //Inicializando
+  Stream<ArquivoModel> get arquivo => _arquivo.stream;
+  StreamSubscription<ArquivoModel> _arquivoSubscriptio;
+
   UploadBloc(this._firestore) {
     _authBloc.userId.listen((userId) => blocState.userId = userId);
 
     uploadTasks = Observable.combineLatest2(
       _authBloc.userId,
-      _filePathController.stream.where((String filePath) => filePath != null),
+      _filePath.stream.where((String filePath) => filePath != null),
       _uploadFromPathHandler,
     );
     //uploadTasks.listen((_) => print("uploadTask iniciada"));
@@ -85,15 +76,15 @@ class UploadBloc {
   }
 
   void dispose() {
-    _filePathController.close();
+    _filePath.close();
     _events.close();
-    _arquivoModelController.close();
-    _arquivoModelControllerSubscriptio.cancel();
+    _arquivo.close();
+    _arquivoSubscriptio.cancel();
   }
 
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
-    print('>>>>>> Iniciando StorageTaskEvent');
     _uploadSucess() async {
+      var ref = _firestore.collection(ArquivoModel.collection);
       var arquivo = ArquivoModel(
         userId: blocState.userId,
         contentType: storageTaskEvent.snapshot.storageMetadata.contentType,
@@ -101,32 +92,15 @@ class UploadBloc {
         titulo: storageTaskEvent.snapshot.storageMetadata.name,
         url: await storageTaskEvent.snapshot.ref.getDownloadURL(),
       );
-      var ref = _firestore.collection(ArquivoModel.collection);
+
       var doc = ref.document();
       doc.setData(arquivo.toMap());
       doc
           .snapshots()
           .map((snap) => ArquivoModel(id: doc.documentID).fromMap(snap.data))
-          .pipe(_arquivoModelController);
+          .pipe(_arquivo);
     }
-    // void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
-    //   _uploadSucess() async {
-    //     var ref = _firestore.collection(ArquivoModel.collection);
-    //     var arquivo = ArquivoModel(
-    //       userId: blocState.userId,
-    //       contentType: storageTaskEvent.snapshot.storageMetadata.contentType,
-    //       storagePath: storageTaskEvent.snapshot.storageMetadata.path,
-    //       titulo: storageTaskEvent.snapshot.storageMetadata.name,
-    //       url: await storageTaskEvent.snapshot.ref.getDownloadURL(),
-    //     );
 
-    //     var doc = ref.document();
-    //     doc.setData(arquivo.toMap());
-    //     doc
-    //         .snapshots()
-    //         .map((snap) => ArquivoModel(id: doc.documentID).fromMap(snap.data))
-    //         .pipe(_arquivoModelController);
-    //   }
     switch (storageTaskEvent.type) {
       case StorageTaskEventType.resume:
         // TODO: Handle this case.
