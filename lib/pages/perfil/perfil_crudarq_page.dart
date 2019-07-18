@@ -1,23 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/usuario_perfil_model2.dart';
-// import 'package:pmsbmibile3/pages/perfil/perfil_crud_page_bloc.dart';
+import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:file_picker/file_picker.dart';
-// import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-
-import 'package:pmsbmibile3/models/models.dart';
-import 'package:pmsbmibile3/state/services.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
-
-import 'package:pmsbmibile3/pages/perfil/editar_variavel_bloc.dart';
 
 class PerfilCRUDArqPage extends StatefulWidget {
   // PerfilCRUDPage({Key key}) : super(key: key);
@@ -102,8 +93,10 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
                   icon: Icon(Icons.file_download),
                   onPressed: () async {
                     await _selecionarNovaImagem();
-                    bloc.perfilCRUDArqPageEventSink(UpDateImagemEvent(imagem));
-                    print('>> camera 2 >> ${imagem.path}');
+                    if (imagem != null && imagem.path != null) {
+                      bloc.perfilCRUDArqPageEventSink(
+                          UpDateImagemEvent(imagem));
+                    }
                   }),
             ),
           ),
@@ -122,7 +115,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
               if (snapshot.data.arquivo != null) {
                 // imageNova = AssetImage(snapshot.data.arquivoPath);
                 imageNova = SquareImage(
-                  image: AssetImage(snapshot.data.arquivo.path),
+                  image: AssetImage(snapshot.data.arquivo?.path),
                 );
                 print(
                     'snapshot.data.arquivoLocal 2 ${snapshot.data.arquivo?.path}');
@@ -130,7 +123,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
               return Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text('Nova imagem: ${snapshot.data.arquivo?.path}'),
+                    title: Text('Nova imagem:'),
                   ),
                   Row(
                     children: <Widget>[
@@ -157,9 +150,6 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
         onPressed: () {
           bloc.perfilCRUDArqPageEventSink(UpLoadEvent());
           Navigator.pop(context);
-
-          print('>>>> >>>>> enviar');
-          // Navigator.pop(context);
         },
         child: Icon(Icons.check),
       ),
@@ -185,7 +175,6 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
       if (imagem != null) {
         print('>> camera 1 >> ${imagem}');
         return imagem;
-
       }
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());

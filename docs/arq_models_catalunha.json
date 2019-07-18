@@ -145,7 +145,7 @@
     "referencia": "uid",
     "anterior": "PerguntaID->referencia || null",
     "posterior": "PerguntaID->referencia || null",
-    "ordem":0,
+    "ordem": 0,
     "questionarioID": {
       "id": "QuestionarioID",
       "nome": "QuestionarioID->nome"
@@ -205,7 +205,7 @@
     ]
   },
   "PerguntaAplicada": {
-    "_comment":"idem a Pergunta. Com as devidas alterações."
+    "_comment": "idem a Pergunta. Com as devidas alterações."
   },
   "PerguntaAplicadaArquivo": {
     "usuarioID": {

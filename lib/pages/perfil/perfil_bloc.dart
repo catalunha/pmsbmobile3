@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:pmsbmibile3/models/arquivo_model.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
@@ -9,6 +10,7 @@ class ConteudoVariavelUsuarioBloc{
   BehaviorSubject<ArquivoModel> _streamArquivo = BehaviorSubject<ArquivoModel>();
   Stream<ArquivoModel> get arquivo => _streamArquivo.stream;
   Function get setArquivoId => _arquivoIdController.sink.add;
+
 
   ConteudoVariavelUsuarioBloc(this._firestore){
     _arquivoIdController.listen(getArquivo);

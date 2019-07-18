@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart' as path;
-import 'package:flutter/cupertino.dart';
-import 'package:pmsbmibile3/state/upload_bloc.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/usuario_perfil_model2.dart';
 
-import 'package:pmsbmibile3/api/api.dart';
-import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:uuid/uuid.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/state/upload_bloc.dart';
+import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 
 class PerfilCRUDArqPageEvent {}
 
@@ -45,7 +42,7 @@ class PerfilCRUDArqPageState {
   @override
   String toString() {
     // TODO: implement toString
-    return 'PerfilCRUDArqPageState.toString: usuarioPerfilID: $usuarioPerfilID | arquivo: ${arquivo.path} | usuarioArquivoIDurl: $usuarioArquivoIDurl';
+    return 'PerfilCRUDArqPageState.toString: usuarioPerfilID: $usuarioPerfilID | arquivo: ${arquivo?.path} | usuarioArquivoIDurl: $usuarioArquivoIDurl';
   }
 }
 
@@ -77,25 +74,16 @@ class PerfilCRUDArqPageBloc {
 
   //UpLoadFile
   final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
-  // final _imagemPerfilController = BehaviorSubject<String>();
-  // Function get imagemPerfilSink => _imagemPerfilController.sink.add;
 
   PerfilCRUDArqPageBloc(this._firestore) {
     perfilCRUDArqPageEventStream.listen(_mapEventToState);
-    // _imagemPerfilController.listen(_imagemPerfilUpload);
   }
 
   void dispose() {
     _perfilCRUDArqPageStateController.close();
     _usuarioPerfilModelController.close();
-    // _imagemPerfilController.close();
   }
 
-  // _imagemPerfilUpload(String filePath) {
-  //   print('>>>>> filepath: $filePath');
-  //   perfilCRUDArqPageState.arquivoLocal = filePath;
-  //   uploadBloc.uploadFromPath(perfilCRUDArqPageState.arquivoLocal);
-  // }
 
   _mapEventToState(PerfilCRUDArqPageEvent event) {
     if (event is UpDateUsuarioPerfilIDEvent) {
@@ -117,36 +105,24 @@ class PerfilCRUDArqPageBloc {
       perfilCRUDArqPageState.arquivoPath = event.arquivoPath;
       File arquivo = File(perfilCRUDArqPageState.arquivoPath);
       perfilCRUDArqPageState.arquivo = arquivo;
-      // uploadBloc.uploadFromPath(perfilCRUDArqPageState.arquivoPath);
     }
     if (event is UpDateImagemEvent) {
       perfilCRUDArqPageState.imagem = event.imagem;
       perfilCRUDArqPageState.arquivo = perfilCRUDArqPageState.imagem;
-
-      // perfilCRUDArqPageState.arquivoPath = event.imagem.path;
-
-      // File arquivo = File(perfilCRUDArqPageState.arquivoPath);
-      // perfilCRUDArqPageState.arquivo = arquivo;
-
     }
     if (event is UpLoadEvent) {
-      // uploadfirebaseStorage(perfilCRUDArqPageState.arquivo);
-      saveStateToFirebaseEvent(perfilCRUDArqPageState.arquivo);
+      if (perfilCRUDArqPageState.arquivo != null) {
+        saveStateToFirebaseEvent(perfilCRUDArqPageState.arquivo);
+      }
     }
 
     perfilCRUDArqPageStateSink(perfilCRUDArqPageState);
-    // perfilCRUDArqPageStateSink(perfilCRUDArqPageState);
-
-    // print('Oiiii');
-    print(
-        '>> perfilCRUDArqPageState.toString() >> ${perfilCRUDArqPageState.toString()}');
   }
 
   Future<String> uploadfirebaseStorage(File file) async {
     print('Storaging to ${file}');
     File _file = file;
 
-    // String fileName = path.basename(_file.path);
     final uuid = Uuid();
     final String filename = uuid.v4();
     final storageRef = await FirebaseStorage.instance.ref().child(filename);
@@ -164,6 +140,11 @@ class PerfilCRUDArqPageBloc {
     _firestore
         .collection(UsuarioPerfilModel.collection)
         .document(perfilCRUDArqPageState.usuarioPerfilID)
-        .setData({"usuarioArquivoID":{"id":"","url":perfilCRUDArqPageState.getDownloadURL}}, merge: true);
+        .setData({
+      "usuarioArquivoID": {
+        "id": "${perfilCRUDArqPageState.usuarioPerfilID}",
+        "url": perfilCRUDArqPageState.getDownloadURL
+      }
+    }, merge: true);
   }
 }

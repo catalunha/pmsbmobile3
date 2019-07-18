@@ -13,16 +13,13 @@ Todos os arquivos de declaração de modelo devem terminar com o sufixo [nome_do
 Todos os nomes de classes de modelos devem terminar com o sufixo Model [NomeDoModelo]Model
 Exemplo para modelos das notícias:
 ~~~
-$ nano /lib/models/noticia_model.dart
-...
+$ cat /lib/models/noticia_model.dart
 class NoticiaModel{
-...
 }
-...
 ~~~
 
 # JSON
-## Auto-Generation code json-to-dart
+## Auto-Generation class json-to-dart
 Alguns geradores de codigo ajudam.
 https://javiercbk.github.io/json_to_dart/
 Teste com:
@@ -33,3 +30,5 @@ Teste com:
 ## Visualizadores de json
 https://jsoneditoronline.org/
 http://jsonviewer.stack.hu/
+
+# Comentario de cada modelo
