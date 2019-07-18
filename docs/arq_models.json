@@ -108,9 +108,8 @@
     },
     "ordem": 0,
     "perguntaTipo": {
-      "perguntaTipoID": "PerguntaTipoID",
+      "id": "PerguntaTipoID",
       "nome": "PerguntaTipo_nome",
-      "referencia": "PerguntaTipo_referencia"
     },
     "titulo": "titulo-valor",
     "textoMarkdown": "texto-valor",
