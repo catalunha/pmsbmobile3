@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pmsbmibile3/models/arquivo_local_model.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart';
+import 'package:flutter/rendering.dart';
+
+import 'dart:io';
+import 'dart:isolate';
+import 'package:image/image.dart' as img;
 
 enum ArquivoTipo { image, aplication }
+
+class DecodeParam {
+  final File file;
+  final SendPort sendPort;
+  DecodeParam(this.file, this.sendPort);
+}
 
 class PerguntaWigdetImagemArquivo extends StatefulWidget {
   final ArquivoTipo arquivoTipo;
@@ -39,12 +50,13 @@ class _PerguntaWigdetImagemArquivoState
   }
 
   Future _selecionarNovaImagem() async {
-    newfilepath = null;
+    File newfile = null;
     try {
-      newfilepath = await ImagePicker.pickImage(source: ImageSource.camera);
-      if (newfilepath != null) {
+      newfile = await ImagePicker.pickImage(source: ImageSource.camera);
+
+      if (newfile != null) {
         setState(() {
-          arquivos.setNovasImagens(newfilepath.path);
+          arquivos.setNovasImagens(newfile.path);
         });
       }
     } on PlatformException catch (e) {

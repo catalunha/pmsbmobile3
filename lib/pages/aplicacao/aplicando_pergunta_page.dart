@@ -8,6 +8,8 @@ class AplicacaoPerguntaPage extends StatefulWidget {
 }
 
 class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
+  TextEditingController _observacoesControler = new TextEditingController();
+
   List<Map<dynamic, dynamic>> _listaPergunta = [
     {
       "tipo": TipoPergunta.UnicaEscolha,
@@ -156,8 +158,9 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
 
   Widget _body() {
     perguntaref = _listaPergunta[_indice]['tipo'];
-    _aplicadorpergunta = mapaTipoPergunta.getWigetPergunta(tipo: perguntaref, entrada: _listaPergunta[_indice]['parametros']);
-    
+    _aplicadorpergunta = mapaTipoPergunta.getWigetPergunta(
+        tipo: perguntaref, entrada: _listaPergunta[_indice]['parametros']);
+
     return ListView(
       children: <Widget>[
         _listaDadosSuperior(),
@@ -167,6 +170,20 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
             child: ListTile(
                 title: Text(_listaPergunta[_indice]['titulo']),
                 subtitle: Text(_listaPergunta[_indice]['texto']))),
+        Divider(color: Colors.black54),
+        Padding(
+            padding: EdgeInsets.all(5),
+            child: Text("Observações:", style: TextStyle(color: Colors.blue))),
+        Padding(
+            padding: EdgeInsets.all(5.0),
+            child: TextField(
+              controller: _observacoesControler,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            )),
         Divider(color: Colors.black54),
         _aplicadorpergunta,
         Padding(padding: EdgeInsets.all(5)),

@@ -52,11 +52,11 @@ class MapaPerguntasWidget {
   }
 
   static _widgetTipoTexto({entrada}) {
-    return perguntaTipoTexto();
+    return PerguntaTipoTextoWidget();
   }
 
   static _widgetTipoNumero({entrada}) {
-    return perguntaTipoNumero();
+    return PerguntaTipoNumeroWidget();
   }
 
 }
