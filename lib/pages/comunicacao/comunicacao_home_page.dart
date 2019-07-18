@@ -84,10 +84,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
                       style: Theme.of(context).textTheme.title,
                     ),
                   ),
-                  Container(
-                    // padding: EdgeInsets.symmetric(vertical: 6),
-                    child: Text("Publicar em: ${noticia.publicar}\n"),
-                  ),
+                  Text("Publicar em: ${noticia.publicar}\n"),
                   MarkdownBody(
                     data: "${noticia.textoMarkdown}",
                   ),
