@@ -6,13 +6,13 @@
 Cada subtitulo a seguir fala a cerca de uma function especifica.
 
 ## Perfil
-Quando um novo documento de perfil por cadastrado em **Perfil** a function deverá cadastrar este perfil em **UsuarioPerfil** constando apenas as partes
+Quando um novo documento de perfil for cadastrado em **Perfil** a function deverá cadastrar este perfil em **UsuarioPerfil** constando apenas as partes
 ~~~json
 {
   "UsuarioPerfil": {
     "usuarioID": {
       "id": "UsuarioID",
-      "nome": "UsuarioIDNome"
+      "nome": "UsuarioID->Nome"
     },
     "perfilID": {
       "id": "PerfilID",
@@ -22,7 +22,7 @@ Quando um novo documento de perfil por cadastrado em **Perfil** a function dever
   }
 }
 ~~~
-
+O aplicativo se encarregará de dependendo do contentType criar a parte de texto. Ou
 ~~~json
 {
 "UsuarioPerfil": {
@@ -30,8 +30,7 @@ Quando um novo documento de perfil por cadastrado em **Perfil** a function dever
   }
 }
 ~~~
-
-
+De arquivo.
 ~~~json
 {
   "UsuarioPerfil": {
@@ -42,5 +41,5 @@ Quando um novo documento de perfil por cadastrado em **Perfil** a function dever
   }
  }
 ~~~
-
+Nao precisa ser automatico, pode ser manual.
 

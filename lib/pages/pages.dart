@@ -5,8 +5,7 @@ export 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento.dart';
 export 'package:pmsbmibile3/pages/noticias/noticias_page.dart';
 
 //perfil
-// export 'package:pmsbmibile3/pages/perfil/perfil_page.dart';
-export 'package:pmsbmibile3/pages/perfil/perfil_page2.dart';
+export 'package:pmsbmibile3/pages/perfil/perfil_page.dart';
 export 'package:pmsbmibile3/pages/perfil/editar_variavel.dart';
 export 'package:pmsbmibile3/pages/perfil/configuracao_page.dart';
 

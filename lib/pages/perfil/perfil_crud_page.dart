@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/usuario_perfil_model2.dart';
+import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crud_page_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';

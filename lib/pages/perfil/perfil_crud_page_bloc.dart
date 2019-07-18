@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/usuario_perfil_model2.dart';
+import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 
 import 'package:pmsbmibile3/api/api.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
