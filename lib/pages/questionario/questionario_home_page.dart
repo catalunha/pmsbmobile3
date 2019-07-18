@@ -122,6 +122,7 @@ class QuestionarioItem extends StatelessWidget {
           Text("Editado por: ${_questionario.editou.nome}"),
           ButtonTheme.bar(
             child: ButtonBar(
+              alignment: MainAxisAlignment.start,
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.list),
