@@ -88,7 +88,7 @@ class PerguntaHomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //Adicionar um nova pergunta
-          Navigator.pushNamed(context, '/pergunta/criar_pergunta', arguments: _questionarioId);
+          Navigator.pushNamed(context, '/pergunta/criar_editar', arguments: _questionarioId);
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
@@ -130,7 +130,7 @@ class PerguntaItem extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    //Editar pergunta
+                    Navigator.pushNamed(context, "/pergunta/criar_editar", arguments:_pergunta.id);
                   },
                 ),
               ],
