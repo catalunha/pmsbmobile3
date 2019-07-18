@@ -46,7 +46,7 @@ class QuestionarioFormPage extends StatelessWidget {
     return StreamBuilder<QuestionarioModel>(
         stream: bloc.instance,
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.active && _questionarioId != null) {
+          if (!snapshot.hasData && _questionarioId != null) {
             return Center(
               child: CircularProgressIndicator(),
             );
