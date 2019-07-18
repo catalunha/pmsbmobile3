@@ -42,6 +42,9 @@ dependencies:
       path: packages/firestore_wrapper_flutter
   location: ^2.3.5
   image_picker: ^0.6.0+17
+  image: ^2.1.4
+  image_picker_saver: ^0.3.0
+  image_gallery_saver: ^1.1.0
 
 
 dev_dependencies:

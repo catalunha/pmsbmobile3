@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 
 class AplicacaoHomePage extends StatefulWidget {
   @override
@@ -118,15 +119,10 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+        length: 2,
+        child: DefaultScaffold(
           bottom: TabBar(
             tabs: [
               Tab(text: "Todos"),
@@ -134,14 +130,20 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
             ],
           ),
           title: Text('Aplicando questionario'),
-        ),
-        body: TabBarView(
+          body: TabBarView(
           children: [
             _bodyTodos(),
             _bodyArvore(),
           ],
         ),
-      ),
-    );
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              // Adicionar novo questionario aplicado 
+             Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
+            },
+          ),
+        ),
+      );
   }
 }
