@@ -59,7 +59,6 @@ class PerguntaHomePageBloc {
           .collection(PerguntaModel.collection)
           .where("questionario.id", isEqualTo: event.questionarioId);
       final perguntasStream = perguntasRef.snapshots().map((snp) {
-        print(snp.documents.length);
         return snp.documents.map((doc) {
           return PerguntaModel(id: doc.documentID).fromMap(doc.data);
         }).toList();
