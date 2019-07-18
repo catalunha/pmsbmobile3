@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (context) => HomePage(),
+            //Desenvolvimento
+            "/desenvolvimento": (context) => Desenvolvimento(),
+
             //perfil
             "/perfil": (context) => PerfilPage(),
             "/perfil/crudtext": (context) => PerfilCRUDPage(),
