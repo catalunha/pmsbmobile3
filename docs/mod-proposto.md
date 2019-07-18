@@ -1,8 +1,9 @@
 - p1
   - q1
   - family: A
-  - familyChild: B
-  - familyParent: 
+  - familyPrevious: 
+  - familyNext: B
+  - reqFamily: 
   - reqId: a
   - reqParent: 
 
@@ -10,8 +11,9 @@
 - p2
   - q1
   - family: B
-  - familyChild: C
-  - familyParent: A
+  - familyPrevious: A
+  - familyNext: C
+  - reqFamily: A
   - reqId: b
   - reqParent: a
 
@@ -20,8 +22,9 @@
 - p3
   - q2
   - family: C
-  - familyChild: D
-  - familyParent: B
+  - familyPrevious: B
+  - familyNext: D
+  - reqFamily: B
   - reqId: c
   - reqParent: b
 
@@ -30,8 +33,9 @@
 - p4
   - q2
   - family: D
-  - familyChild: E
-  - familyParent: A
+  - familyPrevious: 
+  - familyNext: E
+  - reqFamily: A
   - reqId: d
   - reqParent: a
 
@@ -40,7 +44,16 @@
 - p5
   - q2
   - family: E
-  - familyChild: 
-  - familyParent: D
+  - familyPrevious: 
+  - familyNext: F
+  - reqFamily: 
+  - reqId: e
+  - reqParent: 
+
+- p6
+  - q2
+  - family: F
+  - familyNext: 
+  - reqFamily: 
   - reqId: e
   - reqParent: a

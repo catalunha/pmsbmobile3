@@ -1,8 +1,9 @@
 - p1
   - q1
   - family: A
-  - familyChild: B
-  - familyParent: 
+  - familyPrevious: 
+  - familyNext: B
+  - familyReq: 
   - reqId: a1
   - reqParent: 
 
@@ -10,27 +11,35 @@
 - p2
   - q1
   - family: B
-  - familyChild: C
-  - familyParent: A
+  - familyPrevious: 
+  - familyNext: C
+  - familyReq: A
   - reqId: b1
   - reqParent: a1
+
+
+
+
+
 
 
 
 - p3
   - q2
   - family: C
-  - familyChild: D
-  - familyParent: B
+  - familyPrevious: B
+  - familyNext: D
+  - familyReq: B
   - reqId: c1
-  - reqParent: b2 (escolheu pai)
+  - reqParent: b1
 
 
 
 - p4
   - q2
   - family: D
-  - familyChild: E
-  - familyParent: A
+  - familyPrevious: C
+  - familyNext: E
+  - familyReq: A
   - reqId: d1
-  - reqParent: a1 (escolheu pai)
+  - reqParent: a1

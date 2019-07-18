@@ -1,8 +1,9 @@
 - p1
   - q1a
   - family: A
-  - familyChild: B
-  - familyParent: 
+  - familyPrevious: 
+  - familyNext: B
+  - familyReq: 
   - reqId: a2
   - reqParent:
 
@@ -10,7 +11,8 @@
 - p2
   - q1a
   - family: B
-  - familyChild: C
-  - familyParent: A
+  - familyPrevious: 
+  - familyNext: C
+  - familyReq: A
   - reqId: b2
   - reqParent: a2
