@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/comunicacao/comunicacao_destinatario_page.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../user_files.dart';
 import 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page_bloc.dart';
@@ -214,7 +215,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     ));
   }
 
-  _eixos(context) {
+  _destinatarios(context) {
     // List<Map<String, dynamic>> litems = [
     //   {'id': '1', 'nome': 'um'},
     //   {'id': '2', 'nome': 'dois'},
@@ -301,7 +302,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             _texto("Data / Hora da notícia:"),
             _dataHorarioNoticia(context),
             _texto("Escolha o(s) destinatário(s):"),
-            _eixos(context),
+            _destinatarios(context),
             Divider(),
             _botaoDeletarDocumento()
           ],
@@ -336,60 +337,60 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
         });
   }
 
-  _atualizarMarkdown(texto, posicao) {
-    String inicio =
-        _textoMarkdown.substring(0, myController.selection.baseOffset);
-    print("INICIO:" + inicio);
-    String fim = _textoMarkdown.substring(
-        myController.selection.baseOffset, _textoMarkdown.length);
-    print("FIM:" + fim);
+  // _atualizarMarkdown(texto, posicao) {
+  //   String inicio =
+  //       _textoMarkdown.substring(0, myController.selection.baseOffset);
+  //   print("INICIO:" + inicio);
+  //   String fim = _textoMarkdown.substring(
+  //       myController.selection.baseOffset, _textoMarkdown.length);
+  //   print("FIM:" + fim);
 
-    _textoMarkdown = "$inicio$texto$fim";
-    myController.setTextAndPosition(_textoMarkdown,
-        caretPosition: myController.selection.baseOffset + posicao);
-  }
+  //   _textoMarkdown = "$inicio$texto$fim";
+  //   myController.setTextAndPosition(_textoMarkdown,
+  //       caretPosition: myController.selection.baseOffset + posicao);
+  // }
 
-  _iconesLista() {
-    return !showFab
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.format_bold),
-                onPressed: () {
-                  _atualizarMarkdown("****", 2);
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.format_size),
-                onPressed: () {
-                  _atualizarMarkdown("#", 1);
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.format_list_numbered),
-                onPressed: () {
-                  _atualizarMarkdown("- ", 2);
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.link),
-                onPressed: () {
-                  _atualizarMarkdown("[ clique aqui ](   )", 17);
-                },
-              ),
-              IconButton(
-                  icon: Icon(Icons.attach_file),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return UserFilesFirebaseList();
-                    }));
-                  })
-            ],
-          )
-        : null;
-  }
+  // _iconesLista() {
+  //   return !showFab
+  //       ? Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //           children: <Widget>[
+  //             IconButton(
+  //               icon: Icon(Icons.format_bold),
+  //               onPressed: () {
+  //                 _atualizarMarkdown("****", 2);
+  //               },
+  //             ),
+  //             IconButton(
+  //               icon: Icon(Icons.format_size),
+  //               onPressed: () {
+  //                 _atualizarMarkdown("#", 1);
+  //               },
+  //             ),
+  //             IconButton(
+  //               icon: Icon(Icons.format_list_numbered),
+  //               onPressed: () {
+  //                 _atualizarMarkdown("- ", 2);
+  //               },
+  //             ),
+  //             IconButton(
+  //               icon: Icon(Icons.link),
+  //               onPressed: () {
+  //                 _atualizarMarkdown("[ clique aqui ](   )", 17);
+  //               },
+  //             ),
+  //             IconButton(
+  //                 icon: Icon(Icons.attach_file),
+  //                 onPressed: () {
+  //                   Navigator.push(context,
+  //                       MaterialPageRoute(builder: (context) {
+  //                     return UserFilesFirebaseList();
+  //                   }));
+  //                 })
+  //           ],
+  //         )
+  //       : null;
+  // }
 
   _bodyTexto(context) {
     return new Column(
@@ -397,18 +398,26 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       children: <Widget>[
         new Expanded(
           child: ListView(
-            padding: EdgeInsets.all(5),
+            // padding: EdgeInsets.all(5),
             children: <Widget>[
-              _texto("Texto da notícia:"),
+              // _texto("Texto da notícia:"),
+              ListTile(
+                  title: _texto("Texto da notícia: (Use marcação markdown)"),
+                  trailing: IconButton(
+                    icon: Icon(Icons.location_on),
+                    onPressed: () {
+                      launch("https://daringfireball.net/projects/markdown/");
+                    },
+                  )),
               _textoNoticia(),
             ],
           ),
         ),
-        new Container(
-          color: Colors.white,
-          padding: new EdgeInsets.all(10.0),
-          child: _iconesLista(),
-        ),
+        // new Container(
+        //   color: Colors.white,
+        //   padding: new EdgeInsets.all(10.0),
+        //   child: _iconesLista(),
+        // ),
       ],
     );
   }
