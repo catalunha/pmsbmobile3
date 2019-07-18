@@ -145,6 +145,7 @@
     "referencia": "uid",
     "anterior": "PerguntaID->referencia || null",
     "posterior": "PerguntaID->referencia || null",
+    "ordem":0,
     "questionarioID": {
       "id": "QuestionarioID",
       "nome": "QuestionarioID->nome"
@@ -158,8 +159,7 @@
     "escolha": [
       {
         "uid": "uid-valor",
-        "anterior": "escolha->uid || null",
-        "posterior": "escolha->uid || null",
+        "ordem": 0,
         "texto": "texto-valor",
         "marcada": true
       }
