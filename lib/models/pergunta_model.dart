@@ -4,13 +4,15 @@ class Questionario {
   String id;
   String nome;
 
-  Questionario.fromMap(Map<String, dynamic> map) {
+  Questionario(this.id, this.nome);
+
+  Questionario.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     nome = map["nome"];
   }
 
-  Map<String, dynamic> toMap() {
-    final map = Map<String, dynamic>();
+  Map<dynamic, dynamic> toMap() {
+    final map = Map<dynamic, dynamic>();
     if (id != null) map["id"] = id;
     if (nome != null) map["nome"] = nome;
     return map;
@@ -21,7 +23,9 @@ class PerguntaTipo {
   String id;
   String nome;
 
-  PerguntaTipo.fromMap(Map<String, dynamic> map) {
+  PerguntaTipo(this.id, this.nome);
+
+  PerguntaTipo.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     nome = map["nome"];
   }
@@ -40,7 +44,7 @@ class Requisito {
   String perguntaID;
   String escolhaID;
 
-  Requisito.fromMap(Map<String, dynamic> map) {
+  Requisito.fromMap(Map<dynamic, dynamic> map) {
     uid = map["uid"];
     questionarioID = map["questionarioID"];
     perguntaID = map["perguntaID"];
@@ -89,8 +93,8 @@ class PerguntaModel extends FirestoreModel {
   String titulo;
   String textoMarkdown;
 
-  DateTime dataCriacao;
-  DateTime dataEdicao;
+  dynamic dataCriacao;
+  dynamic dataEdicao;
 
   PerguntaModel({
     String id,
@@ -134,17 +138,28 @@ class PerguntaModel extends FirestoreModel {
   @override
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();
-    if(questionario != null) map["questionario"] = questionario.toMap();
-    if(tipo != null) map["tipo"] = tipo.toMap();
-    //TODO: list de maps
-    if(requisitos != null) map["requisitos"] = requisitos;
-    if(escolhas != null) map["escolhas"] = escolhas;
+    if (questionario != null) map["questionario"] = questionario.toMap();
+    if (tipo != null) map["tipo"] = tipo.toMap();
 
-    if(ordem != null) map["ordem"] = ordem;
-    if(titulo != null) map["titulo"] = titulo;
-    if(textoMarkdown != null) map["textoMarkdown"] = textoMarkdown;
-    if(dataCriacao != null) map["dataCriacao"] = dataCriacao;
-    if(dataEdicao != null) map["dataEdicao"] = dataEdicao;
+    if (requisitos != null) {
+      map["requisitos"] = List<Map<String, dynamic>>();
+      for (int index = 0; index < requisitos.length; index++) {
+        map["requisitos"].add(requisitos[index].toMap());
+      }
+    }
+
+    if (escolhas != null) {
+      map["escolhas"] = List<Map<String, dynamic>>();
+      for (int index = 0; index < escolhas.length; index++) {
+        map["escolhas"].add(escolhas[index].toMap());
+      }
+    }
+
+    if (ordem != null) map["ordem"] = ordem;
+    if (titulo != null) map["titulo"] = titulo;
+    if (textoMarkdown != null) map["textoMarkdown"] = textoMarkdown;
+    if (dataCriacao != null) map["dataCriacao"] = dataCriacao;
+    if (dataEdicao != null) map["dataEdicao"] = dataEdicao;
     return map;
   }
 }
