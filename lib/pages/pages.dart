@@ -1,3 +1,7 @@
+// Desenvolvimento
+export 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento.dart';
+
+// Noticias
 export 'package:pmsbmibile3/pages/noticias/noticias_page.dart';
 
 //perfil
