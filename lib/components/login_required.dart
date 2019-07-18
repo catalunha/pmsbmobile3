@@ -25,24 +25,30 @@ class LoginRequired extends StatelessWidget {
     return StreamBuilder<AuthStatus>(
       stream: bloc.status,
       builder: (context, snapshot) {
+        Widget r;
         if (snapshot.hasError) {
-          return Center(
+          r = Center(
             child: Text("ERROR"),
           );
         }
         if (!snapshot.hasData) {
-          return loadingPage;
+          r = loadingPage;
         }
         switch (snapshot.data) {
           case AuthStatus.Uninitialized:
-            return splashPage;
+            r = splashPage;
+            break;
           case AuthStatus.Unauthenticated:
-            return loginPage;
+            r = loginPage;
+            break;
           case AuthStatus.Authenticating:
-            return loadingPage;
+            r = loadingPage;
+            break;
           case AuthStatus.Authenticated:
-            return child;
+            r = child;
+            break;
         }
+        return r;
       },
     );
   }
