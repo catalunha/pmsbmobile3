@@ -127,14 +127,21 @@ class QuestionarioItem extends StatelessWidget {
                   icon: Icon(Icons.list),
                   onPressed: () {
                     // Listar paginas de perguntas
-                    Navigator.pushNamed(context, '/pergunta/home');
+                    Navigator.pushNamed(
+                      context,
+                      '/pergunta/home',
+                      arguments: _questionario.id,
+                    );
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    Navigator.pushNamed(context, "/questionario/form",
-                        arguments: _questionario.id);
+                    Navigator.pushNamed(
+                      context,
+                      "/questionario/form",
+                      arguments: _questionario.id,
+                    );
                   },
                 ),
               ],
