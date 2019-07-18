@@ -91,6 +91,7 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _questionarioId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
