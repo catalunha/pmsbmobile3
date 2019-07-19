@@ -1,5 +1,11 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 
+class Coordenada{
+  Coordenada({this.lat, this.long});
+  num lat;
+  num long;
+}
+
 class Questionario {
   String id;
   String nome;
@@ -107,7 +113,7 @@ class PerguntaModel extends FirestoreModel {
     this.textoMarkdown,
     this.dataCriacao,
     this.dataEdicao,
-  }) : super(id);
+  }): super(id);
 
   @override
   PerguntaModel fromMap(Map<String, dynamic> map) {

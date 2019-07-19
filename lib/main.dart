@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/perfil/perfil_crud_page.dart';
+import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/state/services.dart';
@@ -22,10 +24,17 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (context) => HomePage(),
+            //Desenvolvimento
+            "/desenvolvimento": (context) => Desenvolvimento(),
+
             //perfil
             "/perfil": (context) => PerfilPage(),
-            "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),
+            "/perfil/crudtext": (context) => PerfilCRUDPage(),
+            "/perfil/crudarq": (context) => PerfilCRUDArqPage(),
+            
+            // "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),//apagar
             "/perfil/configuracao": (context) => ConfiguracaoPage(),
+            
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(),
             "/questionario/form":(context) => QuestionarioFormPage(),
@@ -41,13 +50,20 @@ class MyApp extends StatelessWidget {
             "/pergunta/editar_apagar_escolha": (context) =>
                 EditarApagarEscolhaPage(),
 
-            //home
+            //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
+            "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
+            "/aplicacao/aplicando_pergunta": (context) => AplicacaoPerguntaPage(),
+            "/aplicacao/pendencias": (context) => PendenciasPage(),
+            "/aplicacao/visualizar_respostas": (context) =>  VisualizarRespostasPage(),
+            "/aplicacao/definir_requisitos": (context) => DefinirRequisistosPage(),
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),
-            "/resposta/resposta_questionario": (context) => RespostaQuestionarioPage(),
-            "/resposta/questionario_resposta": (context) => QuestionarioRespostaPage(),
+            "/resposta/resposta_questionario": (context) =>
+                RespostaQuestionarioPage(),
+            "/resposta/questionario_resposta": (context) =>
+                QuestionarioRespostaPage(),
 
             //sintese
             "/sintese/home": (context) => SinteseHomePage(),
@@ -60,10 +76,10 @@ class MyApp extends StatelessWidget {
             "/produto/editar_visual": (context) => EditVisual(),
 
             //comunicacao
-            "/comunicacao": (context) => CommunicationPage(),
+            "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
             "/noticias/noticias_visualizadas": (context) =>
                 NoticiasVisualizadasPage(),
-            "/comunicacao/criar_editar": (context) => CommunicationCreateEdit(),
+            "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
             //administração
             "/administracao/home":(context) => AdministracaoHomePage(),

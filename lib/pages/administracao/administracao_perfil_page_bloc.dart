@@ -1,6 +1,6 @@
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
 /// Class base Eventos da Pagina ConfiguracaoPage
@@ -43,9 +43,9 @@ class AdministracaoPerfilPageBloc {
   Function get usuarioModelSink => _usuarioModelController.sink.add;
 
   // UsuarioPerfil
-  final _usuarioPerfilModelController = BehaviorSubject<List<UsuarioPerfil>>();
+  final _usuarioPerfilModelController = BehaviorSubject<List<UsuarioPerfilModel>>();
 
-  Stream<List<UsuarioPerfil>> get usuarioPerfilModelStream =>
+  Stream<List<UsuarioPerfilModel>> get usuarioPerfilModelStream =>
       _usuarioPerfilModelController.stream;
 
   Function get usuarioPerfilModelSink => _usuarioPerfilModelController.sink.add;
@@ -76,14 +76,15 @@ class AdministracaoPerfilPageBloc {
       });
 
       //Usar State UsuarioPerfil
-      _firestore
-          .collection(UsuarioPerfil.collection)
-          .where("usuarioID", isEqualTo: currentState.usuarioId)
+      final noticiasRef = _firestore
+          .collection(UsuarioPerfilModel.collection)
+          .where("usuarioID.id", isEqualTo: currentState.usuarioId);
+      noticiasRef
           .snapshots()
           .map((snapDocs) => snapDocs.documents
-              .map((doc) => UsuarioPerfil(id: doc.documentID).fromMap(doc.data))
+              .map((doc) => UsuarioPerfilModel(id: doc.documentID).fromMap(doc.data))
               .toList())
-          .listen((List<UsuarioPerfil> usuarioPerfilModelList) {
+          .listen((List<UsuarioPerfilModel> usuarioPerfilModelList) {
         usuarioPerfilModelSink(usuarioPerfilModelList);
       });
     }

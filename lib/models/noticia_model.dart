@@ -1,68 +1,98 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 
-enum OpcaoDestinatario {Todos, Eixo, Cargo, Usuario}
-
-class Destinatario{
-  final OpcaoDestinatario opcao;
-  final String destinatarioId;
-  Destinatario({this.opcao, this.destinatarioId});
-}
-
-class NoticiaModel extends FirestoreModel{
+class NoticiaModel extends FirestoreModel {
   static final String collection = "Noticia";
 
-  String userId;
-
   String titulo;
-  int numero;
-  DateTime dataPublicacao;
-  DateTime dataCriacao;
-  String conteudoMarkdown;
-  List<Destinatario> destinatarios;
+  String textoMarkdown;
+  UsuarioIDEditor usuarioIDEditor;
+  bool distribuida;
+  DateTime publicar;
+  List<Destinatario> usuarioIDDestino;
 
-  NoticiaModel({
-    String id,
-    this.userId,
-    this.titulo,
-    this.numero,
-    this.dataPublicacao,
-    this.dataCriacao,
-    this.conteudoMarkdown,
-    this.destinatarios,
-  }) : super(id);
+  NoticiaModel(
+      {String id,
+      this.titulo,
+      this.textoMarkdown,
+      this.usuarioIDEditor,
+      this.distribuida,
+      this.publicar,
+      this.usuarioIDDestino})
+      : super(id);
 
   @override
   NoticiaModel fromMap(Map<String, dynamic> map) {
-    if(map.containsKey("id")) id = map["id"];
-    if(map.containsKey("userId")) userId = map["userId"];
-    if(map.containsKey("titulo")) titulo = map["titulo"];
-    if(map.containsKey("numero")) numero = map["numero"];
-    if(map.containsKey("dataPublicacao")) dataPublicacao = map["dataPublicacao"];
-    if(map.containsKey("dataCriacao")) dataCriacao = map["dataCriacao"];
-    if(map.containsKey("conteudoMarkdown")) conteudoMarkdown = map["conteudoMarkdown"];
-    if(map.containsKey("destinatarios") && map["destinatarios"].runtimeType == List){
-      //assert(map["destinatarios"].runtimeType == List);
-      destinatarios = List<Destinatario>();
-      var lista = map["destinatarios"] as List<Map<String, dynamic>>;
-      for (int index = 0; index < lista.length; index++){
-        if(lista[index].containsKey("opcao") && lista[index].containsKey("destinatarioId")){
-          destinatarios.add(Destinatario(opcao: lista[index]["opcao"], destinatarioId: lista[index]["destinatarioId"]));
-        }
-      }
+    if (map.containsKey('titulo')) titulo = map['titulo'];
+    if (map.containsKey('textoMarkdown')) textoMarkdown = map['textoMarkdown'];
+    if (map.containsKey('usuarioIDEditor')) {
+      usuarioIDEditor =
+          map['usuarioIDEditor'] != null ? new UsuarioIDEditor.fromMap(map['usuarioIDEditor']) : null;
+    }
+    if (map.containsKey('distribuida')) distribuida = map['distribuida'];
+    if (map.containsKey('publicar')) publicar = map['publicar'].toDate();
+    if (map.containsKey('usuarioIDDestino') &&
+        (map['usuarioIDDestino'] != null)) {
+      usuarioIDDestino = new List<Destinatario>();
+      map['usuarioIDDestino'].forEach((v) {
+        usuarioIDDestino.add(new Destinatario.fromMap(v));
+      });
     }
     return this;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "userId":userId,
-      "titulo":titulo,
-      "numero":numero,
-      "dataPublicacao":dataPublicacao,
-      "dataCriacao":dataCriacao,
-      "conteudoMarkdown":conteudoMarkdown,
-      "destinatarios":destinatarios,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (titulo != null) data['titulo'] = this.titulo;
+    if (textoMarkdown != null) data['textoMarkdown'] = this.textoMarkdown;
+    if (this.usuarioIDEditor != null) {
+      data['usuarioIDEditor'] = this.usuarioIDEditor.toMap();
+    }
+    if (distribuida != null) data['distribuida'] = this.distribuida;
+    if (publicar != null) data['publicar'] = this.publicar.toUtc();
+    if (this.usuarioIDDestino != null) {
+      data['usuarioIDDestino'] =
+          this.usuarioIDDestino.map((v) => v.toMap()).toList();
+    }
+    return data;
+  }
+}
+
+class UsuarioIDEditor {
+  String id;
+  String nome;
+
+  UsuarioIDEditor({this.id, this.nome});
+
+  UsuarioIDEditor.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('nome')) nome = map['nome'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (nome != null) data['nome'] = this.nome;
+    return data;
+  }
+}
+
+
+class Destinatario {
+  String id;
+  String nome;
+
+  Destinatario({this.id, this.nome});
+
+  Destinatario.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('nome')) nome = map['nome'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (nome != null) data['nome'] = this.nome;
+    return data;
   }
 }

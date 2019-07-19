@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 
 class AplicacaoHomePage extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
 
   String _eixo = "eixo exemplo";
   String _setor = "setor exemplo";
-
+  
   _cardText(String text) {
     return Padding(
         padding: EdgeInsets.only(top: 10, left: 5),
@@ -40,19 +41,24 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
                   IconButton(
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
-                      //
+                      Navigator.pushNamed(context, "/aplicacao/aplicando_pergunta");
+                      //Navigator.pushNamed(context,'/aplicacao/definir_requisitos');
+                      //'/aplicacao/pendencias'
+                      //'/aplicacao/visualizar_respostas'
+                      //'/aplicacao/definir_requisitos'
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.person_add),
                     onPressed: () {
-                      //
+                       Navigator.pushNamed(context, "/aplicacao/pendencias");
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       // Abrir questionário
+                      Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
                     },
                   ),
                 ],
@@ -113,15 +119,10 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+        length: 2,
+        child: DefaultScaffold(
           bottom: TabBar(
             tabs: [
               Tab(text: "Todos"),
@@ -129,14 +130,20 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
             ],
           ),
           title: Text('Aplicando questionario'),
-        ),
-        body: TabBarView(
+          body: TabBarView(
           children: [
             _bodyTodos(),
             _bodyArvore(),
           ],
         ),
-      ),
-    );
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              // Adicionar novo questionario aplicado 
+             Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
+            },
+          ),
+        ),
+      );
   }
 }

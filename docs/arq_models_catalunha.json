@@ -16,7 +16,7 @@
     "nome": "nome-valor",
     "celular": "celular-valor",
     "email": "email-valor",
-    "ativo":true,
+    "ativo": true,
     "usuarioArquivoID": {
       "id": "UsuarioArquivoID",
       "url": "url-valor"
@@ -24,201 +24,197 @@
     "rotaID": [
       {
         "id": "rotaID",
-        "url": "rotaID$url"
+        "url": "rotaID->url"
       }
     ],
     "setorCensitarioID": {
       "id": "SetorCensitarioID",
-      "nome": "SetorCensitarioID$nome"
+      "nome": "SetorCensitarioID->nome"
     },
     "cargoID": {
       "id": "CargoID",
-      "nome": "CargoID$nome"
+      "nome": "CargoID->nome"
     },
     "eixoIDAtual": {
       "id": "EixoID",
-      "nome": "EixoID$nome"
+      "nome": "EixoID->nome"
     },
     "eixoID": {
       "id": "EixoID",
-      "nome": "EixoID$nome"
+      "nome": "EixoID->nome"
     },
     "eixoIDAcesso": [
       {
         "id": "EixoID",
-        "nome": "EixoID$nome"
+        "nome": "EixoID->nome"
       }
     ]
   },
+  "UsuarioArquivo": {
+    "_comment": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basico_sobre_HTTP/MIME_types/Complete_list_of_MIME_types",
+    "usuarioID": "UsuarioID",
+    "contentType": "text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
+    "storagePath": "storagePath-valor",
+    "titulo": "titulo-valor",
+    "url": "url-valor"
+  },
   "Noticia": {
     "titulo": "titulo-valor",
-    "conteudoMarkdown": "conteudoMarkdown-valor",
-    "editor": "UsuarioID",
+    "textoMarkdown": "textoMarkdown-valor",
+    "usuarioIDEditor": {
+      "id": "UsuarioID",
+      "nome": "UsuarioIDNome"
+    },
     "distribuida": false,
-    "datapublicacao": "2019-01-01 00:00:00",
-    "destinatarios": [
-      "UsuarioID"
+    "publicar": "2019-01-01 00:00:00",
+    "usuarioIDDestino": [
+      {
+        "id": "UsuarioID",
+        "nome": "nome-valor"
+      }
     ]
   },
   "UsuarioNoticia": {
-    "ID": "ID formado por: Usuario__Noticia",
-    "usuario": "UsuarioID",
-    "noticia": "NoticiaID",
+    "usuarioID": "UsuarioID",
+    "noticiaID": "NoticiaID",
     "visualizada": false
   },
+  "Perfil": {
+    "nome": "nome-valor",
+    "_comment": "serão: text | image | application | audio | video ",
+    "contentType": "contentType-valor"
+  },
   "UsuarioPerfil": {
-    "ID": "ID formado por: UsuarioID_PerfilID",
-    "usuarioID": "UsuarioID",
+    "usuarioID": {
+      "id": "UsuarioID",
+      "nome": "UsuarioIDNome"
+    },
     "perfilID": {
       "id": "PerfilID",
       "nome": "nome-valor",
       "contentType": "contentType-valor"
     },
-    "alfanumerico": "alfanumerico-valor",
+    "_comment": "quando criar o perfil nao criar o campo textPlain ou usuarioArquivoID. nao os dois",
+    "_comment2": "quanto o usuario editar o perfil é que cria estes campos dependendo da situação",
+    "textPlain": "textPlain-valor",
     "usuarioArquivoID": {
       "id": "UsuarioArquivoID",
       "url": "url-valor"
     }
   },
-  "UsuarioArquivo": {
-    "_comment": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basico_sobre_HTTP/MIME_types/Complete_list_of_MIME_types",
-    "usuarioID": "UsuarioID",
-    "contentType": "alfanumerico | text/plain | application/pdf | image/png | image/svg+xml | image/jpeg | application/msword | text/csv | text/html | application/json ",
-    "storagePath": "storagePath-valor",
-    "titulo": "titulo-valor",
-    "url": "url-valor"
-  },
-  "Perfil": {
-    "nome": "nome-valor",
-    "contentType": "contentType-valor"
-  },
-  "PerguntaTipo": {
-    "ID": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla",
-    "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla"
-  },
-  "Questionario": {
+  "QuestionarioProposto": {
     "nome": "nome-valor",
     "eixoID": {
       "id": "EixoID",
-      "nome": "EixoID$nome"
+      "nome": "EixoID->nome"
     },
-    "UsuarioID": {
+    "usuarioIDEditor": {
       "id": "UsuarioID",
-      "nome": "UsuarioID$nome"
+      "nome": "UsuarioID->nome"
     },
     "modificado": "data-valor",
     "editando": false
   },
-  "Pergunta": {
-    "questionarioID": {
-      "id": "QuestionarioID",
-      "nome": "QuestionarioID$nome"
-    },
-    "ordem": 0,
-    "perguntaTipoID": {
-      "id": "PerguntaTipoID",
-      "nome": "PerguntaTipoID$nome"
-    },
-    "titulo": "titulo-valor",
-    "textoMarkdown": "texto-valor",
-    "requisito": [
-      {
-        "requisitoUid": "uid-valor",
-        "pergunta": "PerguntaID",
-        "escolha": "PerguntaID$escolha#escolhaUid"
-      }
-    ],
-    "escolha": [
-      {
-        "escolhaUid": "uid-valor",
-        "ordem": 0,
-        "nome": "nome-valor"
-      }
-    ]
-  },
   "QuestionarioAplicado": {
-    "questionarioID": "QuestionarioID",
     "nome": "nome-valor",
+    "referencia": "Local ou Pessoa ou Momento da aplicação.",
     "eixoID": {
       "id": "EixoID",
       "nome": "Eixo_nome"
-    },
-    "usuarioID": {
-      "id": "UsuarioID",
-      "nome": "Usuario_nome"
-    },
-    "datamodificacao": "data-valor",
-    "usuarioIDAplicador": {
-      "id": "UsuarioID",
-      "nome": "Usuario_nome"
     },
     "setorCensitarioID": {
       "id": "SetorCensitarioID",
       "nome": "SetorCensitario_nome"
     },
-    "referencia": "Local ou Pessoa ou Momento da aplicação."
-  },
-  "Resposta": {
-    "questionarioAplicadoID": {
-      "id": "QuestionarioAplicadoID",
-      "nome": "QuestionarioAplicadoID$nome",
-      "referencia": "QuestionarioAplicadoID$referencia"
+    "usuarioIDEditor": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
     },
-    "perguntaID": "PerguntaID",
-    "ordem": "idem",
-    "perguntaTipo": "idem",
-    "titulo": "idem",
-    "textoMarkdown": "idem",
-    "requisito": [
+    "modificado": "data-valor",
+    "usuarioIDAplicador": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "aplicado": "data-valor"
+  },
+  "PerguntaTipo": {
+    "ID": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla",
+    "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla"
+  },
+  "Pergunta": {
+    "referencia": "uid",
+    "anterior": "PerguntaID->referencia || null",
+    "posterior": "PerguntaID->referencia || null",
+    "ordem": 0,
+    "questionarioID": {
+      "id": "QuestionarioID",
+      "nome": "QuestionarioID->nome"
+    },
+    "titulo": "titulo-valor",
+    "textoMarkdown": "texto-valor",
+    "perguntaTipoID": {
+      "id": "PerguntaTipoID",
+      "nome": "PerguntaTipoID->nome"
+    },
+    "escolha": [
       {
-        "requisitoUid": "uid-valor",
-        "pergunta": "PerguntaID",
-        "escolha": "PerguntaID$escolha#escolhaUid"
-      }
-    ],
-    "Escolha": [
-      {
-        "escolhaUid": "uid-valor",
+        "uid": "uid-valor",
         "ordem": 0,
-        "nome": "nome-valor",
+        "texto": "texto-valor",
         "marcada": true
       }
     ],
-    "Texto": {
-      "valor": "Texto-valor",
+    "texto": {
+      "valor": "Texto-valor || null ",
       "observacao": "observacao-valor"
     },
-    "Numero": {
-      "valor": "Numero-valor",
+    "numero": {
+      "valor": "Numero-valor || null",
       "observacao": "observacao-valor"
     },
-    "Imagem": {
+    "imagem": {
       "imagemID": [
-        "RespostaArquivoID"
+        "PerguntaAplicadaArquivoID"
       ],
       "observacao": "observacao-valor"
     },
-    "Arquivo": {
+    "arquivo": {
       "arquivoID": [
-        "RespostaArquivoID"
+        "PerguntaAplicadaArquivoID"
       ],
       "observacao": "observacao-valor"
     },
-    "Coordenada": {
-      "observacao": "observacao-valor",
+    "coordenada": {
       "coordenada": [
         {
           "latitude": "Coordenada",
           "longitude": "Coordenada"
         }
-      ]
+      ],
+      "observacao": "observacao-valor"
     },
-    "RespostaArquivo": {
-      "proprietario": "Resposta/respostaID",
-      "contentType": "contentType-valor",
-      "storagePath": "storagePath-valor",
-      "url": "url-valor"
-    }
+    "requisito": [
+      {
+        "referencia": "PerguntaID->referencia || null",
+        "uid": "uid-valor",
+        "ligado": "requisito->uid",
+        "pergunta": "PerguntaID->escolha || PerguntaID->texto",
+        "escolha": "PerguntaID->escolha->uid",
+        "marca": true
+      }
+    ]
+  },
+  "PerguntaAplicada": {
+    "_comment": "idem a Pergunta. Com as devidas alterações."
+  },
+  "PerguntaAplicadaArquivo": {
+    "usuarioID": {
+      "id": "UsuarioID",
+      "nome": "UsuarioIDNome"
+    },
+    "contentType": "contentType-valor",
+    "storagePath": "storagePath-valor",
+    "url": "url-valor"
   },
   "Produto": {
     "nome": "nome-valor",

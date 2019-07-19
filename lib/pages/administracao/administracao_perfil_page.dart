@@ -19,7 +19,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
       appBar: AppBar(
         // backgroundColor: Colors.red,
         centerTitle: true,
-        title: Text("Visualizar dados e perfil2"),
+        title: Text("Visualizar dados e perfil"),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -82,7 +82,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
             Padding(padding: EdgeInsets.all(10)),
             Expanded(
               flex: 6,
-              child: StreamBuilder<List<UsuarioPerfil>>(
+              child: StreamBuilder<List<UsuarioPerfilModel>>(
                   stream: bloc.usuarioPerfilModelStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
@@ -99,35 +99,52 @@ class AdministracaoPerfilPage extends StatelessWidget {
                       children: <Widget>[
                         // ignore: sdk_version_ui_as_code
                         ...snapshot.data.map((variavel) {
-                          if (variavel.perfilID.contentType != 'text/plain') {
+                          if (variavel.perfilID.contentType == 'text') {
                             return Card(
-                                child: InkWell(
-                                    onTap: () {
-                                      launch(variavel.conteudo);
-                                    },
-                                    child: ListTile(
-                                      title: Text(
-                                        "${variavel.perfilID.nome}:",
-                                        style: TextStyle(fontSize: 14),
-                                      ),
-                                      subtitle: Text(
-//                                        "${variavel.conteudo}",
-                                        "CLIQUE AQUI PARA VER O ARQUIVO",
-                                        style: TextStyle(fontSize: 16, color: Colors.blue),
-                                      ),
-                                    )));
-                          } else {
-                            return Card(
+                                  color: variavel.textPlain == null ? Colors.yellowAccent: Colors.white,
                                 child: ListTile(
                               title: Text(
-                                ">>${variavel.perfilID.nome}:",
+                                "${variavel.perfilID.nome}:",
                                 style: TextStyle(fontSize: 14),
                               ),
                               subtitle: Text(
-                                "${variavel.conteudo}",
+                                "${variavel.textPlain}",
                                 style: TextStyle(fontSize: 16),
                               ),
                             ));
+                          } else {
+                            if (variavel.usuarioArquivoID == null) {
+                              return Card(
+                                  color: Colors.yellowAccent,
+                                  child: ListTile(
+                                    title: Text(
+                                      "${variavel.perfilID.nome}:",
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    subtitle: Text(
+                                      "null",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ));
+                            } else {
+                              return Card(
+                                  child: InkWell(
+                                      onTap: () {
+                                        launch(variavel.usuarioArquivoID.url);
+                                      },
+                                      child: ListTile(
+                                        title: Text(
+                                          "${variavel.perfilID.nome}:",
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                        subtitle: Text(
+//                                        "${variavel.conteudo}",
+                                          "CLIQUE AQUI PARA VER O ARQUIVO",
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.blue),
+                                        ),
+                                      )));
+                            }
                           }
                         }).toList()
                       ],

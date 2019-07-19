@@ -1,3 +1,7 @@
+// Desenvolvimento
+export 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento.dart';
+
+// Noticias
 export 'package:pmsbmibile3/pages/noticias/noticias_page.dart';
 
 //perfil
@@ -14,9 +18,9 @@ export 'package:pmsbmibile3/pages/geral/loading.dart';
 export 'package:pmsbmibile3/pages/geral/splash.dart';
 
 //comunicação
-export 'package:pmsbmibile3/pages/comunicacao/communication.dart';
-export 'package:pmsbmibile3/pages/comunicacao/communication_create_edit.dart';
-export 'package:pmsbmibile3/pages/comunicacao/modal_filter_list.dart';
+export 'package:pmsbmibile3/pages/comunicacao/comunicacao_home_page.dart';
+export 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page.dart';
+// export 'package:pmsbmibile3/pages/comunicacao/modal_filter_list.dart';
 
 //produto
 export 'package:pmsbmibile3/pages/produto/product.dart';
@@ -33,8 +37,6 @@ export 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page.da
 export 'package:pmsbmibile3/pages/pergunta/criar_ordenar_escolha_page.dart';
 export 'package:pmsbmibile3/pages/pergunta/editar_apagar_escolha_page.dart';
 
-
-
 //questionario
 export 'package:pmsbmibile3/pages/questionario/questionario_home_page.dart';
 export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
@@ -42,6 +44,12 @@ export 'package:pmsbmibile3/pages/questionario/questionario_form_page.dart';
 
 //aplicação
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page.dart';
+
+export 'package:pmsbmibile3/pages/aplicacao/pendencias_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/visuaizar_respostas_page.dart';
+export 'package:pmsbmibile3/pages/aplicacao/definir_requisitos_page.dart';
 
 //resposta
 export 'package:pmsbmibile3/pages/resposta/resposta_home_page.dart';

@@ -85,13 +85,22 @@ class DefaultDrawer extends StatelessWidget {
               },
             ),
             ListTile(
+              title: Text('Desenvolvimento'),
+              trailing: Icon(Icons.hourglass_empty),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/desenvolvimento");
+              },
+            ),            ListTile(
               title: Text('Home'),
               trailing: Icon(Icons.home),
               onTap: () {
                 Navigator.pushReplacementNamed(context, "/");
               },
             ),
-            Divider(color: Colors.black45,),
+
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Questionarios'),
               trailing: Icon(Icons.assignment),
@@ -100,6 +109,7 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/questionario/home');
               },
             ),
+            /**
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Perguntas'),
@@ -109,16 +119,23 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/pergunta/home');
               },
             ),
-            Divider(color: Colors.black45,),
+            */
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Aplicação'),
-              trailing: Icon(Icons.directions_walk,),
+              trailing: Icon(
+                Icons.directions_walk,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/aplicacao/home');
               },
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Respostas'),
               trailing: Icon(Icons.chat),
@@ -127,7 +144,9 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/resposta/home');
               },
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Síntese'),
               trailing: Icon(Icons.equalizer),
@@ -136,7 +155,9 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/sintese/home');
               },
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Produto'),
               trailing: Icon(Icons.chrome_reader_mode),
@@ -145,32 +166,38 @@ class DefaultDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, '/produto');
               },
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Comunicação'),
               trailing: Icon(Icons.contact_mail),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/comunicacao');
+                Navigator.pushNamed(context, '/comunicacao/home_page');
               },
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
-              title: Text('Administração'),
+                title: Text('Administração'),
                 trailing: Icon(Icons.business_center),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/administracao/home');
+                }),
+            Divider(
+              color: Colors.black45,
+            ),
+            ListTile(
+              title: Text('Controle'),
+              trailing: Icon(Icons.control_point),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/administracao/home');
-              }
-            ),
-            Divider(color: Colors.black45,),
-        ListTile(
-          title: Text('Controle'),
-          trailing: Icon(Icons.control_point),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.pushNamed(context, '/controle/home');
-          },)
+                Navigator.pushNamed(context, '/controle/home');
+              },
+            )
           ],
         ),
       ),
@@ -189,29 +216,36 @@ class DefaultEndDrawer extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Perfil'),
+              trailing: Icon(Icons.person),
               onTap: () {
                 //noticias perfil
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Noticias Arquivadas'),
+              trailing: Icon(Icons.history),
               onTap: () {
                 //noticias arquivadas
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Configurações'),
+              trailing: Icon(Icons.settings),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil/configuracao");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Sair'),
+              trailing: Icon(Icons.exit_to_app),
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },

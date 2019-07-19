@@ -120,11 +120,6 @@ class ConfiguracaoPageBloc {
 
   Function get updateImagemPerfil => _imagemPerfil.sink.add;
 
-  //form
-//  StreamController<bool> _processForm = BehaviorSubject<bool>();
-//
-//  get processForm => _processForm.sink.add;
-
   ConfiguracaoPageBloc(this._firestore) {
     configuracaoPageEventStream.listen(_mapEventToState);
 
@@ -135,8 +130,6 @@ class ConfiguracaoPageBloc {
         .listen((usuarioID) {
       configuracaoPageEventSink(UpdateUsuarioIDEvent(usuarioID));
     });
-    //update state
-//    usuarioModelStream.listen(perfilUpdateConfiguracaoBlocState);
 
     //pega lista de SetorCensitarioModel
     pullSetorCensitario();

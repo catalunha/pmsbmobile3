@@ -49,15 +49,23 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: AtualizarImagemPerfil(),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: RaisedButton(
-                  onPressed: () => bloc.configuracaoPageEventSink(SaveStateToFirebaseEvent()),
-                  child: Text("salvar"),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 12),
+              //   child: RaisedButton(
+              //     onPressed: () => bloc
+              //         .configuracaoPageEventSink(SaveStateToFirebaseEvent()),
+              //     child: Text("salvar"),
+              //   ),
+              // ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            bloc.configuracaoPageEventSink(SaveStateToFirebaseEvent());
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.check),
         ),
       ),
     );
@@ -121,8 +129,7 @@ class OpcoesEixo extends StatelessWidget {
               return SimpleDialogOption(
                 onPressed: () {
                   bloc.configuracaoPageEventSink(
-                    UpdateEixoIDAtualEvent(
-                      eixo.id, eixo.nome));
+                      UpdateEixoIDAtualEvent(eixo.id, eixo.nome));
                   Navigator.pop(context);
                 },
                 child: Text("${eixo.nome}"),
@@ -183,14 +190,13 @@ class OpcoesSetorCensitario extends StatelessWidget {
             children: snapshot.data
                 .map(
                   (setor) => SimpleDialogOption(
-                        child: Text('Setor: ${setor.nome}'),
-                        onPressed: () {
-                          bloc.configuracaoPageEventSink(
-                              UpdateSetorCensitarioEvent(
-                                  setor.id, setor.nome));
-                          Navigator.pop(context);
-                        },
-                      ),
+                    child: Text('Setor: ${setor.nome}'),
+                    onPressed: () {
+                      bloc.configuracaoPageEventSink(
+                          UpdateSetorCensitarioEvent(setor.id, setor.nome));
+                      Navigator.pop(context);
+                    },
+                  ),
                 )
                 .toList(),
           );
@@ -264,8 +270,8 @@ class AtualizarEmailState extends State<AtualizarEmail> {
               Text("Atualizar Email"),
               TextField(
                 controller: _controller,
-                onChanged: (email) =>
-                    bloc.configuracaoPageEventSink(UpdateEmailEvent(email)),
+                onChanged: (email) => bloc.configuracaoPageEventSink(
+                    UpdateEmailEvent(_controller.text)),
               ),
             ],
           );
@@ -334,8 +340,7 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
               TextField(
                 controller: _controller,
                 onChanged: (nomeProjeto) {
-                  bloc.configuracaoPageEventSink(
-                      UpdateNomeEvent(nomeProjeto));
+                  bloc.configuracaoPageEventSink(UpdateNomeEvent(nomeProjeto));
                 },
               ),
             ],
