@@ -3,10 +3,17 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_home_page_bloc.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart'
+    show EditarApagarPerguntaPageArguments;
 
 class PerguntaHomePage extends StatelessWidget {
-  String _questionarioId;
+  final String _questionarioId;
   final bloc = PerguntaHomePageBloc(Bootstrap.instance.firestore);
+
+  PerguntaHomePage(this._questionarioId) {
+    bloc.dispatch(
+        UpdateQuestionarioIdPerguntaHomePageBlocEvent(_questionarioId));
+  }
 
   Widget _questionarioAtual(context) {
     return StreamBuilder<PerguntaHomePageBlocState>(
@@ -74,10 +81,6 @@ class PerguntaHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _questionarioId = ModalRoute.of(context).settings.arguments;
-    bloc.dispatch(
-        UpdateQuestionarioIdPerguntaHomePageBlocEvent(_questionarioId));
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
@@ -88,7 +91,9 @@ class PerguntaHomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //Adicionar um nova pergunta
-          Navigator.pushNamed(context, '/pergunta/criar_editar', arguments: _questionarioId);
+          Navigator.pushNamed(context, '/pergunta/criar_editar',
+              arguments: EditarApagarPerguntaPageArguments(
+                  questionarioID: _questionarioId));
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
@@ -130,7 +135,10 @@ class PerguntaItem extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    Navigator.pushNamed(context, "/pergunta/criar_editar", arguments:_pergunta.id);
+                    Navigator.pushNamed(context, "/pergunta/criar_editar",
+                        arguments: EditarApagarPerguntaPageArguments(
+                            perguntaID: _pergunta.id,
+                            questionarioID: _pergunta.questionario.id));
                   },
                 ),
               ],

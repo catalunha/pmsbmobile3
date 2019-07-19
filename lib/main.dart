@@ -31,18 +31,28 @@ class MyApp extends StatelessWidget {
             "/perfil": (context) => PerfilPage(),
             "/perfil/crudtext": (context) => PerfilCRUDPage(),
             "/perfil/crudarq": (context) => PerfilCRUDArqPage(),
-            
+
             // "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),//apagar
             "/perfil/configuracao": (context) => ConfiguracaoPage(),
-            
+
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(),
-            "/questionario/form":(context) => QuestionarioFormPage(),
+            "/questionario/form": (context) => QuestionarioFormPage(),
 
             //pergunta
-            "/pergunta/home": (context) => PerguntaHomePage(),
+            "/pergunta/home": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaHomePage(settings.arguments);
+            },
             "/pergunta/criar_pergunta": (context) => CriarPerguntaTipoPage(),
-            "/pergunta/criar_editar": (context) => EditarApagarPerguntaPage(),
+            "/pergunta/criar_editar": (context) {
+              final settings = ModalRoute.of(context).settings;
+              final EditarApagarPerguntaPageArguments args = settings.arguments;
+              return EditarApagarPerguntaPage(
+                questionarioID: args.questionarioID,
+                perguntaID: args.perguntaID,
+              );
+            },
             "/pergunta/selecionar_requisito": (context) =>
                 SelecionarQuequisitoPerguntaPage(),
             "/pergunta/criar_ordenar_escolha": (context) =>
@@ -53,10 +63,13 @@ class MyApp extends StatelessWidget {
             //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
             "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
-            "/aplicacao/aplicando_pergunta": (context) => AplicacaoPerguntaPage(),
+            "/aplicacao/aplicando_pergunta": (context) =>
+                AplicacaoPerguntaPage(),
             "/aplicacao/pendencias": (context) => PendenciasPage(),
-            "/aplicacao/visualizar_respostas": (context) =>  VisualizarRespostasPage(),
-            "/aplicacao/definir_requisitos": (context) => DefinirRequisistosPage(),
+            "/aplicacao/visualizar_respostas": (context) =>
+                VisualizarRespostasPage(),
+            "/aplicacao/definir_requisitos": (context) =>
+                DefinirRequisistosPage(),
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),
@@ -82,8 +95,8 @@ class MyApp extends StatelessWidget {
             "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
             //administração
-            "/administracao/home":(context) => AdministracaoHomePage(),
-            "/administracao/perfil":(context) => AdministracaoPerfilPage(),
+            "/administracao/home": (context) => AdministracaoHomePage(),
+            "/administracao/perfil": (context) => AdministracaoPerfilPage(),
 
             //controle
             "/controle/home": (context) => ControleHomePage(),
