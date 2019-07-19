@@ -216,6 +216,7 @@ class DefaultEndDrawer extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Perfil'),
+              trailing: Icon(Icons.person),
               onTap: () {
                 //noticias perfil
                 Navigator.pop(context);
@@ -223,6 +224,7 @@ class DefaultEndDrawer extends StatelessWidget {
               },
               leading: Icon(Icons.close),
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Configurações'),
               onTap: () {
@@ -231,6 +233,7 @@ class DefaultEndDrawer extends StatelessWidget {
               },
               leading: Icon(Icons.close),
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Noticias Arquivadas'),
               onTap: () {
@@ -240,8 +243,10 @@ class DefaultEndDrawer extends StatelessWidget {
               },
               leading: Icon(Icons.close),
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Sair'),
+              trailing: Icon(Icons.exit_to_app),
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
