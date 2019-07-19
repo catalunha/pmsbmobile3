@@ -51,10 +51,10 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
             return Text("ERROR");
           }
           if(!snap.hasData){
-            return Text("SEM DADOS");
+            return Text("Buscando usuario...");
           }
           var perfil = snap.data;
-          return Text("Ola, ${perfil.nome}");
+          return Text("Olá, ${perfil.nome}");
         },
       ),
       body: NoticiasNaoVisualizadasBody(),

@@ -90,14 +90,14 @@ class DefaultDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacementNamed(context, "/desenvolvimento");
               },
-            ),            ListTile(
+            ),
+            ListTile(
               title: Text('Home'),
               trailing: Icon(Icons.home),
               onTap: () {
                 Navigator.pushReplacementNamed(context, "/");
               },
             ),
-
             Divider(
               color: Colors.black45,
             ),
@@ -221,6 +221,15 @@ class DefaultEndDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil");
               },
+              leading: Icon(Icons.close),
+            ),
+            ListTile(
+              title: Text('Configurações'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/perfil/configuracao");
+              },
+              leading: Icon(Icons.close),
             ),
             ListTile(
               title: Text('Noticias Arquivadas'),
@@ -229,19 +238,14 @@ class DefaultEndDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
               },
-            ),
-            ListTile(
-              title: Text('Configurações'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/perfil/configuracao");
-              },
+              leading: Icon(Icons.close),
             ),
             ListTile(
               title: Text('Sair'),
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
+              leading: Icon(Icons.close),
             ),
           ],
         ),
