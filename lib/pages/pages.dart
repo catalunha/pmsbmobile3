@@ -1,3 +1,4 @@
+export 'package:pmsbmibile3/pages/page_arguments.dart';
 // Desenvolvimento
 export 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento.dart';
 
