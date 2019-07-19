@@ -20,6 +20,11 @@ _texto(String texto) {
 }
 
 class EditarApagarPerguntaPage extends StatefulWidget {
+  final String questionarioID;
+  final String perguntaID;
+
+  EditarApagarPerguntaPage({this.questionarioID, this.perguntaID});
+
   @override
   _EditarApagarPerguntaPageState createState() =>
       _EditarApagarPerguntaPageState();
@@ -27,16 +32,15 @@ class EditarApagarPerguntaPage extends StatefulWidget {
 
 class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   final bloc = EditarApagarPerguntaBloc(Bootstrap.instance.firestore);
-  String _questionario = "Setor exemplo";
-
-  var myController = new SelectingTextEditingController();
-  String _textoMarkdown = "  ";
-  bool showFab;
-
+  final myController = SelectingTextEditingController();
+  bool initialMarkdown = true;
 
   @override
   void initState() {
     super.initState();
+    bloc.dispatch(
+        UpdateQuestionarioEditarApagarPerguntaBlocEvent(widget.questionarioID));
+    bloc.dispatch(UpdateIDEditarApagarPerguntaBlocEvent(widget.perguntaID));
   }
 
   @override
@@ -45,12 +49,46 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     super.dispose();
   }
 
+  Widget _questionario() {
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        return _textoTopo("Questionario - ${snapshot.data.questionario?.nome}");
+      },
+    );
+  }
+
+  Widget _pergunta() {
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        if (snapshot.data.instance != null) {
+          return _textoTopo("Pergunta - ${snapshot.data.instance.titulo}");
+        } else {
+          return _textoTopo("Pergunta - criando");
+        }
+      },
+    );
+  }
+
   Widget _preambulo() {
     return Column(
       children: <Widget>[
         Center(child: EixoAtualUsuario()),
-        _textoTopo("Questionario - $_questionario"),
-        _textoTopo("Pergunta - pergunta"),
+        _questionario(),
+        _pergunta(),
       ],
     );
   }
@@ -119,14 +157,14 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     return StreamBuilder<EditarApagarPerguntaBlocState>(
         stream: bloc.state,
         builder: (context, snapshot) {
-          if (myController.text == null) {
+          if (initialMarkdown && snapshot.hasData && snapshot.data.isBaund) {
+            initialMarkdown = false;
             myController.text = snapshot.data?.instance?.textoMarkdown;
           }
           return Padding(
               padding: EdgeInsets.all(5.0),
               child: TextField(
                 onChanged: (text) {
-                  _textoMarkdown = text;
                   print(myController.selection);
                   bloc.dispatch(
                       UpdateTextoMarkdownPerguntaEditarApagarPerguntaBlocEvent(
@@ -144,14 +182,14 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
 
   _atualizarMarkdown(texto, posicao) {
     String inicio =
-        _textoMarkdown.substring(0, myController.selection.baseOffset);
+        myController.text.substring(0, myController.selection.baseOffset);
     print("INICIO:" + inicio);
-    String fim = _textoMarkdown.substring(
-        myController.selection.baseOffset, _textoMarkdown.length);
+    String fim = myController.text.substring(
+        myController.selection.baseOffset, myController.text.length);
     print("FIM:" + fim);
 
-    _textoMarkdown = "$inicio$texto$fim";
-    myController.setTextAndPosition(_textoMarkdown,
+    myController.text = "$inicio$texto$fim";
+    myController.setTextAndPosition(myController.text,
         caretPosition: myController.selection.baseOffset + posicao);
   }
 
@@ -189,7 +227,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             padding: new EdgeInsets.all(10.0),
             child: _iconesLista(),
           ),
-          visible: !showFab,
+          visible: ! (MediaQuery.of(context).viewInsets.bottom == 0.0),
         )
       ],
     );
@@ -256,16 +294,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
 
   @override
   Widget build(BuildContext context) {
-    myController.setTextAndPosition(_textoMarkdown);
-
-    showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
-    final map = Map<String, String>();
-    final id = ModalRoute.of(context).settings.arguments;
-
-    bloc.dispatch(UpdateQuestionarioEditarApagarPerguntaBlocEvent(id));
-
-    bloc.dispatch(UpdateIDEditarApagarPerguntaBlocEvent(id));
+    myController.setTextAndPosition(myController.text);
 
     return Provider<EditarApagarPerguntaBloc>.value(
       value: bloc,

@@ -5,6 +5,7 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 
+
 class EditarApagarPerguntaBlocState {
   PerguntaModel instance;
   String id;
@@ -193,5 +194,6 @@ class EditarApagarPerguntaBloc {
     validate();
 
     if (!_outputController.isClosed) _outputController.add(_state);
+    print(event.runtimeType);
   }
 }
