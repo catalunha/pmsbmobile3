@@ -21,10 +21,6 @@ class AdministracaoPerfilPageState {
 class AdministracaoPerfilPageBloc {
   final fw.Firestore _firestore;
 
-  // Estados da Página
-  final AdministracaoPerfilPageState currentState =
-      AdministracaoPerfilPageState();
-
   // Eventos da Página
   final _administracaoPerfilPageEventController =
       BehaviorSubject<AdministracaoPerfilPageEvent>();
@@ -34,6 +30,11 @@ class AdministracaoPerfilPageBloc {
 
   Function get administracaoPerfilPageEventSink =>
       _administracaoPerfilPageEventController.sink.add;
+
+  // Estados da Página
+  final AdministracaoPerfilPageState currentState =
+      AdministracaoPerfilPageState();
+
 
   // UsuarioModel
   final _usuarioModelController = BehaviorSubject<UsuarioModel>();

@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/models/noticia_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:pmsbmibile3/pages/comunicacao/noticia_page_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:pmsbmibile3/state/services.dart';
-import 'package:pmsbmibile3/models/models.dart';
+
+import 'comunicacao_home_page_bloc.dart';
 
 
-class NoticiasNaoVisualizadasPage extends StatelessWidget {
+class NoticiaLeituraPage extends StatelessWidget {
+final bloc = NoticiaPageBloc(Bootstrap.instance.firestore);
+
   @override
   Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthBloc>(context);
-
     return DefaultScaffold(
-      title: StreamBuilder<UsuarioModel>(
-        stream: authBloc.perfil,
+      title: StreamBuilder<NoticiaPageState>(
+        stream: bloc.noticiaPageStateStream,
         builder: (context, snap) {
           if(snap.hasError){
             return Text("ERROR");
@@ -22,16 +25,68 @@ class NoticiasNaoVisualizadasPage extends StatelessWidget {
           if(!snap.hasData){
             return Text("Buscando usuario...");
           }
-          var perfil = snap.data;
-          return Text("Olá, ${perfil.nome}");
+          return Text("Oi ${snap.data?.usuarioIDNome}");
         },
       ),
-      body: NoticiasNaoVisualizadasBody(),
+      // body: Text('oi')
+      body: Container(
+        child: StreamBuilder<List<NoticiaModel>>(
+            stream: bloc.noticiaModelListStream,
+            initialData: [],
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Erro. Na leitura de noticias do usuario."),
+                );
+              }
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ListView(
+                children: snapshot.data
+                    .map((noticia) {
+                      return ListTile(
+                        title: Text('Titulo ${noticia?.titulo}'),
+                      );
+                    })
+                    .toList(),
+              );
+            }),
+      ),
     );
   }
 }
 
-class NoticiasNaoVisualizadasBody extends StatelessWidget {
+class lixo {
+/*
+
+        // _firestore
+        //   .collection(UsuarioNoticiaModel.collection)
+        //   .where("usuarioID", isEqualTo: _noticiaPageState.usuarioIDNome)
+        //   .where("visualizada", isEqualTo: false)
+        //   .snapshots()
+        //   .map((snap) => snap.documents
+        // .map((doc) => UsuarioNoticiaModel(id:doc.documentID).fromMap(doc.data))
+        // .toList())
+        // .listen((List<UsuarioNoticiaModel> usuarioNoticiaModelList){
+        //   usuarioNoticiaModelListSink(usuarioNoticiaModelList);
+
+        //   usuarioNoticiaModelList.forEach((noticiaModel){
+        //   _firestore
+        //   .collection(NoticiaModel.collection)
+        //   .where("usuarioIDDestino.${noticiaModel.}.id", isEqualTo: true)
+        //   .snapshots()
+        //   .map((snap) => snap.documents
+        // .map((doc) => NoticiaModel(id:doc.documentID).fromMap(doc.data))
+        // .toList()).pipe(_noticiaModelListController);
+        //   });
+
+        // });
+
+
+class NoticiaLeituraPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var db = Provider.of<DatabaseService>(context);
@@ -63,49 +118,6 @@ class NoticiasNaoVisualizadasBody extends StatelessWidget {
   }
 }
 
-
-class NoticiasVisualizadasBody extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var db = Provider.of<DatabaseService>(context);
-    var authBloc = Provider.of<AuthBloc>(context);
-
-    return StreamBuilder(
-      stream: authBloc.userId,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text("ERRO"),
-          );
-        }
-        if (!snapshot.hasData) {
-          Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Container(
-          child: StreamProvider<List<NoticiaUsuarioModel>>.value(
-            // lista de documentos em /noticias_usuarios não visualizados
-            stream: db.streamNoticiasUsuarios(userId: snapshot.data, visualizada: true),
-            child: ListaNoticiasUsuarios(),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class NoticiasVisualizadasPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Noticias Arquivadas"),
-      ),
-      body: NoticiasVisualizadasBody(),
-    );
-  }
-}
 
 class ListaNoticiasUsuarios extends StatelessWidget {
   Widget _card(BuildContext context, NoticiaUsuarioModel noticiaUsuario) {
@@ -168,23 +180,5 @@ class ListaNoticiasUsuarios extends StatelessWidget {
     }
   }
 }
-
-class NoticiaTile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<NoticiaModel>(
-      builder: (BuildContext context, NoticiaModel noticia, Widget child) {
-        if (noticia != null) {
-          return MarkdownBody(
-            //TODO: replace all deve ir para bloc
-            data: noticia.textoMarkdown.replaceAll("\\n", "\n"),
-          );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
-  }
+*/
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -58,6 +59,42 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               //     .document()
               //     .setData(usuarioPerfilModel,
               //         merge: true);
+              // ---
+              // +++ Listar NoticiaModel
+              // _firestore
+              //     .collection(NoticiaModel.collection)
+              //     .document('-LkB9elzgUkl5OHFyjoB')
+              //     .snapshots()
+              //     .listen((snap) {
+              //   print('>> snap.data.toString() >> ${snap.data.toString()}');
+              //   NoticiaModel noticia = NoticiaModel(id:snap.documentID).fromMap(snap.data);
+              //   print(noticia.toMap());
+              // });
+              // ---
+              // +++ Criar NoticiaModel
+              Map<String, dynamic> noticiaModel = Map<String, dynamic>();
+              noticiaModel["titulo"] = "outra noticia";
+              noticiaModel["textoMarkdown"] = "textoMarkdown-valor1";
+              noticiaModel["usuarioIDEditor"] = {
+                "id": "fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2",
+                "nome": "UsuarioIDNome"
+              };
+              
+              noticiaModel["distribuida"] =false;
+              noticiaModel["publicar"] = DateTime.now().toUtc();
+              noticiaModel["usuarioIDDestino"] = {
+                "fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2": {
+                  "id": true,
+                  "nome": "nome-valor",
+                  "visualizada": false
+                }
+              };
+
+              print('>> noticiaModel >> ${noticiaModel}');
+              _firestore
+                  .collection(NoticiaModel.collection)
+                  .document()
+                  .setData(noticiaModel, merge: true);
               // ---
             },
             child: Text('Prof Catalunha'),
