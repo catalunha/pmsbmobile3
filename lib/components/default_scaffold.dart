@@ -216,29 +216,36 @@ class DefaultEndDrawer extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Perfil'),
+              trailing: Icon(Icons.person),
               onTap: () {
                 //noticias perfil
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Noticias Arquivadas'),
+              trailing: Icon(Icons.history),
               onTap: () {
                 //noticias arquivadas
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Configurações'),
+              trailing: Icon(Icons.settings),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil/configuracao");
               },
             ),
+            Divider(color: Colors.black45,),
             ListTile(
               title: Text('Sair'),
+              trailing: Icon(Icons.exit_to_app),
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
