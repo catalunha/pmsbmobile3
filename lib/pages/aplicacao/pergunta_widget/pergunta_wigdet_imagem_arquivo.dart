@@ -5,20 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:pmsbmibile3/models/arquivo_local_model.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart';
 import 'package:flutter/rendering.dart';
 
-import 'dart:io';
-import 'dart:isolate';
-import 'package:image/image.dart' as img;
-
 enum ArquivoTipo { image, aplication }
-
-class DecodeParam {
-  final File file;
-  final SendPort sendPort;
-  DecodeParam(this.file, this.sendPort);
-}
 
 class PerguntaWigdetImagemArquivo extends StatefulWidget {
   final ArquivoTipo arquivoTipo;
@@ -34,9 +23,9 @@ class PerguntaWigdetImagemArquivo extends StatefulWidget {
 class _PerguntaWigdetImagemArquivoState
     extends State<PerguntaWigdetImagemArquivo> {
   //o objeto ArquivoLocalListModel tem um metodo 'arquivos.getListaFormatoFirebase( )' que vai retornar a lista de arquivos de acordo com o formato que vai ser enviado ao firebase
+  
+  
   ArquivoLocalListModel arquivos = new ArquivoLocalListModel();
-
-  File _image;
 
   String _mensageaquivo = "Adicionar um novo arquivo :";
   String _mensageimagem = "Adicionar uma nova imagem :";
@@ -50,7 +39,7 @@ class _PerguntaWigdetImagemArquivoState
   }
 
   Future _selecionarNovaImagem() async {
-    File newfile = null;
+    File newfile = null; 
     try {
       newfile = await ImagePicker.pickImage(source: ImageSource.camera);
 
@@ -85,7 +74,7 @@ class _PerguntaWigdetImagemArquivoState
     return Card(
         child: Container(
             constraints: new BoxConstraints.expand(
-              height: 200.0,
+              height: 150.0,
             ),
             padding: new EdgeInsets.only(left: 16.0, bottom: 8.0, right: 16.0),
             decoration: new BoxDecoration(
