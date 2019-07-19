@@ -77,8 +77,8 @@ class ComunicacaoCRUDPageState {
     // print('>>> noticiaModel.id >>> ${noticiaModel.id}');
     // print(
     //     '>>> noticiaModel.usuarioIDDestino >>> ${noticiaModel.usuarioIDDestino}');
-    destinatarioListMap =
-        noticiaModel.usuarioIDDestino.map((v) => v.toMap()).toList();
+    // destinatarioListMap =
+    //     noticiaModel.usuarioIDDestino.map((v) => v.toMap()).toList();
   }
 
   NoticiaModel toNoticiaModel() {
@@ -96,7 +96,7 @@ class ComunicacaoCRUDPageState {
       titulo: titulo,
       distribuida: false,
       textoMarkdown: textoMarkdown,
-      usuarioIDDestino: usuarioIDDestino,
+      // usuarioIDDestino: usuarioIDDestino,
       publicar: publicar ?? null,
     );
   }
