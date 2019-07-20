@@ -72,8 +72,9 @@ class _ComunicacaoDestinatariosPageState
                           },
                           child: ListTile(
                             title: Text(
-                              "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
-                              style: TextStyle(fontSize: 14),
+                              // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
+                              "# ${variavel.nome}",
+                              style: TextStyle(fontSize: 18),
                             ),
                             // subtitle: Text(
                             //   "## ${variavel?.nome}",
@@ -114,8 +115,9 @@ class _ComunicacaoDestinatariosPageState
                           },
                           child: ListTile(
                             title: Text(
-                              "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
-                              style: TextStyle(fontSize: 14),
+                              // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
+                              "# ${variavel.nome}",
+                              style: TextStyle(fontSize: 18),
                             ),
 
                             // subtitle: Text(
@@ -157,8 +159,13 @@ class _ComunicacaoDestinatariosPageState
                           },
                           child: ListTile(
                             title: Text(
-                              "# ${variavel.id}-${variavel.nome}-${variavel.eixo}-${variavel.cargo}-${variavel.checked}-${variavel.valor}",
-                              style: TextStyle(fontSize: 14),
+                              // "# ${variavel.id}-${variavel.nome}-${variavel.eixo}-${variavel.cargo}-${variavel.checked}-${variavel.valor}",
+                              "#${variavel.nome}",
+                              
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            subtitle: Text(
+                              "Eixo: ${variavel.eixoNome}. Cargo: ${variavel.cargoNome}",
                             ),
                             // subtitle: Text(
                             //   "## ${variavel?.nome}",

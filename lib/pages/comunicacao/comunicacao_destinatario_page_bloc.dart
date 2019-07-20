@@ -54,9 +54,11 @@ class Usuario {
   String nome;
   String cargo;
   String eixo;
+  String cargoNome;
+  String eixoNome;
   bool checked = false;
   int valor = 0;
-  Usuario({this.id, this.nome, this.cargo, this.eixo});
+  Usuario({this.id, this.nome, this.cargo, this.eixo,this.cargoNome,this.eixoNome});
 }
 
 class ComunicacaoDestinatarioPageBloc {
@@ -120,7 +122,10 @@ class ComunicacaoDestinatarioPageBloc {
                   id: documentSnapshot.documentID,
                   nome: documentSnapshot.data['nome'],
                   cargo: cargoMap['id'],
-                  eixo: eixoMap['id']));
+                  eixo: eixoMap['id'],
+                  cargoNome: cargoMap['nome'],
+                  eixoNome: eixoMap['nome']
+                  ));
             }));
     _comunicacaoDestinatarioPageStateController.sink
         .add(comunicacaoDestinatarioPageState);
