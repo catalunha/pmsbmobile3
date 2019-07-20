@@ -51,12 +51,12 @@
     ]
   },
   "UsuarioArquivo": {
-    "_comment": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basico_sobre_HTTP/MIME_types/Complete_list_of_MIME_types",
     "usuarioID": "UsuarioID",
-    "contentType": "text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
-    "storagePath": "storagePath-valor",
-    "titulo": "titulo-valor",
-    "url": "url-valor"
+    "referencia": "null || uma palavra chave para pesquisa exemplo: perfil.csv || perfil.md || perfil.pdf | noticias.pdf",
+    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
+    "storagePath": "obtida do storage",
+    "titulo": "descricao simples quando for necessario",
+    "url": "obtida do storage"
   },
   "Noticia": {
     "titulo": "titulo-valor",
@@ -68,7 +68,7 @@
     "publicada": false,
     "publicar": "2019-01-01 00:00:00",
     "usuarioIDDestino": {
-      "UsuarioID":{
+      "UsuarioID": {
         "id": "UsuarioID",
         "nome": "nome-valor",
         "visualizada": false
@@ -143,9 +143,9 @@
     "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla"
   },
   "Pergunta": {
-    "referencia": "uid",
-    "anterior": "PerguntaID->referencia || null",
-    "posterior": "PerguntaID->referencia || null",
+    "referencia": "familia da pergunta. uid - gerado internamente pelo dart",
+    "anterior": "PerguntaID || null. para navegação apenas",
+    "posterior": "PerguntaID || null. para navegação apenas",
     "ordem": 0,
     "questionarioID": {
       "id": "QuestionarioID",
@@ -153,57 +153,41 @@
     },
     "titulo": "titulo-valor",
     "textoMarkdown": "texto-valor",
+    "observacao": "observacao-valor",
     "perguntaTipoID": {
       "id": "PerguntaTipoID",
       "nome": "PerguntaTipoID->nome"
     },
+    "texto": "valor",
+    "numero": "valor",
+    "arquivo": [
+      "PerguntaAplicadaArquivoID"
+    ],
+    "coordenada": [
+      {
+        "latitude": "Coordenada",
+        "longitude": "Coordenada"
+      }
+    ],
     "escolha": {
-      "uid":{
-        "key":true,
+      "uid": {
+        "key": true,
         "ordem": 0,
         "texto": "texto-valor",
         "marcada": true
       }
     },
-    "texto": {
-      "valor": "Texto-valor || null ",
-      "observacao": "observacao-valor"
-    },
-    "numero": {
-      "valor": "Numero-valor || null",
-      "observacao": "observacao-valor"
-    },
-    "imagem": {
-      "imagemID": [
-        "PerguntaAplicadaArquivoID"
-      ],
-      "observacao": "observacao-valor"
-    },
-    "arquivo": {
-      "arquivoID": [
-        "PerguntaAplicadaArquivoID"
-      ],
-      "observacao": "observacao-valor"
-    },
-    "coordenada": {
-      "coordenada": [
-        {
-          "latitude": "Coordenada",
-          "longitude": "Coordenada"
-        }
-      ],
-      "observacao": "observacao-valor"
-    },
-    "requisito": {
-      "uid=PerguntaID->referencia":{
-        "key": true,
-        "id": "uid. Sempre novo",
-        "ligado": "requisito.uid.id",
+    "requisito": [
+      {
+        "referencia": "PerguntaID->referencia",
+        "PerguntaID": "PerguntaID",
         "pergunta": "PerguntaID->escolha || PerguntaID->texto",
-        "escolha": "PerguntaID->escolha->uid",
-        "marca": true
+        "escolha": {
+          "id": "PerguntaID->escolha->uid->key",
+          "marcada": true
+        }
       }
-    }
+    ]
   },
   "PerguntaAplicada": {
     "_comment": "idem a Pergunta. Com as devidas alterações."
@@ -213,6 +197,7 @@
       "id": "UsuarioID",
       "nome": "UsuarioIDNome"
     },
+    "PerguntaAplicadaID": "PerguntaAplicadaID",
     "contentType": "contentType-valor",
     "storagePath": "storagePath-valor",
     "url": "url-valor"
