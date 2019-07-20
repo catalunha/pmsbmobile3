@@ -34,7 +34,16 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
               ),
             ],
           ),
-          title: Text("Comunicação"),
+          title: Text("Notícias"),
+          // actions: ,
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: Icon(choices[0].icon),
+          //     onPressed: () {
+          //       _select(choices[0]);
+          //     },
+          //   ),
+          // ],
           body: _body(context),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
