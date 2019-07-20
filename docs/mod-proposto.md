@@ -1,27 +1,18 @@
 - p1
   - questionario: 1
   - referencia: A
-  - anterior: 
-  - posterior: B
-  - requisito.referencia.key: A
-  - requisito.uid.id: a
-  - requisito.uid.ligado: 
+  - requisito.referencia: A
+  - requisito.PerguntaID: ID.p1
 
 - p2
   - questionario: 1
   - referencia: B
-  - anterior: A
-  - posterior: C
-  - requisito.referencia.key: A
-  - requisito.uid.id: b
-  - requisito.uid.ligado: a
+  - requisito.referencia: A
+  - requisito.PerguntaID: ID.p1
 
 
 - p3
   - questionario: 2
   - referencia: C
-  - anterior: B
-  - posterior: D
-  - requisito.referencia.key: B
-  - requisito.uid.id: c
-  - requisito.uid.ligado: b
+  - requisito.referencia: B
+  - requisito.PerguntaID: ID.p2

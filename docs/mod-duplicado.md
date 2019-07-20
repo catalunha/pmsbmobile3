@@ -1,17 +1,11 @@
-- p1
+- p1a
   - questionario: 1a
   - referencia: A
-  - anterior: 
-  - posterior: B
-  - requisito.referencia.key: A
-  - requisito.uid.id: a1
-  - requisito.uid.ligado: 
+  - requisito.referencia: A
+  - requisito.PerguntaID: ID.p1a
 
-- p2
+- p2a
   - questionario: 1a
   - referencia: B
-  - anterior: A
-  - posterior: C
-  - requisito.referencia.key: A
-  - requisito.uid.id: b1
-  - requisito.uid.ligado: a1
+  - requisito.referencia: A
+  - requisito.PerguntaID: ID.p2a
