@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'comunicacao_home_page_bloc.dart';
 
 class NoticiaLeituraPage extends StatelessWidget {
-  final bloc = NoticiaPageBloc(Bootstrap.instance.firestore);
+  final bloc = NoticiaPageBloc(firestore:Bootstrap.instance.firestore,visualizada:false);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class NoticiaLeituraPage extends StatelessWidget {
                           subtitle: Text(
                               "Editor: ${noticia.usuarioIDEditor.nome}\nem: ${noticia.publicar}\n"),
                           trailing: IconButton(
-                            icon: Icon(Icons.assignment_turned_in),
+                            icon: Icon(bloc.visualizada ? Icons.arrow_back : Icons.arrow_forward),
                             onPressed: () {
                               bloc.noticiaPageEventSink(
                                   UpdateNoticiaVisualizadaEvent(
