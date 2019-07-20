@@ -36,9 +36,9 @@ class NoticiaModel extends FirestoreModel {
       Map<dynamic, dynamic> dataFromMap = Map<dynamic, dynamic>();
       Map<String, Destinatario> dataToField = Map<String, Destinatario>();
       dataFromMap = map['usuarioIDDestino'];
-      print('>> dataFromMap >> ${dataFromMap}');
+      // print('>> dataFromMap >> ${dataFromMap}');
       dataFromMap.forEach((k, v) {
-        print(">> v[id].runtimeType >> ${v['id'].runtimeType}");
+        // print(">> v[id].runtimeType >> ${v['id'].runtimeType}");
         dataToField[k] = Destinatario(
             uid: v['uid'],
             id: v['id'],
