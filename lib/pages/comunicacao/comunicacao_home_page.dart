@@ -18,24 +18,46 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ComunicacaoHomePageBloc>.value(
-      value: bloc,
-      child: DefaultScaffold(
-        // backgroundColor: Colors.red,
-        title: Text("Comunicação"),
-        body: _body(context),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            Navigator.pushNamed(context, '/comunicacao/crud_page');
-          },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.blue,
+    // return Provider<ComunicacaoHomePageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      return DefaultTabController(
+        length: 2,
+        child: DefaultScaffold(
+          bottom: TabBar(
+            tabs: <Widget>[
+              Tab(
+                text: 'Em edição',
+              ),
+              Tab(
+                text: 'Publicadas',
+              ),
+            ],
+          ),
+          title: Text("Comunicação"),
+          body: _body(context),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              Navigator.pushNamed(context, '/comunicacao/crud_page');
+            },
+            child: Icon(Icons.add),
+            backgroundColor: Colors.blue,
+          ),
         ),
-      ),
+      // ),
     );
   }
 
   Widget _body(context) {
+    return TabBarView(
+      children: <Widget>[
+        _bodyEmEdicao(context),
+        _bodyPublicadas(context),
+      ],
+    );
+  }
+
+  Widget _bodyEmEdicao(context) {
     return Container(
       child: StreamBuilder<List<NoticiaModel>>(
           stream: bloc.noticiaModelListStream,
@@ -88,29 +110,62 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
                   MarkdownBody(
                     data: "${noticia.textoMarkdown}",
                   ),
-                  // Divider(),
-                  // ButtonTheme.bar(
-                  //   child: ButtonBar(
-                  //     children: <Widget>[
-                  //       IconButton(
-                  //         icon: Icon(Icons.delete),
-                  //         onPressed: () {
-                  //           bloc.communicacaoHomePageSink(UpDateNoticiaIDEvent(noticia.id));
-                  //         },
-                  //       ),
-                  //       IconButton(
-                  //         icon: Icon(Icons.edit),
-                  //         onPressed: () {
-                  //           Navigator.pushNamed(
-                  //               context, '/comunicacao/criar_editar',
-                  //               arguments: noticia.id);
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
                 ],
               ),
             )));
+  }
+
+  Widget _bodyPublicadas(context) {
+    return Container(
+      child: StreamBuilder<List<NoticiaModel>>(
+          stream: bloc.noticiaModelListpublicadasStream,
+          initialData: [],
+          builder: (context, snapshot) {
+            if (snapshot.hasError)
+              return Center(
+                child: Text("Erro. Informe ao administrador do aplicativo"),
+              );
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.data.isEmpty)
+              return Center(
+                child: Text("Nenhuma notícia criada."),
+              );
+            else
+              return ListView(
+                children: snapshot.data
+                    .map((noticia) => _cardBuildPublicada(noticia))
+                    .toList(),
+              );
+          }),
+    );
+  }
+
+  Widget _cardBuildPublicada(NoticiaModel noticia) {
+    return Card(
+      color:Colors.black12,
+        elevation: 10,
+        child: Container(
+          padding: EdgeInsets.all(5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                // padding: EdgeInsets.symmetric(vertical: 6),
+                child: Text(
+                  "${noticia.titulo}",
+                  style: Theme.of(context).textTheme.title,
+                ),
+              ),
+              Text("Publicada em: ${noticia.publicar}\n"),
+              MarkdownBody(
+                data: "${noticia.textoMarkdown}",
+              ),
+            ],
+          ),
+        ));
   }
 }

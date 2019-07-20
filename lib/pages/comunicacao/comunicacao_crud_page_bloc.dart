@@ -9,48 +9,40 @@ import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ComunicacaoCRUDPageEvent {}
-
 class UpDateUsuarioIDEditorEvent extends ComunicacaoCRUDPageEvent {
   final String usuarioIDEditorId;
 
   UpDateUsuarioIDEditorEvent(this.usuarioIDEditorId);
 }
-
 class UpdateNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   final String noticiaID;
 
   UpdateNoticiaIDEvent(this.noticiaID);
 }
-
 class DeleteNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   DeleteNoticiaIDEvent();
 }
-
 class UpdateTituloEvent extends ComunicacaoCRUDPageEvent {
   final String titulo;
 
   UpdateTituloEvent(this.titulo);
 }
-
 class UpdateDestinatarioListEvent extends ComunicacaoCRUDPageEvent {
   List<Map<dynamic, dynamic>> destinatarioList = List<Map<dynamic, dynamic>>();
 
   UpdateDestinatarioListEvent(this.destinatarioList);
 }
-
 class UpdatePublicarEvent extends ComunicacaoCRUDPageEvent {
   final DateTime data;
   final TimeOfDay hora;
 
   UpdatePublicarEvent({this.data, this.hora});
 }
-
 class UpdateTextoMarkdownEvent extends ComunicacaoCRUDPageEvent {
   final String textoMarkdown;
 
   UpdateTextoMarkdownEvent(this.textoMarkdown);
 }
-
 class SaveStateToFirebaseEvent extends ComunicacaoCRUDPageEvent {}
 
 class ComunicacaoCRUDPageState {
@@ -66,6 +58,7 @@ class ComunicacaoCRUDPageState {
   TimeOfDay hora;
   List<Map<String, dynamic>> destinatarioListMap =
       List<Map<String, dynamic>>();
+
 /*
 [
   {
@@ -74,6 +67,7 @@ class ComunicacaoCRUDPageState {
   },
 ]
 */
+
   void fromNoticiaModel(NoticiaModel noticiaModel) {
     currentNoticiaModel = noticiaModel;
     noticiaID = noticiaModel.id;
