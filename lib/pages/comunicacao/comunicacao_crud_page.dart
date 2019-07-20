@@ -299,7 +299,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
           children: <Widget>[
             _texto("Titulo da notícia:"),
             _tituloNoticia(),
-            _texto("Data / Hora da notícia:"),
+            _texto("Data / Hora para publicação:"),
             _dataHorarioNoticia(context),
             _texto("Escolha o(s) destinatário(s):"),
             _destinatarios(context),

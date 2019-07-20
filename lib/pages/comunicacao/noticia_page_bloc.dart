@@ -16,14 +16,23 @@ class UpdateUsuarioIDEvent extends NoticiaPageEvent {
   UpdateUsuarioIDEvent(this.usuarioID);
 }
 
+class UpdateNoticiaVisualizadaEvent extends NoticiaPageEvent {
+  final String noticiaID;
+  final String usuarioID;
+
+  UpdateNoticiaVisualizadaEvent({this.noticiaID, this.usuarioID});
+}
+
 class NoticiaPageState {
   String usuarioID;
   String usuarioIDNome;
+  String noticiaID;
 }
 
 class NoticiaPageBloc {
+  final bool visualizada;
   // Database
-  final fsw.Firestore _firestore;
+  final fsw.Firestore firestore;
 
   // Authenticacação
   final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
@@ -55,7 +64,8 @@ class NoticiaPageBloc {
       _noticiaModelListController.stream;
   Function get noticiaModelListSink => _noticiaModelListController.sink.add;
 
-  NoticiaPageBloc(this._firestore) {
+  NoticiaPageBloc({this.firestore, this.visualizada}) {
+
     noticiaPageEventStream.listen(_mapEventToState);
     _authBloc.userId
         .listen((userId) => noticiaPageEventSink(UpdateUsuarioIDEvent(userId)));
@@ -70,26 +80,26 @@ class NoticiaPageBloc {
   void _mapEventToState(NoticiaPageEvent event) {
     if (event is UpdateUsuarioIDEvent) {
       _noticiaPageState.usuarioID = event.usuarioID;
-      _firestore
+      firestore
           .collection(UsuarioModel.collection)
           .document(_noticiaPageState.usuarioID)
           .snapshots()
           .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
           .listen((usuario) {
         _noticiaPageState.usuarioIDNome = usuario.nome;
-        print('>> usuario.nome >> ${usuario.nome}');
+        // print('>> usuario.nome >> ${usuario.nome}');
         noticiaPageStateSink(_noticiaPageState);
       });
       noticiaPageStateStream.listen((event) {
-        print('>> event >> ${event.usuarioID}');
-        print('>> event >> ${event.usuarioIDNome}');
+        // print('>> event >> ${event.usuarioID}');
+        // print('>> event >> ${event.usuarioIDNome}');
       });
-      _firestore
+      firestore
           .collection(NoticiaModel.collection)
           .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.id",
               isEqualTo: true)
           .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.visualizada",
-              isEqualTo: false)
+              isEqualTo: visualizada)
           // .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.publicar",
           //     isGreaterThanOrEqualTo: DateTime.now())
           .snapshots()
@@ -99,13 +109,27 @@ class NoticiaPageBloc {
           .pipe(_noticiaModelListController);
       noticiaModelListStream.listen((noticia) {
         noticia.forEach((item) {
-          print('>> item. >> ${item.titulo}');
-          print('>> item. >> ${item.publicar}');
-          print('>> item. >> ${item.distribuida}');
-          
+          // print('>> item. >> ${item.titulo}');
+          // print('>> item. >> ${item.publicar}');
+          // print('>> item. >> ${item.distribuida}');
         });
       });
     }
+    if (event is UpdateNoticiaVisualizadaEvent) {
+      _noticiaPageState.noticiaID = event.noticiaID;
+      noticiaPageStateSink(_noticiaPageState);
+
+      print('usuarioIDDestino.${_noticiaPageState.usuarioID}.visualizada');
+      firestore
+          .collection(NoticiaModel.collection)
+          .document(_noticiaPageState.noticiaID)
+          .setData({
+        "usuarioIDDestino": {
+          "${_noticiaPageState.usuarioID}": {"visualizada": !visualizada}
+        }
+      }, merge: true);
+    }
+
     // noticiaPageStateSink(_noticiaPageState);
   }
 }

@@ -73,7 +73,7 @@ class _ComunicacaoDestinatariosPageState
                           child: ListTile(
                             title: Text(
                               // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
-                              "# ${variavel.nome}",
+                              "${variavel.nome}",
                               style: TextStyle(fontSize: 18),
                             ),
                             // subtitle: Text(
@@ -116,7 +116,7 @@ class _ComunicacaoDestinatariosPageState
                           child: ListTile(
                             title: Text(
                               // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
-                              "# ${variavel.nome}",
+                              "${variavel.nome}",
                               style: TextStyle(fontSize: 18),
                             ),
 
@@ -160,7 +160,7 @@ class _ComunicacaoDestinatariosPageState
                           child: ListTile(
                             title: Text(
                               // "# ${variavel.id}-${variavel.nome}-${variavel.eixo}-${variavel.cargo}-${variavel.checked}-${variavel.valor}",
-                              "#${variavel.nome}",
+                              "${variavel.nome}",
                               
                               style: TextStyle(fontSize: 18),
                             ),

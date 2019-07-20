@@ -215,6 +215,15 @@ class DefaultEndDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             ListTile(
+              title: Text('Configurações'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/perfil/configuracao");
+              },
+              leading: Icon(Icons.close),
+            ),
+            Divider(color: Colors.black45,),
+            ListTile(
               title: Text('Perfil'),
               trailing: Icon(Icons.person),
               onTap: () {
@@ -226,16 +235,7 @@ class DefaultEndDrawer extends StatelessWidget {
             ),
             Divider(color: Colors.black45,),
             ListTile(
-              title: Text('Configurações'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/perfil/configuracao");
-              },
-              leading: Icon(Icons.close),
-            ),
-            Divider(color: Colors.black45,),
-            ListTile(
-              title: Text('Noticias Arquivadas'),
+              title: Text('Noticias lidas'),
               onTap: () {
                 //noticias arquivadas
                 Navigator.pop(context);

@@ -14,10 +14,16 @@ class ComunicacaoHomePageBloc {
   // Auth
   final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
-  // NoticiaModel
+  // NoticiaModel Em Edicao
   final _noticiaModelListController = BehaviorSubject<List<NoticiaModel>>();
   Stream<List<NoticiaModel>> get noticiaModelListStream =>
       _noticiaModelListController.stream;
+
+  // NoticiaModel Publicadas
+  final _noticiaModelListPublicadasController = BehaviorSubject<List<NoticiaModel>>();
+  Stream<List<NoticiaModel>> get noticiaModelListpublicadasStream =>
+      _noticiaModelListPublicadasController.stream;
+
 
   ComunicacaoHomePageBloc(this._firestore) {
     _authBloc.userId.listen(_getNoticiasDoUsuario);
@@ -26,7 +32,8 @@ class ComunicacaoHomePageBloc {
   void _getNoticiasDoUsuario(String userId) {
     final noticiasRef = _firestore
         .collection(NoticiaModel.collection)
-        .where("usuarioIDEditor.id", isEqualTo: userId);
+        .where('distribuida', isEqualTo: false)
+        .where('usuarioIDEditor.id', isEqualTo: userId);
 
     noticiasRef
         .snapshots()
@@ -35,10 +42,24 @@ class ComunicacaoHomePageBloc {
                 NoticiaModel(id: docSnap.documentID).fromMap(docSnap.data))
             .toList())
         .pipe(_noticiaModelListController);
+
+    _firestore
+        .collection(NoticiaModel.collection)
+        .where('distribuida', isEqualTo: true)
+        .where('usuarioIDEditor.id', isEqualTo: userId)
+        .snapshots()
+        .map((querySnap) => querySnap.documents
+            .map((docSnap) =>
+                NoticiaModel(id: docSnap.documentID).fromMap(docSnap.data))
+            .toList())
+        .pipe(_noticiaModelListPublicadasController);
+
+
   }
 
   void dispose() {
     _noticiaModelListController.close();
     _authBloc.dispose();
+    _noticiaModelListPublicadasController.close();
   }
 }
