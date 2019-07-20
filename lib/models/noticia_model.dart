@@ -6,7 +6,7 @@ class NoticiaModel extends FirestoreModel {
   String titulo;
   String textoMarkdown;
   UsuarioIDEditor usuarioIDEditor;
-  bool distribuida;
+  bool publicada;
   DateTime publicar;
   Map<String, Destinatario> usuarioIDDestino;
 
@@ -15,7 +15,7 @@ class NoticiaModel extends FirestoreModel {
       this.titulo,
       this.textoMarkdown,
       this.usuarioIDEditor,
-      this.distribuida,
+      this.publicada,
       this.publicar,
       this.usuarioIDDestino})
       : super(id);
@@ -30,7 +30,7 @@ class NoticiaModel extends FirestoreModel {
           ? new UsuarioIDEditor.fromMap(map['usuarioIDEditor'])
           : null;
     }
-    if (map.containsKey('distribuida')) distribuida = map['distribuida'];
+    if (map.containsKey('publicada')) publicada = map['publicada'];
     if (map.containsKey('publicar')) publicar = map['publicar'].toDate();
     if (map.containsKey('usuarioIDDestino')) {
       Map<dynamic, dynamic> dataFromMap = Map<dynamic, dynamic>();
@@ -58,7 +58,7 @@ class NoticiaModel extends FirestoreModel {
     if (this.usuarioIDEditor != null) {
       data['usuarioIDEditor'] = this.usuarioIDEditor.toMap();
     }
-    if (distribuida != null) data['distribuida'] = this.distribuida;
+    if (publicada != null) data['publicada'] = this.publicada;
     if (publicar != null) data['publicar'] = this.publicar.toUtc();
 
     if (usuarioIDDestino != null) {

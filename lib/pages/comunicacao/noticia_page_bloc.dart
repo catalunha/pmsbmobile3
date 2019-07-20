@@ -111,7 +111,7 @@ class NoticiaPageBloc {
         noticia.forEach((item) {
           // print('>> item. >> ${item.titulo}');
           // print('>> item. >> ${item.publicar}');
-          // print('>> item. >> ${item.distribuida}');
+          // print('>> item. >> ${item.publicada}');
         });
       });
     }
