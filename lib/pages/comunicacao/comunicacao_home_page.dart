@@ -126,71 +126,83 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
   }
 
   Widget _bodyPublicadas(context) {
-    return Container(
-      child: StreamBuilder<List<NoticiaModel>>(
-          stream: bloc.noticiaModelListpublicadasStream,
-          initialData: [],
-          builder: (context, snapshot) {
-            if (snapshot.hasError)
-              return Center(
-                child: Text("Erro. Informe ao administrador do aplicativo"),
-              );
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.data.isEmpty) {
-              return Center(
-                child: Text("Nenhuma notícia criada."),
-              );
-            } else {
-              return Column(
-                children: <Widget>[
-                  ButtonTheme.bar(
-                    child: ButtonBar(
-                      children: <Widget>[
-                        Text('csv'),
-                        IconButton(
-                          icon: Icon(Icons.border_bottom),
-                          onPressed: () {
-                            launch('https://www.google.com.br/');
-                          },
-                        ),
-                        Text('md'),
-                        IconButton(
-                          icon: Icon(Icons.web),
-                          onPressed: () {
-                            launch('https://www.google.com.br/');
-                          },
-                        ),
-                        Text('pdf'),
-                        IconButton(
-                          icon: Icon(Icons.picture_as_pdf),
-                          onPressed: () {
-                            launch('https://www.google.com.br/');
-                          },
-                        ),
-                      ],
-                    ),
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: StreamBuilder<ComunicacaoHomePageState>(
+              stream: bloc.comunicacaoHomePageStateStream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<ComunicacaoHomePageState> snapshotState) {
+                if (snapshotState.hasError) {
+                  return Center(
+                    child: Text("Error"),
+                  );
+                }
+                if (!snapshotState.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ButtonTheme.bar(
+                  child: ButtonBar(
+                    children: <Widget>[
+                      Text('csv'),
+                      IconButton(
+                        icon: Icon(Icons.border_bottom),
+                        onPressed: () {
+                          launch(snapshotState.data.urlCSV);
+                        },
+                      ),
+                      Text('web'),
+                      IconButton(
+                        icon: Icon(Icons.web),
+                        onPressed: () {
+                          launch(snapshotState.data.urlMD);
+                        },
+                      ),
+                      Text('pdf'),
+                      IconButton(
+                        icon: Icon(Icons.picture_as_pdf),
+                        onPressed: () {
+                          launch(snapshotState.data.urlPDF);
+                        },
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 9,
-                    child: ListView(
-                      children: snapshot.data
-                          .map((noticia) => _cardBuildPublicada(noticia))
-                          .toList(),
-                    ),
-                  ),
-                ],
-              );
-              // return ListView(
-              //   children: snapshot.data
-              //       .map((noticia) => _cardBuildPublicada(noticia))
-              //       .toList(),
-              // );
-            }
-          }),
+                );
+              },
+            ),
+        ),
+        Expanded(
+          flex: 9,
+          child: StreamBuilder<List<NoticiaModel>>(
+              stream: bloc.noticiaModelListPublicadasStream,
+              initialData: [],
+              builder: (context, snapshot) {
+                if (snapshot.hasError)
+                  return Center(
+                    child: Text("Erro. Informe ao administrador do aplicativo"),
+                  );
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.data.isEmpty) {
+                  return Center(
+                    child: Text("Nenhuma notícia criada."),
+                  );
+                } else {
+                  return ListView(
+                    children: snapshot.data
+                        .map((noticia) => _cardBuildPublicada(noticia))
+                        .toList(),
+                  );
+                }
+              }),
+        ),
+      ],
     );
   }
 

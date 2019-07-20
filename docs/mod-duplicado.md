@@ -2,10 +2,10 @@
   - questionario: 1a
   - referencia: A
   - requisito.referencia: A
-  - requisito.PerguntaID: ID.p1a
+  - requisito.perguntaID: ID.p1a
 
 - p2a
   - questionario: 1a
   - referencia: B
   - requisito.referencia: A
-  - requisito.PerguntaID: ID.p2a
+  - requisito.perguntaID: ID.p2a

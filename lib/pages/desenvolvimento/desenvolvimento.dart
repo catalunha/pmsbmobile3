@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:pmsbmibile3/models/noticia_model.dart';
+import 'package:pmsbmibile3/models/usuario_arquivo_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -72,31 +73,79 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               // });
               // ---
               // +++ Criar NoticiaModel
-              Map<String, dynamic> noticiaModel = Map<String, dynamic>();
-              noticiaModel["titulo"] = "outra noticia";
-              noticiaModel["textoMarkdown"] = "textoMarkdown-valor1";
-              noticiaModel["usuarioIDEditor"] = {
-                "id": "fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2",
-                "nome": "UsuarioIDNome"
-              };
-              
-              noticiaModel["publicada"] =false;
-              noticiaModel["publicar"] = DateTime.now().toUtc();
-              noticiaModel["usuarioIDDestino"] = {
-                "fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2": {
-                  "id": true,
-                  "nome": "nome-valor",
-                  "visualizada": false
-                }
-              };
+              // Map<String, dynamic> noticiaModel = Map<String, dynamic>();
+              // noticiaModel["titulo"] = "outra noticia";
+              // noticiaModel["textoMarkdown"] = "textoMarkdown-valor1";
+              // noticiaModel["usuarioIDEditor"] = {
+              //   "id": "fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2",
+              //   "nome": "UsuarioIDNome"
+              // };
 
-              print('>> noticiaModel >> ${noticiaModel}');
-              _firestore
-                  .collection(NoticiaModel.collection)
-                  .document()
-                  .setData(noticiaModel, merge: true);
+              // noticiaModel["publicada"] =false;
+              // noticiaModel["publicar"] = DateTime.now().toUtc();
+              // noticiaModel["usuarioIDDestino"] = {
+              //   "fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2": {
+              //     "id": true,
+              //     "nome": "nome-valor",
+              //     "visualizada": false
+              //   }
+              // };
+
+              // print('>> noticiaModel >> ${noticiaModel}');
+              // _firestore
+              //     .collection(NoticiaModel.collection)
+              //     .document()
+              //     .setData(noticiaModel, merge: true);
               // ---
-            },
+              // +++ Criar UsuarioArquivo Perfil.csv
+              // Map<String, dynamic> map = Map<String, dynamic>();
+              // map['usuarioID'] = 'fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2';
+              // map['referencia'] = 'perfil.csv';
+              // map['contentType'] = 'text/csv';
+              // map['storagePath'] = 'gs://pmsb-22-to.appspot.com/csv-teste.csv';
+              // map['titulo'] = 'Planilha com perfil';
+              // map['url'] =
+              //     'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/csv-teste.csv?alt=media&token=5133f286-4987-4f32-adbf-21214492425c';
+              // UsuarioArquivoModel usuarioArquivoModel =
+              //     UsuarioArquivoModel().fromMap(map);
+              // _firestore
+              //     .collection(UsuarioArquivoModel.collection)
+              //     .document()
+              //     .setData(usuarioArquivoModel.toMap(), merge: true);
+              // ---
+              // +++ Criar UsuarioArquivo Perfil.pdf
+              // Map<String, dynamic> map = Map<String, dynamic>();
+              // map['usuarioID'] = 'fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2';
+              // map['referencia'] = 'perfil.pdf';
+              // map['contentType'] = 'application/pdf';
+              // map['storagePath'] = 'gs://pmsb-22-to.appspot.com/md-teste.pdf';
+              // map['titulo'] = 'PDF com perfil';
+              // map['url'] =
+              //     'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/md-teste.pdf?alt=media&token=010896c1-84b0-4672-bd89-dbb089be69fa';
+              // UsuarioArquivoModel usuarioArquivoModel =
+              //     UsuarioArquivoModel().fromMap(map);
+              // _firestore
+              //     .collection(UsuarioArquivoModel.collection)
+              //     .document()
+              //     .setData(usuarioArquivoModel.toMap(), merge: true);
+              // ---
+              // +++ Criar UsuarioArquivo Perfil.md
+              Map<String, dynamic> map = Map<String, dynamic>();
+              map['usuarioID'] = 'fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2';
+              map['referencia'] = 'perfil.md';
+              map['contentType'] = 'text/markdown';
+              map['storagePath'] = 'gs://pmsb-22-to.appspot.com/md-teste.md';
+              map['titulo'] = 'PDF com perfil';
+              map['url'] =
+                  'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/md-teste.md?alt=media&token=86bc30a6-f823-41b5-9830-ec4bc24e283c';
+              UsuarioArquivoModel usuarioArquivoModel =
+                  UsuarioArquivoModel().fromMap(map);
+              _firestore
+                  .collection(UsuarioArquivoModel.collection)
+                  .document()
+                  .setData(usuarioArquivoModel.toMap(), merge: true);
+              // ---
+            }, // fim onPressed
             child: Text('Prof Catalunha'),
           ),
           RaisedButton(
