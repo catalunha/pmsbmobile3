@@ -108,7 +108,7 @@ class ComunicacaoHomePageBloc {
           .collection(UsuarioArquivoModel.collection)
           .where("usuarioID",
               isEqualTo: _comunicacaoHomePageState.usuarioId)
-          .where("referencia", isEqualTo: 'perfil.csv')
+          .where("referencia", isEqualTo: 'noticia.csv')
           .snapshots()
           .map((snapDocs) => snapDocs.documents
               .map((doc) =>
@@ -127,7 +127,7 @@ class ComunicacaoHomePageBloc {
           .collection(UsuarioArquivoModel.collection)
           .where("usuarioID",
               isEqualTo: _comunicacaoHomePageState.usuarioId)
-          .where("referencia", isEqualTo: 'perfil.pdf')
+          .where("referencia", isEqualTo: 'noticia.pdf')
           .snapshots()
           .map((snapDocs) => snapDocs.documents
               .map((doc) =>
@@ -146,7 +146,7 @@ class ComunicacaoHomePageBloc {
           .collection(UsuarioArquivoModel.collection)
           .where("usuarioID",
               isEqualTo: _comunicacaoHomePageState.usuarioId)
-          .where("referencia", isEqualTo: 'perfil.md')
+          .where("referencia", isEqualTo: 'noticia.md')
           .snapshots()
           .map((snapDocs) => snapDocs.documents
               .map((doc) =>
