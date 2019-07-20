@@ -65,14 +65,15 @@
       "id": "UsuarioID",
       "nome": "UsuarioIDNome"
     },
-    "distribuida": false,
+    "publicada": false,
     "publicar": "2019-01-01 00:00:00",
-    "usuarioIDDestino": [
-      {
+    "usuarioIDDestino": {
+      "UsuarioID":{
         "id": "UsuarioID",
-        "nome": "nome-valor"
+        "nome": "nome-valor",
+        "visualizada": false
       }
-    ]
+    }
   },
   "UsuarioNoticia": {
     "usuarioID": "UsuarioID",
