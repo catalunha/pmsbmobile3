@@ -90,14 +90,14 @@ class DefaultDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacementNamed(context, "/desenvolvimento");
               },
-            ),            ListTile(
+            ),
+            ListTile(
               title: Text('Home'),
               trailing: Icon(Icons.home),
               onTap: () {
                 Navigator.pushReplacementNamed(context, "/");
               },
             ),
-
             Divider(
               color: Colors.black45,
             ),
@@ -215,6 +215,15 @@ class DefaultEndDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             ListTile(
+              title: Text('Configurações'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/perfil/configuracao");
+              },
+              leading: Icon(Icons.close),
+            ),
+            Divider(color: Colors.black45,),
+            ListTile(
               title: Text('Perfil'),
               trailing: Icon(Icons.person),
               onTap: () {
@@ -222,25 +231,17 @@ class DefaultEndDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil");
               },
+              leading: Icon(Icons.close),
             ),
             Divider(color: Colors.black45,),
             ListTile(
-              title: Text('Noticias Arquivadas'),
-              trailing: Icon(Icons.history),
+              title: Text('Noticias lidas'),
               onTap: () {
                 //noticias arquivadas
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
               },
-            ),
-            Divider(color: Colors.black45,),
-            ListTile(
-              title: Text('Configurações'),
-              trailing: Icon(Icons.settings),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/perfil/configuracao");
-              },
+              leading: Icon(Icons.close),
             ),
             Divider(color: Colors.black45,),
             ListTile(
@@ -249,6 +250,7 @@ class DefaultEndDrawer extends StatelessWidget {
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
+              leading: Icon(Icons.close),
             ),
           ],
         ),

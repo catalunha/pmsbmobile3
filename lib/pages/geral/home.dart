@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/login_required.dart';
+import 'package:pmsbmibile3/pages/comunicacao/noticia_leitura_page.dart';
 import 'package:pmsbmibile3/pages/noticias/noticias_page.dart';
 
 
@@ -8,7 +9,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return DefaultLoginRequired(
-      child: NoticiasNaoVisualizadasPage(),
+      child: NoticiaLeituraPage(),
+      // child: NoticiasNaoVisualizadasPage(),
     );
   }
 }

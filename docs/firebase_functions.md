@@ -43,3 +43,15 @@ De arquivo.
 ~~~
 Nao precisa ser automatico, pode ser manual.
 
+## Noticia
+Quando um novo documento de Noticia for cadastrado em **Noticia** a function deverá cadastrar este noticia em **UsuarioNoticia** constando apenas as partes
+~~~json
+{
+  "UsuarioNoticia": {
+    "usuarioID": "UsuarioID",
+    "noticiaID": "NoticiaID",
+    "visualizada": false
+  }
+
+}
+~~~

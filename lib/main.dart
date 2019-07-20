@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/comunicacao/noticia_lida_page.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crud_page.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page.dart';
 import 'package:provider/provider.dart';
@@ -91,7 +92,7 @@ class MyApp extends StatelessWidget {
             //comunicacao
             "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
             "/noticias/noticias_visualizadas": (context) =>
-                NoticiasVisualizadasPage(),
+                NoticiaLidaPage(),
             "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
             //administração

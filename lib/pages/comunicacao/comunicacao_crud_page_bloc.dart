@@ -9,48 +9,40 @@ import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ComunicacaoCRUDPageEvent {}
-
 class UpDateUsuarioIDEditorEvent extends ComunicacaoCRUDPageEvent {
   final String usuarioIDEditorId;
 
   UpDateUsuarioIDEditorEvent(this.usuarioIDEditorId);
 }
-
 class UpdateNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   final String noticiaID;
 
   UpdateNoticiaIDEvent(this.noticiaID);
 }
-
 class DeleteNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   DeleteNoticiaIDEvent();
 }
-
 class UpdateTituloEvent extends ComunicacaoCRUDPageEvent {
   final String titulo;
 
   UpdateTituloEvent(this.titulo);
 }
-
 class UpdateDestinatarioListEvent extends ComunicacaoCRUDPageEvent {
   List<Map<dynamic, dynamic>> destinatarioList = List<Map<dynamic, dynamic>>();
 
   UpdateDestinatarioListEvent(this.destinatarioList);
 }
-
 class UpdatePublicarEvent extends ComunicacaoCRUDPageEvent {
   final DateTime data;
   final TimeOfDay hora;
 
   UpdatePublicarEvent({this.data, this.hora});
 }
-
 class UpdateTextoMarkdownEvent extends ComunicacaoCRUDPageEvent {
   final String textoMarkdown;
 
   UpdateTextoMarkdownEvent(this.textoMarkdown);
 }
-
 class SaveStateToFirebaseEvent extends ComunicacaoCRUDPageEvent {}
 
 class ComunicacaoCRUDPageState {
@@ -64,8 +56,17 @@ class ComunicacaoCRUDPageState {
   DateTime publicar = DateTime.now();
   DateTime data;
   TimeOfDay hora;
-  List<Map<dynamic, dynamic>> destinatarioListMap =
-      List<Map<dynamic, dynamic>>();
+  List<Map<String, dynamic>> destinatarioListMap =
+      List<Map<String, dynamic>>();
+
+/*
+[
+  {
+    usuarioID:usuarioID
+    nome:usuarioID->nome
+  },
+]
+*/
 
   void fromNoticiaModel(NoticiaModel noticiaModel) {
     currentNoticiaModel = noticiaModel;
@@ -77,24 +78,38 @@ class ComunicacaoCRUDPageState {
     // print('>>> noticiaModel.id >>> ${noticiaModel.id}');
     // print(
     //     '>>> noticiaModel.usuarioIDDestino >>> ${noticiaModel.usuarioIDDestino}');
-    destinatarioListMap =
-        noticiaModel.usuarioIDDestino.map((v) => v.toMap()).toList();
+    // destinatarioListMap =
+    //     noticiaModel.usuarioIDDestino.map((v) => v.toMap()).toList();
+    noticiaModel.usuarioIDDestino.forEach((k, v) {
+// print('>> k >> ${k}');
+// print('>> v >> ${v}');
+      destinatarioListMap.add(
+        {'usuarioID': '${k}', 'nome': '${v.nome}'},
+      );
+    });
   }
 
   NoticiaModel toNoticiaModel() {
-    List<Destinatario> usuarioIDDestino = [];
+    // List<Destinatario> usuarioIDDestino = [];
+    Map<String, Destinatario> usuarioIDDestino = Map<String, Destinatario>();
     // print('>>>>>> ${destinatarioListMap}');
     // destinatarioListMap.map((item) => destinatarioList.add(item['usuarioID']));
+
     destinatarioListMap.forEach((item) {
-      // // print(item['usuarioID']);
-      usuarioIDDestino
-          .add(Destinatario(id: item['usuarioID'], nome: item['nome']));
+      // print(item['usuarioID']);
+      // print(item['nome']);
+      usuarioIDDestino[item['usuarioID']] = Destinatario(
+          uid: item['usuarioID'],
+          id: true,
+          nome: item['nome'],
+          visualizada: false);
+      // print('>> usuarioIDDestino >> ${usuarioIDDestino.toString()}');
     });
     // print('>>>>>> ${destinatarioList}');
     return NoticiaModel(
       usuarioIDEditor: usuarioIDEditor,
       titulo: titulo,
-      distribuida: false,
+      publicada: false,
       textoMarkdown: textoMarkdown,
       usuarioIDDestino: usuarioIDDestino,
       publicar: publicar ?? null,
@@ -144,8 +159,9 @@ class ComunicacaoCRUDPageBloc {
           .document(event.usuarioIDEditorId)
           .snapshots()
           .listen((documentSnapshot) {
-        UsuarioIDEditor usuarioIDEditor =
-            UsuarioIDEditor(id: documentSnapshot.documentID,nome: documentSnapshot.data['nome']);
+        UsuarioIDEditor usuarioIDEditor = UsuarioIDEditor(
+            id: documentSnapshot.documentID,
+            nome: documentSnapshot.data['nome']);
         comunicacaoCRUDPageState.usuarioIDEditor = usuarioIDEditor;
         _comunicacaoCRUDPageStateController.sink.add(comunicacaoCRUDPageState);
       });
@@ -214,7 +230,8 @@ class ComunicacaoCRUDPageBloc {
     final docRef = Firestore.instance
         .collection(NoticiaModel.collection)
         .document(comunicacaoCRUDPageState.noticiaID);
-    docRef.setData(map, merge: true);
+    // docRef.setData(map, merge: true); // se deixar merge ele amplia a lista e nao exclui.
+    docRef.setData(map);
   }
 
   _deleteNoticiaIdEvent() {

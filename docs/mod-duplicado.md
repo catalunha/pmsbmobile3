@@ -1,18 +1,17 @@
 - p1
-  - q1a
-  - family: A
-  - familyPrevious: 
-  - familyNext: B
-  - familyReq: 
-  - reqId: a2
-  - reqParent:
-
+  - questionario: 1a
+  - referencia: A
+  - anterior: 
+  - posterior: B
+  - requisito.referencia.key: A
+  - requisito.uid.id: a1
+  - requisito.uid.ligado: 
 
 - p2
-  - q1a
-  - family: B
-  - familyPrevious: 
-  - familyNext: C
-  - familyReq: A
-  - reqId: b2
-  - reqParent: a2
+  - questionario: 1a
+  - referencia: B
+  - anterior: A
+  - posterior: C
+  - requisito.referencia.key: A
+  - requisito.uid.id: b1
+  - requisito.uid.ligado: a1

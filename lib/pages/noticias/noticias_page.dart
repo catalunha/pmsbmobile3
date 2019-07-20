@@ -6,6 +6,31 @@ import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/models/models.dart';
 
+
+class NoticiasNaoVisualizadasPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var authBloc = Provider.of<AuthBloc>(context);
+
+    return DefaultScaffold(
+      title: StreamBuilder<UsuarioModel>(
+        stream: authBloc.perfil,
+        builder: (context, snap) {
+          if(snap.hasError){
+            return Text("ERROR");
+          }
+          if(!snap.hasData){
+            return Text("Buscando usuario...");
+          }
+          var perfil = snap.data;
+          return Text("Olá, ${perfil.nome}");
+        },
+      ),
+      body: NoticiasNaoVisualizadasBody(),
+    );
+  }
+}
+
 class NoticiasNaoVisualizadasBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -38,29 +63,6 @@ class NoticiasNaoVisualizadasBody extends StatelessWidget {
   }
 }
 
-class NoticiasNaoVisualizadasPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthBloc>(context);
-
-    return DefaultScaffold(
-      title: StreamBuilder<UsuarioModel>(
-        stream: authBloc.perfil,
-        builder: (context, snap) {
-          if(snap.hasError){
-            return Text("ERROR");
-          }
-          if(!snap.hasData){
-            return Text("SEM DADOS");
-          }
-          var perfil = snap.data;
-          return Text("Ola, ${perfil.nome}");
-        },
-      ),
-      body: NoticiasNaoVisualizadasBody(),
-    );
-  }
-}
 
 class NoticiasVisualizadasBody extends StatelessWidget {
   @override
