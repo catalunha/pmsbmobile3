@@ -44,7 +44,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
           }
           return Container(
               child: Column(children: <Widget>[
-            Padding(padding: EdgeInsets.all(10)),
+            Padding(padding: EdgeInsets.all(3)),
             Expanded(
               flex: 2,
               child: Row(
@@ -58,7 +58,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: Container(
-                        padding: EdgeInsets.only(left: 6),
+                        // padding: EdgeInsets.only(left: 6),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -73,15 +73,43 @@ class AdministracaoPerfilPage extends StatelessWidget {
                 ],
               ),
             ),
+            ButtonTheme.bar(
+              child: ButtonBar(
+                children: <Widget>[
+                  Text('csv'),
+                  IconButton(
+                    icon: Icon(Icons.border_bottom),
+                    onPressed: () {
+                      launch('https://www.google.com.br/');
+                    },
+                  ),
+                  Text('md'),
+                  IconButton(
+                    icon: Icon(Icons.web),
+                    onPressed: () {
+                      launch('https://www.google.com.br/');
+                    },
+                  ),
+                  Text('pdf'),
+                  IconButton(
+                    icon: Icon(Icons.picture_as_pdf),
+                    onPressed: () {
+                      launch('https://www.google.com.br/');
+                    },
+                  ),
+                ],
+              ),
+            ),
+
             Padding(
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(0),
                 child: Text(
                   "Documentos do usuario:",
                   style: TextStyle(fontSize: 16),
                 )),
-            Padding(padding: EdgeInsets.all(10)),
+            // Padding(padding: EdgeInsets.all(0)),
             Expanded(
-              flex: 6,
+              flex: 9,
               child: StreamBuilder<List<UsuarioPerfilModel>>(
                   stream: bloc.usuarioPerfilModelStream,
                   builder: (context, snapshot) {
@@ -101,17 +129,19 @@ class AdministracaoPerfilPage extends StatelessWidget {
                         ...snapshot.data.map((variavel) {
                           if (variavel.perfilID.contentType == 'text') {
                             return Card(
-                                  color: variavel.textPlain == null ? Colors.yellowAccent: Colors.white,
+                                color: variavel.textPlain == null
+                                    ? Colors.yellowAccent
+                                    : Colors.white,
                                 child: ListTile(
-                              title: Text(
-                                "${variavel.perfilID.nome}:",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              subtitle: Text(
-                                "${variavel.textPlain}",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ));
+                                  title: Text(
+                                    "${variavel.perfilID.nome}:",
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  subtitle: Text(
+                                    "${variavel.textPlain}",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ));
                           } else {
                             if (variavel.usuarioArquivoID == null) {
                               return Card(
