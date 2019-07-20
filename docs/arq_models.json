@@ -180,7 +180,7 @@
     "requisito": [
       {
         "referencia": "PerguntaID->referencia",
-        "PerguntaID": "PerguntaID",
+        "perguntaID": "PerguntaID",
         "pergunta": "PerguntaID->escolha || PerguntaID->texto",
         "escolha": {
           "id": "PerguntaID->escolha->uid->key",

@@ -15,4 +15,4 @@
   - questionario: 2
   - referencia: C
   - requisito.referencia: B
-  - requisito.PerguntaID:
+  - requisito.perguntaID:
