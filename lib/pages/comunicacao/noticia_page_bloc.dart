@@ -16,9 +16,17 @@ class UpdateUsuarioIDEvent extends NoticiaPageEvent {
   UpdateUsuarioIDEvent(this.usuarioID);
 }
 
+class UpdateNoticiaVisualizadaEvent extends NoticiaPageEvent {
+  final String noticiaID;
+  final String usuarioID;
+
+  UpdateNoticiaVisualizadaEvent({this.noticiaID, this.usuarioID});
+}
+
 class NoticiaPageState {
   String usuarioID;
   String usuarioIDNome;
+  String noticiaID;
 }
 
 class NoticiaPageBloc {
@@ -77,12 +85,12 @@ class NoticiaPageBloc {
           .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
           .listen((usuario) {
         _noticiaPageState.usuarioIDNome = usuario.nome;
-        print('>> usuario.nome >> ${usuario.nome}');
+        // print('>> usuario.nome >> ${usuario.nome}');
         noticiaPageStateSink(_noticiaPageState);
       });
       noticiaPageStateStream.listen((event) {
-        print('>> event >> ${event.usuarioID}');
-        print('>> event >> ${event.usuarioIDNome}');
+        // print('>> event >> ${event.usuarioID}');
+        // print('>> event >> ${event.usuarioIDNome}');
       });
       _firestore
           .collection(NoticiaModel.collection)
@@ -99,13 +107,27 @@ class NoticiaPageBloc {
           .pipe(_noticiaModelListController);
       noticiaModelListStream.listen((noticia) {
         noticia.forEach((item) {
-          print('>> item. >> ${item.titulo}');
-          print('>> item. >> ${item.publicar}');
-          print('>> item. >> ${item.distribuida}');
-          
+          // print('>> item. >> ${item.titulo}');
+          // print('>> item. >> ${item.publicar}');
+          // print('>> item. >> ${item.distribuida}');
         });
       });
     }
+    if (event is UpdateNoticiaVisualizadaEvent) {
+      _noticiaPageState.noticiaID = event.noticiaID;
+      noticiaPageStateSink(_noticiaPageState);
+
+      print('usuarioIDDestino.${_noticiaPageState.usuarioID}.visualizada');
+      _firestore
+          .collection(NoticiaModel.collection)
+          .document(_noticiaPageState.noticiaID)
+          .setData({
+        "usuarioIDDestino": {
+          "${_noticiaPageState.usuarioID}": {"visualizada": true}
+        }
+      }, merge: true);
+    }
+
     // noticiaPageStateSink(_noticiaPageState);
   }
 }

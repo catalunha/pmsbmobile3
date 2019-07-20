@@ -9,9 +9,8 @@ import 'package:provider/provider.dart';
 
 import 'comunicacao_home_page_bloc.dart';
 
-
 class NoticiaLeituraPage extends StatelessWidget {
-final bloc = NoticiaPageBloc(Bootstrap.instance.firestore);
+  final bloc = NoticiaPageBloc(Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +18,10 @@ final bloc = NoticiaPageBloc(Bootstrap.instance.firestore);
       title: StreamBuilder<NoticiaPageState>(
         stream: bloc.noticiaPageStateStream,
         builder: (context, snap) {
-          if(snap.hasError){
+          if (snap.hasError) {
             return Text("ERROR");
           }
-          if(!snap.hasData){
+          if (!snap.hasData) {
             return Text("Buscando usuario...");
           }
           return Text("Oi ${snap.data?.usuarioIDNome}");
@@ -45,13 +44,48 @@ final bloc = NoticiaPageBloc(Bootstrap.instance.firestore);
                 );
               }
               return ListView(
-                children: snapshot.data
-                    .map((noticia) {
-                      return ListTile(
-                        title: Text('Titulo ${noticia?.titulo}'),
-                      );
-                    })
-                    .toList(),
+                children: snapshot.data.map((noticia) {
+                  return Card(
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: Text('Titulo ${noticia?.titulo}'),
+                          subtitle: Text(
+                              "Editor: ${noticia.usuarioIDEditor.nome}\nem: ${noticia.publicar}\n"),
+                          trailing: IconButton(
+                            icon: Icon(Icons.assignment_turned_in),
+                            onPressed: () {
+                              bloc.noticiaPageEventSink(
+                                  UpdateNoticiaVisualizadaEvent(
+                                      noticiaID: noticia.id));
+                            },
+                          ),
+                        ),
+                        ListTile(
+                          title: MarkdownBody(
+                            data: "${noticia.textoMarkdown}",
+                          ),
+                        ),
+                        // Container(
+                        //   // padding: EdgeInsets.symmetric(vertical: 6),
+                        //   child: Text(
+                        //     "${noticia.titulo}",
+                        //     style: Theme.of(context).textTheme.title,
+                        //   ),
+                        // ),
+                        // Text(
+                        //     "Editor: ${noticia.usuarioIDEditor.nome} em: ${noticia.publicar}\n"),
+                        // MarkdownBody(
+                        //   data: "${noticia.textoMarkdown}",
+                        // ),
+                      ],
+                    ),
+                  );
+
+                  //   return ListTile(
+                  //     title: Text('Titulo ${noticia?.titulo}'),
+                  //   );
+                }).toList(),
               );
             }),
       ),
