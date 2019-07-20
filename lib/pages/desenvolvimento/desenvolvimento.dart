@@ -80,7 +80,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 "nome": "UsuarioIDNome"
               };
               
-              noticiaModel["distribuida"] =false;
+              noticiaModel["publicada"] =false;
               noticiaModel["publicar"] = DateTime.now().toUtc();
               noticiaModel["usuarioIDDestino"] = {
                 "fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2": {

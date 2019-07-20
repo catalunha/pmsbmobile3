@@ -109,7 +109,7 @@ class ComunicacaoCRUDPageState {
     return NoticiaModel(
       usuarioIDEditor: usuarioIDEditor,
       titulo: titulo,
-      distribuida: false,
+      publicada: false,
       textoMarkdown: textoMarkdown,
       usuarioIDDestino: usuarioIDDestino,
       publicar: publicar ?? null,

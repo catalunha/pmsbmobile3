@@ -32,7 +32,7 @@ class ComunicacaoHomePageBloc {
   void _getNoticiasDoUsuario(String userId) {
     final noticiasRef = _firestore
         .collection(NoticiaModel.collection)
-        .where('distribuida', isEqualTo: false)
+        .where('publicada', isEqualTo: false)
         .where('usuarioIDEditor.id', isEqualTo: userId);
 
     noticiasRef
@@ -45,7 +45,7 @@ class ComunicacaoHomePageBloc {
 
     _firestore
         .collection(NoticiaModel.collection)
-        .where('distribuida', isEqualTo: true)
+        .where('publicada', isEqualTo: true)
         .where('usuarioIDEditor.id', isEqualTo: userId)
         .snapshots()
         .map((querySnap) => querySnap.documents

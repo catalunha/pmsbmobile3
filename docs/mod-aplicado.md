@@ -1,40 +1,30 @@
 - p1
-  - q1
-  - family: A
-  - familyPrevious: 
-  - familyNext: B
-  - familyReq: 
-  - reqId: a1
-  - reqParent:
-
+  - questionario: 1
+  - referencia: A
+  - anterior: 
+  - posterior: B
+  - requisito.referencia.key: A
+  - requisito.uid.id: a
+  - requisito.uid.ligado: 
 
 - p2
-  - q1
-  - family: B
-  - familyPrevious: 
-  - familyNext: C
-  - familyReq: A
-  - reqId: b1
-  - reqParent: a1
-
+  - questionario: 1
+  - referencia: B
+  - anterior: A
+  - posterior: C
+  - requisito.referencia.key: A
+  - requisito.uid.id: b
+  - requisito.uid.ligado: a
 
 
 - p3
-  - q2
-  - family: C
-  - familyPrevious: 
-  - familyNext: D
-  - familyReq: B
-  - reqId: c1
-  - reqParent: b1 || b2 (escolho req pai)
+  - questionario: 2
+  - referencia: C
+  - anterior: B
+  - posterior: D
+  - requisito.referencia.key: B
+  - requisito.uid.id: c
+  - requisito.uid.ligado: a || a1 
 
 
 
-- p4
-  - q2
-  - family: D
-  - familyPrevious: 
-  - familyNext: E
-  - familyReq: A
-  - reqId: d1
-  - reqParent: a1 || a2
