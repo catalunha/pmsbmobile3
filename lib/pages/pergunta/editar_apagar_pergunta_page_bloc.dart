@@ -16,7 +16,7 @@ class EditarApagarPerguntaBlocState {
   PerguntaTipoEnum tipoEnum;
 
   List<Requisito> requisitos;
-  List<Escolha> escolhas;
+  Map<String, Escolha> escolhas;
 
   bool isValid;
   bool isBaund;
@@ -123,7 +123,7 @@ class EditarApagarPerguntaBloc {
           event.defaultTipoPergunta));
       _state.textoMarkdown = event.defaultTextoMarkdown;
       _state.requisitos = List<Requisito>();
-      _state.escolhas = List<Escolha>();
+      _state.escolhas = Map<String, Escolha>();
     }
 
     if (event is UpdateIDEditarApagarPerguntaBlocEvent) {

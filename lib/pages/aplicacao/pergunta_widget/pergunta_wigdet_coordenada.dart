@@ -27,7 +27,7 @@ class _PerguntaWigdetCoordenadaState extends State<PerguntaWigdetCoordenada> {
     try {
       currentLocation = await location.getLocation();  
       setState(() {
-         _listaLocalizao.add(new Coordenada(lat:currentLocation.latitude, long: currentLocation.longitude ));
+         _listaLocalizao.add(new Coordenada(latitude:currentLocation.latitude, longitude: currentLocation.longitude ));
       });
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
@@ -51,7 +51,7 @@ class _PerguntaWigdetCoordenadaState extends State<PerguntaWigdetCoordenada> {
           });
         },
       ),
-      title: Text("Latitude: ${coordenada.lat}\nLongitude: ${coordenada.long} "),
+      title: Text("Latitude: ${coordenada.latitude}\nLongitude: ${coordenada.longitude} "),
     );
   }
 

@@ -181,7 +181,7 @@
       {
         "referencia": "PerguntaID->referencia",
         "perguntaID": "PerguntaID",
-        "pergunta": "PerguntaID->escolha || PerguntaID->texto",
+        "perguntaTipo": "PerguntaID->escolha || PerguntaID->texto",
         "escolha": {
           "id": "PerguntaID->escolha->uid->key",
           "marcada": true
