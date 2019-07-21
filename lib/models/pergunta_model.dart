@@ -316,7 +316,9 @@ class Escolha {
   String texto;
   bool marcada;
 
-  Escolha.fromMap(Map<String, dynamic> map) {
+  Escolha({this.uid, this.key, this.ordem, this.texto, this.marcada});
+
+  Escolha.fromMap(Map<dynamic, dynamic> map) {
     uid = map["uid"];
     key = map["key"];
     ordem = map["ordem"];
