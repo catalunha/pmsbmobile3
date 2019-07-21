@@ -141,7 +141,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             child: RaisedButton(
                 color: Colors.red,
                 onPressed: () {
-                  // DELETAR ESTA PERGUNTA
+                  bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+                  Navigator.pop(context, "pergunta deletada");
                 },
                 child: Row(
                   children: <Widget>[
@@ -184,8 +185,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     String inicio =
         myController.text.substring(0, myController.selection.baseOffset);
     print("INICIO:" + inicio);
-    String fim = myController.text.substring(
-        myController.selection.baseOffset, myController.text.length);
+    String fim = myController.text
+        .substring(myController.selection.baseOffset, myController.text.length);
     print("FIM:" + fim);
 
     myController.text = "$inicio$texto$fim";
@@ -227,7 +228,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             padding: new EdgeInsets.all(10.0),
             child: _iconesLista(),
           ),
-          visible: ! (MediaQuery.of(context).viewInsets.bottom == 0.0),
+          visible: !(MediaQuery.of(context).viewInsets.bottom == 0.0),
         )
       ],
     );
@@ -268,7 +269,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                     onPressed: () {
                       // SELECIONAR ESCOLHA
                       Navigator.pushNamed(
-                          context, "/pergunta/criar_ordenar_escolha");
+                          context, "/pergunta/criar_ordenar_escolha",
+                          arguments: bloc);
                     }),
               ));
             },

@@ -56,10 +56,15 @@ class MyApp extends StatelessWidget {
             },
             "/pergunta/selecionar_requisito": (context) =>
                 SelecionarQuequisitoPerguntaPage(),
-            "/pergunta/criar_ordenar_escolha": (context) =>
-                CriarOrdenarEscolha(),
-            "/pergunta/editar_apagar_escolha": (context) =>
-                EditarApagarEscolhaPage(),
+            "/pergunta/criar_ordenar_escolha": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return CriarOrdenarEscolha(settings.arguments);
+            },
+            "/pergunta/editar_apagar_escolha": (context) {
+              final settings = ModalRoute.of(context).settings;
+              final EditarApagarEscolhaPageArguments args = settings.arguments;
+              return EditarApagarEscolhaPage(args.bloc, args.escolhaID);
+            },
 
             //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
@@ -91,8 +96,7 @@ class MyApp extends StatelessWidget {
 
             //comunicacao
             "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
-            "/noticias/noticias_visualizadas": (context) =>
-                NoticiaLidaPage(),
+            "/noticias/noticias_visualizadas": (context) => NoticiaLidaPage(),
             "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
             //administração
