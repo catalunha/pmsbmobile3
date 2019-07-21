@@ -135,10 +135,18 @@ class PerguntaItem extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    Navigator.pushNamed(context, "/pergunta/criar_editar",
+                    final result = Navigator.pushNamed(context, "/pergunta/criar_editar",
                         arguments: EditarApagarPerguntaPageArguments(
                             perguntaID: _pergunta.id,
                             questionarioID: _pergunta.questionario.id));
+
+                    //mensagem com resultado da ação
+                    result.then((result){
+                      if(result != null && result is String){
+                        final snackBar = SnackBar(content: Text(result));
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }
+                    });
                   },
                 ),
               ],
