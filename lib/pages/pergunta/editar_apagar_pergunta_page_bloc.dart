@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
-
+import 'package:uuid/uuid.dart' as uuid;
 
 class EditarApagarPerguntaBlocState {
   PerguntaModel instance;
@@ -21,11 +21,15 @@ class EditarApagarPerguntaBlocState {
   bool isValid;
   bool isBaund;
 
+  String itemEscolha;
+  String itemEscolhaID;
+
   void updateFromInstance() {
     questionario = instance.questionario;
     titulo = instance.titulo;
     textoMarkdown = instance.textoMarkdown;
     tipo = instance.tipo;
+    if (tipo != null) tipoEnum = PerguntaTipoModel.ENUM[instance.tipo.id];
     requisitos = instance.requisitos;
     escolhas = instance.escolhas;
   }
@@ -75,7 +79,30 @@ class UpdateTextoMarkdownPerguntaEditarApagarPerguntaBlocEvent
   UpdateTextoMarkdownPerguntaEditarApagarPerguntaBlocEvent(this.textoMarkdown);
 }
 
+//escolha
+class UpdateItemEscolhaIDEditarApagarPerguntaBlocEvent
+    extends EditarApagarPerguntaBlocEvent {
+  final String itemEscolhaID;
+
+  UpdateItemEscolhaIDEditarApagarPerguntaBlocEvent(this.itemEscolhaID);
+}
+
+class UpdateItemEscolhaEditarApagarPerguntaBlocEvent
+    extends EditarApagarPerguntaBlocEvent {
+  final String itemEscolha;
+
+  UpdateItemEscolhaEditarApagarPerguntaBlocEvent(this.itemEscolha);
+}
+
+class AddItemEscolhaEditarApagarPerguntaBlocEvent
+    extends EditarApagarPerguntaBlocEvent {}
+
+class DeletarItemEscolhaEditarApagarPerguntaBlocEvent
+    extends EditarApagarPerguntaBlocEvent {}
+
 class SaveEditarApagarPerguntaBlocEvent extends EditarApagarPerguntaBlocEvent {}
+
+class DeletarEditarApagarPerguntaBlocEvent extends EditarApagarPerguntaBlocEvent {}
 
 class EditarApagarPerguntaBloc {
   final fsw.Firestore _firestore;
@@ -110,9 +137,9 @@ class EditarApagarPerguntaBloc {
 
     _state.isValid = isValid;
 
-    if(_state.instance != null){
+    if (_state.instance != null) {
       _state.isBaund = true;
-    }else{
+    } else {
       _state.isBaund = false;
     }
   }
@@ -132,8 +159,9 @@ class EditarApagarPerguntaBloc {
         final ref =
             _firestore.collection(PerguntaModel.collection).document(_state.id);
         final snap = await ref.get();
-        if(snap.exists){
-          _state.instance = PerguntaModel(id: snap.documentID).fromMap(snap.data);
+        if (snap.exists) {
+          _state.instance =
+              PerguntaModel(id: snap.documentID).fromMap(snap.data);
           _state.updateFromInstance();
         }
       }
@@ -168,12 +196,45 @@ class EditarApagarPerguntaBloc {
       _state.tipo = PerguntaTipo(PerguntaTipoModel.IDS[event.tipo],
           PerguntaTipoModel.NOMES[event.tipo]);
     }
+    //adicionar, editar e remover requisito
 
+
+    //adicionar , editar e remover escolha
+    if (event is UpdateItemEscolhaIDEditarApagarPerguntaBlocEvent) {
+      _state.itemEscolhaID = event.itemEscolhaID;
+    }
+    if (event is UpdateItemEscolhaEditarApagarPerguntaBlocEvent) {
+      _state.itemEscolha = event.itemEscolha;
+    }
+    if (event is AddItemEscolhaEditarApagarPerguntaBlocEvent) {
+      final uuidG = uuid.Uuid();
+
+      final escolhaID =
+          _state.itemEscolhaID == null ? uuidG.v4() : _state.itemEscolhaID;
+
+      _state.escolhas[escolhaID] = Escolha(
+        uid: escolhaID,
+        key: true,
+        marcada: false,
+        ordem: 0,
+        texto: _state.itemEscolha,
+      );
+      _state.itemEscolha = null;
+      _state.itemEscolhaID = null;
+    }
+
+    if (event is DeletarItemEscolhaEditarApagarPerguntaBlocEvent) {
+      //TODO: este codigo não remove item de dicionario no firestore
+      _state.escolhas.remove(_state.itemEscolhaID);
+    }
+
+    //salvar e deletar geral
     if (event is SaveEditarApagarPerguntaBlocEvent) {
       if (_state.isValid) {
         final ref =
             _firestore.collection(PerguntaModel.collection).document(_state.id);
 
+        //TODO: revisar para casos de adição e edição
         final instance = PerguntaModel(
           titulo: _state.titulo,
           textoMarkdown: _state.textoMarkdown,
@@ -189,6 +250,12 @@ class EditarApagarPerguntaBloc {
         final snap = await ref.get();
         _state.instance = PerguntaModel(id: snap.documentID).fromMap(snap.data);
       }
+    }
+
+    if(event is DeletarEditarApagarPerguntaBlocEvent){
+      final ref =
+      _firestore.collection(PerguntaModel.collection).document(_state.id);
+      ref.delete();
     }
 
     validate();
