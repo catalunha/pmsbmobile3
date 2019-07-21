@@ -9,3 +9,9 @@ class EditarApagarPerguntaPageArguments {
 
   EditarApagarPerguntaPageArguments({this.questionarioID, this.perguntaID});
 }
+
+class EditarApagarEscolhaPageArguments{
+  final bloc;
+  final escolhaID;
+  EditarApagarEscolhaPageArguments(this.bloc, this.escolhaID);
+}
