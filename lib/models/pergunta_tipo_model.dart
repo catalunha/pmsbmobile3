@@ -11,6 +11,16 @@ enum PerguntaTipoEnum {
 }
 
 class PerguntaTipoModel extends FirestoreModel {
+  static const ENUM = {
+    "texto": PerguntaTipoEnum.Texto,
+    "imagem": PerguntaTipoEnum.Imagem,
+    "arquivo": PerguntaTipoEnum.Arquivo,
+    "numero": PerguntaTipoEnum.Numero,
+    "coordenada": PerguntaTipoEnum.Coordenada,
+    "escolhaunica": PerguntaTipoEnum.EscolhaUnica,
+    "escolhamultipla": PerguntaTipoEnum.EscolhaMultipla,
+  };
+
   static const IDS = {
     PerguntaTipoEnum.Texto: "texto",
     PerguntaTipoEnum.Imagem: "imagem",
