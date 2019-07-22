@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
+import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_imagem_list_page_bloc.dart';
 
 class ProdutoImagemListPage extends StatelessWidget {
@@ -15,16 +16,19 @@ class ProdutoImagemListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Imagens para o Produto"),
       ),
       body: _body(context),
       floatingActionButton: FloatingActionButton(
+
         child: Icon(Icons.add),
+        
         onPressed: () {
           Navigator.pushNamed(context, '/produto/imagem_crud',
-              arguments: null);
+              arguments:
+                  ProdutoArguments(produtoID: produtoID, arquivoID: null));
         },
         // backgroundColor: Colors.blue,
       ),
@@ -78,25 +82,15 @@ class ProdutoImagemListPage extends StatelessWidget {
                 'http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-ionicons-symbol%402x.png'),
             ButtonTheme.bar(
               child: ButtonBar(
+                alignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.assignment),
-                    onPressed: () {
-                      // O ultimo a editar automaticamente o app
-                      // atualiza seu icone, equipe do
-                      // diagramador ou equipe do projeto.
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.check),
-                    onPressed: () {
-                      // Indica que a img a ser incorporada é a diagramada
-                    },
-                  ),
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       //IR PRA PAGINA DE EDITAR VISUAL
+                      Navigator.pushNamed(context, '/produto/imagem_crud',
+                          arguments: ProdutoArguments(
+                              produtoID: produtoID, arquivoID: imagem.id));
                     },
                   ),
                 ],
@@ -109,21 +103,24 @@ class ProdutoImagemListPage extends StatelessWidget {
   _imagem(String link) {
     return Image.network(
       link,
-      //width: 300,
-      //height: 400,
-      //fit: BoxFit.scaleDown,
+      // width: 300,
+      // height: 400,
+      // fit: BoxFit.scaleDown,
     );
   }
 
-  SizedBox _imagemRow(linkracunho, linkeditado) {
-    return SizedBox(
-      height: 80,
-      child: PageView(
-        children: <Widget>[
-          _imagem(linkracunho),
-          _imagem(linkeditado),
-        ],
-      ),
+  _imagemRow(linkracunho, linkeditado) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: _imagem(linkracunho),
+        ),
+        Expanded(
+          child: _imagem(linkeditado),
+        ),
+      ],
     );
   }
+
+
 }

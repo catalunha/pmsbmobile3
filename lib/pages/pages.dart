@@ -23,6 +23,7 @@ export 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page.dart';
 // export 'package:pmsbmibile3/pages/comunicacao/modal_filter_list.dart';
 
 //produto
+export 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 export 'package:pmsbmibile3/pages/produto/produto_home_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_crud_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';

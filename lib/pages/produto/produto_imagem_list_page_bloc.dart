@@ -26,7 +26,14 @@ class ProdutoImagemListPageState {
 
   void updateStateFromProdutoModel() {
     imagemList = produtoModel.imagem;
-    print('>>> imagemList <<< ${imagemList}');
+  }
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['produtoID'] = this.produtoID;
+    data['produtoModel'] = this.produtoModel.toMap();
+    data['imagemList'] = this.imagemList.map((v) => v.toMap()).toList();
+    return data;
   }
 }
 
@@ -63,11 +70,13 @@ class ProdutoImagemListPageBloc {
       if (docSnap.exists) {
         final produtoModel =
             ProdutoModel(id: docSnap.documentID).fromMap(docSnap.data);
-            _state.produtoModel = produtoModel;
-            _state.updateStateFromProdutoModel();
+        _state.produtoModel = produtoModel;
+        _state.updateStateFromProdutoModel();
       }
-
     }
+    if (!_stateController.isClosed) _stateController.add(_state);
+
+    // print('>>> _state.toMap() <<< ${_state.toMap()}');
   }
 
   void dispose() {

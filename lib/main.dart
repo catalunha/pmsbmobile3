@@ -86,7 +86,8 @@ class MyApp extends StatelessWidget {
             },
             "/produto/imagem_crud": (context) {
               final settings = ModalRoute.of(context).settings;
-              return ProdutoImagemCRUDPage(settings.arguments);
+              ProdutoArguments args = settings.arguments;
+              return ProdutoImagemCRUDPage(args.produtoID,args.arquivoID);
             },
             "/produto/mapa": (context) => ProdutoMapaListPage(),
             "/produto/tabela": (context) => ProdutoTabelaListPage(),

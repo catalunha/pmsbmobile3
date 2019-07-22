@@ -33,6 +33,7 @@ class ProdutoHomePage extends StatelessWidget {
           );
         });
   }
+
   Widget _cardBuildProduto(BuildContext context, ProdutoModel produto) {
     return Card(
         elevation: 10,
@@ -41,46 +42,59 @@ class ProdutoHomePage extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text(produto.nome),
+              trailing: IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  //Ir a pagina de Adicionar ou editar Produtos
+                  Navigator.pushNamed(context, '/produto/crud',
+                      arguments: produto.id);
+                },
+              ),
             ),
             ButtonTheme.bar(
               child: ButtonBar(
                 children: <Widget>[
                   IconButton(
+                    icon: Icon(Icons.text_fields),
+                    onPressed: () {
+                      //Ir para a pagina visuais do produto
+                      Navigator.pushNamed(context, '/produto/texto',
+                          arguments: produto.id);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.note_add),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/produto/imagem',
+                          arguments: produto.id);
+                    },
+                  ),
+                  IconButton(
                     icon: Icon(Icons.image),
                     onPressed: () {
-                       Navigator.pushNamed(context, '/produto/imagem', arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/imagem',
+                          arguments: produto.id);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.border_bottom),
                     onPressed: () {
-                       Navigator.pushNamed(context, '/produto/tabela', arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/tabela',
+                          arguments: produto.id);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.insert_chart),
                     onPressed: () {
-                       Navigator.pushNamed(context, '/produto/grafico', arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/grafico',
+                          arguments: produto.id);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.zoom_out_map),
                     onPressed: () {
-                       Navigator.pushNamed(context, '/produto/mapa', arguments: produto.id);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.text_fields),
-                    onPressed: () {
-                      //Ir para a pagina visuais do produto
-                       Navigator.pushNamed(context, '/produto/texto', arguments: produto.id);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      //Ir a pagina de Adicionar ou editar Produtos
-                       Navigator.pushNamed(context, '/produto/crud', arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/mapa',
+                          arguments: produto.id);
                     },
                   ),
                 ],
@@ -139,7 +153,7 @@ class ProdutoHomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, '/produto/crud',arguments: null);
+          Navigator.pushNamed(context, '/produto/crud', arguments: null);
         },
         // backgroundColor: Colors.blue,
       ),
@@ -147,49 +161,48 @@ class ProdutoHomePage extends StatelessWidget {
   }
 }
 
-
-  // return Builder(
-  //     builder: (BuildContext context) => new Container(
-  //           child: _produtos.length >= 0
-  //               ? new ListView.builder(
-  //                   itemCount: _produtos.length,
-  //                   itemBuilder: (BuildContext context, int index) {
-  //                     return Card(
-  //                         elevation: 10,
-  //                         child: Column(
-  //                           mainAxisSize: MainAxisSize.min,
-  //                           children: <Widget>[
-  //                             ListTile(
-  //                               title: Text(_produtos[index]),
-  //                             ),
-  //                             ButtonTheme.bar(
-  //                               child: ButtonBar(
-  //                                 children: <Widget>[
-  //                                   IconButton(
-  //                                     icon: Icon(Icons.print),
-  //                                     onPressed: () {
-  //                                       // Gerar pdf do produto e imprimir
-  //                                     },
-  //                                   ),
-  //                                   IconButton(
-  //                                     icon: Icon(Icons.attach_file),
-  //                                      onPressed: () {
-  //                                        //Ir para a pagina visuais do produto
-  //                                        Navigator.pushNamed(context, '/produto/visual');
-  //                                      },
-  //                                   ),
-  //                                   IconButton(
-  //                                     icon: Icon(Icons.edit),
-  //                                      onPressed: () {
-  //                                        //Ir a pagina de Adicionar ou editar Produtos
-  //                                        Navigator.pushNamed(context, '/produto/adicionar_editar');
-  //                                      },
-  //                                   ),
-  //                                 ],
-  //                               ),
-  //                             )
-  //                           ],
-  //                         ));
-  //                   })
-  //               : Container(),
-  //         ));
+// return Builder(
+//     builder: (BuildContext context) => new Container(
+//           child: _produtos.length >= 0
+//               ? new ListView.builder(
+//                   itemCount: _produtos.length,
+//                   itemBuilder: (BuildContext context, int index) {
+//                     return Card(
+//                         elevation: 10,
+//                         child: Column(
+//                           mainAxisSize: MainAxisSize.min,
+//                           children: <Widget>[
+//                             ListTile(
+//                               title: Text(_produtos[index]),
+//                             ),
+//                             ButtonTheme.bar(
+//                               child: ButtonBar(
+//                                 children: <Widget>[
+//                                   IconButton(
+//                                     icon: Icon(Icons.print),
+//                                     onPressed: () {
+//                                       // Gerar pdf do produto e imprimir
+//                                     },
+//                                   ),
+//                                   IconButton(
+//                                     icon: Icon(Icons.attach_file),
+//                                      onPressed: () {
+//                                        //Ir para a pagina visuais do produto
+//                                        Navigator.pushNamed(context, '/produto/visual');
+//                                      },
+//                                   ),
+//                                   IconButton(
+//                                     icon: Icon(Icons.edit),
+//                                      onPressed: () {
+//                                        //Ir a pagina de Adicionar ou editar Produtos
+//                                        Navigator.pushNamed(context, '/produto/adicionar_editar');
+//                                      },
+//                                   ),
+//                                 ],
+//                               ),
+//                             )
+//                           ],
+//                         ));
+//                   })
+//               : Container(),
+//         ));
