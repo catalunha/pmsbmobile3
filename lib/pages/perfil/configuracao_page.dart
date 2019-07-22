@@ -7,6 +7,7 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class ConfiguracaoPage extends StatefulWidget {
   @override

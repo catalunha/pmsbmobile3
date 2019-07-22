@@ -1,5 +1,6 @@
 // import 'package:validators/validators.dart';
 import 'package:pmsbmibile3/models/base_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class UsuarioModel extends FirestoreModel {
   static final String collection = "Usuario";
@@ -105,97 +106,3 @@ class UsuarioModel extends FirestoreModel {
   }
 }
 
-class UsuarioArquivoID {
-  String id;
-  String url;
-
-  UsuarioArquivoID({this.id, this.url});
-
-  UsuarioArquivoID.fromMap(Map<dynamic, dynamic> map) {
-    if (map.containsKey('id')) id = map['id'];
-    if (map.containsKey('url')) url = map['url'];
-  }
-
-  Map<dynamic, dynamic> toMap() {
-    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    if (id != null) data['id'] = this.id;
-    if (url != null) data['url'] = this.url;
-    return data;
-  }
-}
-
-class RotaID {
-  String id;
-  String url;
-
-  RotaID({this.id, this.url});
-
-  RotaID.fromMap(Map<dynamic, dynamic> map) {
-    if (map.containsKey('id')) id = map['id'];
-    if (map.containsKey('url')) url = map['url'];
-  }
-
-  Map<dynamic, dynamic> toMap() {
-    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    if (id != null) data['id'] = this.id;
-    if (url != null) data['url'] = this.url;
-    return data;
-  }
-}
-
-class SetorCensitarioID {
-  String id;
-  String nome;
-
-  SetorCensitarioID({this.id, this.nome});
-
-  SetorCensitarioID.fromMap(Map<dynamic, dynamic> map) {
-    if (map.containsKey('id')) id = map['id'];
-    if (map.containsKey('nome')) nome = map['nome'];
-  }
-
-  Map<dynamic, dynamic> toMap() {
-    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    if (id != null) data['id'] = this.id;
-    if (nome != null) data['nome'] = this.nome;
-    return data;
-  }
-}
-
-class CargoID {
-  String id;
-  String nome;
-
-  CargoID({this.id, this.nome});
-
-  CargoID.fromMap(Map<dynamic, dynamic> map) {
-    if (map.containsKey('id')) id = map['id'];
-    if (map.containsKey('nome')) nome = map['nome'];
-  }
-
-  Map<dynamic, dynamic> toMap() {
-    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    if (id != null) data['id'] = this.id;
-    if (nome != null) data['nome'] = this.nome;
-    return data;
-  }
-}
-
-class EixoID {
-  String id;
-  String nome;
-
-  EixoID({this.id, this.nome});
-
-  EixoID.fromMap(Map<dynamic, dynamic> map) {
-    if (map.containsKey('id')) id = map['id'];
-    if (map.containsKey('nome')) nome = map['nome'];
-  }
-
-  Map<dynamic, dynamic> toMap() {
-    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    if (id != null) data['id'] = this.id;
-    if (nome != null) data['nome'] = this.nome;
-    return data;
-  }
-}

@@ -208,33 +208,73 @@
       "id": "EixoID",
       "nome": "Eixo_nome"
     },
-    "UsuarioID": {
-      "id": "UsuarioID",
-      "nome": "Usuario_nome"
-    },
-    "datamodificacao": "data-valor",
-    "editando": false,
     "setorCensitarioID": {
       "id": "SetorCensitarioID",
       "nome": "SetorCensitario_nome"
     },
-    "textoMarkdown": "textoMarkdown-valor",
-    "historico": "historico-valor",
-    "observacao": "observacao-valor",
-    "arquivos": [
+    "usuarioIDEditou": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "modificado": "data-valor",
+    "textoMarkdownID": "data-valor",
+    "imagem": [
       {
-        "arquivoUid": "arquivoUid",
+        "id":"uid",
         "titulo": "titulo-valor",
-        "rascunhoArquivoID": "ProdutoArquivoID",
-        "editadoArquivoID": "ProdutoArquivoID",
-        "incorporarEditado": false
+        "produtoArquivoIDRascunho": "ProdutoArquivoID",
+        "produtoArquivoIDEditado": "ProdutoArquivoID"
+      }
+    ],
+    "tabela": [
+      {
+        "id":"uid",
+        "titulo": "titulo-valor",
+        "produtoArquivoIDRascunho": "ProdutoArquivoID",
+        "produtoArquivoIDEditado": "ProdutoArquivoID"
+      }
+    ],
+    "grafico": [
+      {
+        "id":"uid",
+        "titulo": "titulo-valor",
+        "produtoArquivoIDRascunho": "ProdutoArquivoID",
+        "produtoArquivoIDEditado": "ProdutoArquivoID"
+      }
+    ],
+    "mapa": [
+      {
+        "id":"uid",
+        "titulo": "titulo-valor",
+        "produtoArquivoIDRascunho": "ProdutoArquivoID",
+        "produtoArquivoIDEditado": "ProdutoArquivoID"
       }
     ]
   },
+  "Produto/produtoID/ProdutoTexto": {
+    "usuarioIDEditou": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "modificado": "data-valor",
+    "editando": false,
+    "textoMarkdown": "textoMarkdown-valor"
+  },
+  "Produto/produtoID/ProdutoPost": {
+    "assunto": "palavra chave. automatica. opções: texto,imagem,tabela,grafico,mapa ",
+    "numero": 1,
+    "editado": "data-valor",
+    "usuarioIDAutor": {
+      "id": "UsuarioID",
+      "nome": "Usuario_nome"
+    },
+    "textoMarkdown": "textoMarkdown-valor"
+  },
   "ProdutoArquivo": {
-    "proprietario": "Produto/produtoID",
-    "contentType": "contentType-valor",
-    "storagePath": "storagePath-valor",
-    "url": "url-valor"
+    "produtoID": "Produto/produtoID",
+    "referencia": "uma palavra chave para pesquisa exemplo:imagem || tabela || grafico || mapa",
+    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
+    "storagePath": "obtida do storage",
+    "url": "obtida do storage"
   }
 }

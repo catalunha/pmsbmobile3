@@ -58,8 +58,8 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backgroundColor: Colors.red,
-      body: _body(context),
       title: Text("Produto em edição"),
+      body: _body(context),
     );
     /**
 

@@ -130,20 +130,20 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               //     .setData(usuarioArquivoModel.toMap(), merge: true);
               // ---
               // +++ Criar UsuarioArquivo Perfil.md
-              Map<String, dynamic> map = Map<String, dynamic>();
-              map['usuarioID'] = 'fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2';
-              map['referencia'] = 'perfil.md';
-              map['contentType'] = 'text/markdown';
-              map['storagePath'] = 'gs://pmsb-22-to.appspot.com/md-teste.md';
-              map['titulo'] = 'PDF com perfil';
-              map['url'] =
-                  'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/md-teste.md?alt=media&token=86bc30a6-f823-41b5-9830-ec4bc24e283c';
-              UsuarioArquivoModel usuarioArquivoModel =
-                  UsuarioArquivoModel().fromMap(map);
-              _firestore
-                  .collection(UsuarioArquivoModel.collection)
-                  .document()
-                  .setData(usuarioArquivoModel.toMap(), merge: true);
+              // Map<String, dynamic> map = Map<String, dynamic>();
+              // map['usuarioID'] = 'fOnFWqf9S7ZOuPkp5QTgdy3Wv2h2';
+              // map['referencia'] = 'perfil.md';
+              // map['contentType'] = 'text/markdown';
+              // map['storagePath'] = 'gs://pmsb-22-to.appspot.com/md-teste.md';
+              // map['titulo'] = 'PDF com perfil';
+              // map['url'] =
+              //     'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/md-teste.md?alt=media&token=86bc30a6-f823-41b5-9830-ec4bc24e283c';
+              // UsuarioArquivoModel usuarioArquivoModel =
+              //     UsuarioArquivoModel().fromMap(map);
+              // _firestore
+              //     .collection(UsuarioArquivoModel.collection)
+              //     .document()
+              //     .setData(usuarioArquivoModel.toMap(), merge: true);
               // ---
             }, // fim onPressed
             child: Text('Prof Catalunha'),
