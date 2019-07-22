@@ -15,8 +15,10 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
     return Provider.value(
-      value: AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore),
+      value: authBloc,
       child: Provider<DatabaseService>.value(
         value: DatabaseService(),
         child: MaterialApp(
@@ -54,8 +56,10 @@ class MyApp extends StatelessWidget {
                 perguntaID: args.perguntaID,
               );
             },
-            "/pergunta/selecionar_requisito": (context) =>
-                SelecionarQuequisitoPerguntaPage(),
+            "/pergunta/selecionar_requisito": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return SelecionarQuequisitoPerguntaPage(authBloc, settings.arguments);
+            },
             "/pergunta/criar_ordenar_escolha": (context) {
               final settings = ModalRoute.of(context).settings;
               return CriarOrdenarEscolha(settings.arguments);

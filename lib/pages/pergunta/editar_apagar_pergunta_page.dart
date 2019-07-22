@@ -249,7 +249,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                 onPressed: () {
                   // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
                   Navigator.pushNamed(
-                      context, "/pergunta/selecionar_requisito");
+                      context, "/pergunta/selecionar_requisito", arguments: bloc);
                 }),
           )),
           Padding(padding: EdgeInsets.all(10)),
