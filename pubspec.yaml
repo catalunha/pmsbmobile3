@@ -45,6 +45,7 @@ dependencies:
   image: ^2.1.4
   image_picker_saver: ^0.3.0
   image_gallery_saver: ^1.1.0
+  path_provider: ^1.1.2
 
 
 dev_dependencies:

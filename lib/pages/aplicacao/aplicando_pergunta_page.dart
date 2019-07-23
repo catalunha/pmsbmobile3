@@ -92,7 +92,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                           _indice = _indice + 1;
                         }
                       });
-                      print("VALOR ${_aplicadorpergunta}");
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -157,7 +156,9 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
   }
 
   Widget _body() {
+    // seleciona a pergunta de acordo com o tipo
     perguntaref = _listaPergunta[_indice]['tipo'];
+    //usa o MapaPerguntasWidget - passa o tipo e os parametros e recebe como retorno um widget relativo ao tipo
     _aplicadorpergunta = mapaTipoPergunta.getWigetPergunta(
         tipo: perguntaref, entrada: _listaPergunta[_indice]['parametros']);
 
@@ -185,6 +186,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
               ),
             )),
         Divider(color: Colors.black54),
+        // Widget de tipo pergunta
         _aplicadorpergunta,
         Padding(padding: EdgeInsets.all(5)),
         _botoes()

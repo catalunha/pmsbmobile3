@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 
+
 class AplicacaoHomePage extends StatefulWidget {
   @override
   _AplicacaoHomePageState createState() => _AplicacaoHomePageState();
@@ -16,7 +17,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
 
   String _eixo = "eixo exemplo";
   String _setor = "setor exemplo";
-  
+
   _cardText(String text) {
     return Padding(
         padding: EdgeInsets.only(top: 10, left: 5),
@@ -41,7 +42,8 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
                   IconButton(
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
-                      Navigator.pushNamed(context, "/aplicacao/aplicando_pergunta");
+                      Navigator.pushNamed(
+                          context, "/aplicacao/aplicando_pergunta");
                       //Navigator.pushNamed(context,'/aplicacao/definir_requisitos');
                       //'/aplicacao/pendencias'
                       //'/aplicacao/visualizar_respostas'
@@ -51,14 +53,15 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
                   IconButton(
                     icon: Icon(Icons.person_add),
                     onPressed: () {
-                       Navigator.pushNamed(context, "/aplicacao/pendencias");
+                      Navigator.pushNamed(context, "/aplicacao/pendencias");
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       // Abrir questionário
-                      Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
+                      Navigator.pushNamed(
+                          context, "/aplicacao/momento_aplicacao");
                     },
                   ),
                 ],
@@ -119,31 +122,30 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
-        length: 2,
-        child: DefaultScaffold(
-          bottom: TabBar(
-            tabs: [
-              Tab(text: "Todos"),
-              Tab(text: "Arvore"),
-            ],
-          ),
-          title: Text('Aplicando questionario'),
-          body: TabBarView(
+      length: 2,
+      child: DefaultScaffold(
+        bottom: TabBar(
+          tabs: [
+            Tab(text: "Todos"),
+            Tab(text: "Arvore"),
+          ],
+        ),
+        title: Text('Aplicando questionario'),
+        body: TabBarView(
           children: [
             _bodyTodos(),
             _bodyArvore(),
           ],
         ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              // Adicionar novo questionario aplicado 
-             Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
-            },
-          ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            // Adicionar novo questionario aplicado
+            Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
+          },
         ),
-      );
+      ),
+    );
   }
 }
