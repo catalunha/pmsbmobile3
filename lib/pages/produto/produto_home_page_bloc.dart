@@ -16,32 +16,8 @@ class UpdateUsuarioIDEvent extends ProdutoHomePageEvent {
   UpdateUsuarioIDEvent(this.usuarioID);
 }
 
-// class UpdateProdutoIDTextoEvent extends ProdutoHomePageEvent {
-//   final String produtoIDTexto;
-
-//   UpdateProdutoIDTextoEvent(this.produtoIDTexto);
-// }
-
-// class UpdateProdutoIDNomeEvent extends ProdutoHomePageEvent {
-//   final String produtoIDNome;
-
-//   UpdateProdutoIDNomeEvent(this.produtoIDNome);
-// }
-
-// class UpdateProdutoIDEvent extends ProdutoHomePageEvent {
-//   final String produtoID;
-
-//   UpdateProdutoIDEvent(this.produtoID);
-// }
-
-// class SaveProdutoIDEvent extends ProdutoHomePageEvent {}
-
 class ProdutoHomePageState {
   UsuarioModel usuarioModel;
-  // ProdutoModel produtoModel;
-  // String produtoModelID;
-  // String produtoModelIDNome;
-  // String produtoModelIDTexto;
 }
 
 class ProdutoHomePageBloc {
@@ -52,21 +28,21 @@ class ProdutoHomePageBloc {
   final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
   //Eventos
-  final _produtoHomePageEventController =
+  final _eventController =
       BehaviorSubject<ProdutoHomePageEvent>();
-  Stream<ProdutoHomePageEvent> get produtoHomePageEventStream =>
-      _produtoHomePageEventController.stream;
-  Function get produtoHomePageEventSink =>
-      _produtoHomePageEventController.sink.add;
+  Stream<ProdutoHomePageEvent> get eventStream =>
+      _eventController.stream;
+  Function get eventSink =>
+      _eventController.sink.add;
 
   //Estados
-  final ProdutoHomePageState _produtoHomePageState = ProdutoHomePageState();
-  final _produtoHomePageStateController =
+  final ProdutoHomePageState _state = ProdutoHomePageState();
+  final _stateController =
       BehaviorSubject<ProdutoHomePageState>();
-  Stream<ProdutoHomePageState> get produtoHomePageStateStream =>
-      _produtoHomePageStateController.stream;
-  Function get produtoHomePageStateSink =>
-      _produtoHomePageStateController.sink.add;
+  Stream<ProdutoHomePageState> get stateStream =>
+      _stateController.stream;
+  Function get stateSink =>
+      _stateController.sink.add;
 
   //ProdutoModel List
   final _produtoModelListController = BehaviorSubject<List<ProdutoModel>>();
@@ -74,52 +50,56 @@ class ProdutoHomePageBloc {
       _produtoModelListController.stream;
   Function get produtoModelListSink => _produtoModelListController.sink.add;
 
-  // //ProdutoModel
-  // final _produtoModelController = BehaviorSubject<ProdutoModel>();
-  // Stream<ProdutoModel> get produtoModelStream => _produtoModelController.stream;
-  // Function get produtoModelSink => _produtoModelController.sink.add;
-
   //Bloc
   ProdutoHomePageBloc(this._firestore) {
-    produtoHomePageEventStream.listen(_mapEventToState);
+    eventStream.listen(_mapEventToState);
     _authBloc.userId.listen(
-        (userId) => produtoHomePageEventSink(UpdateUsuarioIDEvent(userId)));
+        (userId) => eventSink(UpdateUsuarioIDEvent(userId)));
   }
 
-  _mapEventToState(ProdutoHomePageEvent event) {
+  _mapEventToState(ProdutoHomePageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
       //Atualiza estado com usuario logado
-      _firestore
+      final docRef = _firestore
           .collection(UsuarioModel.collection)
-          .document(event.usuarioID)
-          .snapshots()
-          .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
-          .listen((usuarioModel) async {
-        _produtoHomePageState.usuarioModel = usuarioModel;
-        // print('>> usuarioModel 1 >> ${usuarioModel.toMap()}');
-        await produtoHomePageStateSink(_produtoHomePageState);
-        // print('>> usuarioModel 2 >> ${_produtoHomePageState.usuarioModel.toMap()}');
-      });
+          .document(event.usuarioID);
+      final docSnap = await docRef.get();
+      if (docSnap.exists) {
+        final usuarioModel =
+            UsuarioModel(id: docSnap.documentID).fromMap(docSnap.data);
+        _state.usuarioModel = usuarioModel;
+      }
 
       // le todos os produtos associados e ele, setor e eixo.
-      produtoHomePageStateStream.listen((state) {
-          // print('>> usuarioModel 3 >> ${state.usuarioModel.toMap()}');
-      
-        _firestore
+      stateStream.listen((state) {
+        final streamDocs = _firestore
             .collection(ProdutoModel.collection)
             .where("eixoID.id", isEqualTo: state.usuarioModel.eixoIDAtual.id)
             .where("setorCensitarioID.id",
                 isEqualTo: state.usuarioModel.setorCensitarioID.id)
-            .snapshots()
-            .map((snapDocs) => snapDocs.documents
-                .map(
-                    (doc) => ProdutoModel(id: doc.documentID).fromMap(doc.data))
-                .toList())
-            .listen((List<ProdutoModel> produtoModelList) {
+            .snapshots();
+
+        final snapList = streamDocs.map((snapDocs) => snapDocs.documents
+            .map((doc) => ProdutoModel(id: doc.documentID).fromMap(doc.data))
+            .toList());
+
+        snapList.listen((List<ProdutoModel> produtoModelList) {
           produtoModelListSink(produtoModelList);
         });
       });
     }
+    if (!_stateController.isClosed) _stateController.add(_state);
+    print(event.runtimeType);
+  }
+
+  void dispose() {
+    _stateController.close();
+    _eventController.close();
+    _authBloc.dispose();
+    _produtoModelListController.close();
+    // _produtoModelController.close();
+  }
+}
 
     // if (event is UpdateProdutoIDEvent) {
     //   // if (event.produtoID == null) {
@@ -137,7 +117,6 @@ class ProdutoHomePageBloc {
     //     // print('>> produtoModel >> ${produtoModel.toMap()}');
     //   });
     // }
-
 
     // if (event is UpdateProdutoIDNomeEvent) {
     //   _produtoHomePageState.produtoModelIDNome = event.produtoIDNome;
@@ -160,7 +139,7 @@ class ProdutoHomePageBloc {
     //     "id": _produtoHomePageState.usuarioModel.id,
     //     "nome": _produtoHomePageState.usuarioModel.nome
     //   };
-      
+
     //   ProdutoModel produtoModel = ProdutoModel().fromMap(produtoModelMap);
     //   produtoModel.modificado=DateTime.now().toUtc();
     //   final map = produtoModel.toMap();
@@ -170,13 +149,3 @@ class ProdutoHomePageBloc {
     //       .document(_produtoHomePageState.produtoModelID)
     //       .setData(map, merge: true);
     // }
-  }
-
-  void dispose() {
-    _produtoHomePageStateController.close();
-    _produtoHomePageEventController.close();
-    _authBloc.dispose();
-    _produtoModelListController.close();
-    // _produtoModelController.close();
-  }
-}

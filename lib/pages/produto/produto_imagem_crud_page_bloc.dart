@@ -162,7 +162,7 @@ class ProdutoImagemCRUDPageBloc {
         );
         final docRef = _firestore
             .collection(UpLoadModel.collection)
-            .document(_state.imagemID);
+            .document(_state.rascunhoEixoArquivoID);
         await docRef.setData(upLoadModel.toMap(), merge: true);
         _state.rascunhoEixoArquivoID = docRef.documentID;
         // criar doc em EixoArquivo
@@ -185,7 +185,7 @@ class ProdutoImagemCRUDPageBloc {
         );
         final docRef = _firestore
             .collection(UpLoadModel.collection)
-            .document(_state.imagemID);
+            .document(_state.editadoEixoArquivoID);
         await docRef.setData(upLoadModel.toMap(), merge: true);
         _state.editadoEixoArquivoID = docRef.documentID;
         // criar doc em EixoArquivo
@@ -199,7 +199,24 @@ class ProdutoImagemCRUDPageBloc {
             .document(_state.editadoEixoArquivoID);
         await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
       }
-
+      if (_state.rascunhoLocalPath == null && _state.rascunhoUrl == null) {
+        if (_state.rascunhoEixoArquivoID != null) {
+          final docRef = _firestore
+              .collection(UpLoadModel.collection)
+              .document(_state.rascunhoEixoArquivoID);
+          await docRef.delete();
+          _state.rascunhoEixoArquivoID = null;
+        }
+      }
+      if (_state.editadoLocalPath == null && _state.editadoUrl == null) {
+        if (_state.editadoEixoArquivoID != null) {
+          final docRef = _firestore
+              .collection(UpLoadModel.collection)
+              .document(_state.editadoEixoArquivoID);
+          await docRef.delete();
+          _state.editadoEixoArquivoID = null;
+        }
+      }
       if (_state.imagemID == null) {
         final uuid = Uuid();
         final imagemSave = Imagem(
@@ -230,6 +247,7 @@ class ProdutoImagemCRUDPageBloc {
         );
         _state.imagemList.add(imagemSave);
       }
+
       final docRef = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoID);
@@ -239,26 +257,28 @@ class ProdutoImagemCRUDPageBloc {
     }
 
     if (event is DeleteEvent) {
-      // if (_state.imagemList != null) {
-      //   _state.imagemList.removeWhere((img) => img.id == _state.imagemID);
-      //   final docRef = _firestore
-      //       .collection(ProdutoModel.collection)
-      //       .document(_state.produtoID);
-      //   docRef.setData(
-      //       {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
-      //       merge: true);
-      // }
+      if (_state.imagemList != null) {
+        _state.imagemList.removeWhere((img) => img.id == _state.imagemID);
+        final docRef = _firestore
+            .collection(ProdutoModel.collection)
+            .document(_state.produtoID);
+        docRef.setData(
+            {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
+            merge: true);
+      }
     }
     if (event is DeleteArquivoEvent) {
-      // if (event.arquivoTipo == 'arquivoEditado') {
-      //   _state.arquivoEditado = null;
-      // } else {
-      //   _state.arquivoRascunho = null;
-      // }
+      if (event.arquivoTipo == 'arquivoEditado') {
+        _state.rascunhoLocalPath = null;
+        _state.rascunhoUrl = null;
+      } else {
+        _state.editadoLocalPath = null;
+        _state.editadoUrl = null;
+      }
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print('>>> event.runtimeType <<< ${event.runtimeType}');
+    // print('>>> _state.toMap() <<< ${_state.toMap()}');
+    // print('>>> event.runtimeType <<< ${event.runtimeType}');
   }
 
   void dispose() {

@@ -16,16 +16,17 @@ class ProdutoHomePage extends StatelessWidget {
             return Center(
               child: Text("Erro. Informe ao administrador do aplicativo"),
             );
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+          // if (!snapshot.hasData) {
+          //   return Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // }
           if (snapshot.data.isEmpty) {
             return Center(
               child: Text("Nenhum produto criado."),
             );
           }
+   
           return ListView(
             children: snapshot.data
                 .map((produto) => _cardBuildProduto(context, produto))
@@ -79,22 +80,22 @@ class ProdutoHomePage extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.border_bottom),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/produto/tabela',
-                          arguments: produto.id);
+                      // Navigator.pushNamed(context, '/produto/tabela',
+                      //     arguments: produto.id);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.insert_chart),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/produto/grafico',
-                          arguments: produto.id);
+                      // Navigator.pushNamed(context, '/produto/grafico',
+                      //     arguments: produto.id);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.zoom_out_map),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/produto/mapa',
-                          arguments: produto.id);
+                      // Navigator.pushNamed(context, '/produto/mapa',
+                      //     arguments: produto.id);
                     },
                   ),
                 ],
@@ -108,7 +109,7 @@ class ProdutoHomePage extends StatelessWidget {
     return Column(
       children: <Widget>[
         StreamBuilder<ProdutoHomePageState>(
-          stream: bloc.produtoHomePageStateStream,
+          stream: bloc.stateStream,
           builder: (BuildContext context,
               AsyncSnapshot<ProdutoHomePageState> snapshot) {
             if (!snapshot.hasData) {
@@ -120,17 +121,16 @@ class ProdutoHomePage extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: Text(
-                    "Eixo: ${snapshot.data.usuarioModel.eixoIDAtual.nome}",
+                  child: snapshot.data?.usuarioModel?.eixoIDAtual?.nome != null ? Text( "Eixo: ${snapshot.data.usuarioModel.eixoIDAtual.nome}" ,
                     style: TextStyle(fontSize: 16, color: Colors.blue),
-                  ),
+                  ) : Text('...'),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
-                  child: Text(
+                  child: snapshot.data?.usuarioModel?.setorCensitarioID?.nome != null ? Text(
                     "Setor: ${snapshot.data.usuarioModel.setorCensitarioID.nome}",
                     style: TextStyle(fontSize: 16, color: Colors.blue),
-                  ),
+                  ): Text('...'),
                 ),
               ],
             );
@@ -145,7 +145,7 @@ class ProdutoHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Produto"),
       ),

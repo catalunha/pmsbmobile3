@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 class ProdutoCRUDPage extends StatefulWidget {
   final String produtoID;
-  final bloc = ProdutoCRUDPageBloc(Bootstrap.instance.firestore);
 
   ProdutoCRUDPage(this.produtoID);
 
@@ -22,34 +21,35 @@ class ProdutoCRUDPage extends StatefulWidget {
 
 class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
   final _controller = TextEditingController();
+  final bloc = ProdutoCRUDPageBloc(Bootstrap.instance.firestore);
 
   @override
   void initState() {
     super.initState();
-    widget.bloc.eventSink(UpdateProdutoIDEvent(widget.produtoID));
+    bloc.eventSink(UpdateProdutoIDEvent(widget.produtoID));
   }
 
   @override
   void dispose() {
-    widget.bloc.dispose();
+    bloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Provider<ProdutoCRUDPageBloc>.value(
-        value: widget.bloc,
+        value: bloc,
         child: Scaffold(
           appBar: AppBar(
             title: Text("Adicionar ou editar produto"),
-            backgroundColor: Colors.red,
+            // backgroundColor: Colors.red,
           ),
           body: Container(
             child: Column(
               children: <Widget>[
                 // UpDateProdutoIDNome(),
                 StreamBuilder<ProdutoCRUDPageState>(
-                    stream: widget.bloc.stateStream,
+                    stream: bloc.stateStream,
                     builder: (BuildContext context,
                         AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
                       if (_controller.text == null ||
@@ -67,7 +67,7 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
                             ),
                             controller: _controller,
                             onChanged: (nomeProduto) {
-                              widget.bloc.eventSink(
+                              bloc.eventSink(
                                   UpdateProdutoIDNomeEvent(nomeProduto));
                             },
                           ),
@@ -81,7 +81,7 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.save_alt),
             onPressed: () {
-              widget.bloc.eventSink(SaveProdutoIDEvent());
+              bloc.eventSink(SaveProdutoIDEvent());
               Navigator.of(context).pop();
 
               // Navigator.pushNamed(context, '/produto/crud_texto');
@@ -118,7 +118,7 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
                             Divider(),
                             SimpleDialogOption(
                               onPressed: () {
-                                widget.bloc.eventSink(DeleteProdutoIDEvent());
+                                bloc.eventSink(DeleteProdutoIDEvent());
                                 Navigator.pushNamed(context, '/produto/home');
                               },
                               child: Text("sim"),

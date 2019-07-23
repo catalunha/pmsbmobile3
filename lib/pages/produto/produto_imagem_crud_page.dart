@@ -50,7 +50,8 @@ class _ProdutoImagemCRUDPageState extends State<ProdutoImagemCRUDPage> {
         child: Icon(Icons.save),
         onPressed: () {
           bloc.eventSink(SaveEvent());
-          Navigator.of(context).pop();
+          Navigator.pushNamed(context, '/produto/imagem',
+                      arguments: widget.produtoID);
         },
       ),
     );
@@ -127,6 +128,7 @@ class _ProdutoImagemCRUDPageState extends State<ProdutoImagemCRUDPage> {
             ),
             Text('url: $rascunhoUrl'),
             Text('local: $rascunhoLocalPath'),
+            // _cardImagem(rascunhoLocalPath),
             Card(
               child: ListTile(
                 leading: IconButton(
@@ -174,6 +176,56 @@ class _ProdutoImagemCRUDPageState extends State<ProdutoImagemCRUDPage> {
     } catch (e) {
       print("Unsupported operation" + e.toString());
     }
+  }
+
+  _cardImagem(String arquivoPath) {
+    return Card(
+        child: Container(
+            constraints: new BoxConstraints.expand(
+              height: 200.0,
+            ),
+            padding: new EdgeInsets.only(left: 16.0, bottom: 8.0, right: 16.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage(arquivoPath),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: new Stack(
+              children: <Widget>[
+                new Positioned(
+                  left: 0.0,
+                  bottom: 0.0,
+                  child: new Text(arquivoPath,
+                      style: new TextStyle(
+                        color: Colors.yellow,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.0,
+                      )),
+                ),
+                new Positioned(
+                    right: 0.0,
+                    bottom: 0.0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40.0),
+                      child: Container(
+                        color: Colors.white,
+                        child: new IconButton(
+                          icon: new Icon(
+                            Icons.delete,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            //apagar esta imagem
+                            setState(() {
+                              // arquivos.removerArquivoLista(arquivo);
+                            });
+                          },
+                        ),
+                      ),
+                    )),
+              ],
+            )));
   }
 
   _botaoDeletarDocumento() {

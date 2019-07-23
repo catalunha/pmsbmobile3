@@ -64,7 +64,6 @@
     ]
   },
   "UsuarioArquivo": {
-    "upLoadID": "UpLoadID",
     "usuarioID": "UsuarioID",
     "referencia": "null || se for necessário uma palavra chave para pesquisa exemplo: perfil.csv || perfil.md || perfil.pdf | noticias.pdf",
     "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",

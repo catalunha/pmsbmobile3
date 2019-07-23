@@ -110,10 +110,6 @@ class ProdutoTextoPageBloc {
       docRef.setData(produtoTextoModelSave.toMap(), merge: true);
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    print(' >>> ProdutoTextoPageEvent <<< ${event.runtimeType}');
-    print(' >>> ProdutoTextoPageEvent <<< ${_state.produtoID}');
-    print(' >>> ProdutoTextoPageEvent <<< ${_state.produtoTextoID}');
-    print(' >>> ProdutoTextoPageEvent <<< ${_state.produtoTextoIDTextoMarkdown}');
   }
 
   void dispose() {
