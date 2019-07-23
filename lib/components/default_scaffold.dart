@@ -220,18 +220,17 @@ class DefaultEndDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil/configuracao");
               },
-              leading: Icon(Icons.close),
+              leading: Icon(Icons.settings),
             ),
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Perfil'),
-              trailing: Icon(Icons.person),
               onTap: () {
                 //noticias perfil
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/perfil");
               },
-              leading: Icon(Icons.close),
+              leading: Icon(Icons.person),
             ),
             Divider(color: Colors.black45,),
             ListTile(
@@ -241,16 +240,15 @@ class DefaultEndDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
               },
-              leading: Icon(Icons.close),
+              leading: Icon(Icons.event_available),
             ),
             Divider(color: Colors.black45,),
             ListTile(
               title: Text('Sair'),
-              trailing: Icon(Icons.exit_to_app),
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
-              leading: Icon(Icons.close),
+              leading: Icon(Icons.exit_to_app),
             ),
           ],
         ),
