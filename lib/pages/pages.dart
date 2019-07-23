@@ -23,6 +23,17 @@ export 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page.dart';
 // export 'package:pmsbmibile3/pages/comunicacao/modal_filter_list.dart';
 
 //produto
+export 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
+export 'package:pmsbmibile3/pages/produto/produto_home_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_crud_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_grafico_list_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_imagem_list_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_mapa_list_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_tabela_list_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page.dart';
+
+//produto0
 export 'package:pmsbmibile3/pages/produto/product.dart';
 export 'package:pmsbmibile3/pages/produto/product_list.dart';
 export 'package:pmsbmibile3/pages/produto/product_visual.dart';

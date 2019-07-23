@@ -163,7 +163,8 @@ class DefaultDrawer extends StatelessWidget {
               trailing: Icon(Icons.chrome_reader_mode),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/produto');
+                Navigator.pushNamed(context, '/produto/home');
+                // Navigator.pushNamed(context, '/produto/setor_page');
               },
             ),
             Divider(

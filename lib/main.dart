@@ -33,10 +33,10 @@ class MyApp extends StatelessWidget {
             "/perfil/crudtext": (context) => PerfilCRUDPage(),
             "/perfil/crudarq": (context) => PerfilCRUDArqPage(),
             "/perfil/configuracao": (context) => ConfiguracaoPage(),
-            
+
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(),
-            "/questionario/form":(context) => QuestionarioFormPage(),
+            "/questionario/form": (context) => QuestionarioFormPage(),
 
             //pergunta
             "/pergunta/home": (context) => PerguntaHomePage(),
@@ -52,10 +52,13 @@ class MyApp extends StatelessWidget {
             //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
             "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
-            "/aplicacao/aplicando_pergunta": (context) => AplicacaoPerguntaPage(),
+            "/aplicacao/aplicando_pergunta": (context) =>
+                AplicacaoPerguntaPage(),
             "/aplicacao/pendencias": (context) => PendenciasPage(),
-            "/aplicacao/visualizar_respostas": (context) =>  VisualizarRespostasPage(),
-            "/aplicacao/definir_requisitos": (context) => DefinirRequisistosPage(),
+            "/aplicacao/visualizar_respostas": (context) =>
+                VisualizarRespostasPage(),
+            "/aplicacao/definir_requisitos": (context) =>
+                DefinirRequisistosPage(),
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),
@@ -68,7 +71,30 @@ class MyApp extends StatelessWidget {
             "/sintese/home": (context) => SinteseHomePage(),
 
             //produto
-            "/produto": (context) => ProductPage(),
+            "/produto/home": (context) => ProdutoHomePage(),
+            "/produto/crud": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return ProdutoCRUDPage(settings.arguments);
+            },
+            "/produto/texto": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return ProdutoTextoPage(settings.arguments);
+            },
+            "/produto/imagem": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return ProdutoImagemListPage(settings.arguments);
+            },
+            "/produto/imagem_crud": (context) {
+              final settings = ModalRoute.of(context).settings;
+              ProdutoArguments args = settings.arguments;
+              return ProdutoImagemCRUDPage(args.produtoID,args.arquivoID);
+            },
+            "/produto/mapa": (context) => ProdutoMapaListPage(),
+            "/produto/tabela": (context) => ProdutoTabelaListPage(),
+            "/produto/grafico": (context) => ProdutoGraficoListPage(),
+
+            //produto0
+            // "/produto": (context) => ProductPage(),
             "/produto/adicionar_editar": (context) => AddEditProduct(),
             "/produto/lista": (context) => ProductList(),
             "/produto/visual": (context) => ProductVisual(),
@@ -76,13 +102,12 @@ class MyApp extends StatelessWidget {
 
             //comunicacao
             "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
-            "/noticias/noticias_visualizadas": (context) =>
-                NoticiaLidaPage(),
+            "/noticias/noticias_visualizadas": (context) => NoticiaLidaPage(),
             "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
             //administração
-            "/administracao/home":(context) => AdministracaoHomePage(),
-            "/administracao/perfil":(context) => AdministracaoPerfilPage(),
+            "/administracao/home": (context) => AdministracaoHomePage(),
+            "/administracao/perfil": (context) => AdministracaoPerfilPage(),
 
             //controle
             "/controle/home": (context) => ControleHomePage(),

@@ -99,7 +99,7 @@ class _ProductListState extends State<ProductList> {
           //Adicionar um novo produto
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
+        // backgroundColor: Colors.blue,
       ),
     );
   }
