@@ -6,10 +6,10 @@ import 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page_bloc.dart';
 
 class ProdutoImagemCRUDPage extends StatefulWidget {
   final String produtoID;
-  final String arquivoID;
+  final String imagemID;
 
-  ProdutoImagemCRUDPage(this.produtoID, this.arquivoID) {
-    // bloc.eventSink(UpdateProdutoIDArquivoIDEvent(produtoID, arquivoID));
+  ProdutoImagemCRUDPage(this.produtoID, this.imagemID) {
+    // bloc.eventSink(UpdateProdutoIDArquivoIDEvent(produtoID, imagemID));
   }
 
   @override
@@ -21,14 +21,16 @@ class ProdutoImagemCRUDPage extends StatefulWidget {
 class _ProdutoImagemCRUDPageState extends State<ProdutoImagemCRUDPage> {
   final bloc = ProdutoImagemCRUDPageBloc(Bootstrap.instance.firestore);
   final _controller = TextEditingController();
-  String arquivoRascunho;
-  String arquivoEditado;
+  String rascunhoUrl;
+  String rascunhoLocalPath;
+  String editadoUrl;
+  String editadoLocalPath;
 
   @override
   void initState() {
     super.initState();
     bloc.eventSink(
-        UpdateProdutoIDArquivoIDEvent(widget.produtoID, widget.arquivoID));
+        UpdateProdutoIDArquivoIDEvent(widget.produtoID, widget.imagemID));
   }
 
   @override
@@ -67,17 +69,25 @@ class _ProdutoImagemCRUDPageState extends State<ProdutoImagemCRUDPage> {
         if (_controller.text == null || _controller.text.isEmpty) {
           _controller.text = snapshot.data?.titulo;
         }
-        if (!snapshot.hasData) {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        arquivoRascunho = snapshot.data?.arquivoRascunho ?? 'Sem arquivo';
-        arquivoEditado = snapshot.data?.arquivoEditado ?? 'Sem arquivo';
+        // if (!snapshot.hasData) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // }
+        rascunhoUrl = snapshot.data?.rascunhoUrl ?? 'Sem arquivo';
+        rascunhoLocalPath = snapshot.data?.rascunhoLocalPath ?? 'Sem arquivo';
+        editadoUrl = snapshot.data?.editadoUrl ?? 'Sem arquivo';
+        editadoLocalPath = snapshot.data?.editadoLocalPath ?? 'Sem arquivo';
 
         return ListView(
           padding: EdgeInsets.all(5),
           children: <Widget>[
+            snapshot.data?.produtoID == null
+                ? Text("produtoID: null")
+                : Text("produtoID: ${snapshot.data.produtoID}"),
+            snapshot.data?.imagemID == null
+                ? Text("imagemID: null")
+                : Text("imagemID: ${snapshot.data.imagemID}"),
             Text("Editar titulo da imagem"),
             TextField(
               controller: _controller,
@@ -91,62 +101,62 @@ class _ProdutoImagemCRUDPageState extends State<ProdutoImagemCRUDPage> {
             ),
             Card(
               child: ListTile(
-                 leading: IconButton(
+                leading: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () async {
-                      bloc.eventSink(
-                          DeleteArquivoEvent('arquivoRascunho'));
+                      bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
                     }),
                 title: Text('Selecione o arquivo rascunho'),
                 trailing: IconButton(
                     icon: Icon(Icons.file_download),
                     onPressed: () async {
-                      await _selecionarNovosArquivos().then((arq) {
-                        arquivoRascunho = arq;
+                      await _selecionarNovoArquivo().then((arq) {
+                        rascunhoLocalPath = arq;
                       });
-                      print('>> arquivoPath 1 >> ${arquivoRascunho}');
+                      // print('>> arquivoPath 1 >> ${arquivoRascunho}');
                       setState(() {
                         // ALTERA SE VAI OU NAO SER INCORPORADO O EDITADO
-                        arquivoRascunho == null
+                        rascunhoLocalPath == null
                             ? 'Nenhum arquivo selecionado'
-                            : arquivoRascunho;
+                            : rascunhoLocalPath;
                       });
                       bloc.eventSink(
-                          UpdateArquivoRascunhoEvent(arquivoRascunho));
+                          UpdateArquivoRascunhoEvent(rascunhoLocalPath));
                     }),
               ),
             ),
-            Text(arquivoRascunho),
+            Text('url: $rascunhoUrl'),
+            Text('local: $rascunhoLocalPath'),
             Card(
               child: ListTile(
                 leading: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () async {
-                      bloc.eventSink(
-                          DeleteArquivoEvent('arquivoEditado'));
+                      bloc.eventSink(DeleteArquivoEvent('arquivoEditado'));
                     }),
                 title: Text('Selecione o arquivo editado'),
                 trailing: IconButton(
                     icon: Icon(Icons.file_download),
                     onPressed: () async {
-                      await _selecionarNovosArquivos().then((arq) {
-                        arquivoEditado = arq;
+                      await _selecionarNovoArquivo().then((arq) {
+                        editadoLocalPath = arq;
                       });
-                      print('>> arquivoEditado 1 >> ${arquivoEditado}');
+                      // print('>> arquivoEditado 1 >> ${arquivoEditado}');
                       setState(() {
                         // ALTERA SE VAI OU NAO SER INCORPORADO O EDITADO
-                        arquivoEditado == null
+                        editadoLocalPath == null
                             ? 'Nenhum arquivo selecionado'
-                            : arquivoEditado;
+                            : editadoLocalPath;
                       });
-                      bloc.eventSink(UpdateArquivoEditadoEvent(arquivoEditado));
+                      bloc.eventSink(
+                          UpdateArquivoEditadoEvent(editadoLocalPath));
                     }),
               ),
             ),
-            Text(arquivoEditado),
+            Text('url: $editadoUrl'),
+            Text('local: $editadoLocalPath'),
             _botaoDeletarDocumento(),
             // CircularProgressIndicator(),
-
           ],
         );
       },
@@ -154,7 +164,7 @@ class _ProdutoImagemCRUDPageState extends State<ProdutoImagemCRUDPage> {
     // return ;
   }
 
-  Future<String> _selecionarNovosArquivos() async {
+  Future<String> _selecionarNovoArquivo() async {
     try {
       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
       if (arquivoPath != null) {

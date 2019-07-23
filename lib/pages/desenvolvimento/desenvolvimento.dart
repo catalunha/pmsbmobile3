@@ -50,11 +50,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 );
               }
 
-              if (!snapshot.hasData) {
-                return Container(
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
+              // if (!snapshot.hasData) {
+              //   return Container(
+              //     child: Center(child: CircularProgressIndicator()),
+              //   );
+              // }
               arquivoRascunho = snapshot.data?.arquivo ?? 'Sem arquivo 1';
               arquivoRascunho = snapshot.data.arquivo ?? 'Sem arquivo 2';
 
@@ -73,7 +73,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     trailing: IconButton(
                         icon: Icon(Icons.file_download),
                         onPressed: () async {
-                          await _selecionarNovosArquivos().then((arq) {
+                          await _selecionarNovoArquivo().then((arq) {
                             arquivoRascunho = arq;
                           });
                           // print('>> arquivoPath 1 >> ${arquivoRascunho}');
@@ -92,7 +92,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
             }));
   }
 
-  Future<String> _selecionarNovosArquivos() async {
+  Future<String> _selecionarNovoArquivo() async {
     try {
       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
       if (arquivoPath != null) {

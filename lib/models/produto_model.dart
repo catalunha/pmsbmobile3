@@ -104,39 +104,61 @@ class ProdutoModel extends FirestoreModel {
   }
 }
 
-
 class Imagem {
   String id;
   String titulo;
-  String produtoArquivoIDRascunho;
-  String produtoArquivoIDEditado;
+  String rascunhoEixoArquivoID;
+  String rascunhoUrl;
+  String rascunhoLocalPath;
+  String editadoEixoArquivoID;
+  String editadoUrl;
+  String editadoLocalPath;
 
   Imagem(
       {this.id,
       this.titulo,
-      this.produtoArquivoIDRascunho,
-      this.produtoArquivoIDEditado});
+      this.rascunhoEixoArquivoID,
+      this.rascunhoUrl,
+      this.rascunhoLocalPath,
+      this.editadoEixoArquivoID,
+      this.editadoUrl,
+      this.editadoLocalPath});
 
   Imagem.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('titulo')) titulo = map['titulo'];
-    if (map.containsKey('produtoArquivoIDRascunho'))
-      produtoArquivoIDRascunho = map['produtoArquivoIDRascunho'];
-    if (map.containsKey('produtoArquivoIDEditado'))
-      produtoArquivoIDEditado = map['produtoArquivoIDEditado'];
+    if (map.containsKey('rascunhoEixoArquivoID'))
+      rascunhoEixoArquivoID = map['rascunhoEixoArquivoID'];
+    if (map.containsKey('rascunhoUrl')) rascunhoUrl = map['rascunhoUrl'];
+    if (map.containsKey('rascunhoLocalPath'))
+      rascunhoLocalPath = map['rascunhoLocalPath'];
+    if (map.containsKey('editadoEixoArquivoID'))
+      editadoEixoArquivoID = map['editadoEixoArquivoID'];
+    if (map.containsKey('editadoUrl')) editadoUrl = map['editadoUrl'];
+    if (map.containsKey('editadoLocalPath'))
+      editadoLocalPath = map['editadoLocalPath'];
   }
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (id != null) data['id'] = this.id;
     if (titulo != null) data['titulo'] = this.titulo;
-    if (produtoArquivoIDRascunho != null)
-      data['produtoArquivoIDRascunho'] = this.produtoArquivoIDRascunho;
-    if (produtoArquivoIDEditado != null)
-      data['produtoArquivoIDEditado'] = this.produtoArquivoIDEditado;
+    if (rascunhoEixoArquivoID != null)
+      data['rascunhoEixoArquivoID'] = this.rascunhoEixoArquivoID;
+    if (rascunhoUrl != null) data['rascunhoUrl'] = this.rascunhoUrl;
+    if (rascunhoLocalPath != null)
+      data['rascunhoLocalPath'] = this.rascunhoLocalPath;
+    if (editadoEixoArquivoID != null)
+      data['editadoEixoArquivoID'] = this.editadoEixoArquivoID;
+    if (editadoUrl != null) data['editadoUrl'] = this.editadoUrl;
+    if (editadoLocalPath != null)
+      data['editadoLocalPath'] = this.editadoLocalPath;
     return data;
   }
 }
+
+
+
 
 class Tabela {
   String id;
