@@ -7,18 +7,26 @@ import 'package:rxdart/rxdart.dart';
 
 class PageEvent {}
 
-class UpdateUsuarioIDEvent extends PageEvent {
-  final String usuarioID;
+class UpdateUsuarioIDEvent extends PageEvent {}
 
-  UpdateUsuarioIDEvent(this.usuarioID);
-}
 class StartUserEvent extends PageEvent {}
 
-class StartUploadEvent extends PageEvent {}
+class StartUploadEvent extends PageEvent {
+  final String id;
+
+  StartUploadEvent(this.id);
+}
+
+class Uploading {
+  final String id;
+  final UploadModel upload;
+  bool uploading = false;
+
+  Uploading(this.upload, this.id);
+}
 
 class PageState {
-  List<UploadModel> uploadList;
-  bool uploading;
+  List<Uploading> uploadingList;
 }
 
 class UploadPageBloc {
@@ -47,25 +55,35 @@ class UploadPageBloc {
 
   UploadPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
-    _authBloc.userId
-        .listen((userId) => eventSink(UpdateUsuarioIDEvent(userId)));
+    // _authBloc.userId
+    //     .listen((userId) => eventSink(UpdateUsuarioIDEvent(userId)));
   }
 
   _mapEventToState(PageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
-      final streamDocs = _firestore
-          .collection(UploadModel.collection)
-          .where("usuarioID.id", isEqualTo: event.usuarioID)
-          .where("upload", isEqualTo: false)
-          .snapshots()
-          .map((snapDocs) => snapDocs.documents
-              .map((doc) => UploadModel(id: doc.documentID).fromMap(doc.data))
-              .toList())
-          .listen((List<UploadModel> uploadModelList) {
-        _state.uploadList = uploadModelList;
+      _authBloc.userId.listen((userId) {
+        final streamDocs = _firestore
+            .collection(UploadModel.collection)
+            .where("usuarioID.id", isEqualTo: userId)
+            .where("upload", isEqualTo: false)
+            .snapshots()
+            .map((snapDocs) => snapDocs.documents
+                .map((doc) => Uploading(
+                    UploadModel(id: doc.documentID).fromMap(doc.data),
+                    doc.documentID))
+                .toList())
+            .listen((List<Uploading> uploadingList) {
+          _state.uploadingList = uploadingList;
+        });
       });
     }
     if (event is StartUploadEvent) {
+
+      _state.uploadingList?.forEach((up) {
+        if (up.id == event.id) {
+          up.uploading = true;
+        }
+      });
       var delayedResult = Future.delayed(
           Duration(seconds: 5), () => 'Mostrar depois de 5 segundos');
       delayedResult.then((str) => print(str));
