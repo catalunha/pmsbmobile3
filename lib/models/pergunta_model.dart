@@ -22,7 +22,7 @@ class PerguntaModel extends FirestoreModel {
 
   PerguntaTipo tipo;
 
-  List<Requisito> requisitos;
+  Map<String, Requisito> requisitos;
 
   /// Mapa contendo escolhas
   Map<String, Escolha> escolhas;
@@ -70,6 +70,8 @@ class PerguntaModel extends FirestoreModel {
     this.textoMarkdown,
     this.dataCriacao,
     this.dataEdicao,
+    this.anterior,
+    this.posterior,
   }) : super(id);
 
   @override
@@ -79,10 +81,11 @@ class PerguntaModel extends FirestoreModel {
 
     if (map["tipo"] is Map) tipo = PerguntaTipo.fromMap(map['tipo']);
 
-    if (map["requisitos"] is List) {
-      requisitos = List<Requisito>();
-      for (int index = 0; index < map["requisitos"].length; index++)
-        requisitos.add(Requisito.fromMap(map['requisitos']));
+    if (map["requisitos"] is Map) {
+      requisitos = Map<String, Requisito>();
+      map["requisitos"].forEach((k, v) {
+        requisitos[k] = Requisito.fromMap(v);
+      });
     }
 
     referencia = map["referencia"];
@@ -138,10 +141,10 @@ class PerguntaModel extends FirestoreModel {
     if (tipo != null) map["tipo"] = tipo.toMap();
 
     if (requisitos != null) {
-      map["requisitos"] = List<Map<String, dynamic>>();
-      for (int index = 0; index < requisitos.length; index++) {
-        map["requisitos"].add(requisitos[index].toMap());
-      }
+      map["requisitos"] = Map<String, Map<String, dynamic>>();
+      requisitos.forEach((key, value) {
+        if (value != null) map["requisitos"][key] = value.toMap();
+      });
     }
 
     if (escolhas != null) {
@@ -152,6 +155,10 @@ class PerguntaModel extends FirestoreModel {
     }
 
     if (ordem != null) map["ordem"] = ordem;
+
+    if (anterior != null) map["anterior"] = anterior;
+
+    if (posterior != null) map["posterior"] = posterior;
 
     if (titulo != null) map["titulo"] = titulo;
 
@@ -257,6 +264,9 @@ class Requisito {
   String perguntaTipo;
   EscolhaRequisito escolha;
 
+  Requisito(
+      {this.referencia, this.perguntaID, this.perguntaTipo, this.escolha});
+
   Requisito.fromMap(Map<dynamic, dynamic> map) {
     referencia = map["referencia"];
     perguntaID = map["perguntaID"];
@@ -285,6 +295,8 @@ class Requisito {
 class EscolhaRequisito {
   String id;
   bool marcada;
+
+  EscolhaRequisito({this.id, this.marcada});
 
   EscolhaRequisito.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
