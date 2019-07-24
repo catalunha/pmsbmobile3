@@ -46,7 +46,12 @@ class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
           },
         );
         return ListView(
-          children: widgetRequisitos.values.toList(),
+          children: [
+            ...widgetRequisitos.values.toList(),
+            Container(
+              padding: EdgeInsets.only(top: 75),
+            ),
+          ],
         );
       },
     );
@@ -62,7 +67,8 @@ class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            bloc.dispatch(UpdateRequisitosSelecionarRequisitoPerguntaPageBlocEvent());
+            bloc.dispatch(
+                UpdateRequisitosSelecionarRequisitoPerguntaPageBlocEvent());
             Navigator.pop(context);
           },
           child: Icon(Icons.thumb_up),
