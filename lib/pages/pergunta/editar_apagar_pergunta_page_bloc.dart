@@ -232,6 +232,7 @@ class EditarApagarPerguntaBloc {
     //adicionar , editar e remover escolha
     if (event is UpdateItemEscolhaIDEditarApagarPerguntaBlocEvent) {
       _state.itemEscolhaID = event.itemEscolhaID;
+      _state.itemEscolha = _state.escolhas[event.itemEscolhaID].texto;
     }
     if (event is UpdateItemEscolhaEditarApagarPerguntaBlocEvent) {
       _state.itemEscolha = event.itemEscolha;
@@ -394,6 +395,6 @@ class EditarApagarPerguntaBloc {
     validate();
 
     if (!_outputController.isClosed) _outputController.add(_state);
-    print(event.runtimeType);
+
   }
 }
