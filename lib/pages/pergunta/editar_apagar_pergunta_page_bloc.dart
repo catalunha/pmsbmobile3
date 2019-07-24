@@ -17,6 +17,9 @@ class EditarApagarPerguntaBlocState {
   PerguntaTipo tipo;
   PerguntaTipoEnum tipoEnum;
   int ordem = 0;
+
+  //TODO: anterior e posterior devem ser removido e utilizado somente a ordem
+  //TODO: removido do model e bloc
   String anterior;
   String posterior;
 
