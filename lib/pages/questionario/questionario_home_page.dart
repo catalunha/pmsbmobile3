@@ -148,7 +148,6 @@ class QuestionarioItem extends StatelessWidget {
               ],
             ),
           ),
-          Divider(),
         ],
       ),
     );
