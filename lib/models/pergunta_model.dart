@@ -141,14 +141,14 @@ class PerguntaModel extends FirestoreModel {
     if (tipo != null) map["tipo"] = tipo.toMap();
 
     if (requisitos != null) {
-      map["requisitos"] = Map<String, Map<String, dynamic>>();
+      map["requisitos"] = Map<String, dynamic>();
       requisitos.forEach((key, value) {
         if (value != null) map["requisitos"][key] = value.toMap();
       });
     }
 
     if (escolhas != null) {
-      map["escolhas"] = Map<String, Map<String, dynamic>>();
+      map["escolhas"] = Map<String, dynamic>();
       escolhas.forEach((k, v) {
         map["escolhas"][k] = v.toMap();
       });
@@ -248,7 +248,7 @@ class Coordenada {
 }
 
 /// Requisito
-///{
+///"referencia/escolha.id": {
 ///  "referencia": "PerguntaID->referencia",
 ///  "perguntaID": "PerguntaID",
 ///  "perguntaTipo": "PerguntaID->escolha || PerguntaID->texto",
@@ -257,7 +257,6 @@ class Coordenada {
 ///    "marcada": true
 ///  }
 ///}
-///
 class Requisito {
   String referencia;
   String perguntaID;
