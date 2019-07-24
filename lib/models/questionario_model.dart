@@ -86,6 +86,9 @@ class QuestionarioModel extends FirestoreModel {
 
   bool editando;
 
+  String primeiraPerguntaID;
+  String ultimaPerguntaID;
+
   QuestionarioModel({
     String id,
     this.nome,
@@ -95,6 +98,8 @@ class QuestionarioModel extends FirestoreModel {
     this.editou,
     this.eixo,
     this.editando,
+    this.primeiraPerguntaID,
+    this.ultimaPerguntaID,
   }) : super(id);
 
   @override
@@ -103,6 +108,9 @@ class QuestionarioModel extends FirestoreModel {
     criado = map["criado"];
     modificado = map["modificado"];
     editando = map["editando"];
+    primeiraPerguntaID = map["primeiraPerguntaID"];
+    ultimaPerguntaID = map["ultimaPerguntaID"];
+
     if (map["criou"] != null) {
       criou = UsuarioCriou.fromMap(map["criou"]);
     }else{
@@ -131,6 +139,8 @@ class QuestionarioModel extends FirestoreModel {
     if (editou != null) data['editou'] = editou.toMap();
     if (eixo != null) data['eixo'] = eixo.toMap();
     if (editando != null) data['editando'] = editando;
+    if (primeiraPerguntaID != null) data['primeiraPerguntaID'] = primeiraPerguntaID;
+    if (ultimaPerguntaID != null) data['ultimaPerguntaID'] = ultimaPerguntaID;
     return data;
   }
 }

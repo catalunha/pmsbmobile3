@@ -1,43 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:provider/provider.dart';
+import 'package:pmsbmibile3/components/eixo.dart';
+import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 
 import '../user_files.dart';
 
+_texto(String texto) {
+  return Padding(
+    padding: EdgeInsets.all(5.0),
+    child: Text(
+      texto,
+      style: TextStyle(fontSize: 15, color: Colors.blue),
+    ),
+  );
+}
+
 class EditarApagarPerguntaPage extends StatefulWidget {
+  final String questionarioID;
+  final String perguntaID;
+
+  EditarApagarPerguntaPage({this.questionarioID, this.perguntaID});
+
   @override
   _EditarApagarPerguntaPageState createState() =>
       _EditarApagarPerguntaPageState();
 }
 
 class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
-  String _eixo = "eixo exemplo";
-  String _questionario = "Setor exemplo";
-  String _pergunta = "produto exemplo";
+  final bloc = EditarApagarPerguntaBloc(Bootstrap.instance.firestore);
+  final myController = SelectingTextEditingController();
+  bool initialMarkdown = true;
 
-  var myController = new SelectingTextEditingController();
-  String _textoMarkdown = "  ";
-  bool showFab;
-
-  _tituloProduto() {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-        ));
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatch(
+        UpdateQuestionarioEditarApagarPerguntaBlocEvent(widget.questionarioID));
+    bloc.dispatch(UpdateIDEditarApagarPerguntaBlocEvent(widget.perguntaID));
   }
 
-  _texto(String texto) {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Text(
-          texto,
-          style: TextStyle(fontSize: 15, color: Colors.blue),
-        ));
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  Widget _questionario() {
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        return _textoTopo("Questionario - ${snapshot.data.questionario?.nome}");
+      },
+    );
+  }
+
+  Widget _pergunta() {
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        if (snapshot.data.instance != null) {
+          return _textoTopo("Pergunta - ${snapshot.data.instance.titulo}");
+        } else {
+          return _textoTopo("Pergunta - criando");
+        }
+      },
+    );
+  }
+
+  Widget _preambulo() {
+    return Column(
+      children: <Widget>[
+        Center(child: EixoAtualUsuario()),
+        _questionario(),
+        _pergunta(),
+      ],
+    );
   }
 
   _iconesLista() {
@@ -88,7 +141,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             child: RaisedButton(
                 color: Colors.red,
                 onPressed: () {
-                  // DELETAR ESTA PERGUNTA
+                  bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+                  Navigator.pop(context, "pergunta deletada");
                 },
                 child: Row(
                   children: <Widget>[
@@ -101,32 +155,42 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   }
 
   _textoMarkdownField() {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: TextField(
-          onChanged: (text) {
-            _textoMarkdown = text;
-            print(myController.selection);
-          },
-          controller: myController,
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-        ));
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+        stream: bloc.state,
+        builder: (context, snapshot) {
+          if (initialMarkdown && snapshot.hasData && snapshot.data.isBaund) {
+            initialMarkdown = false;
+            myController.text = snapshot.data?.instance?.textoMarkdown;
+          }
+          return Padding(
+              padding: EdgeInsets.all(5.0),
+              child: TextField(
+                onChanged: (text) {
+                  print(myController.selection);
+                  bloc.dispatch(
+                      UpdateTextoMarkdownPerguntaEditarApagarPerguntaBlocEvent(
+                          text));
+                },
+                controller: myController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ));
+        });
   }
 
   _atualizarMarkdown(texto, posicao) {
     String inicio =
-        _textoMarkdown.substring(0, myController.selection.baseOffset);
+        myController.text.substring(0, myController.selection.baseOffset);
     print("INICIO:" + inicio);
-    String fim = _textoMarkdown.substring(
-        myController.selection.baseOffset, _textoMarkdown.length);
+    String fim = myController.text
+        .substring(myController.selection.baseOffset, myController.text.length);
     print("FIM:" + fim);
 
-    _textoMarkdown = "$inicio$texto$fim";
-    myController.setTextAndPosition(_textoMarkdown,
+    myController.text = "$inicio$texto$fim";
+    myController.setTextAndPosition(myController.text,
         caretPosition: myController.selection.baseOffset + posicao);
   }
 
@@ -147,16 +211,52 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
           child: ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
-              _textoTopo(
-                "Eixo : $_eixo",
-              ),
-              _textoTopo("Questionario - $_questionario"),
-              _textoTopo("Pergunta - $_pergunta"),
+              _preambulo(),
               Padding(padding: EdgeInsets.all(10)),
+              _texto("Tipo da pergunta:"),
+              PerguntaTipoInput(),
+              Card(
+                  child: ListTile(
+                title: Text('Selecione perguntas ou escolha requisito:'),
+                trailing: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
+                      Navigator.pushNamed(
+                          context, "/pergunta/selecionar_requisito",
+                          arguments: bloc);
+                    }),
+              )),
+              Padding(padding: EdgeInsets.all(10)),
+              StreamBuilder<EditarApagarPerguntaBlocState>(
+                stream: bloc.state,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return Container();
+                  if (snapshot.data.tipoEnum != PerguntaTipoEnum.EscolhaUnica &&
+                      snapshot.data.tipoEnum !=
+                          PerguntaTipoEnum.EscolhaMultipla) {
+                    return Container();
+                  }
+                  return Card(
+                      child: ListTile(
+                    title: Text('Defina as escolhas:'),
+                    trailing: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          // SELECIONAR ESCOLHA
+                          Navigator.pushNamed(
+                              context, "/pergunta/criar_ordenar_escolha",
+                              arguments: bloc);
+                        }),
+                  ));
+                },
+              ),
               _texto("Titulo da pergunta:"),
-              _tituloProduto(),
+              TituloInputField(bloc),
               _texto("Texto da pergunta:"),
-              _textoMarkdownField()
+              _textoMarkdownField(),
+              Padding(padding: EdgeInsets.all(10)),
+              _botaoDeletarPergunta(),
             ],
           ),
         ),
@@ -166,86 +266,214 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             padding: new EdgeInsets.all(10.0),
             child: _iconesLista(),
           ),
-          visible: !showFab,
+          visible: !(MediaQuery.of(context).viewInsets.bottom == 0.0),
         )
       ],
     );
   }
 
   _bodyPreview() {
-    return Markdown(data: myController.text);
-  }
-
-  _bodyDados() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(padding: EdgeInsets.all(10)),
-          _textoTopo("Eixo : $_eixo"),
-          _textoTopo("Questionario - $_questionario"),
-          _textoTopo("Pergunta - $_pergunta"),
-          Padding(padding: EdgeInsets.all(10)),
-          Card(
-              child: ListTile(
-            title: Text('Selecione perguntas ou escolha requisito:'),
-            trailing: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
-                  Navigator.pushNamed(context, "/pergunta/selecionar_requisito");
-                }),
-          )),
-          Padding(padding: EdgeInsets.all(10)),
-          Card(
-              child: ListTile(
-            title: Text('Defina as escolhas:'),
-            trailing: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  // SELECIONAR ESCOLHA
-                  Navigator.pushNamed(context, "/pergunta/criar_ordenar_escolha"); 
-                }),
-          )),
-          Padding(padding: EdgeInsets.all(10)),
-          _botaoDeletarPergunta()
-        ]);
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+        stream: bloc.state,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("ERROR");
+          }
+          if (!snapshot.hasData) {
+            return Text("SEM DADOS");
+          }
+          return Markdown(data: snapshot.data.textoMarkdown);
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-    myController.setTextAndPosition(_textoMarkdown);
+    myController.setTextAndPosition(myController.text);
 
-    return DefaultTabController(
-        length: 3,
+    return Provider<EditarApagarPerguntaBloc>.value(
+      value: bloc,
+      child: DefaultTabController(
+        length: 2,
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.red,
-              leading: new IconButton(
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              bottom: TabBar(
-                tabs: [
-                  Tab(text: "Texto"),
-                  Tab(text: "Preview"),
-                  Tab(text: "Dados"),
-                ],
-              ),
-              title: Text("Editar apagar pergunta"),
+          appBar: AppBar(
+            backgroundColor: Colors.red,
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            body: TabBarView(
-              children: [_bodyTexto(context), _bodyPreview(), _bodyDados()],
+            bottom: TabBar(
+              tabs: [
+                Tab(text: "Edição"),
+                Tab(text: "Preview"),
+              ],
             ),
-            floatingActionButton: Visibility(
-                visible: showFab,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    // SALVAR TUDO E VOLTAR A TELA ANTERIOR
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(Icons.thumb_up),
-                  backgroundColor: Colors.blue,
-                ))));
+            title: Text("Editar apagar pergunta"),
+          ),
+          body: TabBarView(
+            children: [_bodyTexto(context), _bodyPreview()],
+          ),
+          floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
+            stream: bloc.state,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text("SEM DADOS");
+              }
+              return FloatingActionButton(
+                onPressed: !snapshot.data.isValid
+                    ? null
+                    : () {
+                        bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
+                        Navigator.of(context).pop();
+                      },
+                child: Icon(Icons.thumb_up),
+                backgroundColor:
+                    !snapshot.data.isValid ? Colors.grey : Colors.blue,
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PerguntaTipoInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
+
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+        stream: bloc.state,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("ERROR");
+          }
+          if (!snapshot.hasData) {
+            return _texto("SEM DADOS");
+          }
+          return Container(
+            child: Column(
+              children: <Widget>[
+                if (!snapshot.data.isBaund)
+                  Wrap(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.list, color: Colors.black),
+                        onPressed: () {
+                          // pergunta do tipo texto
+                          bloc.dispatch(
+                              UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
+                                  PerguntaTipoEnum.Texto));
+                        },
+                      ),
+                      IconButton(
+                        icon:
+                            Icon(Icons.insert_drive_file, color: Colors.black),
+                        onPressed: () {
+                          // pergunta do tipo arquivo
+                          bloc.dispatch(
+                              UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
+                                  PerguntaTipoEnum.Arquivo));
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.image, color: Colors.black),
+                        onPressed: () {
+                          // pergunta do tipo imagem
+                          bloc.dispatch(
+                              UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
+                                  PerguntaTipoEnum.Imagem));
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.plus_one, color: Colors.black),
+                        onPressed: () {
+                          // pergunta do tipo numero
+                          bloc.dispatch(
+                              UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
+                                  PerguntaTipoEnum.Numero));
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.room),
+                        color: Colors.black,
+                        onPressed: () {
+                          // pergunta do tipo coordenada
+                          bloc.dispatch(
+                              UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
+                                  PerguntaTipoEnum.Coordenada));
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.looks_one, color: Colors.black),
+                        onPressed: () {
+                          // pergunta do tipo escolha única"
+                          bloc.dispatch(
+                              UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
+                                  PerguntaTipoEnum.EscolhaUnica));
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.queue, color: Colors.black),
+                        onPressed: () {
+                          // pergunta do tipo escolha multipla
+                          bloc.dispatch(
+                              UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
+                                  PerguntaTipoEnum.EscolhaMultipla));
+                        },
+                      ),
+                    ],
+                  ),
+                _texto(snapshot.data.tipo.nome),
+              ],
+            ),
+          );
+        });
+  }
+}
+
+class TituloInputField extends StatefulWidget {
+  final EditarApagarPerguntaBloc bloc;
+
+  TituloInputField(this.bloc);
+
+  @override
+  State<StatefulWidget> createState() {
+    return TituloInputFieldState();
+  }
+}
+
+class TituloInputFieldState extends State<TituloInputField> {
+  final _controller = TextEditingController();
+  bool initialValue = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(5.0),
+      child: StreamBuilder<EditarApagarPerguntaBlocState>(
+        stream: widget.bloc.state,
+        builder: (context, snapshot) {
+          if (initialValue &&
+              snapshot.hasData &&
+              snapshot.data.titulo != null) {
+            initialValue = false;
+            _controller.text = snapshot.data?.titulo;
+          }
+          return TextField(
+            controller: _controller,
+            onChanged: (text) {
+              widget.bloc.dispatch(
+                  UpdateTituloPerguntaEditarApagarPerguntaBlocEvent(text));
+            },
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

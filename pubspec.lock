@@ -42,7 +42,7 @@ packages:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.7"
+    version: "0.12.7+1"
   collection:
     dependency: transitive
     description:
@@ -84,39 +84,39 @@ packages:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.1+11"
+    version: "0.11.1+12"
   firebase_core:
     dependency: "direct main"
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0+6"
+    version: "0.4.0+8"
   firebase_storage:
     dependency: "direct main"
     description:
       name: firebase_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.3"
+    version: "3.0.4"
   firestore_wrapper:
     dependency: transitive
     description:
       path: "packages/firestore_wrapper"
       ref: HEAD
-      resolved-ref: e049d9eaa192d2d1e297551d9d30d70eec789d83
+      resolved-ref: "9fbcd2ff2dfc23940b4ad54fa3269636b0c6349c"
       url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
     source: git
-    version: "0.0.1"
+    version: "0.0.3"
   firestore_wrapper_flutter:
     dependency: "direct main"
     description:
       path: "packages/firestore_wrapper_flutter"
       ref: HEAD
-      resolved-ref: e049d9eaa192d2d1e297551d9d30d70eec789d83
+      resolved-ref: "9fbcd2ff2dfc23940b4ad54fa3269636b0c6349c"
       url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
     source: git
-    version: "0.0.0"
+    version: "0.0.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -231,7 +231,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "2.4.0"
   provider:
     dependency: "direct main"
     description:
@@ -252,7 +252,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.22.0"
+    version: "0.22.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -341,7 +341,7 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.4.1"
+    version: "3.5.0"
 sdks:
-  dart: ">=2.2.2 <3.0.0"
+  dart: ">=2.4.0 <3.0.0"
   flutter: ">=1.5.0 <2.0.0"
