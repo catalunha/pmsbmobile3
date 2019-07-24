@@ -232,7 +232,8 @@ class EditarApagarPerguntaBloc {
     //adicionar , editar e remover escolha
     if (event is UpdateItemEscolhaIDEditarApagarPerguntaBlocEvent) {
       _state.itemEscolhaID = event.itemEscolhaID;
-      _state.itemEscolha = _state.escolhas[event.itemEscolhaID].texto;
+      if (event.itemEscolhaID != null)
+        _state.itemEscolha = _state.escolhas[event.itemEscolhaID].texto;
     }
     if (event is UpdateItemEscolhaEditarApagarPerguntaBlocEvent) {
       _state.itemEscolha = event.itemEscolha;
@@ -368,7 +369,8 @@ class EditarApagarPerguntaBloc {
             .document(pergunta.anterior);
         final perguntaAnteriorSnap = await perguntaAnteriorRef.get();
         if (perguntaAnteriorSnap.exists) {
-          perguntaAnteriorRef.setData({"posterior":pergunta.posterior}, merge: true);
+          perguntaAnteriorRef
+              .setData({"posterior": pergunta.posterior}, merge: true);
         }
       }
 
@@ -397,6 +399,5 @@ class EditarApagarPerguntaBloc {
     validate();
 
     if (!_outputController.isClosed) _outputController.add(_state);
-
   }
 }
