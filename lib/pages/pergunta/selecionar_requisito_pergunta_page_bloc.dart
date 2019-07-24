@@ -9,14 +9,20 @@ Requisito a = Requisito();
 
 class SelecionarRequisitoPerguntaPageBlocState {
   String eixoID;
-  PerguntaModel pergunta;
+  String perguntaID;
 
   ///"perguntaIDescolhaUID"{'pergunta': 'Pergunta texto ', 'checkbox': true},
   Map requisitos = Map<String, Map<String, dynamic>>();
-  Map requisitosSalvos = Map<String, Requisito>();
 }
 
 class SelecionarRequisitoPerguntaPageBlocEvent {}
+
+class UpdatePerguntaIDSelecionarRequisitoPerguntaPageBlocEvent
+    extends SelecionarRequisitoPerguntaPageBlocEvent {
+  final String id;
+
+  UpdatePerguntaIDSelecionarRequisitoPerguntaPageBlocEvent(this.id);
+}
 
 class UpdateRequisitosSelecionarRequisitoPerguntaPageBlocEvent
     extends SelecionarRequisitoPerguntaPageBlocEvent {}
@@ -28,15 +34,13 @@ class UpdateEixoIDSelecionarRequisitoPerguntaPageBlocEvent
   UpdateEixoIDSelecionarRequisitoPerguntaPageBlocEvent(this.eixoID);
 }
 
-class UpdatePerguntaSelecionarRequisitoPerguntaPageBlocEvent
-    extends SelecionarRequisitoPerguntaPageBlocEvent {
-  final PerguntaModel pergunta;
-
-  UpdatePerguntaSelecionarRequisitoPerguntaPageBlocEvent(this.pergunta);
-}
-
 class UpdateListaRequisitosSelecionarRequisitoPerguntaPageBlocEvent
-    extends SelecionarRequisitoPerguntaPageBlocEvent {}
+    extends SelecionarRequisitoPerguntaPageBlocEvent {
+  final Map<String, Requisito> requisitos;
+
+  UpdateListaRequisitosSelecionarRequisitoPerguntaPageBlocEvent(
+      this.requisitos);
+}
 
 class IndexSelecionarRequisitoPerguntaPageBlocEvent
     extends SelecionarRequisitoPerguntaPageBlocEvent {
@@ -69,16 +73,16 @@ class SelecionarRequisitoPerguntaPageBloc {
     _inputController.listen(_handleInput);
 
     perguntaBloc.state.listen((state) {
-      dispatch(UpdatePerguntaSelecionarRequisitoPerguntaPageBlocEvent(
-          state.instance));
+      dispatch(
+          UpdatePerguntaIDSelecionarRequisitoPerguntaPageBlocEvent(state.id));
+      dispatch(UpdateListaRequisitosSelecionarRequisitoPerguntaPageBlocEvent(
+          state.requisitos));
     });
 
     authBloc.perfil.listen((perfil) {
       if (perfil.eixoIDAtual.id != null) {
         dispatch(UpdateEixoIDSelecionarRequisitoPerguntaPageBlocEvent(
             perfil.eixoIDAtual.id));
-        dispatch(
-            UpdateListaRequisitosSelecionarRequisitoPerguntaPageBlocEvent());
       }
     });
   }
@@ -92,9 +96,10 @@ class SelecionarRequisitoPerguntaPageBloc {
     if (event is UpdateEixoIDSelecionarRequisitoPerguntaPageBlocEvent) {
       _state.eixoID = event.eixoID;
     }
-    if (event is UpdatePerguntaSelecionarRequisitoPerguntaPageBlocEvent) {
-      _state.pergunta = event.pergunta;
+    if (event is UpdatePerguntaIDSelecionarRequisitoPerguntaPageBlocEvent) {
+      _state.perguntaID = event.id;
     }
+
     if (event
         is UpdateListaRequisitosSelecionarRequisitoPerguntaPageBlocEvent) {
       final ref = _firestore.collection(PerguntaModel.collection);
@@ -105,14 +110,13 @@ class SelecionarRequisitoPerguntaPageBloc {
         }).toList();
 
         perguntas.forEach((PerguntaModel pergunta) {
-          if (pergunta.id != _state.pergunta.id) {
+          if (pergunta.id != _state.perguntaID) {
             final tipoEnum = PerguntaTipoModel.ENUM[pergunta.tipo.id];
-            final contains =
-                _state.pergunta.requisitos.containsKey(pergunta.id);
+            final contains = event.requisitos.containsKey(pergunta.id);
             _state.requisitos[pergunta.id] = {
               "pergunta": pergunta.titulo,
               "requisito": contains
-                  ? _state.pergunta.requisitos[pergunta.id]
+                  ? event.requisitos[pergunta.id]
                   : Requisito(
                       referencia: pergunta.referencia,
                       perguntaTipo: pergunta.tipo.id,
@@ -125,10 +129,9 @@ class SelecionarRequisitoPerguntaPageBloc {
                 tipoEnum == PerguntaTipoEnum.EscolhaMultipla) {
               pergunta.escolhas.forEach((k, v) {
                 final requisitoKey = "${pergunta.id}${k}";
-                final contains =
-                    _state.pergunta.requisitos.containsKey(requisitoKey);
+                final contains = event.requisitos.containsKey(requisitoKey);
                 final requisito = contains
-                    ? _state.pergunta.requisitos[requisitoKey]
+                    ? event.requisitos[requisitoKey]
                     : Requisito(
                         referencia: pergunta.referencia,
                         perguntaTipo: pergunta.tipo.id,
