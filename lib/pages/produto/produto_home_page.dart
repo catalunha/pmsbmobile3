@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_home_page_bloc.dart';
 
 class ProdutoHomePage extends StatelessWidget {
@@ -16,11 +17,11 @@ class ProdutoHomePage extends StatelessWidget {
             return Center(
               child: Text("Erro. Informe ao administrador do aplicativo"),
             );
-          // if (!snapshot.hasData) {
-          //   return Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (snapshot.data.isEmpty) {
             return Center(
               child: Text("Nenhum produto criado."),
@@ -66,15 +67,15 @@ class ProdutoHomePage extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.note_add),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/produto/imagem',
-                          arguments: produto.id);
+                      // Navigator.pushNamed(context, '/produto/imagem',
+                      //     arguments: produto.id);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.image),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/produto/imagem',
-                          arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(produtoID: produto.id, tipo:'imagem'));
                     },
                   ),
                   IconButton(
