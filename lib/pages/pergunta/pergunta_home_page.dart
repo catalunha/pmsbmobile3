@@ -71,7 +71,9 @@ class PerguntaHomePage extends StatelessWidget {
         return ListView(
           children: [
             ..._preambulo(context),
-            ...snapshot.data.map((pergunta) => PerguntaItem(pergunta)).toList(),
+            ...snapshot.data
+                .map((pergunta) => PerguntaItem(pergunta, bloc))
+                .toList(),
             Padding(padding: EdgeInsets.all(30)),
           ],
         );
@@ -104,8 +106,9 @@ class PerguntaHomePage extends StatelessWidget {
 
 class PerguntaItem extends StatelessWidget {
   final PerguntaModel _pergunta;
+  final PerguntaHomePageBloc bloc;
 
-  PerguntaItem(this._pergunta);
+  PerguntaItem(this._pergunta, this.bloc);
 
   @override
   Widget build(BuildContext context) {
@@ -116,33 +119,49 @@ class PerguntaItem extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text(_pergunta.titulo),
+            trailing: Text("${_pergunta.ordem}"),
+            subtitle: Column(
+              children: <Widget>[
+                Text("${_pergunta.anterior}"),
+                Text("${_pergunta.posterior}"),
+              ],
+            ),
           ),
           ButtonTheme.bar(
             child: ButtonBar(
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.arrow_downward),
-                  onPressed: () {
-                    //Mover pergunta para baixo na ordem
-                  },
+                  onPressed: _pergunta.anterior == null || _pergunta.posterior == null
+                      ? null
+                      : () {
+                          //Mover pergunta para baixo na ordem
+                          bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
+                              _pergunta.id, false));
+                        },
                 ),
                 IconButton(
                   icon: Icon(Icons.arrow_upward),
-                  onPressed: () {
-                    //Mover pergunta para cima na ordem
-                  },
+                  onPressed: _pergunta.anterior == null || _pergunta.posterior == null
+                      ? null
+                      : () {
+                          //Mover pergunta para cima na ordem
+                          bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
+                              _pergunta.id, true));
+                        },
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    final result = Navigator.pushNamed(context, "/pergunta/criar_editar",
+                    final result = Navigator.pushNamed(
+                        context, "/pergunta/criar_editar",
                         arguments: EditarApagarPerguntaPageArguments(
                             perguntaID: _pergunta.id,
                             questionarioID: _pergunta.questionario.id));
 
                     //mensagem com resultado da ação
-                    result.then((result){
-                      if(result != null && result is String){
+                    result.then((result) {
+                      if (result != null && result is String) {
                         final snackBar = SnackBar(content: Text(result));
                         Scaffold.of(context).showSnackBar(snackBar);
                       }
