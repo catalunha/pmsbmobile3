@@ -215,10 +215,48 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               Padding(padding: EdgeInsets.all(10)),
               _texto("Tipo da pergunta:"),
               PerguntaTipoInput(),
+              Card(
+                  child: ListTile(
+                title: Text('Selecione perguntas ou escolha requisito:'),
+                trailing: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
+                      Navigator.pushNamed(
+                          context, "/pergunta/selecionar_requisito",
+                          arguments: bloc);
+                    }),
+              )),
+              Padding(padding: EdgeInsets.all(10)),
+              StreamBuilder<EditarApagarPerguntaBlocState>(
+                stream: bloc.state,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return Container();
+                  if (snapshot.data.tipoEnum != PerguntaTipoEnum.EscolhaUnica &&
+                      snapshot.data.tipoEnum !=
+                          PerguntaTipoEnum.EscolhaMultipla) {
+                    return Container();
+                  }
+                  return Card(
+                      child: ListTile(
+                    title: Text('Defina as escolhas:'),
+                    trailing: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          // SELECIONAR ESCOLHA
+                          Navigator.pushNamed(
+                              context, "/pergunta/criar_ordenar_escolha",
+                              arguments: bloc);
+                        }),
+                  ));
+                },
+              ),
               _texto("Titulo da pergunta:"),
               TituloInputField(bloc),
               _texto("Texto da pergunta:"),
               _textoMarkdownField(),
+              Padding(padding: EdgeInsets.all(10)),
+              _botaoDeletarPergunta(),
             ],
           ),
         ),
@@ -232,52 +270,6 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
         )
       ],
     );
-  }
-
-  _bodyDados() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(padding: EdgeInsets.all(10)),
-          _preambulo(),
-          Padding(padding: EdgeInsets.all(10)),
-          Card(
-              child: ListTile(
-            title: Text('Selecione perguntas ou escolha requisito:'),
-            trailing: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
-                  Navigator.pushNamed(
-                      context, "/pergunta/selecionar_requisito", arguments: bloc);
-                }),
-          )),
-          Padding(padding: EdgeInsets.all(10)),
-          StreamBuilder<EditarApagarPerguntaBlocState>(
-            stream: bloc.state,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Container();
-              if (snapshot.data.tipoEnum != PerguntaTipoEnum.EscolhaUnica &&
-                  snapshot.data.tipoEnum != PerguntaTipoEnum.EscolhaMultipla) {
-                return Container();
-              }
-              return Card(
-                  child: ListTile(
-                title: Text('Defina as escolhas:'),
-                trailing: IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      // SELECIONAR ESCOLHA
-                      Navigator.pushNamed(
-                          context, "/pergunta/criar_ordenar_escolha",
-                          arguments: bloc);
-                    }),
-              ));
-            },
-          ),
-          Padding(padding: EdgeInsets.all(10)),
-          _botaoDeletarPergunta()
-        ]);
   }
 
   _bodyPreview() {
@@ -301,7 +293,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     return Provider<EditarApagarPerguntaBloc>.value(
       value: bloc,
       child: DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.red,
@@ -311,15 +303,14 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             ),
             bottom: TabBar(
               tabs: [
-                Tab(text: "Texto"),
-                Tab(text: "Dados"),
+                Tab(text: "Edição"),
                 Tab(text: "Preview"),
               ],
             ),
             title: Text("Editar apagar pergunta"),
           ),
           body: TabBarView(
-            children: [_bodyTexto(context), _bodyDados(), _bodyPreview()],
+            children: [_bodyTexto(context), _bodyPreview()],
           ),
           floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
             stream: bloc.state,
