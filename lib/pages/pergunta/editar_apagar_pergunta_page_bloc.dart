@@ -273,9 +273,10 @@ class EditarApagarPerguntaBloc {
 
         String questionarioPrimeiraPerguntaID;
         String questionarioUltimaPerguntaID;
-
+        String referencia;
         //criando a pergunta devemos verificar onde ela vai ser posicionada
         if (_state.id == null) {
+          referencia = uuid.Uuid().v4();
           //primeira pergunta do questionario
           final _perguntasRef = _firestore.collection(PerguntaModel.collection);
           final ultimaPerguntaRef = _perguntasRef
@@ -318,6 +319,7 @@ class EditarApagarPerguntaBloc {
         }, merge: true);
 
         final instance = PerguntaModel(
+          referencia: referencia,
           titulo: _state.titulo,
           textoMarkdown: _state.textoMarkdown,
           questionario: _state.questionario,
