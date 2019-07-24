@@ -8,16 +8,22 @@ import 'package:uuid/uuid.dart' as uuid;
 
 class EditarApagarPerguntaBlocState {
   PerguntaModel instance;
+  QuestionarioModel questionarioInstance;
   String id;
   Questionario questionario;
   String titulo;
   String textoMarkdown;
   PerguntaTipo tipo;
   PerguntaTipoEnum tipoEnum;
+  int ordem = 0;
+  String anterior;
+  String posterior;
 
-  List<Requisito> requisitos;
+  Map<String, Requisito> requisitos;
+  Map<String, fsw.FieldValue> requisitosRemovidos =
+      Map<String, fsw.FieldValue>();
   Map<String, Escolha> escolhas;
-
+  Map<String, fsw.FieldValue> escolhasRemovidas = Map<String, fsw.FieldValue>();
   bool isValid;
   bool isBaund;
 
@@ -30,7 +36,7 @@ class EditarApagarPerguntaBlocState {
     textoMarkdown = instance.textoMarkdown;
     tipo = instance.tipo;
     if (tipo != null) tipoEnum = PerguntaTipoModel.ENUM[instance.tipo.id];
-    requisitos = instance.requisitos;
+    requisitos = instance.requisitos != null ? instance.requisitos : requisitos;
     escolhas = instance.escolhas;
   }
 }
@@ -100,9 +106,17 @@ class AddItemEscolhaEditarApagarPerguntaBlocEvent
 class DeletarItemEscolhaEditarApagarPerguntaBlocEvent
     extends EditarApagarPerguntaBlocEvent {}
 
+class UpdateRequisitosEditarApagarPerguntaBlocEvent
+    extends EditarApagarPerguntaBlocEvent {
+  final Map<String, Map<String, dynamic>> requisitos;
+
+  UpdateRequisitosEditarApagarPerguntaBlocEvent(this.requisitos);
+}
+
 class SaveEditarApagarPerguntaBlocEvent extends EditarApagarPerguntaBlocEvent {}
 
-class DeletarEditarApagarPerguntaBlocEvent extends EditarApagarPerguntaBlocEvent {}
+class DeletarEditarApagarPerguntaBlocEvent
+    extends EditarApagarPerguntaBlocEvent {}
 
 class EditarApagarPerguntaBloc {
   final fsw.Firestore _firestore;
@@ -149,7 +163,7 @@ class EditarApagarPerguntaBloc {
       dispatch(UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
           event.defaultTipoPergunta));
       _state.textoMarkdown = event.defaultTextoMarkdown;
-      _state.requisitos = List<Requisito>();
+      _state.requisitos = Map<String, Requisito>();
       _state.escolhas = Map<String, Escolha>();
     }
 
@@ -183,6 +197,9 @@ class EditarApagarPerguntaBloc {
 
         final snap = await ref.get();
         if (snap.exists) {
+          _state.questionarioInstance =
+              QuestionarioModel(id: snap.documentID).fromMap(snap.data);
+
           _state.questionario = Questionario.fromMap({
             "id": snap.documentID,
             ...snap.data,
@@ -196,8 +213,19 @@ class EditarApagarPerguntaBloc {
       _state.tipo = PerguntaTipo(PerguntaTipoModel.IDS[event.tipo],
           PerguntaTipoModel.NOMES[event.tipo]);
     }
-    //adicionar, editar e remover requisito
 
+    //adicionar, editar e remover requisito
+    if (event is UpdateRequisitosEditarApagarPerguntaBlocEvent) {
+      event.requisitos.forEach((key, value) {
+        if (value["checkbox"] != null) {
+          if (value["checkbox"]) {
+            _state.requisitos[key] = value["requisito"];
+          } else {
+            _state.requisitosRemovidos[key] = fsw.FieldValue.delete();
+          }
+        }
+      });
+    }
 
     //adicionar , editar e remover escolha
     if (event is UpdateItemEscolhaIDEditarApagarPerguntaBlocEvent) {
@@ -224,8 +252,8 @@ class EditarApagarPerguntaBloc {
     }
 
     if (event is DeletarItemEscolhaEditarApagarPerguntaBlocEvent) {
-      //TODO: este codigo não remove item de dicionario no firestore
       _state.escolhas.remove(_state.itemEscolhaID);
+      _state.escolhasRemovidas[_state.itemEscolhaID] = fsw.FieldValue.delete();
     }
 
     //salvar e deletar geral
@@ -233,6 +261,44 @@ class EditarApagarPerguntaBloc {
       if (_state.isValid) {
         final ref =
             _firestore.collection(PerguntaModel.collection).document(_state.id);
+
+        //anterior, posterior e ordem
+        final questionarioRef = _firestore
+            .collection(QuestionarioModel.collection)
+            .document(_state.questionarioInstance.id);
+        String questionarioPrimeiraPerguntaID;
+        String questionarioUltimaPerguntaID;
+
+        //criando a pergunta devemos verificar onde ela vai ser posicionada
+        if (_state.id == null) {
+          //primeira pergunta do questionario
+          if (_state.questionarioInstance.primeiraPerguntaID == null &&
+              _state.questionarioInstance.ultimaPerguntaID == null) {
+            questionarioPrimeiraPerguntaID = ref.documentID;
+            questionarioUltimaPerguntaID = ref.documentID;
+            _state.ordem = 0;
+          } else {
+            final ultimaPerguntaRef = _firestore
+                .collection(PerguntaModel.collection)
+                .document(_state.questionarioInstance.ultimaPerguntaID);
+            final ultimaPerguntaSnap = await ultimaPerguntaRef.get();
+            final ultimaPergunta =
+                PerguntaModel(id: ultimaPerguntaSnap.documentID)
+                    .fromMap(ultimaPerguntaSnap.data);
+            _state.ordem = ultimaPergunta.ordem + 1;
+            ultimaPergunta.posterior = ref.documentID;
+            _state.anterior = ultimaPergunta.id;
+            ultimaPerguntaRef.setData(ultimaPergunta.toMap(), merge: true);
+            questionarioUltimaPerguntaID = ref.documentID;
+          }
+        }
+
+        questionarioRef.setData({
+          if (questionarioPrimeiraPerguntaID != null)
+            "primeiraPerguntaID": questionarioPrimeiraPerguntaID,
+          if (questionarioUltimaPerguntaID != null)
+            "ultimaPerguntaID": questionarioUltimaPerguntaID,
+        }, merge: true);
 
         //TODO: revisar para casos de adição e edição
         final instance = PerguntaModel(
@@ -242,19 +308,24 @@ class EditarApagarPerguntaBloc {
           tipo: _state.tipo,
           requisitos: _state.requisitos,
           escolhas: _state.escolhas,
-          ordem: 0,
+          ordem: _state.ordem,
+          anterior: _state.anterior,
+          posterior: _state.posterior,
           dataCriacao: DateTime.now(),
           dataEdicao: DateTime.now(),
         );
+
         ref.setData(instance.toMap(), merge: true);
+        ref.setData({"requisitos": _state.requisitosRemovidos}, merge: true);
         final snap = await ref.get();
+        _state.id = snap.documentID;
         _state.instance = PerguntaModel(id: snap.documentID).fromMap(snap.data);
       }
     }
 
-    if(event is DeletarEditarApagarPerguntaBlocEvent){
+    if (event is DeletarEditarApagarPerguntaBlocEvent) {
       final ref =
-      _firestore.collection(PerguntaModel.collection).document(_state.id);
+          _firestore.collection(PerguntaModel.collection).document(_state.id);
       ref.delete();
     }
 
