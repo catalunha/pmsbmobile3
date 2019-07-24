@@ -61,6 +61,7 @@ class PerguntaModel extends FirestoreModel {
 
   PerguntaModel({
     String id,
+    this.referencia,
     this.questionario,
     this.tipo,
     this.requisitos,
@@ -72,6 +73,12 @@ class PerguntaModel extends FirestoreModel {
     this.dataEdicao,
     this.anterior,
     this.posterior,
+    this.observacao,
+
+    this.texto,
+    this.arquivo,
+    this.coordenada,
+    this.numero,
   }) : super(id);
 
   @override
@@ -81,8 +88,8 @@ class PerguntaModel extends FirestoreModel {
 
     if (map["tipo"] is Map) tipo = PerguntaTipo.fromMap(map['tipo']);
 
+    requisitos = Map<String, Requisito>();
     if (map["requisitos"] is Map) {
-      requisitos = Map<String, Requisito>();
       map["requisitos"].forEach((k, v) {
         requisitos[k] = Requisito.fromMap(v);
       });
@@ -109,8 +116,8 @@ class PerguntaModel extends FirestoreModel {
     /// respostas
 
     ///escolhas contem as opções possiveis e a informação de quem foi marcado
+    escolhas = Map<String, Escolha>();
     if (map["escolhas"] is Map) {
-      escolhas = Map<String, Escolha>();
       map["escolhas"].forEach((k, v) {
         escolhas[k] = Escolha.fromMap(v);
       });
@@ -153,6 +160,8 @@ class PerguntaModel extends FirestoreModel {
         map["escolhas"][k] = v.toMap();
       });
     }
+
+    if (referencia != null) map["referencia"] = referencia;
 
     if (ordem != null) map["ordem"] = ordem;
 
