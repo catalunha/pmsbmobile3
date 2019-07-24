@@ -33,8 +33,8 @@ class UploadPageBloc {
   //Firestore
   final fw.Firestore _firestore;
   // Authenticacação
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
-
+  // final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final _authBloc;
   //Eventos
   final _eventController = BehaviorSubject<PageEvent>();
 
@@ -53,7 +53,7 @@ class UploadPageBloc {
   //     _uploadModelListController.stream;
   // Function get uploadModelListSink => _uploadModelListController.sink.add;
 
-  UploadPageBloc(this._firestore) {
+  UploadPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
     // _authBloc.userId
     //     .listen((userId) => eventSink(UpdateUsuarioIDEvent(userId)));
@@ -96,6 +96,6 @@ class UploadPageBloc {
   void dispose() {
     _stateController.close();
     _eventController.close();
-    _authBloc.dispose();
+    // _authBloc.dispose();
   }
 }

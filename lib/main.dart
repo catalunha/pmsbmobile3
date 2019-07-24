@@ -15,7 +15,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
     return Provider.value(
       value: authBloc,
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
             "/desenvolvimento": (context) => Desenvolvimento(),
 
             //Upload
-            "/upload": (context) => UploadPage(),
+            "/upload": (context) => UploadPage(authBloc),
 
             //perfil
             "/perfil": (context) => PerfilPage(),
@@ -95,7 +94,7 @@ class MyApp extends StatelessWidget {
             "/sintese/home": (context) => SinteseHomePage(),
 
             //produto
-            "/produto/home": (context) => ProdutoHomePage(),
+            "/produto/home": (context) => ProdutoHomePage(authBloc),
             "/produto/crud": (context) {
               final settings = ModalRoute.of(context).settings;
               return ProdutoCRUDPage(settings.arguments);
@@ -104,14 +103,20 @@ class MyApp extends StatelessWidget {
               final settings = ModalRoute.of(context).settings;
               return ProdutoTextoPage(settings.arguments);
             },
-            "/produto/imagem": (context) {
-              final settings = ModalRoute.of(context).settings;
-              return ProdutoImagemListPage(settings.arguments);
-            },
-            "/produto/imagem_crud": (context) {
+            "/produto/arquivo_list": (context) {
               final settings = ModalRoute.of(context).settings;
               ProdutoArguments args = settings.arguments;
-              return ProdutoImagemCRUDPage(args.produtoID,args.arquivoID);
+
+              return ProdutoArquivoListPage(
+                  produtoID: args.produtoID, tipo: args.tipo);
+            },
+            "/produto/arquivo_crud": (context) {
+              final settings = ModalRoute.of(context).settings;
+              ProdutoArguments args = settings.arguments;
+              return ProdutoArquivoCRUDPage(
+                  produtoID: args.produtoID,
+                  arquivoID: args.arquivoID,
+                  tipo: args.tipo);
             },
 
             //produto0

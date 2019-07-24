@@ -197,8 +197,8 @@
     "requisito": {
       "perguntaID/EscolhaUID": {
         "referencia": "PerguntaID->referencia",
-        "perguntaID": "PerguntaID",
-        "perguntaTipo": "PerguntaID->escolha || PerguntaID->texto",
+        "perguntaID": "PerguntaID das referencias em diferentes questionarios",
+        "pergunta": "PerguntaID->escolha || PerguntaID->texto || PerguntaID->coordenada ",
         "escolha": {
           "id": "PerguntaID->escolha->uid->key",
           "marcada": true
@@ -236,6 +236,19 @@
     },
     "modificado": "data-valor",
     "textoMarkdownID": "data-valor",
+    "arquivo": {
+      "uid":{
+        "tipo": "imagem || tabela || grafico || mapa",
+        "titulo": "titulo-valor",
+        "rascunhoEixoArquivoID": "EixoArquivoID",
+        "rascunhoUrl": "null || obtida do storage após upload",
+        "rascunhoLocalPath": "path local do arquivo no celular do usuario.",
+        "editadoEixoArquivoID": "EixoArquivoID",
+        "editadoUrl": "null || obtida do storage após upload",
+        "editadoLocalPath": "path local do arquivo no celular do usuario."
+      }
+    },
+
     "imagem": [
       {
         "id": "uid",

@@ -31,8 +31,8 @@ export 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 export 'package:pmsbmibile3/pages/produto/produto_home_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_crud_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_imagem_list_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page.dart';
+export 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page.dart';
 
 //produto0
 export 'package:pmsbmibile3/pages/produto/product.dart';

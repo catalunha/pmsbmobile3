@@ -3,20 +3,18 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/pages/upload/upload_page_bloc.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-class UploadPage extends StatefulWidget {
-  final bloc = UploadPageBloc(Bootstrap.instance.firestore);
 
-  @override
-  _UploadPageState createState() => _UploadPageState();
-}
+class UploadPage extends StatelessWidget {
 
-class _UploadPageState extends State<UploadPage> {
-  @override
-  void initState() {
-    super.initState();
-    widget.bloc.eventSink(UpdateUsuarioIDEvent());
+  final UploadPageBloc bloc;
+
+  UploadPage(AuthBloc authBloc) : bloc = UploadPageBloc(Bootstrap.instance.firestore, authBloc){
+    bloc.eventSink(UpdateUsuarioIDEvent());
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class _UploadPageState extends State<UploadPage> {
 
   _uploadBody() {
     return StreamBuilder<PageState>(
-        stream: widget.bloc.stateStream,
+        stream: bloc.stateStream,
         builder: (BuildContext context, AsyncSnapshot<PageState> snapshot) {
           if (snapshot.hasError)
             return Center(
@@ -69,7 +67,7 @@ class _UploadPageState extends State<UploadPage> {
             trailing: IconButton(
               icon: uploading.uploading ? Icon(Icons.send) : Icon(Icons.close),
               onPressed: () {
-                widget.bloc.eventSink(StartUploadEvent(uploading.id));
+                bloc.eventSink(StartUploadEvent(uploading.id));
               },
             ),
           ),

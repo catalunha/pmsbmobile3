@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_home_page_bloc.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ProdutoHomePage extends StatelessWidget {
-  final bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore);
+  final ProdutoHomePageBloc bloc;
 
+  ProdutoHomePage(AuthBloc authBloc)
+      : bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc) {
+    // bloc.eventSink(UpdateUsuarioIDEvent());
+  }
+ void dispose() {
+    bloc.dispose();
+  }
+  
   _listaProdutos(BuildContext context) {
     return StreamBuilder<List<ProdutoModel>>(
         stream: bloc.produtoModelListStream,
@@ -16,17 +26,17 @@ class ProdutoHomePage extends StatelessWidget {
             return Center(
               child: Text("Erro. Informe ao administrador do aplicativo"),
             );
-          // if (!snapshot.hasData) {
-          //   return Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (snapshot.data.isEmpty) {
             return Center(
               child: Text("Nenhum produto criado."),
             );
           }
-   
+
           return ListView(
             children: snapshot.data
                 .map((produto) => _cardBuildProduto(context, produto))
@@ -66,15 +76,16 @@ class ProdutoHomePage extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.note_add),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/produto/imagem',
-                          arguments: produto.id);
+                      // Navigator.pushNamed(context, '/produto/imagem',
+                      //     arguments: produto.id);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.image),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/produto/imagem',
-                          arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(
+                              produtoID: produto.id, tipo: 'imagem'));
                     },
                   ),
                   IconButton(
@@ -121,16 +132,22 @@ class ProdutoHomePage extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: snapshot.data?.usuarioModel?.eixoIDAtual?.nome != null ? Text( "Eixo: ${snapshot.data.usuarioModel.eixoIDAtual.nome}" ,
-                    style: TextStyle(fontSize: 16, color: Colors.blue),
-                  ) : Text('...'),
+                  child: snapshot.data?.usuarioModel?.eixoIDAtual?.nome != null
+                      ? Text(
+                          "Eixo: ${snapshot.data.usuarioModel.eixoIDAtual.nome}",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        )
+                      : Text('...'),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
-                  child: snapshot.data?.usuarioModel?.setorCensitarioID?.nome != null ? Text(
-                    "Setor: ${snapshot.data.usuarioModel.setorCensitarioID.nome}",
-                    style: TextStyle(fontSize: 16, color: Colors.blue),
-                  ): Text('...'),
+                  child: snapshot.data?.usuarioModel?.setorCensitarioID?.nome !=
+                          null
+                      ? Text(
+                          "Setor: ${snapshot.data.usuarioModel.setorCensitarioID.nome}",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        )
+                      : Text('...'),
                 ),
               ],
             );

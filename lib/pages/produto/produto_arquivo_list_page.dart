@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
-import 'package:pmsbmibile3/pages/produto/produto_imagem_list_page_bloc.dart';
+import 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page_bloc.dart';
 
-class ProdutoImagemListPage extends StatelessWidget {
+class ProdutoArquivoListPage extends StatelessWidget {
   final String produtoID;
-  final bloc = ProdutoImagemListPageBloc(Bootstrap.instance.firestore);
+  final String tipo;
+  final ProdutoArquivoListPageBloc bloc;
 
-  ProdutoImagemListPage(this.produtoID) {
-    bloc.eventSink(UpdateProdutoIDEvent(this.produtoID));
+  ProdutoArquivoListPage({this.produtoID, this.tipo})
+      : bloc = ProdutoArquivoListPageBloc(Bootstrap.instance.firestore) {
+    bloc.eventSink(UpdateProdutoIDTipoEvent(this.produtoID, this.tipo));
   }
 
+ void dispose() {
+    bloc.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +28,14 @@ class ProdutoImagemListPage extends StatelessWidget {
         title: Text("Imagens para o Produto"),
       ),
       body: _body(context),
+      // body: Text('${produtoID} | ${tipo}'),
       floatingActionButton: FloatingActionButton(
-
         child: Icon(Icons.add),
-        
+
         onPressed: () {
-          Navigator.pushNamed(context, '/produto/imagem_crud',
-              arguments:
-                  ProdutoArguments(produtoID: produtoID, arquivoID: null));
+          Navigator.pushNamed(context, '/produto/arquivo_crud',
+              arguments: ProdutoArguments(
+                  produtoID: this.produtoID, arquivoID: null, tipo: this.tipo));
         },
         // backgroundColor: Colors.blue,
       ),
@@ -36,17 +43,17 @@ class ProdutoImagemListPage extends StatelessWidget {
   }
 
   _body(BuildContext context) {
-    return StreamBuilder<ProdutoImagemListPageState>(
+    return StreamBuilder<ProdutoArquivoListPageState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
-            AsyncSnapshot<ProdutoImagemListPageState> snapshot) {
+            AsyncSnapshot<ProdutoArquivoListPageState> snapshot) {
           if (snapshot.hasError)
             return Center(
               child: Text("Erro. Informe ao administrador do aplicativo"),
             );
-          if (snapshot.data?.imagemList == null) {
+          if (snapshot.data?.arquivo == null) {
             return Center(
-              child: Text("Sem imagens na lista."),
+              child: Text("Sem arquivo do tipo ${tipo} na lista."),
             );
           }
           if (!snapshot.hasData) {
@@ -54,28 +61,27 @@ class ProdutoImagemListPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+          var arquivo = Map<String, ArquivoProduto>();
 
-          var lista = List<Imagem>();
-          if (snapshot.data.imagemList != null) {
-            lista = snapshot.data.imagemList;
-          }
-
+          arquivo = snapshot.data?.arquivo;
+          var lista = List<Widget>();
+          arquivo.forEach((k, v) {
+            lista.add(_cardBuildImagem(context, v));
+          });
           return ListView(
-            children: lista
-                .map((imagem) => _cardBuildImagem(context, imagem))
-                .toList(),
+            children: lista,
           );
         });
   }
 
-  Widget _cardBuildImagem(BuildContext context, Imagem imagem) {
+  Widget _cardBuildImagem(BuildContext context, ArquivoProduto arquivo) {
     return Card(
         elevation: 10,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: Text(imagem.titulo),
+              title: Text(arquivo.titulo),
             ),
             _imagemRow(
                 'http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-components-symbol%402x.png',
@@ -88,9 +94,9 @@ class ProdutoImagemListPage extends StatelessWidget {
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       //IR PRA PAGINA DE EDITAR VISUAL
-                      Navigator.pushNamed(context, '/produto/imagem_crud',
+                      Navigator.pushNamed(context, '/produto/arquivo_crud',
                           arguments: ProdutoArguments(
-                              produtoID: produtoID, arquivoID: imagem.id));
+                              produtoID: produtoID, arquivoID: arquivo.id,tipo: arquivo.tipo));
                     },
                   ),
                 ],
@@ -121,6 +127,4 @@ class ProdutoImagemListPage extends StatelessWidget {
       ],
     );
   }
-
-
 }
