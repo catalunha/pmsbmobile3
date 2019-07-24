@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
             "/perfil": (context) => PerfilPage(),
             "/perfil/crudtext": (context) => PerfilCRUDPage(),
             "/perfil/crudarq": (context) => PerfilCRUDArqPage(),
+
+            // "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),//apagar
             "/perfil/configuracao": (context) => ConfiguracaoPage(),
 
             //questionario
@@ -43,15 +45,32 @@ class MyApp extends StatelessWidget {
             "/questionario/form": (context) => QuestionarioFormPage(),
 
             //pergunta
-            "/pergunta/home": (context) => PerguntaHomePage(),
+            "/pergunta/home": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaHomePage(settings.arguments);
+            },
             "/pergunta/criar_pergunta": (context) => CriarPerguntaTipoPage(),
-            "/pergunta/criar_editar": (context) => EditarApagarPerguntaPage(),
-            "/pergunta/selecionar_requisito": (context) =>
-                SelecionarQuequisitoPerguntaPage(),
-            "/pergunta/criar_ordenar_escolha": (context) =>
-                CriarOrdenarEscolha(),
-            "/pergunta/editar_apagar_escolha": (context) =>
-                EditarApagarEscolhaPage(),
+            "/pergunta/criar_editar": (context) {
+              final settings = ModalRoute.of(context).settings;
+              final EditarApagarPerguntaPageArguments args = settings.arguments;
+              return EditarApagarPerguntaPage(
+                questionarioID: args.questionarioID,
+                perguntaID: args.perguntaID,
+              );
+            },
+            "/pergunta/selecionar_requisito": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return SelecionarQuequisitoPerguntaPage(authBloc, settings.arguments);
+            },
+            "/pergunta/criar_ordenar_escolha": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return CriarOrdenarEscolha(settings.arguments);
+            },
+            "/pergunta/editar_apagar_escolha": (context) {
+              final settings = ModalRoute.of(context).settings;
+              final EditarApagarEscolhaPageArguments args = settings.arguments;
+              return EditarApagarEscolhaPage(args.bloc, args.escolhaID);
+            },
 
             //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
@@ -12,49 +12,49 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
 
   List<Map<dynamic, dynamic>> _listaPergunta = [
     {
-      "tipo": TipoPergunta.UnicaEscolha,
+      "tipo": PerguntaTipoEnum.EscolhaUnica,
       'parametros': perguntasquesitoescolhaunica,
       'titulo': "Pergunta escolha unica",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": TipoPergunta.MultiplaEscolha,
+      "tipo": PerguntaTipoEnum.EscolhaMultipla,
       'parametros': perguntasquesitoescolhaunica,
       'titulo': "Pergunta escolha_multipla",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": TipoPergunta.Imagem,
+      "tipo": PerguntaTipoEnum.Imagem,
       'parametros': null,
       'titulo': "Pergunta imagem",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": TipoPergunta.Arquivo,
+      "tipo": PerguntaTipoEnum.Arquivo,
       'parametros': null,
       'titulo': "Pergunta arquivo",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": TipoPergunta.Texto,
+      "tipo": PerguntaTipoEnum.Texto,
       'parametros': null,
       'titulo': "Pergunta texto",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": TipoPergunta.Numero,
+      "tipo": PerguntaTipoEnum.Numero,
       'parametros': null,
       'titulo': "Pergunta numero",
       "texto":
           "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
     },
     {
-      "tipo": TipoPergunta.Coordenada,
+      "tipo": PerguntaTipoEnum.Coordenada,
       'parametros': null,
       'titulo': "Pergunta coordenada",
       "texto":

@@ -129,7 +129,9 @@
       "nome": "UsuarioID->nome"
     },
     "modificado": "data-valor",
-    "editando": false
+    "editando": false,
+    "primeiraPerguntaID": "Pergunta->referencia",
+    "ultimaPerguntaID": "Pergunta->referencia"
   },
   "QuestionarioAplicado": {
     "nome": "nome-valor",
@@ -192,8 +194,8 @@
         "marcada": true
       }
     },
-    "requisito": [
-      {
+    "requisito": {
+      "perguntaID/EscolhaUID": {
         "referencia": "PerguntaID->referencia",
         "perguntaID": "PerguntaID das referencias em diferentes questionarios",
         "pergunta": "PerguntaID->escolha || PerguntaID->texto || PerguntaID->coordenada ",
@@ -202,7 +204,7 @@
           "marcada": true
         }
       }
-    ]
+    }
   },
   "PerguntaAplicada": {
     "_comment": "idem a Pergunta. Com as devidas alterações."

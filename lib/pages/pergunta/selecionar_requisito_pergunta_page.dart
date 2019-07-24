@@ -1,53 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
+import 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page_bloc.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-class SelecionarQuequisitoPerguntaPage extends StatefulWidget {
-  @override
-  _SelecionarQuequisitoPerguntaPageState createState() =>
-      _SelecionarQuequisitoPerguntaPageState();
-}
+class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
+  final AuthBloc authBloc;
+  final EditarApagarPerguntaBloc blocPergunta;
+  final SelecionarRequisitoPerguntaPageBloc bloc;
 
-class _SelecionarQuequisitoPerguntaPageState
-    extends State<SelecionarQuequisitoPerguntaPage> {
-  //List<bool> inputs = [false, false, false];
-  //List<String> _perguntasquesito = ["Area 01", "Area 02", "Area 03"];
+  SelecionarQuequisitoPerguntaPage(this.authBloc, this.blocPergunta)
+      : bloc = SelecionarRequisitoPerguntaPageBloc(
+            Bootstrap.instance.firestore, authBloc, blocPergunta);
 
-  List<Map<String, dynamic>> _perguntasquesito = [
-    {'pergunta': 'Pergunta texto ', 'checkbox': true},
-    {'pergunta': 'Pergunta unica / sim', 'checkbox': false},
-    {'pergunta': 'Pergunta unicao / Nâo', 'checkbox': false}
-  ];
+  Widget _body() {
+    return StreamBuilder<SelecionarRequisitoPerguntaPageBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    setState(() {});
-  }
+        final requisitos =
+            snapshot.data.requisitos != null ? snapshot.data.requisitos : {};
 
-  void _itemChange(bool val, int index) {
-    setState(() {
-      _perguntasquesito[index]['checkbox'] = val;
-    });
-  }
-
-  _body() {
-    return ListView.builder(
-        itemCount: _perguntasquesito.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-              //padding: new EdgeInsets.all(10.0),
-              child: CheckboxListTile(
-                  value: _perguntasquesito[index]['checkbox'],
-                  title: new Text('${_perguntasquesito[index]['pergunta']}'),
+        final widgetRequisitos = requisitos.map(
+          (i, e) {
+            return MapEntry(
+              i,
+              Card(
+                child: CheckboxListTile(
+                  value: e['checkbox'],
+                  title: new Text('${e['pergunta']}'),
                   controlAffinity: ListTileControlAffinity.trailing,
                   onChanged: (bool val) {
-                    _itemChange(val, index);
-                  }));
-        });
+                    bloc.dispatch(
+                        IndexSelecionarRequisitoPerguntaPageBlocEvent(i, val));
+                  },
+                ),
+              ),
+            );
+          },
+        );
+        return ListView(
+          children: [
+            ...widgetRequisitos.values.toList(),
+            Container(
+              padding: EdgeInsets.only(top: 75),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red,
@@ -56,6 +67,8 @@ class _SelecionarQuequisitoPerguntaPageState
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            bloc.dispatch(
+                UpdateRequisitosSelecionarRequisitoPerguntaPageBlocEvent());
             Navigator.pop(context);
           },
           child: Icon(Icons.thumb_up),

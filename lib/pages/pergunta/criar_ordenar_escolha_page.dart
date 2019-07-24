@@ -1,16 +1,13 @@
+import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
+import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
 
-class CriarOrdenarEscolha extends StatefulWidget {
-  @override
-  _CriarOrdenarEscolhaState createState() => _CriarOrdenarEscolhaState();
-}
+class CriarOrdenarEscolha extends StatelessWidget {
+  final EditarApagarPerguntaBloc bloc;
 
-class _CriarOrdenarEscolhaState extends State<CriarOrdenarEscolha> {
-  String _eixo = "eixo exemplo";
-  String _questionario = "Setor exemplo";
-  String _pergunta = "produto exemplo";
-  List<String> _perguntaescolha = ['Sim', 'Não'];
+  CriarOrdenarEscolha(this.bloc);
 
   _textoTopo(text) {
     return Padding(
@@ -23,10 +20,18 @@ class _CriarOrdenarEscolhaState extends State<CriarOrdenarEscolha> {
   }
 
   _listarPerguntaEscolha() {
-    return ListView.builder(
-        itemCount: _perguntaescolha.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        List<Widget> list = List<Widget>();
+        snapshot.data.escolhas.forEach((k, v) {
+          list.add(Card(
             elevation: 10,
             child: Row(
               children: <Widget>[
@@ -34,7 +39,7 @@ class _CriarOrdenarEscolhaState extends State<CriarOrdenarEscolha> {
                     flex: 3,
                     child: ListTile(
                       leading: Icon(Icons.info),
-                      title: Text(_perguntaescolha[index]),
+                      title: Text(v.texto),
                     )),
                 Expanded(
                   flex: 2,
@@ -56,24 +61,50 @@ class _CriarOrdenarEscolhaState extends State<CriarOrdenarEscolha> {
                           onPressed: () {
                             // Editar uma nova escolha
                             Navigator.pushNamed(
-                                context, "/pergunta/editar_apagar_escolha");
+                                context, "/pergunta/editar_apagar_escolha",
+                                arguments: EditarApagarEscolhaPageArguments(
+                                    bloc, k));
                           }),
                     ],
                   ),
                 ),
               ],
             ),
-          );
+          ));
         });
+        return ListView(
+          children: list,
+        );
+      },
+    );
   }
 
   _body() {
     return Container(
         alignment: Alignment(0.0, 0.0),
         child: Column(children: <Widget>[
-          _textoTopo("Eixo: $_eixo"),
-          _textoTopo("Questionario: $_questionario"),
-          _textoTopo("Pergunta: $_pergunta"),
+          Container(
+            padding: EdgeInsets.only(top: 10),
+            child: EixoAtualUsuario(),
+          ),
+          StreamBuilder<EditarApagarPerguntaBlocState>(
+            stream: bloc.state,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text("ERROR");
+              }
+              if (!snapshot.hasData) {
+                return Text("SEM DADOS");
+              }
+              return Column(
+                children: <Widget>[
+                  _textoTopo(
+                      "Questionario: ${snapshot.data.questionario.nome}"),
+                  _textoTopo("Pergunta: ${snapshot.data.titulo}"),
+                ],
+              );
+            },
+          ),
           Padding(padding: EdgeInsets.all(10)),
           Expanded(child: _listarPerguntaEscolha())
         ]));
@@ -91,7 +122,8 @@ class _CriarOrdenarEscolhaState extends State<CriarOrdenarEscolha> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             // Adicionar uma nova escolha
-            Navigator.pushNamed(context, "/pergunta/editar_apagar_escolha");
+            Navigator.pushNamed(context, "/pergunta/editar_apagar_escolha",
+                arguments: EditarApagarEscolhaPageArguments(bloc, null));
           },
           child: Icon(Icons.add),
           backgroundColor: Colors.blue,
