@@ -17,7 +17,13 @@ class UpdateProdutoIDTipoEvent extends ProdutoArquivoListPageEvent {
   final String tipo;
 
   UpdateProdutoIDTipoEvent(this.produtoID, this.tipo);
+}
 
+class UpdateArquivoMapPageEvent extends ProdutoArquivoListPageEvent{
+  final fw.DocumentSnapshot snap;
+
+  UpdateArquivoMapPageEvent(this.snap);
+  
 }
 
 class ProdutoArquivoListPageState {
@@ -30,11 +36,13 @@ class ProdutoArquivoListPageState {
 
   void updateStateFromProdutoModel() {
     arquivo = Map<String, ArquivoProduto>();
-    produtoModel.arquivo.forEach((k, v) {
-      if (v.tipo==this.tipo) {
-        arquivo[k]=v;
-      }
-    });
+    if (produtoModel.arquivo != null) {
+      produtoModel?.arquivo?.forEach((k, v) {
+        if (v.tipo == this.tipo) {
+          arquivo[k] = v;
+        }
+      });
+    }
   }
 
   // Map<String, dynamic> toMap() {
@@ -77,15 +85,24 @@ class ProdutoArquivoListPageBloc {
           .collection(ProdutoModel.collection)
           .document(_state.produtoID);
 
-      final docSnap = await docRef.get();
-
-      if (docSnap.exists) {
-        final produtoModel =
-            ProdutoModel(id: docSnap.documentID).fromMap(docSnap.data);
-        _state.produtoModel = produtoModel;
-        _state.updateStateFromProdutoModel();
+      docRef.snapshots().listen((snap){
+        if (snap.exists) {
+        _eventController.add(UpdateArquivoMapPageEvent(snap)); 
       }
+       
+      });
     }
+    if(event is UpdateArquivoMapPageEvent){
+      final produtoModel =
+            ProdutoModel(id: event.snap.documentID).fromMap(event.snap.data);
+        _state.produtoModel = produtoModel;
+        _state.updateStateFromProdutoModel(); 
+    }
+
+
+
+ 
+
     if (!_stateController.isClosed) _stateController.add(_state);
 
     // print('>>> _state.toMap() <<< ${_state.toMap()}');

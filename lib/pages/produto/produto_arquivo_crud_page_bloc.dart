@@ -1,66 +1,56 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:mime/mime.dart';
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/models/eixo_arquivo_model.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
-import 'package:pmsbmibile3/models/produto_texto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
-import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:uuid/uuid.dart';
 
-class ProdutoImagemCRUDPageEvent {}
+class ProdutoArquivoCRUDPageEvent {}
 
-class UpdateProdutoIDArquivoIDEvent extends ProdutoImagemCRUDPageEvent {
+class UpdateProdutoIDArquivoIDTipoEvent extends ProdutoArquivoCRUDPageEvent {
   final String produtoID;
-  final String imagemID;
+  final String arquivoID;
+  final String tipo;
 
-  UpdateProdutoIDArquivoIDEvent(this.produtoID, this.imagemID);
+  UpdateProdutoIDArquivoIDTipoEvent(this.produtoID, this.arquivoID, this.tipo);
 }
 
-class UpdateTituloEvent extends ProdutoImagemCRUDPageEvent {
+class UpdateTituloEvent extends ProdutoArquivoCRUDPageEvent {
   final String titulo;
 
   UpdateTituloEvent(this.titulo);
 }
 
-class UpdateArquivoRascunhoEvent extends ProdutoImagemCRUDPageEvent {
+class UpdateArquivoRascunhoEvent extends ProdutoArquivoCRUDPageEvent {
   final String arquivoRascunho;
 
   UpdateArquivoRascunhoEvent(this.arquivoRascunho);
 }
 
-class UpdateArquivoEditadoEvent extends ProdutoImagemCRUDPageEvent {
+class UpdateArquivoEditadoEvent extends ProdutoArquivoCRUDPageEvent {
   final String arquivoEditado;
 
   UpdateArquivoEditadoEvent(this.arquivoEditado);
 }
 
-class SaveEvent extends ProdutoImagemCRUDPageEvent {}
+class SaveEvent extends ProdutoArquivoCRUDPageEvent {}
 
-class DeleteEvent extends ProdutoImagemCRUDPageEvent {}
+class DeleteEvent extends ProdutoArquivoCRUDPageEvent {}
 
-class DeleteArquivoEvent extends ProdutoImagemCRUDPageEvent {
+class DeleteArquivoEvent extends ProdutoArquivoCRUDPageEvent {
   final String arquivoTipo;
 
   DeleteArquivoEvent(this.arquivoTipo);
 }
 
-class ProdutoImagemCRUDPageState {
+class ProdutoArquivoCRUDPageState {
   ProdutoModel produtoModel;
-  List<Imagem> imagemList;
-  Imagem imagem;
+  ArquivoProduto arquivo;
 
   String produtoID;
-  String imagemID;
+  String arquivoID;
+  String tipo;
 
   String titulo;
   String rascunhoEixoArquivoID;
@@ -71,27 +61,26 @@ class ProdutoImagemCRUDPageState {
   String editadoLocalPath;
 
   void updateStateFromProdutoModel() {
-    imagemList = produtoModel.imagem;
-
-    produtoModel.imagem?.forEach((img) {
-      if (img.id == imagemID) {
-        imagem = img;
-        titulo = imagem.titulo;
-        rascunhoEixoArquivoID = img.rascunhoEixoArquivoID;
-        rascunhoUrl = img.rascunhoUrl;
-        rascunhoLocalPath = img.rascunhoLocalPath;
-        editadoEixoArquivoID = img.editadoEixoArquivoID;
-        editadoUrl = img.editadoUrl;
-        editadoLocalPath = img.editadoLocalPath;
-      }
-    });
+    // arquivo = produtoModel.arquivo;
+    if (this.arquivoID != null) {
+      arquivo = produtoModel.arquivo[arquivoID];
+      titulo = arquivo.titulo;
+      tipo = arquivo.tipo;
+      rascunhoEixoArquivoID = arquivo.rascunhoEixoArquivoID;
+      rascunhoUrl = arquivo.rascunhoUrl;
+      rascunhoLocalPath = arquivo.rascunhoLocalPath;
+      editadoEixoArquivoID = arquivo.editadoEixoArquivoID;
+      editadoUrl = arquivo.editadoUrl;
+      editadoLocalPath = arquivo.editadoLocalPath;
+    }
   }
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['produtoID'] = this.produtoID;
-    data['imagemID'] = this.imagemID;
+    data['arquivoID'] = this.arquivoID;
     data['titulo'] = this.titulo;
+    data['tipo'] = this.tipo;
     data['rascunhoEixoArquivoID'] = this.rascunhoEixoArquivoID;
     data['rascunhoUrl'] = this.rascunhoUrl;
     data['rascunhoLocalPath'] = this.rascunhoLocalPath;
@@ -102,30 +91,33 @@ class ProdutoImagemCRUDPageState {
   }
 }
 
-class ProdutoImagemCRUDPageBloc {
+class ProdutoArquivoCRUDPageBloc {
   //Firestore
   final fw.Firestore _firestore;
 
   //Eventos
-  final _eventController = BehaviorSubject<ProdutoImagemCRUDPageEvent>();
-  Stream<ProdutoImagemCRUDPageEvent> get eventStream => _eventController.stream;
+  final _eventController = BehaviorSubject<ProdutoArquivoCRUDPageEvent>();
+  Stream<ProdutoArquivoCRUDPageEvent> get eventStream =>
+      _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   //Estados
-  final ProdutoImagemCRUDPageState _state = ProdutoImagemCRUDPageState();
-  final _stateController = BehaviorSubject<ProdutoImagemCRUDPageState>();
-  Stream<ProdutoImagemCRUDPageState> get stateStream => _stateController.stream;
+  final ProdutoArquivoCRUDPageState _state = ProdutoArquivoCRUDPageState();
+  final _stateController = BehaviorSubject<ProdutoArquivoCRUDPageState>();
+  Stream<ProdutoArquivoCRUDPageState> get stateStream =>
+      _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   //Bloc
-  ProdutoImagemCRUDPageBloc(this._firestore) {
+  ProdutoArquivoCRUDPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
 
-  _mapEventToState(ProdutoImagemCRUDPageEvent event) async {
-    if (event is UpdateProdutoIDArquivoIDEvent) {
+  _mapEventToState(ProdutoArquivoCRUDPageEvent event) async {
+    if (event is UpdateProdutoIDArquivoIDTipoEvent) {
       _state.produtoID = event.produtoID;
-      _state.imagemID = event.imagemID;
+      _state.arquivoID = event.arquivoID;
+      _state.tipo = event.tipo;
 
       final docRef = _firestore
           .collection(ProdutoModel.collection)
@@ -217,11 +209,14 @@ class ProdutoImagemCRUDPageBloc {
           _state.editadoEixoArquivoID = null;
         }
       }
-      if (_state.imagemID == null) {
+      ArquivoProduto imagemSave;
+      if (_state.arquivoID == null) {
         final uuid = Uuid();
-        final imagemSave = Imagem(
-          id: uuid.v4(),
+          _state.arquivoID = uuid.v4();
+         imagemSave = ArquivoProduto(
+          id: _state.arquivoID,
           titulo: _state.titulo,
+          tipo: _state.tipo,
           rascunhoEixoArquivoID: _state.rascunhoEixoArquivoID,
           rascunhoUrl: _state.rascunhoUrl,
           rascunhoLocalPath: _state.rascunhoLocalPath,
@@ -229,15 +224,11 @@ class ProdutoImagemCRUDPageBloc {
           editadoUrl: _state.editadoUrl,
           editadoLocalPath: _state.editadoLocalPath,
         );
-        if (_state.imagemList == null) {
-          _state.imagemList = List<Imagem>();
-        }
-        _state.imagemList.add(imagemSave);
       } else {
-        _state.imagemList.removeWhere((img) => img.id == _state.imagemID);
-        final imagemSave = Imagem(
-          id: _state.imagemID,
+         imagemSave = ArquivoProduto(
+          id: _state.arquivoID,
           titulo: _state.titulo,
+          tipo: _state.tipo,
           rascunhoEixoArquivoID: _state.rascunhoEixoArquivoID,
           rascunhoUrl: _state.rascunhoUrl,
           rascunhoLocalPath: _state.rascunhoLocalPath,
@@ -245,36 +236,37 @@ class ProdutoImagemCRUDPageBloc {
           editadoUrl: _state.editadoUrl,
           editadoLocalPath: _state.editadoLocalPath,
         );
-        _state.imagemList.add(imagemSave);
       }
 
       final docRef = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoID);
+          // Map<dynamic,dynamic> map = Map<dynamic,dynamic>();
+          // map[_state.arquivoID]=imagemSave.toMap();
       final doc = await docRef.setData(
-          {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
+          {"arquivo": {_state.arquivoID:imagemSave.toMap()}},
           merge: true);
     }
 
     if (event is DeleteEvent) {
-      if (_state.imagemList != null) {
-        _state.imagemList.removeWhere((img) => img.id == _state.imagemID);
-        final docRef = _firestore
-            .collection(ProdutoModel.collection)
-            .document(_state.produtoID);
-        docRef.setData(
-            {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
-            merge: true);
-      }
+      // if (_state.imagemList != null) {
+      //   _state.imagemList.removeWhere((img) => img.id == _state.arquivoID);
+      //   final docRef = _firestore
+      //       .collection(ProdutoModel.collection)
+      //       .document(_state.produtoID);
+      //   docRef.setData(
+      //       {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
+      //       merge: true);
+      // }
     }
     if (event is DeleteArquivoEvent) {
-      if (event.arquivoTipo == 'arquivoEditado') {
-        _state.rascunhoLocalPath = null;
-        _state.rascunhoUrl = null;
-      } else {
-        _state.editadoLocalPath = null;
-        _state.editadoUrl = null;
-      }
+      // if (event.arquivoTipo == 'arquivoEditado') {
+      //   _state.rascunhoLocalPath = null;
+      //   _state.rascunhoUrl = null;
+      // } else {
+      //   _state.editadoLocalPath = null;
+      //   _state.editadoUrl = null;
+      // }
     }
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
@@ -331,21 +323,21 @@ class ProdutoImagemCRUDPageBloc {
 // }
 // print('>>> _state.toMap() <<< ${_state.toMap()}');
 
-// if (_state.imagemID == null) {
+// if (_state.arquivoID == null) {
 //   final uuid = Uuid();
-//   final imagemSave = Imagem(
+//   final imagemSave = Arquivo(
 //       id: uuid.v4(),
 //       titulo: _state.titulo,
 //       produtoArquivoIDRascunho: _state.arquivoRascunho,
 //       produtoArquivoIDEditado: _state.arquivoEditado);
 //   if (_state.imagemList == null) {
-//     _state.imagemList = List<Imagem>();
+//     _state.imagemList = List<Arquivo>();
 //   }
 //   _state.imagemList.add(imagemSave);
 // } else {
-//   _state.imagemList.removeWhere((img) => img.id == _state.imagemID);
-//   final imagemSave = Imagem(
-//       id: _state.imagemID,
+//   _state.imagemList.removeWhere((img) => img.id == _state.arquivoID);
+//   final imagemSave = Arquivo(
+//       id: _state.arquivoID,
 //       titulo: _state.titulo,
 //       produtoArquivoIDRascunho: _state.arquivoRascunho,
 //       produtoArquivoIDEditado: _state.arquivoEditado);

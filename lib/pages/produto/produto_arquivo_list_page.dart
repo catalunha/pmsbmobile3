@@ -10,28 +10,32 @@ class ProdutoArquivoListPage extends StatelessWidget {
   final String tipo;
   final ProdutoArquivoListPageBloc bloc;
 
-  ProdutoArquivoListPage({this.produtoID,this.tipo}): bloc = ProdutoArquivoListPageBloc(Bootstrap.instance.firestore) {
-    bloc.eventSink(UpdateProdutoIDTipoEvent(this.produtoID,this.tipo));
+  ProdutoArquivoListPage({this.produtoID, this.tipo})
+      : bloc = ProdutoArquivoListPageBloc(Bootstrap.instance.firestore) {
+    bloc.eventSink(UpdateProdutoIDTipoEvent(this.produtoID, this.tipo));
   }
 
+ void dispose() {
+    bloc.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: Colors.red,
         centerTitle: true,
-        title:  Text("Imagens para o Produto"),
+        title: Text("Imagens para o Produto"),
       ),
       body: _body(context),
       // body: Text('${produtoID} | ${tipo}'),
       floatingActionButton: FloatingActionButton(
-
         child: Icon(Icons.add),
-        
+
         onPressed: () {
           Navigator.pushNamed(context, '/produto/arquivo_crud',
-              arguments:
-                  ProdutoArguments(produtoID: this.produtoID, arquivoID: null,tipo: this.tipo));
+              arguments: ProdutoArguments(
+                  produtoID: this.produtoID, arquivoID: null, tipo: this.tipo));
         },
         // backgroundColor: Colors.blue,
       ),
@@ -57,28 +61,27 @@ class ProdutoArquivoListPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+          var arquivo = Map<String, ArquivoProduto>();
 
-          var keys;
-          var values;
-          if (snapshot.data.arquivo != null) {
-            keys = snapshot.data.arquivo.keys.toList();
-            keys = snapshot.data.arquivo[keys[idx]];
-          }
-
+          arquivo = snapshot.data?.arquivo;
+          var lista = List<Widget>();
+          arquivo.forEach((k, v) {
+            lista.add(_cardBuildImagem(context, v));
+          });
           return ListView(
-            children: arquivos.map((k,v)=>_cardBuildImagem(context,v))),
+            children: lista,
           );
         });
   }
 
-  Widget _cardBuildImagem(BuildContext context, Imagem imagem) {
+  Widget _cardBuildImagem(BuildContext context, ArquivoProduto arquivo) {
     return Card(
         elevation: 10,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: Text(imagem.titulo),
+              title: Text(arquivo.titulo),
             ),
             _imagemRow(
                 'http://man.hubwiz.com/docset/Ionic.docset/Contents/Resources/Documents/ionicframework.com/img/docs/symbols/docs-components-symbol%402x.png',
@@ -91,9 +94,9 @@ class ProdutoArquivoListPage extends StatelessWidget {
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       //IR PRA PAGINA DE EDITAR VISUAL
-                      Navigator.pushNamed(context, '/produto/imagem_crud',
+                      Navigator.pushNamed(context, '/produto/arquivo_crud',
                           arguments: ProdutoArguments(
-                              produtoID: produtoID, arquivoID: imagem.id));
+                              produtoID: produtoID, arquivoID: arquivo.id,tipo: arquivo.tipo));
                     },
                   ),
                 ],
@@ -124,6 +127,4 @@ class ProdutoArquivoListPage extends StatelessWidget {
       ],
     );
   }
-
-
 }

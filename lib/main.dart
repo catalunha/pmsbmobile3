@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
             "/sintese/home": (context) => SinteseHomePage(),
 
             //produto
-            "/produto/home": (context) => ProdutoHomePage(),
+            "/produto/home": (context) => ProdutoHomePage(authBloc),
             "/produto/crud": (context) {
               final settings = ModalRoute.of(context).settings;
               return ProdutoCRUDPage(settings.arguments);
@@ -94,7 +94,10 @@ class MyApp extends StatelessWidget {
             "/produto/arquivo_crud": (context) {
               final settings = ModalRoute.of(context).settings;
               ProdutoArguments args = settings.arguments;
-              return ProdutoArquivoCRUDPage(args.produtoID, args.arquivoID);
+              return ProdutoArquivoCRUDPage(
+                  produtoID: args.produtoID,
+                  arquivoID: args.arquivoID,
+                  tipo: args.tipo);
             },
 
             //produto0

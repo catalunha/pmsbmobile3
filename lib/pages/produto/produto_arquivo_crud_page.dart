@@ -2,14 +2,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page_bloc.dart';
+import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
+import 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page_bloc.dart';
+// import 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page_bloc.dart';
 
 class ProdutoArquivoCRUDPage extends StatefulWidget {
   final String produtoID;
-  final String imagemID;
+  final String arquivoID;
+  final String tipo;
 
-  ProdutoArquivoCRUDPage(this.produtoID, this.imagemID) {
-    // bloc.eventSink(UpdateProdutoIDArquivoIDEvent(produtoID, imagemID));
+  ProdutoArquivoCRUDPage({this.produtoID, this.arquivoID, this.tipo}) {
+    // bloc.eventSink(UpdateProdutoIDArquivoIDEvent(produtoID, arquivoID));
   }
 
   @override
@@ -19,7 +22,7 @@ class ProdutoArquivoCRUDPage extends StatefulWidget {
 }
 
 class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
-  final bloc = ProdutoImagemCRUDPageBloc(Bootstrap.instance.firestore);
+  final bloc = ProdutoArquivoCRUDPageBloc(Bootstrap.instance.firestore);
   final _controller = TextEditingController();
   String rascunhoUrl;
   String rascunhoLocalPath;
@@ -30,7 +33,7 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
   void initState() {
     super.initState();
     bloc.eventSink(
-        UpdateProdutoIDArquivoIDEvent(widget.produtoID, widget.imagemID));
+        UpdateProdutoIDArquivoIDTipoEvent(widget.produtoID, widget.arquivoID, widget.tipo));
   }
 
   @override
@@ -50,18 +53,20 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
         child: Icon(Icons.save),
         onPressed: () {
           bloc.eventSink(SaveEvent());
-          Navigator.pushNamed(context, '/produto/imagem',
-                      arguments: widget.produtoID);
+          Navigator.pop(context);
+          // Navigator.pushNamed(context, '/produto/arquivo_list',
+          //     arguments: ProdutoArguments(
+          //                     produtoID: widget.produtoID, tipo: widget.tipo));
         },
       ),
     );
   }
 
   _bodyDados(BuildContext context) {
-    return StreamBuilder<ProdutoImagemCRUDPageState>(
+    return StreamBuilder<ProdutoArquivoCRUDPageState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<ProdutoImagemCRUDPageState> snapshot) {
+          AsyncSnapshot<ProdutoArquivoCRUDPageState> snapshot) {
         if (snapshot.hasError) {
           return Container(
             child: Center(child: Text('Erro.')),
@@ -86,10 +91,10 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
             snapshot.data?.produtoID == null
                 ? Text("produtoID: null")
                 : Text("produtoID: ${snapshot.data.produtoID}"),
-            snapshot.data?.imagemID == null
-                ? Text("imagemID: null")
-                : Text("imagemID: ${snapshot.data.imagemID}"),
-            Text("Editar titulo da imagem"),
+            snapshot.data?.arquivoID == null
+                ? Text("arquivoID: null")
+                : Text("arquivoID: ${snapshot.data.arquivoID}"),
+            Text("Editar titulo da ${widget.tipo}"),
             TextField(
               controller: _controller,
               onChanged: (nomeProduto) {
@@ -256,7 +261,7 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
                             SimpleDialogOption(
                               onPressed: () {
                                 bloc.eventSink(DeleteEvent());
-                                Navigator.pushNamed(context, '/produto/imagem',
+                                Navigator.pushNamed(context, '/produto/arquivo_list',
                                     arguments: widget.produtoID);
                               },
                               child: Text("sim"),

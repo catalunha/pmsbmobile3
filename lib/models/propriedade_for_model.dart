@@ -32,6 +32,7 @@ class ArquivoProduto {
   ArquivoProduto(
       {this.id,
       this.titulo,
+      this.tipo,
       this.rascunhoEixoArquivoID,
       this.rascunhoUrl,
       this.rascunhoLocalPath,
@@ -59,6 +60,7 @@ class ArquivoProduto {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (id != null) data['id'] = this.id;
     if (titulo != null) data['titulo'] = this.titulo;
+    if (tipo != null) data['tipo'] = this.tipo;
     if (rascunhoEixoArquivoID != null)
       data['rascunhoEixoArquivoID'] = this.rascunhoEixoArquivoID;
     if (rascunhoUrl != null) data['rascunhoUrl'] = this.rascunhoUrl;
