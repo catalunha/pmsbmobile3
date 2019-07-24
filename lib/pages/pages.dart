@@ -1,6 +1,9 @@
 // Desenvolvimento
 export 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento.dart';
 
+//upload
+export 'package:pmsbmibile3/pages/upload/upload_page.dart';
+
 // Noticias
 export 'package:pmsbmibile3/pages/noticias/noticias_page.dart';
 
@@ -27,10 +30,7 @@ export 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 export 'package:pmsbmibile3/pages/produto/produto_home_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_crud_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_grafico_list_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_imagem_list_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_mapa_list_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_tabela_list_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page.dart';
 
 //produto0

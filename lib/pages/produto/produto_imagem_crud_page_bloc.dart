@@ -154,14 +154,14 @@ class ProdutoImagemCRUDPageBloc {
     if (event is SaveEvent) {
       if (_state.rascunhoLocalPath != null) {
         // Cria doc em UpLoad collection para upload futuro
-        final upLoadModel = UpLoadModel(
+        final upLoadModel = UploadModel(
           usuarioID: _state.produtoModel.usuarioID,
           localPath: _state.rascunhoLocalPath,
           upload: false,
           atualizar: 'EixoArquivo',
         );
         final docRef = _firestore
-            .collection(UpLoadModel.collection)
+            .collection(UploadModel.collection)
             .document(_state.rascunhoEixoArquivoID);
         await docRef.setData(upLoadModel.toMap(), merge: true);
         _state.rascunhoEixoArquivoID = docRef.documentID;
@@ -177,14 +177,14 @@ class ProdutoImagemCRUDPageBloc {
         await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
       }
       if (_state.editadoLocalPath != null) {
-        final upLoadModel = UpLoadModel(
+        final upLoadModel = UploadModel(
           usuarioID: _state.produtoModel.usuarioID,
           localPath: _state.editadoLocalPath,
           upload: false,
           atualizar: 'EixoArquivo',
         );
         final docRef = _firestore
-            .collection(UpLoadModel.collection)
+            .collection(UploadModel.collection)
             .document(_state.editadoEixoArquivoID);
         await docRef.setData(upLoadModel.toMap(), merge: true);
         _state.editadoEixoArquivoID = docRef.documentID;
@@ -202,7 +202,7 @@ class ProdutoImagemCRUDPageBloc {
       if (_state.rascunhoLocalPath == null && _state.rascunhoUrl == null) {
         if (_state.rascunhoEixoArquivoID != null) {
           final docRef = _firestore
-              .collection(UpLoadModel.collection)
+              .collection(UploadModel.collection)
               .document(_state.rascunhoEixoArquivoID);
           await docRef.delete();
           _state.rascunhoEixoArquivoID = null;
@@ -211,7 +211,7 @@ class ProdutoImagemCRUDPageBloc {
       if (_state.editadoLocalPath == null && _state.editadoUrl == null) {
         if (_state.editadoEixoArquivoID != null) {
           final docRef = _firestore
-              .collection(UpLoadModel.collection)
+              .collection(UploadModel.collection)
               .document(_state.editadoEixoArquivoID);
           await docRef.delete();
           _state.editadoEixoArquivoID = null;
