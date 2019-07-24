@@ -122,6 +122,7 @@ class PerguntaItem extends StatelessWidget {
             trailing: Text("${_pergunta.ordem}"),
             subtitle: Column(
               children: <Widget>[
+                Text("${_pergunta.id}"),
                 Text("${_pergunta.anterior}"),
                 Text("${_pergunta.posterior}"),
               ],
