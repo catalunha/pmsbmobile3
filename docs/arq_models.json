@@ -177,8 +177,8 @@
         "marcada": true
       }
     },
-    "requisito": [
-      {
+    "requisito": {
+      "perguntaID/EscolhaUID": {
         "referencia": "PerguntaID->referencia",
         "perguntaID": "PerguntaID",
         "perguntaTipo": "PerguntaID->escolha || PerguntaID->texto",
@@ -187,7 +187,7 @@
           "marcada": true
         }
       }
-    ]
+    }
   },
   "PerguntaAplicada": {
     "_comment": "idem a Pergunta. Com as devidas alterações."
