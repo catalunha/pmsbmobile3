@@ -104,19 +104,19 @@ packages:
     description:
       path: "packages/firestore_wrapper"
       ref: HEAD
-      resolved-ref: "57d6423c10bcf878939777cafbff301a4c64d5c4"
+      resolved-ref: "9fbcd2ff2dfc23940b4ad54fa3269636b0c6349c"
       url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
     source: git
-    version: "0.0.2"
+    version: "0.0.3"
   firestore_wrapper_flutter:
     dependency: "direct main"
     description:
       path: "packages/firestore_wrapper_flutter"
       ref: HEAD
-      resolved-ref: "57d6423c10bcf878939777cafbff301a4c64d5c4"
+      resolved-ref: "9fbcd2ff2dfc23940b4ad54fa3269636b0c6349c"
       url: "https://github.com/paulorobertocruz/firestore_wrapper.git"
     source: git
-    version: "0.0.0"
+    version: "0.0.3"
   flutter:
     dependency: "direct main"
     description: flutter
