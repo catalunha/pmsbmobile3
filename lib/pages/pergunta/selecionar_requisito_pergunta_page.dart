@@ -13,13 +13,7 @@ class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
       : bloc = SelecionarRequisitoPerguntaPageBloc(
             Bootstrap.instance.firestore, authBloc, blocPergunta);
 
-  final List<Map<String, dynamic>> _perguntasquesito = [
-    {'pergunta': 'Pergunta texto ', 'checkbox': true},
-    {'pergunta': 'Pergunta unica / sim', 'checkbox': false},
-    {'pergunta': 'Pergunta unicao / Nâo', 'checkbox': false}
-  ];
-
-  _body() {
+  Widget _body() {
     return StreamBuilder<SelecionarRequisitoPerguntaPageBlocState>(
       stream: bloc.state,
       builder: (context, snapshot) {
@@ -29,11 +23,11 @@ class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
         if (!snapshot.hasData) {
           return Text("SEM DADOS");
         }
-        print(snapshot.data.requisitos);
-        final requisitos =
-            snapshot.data.requisitos != null ? snapshot.data.requisitos : [];
 
-        final widgetRequisitos = requisitos.asMap().map(
+        final requisitos =
+            snapshot.data.requisitos != null ? snapshot.data.requisitos : {};
+
+        final widgetRequisitos = requisitos.map(
           (i, e) {
             return MapEntry(
               i,
@@ -68,6 +62,7 @@ class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            bloc.dispatch(UpdateRequisitosSelecionarRequisitoPerguntaPageBlocEvent());
             Navigator.pop(context);
           },
           child: Icon(Icons.thumb_up),
