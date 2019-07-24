@@ -1,9 +1,8 @@
-
 import 'package:pmsbmibile3/models/base_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
-class UpLoadModel extends FirestoreModel {
-  static final String collection = "UpLoad";
+class UploadModel extends FirestoreModel {
+  static final String collection = "Upload";
   UsuarioID usuarioID;
   String hash;
   String localPath;
@@ -12,7 +11,7 @@ class UpLoadModel extends FirestoreModel {
   String url;
   String atualizar;
 
-  UpLoadModel(
+  UploadModel(
       {String id,
       this.usuarioID,
       this.hash,
@@ -20,9 +19,10 @@ class UpLoadModel extends FirestoreModel {
       this.upload,
       this.storagePath,
       this.url,
-      this.atualizar}) : super(id);
+      this.atualizar})
+      : super(id);
 
-  UpLoadModel fromMap(Map<String, dynamic> map) {
+  UploadModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('usuarioID')) {
       usuarioID = map['usuarioID'] != null
           ? new UsuarioID.fromMap(map['usuarioID'])
@@ -34,8 +34,7 @@ class UpLoadModel extends FirestoreModel {
     if (map.containsKey('storagePath')) storagePath = map['storagePath'];
     if (map.containsKey('url')) url = map['url'];
     if (map.containsKey('atualizar')) atualizar = map['atualizar'];
-        return this;
-
+    return this;
   }
 
   Map<String, dynamic> toMap() {
@@ -52,4 +51,3 @@ class UpLoadModel extends FirestoreModel {
     return data;
   }
 }
-

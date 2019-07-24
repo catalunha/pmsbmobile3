@@ -92,6 +92,13 @@ class DefaultDrawer extends StatelessWidget {
               },
             ),
             ListTile(
+              title: Text('Upload'),
+              trailing: Icon(Icons.file_upload),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/upload");
+              },
+            ),
+            ListTile(
               title: Text('Home'),
               trailing: Icon(Icons.home),
               onTap: () {
@@ -223,7 +230,9 @@ class DefaultEndDrawer extends StatelessWidget {
               },
               leading: Icon(Icons.settings),
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Perfil'),
               onTap: () {
@@ -233,7 +242,9 @@ class DefaultEndDrawer extends StatelessWidget {
               },
               leading: Icon(Icons.person),
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Noticias lidas'),
               onTap: () {
@@ -243,7 +254,9 @@ class DefaultEndDrawer extends StatelessWidget {
               },
               leading: Icon(Icons.event_available),
             ),
-            Divider(color: Colors.black45,),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text('Sair'),
               onTap: () {

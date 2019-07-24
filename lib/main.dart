@@ -28,6 +28,9 @@ class MyApp extends StatelessWidget {
             //Desenvolvimento
             "/desenvolvimento": (context) => Desenvolvimento(),
 
+            //Upload
+            "/upload": (context) => UploadPage(),
+
             //perfil
             "/perfil": (context) => PerfilPage(),
             "/perfil/crudtext": (context) => PerfilCRUDPage(),
@@ -89,9 +92,6 @@ class MyApp extends StatelessWidget {
               ProdutoArguments args = settings.arguments;
               return ProdutoImagemCRUDPage(args.produtoID,args.arquivoID);
             },
-            "/produto/mapa": (context) => ProdutoMapaListPage(),
-            "/produto/tabela": (context) => ProdutoTabelaListPage(),
-            "/produto/grafico": (context) => ProdutoGraficoListPage(),
 
             //produto0
             // "/produto": (context) => ProductPage(),
