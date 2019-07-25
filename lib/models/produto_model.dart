@@ -4,7 +4,7 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class ProdutoModel extends FirestoreModel {
   static final String collection = "Produto";
 
-  String nome;
+  String titulo;
   String textoMarkdownID;
   EixoID eixoID;
   DateTime modificado;
@@ -14,7 +14,7 @@ class ProdutoModel extends FirestoreModel {
 
   ProdutoModel({
     String id,
-    this.nome,
+    this.titulo,
     this.textoMarkdownID,
     this.eixoID,
     this.setorCensitarioID,
@@ -24,7 +24,7 @@ class ProdutoModel extends FirestoreModel {
   }) : super(id);
   @override
   ProdutoModel fromMap(Map<String, dynamic> map) {
-    if (map.containsKey('nome')) nome = map['nome'];
+    if (map.containsKey('titulo')) titulo = map['titulo'];
     if (map.containsKey('textoMarkdownID'))
       textoMarkdownID = map['textoMarkdownID'];
     if (map.containsKey('eixoID')) {
@@ -54,7 +54,7 @@ class ProdutoModel extends FirestoreModel {
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (textoMarkdownID != null) data['textoMarkdownID'] = this.textoMarkdownID;
-    if (nome != null) data['nome'] = this.nome;
+    if (titulo != null) data['titulo'] = this.titulo;
     if (this.eixoID != null) {
       data['eixoID'] = this.eixoID.toMap();
     }

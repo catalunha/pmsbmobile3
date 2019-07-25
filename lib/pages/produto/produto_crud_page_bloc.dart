@@ -12,11 +12,13 @@ import 'package:pmsbmibile3/bootstrap.dart';
 
 class ProdutoCRUDPageEvent {}
 
-class UpdateUsuarioIDEvent extends ProdutoCRUDPageEvent {
-  final String usuarioID;
+// class UpdateUsuarioIDEvent extends ProdutoCRUDPageEvent {
+//   final String usuarioID;
 
-  UpdateUsuarioIDEvent(this.usuarioID);
-}
+//   UpdateUsuarioIDEvent(this.usuarioID);
+// }
+
+class UpdateUsuarioIDEvent extends ProdutoCRUDPageEvent {}
 
 class UpdateProdutoIDEvent extends ProdutoCRUDPageEvent {
   final String produtoID;
@@ -41,7 +43,14 @@ class ProdutoCRUDPageState {
   String produtoModelIDNome;
 
   void updateStateFromProdutoModel() {
-    produtoModelIDNome = produtoModel.nome;
+    produtoModelIDNome = produtoModel.titulo;
+  }
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['produtoModelID'] = this.produtoModelID;
+    data['produtoModelIDNome'] = this.produtoModelIDNome;
+    return data;
   }
 }
 
@@ -50,7 +59,7 @@ class ProdutoCRUDPageBloc {
   final fw.Firestore _firestore;
 
   // Authenticacação
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  AuthBloc _authBloc;
 
   //Eventos
   final _eventController = BehaviorSubject<ProdutoCRUDPageEvent>();
@@ -69,25 +78,26 @@ class ProdutoCRUDPageBloc {
   Function get produtoModelSink => _produtoModelController.sink.add;
 
   //Bloc
-  ProdutoCRUDPageBloc(this._firestore) {
+  ProdutoCRUDPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
-    _authBloc.userId
-        .listen((userId) => eventSink(UpdateUsuarioIDEvent(userId)));
   }
 
   _mapEventToState(ProdutoCRUDPageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
-      //Atualiza estado com usuario logado
-      final docRef = _firestore
-          .collection(UsuarioModel.collection)
-          .document(event.usuarioID);
+      _authBloc.userId.listen((userId) async{
+        final docRef = _firestore
+            .collection(UsuarioModel.collection)
+            .document(userId);
 
-      final snap = await docRef.get();
-      
-      if (snap.exists) {
-        _state.usuarioModel =
-            UsuarioModel(id: snap.documentID).fromMap(snap.data);
-      }
+        final snap = await docRef.get();
+
+        if (snap.exists) {
+          _state.usuarioModel =
+              UsuarioModel(id: snap.documentID).fromMap(snap.data);
+        }
+      });
+
+      //Atualiza estado com usuario logado
     }
 
     if (event is UpdateProdutoIDEvent) {
@@ -113,7 +123,7 @@ class ProdutoCRUDPageBloc {
 
     if (event is SaveProdutoIDEvent) {
       final produtoModelSave = ProdutoModel(
-        nome: _state.produtoModelIDNome,
+        titulo: _state.produtoModelIDNome,
         eixoID: _state.usuarioModel.eixoIDAtual,
         setorCensitarioID: _state.usuarioModel.setorCensitarioID,
         usuarioID: UsuarioID(
@@ -121,77 +131,45 @@ class ProdutoCRUDPageBloc {
         modificado: DateTime.now().toUtc(),
       );
 
-      final docRefColl = _firestore
+      final docRefColl =  _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoModelID);
-      docRefColl.setData(produtoModelSave.toMap(), merge: true);
+      await docRefColl.setData(produtoModelSave.toMap(), merge: true);
 
-      final produtoTextoModelSave = ProdutoTextoModel(
-        textoMarkdown: "Pronto para iniciar edição.",
-        editando: false,
-        usuarioID: UsuarioID(
-            id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
-      );
+      if (_state.produtoModelID == null) {
+        final produtoTextoModelSave = ProdutoTextoModel(
+          textoMarkdown: "Pronto para iniciar edição.",
+          editando: false,
+          usuarioID: UsuarioID(
+              id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
+        );
 
-      final docRefSubColl = docRefColl
-          .collection(ProdutoTextoModel.collection)
-          .document(_state.produtoModel.textoMarkdownID);
-      docRefSubColl.setData(produtoTextoModelSave.toMap(), merge: true);
+        final docRefSubColl = docRefColl
+            .collection(ProdutoTextoModel.collection)
+            .document();
+       await docRefSubColl.setData(produtoTextoModelSave.toMap(), merge: true);
 
-      docRefSubColl.get().then((docSnap) {
-        docRefColl
-            .setData({"textoMarkdownID": docSnap.documentID}, merge: true);
-      });
+        await docRefSubColl.get().then((docSnap) {
+          docRefColl
+              .setData({"textoMarkdownID": docSnap.documentID}, merge: true);
+        });
+      }
     }
 
     if (event is DeleteProdutoIDEvent) {
-      final docRef = _firestore
+      final docRef = await _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoModelID);
       docRef.delete();
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    print(event.runtimeType);
+    print('>>> _state.toMap() <<< ${_state.toMap()}');
+    print('ccc: ProdutoCRUDPageBloc ${event.runtimeType}');
   }
 
   void dispose() {
     _stateController.close();
     _eventController.close();
-    _authBloc.dispose();
     _produtoModelController.close();
   }
 }
-
-//     .snapshots()
-//     .map((snap) => ProdutoModel(id: snap.documentID).fromMap(snap.data))
-//     .listen((produtoModel) async {
-//   _state.produtoModel = produtoModel;
-//   _state.produtoModelIDNome = produtoModel.nome;
-//   _state.produtoModelID = produtoModel.id;
-//   await stateSink(_state);
-// });
-// ProdutoTextoModel produtoTextoModel =
-//     ProdutoTextoModel().fromMap(produtoTextoModelMap);
-// produtoTextoModel.modificado = DateTime.now().toUtc();
-// final mapProdutoTextoModel = produtoTextoModel.toMap();
-
-// ProdutoModel produtoModel = ProdutoModel().fromMap(produtoModelMap);
-// produtoModel.modificado = DateTime.now().toUtc();
-// final mapProdutoModel = produtoModel.toMap();
-
-// Map<String, dynamic> produtoTextoModelMap = Map<String, dynamic>();
-// produtoTextoModelMap['textoMarkdown'] = "Pronto para iniciar edição.";
-// produtoTextoModelMap['editando'] = false;
-// produtoTextoModelMap['usuarioIDEditou'] = {
-//   "id": _state.usuarioModel.id,
-//   "nome": _state.usuarioModel.nome
-// };
-// Map<String, dynamic> produtoModelMap = Map<String, dynamic>();
-// produtoModelMap['nome'] = _state.produtoModelIDNome;
-// produtoModelMap['eixoID'] = _state.usuarioModel.eixoIDAtual.toMap();
-// produtoModelMap['setorCensitarioID'] =
-//     _state.usuarioModel.setorCensitarioID.toMap();
-// produtoModelMap['usuarioIDEditou'] = {
-//   "id": _state.usuarioModel.id,
-//   "nome": _state.usuarioModel.nome
-// };

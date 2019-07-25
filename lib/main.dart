@@ -34,8 +34,14 @@ class MyApp extends StatelessWidget {
 
             //perfil
             "/perfil": (context) => PerfilPage(),
-            "/perfil/crudtext": (context) => PerfilCRUDPage(),
-            "/perfil/crudarq": (context) => PerfilCRUDArqPage(),
+            "/perfil/crudtext": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerfilCRUDPage(settings.arguments);
+            },
+            "/perfil/crudarq": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerfilCRUDArqPage(settings.arguments);
+            },
 
             // "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),//apagar
             "/perfil/configuracao": (context) => ConfiguracaoPage(),
@@ -60,7 +66,8 @@ class MyApp extends StatelessWidget {
             },
             "/pergunta/selecionar_requisito": (context) {
               final settings = ModalRoute.of(context).settings;
-              return SelecionarQuequisitoPerguntaPage(authBloc, settings.arguments);
+              return SelecionarQuequisitoPerguntaPage(
+                  authBloc, settings.arguments);
             },
             "/pergunta/criar_ordenar_escolha": (context) {
               final settings = ModalRoute.of(context).settings;
@@ -97,11 +104,13 @@ class MyApp extends StatelessWidget {
             "/produto/home": (context) => ProdutoHomePage(authBloc),
             "/produto/crud": (context) {
               final settings = ModalRoute.of(context).settings;
-              return ProdutoCRUDPage(settings.arguments);
+              return ProdutoCRUDPage(settings.arguments, authBloc);
             },
             "/produto/texto": (context) {
               final settings = ModalRoute.of(context).settings;
-              return ProdutoTextoPage(settings.arguments);
+              return ProdutoTextoPage(
+                settings.arguments,
+              );
             },
             "/produto/arquivo_list": (context) {
               final settings = ModalRoute.of(context).settings;

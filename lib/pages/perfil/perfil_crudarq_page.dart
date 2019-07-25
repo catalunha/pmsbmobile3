@@ -11,7 +11,13 @@ import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page_bloc.dart';
 
 class PerfilCRUDArqPage extends StatefulWidget {
-  // PerfilCRUDPage({Key key}) : super(key: key);
+  final String usuarioPerfilID;
+  final PerfilCRUDArqPageBloc bloc;
+
+  PerfilCRUDArqPage(this.usuarioPerfilID)
+      : bloc = PerfilCRUDArqPageBloc(Bootstrap.instance.firestore) {
+    bloc.perfilCRUDArqPageEventSink(UpDateUsuarioPerfilIDEvent(usuarioPerfilID));
+  }
 
   _PerfilCRUDArqPageState createState() => _PerfilCRUDArqPageState();
 }
@@ -22,11 +28,11 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String usuarioPerfilID = ModalRoute.of(context).settings.arguments;
-    final bloc = PerfilCRUDArqPageBloc(Bootstrap.instance.firestore);
+    // final String usuarioPerfilID = ModalRoute.of(context).settings.arguments;
+    // final bloc = PerfilCRUDArqPageBloc(Bootstrap.instance.firestore);
     dynamic image = FlutterLogo();
-    bloc.perfilCRUDArqPageEventSink(
-        UpDateUsuarioPerfilIDEvent(usuarioPerfilID));
+    // bloc.perfilCRUDArqPageEventSink(
+    //     UpDateUsuarioPerfilIDEvent(usuarioPerfilID));
     return Scaffold(
       appBar: AppBar(
         title: Text('Anexar arquivo no perfil '),
@@ -35,7 +41,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
       body: ListView(
         children: <Widget>[
           StreamBuilder<UsuarioPerfilModel>(
-            stream: bloc.usuarioPerfilModelStream,
+            stream: widget.bloc.usuarioPerfilModelStream,
             builder: (BuildContext context,
                 AsyncSnapshot<UsuarioPerfilModel> snapshot) {
               if (!snapshot.hasData) {
@@ -80,7 +86,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
                   icon: Icon(Icons.file_download),
                   onPressed: () async {
                     await _selecionarNovosArquivos();
-                    bloc.perfilCRUDArqPageEventSink(
+                    widget.bloc.perfilCRUDArqPageEventSink(
                         UpDateArquivoPathEvent(arquivoPath));
                     print('>> arquivoPath 2 >> ${arquivoPath}');
                   }),
@@ -94,14 +100,14 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
                   onPressed: () async {
                     await _selecionarNovaImagem();
                     if (imagem != null && imagem.path != null) {
-                      bloc.perfilCRUDArqPageEventSink(
+                      widget.bloc.perfilCRUDArqPageEventSink(
                           UpDateImagemEvent(imagem));
                     }
                   }),
             ),
           ),
           StreamBuilder<PerfilCRUDArqPageState>(
-            stream: bloc.perfilCRUDArqPageStateStream,
+            stream: widget.bloc.perfilCRUDArqPageStateStream,
             builder: (BuildContext context,
                 AsyncSnapshot<PerfilCRUDArqPageState> snapshot) {
               if (!snapshot.hasData) {
@@ -148,7 +154,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          bloc.perfilCRUDArqPageEventSink(UpLoadEvent());
+          widget.bloc.perfilCRUDArqPageEventSink(UpLoadEvent());
           Navigator.pop(context);
         },
         child: Icon(Icons.check),
@@ -214,7 +220,7 @@ class Lixo {
   //       flex:ressed: () async {
   //   var filepath =
   //       await FilePicker.getFilePath(type: FileType.IMAGE);
-  //   bloc.perfilCRUDArqPageEventSink(
+  //   widget.bloc.perfilCRUDArqPageEventSink(
   //       UpDateArquivoLocalEvent(filepath));
   // } 2,
   //     ),

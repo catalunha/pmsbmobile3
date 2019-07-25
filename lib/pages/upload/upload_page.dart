@@ -14,6 +14,9 @@ class UploadPage extends StatelessWidget {
     bloc.eventSink(UpdateUsuarioIDEvent());
   }
 
+  void dispose() {
+    bloc.dispose();
+  }
 
 
   @override
@@ -38,16 +41,16 @@ class UploadPage extends StatelessWidget {
           //     child: CircularProgressIndicator(),
           //   );
           // }
-          // if (!snapshot.hasData) {
-          //   return Center(
-          //     child: Text("Nenhum upload pendente."),
-          //   );
-          // }
-          if (snapshot.data?.uploadingList == null) {
+          if (!snapshot.hasData) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Text("Nenhum upload pendente."),
             );
           }
+          // if (snapshot.data?.uploadingList == null) {
+          //   return Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // }
           var lista = snapshot.data.uploadingList;
           return ListView(
             children: lista

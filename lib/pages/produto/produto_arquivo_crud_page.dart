@@ -1,19 +1,26 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page_bloc.dart';
+import 'package:provider/provider.dart';
+// import 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page_bloc.dart';
 // import 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page_bloc.dart';
 
 class ProdutoArquivoCRUDPage extends StatefulWidget {
   final String produtoID;
   final String arquivoID;
   final String tipo;
-
+  // final ProdutoArquivoCRUDPageBloc bloc;
   ProdutoArquivoCRUDPage({this.produtoID, this.arquivoID, this.tipo}) {
-    // bloc.eventSink(UpdateProdutoIDArquivoIDEvent(produtoID, arquivoID));
+    print('instancia de ProdutoArquivoCRUDPage 2');
   }
+
+  // ProdutoArquivoCRUDPage({this.produtoID, this.arquivoID, this.tipo})
+  //     : bloc = ProdutoArquivoCRUDPageBloc(Bootstrap.instance.firestore) {
+  //   print('instancia de ProdutoArquivoCRUDPage');
+  //   bloc.eventSink(
+  //       UpdateProdutoIDArquivoIDTipoEvent(produtoID, arquivoID, tipo));
+  // }
 
   @override
   State<StatefulWidget> createState() {
@@ -32,8 +39,8 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
   @override
   void initState() {
     super.initState();
-    bloc.eventSink(
-        UpdateProdutoIDArquivoIDTipoEvent(widget.produtoID, widget.arquivoID, widget.tipo));
+    bloc.eventSink(UpdateProdutoIDArquivoIDTipoEvent(
+        widget.produtoID, widget.arquivoID, widget.tipo));
   }
 
   @override
@@ -44,22 +51,24 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Editar Imagem"),
-      ),
-      body: _bodyDados(context),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save),
-        onPressed: () {
-          bloc.eventSink(SaveEvent());
-          Navigator.pop(context);
-          // Navigator.pushNamed(context, '/produto/arquivo_list',
-          //     arguments: ProdutoArguments(
-          //                     produtoID: widget.produtoID, tipo: widget.tipo));
-        },
-      ),
-    );
+    return Provider<ProdutoArquivoCRUDPageBloc>.value(
+        value: bloc,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Editar ${widget.tipo}"),
+          ),
+          body: _bodyDados(context),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.save),
+            onPressed: () {
+              bloc.eventSink(SaveEvent());
+              Navigator.of(context).pop();
+              // Navigator.pushNamed(context, '/produto/arquivo_list',
+              //     arguments: ProdutoArguments(
+              //                     produtoID: widget.produtoID, tipo: widget.tipo));
+            },
+          ),
+        ));
   }
 
   _bodyDados(BuildContext context) {
@@ -72,103 +81,115 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
             child: Center(child: Text('Erro.')),
           );
         }
-        if (_controller.text == null || _controller.text.isEmpty) {
-          _controller.text = snapshot.data?.titulo;
-        }
+
         // if (!snapshot.hasData) {
         //   return Container(
         //     child: Center(child: CircularProgressIndicator()),
         //   );
         // }
-        rascunhoUrl = snapshot.data?.rascunhoUrl ?? 'Sem arquivo';
-        rascunhoLocalPath = snapshot.data?.rascunhoLocalPath ?? 'Sem arquivo';
-        editadoUrl = snapshot.data?.editadoUrl ?? 'Sem arquivo';
-        editadoLocalPath = snapshot.data?.editadoLocalPath ?? 'Sem arquivo';
+        rascunhoUrl = snapshot.data?.rascunhoUrl; // ?? 'Sem arquivo';
+        rascunhoLocalPath =
+            snapshot.data?.rascunhoLocalPath; //?? 'Sem arquivo';
+        editadoUrl = snapshot.data?.editadoUrl; //?? 'Sem arquivo';
+        editadoLocalPath = snapshot.data?.editadoLocalPath; // ?? 'Sem arquivo';
 
         return ListView(
           padding: EdgeInsets.all(5),
           children: <Widget>[
+            Text("Editar titulo da ${widget.tipo}"),
+            TituloArquivo(),
+            ButtonTheme.bar(
+                child: ButtonBar(children: <Widget>[
+              Text('Apague ou Selecione o arquivo de rascunho'),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () async {
+                  bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.file_download),
+                onPressed: () async {
+                  await _selecionarNovoArquivo().then((arq) {
+                    rascunhoLocalPath = arq;
+                  });
+                  bloc.eventSink(UpdateArquivoRascunhoEvent(rascunhoLocalPath));
+                },
+              ),
+            ])),
+            ButtonTheme.bar(
+                child: ButtonBar(children: <Widget>[
+              Text('Apague ou Selecione o arquivo editado'),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () async {
+                  bloc.eventSink(DeleteArquivoEvent('arquivoEditado'));
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.file_download),
+                onPressed: () async {
+                  await _selecionarNovoArquivo().then((arq) {
+                    editadoLocalPath = arq;
+                  });
+                  bloc.eventSink(UpdateArquivoEditadoEvent(editadoLocalPath));
+                },
+              ),
+            ])),
+            _imagemRow(
+                rascunhoUrl, rascunhoLocalPath, editadoUrl, editadoLocalPath),
+            _botaoDeletarDocumento(),
+            //TODO: Comentar esta informação após testes.
+            //+++ comentar
             snapshot.data?.produtoID == null
                 ? Text("produtoID: null")
                 : Text("produtoID: ${snapshot.data.produtoID}"),
             snapshot.data?.arquivoID == null
                 ? Text("arquivoID: null")
                 : Text("arquivoID: ${snapshot.data.arquivoID}"),
-            Text("Editar titulo da ${widget.tipo}"),
-            TextField(
-              controller: _controller,
-              onChanged: (nomeProduto) {
-                bloc.eventSink(UpdateTituloEvent(nomeProduto));
-              },
-              maxLines: null,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () async {
-                      bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
-                    }),
-                title: Text('Selecione o arquivo rascunho'),
-                trailing: IconButton(
-                    icon: Icon(Icons.file_download),
-                    onPressed: () async {
-                      await _selecionarNovoArquivo().then((arq) {
-                        rascunhoLocalPath = arq;
-                      });
-                      // print('>> arquivoPath 1 >> ${arquivoRascunho}');
-                      setState(() {
-                        // ALTERA SE VAI OU NAO SER INCORPORADO O EDITADO
-                        rascunhoLocalPath == null
-                            ? 'Nenhum arquivo selecionado'
-                            : rascunhoLocalPath;
-                      });
-                      bloc.eventSink(
-                          UpdateArquivoRascunhoEvent(rascunhoLocalPath));
-                    }),
-              ),
-            ),
-            Text('url: $rascunhoUrl'),
+            snapshot.data?.titulo == null
+                ? Text("arquivoID: null")
+                : Text("arquivoID: ${snapshot.data.titulo}"),
+            Text('rascunhoUrl: $rascunhoUrl'),
             Text('local: $rascunhoLocalPath'),
-            // _cardImagem(rascunhoLocalPath),
-            Card(
-              child: ListTile(
-                leading: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () async {
-                      bloc.eventSink(DeleteArquivoEvent('arquivoEditado'));
-                    }),
-                title: Text('Selecione o arquivo editado'),
-                trailing: IconButton(
-                    icon: Icon(Icons.file_download),
-                    onPressed: () async {
-                      await _selecionarNovoArquivo().then((arq) {
-                        editadoLocalPath = arq;
-                      });
-                      // print('>> arquivoEditado 1 >> ${arquivoEditado}');
-                      setState(() {
-                        // ALTERA SE VAI OU NAO SER INCORPORADO O EDITADO
-                        editadoLocalPath == null
-                            ? 'Nenhum arquivo selecionado'
-                            : editadoLocalPath;
-                      });
-                      bloc.eventSink(
-                          UpdateArquivoEditadoEvent(editadoLocalPath));
-                    }),
-              ),
-            ),
-            Text('url: $editadoUrl'),
+            Text('editadoUrl: $editadoUrl'),
             Text('local: $editadoLocalPath'),
-            _botaoDeletarDocumento(),
-            // CircularProgressIndicator(),
+            //--- comentar
           ],
         );
       },
     );
     // return ;
+  }
+
+  _imagemRow(rascunhoUrl, rascunhoLocalPath, editadoUrl, editadoLocalPath) {
+    Widget rascunho;
+    if (rascunhoUrl == null && rascunhoLocalPath == null) {
+      rascunho = Center(child: Text('Sem imagem.'));
+    } else if (rascunhoUrl != null) {
+      rascunho = Image.network(rascunhoUrl);
+    } else {
+      rascunho = Image.asset(rascunhoLocalPath);
+    }
+
+    Widget editado;
+    if (editadoUrl == null && editadoLocalPath == null) {
+      editado = Center(child: Text('Sem imagem.'));
+    } else if (editadoUrl != null) {
+      editado = Image.network(editadoUrl);
+    } else {
+      editado = Image.asset(editadoLocalPath);
+    }
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: rascunho,
+        ),
+        Expanded(
+          child: editado,
+        ),
+      ],
+    );
   }
 
   Future<String> _selecionarNovoArquivo() async {
@@ -181,56 +202,6 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
     } catch (e) {
       print("Unsupported operation" + e.toString());
     }
-  }
-
-  _cardImagem(String arquivoPath) {
-    return Card(
-        child: Container(
-            constraints: new BoxConstraints.expand(
-              height: 200.0,
-            ),
-            padding: new EdgeInsets.only(left: 16.0, bottom: 8.0, right: 16.0),
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage(arquivoPath),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: new Stack(
-              children: <Widget>[
-                new Positioned(
-                  left: 0.0,
-                  bottom: 0.0,
-                  child: new Text(arquivoPath,
-                      style: new TextStyle(
-                        color: Colors.yellow,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.0,
-                      )),
-                ),
-                new Positioned(
-                    right: 0.0,
-                    bottom: 0.0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(40.0),
-                      child: Container(
-                        color: Colors.white,
-                        child: new IconButton(
-                          icon: new Icon(
-                            Icons.delete,
-                            color: Colors.black,
-                          ),
-                          onPressed: () {
-                            //apagar esta imagem
-                            setState(() {
-                              // arquivos.removerArquivoLista(arquivo);
-                            });
-                          },
-                        ),
-                      ),
-                    )),
-              ],
-            )));
   }
 
   _botaoDeletarDocumento() {
@@ -249,22 +220,32 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
                         return SimpleDialog(
                           children: <Widget>[
                             SimpleDialogOption(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
                               child: Text("CANCELAR EXCLUSÃO"),
+                              onPressed: () {
+                                // Navigator.pop(context);
+                                Navigator.of(context).pop();
+                              },
                             ),
                             Container(
                               padding: EdgeInsets.all(20),
                             ),
                             Divider(),
                             SimpleDialogOption(
+                              child: Text("sim"),
                               onPressed: () {
                                 bloc.eventSink(DeleteEvent());
-                                Navigator.pushNamed(context, '/produto/arquivo_list',
-                                    arguments: widget.produtoID);
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+
+                                // // Navigator.pushNamed(
+                                // //     context, '/produto/arquivo_list',
+                                // //     arguments: widget.produtoID);
+                                // Navigator.pushNamed(
+                                //     context, '/produto/arquivo_list',
+                                //     arguments: ProdutoArguments(
+                                //         produtoID: widget.produtoID,
+                                //         tipo: 'imagem'));
                               },
-                              child: Text("sim"),
                             ),
                           ],
                         );
@@ -278,5 +259,49 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
                 ))),
       ],
     ));
+  }
+}
+
+class TituloArquivo extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return TituloArquivoState();
+  }
+}
+
+class TituloArquivoState extends State<TituloArquivo> {
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<ProdutoArquivoCRUDPageBloc>(context);
+    return StreamBuilder<ProdutoArquivoCRUDPageState>(
+        stream: bloc.stateStream,
+        builder: (BuildContext context,
+            AsyncSnapshot<ProdutoArquivoCRUDPageState> snapshot) {
+          if (_controller.text == null || _controller.text.isEmpty) {
+            _controller.text = snapshot.data?.titulo;
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Text("Atualizar nome no produto"),
+              TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+                controller: _controller,
+                onChanged: (produtoTexto) {
+                  setState(() {
+                    bloc.eventSink(UpdateTituloEvent(produtoTexto));
+                  });
+                },
+              ),
+            ],
+          );
+        });
   }
 }
