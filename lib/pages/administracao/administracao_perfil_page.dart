@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
+import 'package:pmsbmibile3/services/services.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,9 +10,13 @@ import 'package:url_launcher/url_launcher.dart';
 class AdministracaoPerfilPage extends StatelessWidget {
   final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
 
+
   void dispose() {
     bloc.dispose();
   }
+
+  //auxiliares
+  var usuarioModelData;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +54,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                     child: Text("Sem perfil em pdf/csv/web"),
                   );
                 }
+                usuarioModelData = snapshot.data;
                 return Container(
                   child: Column(children: <Widget>[
                     Padding(padding: EdgeInsets.all(3)),
@@ -70,13 +76,11 @@ class AdministracaoPerfilPage extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                        "ID: ${snapshot.data.id.substring(0, 10)}"),
+                                    Text("ID: ${snapshot.data.id.substring(0, 10)}"),
                                     Text("Nome: ${snapshot.data.nome}"),
                                     Text("Celular: ${snapshot.data.celular}"),
                                     Text("Email: ${snapshot.data.email}"),
-                                    Text(
-                                        "Eixo: ${snapshot.data.eixoIDAtual.nome}"),
+                                    Text("Eixo: ${snapshot.data.eixoIDAtual.nome}"),
                                   ],
                                 ),
                               ))
@@ -109,21 +113,24 @@ class AdministracaoPerfilPage extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.border_bottom),
                     onPressed: () {
-                      launch(snapshotState.data.urlCSV);
+                      GeradorCsvService.generateCsvFromUsuarioModel(usuarioModelData);
+                      //launch(snapshotState.data.urlCSV);
                     },
                   ),
-                  Text('web'),
-                  IconButton(
-                    icon: Icon(Icons.web),
-                    onPressed: () {
-                      launch(snapshotState.data.urlMD);
-                    },
-                  ),
+                  // Text('web'),
+                  // IconButton(
+                  //   icon: Icon(Icons.web),
+                  //   onPressed: () {
+                  //     launch(snapshotState.data.urlMD);
+                  //   },
+                  // ),
                   Text('pdf'),
                   IconButton(
                     icon: Icon(Icons.picture_as_pdf),
                     onPressed: () {
-                      launch(snapshotState.data.urlPDF);
+                      var mdtext = GeradorMdService.generateMdFromUsuarioModel(
+                          usuarioModelData);
+                      GeradorPdfService.generatePdfFromMd(mdtext);
                     },
                   ),
                 ],
@@ -205,21 +212,5 @@ class AdministracaoPerfilPage extends StatelessWidget {
             }),
       ),
     ]);
-
-    ;
-
-    //         Padding(
-    //             padding: EdgeInsets.all(0),
-    //             child: Text(
-    //               "Documentos do usuario:",
-    //               style: TextStyle(fontSize: 16),
-    //             )),
-    //         // Padding(padding: EdgeInsets.all(0)),
-    //         Expanded(
-    //           flex: 9,
-    //   child:
-    // ),
-    //       ]));
-    //     });
   }
 }

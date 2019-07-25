@@ -128,7 +128,7 @@ class SelecionarRequisitoPerguntaPageBloc {
             if (tipoEnum == PerguntaTipoEnum.EscolhaUnica ||
                 tipoEnum == PerguntaTipoEnum.EscolhaMultipla) {
               pergunta.escolhas.forEach((k, v) {
-                final requisitoKey = "${pergunta.id}${k}";
+                final requisitoKey = "${pergunta.id}$k";
                 final contains = event.requisitos.containsKey(requisitoKey);
                 final requisito = contains
                     ? event.requisitos[requisitoKey]

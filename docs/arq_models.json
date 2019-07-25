@@ -130,8 +130,7 @@
     },
     "modificado": "data-valor",
     "editando": false,
-    "primeiraPerguntaID": "Pergunta->referencia",
-    "ultimaPerguntaID": "Pergunta->referencia"
+    "ultimaOrdem": "interiro com o valor do maior campor ordem das perguntas deste questionario"
   },
   "QuestionarioAplicado": {
     "nome": "nome-valor",
@@ -161,8 +160,6 @@
   },
   "Pergunta": {
     "referencia": "familia da pergunta. uid - gerado internamente pelo dart",
-    "anterior": "PerguntaID || null. para navegação apenas",
-    "posterior": "PerguntaID || null. para navegação apenas",
     "ordem": 0,
     "questionarioID": {
       "id": "QuestionarioID",

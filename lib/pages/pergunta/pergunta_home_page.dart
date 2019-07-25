@@ -15,6 +15,10 @@ class PerguntaHomePage extends StatelessWidget {
         UpdateQuestionarioIdPerguntaHomePageBlocEvent(_questionarioId));
   }
 
+  void dispose() {
+    bloc.dispose();
+  }
+
   Widget _questionarioAtual(context) {
     return StreamBuilder<PerguntaHomePageBlocState>(
         stream: bloc.state,
@@ -55,8 +59,8 @@ class PerguntaHomePage extends StatelessWidget {
   }
 
   Widget _body(context) {
-    return StreamBuilder<List<PerguntaModel>>(
-      stream: bloc.perguntas,
+    return StreamBuilder<PerguntaHomePageBlocState>(
+      stream: bloc.state,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -68,11 +72,16 @@ class PerguntaHomePage extends StatelessWidget {
             child: Text("SEM DADOS"),
           );
         }
+        final ups = snapshot.data.ups;
+        final downs = snapshot.data.downs;
+        final perguntas =
+            snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
         return ListView(
           children: [
             ..._preambulo(context),
-            ...snapshot.data
-                .map((pergunta) => PerguntaItem(pergunta, bloc))
+            ...perguntas
+                .map((pergunta) => PerguntaItem(
+                    pergunta, ups[pergunta.id], downs[pergunta.id], bloc))
                 .toList(),
             Padding(padding: EdgeInsets.all(30)),
           ],
@@ -106,9 +115,13 @@ class PerguntaHomePage extends StatelessWidget {
 
 class PerguntaItem extends StatelessWidget {
   final PerguntaModel _pergunta;
+  final bool up;
+  final bool down;
   final PerguntaHomePageBloc bloc;
 
-  PerguntaItem(this._pergunta, this.bloc);
+  PerguntaItem(this._pergunta, this.up, this.down, this.bloc)
+      : assert(up != null),
+        assert(down != null);
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +136,7 @@ class PerguntaItem extends StatelessWidget {
             subtitle: Column(
               children: <Widget>[
                 Text("${_pergunta.id}"),
-                Text("${_pergunta.anterior}"),
-                Text("${_pergunta.posterior}"),
+                Text("${_pergunta.referencia}"),
               ],
             ),
           ),
@@ -133,23 +145,23 @@ class PerguntaItem extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.arrow_downward),
-                  onPressed: _pergunta.anterior == null || _pergunta.posterior == null
-                      ? null
-                      : () {
+                  onPressed: down
+                      ? () {
                           //Mover pergunta para baixo na ordem
                           bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
                               _pergunta.id, false));
-                        },
+                        }
+                      : null,
                 ),
                 IconButton(
                   icon: Icon(Icons.arrow_upward),
-                  onPressed: _pergunta.anterior == null || _pergunta.posterior == null
-                      ? null
-                      : () {
+                  onPressed: up
+                      ? () {
                           //Mover pergunta para cima na ordem
                           bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
                               _pergunta.id, true));
-                        },
+                        }
+                      : null,
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
@@ -175,6 +187,5 @@ class PerguntaItem extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }
