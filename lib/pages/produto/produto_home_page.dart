@@ -52,7 +52,7 @@ class ProdutoHomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: Text(produto.nome),
+              title: produto.titulo != null ? Text(produto.titulo):Text('Sem titulo'),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
@@ -91,22 +91,25 @@ class ProdutoHomePage extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.border_bottom),
                     onPressed: () {
-                      // Navigator.pushNamed(context, '/produto/tabela',
-                      //     arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(
+                              produtoID: produto.id, tipo: 'tabela'));
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.insert_chart),
                     onPressed: () {
-                      // Navigator.pushNamed(context, '/produto/grafico',
-                      //     arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(
+                              produtoID: produto.id, tipo: 'grafico'));
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.zoom_out_map),
                     onPressed: () {
-                      // Navigator.pushNamed(context, '/produto/mapa',
-                      //     arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(
+                              produtoID: produto.id, tipo: 'mapa'));
                     },
                   ),
                 ],

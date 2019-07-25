@@ -27,6 +27,12 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+  
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
@@ -122,54 +128,3 @@ class UpDateProdutoIDTextoState extends State<UpDateProdutoIDTexto> {
         });
   }
 }
-
-// class ViewProdutoIDTexto extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() {
-//     return ViewProdutoIDTextoState();
-//   }
-// }
-
-// class ViewProdutoIDTextoState extends State<ViewProdutoIDTexto> {
-//   // final _controller = TextEditingController();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final bloc = Provider.of<ProdutoTextoPageBloc>(context);
-//     return StreamBuilder<ProdutoTextoPageState>(
-//         stream: bloc.stateStream,
-//         builder: (BuildContext context,
-//             AsyncSnapshot<ProdutoTextoPageState> snapshot) {
-//           if (snapshot.hasError)
-//             return Center(
-//               child: Text("Erro. Informe ao administrador do aplicativo"),
-//             );
-//           if (!snapshot.hasData) {
-//             return Center(
-//               child: Text("Texto vazio."),
-//             );
-//           }
-//           if (snapshot.data == null) {
-//             return Center(
-//               child: Text("snapshot.data == null"),
-//             );
-//           }
-//           if (snapshot.data.produtoTextoIDTextoMarkdown == null) {
-//             return Center(
-//               child: Text("snapshot.data.texto == null."),
-//             );
-//           }
-//           return Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               // Text("teste"),
-//               Text('${snapshot.data.produtoTextoIDTextoMarkdown}'),
-//               // Markdown(data: snapshot.data.produtoTextoIDTextoMarkdown),
-
-//               // snapshot.data.produtoTextoIDTexto != null ?
-//               // Markdown(data: snapshot.data.produtoTextoIDTexto):Text("Erro. Informar a equipe de desenvolvimento."),
-//             ],
-//           );
-//         });
-//   }
-// }

@@ -20,6 +20,11 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
   final bloc = ConfiguracaoPageBloc(Bootstrap.instance.firestore);
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Provider<ConfiguracaoPageBloc>.value(
       value: bloc,

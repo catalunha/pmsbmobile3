@@ -1,3 +1,4 @@
+import 'package:pmsbmibile3/bootstrap.dart';
 
 class UsuarioArquivoID {
   String id;
@@ -73,7 +74,28 @@ class ArquivoProduto {
       data['editadoLocalPath'] = this.editadoLocalPath;
     return data;
   }
+
+  Map<dynamic, dynamic> toMapFirestore() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    data['id'] = this.id ?? Bootstrap.instance.FieldValue.delete();
+    data['titulo'] = this.titulo ?? Bootstrap.instance.FieldValue.delete();
+    data['tipo'] = this.tipo ?? Bootstrap.instance.FieldValue.delete();
+    data['rascunhoEixoArquivoID'] =
+        this.rascunhoEixoArquivoID ?? Bootstrap.instance.FieldValue.delete();
+    data['rascunhoUrl'] =
+        this.rascunhoUrl ?? Bootstrap.instance.FieldValue.delete();
+    data['rascunhoLocalPath'] =
+        this.rascunhoLocalPath ?? Bootstrap.instance.FieldValue.delete();
+    data['editadoEixoArquivoID'] =
+        this.editadoEixoArquivoID ?? Bootstrap.instance.FieldValue.delete();
+    data['editadoUrl'] =
+        this.editadoUrl ?? Bootstrap.instance.FieldValue.delete();
+    data['editadoLocalPath'] =
+        this.editadoLocalPath ?? Bootstrap.instance.FieldValue.delete();
+    return data;
+  }
 }
+
 class RotaID {
   String id;
   String url;
@@ -95,19 +117,19 @@ class RotaID {
 
 class ProdutoID {
   String id;
-  String nome;
+  String titulo;
 
-  ProdutoID({this.id, this.nome});
+  ProdutoID({this.id, this.titulo});
 
   ProdutoID.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];
-    if (map.containsKey('nome')) nome = map['nome'];
+    if (map.containsKey('titulo')) titulo = map['titulo'];
   }
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (id != null) data['id'] = this.id;
-    if (nome != null) data['nome'] = this.nome;
+    if (titulo != null) data['titulo'] = this.titulo;
     return data;
   }
 }
@@ -170,7 +192,6 @@ class EixoID {
 }
 
 class UsuarioID {
-
   String id;
   String nome;
 
@@ -188,7 +209,6 @@ class UsuarioID {
     return data;
   }
 }
-
 
 class PerfilID {
   String id;

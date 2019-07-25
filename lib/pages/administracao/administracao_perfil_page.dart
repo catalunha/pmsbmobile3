@@ -9,6 +9,10 @@ import 'package:url_launcher/url_launcher.dart';
 class AdministracaoPerfilPage extends StatelessWidget {
   final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
 
+  void dispose() {
+    bloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var usuarioId = ModalRoute.of(context).settings.arguments;

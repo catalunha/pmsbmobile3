@@ -1,3 +1,4 @@
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/eixo_arquivo_model.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
@@ -52,6 +53,7 @@ class ProdutoArquivoCRUDPageState {
   String arquivoID;
   String tipo;
 
+  // String id;
   String titulo;
   String rascunhoEixoArquivoID;
   String rascunhoUrl;
@@ -64,6 +66,7 @@ class ProdutoArquivoCRUDPageState {
     // arquivo = produtoModel.arquivo;
     if (this.arquivoID != null) {
       arquivo = produtoModel.arquivo[arquivoID];
+      // id = arquivo.id;
       titulo = arquivo.titulo;
       tipo = arquivo.tipo;
       rascunhoEixoArquivoID = arquivo.rascunhoEixoArquivoID;
@@ -81,10 +84,10 @@ class ProdutoArquivoCRUDPageState {
     data['arquivoID'] = this.arquivoID;
     data['titulo'] = this.titulo;
     data['tipo'] = this.tipo;
-    data['rascunhoEixoArquivoID'] = this.rascunhoEixoArquivoID;
+    // data['rascunhoEixoArquivoID'] = this.rascunhoEixoArquivoID;
     data['rascunhoUrl'] = this.rascunhoUrl;
     data['rascunhoLocalPath'] = this.rascunhoLocalPath;
-    data['editadoEixoArquivoID'] = this.editadoEixoArquivoID;
+    // data['editadoEixoArquivoID'] = this.editadoEixoArquivoID;
     data['editadoUrl'] = this.editadoUrl;
     data['editadoLocalPath'] = this.editadoLocalPath;
     return data;
@@ -145,7 +148,7 @@ class ProdutoArquivoCRUDPageBloc {
 
     if (event is SaveEvent) {
       if (_state.rascunhoLocalPath != null) {
-        // Cria doc em UpLoad collection para upload futuro
+        //+++ Cria doc em UpLoadCollection
         final upLoadModel = UploadModel(
           usuarioID: _state.produtoModel.usuarioID,
           localPath: _state.rascunhoLocalPath,
@@ -157,18 +160,13 @@ class ProdutoArquivoCRUDPageBloc {
             .document(_state.rascunhoEixoArquivoID);
         await docRef.setData(upLoadModel.toMap(), merge: true);
         _state.rascunhoEixoArquivoID = docRef.documentID;
-        // criar doc em EixoArquivo
-        final eixoArquivoModel = EixoArquivoModel(
-          produtoID:
-              ProdutoID(id: _state.produtoID, nome: _state.produtoModel.nome),
-          titulo: _state.titulo,
-        );
-        final docRef2 = _firestore
-            .collection(EixoArquivoModel.collection)
-            .document(_state.rascunhoEixoArquivoID);
-        await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
+        //--- Cria doc em UpLoadCollection
       }
+      if (!_stateController.isClosed) _stateController.add(_state);
+      // print('>>> _state.toMap() 1 <<< ${_state.toMap()}');
+
       if (_state.editadoLocalPath != null) {
+        //+++ Cria doc em UpLoadCollection
         final upLoadModel = UploadModel(
           usuarioID: _state.produtoModel.usuarioID,
           localPath: _state.editadoLocalPath,
@@ -180,41 +178,56 @@ class ProdutoArquivoCRUDPageBloc {
             .document(_state.editadoEixoArquivoID);
         await docRef.setData(upLoadModel.toMap(), merge: true);
         _state.editadoEixoArquivoID = docRef.documentID;
-        // criar doc em EixoArquivo
-        final eixoArquivoModel = EixoArquivoModel(
-          produtoID:
-              ProdutoID(id: _state.produtoID, nome: _state.produtoModel.nome),
-          titulo: _state.titulo,
-        );
-        final docRef2 = _firestore
-            .collection(EixoArquivoModel.collection)
-            .document(_state.editadoEixoArquivoID);
-        await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
+        //--- Cria doc em UpLoadCollection
       }
+      if (!_stateController.isClosed) _stateController.add(_state);
+      print('>>> _state.toMap() 2 <<< ${_state.toMap()}');
+
+      //+++ Apagar rascunho em UpLoadCollection e EixoArquivoCollection
       if (_state.rascunhoLocalPath == null && _state.rascunhoUrl == null) {
         if (_state.rascunhoEixoArquivoID != null) {
           final docRef = _firestore
               .collection(UploadModel.collection)
               .document(_state.rascunhoEixoArquivoID);
           await docRef.delete();
+          final docRef2 = _firestore
+              .collection(EixoArquivoModel.collection)
+              .document(_state.rascunhoEixoArquivoID);
+          await docRef2.delete();
           _state.rascunhoEixoArquivoID = null;
         }
       }
+      //--- Apagar rascunho em UpLoadCollection
+
+      if (!_stateController.isClosed) _stateController.add(_state);
+      print('>>> _state.toMap() 3 <<< ${_state.toMap()}');
+
+      //+++ Apagar editado em UpLoadCollection
       if (_state.editadoLocalPath == null && _state.editadoUrl == null) {
         if (_state.editadoEixoArquivoID != null) {
           final docRef = _firestore
               .collection(UploadModel.collection)
               .document(_state.editadoEixoArquivoID);
           await docRef.delete();
+          final docRef2 = _firestore
+              .collection(EixoArquivoModel.collection)
+              .document(_state.editadoEixoArquivoID);
+          await docRef2.delete();
           _state.editadoEixoArquivoID = null;
         }
       }
+      //--- Apagar editado em UpLoadCollection
+
+      if (!_stateController.isClosed) _stateController.add(_state);
+      print('>>> _state.toMap() 4 <<< ${_state.toMap()}');
+
       ArquivoProduto imagemSave;
+      Map<String, dynamic> mapSave;
       if (_state.arquivoID == null) {
         final uuid = Uuid();
-          _state.arquivoID = uuid.v4();
-         imagemSave = ArquivoProduto(
-          id: _state.arquivoID,
+        _state.arquivoID = uuid.v4();
+        imagemSave = ArquivoProduto(
+          // id: _state.arquivoID,
           titulo: _state.titulo,
           tipo: _state.tipo,
           rascunhoEixoArquivoID: _state.rascunhoEixoArquivoID,
@@ -225,8 +238,8 @@ class ProdutoArquivoCRUDPageBloc {
           editadoLocalPath: _state.editadoLocalPath,
         );
       } else {
-         imagemSave = ArquivoProduto(
-          id: _state.arquivoID,
+        imagemSave = ArquivoProduto(
+          // id: _state.arquivoID,
           titulo: _state.titulo,
           tipo: _state.tipo,
           rascunhoEixoArquivoID: _state.rascunhoEixoArquivoID,
@@ -237,40 +250,67 @@ class ProdutoArquivoCRUDPageBloc {
           editadoLocalPath: _state.editadoLocalPath,
         );
       }
+      if (!_stateController.isClosed) _stateController.add(_state);
+      print('>>> _state.toMap() 5 <<< ${_state.toMap()}');
+      print('>>> imagemSave.toMap2() 5 <<< ${imagemSave.toMap()}');
 
       final docRef = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoID);
-          // Map<dynamic,dynamic> map = Map<dynamic,dynamic>();
-          // map[_state.arquivoID]=imagemSave.toMap();
-      final doc = await docRef.setData(
-          {"arquivo": {_state.arquivoID:imagemSave.toMap()}},
-          merge: true);
+      final doc = await docRef.setData({
+        "arquivo": {_state.arquivoID: imagemSave.toMapFirestore()}
+      }, merge: true);
+
+      if (_state.rascunhoLocalPath != null) {
+        //+++ Criar doc em EixoArquivoCollection
+        final eixoArquivoModel = EixoArquivoModel(
+          produtoID: ProdutoID(
+              id: _state.produtoID, titulo: _state.produtoModel.titulo),
+          titulo: _state.titulo,
+          referencia: _state.arquivoID,
+        );
+        final docRef2 = _firestore
+            .collection(EixoArquivoModel.collection)
+            .document(_state.rascunhoEixoArquivoID);
+        await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
+        //--- Criar doc em EixoArquivoCollection
+      }
+      if (_state.editadoLocalPath != null) {
+        //+++ Criar doc em EixoArquivoCollection
+        final eixoArquivoModel = EixoArquivoModel(
+          produtoID: ProdutoID(
+              id: _state.produtoID, titulo: _state.produtoModel.titulo),
+          titulo: _state.titulo,
+          referencia: _state.arquivoID,
+        );
+        final docRef2 = _firestore
+            .collection(EixoArquivoModel.collection)
+            .document(_state.editadoEixoArquivoID);
+        await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
+        //--- Criar doc em EixoArquivoCollection
+      }
     }
 
     if (event is DeleteEvent) {
-      // if (_state.imagemList != null) {
-      //   _state.imagemList.removeWhere((img) => img.id == _state.arquivoID);
-      //   final docRef = _firestore
-      //       .collection(ProdutoModel.collection)
-      //       .document(_state.produtoID);
-      //   docRef.setData(
-      //       {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
-      //       merge: true);
-      // }
+      final docRef = _firestore
+          .collection(ProdutoModel.collection)
+          .document(_state.produtoID);
+      docRef.setData({
+        "arquivo": {_state.arquivoID: Bootstrap.instance.FieldValue.delete()}
+      }, merge: true);
     }
     if (event is DeleteArquivoEvent) {
-      // if (event.arquivoTipo == 'arquivoEditado') {
-      //   _state.rascunhoLocalPath = null;
-      //   _state.rascunhoUrl = null;
-      // } else {
-      //   _state.editadoLocalPath = null;
-      //   _state.editadoUrl = null;
-      // }
+      if (event.arquivoTipo == 'arquivoRascunho') {
+        _state.rascunhoLocalPath = null;
+        _state.rascunhoUrl = null;
+      } else {
+        _state.editadoLocalPath = null;
+        _state.editadoUrl = null;
+      }
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
-    // print('>>> event.runtimeType <<< ${event.runtimeType}');
+    print('>>> _state.toMap() <<< ${_state.toMap()}');
+    print('>>> event.runtimeType <<< ${event.runtimeType}');
   }
 
   void dispose() {

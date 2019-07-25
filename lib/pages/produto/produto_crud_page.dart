@@ -1,97 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
-// import 'package:pmsbmibile3/pages/produto/produto_bloc.dart';
 import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 
-class ProdutoCRUDPage extends StatefulWidget {
+class ProdutoCRUDPage extends StatelessWidget {
   final String produtoID;
-
-  ProdutoCRUDPage(this.produtoID);
-
-  // @override
-  // _ProdutoCRUDPageState createState() => _ProdutoCRUDPageState();
-  @override
-  State<StatefulWidget> createState() {
-    return _ProdutoCRUDPageState();
-  }
-}
-
-class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
-  final _controller = TextEditingController();
-  final bloc = ProdutoCRUDPageBloc(Bootstrap.instance.firestore);
-
-  @override
-  void initState() {
-    super.initState();
-    bloc.eventSink(UpdateProdutoIDEvent(widget.produtoID));
+  final ProdutoCRUDPageBloc bloc;
+  ProdutoCRUDPage(this.produtoID, AuthBloc authBloc)
+      : bloc = ProdutoCRUDPageBloc(Bootstrap.instance.firestore, authBloc) {
+    bloc.eventSink(UpdateUsuarioIDEvent());
+    bloc.eventSink(UpdateProdutoIDEvent(produtoID));
   }
 
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Provider<ProdutoCRUDPageBloc>.value(
-        value: bloc,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Adicionar ou editar produto"),
-            // backgroundColor: Colors.red,
-          ),
-          body: Container(
-            child: Column(
-              children: <Widget>[
-                // UpDateProdutoIDNome(),
-                StreamBuilder<ProdutoCRUDPageState>(
-                    stream: bloc.stateStream,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
-                      if (_controller.text == null ||
-                          _controller.text.isEmpty) {
-                        _controller.text = snapshot.data?.produtoModel?.nome;
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Atualizar nome do produto"),
-                          TextField(
-                            maxLines: null,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                            ),
-                            controller: _controller,
-                            onChanged: (nomeProduto) {
-                              bloc.eventSink(
-                                  UpdateProdutoIDNomeEvent(nomeProduto));
-                            },
-                          ),
-                        ],
-                      );
-                    }),
-                _botaoDeletarDocumento(context),
-              ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.save_alt),
-            onPressed: () {
-              bloc.eventSink(SaveProdutoIDEvent());
-              Navigator.of(context).pop();
-
-              // Navigator.pushNamed(context, '/produto/crud_texto');
-            },
-            // backgroundColor: Colors.blue,
-          ),
-        ));
-  }
-
-  Widget _botaoDeletarDocumento(BuildContext context) {
+  _botaoDeletarDocumento(BuildContext context) {
     return SafeArea(
         child: Row(
       children: <Widget>[
@@ -107,21 +30,23 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
                         return SimpleDialog(
                           children: <Widget>[
                             SimpleDialogOption(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
                               child: Text("CANCELAR EXCLUSÃO"),
+                              onPressed: () {
+                                // Navigator.pop(context);
+                                Navigator.of(context).pop();
+                              },
                             ),
                             Container(
                               padding: EdgeInsets.all(20),
                             ),
                             Divider(),
                             SimpleDialogOption(
+                              child: Text("sim"),
                               onPressed: () {
                                 bloc.eventSink(DeleteProdutoIDEvent());
-                                Navigator.pushNamed(context, '/produto/home');
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
                               },
-                              child: Text("sim"),
                             ),
                           ],
                         );
@@ -136,44 +61,79 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
       ],
     ));
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Provider<ProdutoCRUDPageBloc>.value(
+      value: bloc,
+      child: Scaffold(
+        appBar: AppBar(
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            title: Text(
+                (produtoID != null ? "Editar" : "Adicionar") + " Produto")),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.thumb_up),
+          onPressed: () {
+            // salvar e voltar
+            bloc.eventSink(SaveProdutoIDEvent());
+            Navigator.pop(context);
+          },
+        ),
+        body: ListView(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "Titulo do questionario:",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  )),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: ProdutoTitulo(),
+              ),
+              _botaoDeletarDocumento(context),
+            ],
+          ),
+      ),
+    );
+  }
 }
 
-// class UpDateProdutoIDNome extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() {
-//     return UpDateProdutoIDNomeState();
-//   }
-// }
+class ProdutoTitulo extends StatefulWidget {
+  @override
+  ProdutoTituloState createState() {
+    return ProdutoTituloState();
+  }
+}
 
-// class UpDateProdutoIDNomeState extends State<UpDateProdutoIDNome> {
-//   final _controller = TextEditingController();
-//   @override
-//   Widget build(BuildContext context) {
-//     final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
-//     return StreamBuilder<ProdutoCRUDPageState>(
-//         stream: bloc.produtoCRUDPageStateStream,
-//         builder: (BuildContext context,
-//             AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
-//           if (_controller.text == null || _controller.text.isEmpty) {
-//             _controller.text = snapshot.data?.produtoModel?.nome;
-//           }
-//           return Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               Text("Atualizar nome do produto"),
-//               TextField(
-//                 maxLines: null,
-//                 decoration: InputDecoration(
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 controller: _controller,
-//                 onChanged: (nomeProduto) {
-//                   bloc.produtoCRUDPageEventSink(
-//                       UpdateProdutoIDNomeEvent(nomeProduto));
-//                 },
-//               ),
-//             ],
-//           );
-//         });
-//   }
-// }
+class ProdutoTituloState extends State<ProdutoTitulo> {
+  final _textFieldController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
+    return StreamBuilder<ProdutoCRUDPageState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+            AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
+        if (_textFieldController.text.isEmpty) {
+          _textFieldController.text = snapshot.data?.produtoModelIDNome;
+        }
+        return TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          controller: _textFieldController,
+          onChanged: (text) {
+            bloc.eventSink(UpdateProdutoIDNomeEvent(text));
+          },
+        );
+      },
+    );
+  }
+}

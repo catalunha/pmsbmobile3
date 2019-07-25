@@ -258,7 +258,7 @@ class DefaultEndDrawer extends StatelessWidget {
               color: Colors.black45,
             ),
             ListTile(
-              title: Text('Sair'),
+              title: Text('Trocar de usuário'),
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
