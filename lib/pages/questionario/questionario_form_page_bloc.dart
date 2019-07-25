@@ -104,9 +104,9 @@ class QuestionarioFormPageBloc {
         id: _state.id,
         nome: _state.nome,
         criou: _state.id == null
-            ? UsuarioCriou(id: _state.userId, nome: _state.userName)
+            ? UsuarioQuestionario(id: _state.userId, nome: _state.userName)
             : null,
-        editou: UsuarioEditou(id: _state.userId, nome: _state.userName),
+        editou: UsuarioQuestionario(id: _state.userId, nome: _state.userName),
         eixo: Eixo(id: _state.eixoAtualID, nome: _state.eixoAtualNome),
         criado: _state.id == null ? DateTime.now() : null,
         modificado: DateTime.now(),
