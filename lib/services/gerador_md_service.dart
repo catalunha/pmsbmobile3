@@ -1,11 +1,10 @@
 import 'package:pmsbmibile3/models/models.dart';
 
 class GeradorMdService {
-  
   static generateMdFromUsuarioModel(UsuarioModel usuarioModel) {
     return """
 ${usuarioModel.nome}
-=======================
+====================================================
 
 ![alt text](${usuarioModel.usuarioArquivoID.url})
 
@@ -17,6 +16,4 @@ ${usuarioModel.nome}
 ## Perfil em construção
 """;
   }
-
-
 }

@@ -10,28 +10,44 @@ class GeradorCsvService {
   static generateCsvFromUsuarioModel(UsuarioModel usuarioModel) async {
     List<List<dynamic>> colunas = List<List<dynamic>>();
 
-    //Coluna com o nome das variaveis
-    List<dynamic> colunaNomeValor = List();
-    colunaNomeValor.add("Foto");
-    colunaNomeValor.add("Id");
-    colunaNomeValor.add("Nome");
-    colunaNomeValor.add("Celular");
-    colunaNomeValor.add("Email");
-    colunaNomeValor.add("Eixo");
-    colunas.add(colunaNomeValor);
+    //adicionar Colunas
+    List<dynamic> colunaHead = List();
+    colunaHead.add("Item");
+    colunaHead.add("Valor");
+    colunas.add(colunaHead);
 
-    //coluna com os valores de usuarioModel
-    List<dynamic> colunaValores = List();
-    colunaValores.add("${usuarioModel.usuarioArquivoID.url}");
-    colunaValores.add("${usuarioModel.id}");
-    colunaValores.add("${usuarioModel.nome}");
-    colunaValores.add("${usuarioModel.celular}");
-    colunaValores.add("${usuarioModel.email}");
-    colunaValores.add("${usuarioModel.eixoID.nome}");
-    colunas.add(colunaValores);
+    List<dynamic> colunaFoto = List();
+    colunaFoto.add("Foto");
+    colunaFoto.add("${usuarioModel.usuarioArquivoID.url}");
+    colunas.add(colunaFoto);
+
+    List<dynamic> colunaId = List();
+    colunaId.add("Id");
+    colunaId.add("${usuarioModel.id}");
+    colunas.add(colunaId);
+
+    List<dynamic> colunaNome = List();
+    colunaNome.add("Nome");
+    colunaNome.add("${usuarioModel.nome}");
+    colunas.add(colunaNome);
+
+    List<dynamic> colunaCelular = List();
+    colunaCelular.add("Celular");
+    colunaCelular.add("${usuarioModel.celular}");
+    colunas.add(colunaCelular);
+
+    List<dynamic> colunaEmail = List();
+    colunaEmail.add("Email");
+    colunaEmail.add("${usuarioModel.email}");
+    colunas.add(colunaEmail);
+
+    List<dynamic> colunaEixo = List();
+    colunaEixo.add("Eixo");
+    colunaEixo.add("${usuarioModel.eixoID.nome}");
+    colunas.add(colunaEixo);
 
     //gerar e salvar
-    var csvDirectory = (await getExternalStorageDirectory()).absolute.path + "/documents";
+    var csvDirectory = (await getExternalStorageDirectory()).path + "/";
     var fileDirectory = "$csvDirectory";
     String filename = "filename.csv";
     await _salvarArquivoCsv(colunas, filename, fileDirectory);
@@ -39,21 +55,9 @@ class GeradorCsvService {
   }
 
   //PRIVATE
-  static Future<File> _salvarArquivoCsv(List<List<dynamic>> rows, String filename, String fileDirectory) async {
-    //String dir = (await getExternalStorageDirectory()).absolute.path + "/documents";
-    //var file = "$dir";
-    //File f = new File(file + "filename.csv");
-
-    // convert rows to String and write as csv file
-
-    //await f.writeAsString(csv);
-    //await saveFile(file);
-
-    String csvData = ListToCsvConverter().convert(rows);
-
-    // var csvDirectory = await getExternalStorageDirectory();
-    // var file = csvDirectory.path;
-    // String filename = "planilha.csv";
+  static Future<File> _salvarArquivoCsv(
+      List<List<dynamic>> rows, String filename, String fileDirectory) async {
+    String csvData = ListToCsvConverter().convert(rows, fieldDelimiter: ';');
 
     File csvFile = new File(fileDirectory + "filename.csv");
     await csvFile.writeAsString(csvData);
@@ -61,8 +65,6 @@ class GeradorCsvService {
   }
 
   static _openFileFromDirectory(String filename, String fileDirectory) async {
-    print('>>> fileDirectory >>> ${fileDirectory}');
-    print('>>> filename >>> ${filename}');
     await OpenFile.open(fileDirectory + filename, type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
   }
 }
