@@ -13,6 +13,13 @@ class UpdateQuestionarioIdPerguntaHomePageBlocEvent
   UpdateQuestionarioIdPerguntaHomePageBlocEvent(this.questionarioId);
 }
 
+class UpdatePerguntaListPerguntaHomePageBlocEvent
+    extends PerguntaHomePageBlocEvent {
+  final List<PerguntaModel> perguntas;
+
+  UpdatePerguntaListPerguntaHomePageBlocEvent(this.perguntas);
+}
+
 class OrdemPerguntaPerguntaHomePageBlocEvent extends PerguntaHomePageBlocEvent {
   final String perguntaID;
   final bool up;
@@ -25,6 +32,10 @@ class OrdemPerguntaPerguntaHomePageBlocEvent extends PerguntaHomePageBlocEvent {
 
 class PerguntaHomePageBlocState {
   QuestionarioModel questionarioInstance;
+  List<PerguntaModel> perguntas;
+  Map<String, bool> ups = Map<String, bool>();
+  Map<String, bool> downs = Map<String, bool>();
+  Map<String, int> indexMap = Map<String, int>();
 }
 
 class PerguntaHomePageBloc {
@@ -44,15 +55,11 @@ class PerguntaHomePageBloc {
 
   Stream<PerguntaHomePageBlocState> get state => _outputController.stream;
 
-  final _perguntasController = BehaviorSubject<List<PerguntaModel>>();
   StreamSubscription<List<PerguntaModel>> _perguntaSubscription;
-
-  Stream<List<PerguntaModel>> get perguntas => _perguntasController.stream;
 
   void dispose() {
     _inputController.close();
     _outputController.close();
-    _perguntasController.close();
   }
 
   void _handleInput(PerguntaHomePageBlocEvent event) async {
@@ -76,85 +83,34 @@ class PerguntaHomePageBloc {
       });
       await _perguntaSubscription?.cancel();
       _perguntaSubscription = perguntasStream.listen((data) {
-        _perguntasController.add(data);
+        dispatch(UpdatePerguntaListPerguntaHomePageBlocEvent(data));
+      });
+    }
+
+    if (event is UpdatePerguntaListPerguntaHomePageBlocEvent) {
+      _state.perguntas = event.perguntas;
+      event.perguntas.asMap().forEach((index, pergunta) {
+        _state.indexMap[pergunta.id] = index;
+        _state.ups[pergunta.id] = index > 0;
+        _state.downs[pergunta.id] = index + 1 < event.perguntas.length;
       });
     }
 
     if (event is OrdemPerguntaPerguntaHomePageBlocEvent) {
+      final index = _state.indexMap[event.perguntaID];
+      final outroIndex = event.up ? index - 1 : index + 1;
 
-      final _perguntasRef = _firestore.collection(PerguntaModel.collection);
-      final perguntaRef = _perguntasRef.document(event.perguntaID);
-      final perguntaSnap = await perguntaRef.get();
-      final pergunta =
-          PerguntaModel(id: perguntaSnap.documentID).fromMap(perguntaSnap.data);
+      final perguntaBID = _state.perguntas[outroIndex].id;
 
-      final perguntaUpRef = _perguntasRef.document(pergunta.anterior);
-      final perguntaUpSnap = await perguntaUpRef.get();
-      final perguntaUp = PerguntaModel(id: perguntaUpSnap.documentID)
-          .fromMap(perguntaUpSnap.data);
+      final ordemA = _state.perguntas[index].ordem;
+      final ordemB = _state.perguntas[outroIndex].ordem;
 
-      final perguntaDownRef = _perguntasRef.document(pergunta.posterior);
-      final perguntaDownSnap = await perguntaDownRef.get();
-      final perguntaDown = PerguntaModel(id: perguntaDownSnap.documentID)
-          .fromMap(perguntaDownSnap.data);
-
-      int perguntaOrdem;
-      String perguntaAnterior;
-      String perguntaPosterior;
-      int perguntaUpOrdem;
-      String perguntaUpAnterior;
-      String perguntaUpPosterior;
-      int perguntaDownOrdem;
-      String perguntaDownAnterior;
-      String perguntaDownPosterior;
-
-      if (event.up) {
-        perguntaOrdem = perguntaUp.ordem;
-        perguntaUpOrdem = pergunta.ordem;
-        perguntaDownOrdem = perguntaDown.ordem;
-
-        perguntaAnterior = perguntaUp.anterior;
-        perguntaPosterior = pergunta.anterior;
-
-        perguntaUpAnterior = perguntaDown.anterior;
-        perguntaUpPosterior = pergunta.posterior;
-
-        perguntaDownAnterior = pergunta.anterior;
-        perguntaDownPosterior = perguntaDown.posterior;
-      } else {
-        perguntaOrdem = perguntaDown.ordem;
-        perguntaDownOrdem = pergunta.ordem;
-        perguntaUpOrdem = perguntaUp.ordem;
-
-        perguntaAnterior = pergunta.posterior;
-        perguntaPosterior = perguntaDown.posterior;
-
-        perguntaUpPosterior = pergunta.posterior;
-        perguntaUpAnterior = perguntaUp.anterior;
-
-        perguntaDownAnterior = pergunta.anterior;
-        perguntaDownPosterior = perguntaUp.posterior;
-      }
-
-      perguntaRef.setData({
-        "ordem": perguntaOrdem,
-        "anterior": perguntaAnterior,
-        "posterior": perguntaPosterior,
-      }, merge: true);
-
-      perguntaUpRef.setData({
-        "ordem": perguntaUpOrdem,
-        "anterior": perguntaUpAnterior,
-        "posterior": perguntaUpPosterior,
-      }, merge: true);
-
-      perguntaDownRef.setData({
-        "ordem": perguntaDownOrdem,
-        "anterior": perguntaDownAnterior,
-        "posterior": perguntaDownPosterior,
-      }, merge: true);
+      final perguntasRef = _firestore.collection(PerguntaModel.collection);
+      final perguntaARef = perguntasRef.document(event.perguntaID);
+      final perguntaBRef = perguntasRef.document(perguntaBID);
+      perguntaARef.setData({"ordem": ordemB}, merge: true);
+      perguntaBRef.setData({"ordem": ordemA}, merge: true);
     }
-
     _outputController.add(_state);
   }
 }

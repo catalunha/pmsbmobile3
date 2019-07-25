@@ -11,12 +11,6 @@ class PerguntaModel extends FirestoreModel {
   ///"referencia": "familia da pergunta. uid - gerado internamente pelo dart",
   String referencia;
 
-  ///    "anterior": "PerguntaID || null. para navegação apenas",
-  String anterior;
-
-  ///    "posterior": "PerguntaID || null. para navegação apenas",
-  String posterior;
-
   ///Questionario do qual esta pergunta pertence
   Questionario questionario;
 
@@ -71,8 +65,6 @@ class PerguntaModel extends FirestoreModel {
     this.textoMarkdown,
     this.dataCriacao,
     this.dataEdicao,
-    this.anterior,
-    this.posterior,
     this.observacao,
 
     this.texto,
@@ -96,10 +88,6 @@ class PerguntaModel extends FirestoreModel {
     }
 
     referencia = map["referencia"];
-
-    anterior = map["anterior"];
-
-    posterior = map["posterior"];
 
     ordem = map['ordem'];
 
@@ -165,9 +153,6 @@ class PerguntaModel extends FirestoreModel {
 
     if (ordem != null) map["ordem"] = ordem;
 
-    if (anterior != null) map["anterior"] = anterior;
-
-    if (posterior != null) map["posterior"] = posterior;
 
     if (titulo != null) map["titulo"] = titulo;
 
