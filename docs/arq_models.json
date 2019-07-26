@@ -11,17 +11,18 @@
   "Rota": {
     "url": "nome-valor"
   },
-  "UpLoad": {
-    "usuarioID": {
-      "id": "UsuarioID",
-      "nome": "nome"
-    },
-    "hash": "gerado pelo dart na leitura local do arquivo",
+  "Upload": {
+    "usuario": "idUsuario",
     "localPath": "path local do arquivo no celular do usuario.",
+    "atualizar": {
+      "colecao": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
+      "campo": "UsuarioID.foto || UsuarioPerfilID.arquivo || ProdutoID.uid.rascunhoIdUpload ou ProdutoID.uid.editadoIdUpload  || PerguntaAplicadaID.arquivo "
+    },
     "upload": false,
     "storagePath": "obtida do storage após upload",
     "url": "obtida do storage após upload",
-    "atualizar": "UsuarioArquivoID || PerguntaAplicadaArquivoID || ProdutoArquivoID "
+    "hash": "gerado pelo dart na leitura local do arquivo",
+    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
   },
   "Usuario": {
     "ID": "mesmo ID do userID do authentication(email/senha)",
@@ -29,8 +30,8 @@
     "celular": "celular-valor",
     "email": "email-valor",
     "ativo": true,
-    "usuarioArquivoID": {
-      "id": "UsuarioArquivoID",
+    "foto": {
+      "idUpload": "idUpload",
       "url": "null || obtida do storage após upload",
       "localPath": "path local do arquivo no celular do usuario."
     },
@@ -62,14 +63,6 @@
         "nome": "EixoID->nome"
       }
     ]
-  },
-  "UsuarioArquivo": {
-    "usuarioID": "UsuarioID",
-    "referencia": "null || se for necessário uma palavra chave para pesquisa exemplo: perfil.csv || perfil.md || perfil.pdf | noticias.pdf",
-    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
-    "titulo": "descricao simples quando for necessario",
-    "storagePath": "null || se tiver upload feito atualiza aqui",
-    "url": "null || se tiver upload feito atualiza aqui"
   },
   "Noticia": {
     "titulo": "titulo-valor",
@@ -111,9 +104,9 @@
     },
     "_comment": "quando criar o perfil nao criar o campo textPlain ou usuarioArquivoID. nao os dois",
     "_comment2": "quanto o usuario editar o perfil é que cria estes campos dependendo da situação",
-    "textPlain": "textPlain-valor",
-    "usuarioArquivoID": {
-      "id": "UsuarioArquivoID",
+    "texto": "textPlain-valor",
+    "arquivo": {
+      "idUpload": "idUpload",
       "url": "null || obtida do storage após upload",
       "localPath": "path local do arquivo no celular do usuario."
     }
@@ -174,8 +167,19 @@
     },
     "texto": "valor",
     "numero": "valor",
-    "arquivo": [
-      "PerguntaAplicadaArquivoID"
+    "arquivo1": {
+      "idUpload": {
+        "id ou key": true,
+        "url": "null || obtida do storage após upload",
+        "localPath": "path local do arquivo no celular do usuario."
+      }
+    },
+    "arquivo2": [
+      {
+        "idUpload": "UploadID",
+        "url": "null || obtida do storage após upload",
+        "localPath": "path local do arquivo no celular do usuario."
+      }
     ],
     "coordenada": [
       {
@@ -206,17 +210,6 @@
   "PerguntaAplicada": {
     "_comment": "idem a Pergunta. Com as devidas alterações."
   },
-  "PerguntaAplicadaArquivo": {
-    "upLoadID": "UpLoadID",
-    "usuarioID": {
-      "id": "UsuarioID",
-      "nome": "UsuarioIDNome"
-    },
-    "PerguntaAplicadaID": "PerguntaAplicadaID",
-    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
-    "storagePath": "null || se tiver upload feito atualiza aqui",
-    "url": "null || se tiver upload feito atualiza aqui"
-  },
   "Produto": {
     "nome": "nome-valor",
     "eixoID": {
@@ -234,54 +227,17 @@
     "modificado": "data-valor",
     "textoMarkdownID": "data-valor",
     "arquivo": {
-      "uid":{
+      "uid": {
         "tipo": "imagem || tabela || grafico || mapa",
         "titulo": "titulo-valor",
-        "rascunhoEixoArquivoID": "EixoArquivoID",
+        "rascunhoIdUpload": "idUpload",
         "rascunhoUrl": "null || obtida do storage após upload",
         "rascunhoLocalPath": "path local do arquivo no celular do usuario.",
-        "editadoEixoArquivoID": "EixoArquivoID",
+        "editadoIdUpload": "idUpload",
         "editadoUrl": "null || obtida do storage após upload",
         "editadoLocalPath": "path local do arquivo no celular do usuario."
       }
-    },
-
-    "imagem": [
-      {
-        "id": "uid",
-        "titulo": "titulo-valor",
-        "rascunhoEixoArquivoID": "EixoArquivoID",
-        "rascunhoUrl": "null || obtida do storage após upload",
-        "rascunhoLocalPath": "path local do arquivo no celular do usuario.",
-        "editadoEixoArquivoID": "EixoArquivoID",
-        "editadoUrl": "null || obtida do storage após upload",
-        "editadoLocalPath": "path local do arquivo no celular do usuario."
-      }
-    ],
-    "tabela": [
-      {
-        "id": "uid",
-        "titulo": "titulo-valor",
-        "produtoArquivoIDRascunho": "ProdutoArquivoID",
-        "produtoArquivoIDEditado": "ProdutoArquivoID"
-      }
-    ],
-    "grafico": [
-      {
-        "id": "uid",
-        "titulo": "titulo-valor",
-        "produtoArquivoIDRascunho": "ProdutoArquivoID",
-        "produtoArquivoIDEditado": "ProdutoArquivoID"
-      }
-    ],
-    "mapa": [
-      {
-        "id": "uid",
-        "titulo": "titulo-valor",
-        "produtoArquivoIDRascunho": "ProdutoArquivoID",
-        "produtoArquivoIDEditado": "ProdutoArquivoID"
-      }
-    ]
+    }
   },
   "Produto/produtoID/ProdutoTexto": {
     "usuarioIDEditou": {
@@ -301,16 +257,5 @@
       "nome": "Usuario_nome"
     },
     "textoMarkdown": "textoMarkdown-valor"
-  },
-  "EixoArquivo": {
-    "produtoID": {
-      "id": "Produto/produtoID",
-      "nome": "Produto/produtoID$nome"
-    },
-    "titulo": "titulo-valor",
-    "referencia": "uma palavra chave para pesquisa exemplo: imagem || tabela || grafico || mapa",
-    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
-    "storagePath": "null || se tiver upload feito atualiza aqui",
-    "url": "null || se tiver upload feito atualiza aqui"
   }
 }
