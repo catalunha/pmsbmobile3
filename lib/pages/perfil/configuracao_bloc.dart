@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
+import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/eixo_model.dart';
@@ -136,7 +137,7 @@ class ConfiguracaoPageBloc {
     pullSetorCensitario();
 
     _imagemPerfil.listen(_imagemPerfilUpload);
-    uploadBloc.arquivo
+    uploadBloc.uploadModelStream
         .listen(_imagemPerfilUpdateState); //update informação do perfil
   }
 
@@ -218,13 +219,13 @@ class ConfiguracaoPageBloc {
   void _imagemPerfilUpload(String filepath) {
     print('>>>>> filepath: $filepath');
     configuracaoPageState.filePath = filepath;
-    uploadBloc.uploadFromPath(configuracaoPageState.filePath);
+    uploadBloc.fileSink(configuracaoPageState.filePath);
   }
 
-  void _imagemPerfilUpdateState(ArquivoModel arquivo) {
+  void _imagemPerfilUpdateState(UploadModel arquivo) {
     configuracaoPageState.imagemPerfilUrl = arquivo.url;
-    configuracaoPageState.imagemPerfil =
-        _firestore.collection(ArquivoModel.collection).document(arquivo.id);
+    // configuracaoPageState.imagemPerfil =
+        // _firestore.collection(ArquivoModel.collection).document(arquivo.id);
   }
 
   void _mapEventToState(ConfiguracaoPageEvent event) {

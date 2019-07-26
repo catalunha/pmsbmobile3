@@ -1,5 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
+import 'package:pmsbmibile3/state/upload_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PageEvent {}
@@ -9,11 +10,17 @@ class UpdateArquivoEvent extends PageEvent {
 
   UpdateArquivoEvent(this.arquivo);
 }
+class DeleteArquivoEvent extends PageEvent {
+  final String arquivo;
+
+  DeleteArquivoEvent(this.arquivo);
+}
 
 class SaveEvent extends PageEvent {}
 
 class PageState {
   String arquivo;
+
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['arquivo'] = this.arquivo;
@@ -24,7 +31,8 @@ class PageState {
 class DesenvolvimentoPageBloc {
   //Firestore
   final fw.Firestore _firestore;
-
+  // Upload Bloc
+  UploadBloc uploadBloc;
   //Eventos
   final BehaviorSubject<PageEvent> _eventController =
       BehaviorSubject<PageEvent>();
@@ -44,12 +52,15 @@ class DesenvolvimentoPageBloc {
     if (event is UpdateArquivoEvent) {
       _state.arquivo = event.arquivo;
     }
-    if (event is SaveEvent) {
-          print('>>> SaveEvent _state.toMap() <<< ${_state.toMap()}');
+    if (event is DeleteArquivoEvent) {
+      _state.arquivo = null;
+    }
+        if (event is SaveEvent) {
+      print('>>> SaveEvent _state.toMap() <<< ${_state.toMap()}');
     }
     if (!_stateController.isClosed) _stateController.add(_state);
     print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print('>>> event.runtimeType <<< ${event.runtimeType}');
+    print('>>> DesenvolvimentoPageBloc event.runtimeType <<< ${event.runtimeType}');
   }
 
   void dispose() {
