@@ -3,51 +3,56 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class UploadModel extends FirestoreModel {
   static final String collection = "Upload";
-  UsuarioID usuarioID;
-  String hash;
+  String usuario;
   String localPath;
   bool upload;
   String storagePath;
+  String contentType;
   String url;
-  String atualizar;
+  String hash;
+  UpdateCollection updateCollection;
 
   UploadModel(
       {String id,
-      this.usuarioID,
-      this.hash,
+      this.usuario,
       this.localPath,
       this.upload,
       this.storagePath,
+      this.contentType,
       this.url,
-      this.atualizar})
+      this.hash,
+      this.updateCollection})
       : super(id);
 
+  @override
   UploadModel fromMap(Map<String, dynamic> map) {
-    if (map.containsKey('usuarioID')) {
-      usuarioID = map['usuarioID'] != null
-          ? new UsuarioID.fromMap(map['usuarioID'])
-          : null;
-    }
-    if (map.containsKey('hash')) hash = map['hash'];
+    if (map.containsKey('usuario')) usuario = map['usuario'];
     if (map.containsKey('localPath')) localPath = map['localPath'];
     if (map.containsKey('upload')) upload = map['upload'];
     if (map.containsKey('storagePath')) storagePath = map['storagePath'];
+    if (map.containsKey('contentType')) contentType = map['contentType'];
     if (map.containsKey('url')) url = map['url'];
-    if (map.containsKey('atualizar')) atualizar = map['atualizar'];
+    if (map.containsKey('hash')) hash = map['hash'];
+    if (map.containsKey('updateCollection')) {
+      updateCollection = map['updateCollection'] != null
+          ? new UpdateCollection.fromMap(map['updateCollection'])
+          : null;
+    }
     return this;
   }
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.usuarioID != null) {
-      data['usuarioID'] = this.usuarioID.toMap();
-    }
-    if (hash != null) data['hash'] = this.hash;
+    if (usuario != null) data['usuario'] = this.usuario;
     if (localPath != null) data['localPath'] = this.localPath;
     if (upload != null) data['upload'] = this.upload;
     if (storagePath != null) data['storagePath'] = this.storagePath;
+    if (contentType != null) data['contentType'] = this.contentType;
     if (url != null) data['url'] = this.url;
-    if (atualizar != null) data['atualizar'] = this.atualizar;
+    if (hash != null) data['hash'] = this.hash;
+    if (this.updateCollection != null) {
+      data['updateCollection'] = this.updateCollection.toMap();
+    }
     return data;
   }
 }
