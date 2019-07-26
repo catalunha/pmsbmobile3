@@ -149,8 +149,33 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
   dynamic aplicado;
   UsuarioQuestionario aplicador;
 
+  QuestionarioAplicadoModel({
+    String id,
+    this.referencia,
+    this.aplicado,
+    this.aplicador,
+    String nome,
+    dynamic criado,
+    dynamic modificado,
+    UsuarioQuestionario criou,
+    UsuarioQuestionario editou,
+    Eixo eixo,
+    bool editando,
+    int ultimaOrdem,
+  }) : super(
+          id: id,
+          nome: nome,
+          criado: criado,
+          modificado: modificado,
+          criou: criou,
+          editou: editou,
+          eixo: eixo,
+          editando: editando,
+          ultimaOrdem: ultimaOrdem,
+        );
+
   @override
-  QuestionarioModel fromMap(Map<String, dynamic> map) {
+  QuestionarioAplicadoModel fromMap(Map<String, dynamic> map) {
     super.fromMap(map);
 
     referencia = map["referencia"];

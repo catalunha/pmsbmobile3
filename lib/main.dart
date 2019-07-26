@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
             },
 
             //aplicacao
-            "/aplicacao/home": (context) => AplicacaoHomePage(),
+            "/aplicacao/home": (context) => AplicacaoHomePage(authBloc),
             "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
             "/aplicacao/aplicando_pergunta": (context) =>
                 AplicacaoPerguntaPage(),

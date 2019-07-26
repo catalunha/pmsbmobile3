@@ -1,90 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/models/questionario_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page_bloc.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
+class AplicacaoHomePage extends StatelessWidget {
+  final String _eixo = "eixo exemplo";
+  final String _setor = "setor exemplo";
+  final AplicacaoHomePageBloc bloc =
+      AplicacaoHomePageBloc(Bootstrap.instance.firestore);
 
-class AplicacaoHomePage extends StatefulWidget {
-  @override
-  _AplicacaoHomePageState createState() => _AplicacaoHomePageState();
-}
-
-class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
-  List<String> _questionarioaplicado = [
-    "Questionário 01",
-    "Questionário 02",
-    "Questionário 03",
-    "Questionário 04"
-  ];
-
-  String _eixo = "eixo exemplo";
-  String _setor = "setor exemplo";
-
-  _cardText(String text) {
-    return Padding(
-        padding: EdgeInsets.only(top: 10, left: 5),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 15),
-        ));
-  }
-
-  _cardQuestionarioAplicado(index) {
-    return Card(
-        elevation: 10,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _cardText("Questionario: ${_questionarioaplicado[index]}"),
-            _cardText("Local: #local_exemplo"),
-            _cardText("Requisitos: #questionario01 => #local"),
-            ButtonTheme.bar(
-              child: ButtonBar(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.record_voice_over),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, "/aplicacao/aplicando_pergunta");
-                      //Navigator.pushNamed(context,'/aplicacao/definir_requisitos');
-                      //'/aplicacao/pendencias'
-                      //'/aplicacao/visualizar_respostas'
-                      //'/aplicacao/definir_requisitos'
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.person_add),
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/aplicacao/pendencias");
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      // Abrir questionário
-                      Navigator.pushNamed(
-                          context, "/aplicacao/momento_aplicacao");
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
-        ));
+  AplicacaoHomePage(AuthBloc authBloc) {
+    authBloc.userId.listen((userID) {
+      bloc.dispatch(UpdateUserIDEvent(userID));
+    });
   }
 
   _listaQuestionarioAplicado() {
-    return Builder(
-        builder: (BuildContext context) => new Container(
-              child: _questionarioaplicado.length >= 0
-                  ? new ListView.separated(
-                      itemCount: _questionarioaplicado.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _cardQuestionarioAplicado(index);
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          new Divider(),
-                    )
-                  : new Container(),
-            ));
+    return StreamBuilder<AplicacaoHomePageBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Text("SEM DADOS");
+        }
+        final questionarios = snapshot.data.questionariosAplicados != null
+            ? snapshot.data.questionariosAplicados
+            : [];
+        return ListView(
+          children:
+              questionarios.map((q) => QuestionarioAplicadoItem(q)).toList(),
+        );
+      },
+    );
   }
 
   _bodyTodos() {
@@ -147,5 +98,70 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
         ),
       ),
     );
+  }
+}
+
+class CardText extends StatelessWidget {
+  final String text;
+
+  const CardText(this.text, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 10, left: 5),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 15),
+      ),
+    );
+  }
+}
+
+class QuestionarioAplicadoItem extends StatelessWidget {
+  final QuestionarioAplicadoModel _questionario;
+
+  const QuestionarioAplicadoItem(this._questionario, {Key key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        elevation: 10,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CardText("Questionario: ${_questionario.nome}"),
+            CardText("Local: #local_exemplo"),
+            CardText("Requisitos: #questionario01 => #local"),
+            ButtonTheme.bar(
+              child: ButtonBar(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.record_voice_over),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, "/aplicacao/aplicando_pergunta");
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.person_add),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/aplicacao/pendencias");
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      // Abrir questionário
+                      Navigator.pushNamed(
+                          context, "/aplicacao/momento_aplicacao");
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
   }
 }
