@@ -16,4 +16,20 @@ ${usuarioModel.nome}
 ## Perfil em construção
 """;
   }
+  static generateMdFromNoticiaModelList(List<NoticiaModel> noticiaModelList) {
+    String texto = '';
+    noticiaModelList.forEach((noticia) {
+      texto += """
+# Noticias  Publicadas
+
+## ${noticia.titulo}
+id: ${noticia.id}
+
+${noticia.textoMarkdown}
+
+---
+""";
+    });
+    return texto;
+  }
 }
