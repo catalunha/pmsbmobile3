@@ -115,9 +115,10 @@ class ConfiguracaoPageBloc {
   Stream<List<SetorCensitarioModel>> get setorCensitarioModelListStream =>
       _setorCensitarioModelListController.stream;
 
-  //Imagem usuario.
+  //UploadBloc
   final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
 
+  //Imagem usuario.
   BehaviorSubject<String> _imagemPerfil = BehaviorSubject<String>();
 
   Function get updateImagemPerfil => _imagemPerfil.sink.add;

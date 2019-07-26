@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
+import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_arquivo_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento_bloc.dart';
@@ -79,6 +81,18 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     ),
                   ])),
                   Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
+                  
+                  StreamBuilder<UploadModel>(
+                      stream: bloc.uploadBloc.uploadModelStream,
+                      builder: (context, snapshot) {
+                        dynamic image = FlutterLogo();
+                        return Container(
+                          child: snapshot.data == null
+                              ? image
+                              : SquareImage(
+                                  image: NetworkImage(snapshot.data.url)),
+                        );
+                      })
                 ],
               );
             }));
