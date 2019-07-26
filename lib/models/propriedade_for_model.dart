@@ -20,38 +20,39 @@ class UsuarioArquivoID {
 }
 
 class ArquivoProduto {
-  String id;
+  // String id;
   String titulo;
   String tipo;
-  String rascunhoEixoArquivoID;
+  String rascunhoIdUpload;
   String rascunhoUrl;
   String rascunhoLocalPath;
-  String editadoEixoArquivoID;
+  String editadoIdUpload;
   String editadoUrl;
   String editadoLocalPath;
 
   ArquivoProduto(
-      {this.id,
+      {
+        // this.id,
       this.titulo,
       this.tipo,
-      this.rascunhoEixoArquivoID,
+      this.rascunhoIdUpload,
       this.rascunhoUrl,
       this.rascunhoLocalPath,
-      this.editadoEixoArquivoID,
+      this.editadoIdUpload,
       this.editadoUrl,
       this.editadoLocalPath});
 
   ArquivoProduto.fromMap(Map<dynamic, dynamic> map) {
-    if (map.containsKey('id')) id = map['id'];
+    // if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('titulo')) titulo = map['titulo'];
     if (map.containsKey('tipo')) tipo = map['tipo'];
-    if (map.containsKey('rascunhoEixoArquivoID'))
-      rascunhoEixoArquivoID = map['rascunhoEixoArquivoID'];
+    if (map.containsKey('rascunhoIdUpload'))
+      rascunhoIdUpload = map['rascunhoIdUpload'];
     if (map.containsKey('rascunhoUrl')) rascunhoUrl = map['rascunhoUrl'];
     if (map.containsKey('rascunhoLocalPath'))
       rascunhoLocalPath = map['rascunhoLocalPath'];
-    if (map.containsKey('editadoEixoArquivoID'))
-      editadoEixoArquivoID = map['editadoEixoArquivoID'];
+    if (map.containsKey('editadoIdUpload'))
+      editadoIdUpload = map['editadoIdUpload'];
     if (map.containsKey('editadoUrl')) editadoUrl = map['editadoUrl'];
     if (map.containsKey('editadoLocalPath'))
       editadoLocalPath = map['editadoLocalPath'];
@@ -59,16 +60,16 @@ class ArquivoProduto {
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    if (id != null) data['id'] = this.id;
+    // if (id != null) data['id'] = this.id;
     if (titulo != null) data['titulo'] = this.titulo;
     if (tipo != null) data['tipo'] = this.tipo;
-    if (rascunhoEixoArquivoID != null)
-      data['rascunhoEixoArquivoID'] = this.rascunhoEixoArquivoID;
+    if (rascunhoIdUpload != null)
+      data['rascunhoIdUpload'] = this.rascunhoIdUpload;
     if (rascunhoUrl != null) data['rascunhoUrl'] = this.rascunhoUrl;
     if (rascunhoLocalPath != null)
       data['rascunhoLocalPath'] = this.rascunhoLocalPath;
-    if (editadoEixoArquivoID != null)
-      data['editadoEixoArquivoID'] = this.editadoEixoArquivoID;
+    if (editadoIdUpload != null)
+      data['editadoIdUpload'] = this.editadoIdUpload;
     if (editadoUrl != null) data['editadoUrl'] = this.editadoUrl;
     if (editadoLocalPath != null)
       data['editadoLocalPath'] = this.editadoLocalPath;
@@ -77,21 +78,40 @@ class ArquivoProduto {
 
   Map<dynamic, dynamic> toMapFirestore() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    data['id'] = this.id ?? Bootstrap.instance.FieldValue.delete();
+    // data['id'] = this.id ?? Bootstrap.instance.FieldValue.delete();
     data['titulo'] = this.titulo ?? Bootstrap.instance.FieldValue.delete();
     data['tipo'] = this.tipo ?? Bootstrap.instance.FieldValue.delete();
-    data['rascunhoEixoArquivoID'] =
-        this.rascunhoEixoArquivoID ?? Bootstrap.instance.FieldValue.delete();
+    data['rascunhoIdUpload'] =
+        this.rascunhoIdUpload ?? Bootstrap.instance.FieldValue.delete();
     data['rascunhoUrl'] =
         this.rascunhoUrl ?? Bootstrap.instance.FieldValue.delete();
     data['rascunhoLocalPath'] =
         this.rascunhoLocalPath ?? Bootstrap.instance.FieldValue.delete();
-    data['editadoEixoArquivoID'] =
-        this.editadoEixoArquivoID ?? Bootstrap.instance.FieldValue.delete();
+    data['editadoIdUpload'] =
+        this.editadoIdUpload ?? Bootstrap.instance.FieldValue.delete();
     data['editadoUrl'] =
         this.editadoUrl ?? Bootstrap.instance.FieldValue.delete();
     data['editadoLocalPath'] =
         this.editadoLocalPath ?? Bootstrap.instance.FieldValue.delete();
+    return data;
+  }
+}
+
+class UpdateCollection {
+  String collection;
+  String field;
+
+  UpdateCollection({this.collection, this.field});
+
+  UpdateCollection.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('collection')) collection = map['collection'];
+    if (map.containsKey('field')) field = map['field'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (collection != null) data['collection'] = this.collection;
+    if (field != null) data['field'] = this.field;
     return data;
   }
 }

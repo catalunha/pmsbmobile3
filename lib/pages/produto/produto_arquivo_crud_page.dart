@@ -92,7 +92,7 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
             snapshot.data?.rascunhoLocalPath; //?? 'Sem arquivo';
         editadoUrl = snapshot.data?.editadoUrl; //?? 'Sem arquivo';
         editadoLocalPath = snapshot.data?.editadoLocalPath; // ?? 'Sem arquivo';
-
+// String 
         return ListView(
           padding: EdgeInsets.all(5),
           children: <Widget>[
@@ -143,16 +143,23 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
             //+++ comentar
             snapshot.data?.produtoID == null
                 ? Text("produtoID: null")
-                : Text("produtoID: ${snapshot.data.produtoID}"),
+                : Text("produtoID: " + (snapshot.data?.produtoID ?? '...')),
+            Text('snapshot.data?.produtoID: ' +
+                (snapshot.data?.produtoID ?? '...')),
             snapshot.data?.arquivoID == null
                 ? Text("arquivoID: null")
                 : Text("arquivoID: ${snapshot.data.arquivoID}"),
             snapshot.data?.titulo == null
-                ? Text("arquivoID: null")
-                : Text("arquivoID: ${snapshot.data.titulo}"),
+                ? Text("titulo: null")
+                : Text("titulo: ${snapshot.data.titulo}"),
+            Text('idUsuario: ' +
+                (snapshot.data?.produtoModel?.usuarioID?.id ?? '...')),
+            Text('uidParArquivos: ${snapshot.data?.arquivoID}'),
             Text('rascunhoUrl: $rascunhoUrl'),
+            Text('rascunhoUrl: ' + (rascunhoUrl ?? '...')),
             Text('local: $rascunhoLocalPath'),
             Text('editadoUrl: $editadoUrl'),
+            Text('editadoUrl: '+( editadoUrl ??'...')),
             Text('local: $editadoLocalPath'),
             //--- comentar
           ],

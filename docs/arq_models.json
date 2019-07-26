@@ -14,15 +14,15 @@
   "Upload": {
     "usuario": "idUsuario",
     "localPath": "path local do arquivo no celular do usuario.",
-    "atualizar": {
-      "colecao": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
-      "campo": "UsuarioID.foto || UsuarioPerfilID.arquivo || ProdutoID.uid.rascunhoIdUpload ou ProdutoID.uid.editadoIdUpload  || PerguntaAplicadaID.arquivo "
-    },
     "upload": false,
     "storagePath": "obtida do storage após upload",
+    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
     "url": "obtida do storage após upload",
     "hash": "gerado pelo dart na leitura local do arquivo",
-    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
+    "updateCollection": {
+      "collection": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
+      "field": "UsuarioID.foto || UsuarioPerfilID.arquivo || ProdutoID.uid.rascunhoIdUpload ou ProdutoID.uid.editadoIdUpload  || PerguntaAplicadaID.arquivo "
+    }
   },
   "Usuario": {
     "ID": "mesmo ID do userID do authentication(email/senha)",
