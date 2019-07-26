@@ -154,7 +154,7 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
                 : Text("titulo: ${snapshot.data.titulo}"),
             Text('idUsuario: ' +
                 (snapshot.data?.produtoModel?.usuarioID?.id ?? '...')),
-            Text('uidParArquivos: ${snapshot.data.arquivoID}'),
+            Text('uidParArquivos: ${snapshot.data?.arquivoID}'),
             Text('rascunhoUrl: $rascunhoUrl'),
             Text('rascunhoUrl: ' + (rascunhoUrl ?? '...')),
             Text('local: $rascunhoLocalPath'),
