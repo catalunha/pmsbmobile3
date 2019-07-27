@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
-import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -54,11 +52,6 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
             children: <Widget>[
               SelecionarEixo(),
               SelecionarSetorCensitario(),
-              // SelecionarTema(),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 12),
-              //   child: AtualizarEmail(),
-              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: AtualizarNumeroCelular(),
@@ -67,25 +60,7 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: AtualizarNomeNoProjeto(),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 12),
-              //   child: ImagemUnica(bloc.),
-              // ),
-              // Column(
-              //   children: <Widget>[
-              //   ],
-              // )
-              // ImagemUnica(fotoUrl: null, fotoLocalPath: null),
               FotoUsuario(),
-
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 12),
-              //   child: RaisedButton(
-              //     onPressed: () => bloc
-              //         .configuracaoPageEventSink(SaveStateToFirebaseEvent()),
-              //     child: Text("salvar"),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -152,7 +127,6 @@ class OpcoesEixo extends StatelessWidget {
             lista = snapshot.data.eixoIDAcesso;
           }
 
-          //snapshot.data.listaPossivelEixoAtual
           return SimpleDialog(
             children: lista.map((eixo) {
               return SimpleDialogOption(
@@ -275,38 +249,6 @@ class OpcoesTema extends StatelessWidget {
   }
 }
 
-// class AtualizarEmail extends StatefulWidget {
-//   @override
-//   AtualizarEmailState createState() => AtualizarEmailState();
-// }
-
-// class AtualizarEmailState extends State<AtualizarEmail> {
-//   final _controller = TextEditingController();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final bloc = Provider.of<ConfiguracaoPageBloc>(context);
-//     return StreamBuilder<UsuarioModel>(
-//         stream: bloc.usuarioModelStream,
-//         builder: (context, snapshot) {
-//           if (_controller.text == null || _controller.text.isEmpty) {
-//             _controller.text = snapshot.data?.email;
-//           }
-//           return Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               Text("Atualizar Email"),
-//               TextField(
-//                 controller: _controller,
-//                 onChanged: (email) =>
-//                     bloc.eventSink(UpdateEmailEvent(_controller.text)),
-//               ),
-//             ],
-//           );
-//         });
-//   }
-// }
-
 class AtualizarNumeroCelular extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -394,19 +336,7 @@ class FotoUsuario extends StatelessWidget {
             child: Center(child: Text('Erro.')),
           );
         }
-
-        // if (!snapshot.hasData) {
-        //   return Container(
-        //     child: Center(child: CircularProgressIndicator()),
-        //   );
-        // }
-        // fotoUrl = snapshot.data?.fotoUrl ?? 'Sem arquivo';
-        // fotoLocalPath = snapshot.data?.fotoLocalPath ?? 'Sem arquivo';
-        print('>>> fotoUrl <<< ${fotoUrl}');
-        print('>>> fotoLocalPath <<< ${fotoLocalPath}');
         return Column(
-          //  ListView(
-          //   padding: EdgeInsets.all(5),
           children: <Widget>[
             ButtonTheme.bar(
                 child: ButtonBar(children: <Widget>[
@@ -421,8 +351,9 @@ class FotoUsuario extends StatelessWidget {
                 },
               ),
             ])),
-            // Center(child: Text('Sem imagem.'));
-            ImagemUnica(fotoUrl: snapshot.data?.fotoUrl, fotoLocalPath: snapshot.data?.fotoLocalPath),
+            ImagemUnica(
+                fotoUrl: snapshot.data?.fotoUrl,
+                fotoLocalPath: snapshot.data?.fotoLocalPath),
           ],
         );
       },
@@ -467,13 +398,19 @@ class ImagemUnica extends StatelessWidget {
             child: Image.asset(fotoLocalPath),
           ));
     }
-    return foto;
-    // return Row(
-    //   children: <Widget>[
-    //     Expanded(
-    //       child: foto,
-    //     ),
-    //   ],
-    // );
+    return Row(
+      children: <Widget>[
+        Spacer(
+          flex: 3,
+        ),
+        Expanded(
+          flex: 4,
+          child: foto,
+        ),
+        Spacer(
+          flex: 3,
+        ),
+      ],
+    );
   }
 }

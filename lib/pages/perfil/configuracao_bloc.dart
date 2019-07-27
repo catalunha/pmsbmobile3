@@ -5,7 +5,6 @@ import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/models/eixo_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 /// Class base Eventos da Pagina ConfiguracaoPage
@@ -59,15 +58,10 @@ class ConfiguracaoPageState {
   String fotoUploadID;
   String fotoUrl;
   String fotoLocalPath;
-  // String email;
   String setorCensitarioIDId;
   String setorCensitarioIDnome;
   String eixoIDAtualId;
   String eixoIDAtualNome;
-
-  // String filePath;
-  // dynamic imagemPerfil;
-  // String imagemPerfilUrl;
 
   void updateStateFromUsuarioModel() {
     usuarioID = usuarioModel.id;
@@ -120,10 +114,6 @@ class ConfiguracaoPageBloc {
   Stream<UsuarioModel> get usuarioModelStream => _usuarioModelController.stream;
   Function get usuarioModelSink => _usuarioModelController.sink.add;
 
-  // // EixoModel
-  // BehaviorSubject<List<EixoModel>> _eixoModelListController =
-  //     BehaviorSubject<List<EixoModel>>();
-
 // SetorCensitarioModel
   BehaviorSubject<List<SetorCensitarioModel>>
       _setorCensitarioModelListController =
@@ -131,130 +121,23 @@ class ConfiguracaoPageBloc {
   Stream<List<SetorCensitarioModel>> get setorCensitarioModelListStream =>
       _setorCensitarioModelListController.stream;
 
-  // //UploadBloc
-  // final uploadFilePathBloc = UploadFilePathBloc(Bootstrap.instance.firestore);
-
-  //Imagem usuario.
-  // BehaviorSubject<String> _imagemPerfil = BehaviorSubject<String>();
-
-  // Function get updateImagemPerfil => _imagemPerfil.sink.add;
-
   ConfiguracaoPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
-
-    // //retorna somente id do usuario caso esteja logado
-    // FirebaseAuth.instance.onAuthStateChanged
-    //     .where((user) => user != null)
-    //     .map((user) => user.uid)
-    //     .listen((usuarioID) {
-    //   eventSink(UpdateUsuarioIDEvent(usuarioID));
-    // });
-
-    //pega lista de SetorCensitarioModel
-    // pullSetorCensitario();
-
-    // _imagemPerfil.listen(_imagemPerfilUpload);
-    // uploadFilePathBloc.uploadModelStream
-    //     .listen(_imagemPerfilUpdateState); //update informação do perfil
   }
   void dispose() {
     _usuarioModelController.close();
-//    _processForm.close();
     _setorCensitarioModelListController.close();
-    // _eixoModelListController.close();
     _eventController.close();
     _stateController.close();
   }
 
-  // void pullSetorCensitario() {
-  //   //pega lista de SetorCensitarioModel
-  //   _firestore
-  //       .collection(SetorCensitarioModel.collection)
-  //       .snapshots()
-  //       .map((snap) => snap.documents
-  //           .map((doc) =>
-  //               SetorCensitarioModel(id: doc.documentID).fromMap(doc.data))
-  //           .toList())
-  //       .pipe(_setorCensitarioModelListController);
-  // }
-
-  // void pullUsuarioModel(String usuarioID) {
-  //   print('2');
-  //   _firestore
-  //       .collection(UsuarioModel.collection)
-  //       .document(usuarioID)
-  //       .snapshots()
-  //       .where((snap) => snap.exists)
-  //       .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
-  //       .pipe(_usuarioModelController);
-  //   print('3');
-  //   usuarioModelStream.listen(upDateConfiguracaoPageStateUsuarioModel);
-  //   print('4');
-  // }
-
-  // void upDateConfiguracaoPageStateUsuarioModel(UsuarioModel perfil) {
-  //   print('5');
-  //   _state.celular = perfil.celular;
-  //   _state.nome = perfil.nome;
-  //   _state.setorCensitarioIDId = perfil.setorCensitarioID.id;
-  //   _state.setorCensitarioIDnome = perfil.setorCensitarioID.nome;
-  //   _state.eixoIDAtualId = perfil.eixoIDAtual.id;
-  //   _state.eixoIDAtualNome = perfil.eixoIDAtual.nome;
-  //   // _state.imagemPerfilUrl = perfil.foto.url;
-  //   // _state.imagemPerfil = perfil.foto.id;
-  //   print('6');
-  //   _stateController.sink.add(_state);
-  //   print('6a');
-  // }
-
-  // bool SaveStateToFirebase(String usuarioID) {
-  //   UploadID foto = null;
-  //   // UploadID(id: _state.imagemPerfil, url: _state.imagemPerfilUrl);
-  //   SetorCensitarioID setorCensitarioID = SetorCensitarioID(
-  //       id: _state.setorCensitarioIDId, nome: _state.setorCensitarioIDnome);
-  //   EixoID eixoIDAtual =
-  //       EixoID(id: _state.eixoIDAtualId, nome: _state.eixoIDAtualNome);
-  //   _firestore.collection(UsuarioModel.collection).document(usuarioID).setData({
-  //     ...UsuarioModel(
-  //       id: usuarioID,
-  //       nome: _state.nome,
-  //       celular: _state.celular,
-  //       foto: foto,
-  //       // email: _state.email,
-  //       setorCensitarioID: setorCensitarioID,
-  //       eixoIDAtual: eixoIDAtual,
-  //     ).toMap(),
-  //   }, merge: true);
-  //   return true;
-  // }
-
-  // //upload file
-  // void _imagemPerfilUpload(String filepath) {
-  //   print('>>>>> filepath: $filepath');
-  //   _state.filePath = filepath;
-  //   uploadFilePathBloc.fileSink(_state.filePath);
-  // }
-
-  // void _imagemPerfilUpdateState(UploadModel arquivo) {
-  //   _state.imagemPerfilUrl = arquivo.url;
-  //   // configuracaoPageState.imagemPerfil =
-  //   // _firestore.collection(ArquivoModel.collection).document(arquivo.id);
-  // }
-
   void _mapEventToState(ConfiguracaoPageEvent event) async {
-    // if (event is UpdateEmailEvent) {
-    //   pageState.email = event.email;
-    // }
     if (event is UpdateUsuarioIDEvent) {
       _authBloc.perfil.listen((usuario) {
         _state.usuarioModel = usuario;
         usuarioModelSink(usuario);
         _state.updateStateFromUsuarioModel();
       });
-      // print('1');
-      // _state.usuarioID = event.usuarioID;
-      // pullUsuarioModel(event.usuarioID);
-      // print('7');
     }
     if (event is PullSetorCensitarioEvent) {
       _firestore
