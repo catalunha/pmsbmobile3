@@ -60,7 +60,8 @@ class MyApp extends StatelessWidget {
             },
             "/pergunta/selecionar_requisito": (context) {
               final settings = ModalRoute.of(context).settings;
-              return SelecionarQuequisitoPerguntaPage(authBloc, settings.arguments);
+              return SelecionarQuequisitoPerguntaPage(
+                  authBloc, settings.arguments);
             },
             "/pergunta/criar_ordenar_escolha": (context) {
               final settings = ModalRoute.of(context).settings;
@@ -74,7 +75,16 @@ class MyApp extends StatelessWidget {
 
             //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(authBloc),
-            "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
+            "/aplicacao/momento_aplicacao": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return MomentoAplicacaoPage(
+                questionarioAplicadoID: settings.arguments,
+              );
+            },
+            "/aplicacao/selecionar_questionario": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return AplicacaoSelecionarQuestionarioPage(args);
+            },
             "/aplicacao/aplicando_pergunta": (context) =>
                 AplicacaoPerguntaPage(),
             "/aplicacao/pendencias": (context) => PendenciasPage(),
