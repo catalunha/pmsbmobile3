@@ -32,7 +32,7 @@
     "email": "email-valor",
     "ativo": true,
     "foto": {
-      "idUpload": "idUpload",
+      "uploadID": "UploadID",
       "url": "null || obtida do storage após upload",
       "localPath": "path local do arquivo no celular do usuario."
     },
@@ -107,7 +107,7 @@
     "_comment2": "quanto o usuario editar o perfil é que cria estes campos dependendo da situação",
     "texto": "textPlain-valor",
     "arquivo": {
-      "idUpload": "idUpload",
+      "uploadID": "UploadID",
       "url": "null || obtida do storage após upload",
       "localPath": "path local do arquivo no celular do usuario."
     }
@@ -169,7 +169,7 @@
     "texto": "valor",
     "numero": "valor",
     "arquivo1": {
-      "idUpload": {
+      "uploadID": {
         "id ou key": true,
         "url": "null || obtida do storage após upload",
         "localPath": "path local do arquivo no celular do usuario."
@@ -177,7 +177,7 @@
     },
     "arquivo2": [
       {
-        "idUpload": "UploadID",
+        "uploadID": "UploadID",
         "url": "null || obtida do storage após upload",
         "localPath": "path local do arquivo no celular do usuario."
       }
@@ -231,10 +231,10 @@
       "uid": {
         "tipo": "imagem || tabela || grafico || mapa",
         "titulo": "titulo-valor",
-        "rascunhoIdUpload": "idUpload",
+        "rascunhoIdUpload": "UploadID",
         "rascunhoUrl": "null || obtida do storage após upload",
         "rascunhoLocalPath": "path local do arquivo no celular do usuario.",
-        "editadoIdUpload": "idUpload",
+        "editadoIdUpload": "UploadID",
         "editadoUrl": "null || obtida do storage após upload",
         "editadoLocalPath": "path local do arquivo no celular do usuario."
       }
