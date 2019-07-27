@@ -5,16 +5,33 @@ import 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-class AplicacaoHomePage extends StatelessWidget {
+class AplicacaoHomePage extends StatefulWidget {
+  final AuthBloc authBloc;
+
+  const AplicacaoHomePage(this.authBloc, {Key key}) : super(key: key);
+
+  @override
+  _AplicacaoHomePageState createState() {
+    return _AplicacaoHomePageState(authBloc);
+  }
+}
+
+class _AplicacaoHomePageState extends State<AplicacaoHomePage>{
   final String _eixo = "eixo exemplo";
   final String _setor = "setor exemplo";
   final AplicacaoHomePageBloc bloc =
       AplicacaoHomePageBloc(Bootstrap.instance.firestore);
 
-  AplicacaoHomePage(AuthBloc authBloc) {
+  _AplicacaoHomePageState(AuthBloc authBloc) {
     authBloc.userId.listen((userID) {
-      bloc.dispatch(UpdateUserIDEvent(userID));
+      bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(userID));
     });
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 
   _listaQuestionarioAplicado() {
@@ -155,7 +172,8 @@ class QuestionarioAplicadoItem extends StatelessWidget {
                     onPressed: () {
                       // Abrir questionário
                       Navigator.pushNamed(
-                          context, "/aplicacao/momento_aplicacao");
+                          context, "/aplicacao/momento_aplicacao",
+                          arguments: _questionario.id);
                     },
                   ),
                 ],
