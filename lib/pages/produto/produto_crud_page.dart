@@ -1,65 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 
-class ProdutoCRUDPage extends StatelessWidget {
+class ProdutoCRUDPage extends StatefulWidget {
   final String produtoID;
+  final AuthBloc authBloc;
+
+  ProdutoCRUDPage(this.produtoID, this.authBloc);
+
+  // @override
+  @override
+  State<StatefulWidget> createState() {
+    return _ProdutoCRUDPageState(authBloc);
+  }
+}
+
+class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
   final ProdutoCRUDPageBloc bloc;
-  ProdutoCRUDPage(this.produtoID, AuthBloc authBloc)
-      : bloc = ProdutoCRUDPageBloc(Bootstrap.instance.firestore, authBloc) {
+
+  _ProdutoCRUDPageState(AuthBloc authBloc)
+      : bloc = ProdutoCRUDPageBloc(Bootstrap.instance.firestore, authBloc);
+
+  @override
+  void initState() {
+    super.initState();
     bloc.eventSink(UpdateUsuarioIDEvent());
-    bloc.eventSink(UpdateProdutoIDEvent(produtoID));
+    bloc.eventSink(UpdateProdutoIDEvent(widget.produtoID));
   }
 
-  _botaoDeletarDocumento(BuildContext context) {
-    return SafeArea(
-        child: Row(
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.all(5.0),
-            child: RaisedButton(
-                // color: Colors.red,
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) {
-                        return SimpleDialog(
-                          children: <Widget>[
-                            SimpleDialogOption(
-                              child: Text("CANCELAR EXCLUSÃO"),
-                              onPressed: () {
-                                // Navigator.pop(context);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(20),
-                            ),
-                            Divider(),
-                            SimpleDialogOption(
-                              child: Text("sim"),
-                              onPressed: () {
-                                bloc.eventSink(DeleteProdutoIDEvent());
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                },
-                child: Row(
-                  children: <Widget>[
-                    // Text('Apagar notícia', style: TextStyle(fontSize: 20)),
-                    Icon(Icons.delete)
-                  ],
-                ))),
-      ],
-    ));
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -72,8 +46,8 @@ class ProdutoCRUDPage extends StatelessWidget {
               icon: new Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Text(
-                (produtoID != null ? "Editar" : "Adicionar") + " Produto")),
+            title: Text((widget.produtoID != null ? "Editar" : "Adicionar") +
+                " Produto")),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.thumb_up),
           onPressed: () {
@@ -83,20 +57,24 @@ class ProdutoCRUDPage extends StatelessWidget {
           },
         ),
         body: ListView(
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    "Titulo do questionario:",
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  )),
-              Padding(
+          children: <Widget>[
+            Padding(
                 padding: EdgeInsets.all(5.0),
-                child: ProdutoTitulo(),
-              ),
-              _botaoDeletarDocumento(context),
-            ],
-          ),
+                child: Text(
+                  "Titulo do questionario:",
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                )),
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: ProdutoTitulo(),
+            ),
+            Divider(),
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: _DeleteDocumentOrField(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -117,10 +95,10 @@ class ProdutoTituloState extends State<ProdutoTitulo> {
     final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoCRUDPageState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-            AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.produtoModelIDNome;
+          _textFieldController.text = snapshot.data?.produtoModelIDTitulo;
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -132,6 +110,54 @@ class ProdutoTituloState extends State<ProdutoTitulo> {
           onChanged: (text) {
             bloc.eventSink(UpdateProdutoIDNomeEvent(text));
           },
+        );
+      },
+    );
+  }
+}
+
+class _DeleteDocumentOrField extends StatefulWidget {
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState();
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
+    return StreamBuilder<ProdutoCRUDPageState>(
+      stream: bloc.stateStream,
+      builder:
+          (BuildContext context, AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                  // onChanged: (text) {
+                  //   bloc.eventSink(DeleteProdutoIDEvent);
+                  // },
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                //Ir para a pagina visuais do produto
+                bloc.eventSink(DeleteProdutoIDEvent());
+                if (_textFieldController.text == 'CONCORDO') {
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
         );
       },
     );

@@ -5,7 +5,7 @@ class ProdutoModel extends FirestoreModel {
   static final String collection = "Produto";
 
   String titulo;
-  String textoMarkdownID;
+  String produtoTextoID;
   EixoID eixoID;
   DateTime modificado;
   SetorCensitarioID setorCensitarioID;
@@ -15,7 +15,7 @@ class ProdutoModel extends FirestoreModel {
   ProdutoModel({
     String id,
     this.titulo,
-    this.textoMarkdownID,
+    this.produtoTextoID,
     this.eixoID,
     this.setorCensitarioID,
     this.usuarioID,
@@ -25,8 +25,8 @@ class ProdutoModel extends FirestoreModel {
   @override
   ProdutoModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('titulo')) titulo = map['titulo'];
-    if (map.containsKey('textoMarkdownID'))
-      textoMarkdownID = map['textoMarkdownID'];
+    if (map.containsKey('produtoTextoID'))
+      produtoTextoID = map['produtoTextoID'];
     if (map.containsKey('eixoID')) {
       eixoID = map['eixoID'] != null ? new EixoID.fromMap(map['eixoID']) : null;
     }
@@ -53,7 +53,7 @@ class ProdutoModel extends FirestoreModel {
   @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (textoMarkdownID != null) data['textoMarkdownID'] = this.textoMarkdownID;
+    if (produtoTextoID != null) data['produtoTextoID'] = this.produtoTextoID;
     if (titulo != null) data['titulo'] = this.titulo;
     if (this.eixoID != null) {
       data['eixoID'] = this.eixoID.toMap();

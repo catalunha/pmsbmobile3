@@ -141,15 +141,33 @@ class ProdutoArquivoCRUDPageBloc {
     }
     if (event is UpdateArquivoRascunhoEvent) {
       _state.rascunhoLocalPath = event.arquivoRascunho;
+      _state.rascunhoUrl = null;
     }
     if (event is UpdateArquivoEditadoEvent) {
       _state.editadoLocalPath = event.arquivoEditado;
+      _state.editadoUrl = null;
     }
 
     if (event is SaveEvent) {
       if (_state.arquivoID == null) {
         final uuid = Uuid();
         _state.arquivoID = uuid.v4();
+      }
+      if (!_stateController.isClosed) _stateController.add(_state);
+
+      if (_state.rascunhoIdUpload != null && _state.rascunhoUrl == null) {
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.rascunhoIdUpload);
+        await docRef.delete();
+        _state.rascunhoIdUpload = null;
+      }
+      if (_state.editadoIdUpload != null && _state.editadoUrl == null) {
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.editadoIdUpload);
+        await docRef.delete();
+        _state.editadoIdUpload = null;
       }
       if (!_stateController.isClosed) _stateController.add(_state);
 
@@ -265,15 +283,6 @@ class ProdutoArquivoCRUDPageBloc {
       print('>>> _state.toMap() 4 <<< ${_state.toMap()}');
     }
 
-    if (event is DeleteEvent) {
-      final docRef = _firestore
-          .collection(ProdutoModel.collection)
-          .document(_state.produtoID);
-      docRef.setData({
-        "arquivo": {_state.arquivoID: Bootstrap.instance.FieldValue.delete()}
-      }, merge: true);
-    }
-
     if (event is DeleteArquivoEvent) {
       if (event.arquivoTipo == 'arquivoRascunho') {
         _state.rascunhoLocalPath = null;
@@ -283,6 +292,16 @@ class ProdutoArquivoCRUDPageBloc {
         _state.editadoUrl = null;
       }
     }
+
+    if (event is DeleteEvent) {
+      final docRef = _firestore
+          .collection(ProdutoModel.collection)
+          .document(_state.produtoID);
+      docRef.setData({
+        "arquivo": {_state.arquivoID: Bootstrap.instance.FieldValue.delete()}
+      }, merge: true);
+    }
+
     if (!_stateController.isClosed) _stateController.add(_state);
     print('>>> _state.toMap() <<< ${_state.toMap()}');
     print('>>> event.runtimeType <<< ${event.runtimeType}');
