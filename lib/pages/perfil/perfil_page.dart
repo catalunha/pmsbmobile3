@@ -44,7 +44,7 @@ class PerfilPage extends StatelessWidget {
 
   Widget _listTile(BuildContext context, UsuarioPerfilModel usuarioPerfil) {
     return Card(
-      color: (usuarioPerfil.usuarioArquivoID == null) ==
+      color: (usuarioPerfil.arquivo == null) ==
               (usuarioPerfil.textPlain == null)
           ? Colors.yellow
           : Colors.white,
@@ -62,7 +62,7 @@ class PerfilPage extends StatelessWidget {
           title: Text('${usuarioPerfil.perfilID.nome}'),
           subtitle: usuarioPerfil.textPlain != null
               ? Text('${usuarioPerfil.textPlain}')
-              : usuarioPerfil.usuarioArquivoID != null
+              : usuarioPerfil.arquivo != null
                   ? Text('Arquivo anexado com sucesso.')
                   : Text('Informe o que se pede.'),
           trailing: usuarioPerfil.perfilID.contentType == 'text' ? Icon(Icons.edit):Icon(Icons.art_track),

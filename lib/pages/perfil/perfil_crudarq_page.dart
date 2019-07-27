@@ -49,10 +49,10 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
                   child: CircularProgressIndicator(),
                 );
               }
-              print(snapshot.data.usuarioArquivoID?.url);
-              if (snapshot.data.usuarioArquivoID != null) {
+              print(snapshot.data.arquivo?.url);
+              if (snapshot.data.arquivo != null) {
                 image = SquareImage(
-                  image: NetworkImage(snapshot.data.usuarioArquivoID?.url),
+                  image: NetworkImage(snapshot.data.arquivo?.url),
                 );
               }
               return Column(

@@ -43,8 +43,7 @@ class MyApp extends StatelessWidget {
               return PerfilCRUDArqPage(settings.arguments);
             },
 
-            // "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),//apagar
-            "/perfil/configuracao": (context) => ConfiguracaoPage(),
+            "/perfil/configuracao": (context) => ConfiguracaoPage(authBloc),
 
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(),

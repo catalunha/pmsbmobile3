@@ -63,7 +63,7 @@ class ItemListView extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: SquareImage(
-                    image: NetworkImage(usuario.usuarioArquivoID.url),
+                    image: NetworkImage(usuario.foto.url),
                   )),
               Expanded(
                 flex: 5,

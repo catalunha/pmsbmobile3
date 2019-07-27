@@ -1,23 +1,28 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 
-class UsuarioArquivoID {
-  String id;
+
+class UploadID {
+  String uploadID;
   String url;
+  String localPath;
 
-  UsuarioArquivoID({this.id, this.url});
+  UploadID({this.uploadID, this.url, this.localPath});
 
-  UsuarioArquivoID.fromMap(Map<dynamic, dynamic> map) {
-    if (map.containsKey('id')) id = map['id'];
+  UploadID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('uploadID')) uploadID = map['uploadID'];
     if (map.containsKey('url')) url = map['url'];
+    if (map.containsKey('localPath')) localPath = map['localPath'];
   }
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    if (id != null) data['id'] = this.id;
+    if (uploadID != null) data['uploadID'] = this.uploadID;
     if (url != null) data['url'] = this.url;
+    if (localPath != null) data['localPath'] = this.localPath;
     return data;
   }
 }
+
 
 class ArquivoProduto {
   // String id;

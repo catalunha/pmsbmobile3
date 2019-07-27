@@ -98,7 +98,7 @@ class PerfilCRUDArqPageBloc {
       usuarioPerfilModelStream.listen((usuarioPerfilModel) {
         print('>> usuarioPerfilModel CRUDArqPage >> ${usuarioPerfilModel}');
         perfilCRUDArqPageState.usuarioArquivoIDurl =
-            usuarioPerfilModel.usuarioArquivoID?.url;
+            usuarioPerfilModel.arquivo?.url;
       });
     }
     if (event is UpDateArquivoPathEvent) {

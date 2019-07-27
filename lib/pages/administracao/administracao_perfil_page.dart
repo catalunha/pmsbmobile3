@@ -67,7 +67,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                               flex: 2,
                               child: SquareImage(
                                 image: NetworkImage(
-                                    snapshot.data.usuarioArquivoID.url),
+                                    snapshot.data.foto.url),
                               )),
                           Expanded(
                               flex: 5,
@@ -174,7 +174,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                             ),
                           ));
                     } else {
-                      if (variavel.usuarioArquivoID == null) {
+                      if (variavel.arquivo == null) {
                         return Card(
                             color: Colors.yellowAccent,
                             child: ListTile(
@@ -191,7 +191,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                         return Card(
                             child: InkWell(
                                 onTap: () {
-                                  launch(variavel.usuarioArquivoID.url);
+                                  launch(variavel.arquivo.url);
                                 },
                                 child: ListTile(
                                   title: Text(

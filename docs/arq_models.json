@@ -19,11 +19,10 @@
       "collection": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
       "field": "UsuarioID.foto || UsuarioPerfilID.arquivo || ProdutoID.uid.rascunhoIdUpload ou ProdutoID.uid.editadoIdUpload  || PerguntaAplicadaID.arquivo "
     },
-
     "storagePath": "obtida do storage após upload",
     "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
     "url": "obtida do storage após upload",
-    "hash": "gerado pelo dart na leitura local do arquivo",
+    "hash": "gerado pelo dart na leitura local do arquivo"
   },
   "Usuario": {
     "ID": "mesmo ID do userID do authentication(email/senha)",

@@ -1,30 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class ConfiguracaoPage extends StatefulWidget {
+  final AuthBloc authBloc;
+
+  const ConfiguracaoPage(this.authBloc);
+
   @override
   State<StatefulWidget> createState() {
-    return ConfiguracaoState();
+    return ConfiguracaoState(authBloc);
   }
 }
 
 class ConfiguracaoState extends State<ConfiguracaoPage> {
-  final bloc = ConfiguracaoPageBloc(Bootstrap.instance.firestore);
+  final ConfiguracaoPageBloc bloc;
+
+  ConfiguracaoState(AuthBloc authBloc)
+      : bloc = ConfiguracaoPageBloc(Bootstrap.instance.firestore, authBloc);
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.eventSink(UpdateUsuarioIDEvent());
+    bloc.eventSink(PullSetorCensitarioEvent());
+  }
 
   @override
   void dispose() {
     bloc.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Provider<ConfiguracaoPageBloc>.value(
@@ -52,10 +67,17 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: AtualizarNomeNoProjeto(),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: AtualizarImagemPerfil(),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 12),
+              //   child: ImagemUnica(bloc.),
+              // ),
+              // Column(
+              //   children: <Widget>[
+              //   ],
+              // )
+              // ImagemUnica(fotoUrl: null, fotoLocalPath: null),
+              FotoUsuario(),
+
               // Padding(
               //   padding: const EdgeInsets.symmetric(vertical: 12),
               //   child: RaisedButton(
@@ -69,7 +91,7 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            bloc.configuracaoPageEventSink(SaveStateToFirebaseEvent());
+            bloc.eventSink(SaveEvent());
             Navigator.pop(context);
           },
           child: Icon(Icons.check),
@@ -88,7 +110,7 @@ class SelecionarEixo extends StatelessWidget {
         showDialog(context: context, builder: (context) => OpcoesEixo(bloc));
       },
       child: StreamBuilder<ConfiguracaoPageState>(
-          stream: bloc.configuracaoPageStateStream,
+          stream: bloc.stateStream,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("ERRO");
@@ -101,7 +123,7 @@ class SelecionarEixo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Escolha o Eixo: ${snapshot.data.eixoIDAtualNome}"),
+                  Text("Alterar Eixo: ${snapshot.data.eixoIDAtualNome}"),
                   Icon(Icons.search),
                 ],
               ),
@@ -135,8 +157,7 @@ class OpcoesEixo extends StatelessWidget {
             children: lista.map((eixo) {
               return SimpleDialogOption(
                 onPressed: () {
-                  bloc.configuracaoPageEventSink(
-                      UpdateEixoIDAtualEvent(eixo.id, eixo.nome));
+                  bloc.eventSink(UpdateEixoIDAtualEvent(eixo.id, eixo.nome));
                   Navigator.pop(context);
                 },
                 child: Text("${eixo.nome}"),
@@ -158,7 +179,7 @@ class SelecionarSetorCensitario extends StatelessWidget {
             builder: (context) => OpcoesSetorCensitario(bloc));
       },
       child: StreamBuilder<ConfiguracaoPageState>(
-          stream: bloc.configuracaoPageStateStream,
+          stream: bloc.stateStream,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("ERRO");
@@ -172,7 +193,7 @@ class SelecionarSetorCensitario extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                      "Escolha o Setor Censitário: ${snapshot.data.setorCensitarioIDnome}"),
+                      "Alterar Setor Censitário: ${snapshot.data.setorCensitarioIDnome}"),
                   Icon(Icons.search),
                 ],
               ),
@@ -199,7 +220,7 @@ class OpcoesSetorCensitario extends StatelessWidget {
                   (setor) => SimpleDialogOption(
                     child: Text('Setor: ${setor.nome}'),
                     onPressed: () {
-                      bloc.configuracaoPageEventSink(
+                      bloc.eventSink(
                           UpdateSetorCensitarioEvent(setor.id, setor.nome));
                       Navigator.pop(context);
                     },
@@ -254,37 +275,37 @@ class OpcoesTema extends StatelessWidget {
   }
 }
 
-class AtualizarEmail extends StatefulWidget {
-  @override
-  AtualizarEmailState createState() => AtualizarEmailState();
-}
+// class AtualizarEmail extends StatefulWidget {
+//   @override
+//   AtualizarEmailState createState() => AtualizarEmailState();
+// }
 
-class AtualizarEmailState extends State<AtualizarEmail> {
-  final _controller = TextEditingController();
+// class AtualizarEmailState extends State<AtualizarEmail> {
+//   final _controller = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    final bloc = Provider.of<ConfiguracaoPageBloc>(context);
-    return StreamBuilder<UsuarioModel>(
-        stream: bloc.usuarioModelStream,
-        builder: (context, snapshot) {
-          if (_controller.text == null || _controller.text.isEmpty) {
-            _controller.text = snapshot.data?.email;
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Atualizar Email"),
-              TextField(
-                controller: _controller,
-                onChanged: (email) => bloc.configuracaoPageEventSink(
-                    UpdateEmailEvent(_controller.text)),
-              ),
-            ],
-          );
-        });
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final bloc = Provider.of<ConfiguracaoPageBloc>(context);
+//     return StreamBuilder<UsuarioModel>(
+//         stream: bloc.usuarioModelStream,
+//         builder: (context, snapshot) {
+//           if (_controller.text == null || _controller.text.isEmpty) {
+//             _controller.text = snapshot.data?.email;
+//           }
+//           return Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: <Widget>[
+//               Text("Atualizar Email"),
+//               TextField(
+//                 controller: _controller,
+//                 onChanged: (email) =>
+//                     bloc.eventSink(UpdateEmailEvent(_controller.text)),
+//               ),
+//             ],
+//           );
+//         });
+//   }
+// }
 
 class AtualizarNumeroCelular extends StatefulWidget {
   @override
@@ -308,11 +329,11 @@ class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Atualizar numero celular"),
+              Text("Atualizar número do celular"),
               TextField(
                 controller: _controller,
                 onChanged: (celular) {
-                  bloc.configuracaoPageEventSink(UpdateCelularEvent(celular));
+                  bloc.eventSink(UpdateCelularEvent(celular));
                 },
               ),
             ],
@@ -347,7 +368,7 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
               TextField(
                 controller: _controller,
                 onChanged: (nomeProjeto) {
-                  bloc.configuracaoPageEventSink(UpdateNomeEvent(nomeProjeto));
+                  bloc.eventSink(UpdateNomeEvent(nomeProjeto));
                 },
               ),
             ],
@@ -356,61 +377,103 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
   }
 }
 
-class AtualizarImagemPerfil extends StatelessWidget {
+class FotoUsuario extends StatelessWidget {
+  String fotoUrl;
+  String fotoLocalPath;
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ConfiguracaoPageBloc>(context);
-    return StreamBuilder<UsuarioModel>(
-        stream: bloc.usuarioModelStream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          var perfil = snapshot.data;
-          dynamic image = FlutterLogo();
-          if (snapshot.data.usuarioArquivoID.url != null) {
-            image =
-                SquareImage(image: NetworkImage(perfil.usuarioArquivoID.url));
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 12),
-                child: Text("Atualizar imagem do perfil"),
-              ),
-              InkWell(
-                child: Row(
-                  children: <Widget>[
-                    Spacer(
-                      flex: 2,
-                    ),
-                    StreamBuilder<UploadModel>(
-                        stream: bloc.uploadFilePathBloc.uploadModelStream,
-                        builder: (context, snapshot) {
-                          return Expanded(
-                            flex: 4,
-                            child: snapshot.data == null
-                                ? image
-                                : SquareImage(
-                                    image: NetworkImage(snapshot.data.url)),
-                          );
-                        }),
-                    Spacer(
-                      flex: 2,
-                    ),
-                  ],
-                ),
-                onTap: () async {
-                  var filepath =
-                      await FilePicker.getFilePath(type: FileType.IMAGE);
-                  bloc.updateImagemPerfil(filepath);
+
+    return StreamBuilder<ConfiguracaoPageState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<ConfiguracaoPageState> snapshot) {
+        if (snapshot.hasError) {
+          return Container(
+            child: Center(child: Text('Erro.')),
+          );
+        }
+
+        // if (!snapshot.hasData) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // }
+        // fotoUrl = snapshot.data?.fotoUrl ?? 'Sem arquivo';
+        // fotoLocalPath = snapshot.data?.fotoLocalPath ?? 'Sem arquivo';
+        print('>>> fotoUrl <<< ${fotoUrl}');
+        print('>>> fotoLocalPath <<< ${fotoLocalPath}');
+        return Column(
+          //  ListView(
+          //   padding: EdgeInsets.all(5),
+          children: <Widget>[
+            ButtonTheme.bar(
+                child: ButtonBar(children: <Widget>[
+              Text('Atualizar foto de usuario'),
+              IconButton(
+                icon: Icon(Icons.file_download),
+                onPressed: () async {
+                  await _selecionarNovoArquivo().then((arq) {
+                    fotoLocalPath = arq;
+                  });
+                  bloc.eventSink(UpdateFotoEvent(fotoLocalPath));
                 },
               ),
-            ],
-          );
-        });
+            ])),
+            // Center(child: Text('Sem imagem.'));
+            ImagemUnica(fotoUrl: snapshot.data?.fotoUrl, fotoLocalPath: snapshot.data?.fotoLocalPath),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<String> _selecionarNovoArquivo() async {
+    try {
+      var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
+      if (arquivoPath != null) {
+        // print('>> newfilepath 1 >> ${arquivoPath}');
+        return arquivoPath;
+      }
+    } catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+  }
+}
+
+class ImagemUnica extends StatelessWidget {
+  final String fotoUrl;
+  final String fotoLocalPath;
+
+  const ImagemUnica({this.fotoUrl, this.fotoLocalPath});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget foto;
+    if (fotoUrl == null && fotoLocalPath == null) {
+      foto = Center(child: Text('Sem imagem.'));
+    } else if (fotoUrl != null) {
+      foto = Container(
+          child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Image.network(fotoUrl),
+      ));
+    } else {
+      foto = Container(
+          color: Colors.yellow,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Image.asset(fotoLocalPath),
+          ));
+    }
+    return foto;
+    // return Row(
+    //   children: <Widget>[
+    //     Expanded(
+    //       child: foto,
+    //     ),
+    //   ],
+    // );
   }
 }
