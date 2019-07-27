@@ -13,10 +13,10 @@ class ProdutoHomePage extends StatelessWidget {
       : bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc) {
     // bloc.eventSink(UpdateUsuarioIDEvent());
   }
- void dispose() {
+  void dispose() {
     bloc.dispose();
   }
-  
+
   _listaProdutos(BuildContext context) {
     return StreamBuilder<List<ProdutoModel>>(
         stream: bloc.produtoModelListStream,
@@ -52,9 +52,12 @@ class ProdutoHomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: produto.titulo != null ? Text(produto.titulo):Text('Sem titulo'),
+              title: produto.titulo != null
+                  ? Text(produto.titulo)
+                  : Text('Sem titulo'),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
+                    tooltip: 'Editar titulo e apagar este produto',
                 onPressed: () {
                   //Ir a pagina de Adicionar ou editar Produtos
                   Navigator.pushNamed(context, '/produto/crud',
@@ -67,6 +70,7 @@ class ProdutoHomePage extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.text_fields),
+                    tooltip: 'Editar texto do produto',
                     onPressed: () {
                       //Ir para a pagina visuais do produto
                       Navigator.pushNamed(context, '/produto/texto',
@@ -75,6 +79,7 @@ class ProdutoHomePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.note_add),
+                    tooltip: 'Editar uma mensagem sobre este produto',
                     onPressed: () {
                       // Navigator.pushNamed(context, '/produto/imagem',
                       //     arguments: produto.id);
@@ -82,6 +87,7 @@ class ProdutoHomePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.image),
+                    tooltip: 'Gerenciar imagens para este produto',
                     onPressed: () {
                       Navigator.pushNamed(context, '/produto/arquivo_list',
                           arguments: ProdutoArguments(
@@ -90,6 +96,7 @@ class ProdutoHomePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.border_bottom),
+                    tooltip: 'Gerenciar tabelas para este produto',
                     onPressed: () {
                       Navigator.pushNamed(context, '/produto/arquivo_list',
                           arguments: ProdutoArguments(
@@ -98,6 +105,7 @@ class ProdutoHomePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.insert_chart),
+                    tooltip: 'Gerenciar gráficos para este produto',
                     onPressed: () {
                       Navigator.pushNamed(context, '/produto/arquivo_list',
                           arguments: ProdutoArguments(
@@ -105,7 +113,8 @@ class ProdutoHomePage extends StatelessWidget {
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.zoom_out_map),
+                    icon: Icon(Icons.location_on),
+                    tooltip: 'Gerenciar mapas para este produto',
                     onPressed: () {
                       Navigator.pushNamed(context, '/produto/arquivo_list',
                           arguments: ProdutoArguments(

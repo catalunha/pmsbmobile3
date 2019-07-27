@@ -1,22 +1,12 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/produto_texto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:pmsbmibile3/bootstrap.dart';
-
 class ProdutoCRUDPageEvent {}
-
-// class UpdateUsuarioIDEvent extends ProdutoCRUDPageEvent {
-//   final String usuarioID;
-
-//   UpdateUsuarioIDEvent(this.usuarioID);
-// }
 
 class UpdateUsuarioIDEvent extends ProdutoCRUDPageEvent {}
 
@@ -39,17 +29,18 @@ class DeleteProdutoIDEvent extends ProdutoCRUDPageEvent {}
 class ProdutoCRUDPageState {
   UsuarioModel usuarioModel;
   ProdutoModel produtoModel;
+
   String produtoModelID;
-  String produtoModelIDNome;
+  String produtoModelIDTitulo;
 
   void updateStateFromProdutoModel() {
-    produtoModelIDNome = produtoModel.titulo;
+    produtoModelIDTitulo = produtoModel.titulo;
   }
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['produtoModelID'] = this.produtoModelID;
-    data['produtoModelIDNome'] = this.produtoModelIDNome;
+    data['produtoModelIDTitulo'] = this.produtoModelIDTitulo;
     return data;
   }
 }
@@ -84,18 +75,21 @@ class ProdutoCRUDPageBloc {
 
   _mapEventToState(ProdutoCRUDPageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
-      _authBloc.userId.listen((userId) async{
-        final docRef = _firestore
-            .collection(UsuarioModel.collection)
-            .document(userId);
-
-        final snap = await docRef.get();
-
-        if (snap.exists) {
-          _state.usuarioModel =
-              UsuarioModel(id: snap.documentID).fromMap(snap.data);
-        }
+      _authBloc.perfil.listen((usuario) {
+        _state.usuarioModel = usuario;
       });
+      // _authBloc.userId.listen((userId) async{
+      //   final docRef = _firestore
+      //       .collection(UsuarioModel.collection)
+      //       .document(userId);
+
+      //   final snap = await docRef.get();
+
+      //   if (snap.exists) {
+      //     _state.usuarioModel =
+      //         UsuarioModel(id: snap.documentID).fromMap(snap.data);
+      //   }
+      // });
 
       //Atualiza estado com usuario logado
     }
@@ -118,12 +112,12 @@ class ProdutoCRUDPageBloc {
     }
 
     if (event is UpdateProdutoIDNomeEvent) {
-      _state.produtoModelIDNome = event.produtoIDNome;
+      _state.produtoModelIDTitulo = event.produtoIDNome;
     }
 
     if (event is SaveProdutoIDEvent) {
       final produtoModelSave = ProdutoModel(
-        titulo: _state.produtoModelIDNome,
+        titulo: _state.produtoModelIDTitulo,
         eixoID: _state.usuarioModel.eixoIDAtual,
         setorCensitarioID: _state.usuarioModel.setorCensitarioID,
         usuarioID: UsuarioID(
@@ -131,7 +125,7 @@ class ProdutoCRUDPageBloc {
         modificado: DateTime.now().toUtc(),
       );
 
-      final docRefColl =  _firestore
+      final docRefColl = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoModelID);
       await docRefColl.setData(produtoModelSave.toMap(), merge: true);
@@ -144,23 +138,28 @@ class ProdutoCRUDPageBloc {
               id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
         );
 
-        final docRefSubColl = docRefColl
-            .collection(ProdutoTextoModel.collection)
-            .document();
-       await docRefSubColl.setData(produtoTextoModelSave.toMap(), merge: true);
+        final docRefSubColl =
+            docRefColl.collection(ProdutoTextoModel.collection).document();
+        await docRefSubColl.setData(produtoTextoModelSave.toMap(), merge: true);
 
         await docRefSubColl.get().then((docSnap) {
           docRefColl
-              .setData({"textoMarkdownID": docSnap.documentID}, merge: true);
+              .setData({"produtoTextoID": docSnap.documentID}, merge: true);
         });
       }
     }
 
     if (event is DeleteProdutoIDEvent) {
-      final docRef = await _firestore
+      final docRef = _firestore
+          .collection(ProdutoModel.collection)
+          .document(_state.produtoModelID)
+          .collection('ProdutoTexto')
+          .document(_state.produtoModel.produtoTextoID);
+      await docRef.delete();
+      final docRef2 = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoModelID);
-      docRef.delete();
+      await docRef2.delete();
     }
     if (!_stateController.isClosed) _stateController.add(_state);
     print('>>> _state.toMap() <<< ${_state.toMap()}');

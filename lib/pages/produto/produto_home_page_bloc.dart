@@ -1,12 +1,8 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:pmsbmibile3/bootstrap.dart';
 
 class ProdutoHomePageEvent {}
 

@@ -128,13 +128,6 @@ class MyApp extends StatelessWidget {
                   tipo: args.tipo);
             },
 
-            //produto0
-            // "/produto": (context) => ProductPage(),
-            "/produto/adicionar_editar": (context) => AddEditProduct(),
-            "/produto/lista": (context) => ProductList(),
-            "/produto/visual": (context) => ProductVisual(),
-            "/produto/editar_visual": (context) => EditVisual(),
-
             //comunicacao
             "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
             "/noticias/noticias_visualizadas": (context) => NoticiaLidaPage(),

@@ -34,13 +34,6 @@ export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page.dart';
 
-//produto0
-export 'package:pmsbmibile3/pages/produto/product.dart';
-export 'package:pmsbmibile3/pages/produto/product_list.dart';
-export 'package:pmsbmibile3/pages/produto/product_visual.dart';
-export 'package:pmsbmibile3/pages/produto/add_edit_product.dart';
-export 'package:pmsbmibile3/pages/produto/edit_visual.dart';
-
 //pergunta
 export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
 export 'package:pmsbmibile3/pages/pergunta/criar_pergunta_tipo_page.dart';

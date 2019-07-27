@@ -226,7 +226,7 @@
       "nome": "Usuario_nome"
     },
     "modificado": "data-valor",
-    "textoMarkdownID": "data-valor",
+    "produtoTextoID": "Produto/produtoID/ProdutoTexto/produtoTextoID",
     "arquivo": {
       "uid": {
         "tipo": "imagem || tabela || grafico || mapa",
