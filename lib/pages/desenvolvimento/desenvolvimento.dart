@@ -35,6 +35,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     // bloc.eventSink(
     //     UpdateProdutoIDArquivoIDEvent(widget.produtoID, widget.arquivoID));
   }
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +69,20 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () async {
-                        bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
+                        // bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
+                        bloc.eventSink(
+                            UpdateArquivoEvent('-LkjTBbXbHxqob2t2SZS'));
                       },
                     ),
                     IconButton(
                       icon: Icon(Icons.file_download),
                       onPressed: () async {
-                        await _selecionarNovoArquivo().then((arq) {
-                          bloc.eventSink(UpdateArquivoEvent(arq));
-                        });
+                        bloc.eventSink(
+                            UpdateArquivoEvent('-LkjTBXRb1-w9_Xr7fzn'));
+
+                        // await _selecionarNovoArquivo().then((arq) {
+                        //   bloc.eventSink(UpdateArquivoEvent(arq));
+                        // });
                       },
                     ),
                     IconButton(
@@ -81,18 +91,18 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     ),
                   ])),
                   Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
-                  
-                  StreamBuilder<UploadModel>(
-                      stream: bloc.uploadBloc.uploadModelStream,
-                      builder: (context, snapshot) {
-                        dynamic image = FlutterLogo();
-                        return Container(
-                          child: snapshot.data == null
-                              ? image
-                              : SquareImage(
-                                  image: NetworkImage(snapshot.data.url)),
-                        );
-                      })
+
+                  // StreamBuilder<UploadModel>(
+                  //     stream: bloc.uploadBloc.uploadModelStream,
+                  //     builder: (context, snapshot) {
+                  //       dynamic image = FlutterLogo();
+                  //       return Container(
+                  //         child: snapshot.data == null
+                  //             ? image
+                  //             : SquareImage(
+                  //                 image: NetworkImage(snapshot.data.url)),
+                  //       );
+                  //     })
                 ],
               );
             }));

@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
+import 'package:pmsbmibile3/state/upload_filepath_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/eixo_model.dart';
@@ -116,7 +117,7 @@ class ConfiguracaoPageBloc {
       _setorCensitarioModelListController.stream;
 
   //UploadBloc
-  final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
+  final uploadFilePathBloc = UploadFilePathBloc(Bootstrap.instance.firestore);
 
   //Imagem usuario.
   BehaviorSubject<String> _imagemPerfil = BehaviorSubject<String>();
@@ -138,7 +139,7 @@ class ConfiguracaoPageBloc {
     pullSetorCensitario();
 
     _imagemPerfil.listen(_imagemPerfilUpload);
-    uploadBloc.uploadModelStream
+    uploadFilePathBloc.uploadModelStream
         .listen(_imagemPerfilUpdateState); //update informação do perfil
   }
 
@@ -220,7 +221,7 @@ class ConfiguracaoPageBloc {
   void _imagemPerfilUpload(String filepath) {
     print('>>>>> filepath: $filepath');
     configuracaoPageState.filePath = filepath;
-    uploadBloc.fileSink(configuracaoPageState.filePath);
+    uploadFilePathBloc.fileSink(configuracaoPageState.filePath);
   }
 
   void _imagemPerfilUpdateState(UploadModel arquivo) {

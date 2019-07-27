@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/pages/produto/produto_texto_page_bloc.dart';
 import 'package:provider/provider.dart';
 

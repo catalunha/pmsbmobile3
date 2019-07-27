@@ -5,19 +5,17 @@ import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/pages/upload/upload_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-
 class UploadPage extends StatelessWidget {
-
   final UploadPageBloc bloc;
 
-  UploadPage(AuthBloc authBloc) : bloc = UploadPageBloc(Bootstrap.instance.firestore, authBloc){
+  UploadPage(AuthBloc authBloc)
+      : bloc = UploadPageBloc(Bootstrap.instance.firestore, authBloc) {
     bloc.eventSink(UpdateUsuarioIDEvent());
   }
 
   void dispose() {
-    bloc.dispose();
+    // bloc.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +49,14 @@ class UploadPage extends StatelessWidget {
           //     child: CircularProgressIndicator(),
           //   );
           // }
-          var lista = snapshot.data.uploadingList;
+          // +++ Com lista de uploading
+          var lista = snapshot.data?.uploadingList;
           return ListView(
             children: lista
                 .map((uploading) => _listUpload(context, uploading))
                 .toList(),
           );
+          // --- Com lista de uploading
         });
   }
 
@@ -78,8 +78,7 @@ class UploadPage extends StatelessWidget {
         uploading.uploading
             ? CircularProgressIndicator()
             : IconButton(
-                icon:
-                    Icon(Icons.cloud_off),
+                icon: Icon(Icons.cloud_off),
                 onPressed: () {},
               ),
       ],

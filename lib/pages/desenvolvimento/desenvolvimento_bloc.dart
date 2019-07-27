@@ -8,9 +8,9 @@ import 'package:rxdart/rxdart.dart';
 class PageEvent {}
 
 class UpdateArquivoEvent extends PageEvent {
-  final String arquivo;
+  final String idUpload;
 
-  UpdateArquivoEvent(this.arquivo);
+  UpdateArquivoEvent(this.idUpload);
 }
 
 class UpdateUploadModelEvent extends PageEvent {
@@ -30,6 +30,7 @@ class SaveEvent extends PageEvent {}
 class PageState {
   String arquivo;
   UploadModel uploadModel;
+  Map<String, UploadBloc> uploading = Map<String, UploadBloc>();
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -44,7 +45,7 @@ class DesenvolvimentoPageBloc {
   final fw.Firestore _firestore;
 
   // Upload Bloc
-  final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
+  // final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
 
   //Eventos
   final BehaviorSubject<PageEvent> _eventController =
@@ -60,13 +61,37 @@ class DesenvolvimentoPageBloc {
 
   DesenvolvimentoPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
-    uploadBloc.uploadModelStream.listen((arq) => UpdateUploadModelEvent(arq));
+    // uploadBloc.uploadModelStream.listen((arq) => UpdateUploadModelEvent(arq));
   }
   _mapEventToState(PageEvent event) async {
     if (event is UpdateArquivoEvent) {
-      _state.arquivo = event.arquivo;
-      uploadBloc.fileSink(_state.arquivo);
+      // _state.arquivo = event.arquivo;
+      // uploadBloc.fileSink(_state.arquivo);
+
+      final ref = _firestore
+          .collection(UploadModel.collection)
+          .document(event.idUpload);
+      _state.uploading[event.idUpload] =
+          UploadBloc(Bootstrap.instance.firestore);
+
+      final snap = await ref.get();
+      if (snap.exists) {
+        var uploadModel = UploadModel(id: snap.documentID).fromMap(snap.data);
+
+        final blocAtual = _state.uploading[event.idUpload];
+
+        blocAtual.uploadModelSink(uploadModel);
+
+        blocAtual.stateStream.listen((estado) {
+          if (estado.uploaded == true) {
+            blocAtual.dispose();
+            _state.uploading.remove(event.idUpload);
+          }
+        });
+      }
+      print('>>> uploading.toString() <<< ${_state.uploading.toString()}');
     }
+
     if (event is UpdateUploadModelEvent) {
       _state.uploadModel = event.uploadModel;
     }
@@ -74,10 +99,10 @@ class DesenvolvimentoPageBloc {
       _state.arquivo = null;
     }
     if (event is SaveEvent) {
-      print('>>> SaveEvent _state.toMap() <<< ${_state.toMap()}');
+      // print('>>> SaveEvent _state.toMap() <<< ${_state.toMap()}');
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('>>> _state.toMap() <<< ${_state.toMap()}');
+    // print('>>> _state.toMap() <<< ${_state.toMap()}');
     print(
         '>>> DesenvolvimentoPageBloc event.runtimeType <<< ${event.runtimeType}');
   }

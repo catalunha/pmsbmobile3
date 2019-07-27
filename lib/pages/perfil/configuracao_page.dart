@@ -388,7 +388,7 @@ class AtualizarImagemPerfil extends StatelessWidget {
                       flex: 2,
                     ),
                     StreamBuilder<UploadModel>(
-                        stream: bloc.uploadBloc.uploadModelStream,
+                        stream: bloc.uploadFilePathBloc.uploadModelStream,
                         builder: (context, snapshot) {
                           return Expanded(
                             flex: 4,
