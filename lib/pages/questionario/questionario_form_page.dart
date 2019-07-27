@@ -6,9 +6,36 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 
-class QuestionarioFormPage extends StatelessWidget {
+class QuestionarioFormPage extends StatefulWidget {
+  final String questionarioID;
+  final AuthBloc authBloc;
+
+  const QuestionarioFormPage(this.authBloc, this.questionarioID, {Key key}) : super(key: key);
+
+  @override
+  _QuestionarioFormPageState createState() {
+    return _QuestionarioFormPageState();
+  }
+}
+
+class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
   final bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore);
-  String _questionarioId;
+
+  _QuestionarioFormPageState();
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(widget.questionarioID));
+    widget.authBloc.perfil.listen((usuario) {
+      bloc.dispatch(UpdateUserInfoQuestionarioFormPageBlocEvent(
+        usuario.id,
+        usuario.nome,
+        usuario.eixoIDAtual.id,
+        usuario.eixoIDAtual.nome,
+      ));
+    });
+  }
 
   Widget _btnApagar(BuildContext context) {
     return StreamBuilder<QuestionarioModel>(
@@ -46,7 +73,7 @@ class QuestionarioFormPage extends StatelessWidget {
     return StreamBuilder<QuestionarioModel>(
         stream: bloc.instance,
         builder: (context, snapshot) {
-          if (!snapshot.hasData && _questionarioId != null) {
+          if (!snapshot.hasData && widget.questionarioID != null) {
             return Center(
               child: CircularProgressIndicator(),
             );
@@ -76,21 +103,6 @@ class QuestionarioFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //manda id do questionario se existir ou null no caso de settings.arguments = null
-    _questionarioId = ModalRoute.of(context).settings.arguments;
-    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(_questionarioId));
-
-    //manda o id do usuario atual
-    final authBloc = Provider.of<AuthBloc>(context);
-    authBloc.perfil.listen((usuario) {
-      bloc.dispatch(UpdateUserInfoQuestionarioFormPageBlocEvent(
-        usuario.id,
-        usuario.nome,
-        usuario.eixoIDAtual.id,
-        usuario.eixoIDAtual.nome,
-      ));
-    });
-
     return Provider<QuestionarioFormPageBloc>.value(
       value: bloc,
       child: Scaffold(
@@ -99,7 +111,7 @@ class QuestionarioFormPage extends StatelessWidget {
               icon: new Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
+            title: Text((widget.questionarioID != null ? "Editar" : "Adicionar") +
                 " Questionario")),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.thumb_up),
