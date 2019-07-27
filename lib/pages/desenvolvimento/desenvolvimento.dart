@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
+import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_arquivo_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento_bloc.dart';
@@ -26,13 +28,17 @@ class Desenvolvimento extends StatefulWidget {
 
 class _DesenvolvimentoState extends State<Desenvolvimento> {
   final bloc = DesenvolvimentoPageBloc(Bootstrap.instance.firestore);
-  String arquivoRascunho;
 
   @override
   void initState() {
     super.initState();
     // bloc.eventSink(
     //     UpdateProdutoIDArquivoIDEvent(widget.produtoID, widget.arquivoID));
+  }
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -42,8 +48,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         title: Text('Desenvolvimento'),
         body: StreamBuilder<PageState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<PageState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<PageState> snapshot) {
               if (snapshot.hasError) {
                 return Container(
                   child: Center(child: Text('Erro.')),
@@ -55,38 +60,49 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
               //     child: Center(child: CircularProgressIndicator()),
               //   );
               // }
-              arquivoRascunho = snapshot.data?.arquivo ?? 'Sem arquivo 1';
-              arquivoRascunho = snapshot.data.arquivo ?? 'Sem arquivo 2';
-
               return ListView(
                 children: <Widget>[
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
-                  ListTile(
-                    leading: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () async {
-                          // bloc.eventSink(
-                          //     DeleteArquivoEvent('arquivoRascunho'));
-                        }),
-                    title: Text('Selecione o arquivo'),
-                    trailing: IconButton(
-                        icon: Icon(Icons.file_download),
-                        onPressed: () async {
-                          await _selecionarNovoArquivo().then((arq) {
-                            arquivoRascunho = arq;
-                          });
-                          // print('>> arquivoPath 1 >> ${arquivoRascunho}');
-                          setState(() {
-                            // ALTERA SE VAI OU NAO SER INCORPORADO O EDITADO
-                            arquivoRascunho == null
-                                ? 'Nenhum arquivo selecionado'
-                                : arquivoRascunho;
-                          });
-                          bloc.eventSink(UpdateArquivoEvent(arquivoRascunho));
-                        }),
-                  ),
-                  Text(arquivoRascunho),
+                  ButtonTheme.bar(
+                      child: ButtonBar(children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () async {
+                        // bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
+                        bloc.eventSink(
+                            UpdateArquivoEvent('-LkjTBbXbHxqob2t2SZS'));
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.file_download),
+                      onPressed: () async {
+                        bloc.eventSink(
+                            UpdateArquivoEvent('-LkjTBXRb1-w9_Xr7fzn'));
+
+                        // await _selecionarNovoArquivo().then((arq) {
+                        //   bloc.eventSink(UpdateArquivoEvent(arq));
+                        // });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.cloud_upload),
+                      onPressed: () {},
+                    ),
+                  ])),
+                  Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
+
+                  // StreamBuilder<UploadModel>(
+                  //     stream: bloc.uploadBloc.uploadModelStream,
+                  //     builder: (context, snapshot) {
+                  //       dynamic image = FlutterLogo();
+                  //       return Container(
+                  //         child: snapshot.data == null
+                  //             ? image
+                  //             : SquareImage(
+                  //                 image: NetworkImage(snapshot.data.url)),
+                  //       );
+                  //     })
                 ],
               );
             }));

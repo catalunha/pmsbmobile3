@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
+import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:provider/provider.dart';
@@ -386,8 +387,8 @@ class AtualizarImagemPerfil extends StatelessWidget {
                     Spacer(
                       flex: 2,
                     ),
-                    StreamBuilder<ArquivoModel>(
-                        stream: bloc.uploadBloc.arquivo,
+                    StreamBuilder<UploadModel>(
+                        stream: bloc.uploadFilePathBloc.uploadModelStream,
                         builder: (context, snapshot) {
                           return Expanded(
                             flex: 4,
