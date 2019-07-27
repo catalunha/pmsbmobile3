@@ -398,6 +398,7 @@ class ImagemUnica extends StatelessWidget {
             child: Image.asset(fotoLocalPath),
           ));
     }
+    
     return Row(
       children: <Widget>[
         Spacer(
