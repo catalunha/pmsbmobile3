@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
 
 class MomentoAplicacaoPage extends StatefulWidget {
+  final String usuarioID;
+  final String questionarioAplicadoID;
+
+  const MomentoAplicacaoPage(
+      {Key key, this.usuarioID, this.questionarioAplicadoID})
+      : super(key: key);
+
   @override
-  _MomentoAplicacaoPageState createState() => _MomentoAplicacaoPageState();
+  State<StatefulWidget> createState() {
+    return _MomentoAplicacaoPageState();
+  }
 }
 
 class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
-  
-  List<String> _requisitos = [
-    "QuestSel02Perg01 -> QuestAp01RefAPerg02",
-    "QuestSel02Perg02 -> QuestAp01RefBPerg02",
-  ];
-  
-  String _eixo = "eixo exemplo";
-  String _questionario = "questionarios exemplo";
-  String _local = "local exemplo";
-  String _setor = "setor exemplo";
+  final bloc = MomentoAplicacaoPageBloc(Bootstrap.instance.firestore);
+
+  final String _eixo = "eixo exemplo";
+  final String _questionario = "questionarios exemplo";
+  final String _local = "local exemplo";
+  final String _setor = "setor exemplo";
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatch(
+        UpdateIDMomentoAplicacaoPageBlocEvent(widget.questionarioAplicadoID));
+  }
 
   _botaoDeletar() {
     return SafeArea(
@@ -26,7 +40,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
             child: RaisedButton(
                 color: Colors.red,
                 onPressed: () {
-                  // Deletar essa aplicacao de questionario
+                  bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
                 },
                 child: Row(
                   children: <Widget>[
@@ -42,6 +56,9 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     return Padding(
         padding: EdgeInsets.all(5.0),
         child: TextField(
+          onChanged: (text) {
+            bloc.dispatch(UpdateReferenciaMomentoAplicacaoPageBlocEvent(text));
+          },
           keyboardType: TextInputType.multiline,
           maxLines: null,
           decoration: InputDecoration(
@@ -85,20 +102,37 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     );
   }
 
-  Widget _body() {
+  Widget _body(context) {
     return ListView(
       children: <Widget>[
         _listaDadosSuperior(),
         Divider(color: Colors.black87),
-        ListTile(
-          trailing: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                //selecionar o questionario
-              }),
-          title: Text("Escolha um questionario: "),
-          subtitle: Text("  $_questionario", style: TextStyle(fontSize: 18)),
-        ),
+        StreamBuilder<MomentoAplicacaoPageBlocState>(
+            stream: bloc.state,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return Container();
+              final questionario = snapshot?.data?.questionario;
+              final nomeQuestionario =
+                  questionario?.nome != null ? questionario.nome : "";
+              final isBound = snapshot.data.isBound;
+              return ListTile(
+                trailing: isBound
+                    ? null
+                    : IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          bloc.dispatch(
+                              CarregarListaQuestionarioMomentoAplicacaoPageBlocEvent());
+                          Navigator.pushNamed(
+                              context, "/aplicacao/selecionar_questionario",
+                              arguments: bloc);
+                          //selecionar o questionario
+                        }),
+                title: isBound ? null : Text("Escolha um questionario: "),
+                subtitle:
+                    Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
+              );
+            }),
         Divider(color: Colors.black87),
         Padding(
             padding: EdgeInsets.all(5),
@@ -116,10 +150,45 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                 }),
             title: Text("Lista de requisitos:"),
           ),
-          for (var requisito in _requisitos)
-            Padding(
-                padding: EdgeInsets.only(left: 10, top: 5),
-                child: Text(requisito, style: TextStyle(fontSize: 15)))
+          StreamBuilder<MomentoAplicacaoPageBlocState>(
+            stream: bloc.state,
+            builder: (context, snapshot) {
+              //if(!snapshot.hasData) return Container();
+              final requisitos = snapshot?.data?.requisitos;
+              final requisitosMap = requisitos != null ? requisitos : {};
+              return Column(
+                children: requisitosMap
+                    .map((k, r) {
+                      return MapEntry(
+                          k,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              FlatButton(
+                                child: Text(
+                                  "${r.referencia}",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                onPressed: (){},
+                              ),
+                              snapshot.data.requisitosSelecionados
+                                      .containsKey(k)
+                                  ? Icon(
+                                      Icons.check_circle,
+                                      color: Colors.blue,
+                                    )
+                                  : Icon(
+                                      Icons.check_circle_outline,
+                                      color: Colors.red,
+                                    ),
+                            ],
+                          ));
+                    })
+                    .values
+                    .toList(),
+              );
+            },
+          ),
         ]),
         Divider(color: Colors.black87),
         _botaoDeletar()
@@ -135,15 +204,25 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         centerTitle: true,
         title: Text("Local/Pessoa/Momento de aplicação"),
       ),
-      body: _body(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //salvar e voltar
-          Navigator.pop(context);
-        },
-        child: Icon(Icons.thumb_up),
-        backgroundColor: Colors.blue,
-      ),
+      body: _body(context),
+      floatingActionButton: StreamBuilder<MomentoAplicacaoPageBlocState>(
+          stream: bloc.state,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Container();
+
+            return FloatingActionButton(
+              onPressed: snapshot.data.isValid
+                  ? () {
+                      //salvar e voltar
+                      bloc.dispatch(SaveMomentoAplicacaoPageBlocEvent());
+                      Navigator.pop(context);
+                    }
+                  : null,
+              child: Icon(Icons.thumb_up),
+              backgroundColor:
+                  snapshot.data.isValid ? Colors.blue : Colors.grey,
+            );
+          }),
     );
   }
 }
