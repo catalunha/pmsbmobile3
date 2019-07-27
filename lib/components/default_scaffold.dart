@@ -46,11 +46,11 @@ class DefaultDrawer extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               flex: 4,
-                              child: snap.data.usuarioArquivoID.url == null
+                              child: snap.data?.foto?.url == null
                                   ? Icon(Icons.people, size: 75)
                                   : CircleImage(
                                       image: NetworkImage(
-                                          snap.data.usuarioArquivoID.url),
+                                          snap.data.foto?.url),
                                     ),
                             ),
                             Expanded(

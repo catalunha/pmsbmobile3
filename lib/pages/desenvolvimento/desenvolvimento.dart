@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
-import 'package:pmsbmibile3/models/usuario_arquivo_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento_bloc.dart';
 import 'package:rxdart/rxdart.dart';

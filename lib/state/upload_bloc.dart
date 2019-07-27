@@ -1,12 +1,8 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:mime/mime.dart';
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
-import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;

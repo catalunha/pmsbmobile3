@@ -1,5 +1,4 @@
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/eixo_arquivo_model.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';

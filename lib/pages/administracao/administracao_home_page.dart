@@ -62,9 +62,8 @@ class ItemListView extends StatelessWidget {
             children: <Widget>[
               Expanded(
                   flex: 2,
-                  child: SquareImage(
-                    image: NetworkImage(usuario.usuarioArquivoID.url),
-                  )),
+                  child: _ImagemUnica(fotoLocalPath: usuario?.foto?.localPath,fotoUrl: usuario?.foto?.url,),
+              ),
               Expanded(
                 flex: 5,
                 child: Container(
@@ -85,6 +84,50 @@ class ItemListView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+
+class _ImagemUnica extends StatelessWidget {
+  final String fotoUrl;
+  final String fotoLocalPath;
+
+  const _ImagemUnica({this.fotoUrl, this.fotoLocalPath});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget foto;
+    if (fotoUrl == null && fotoLocalPath == null) {
+      foto = Center(child: Text('Sem imagem.'));
+    } else if (fotoUrl != null) {
+      foto = Container(
+          child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Image.network(fotoUrl),
+      ));
+    } else {
+      foto = Container(
+          color: Colors.yellow,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Icon(Icons.people, size: 75),//Image.asset(fotoLocalPath),
+          ));
+    }
+    
+    return Row(
+      children: <Widget>[
+        Spacer(
+          flex: 1,
+        ),
+        Expanded(
+          flex: 8,
+          child: foto,
+        ),
+        Spacer(
+          flex: 1,
+        ),
+      ],
     );
   }
 }

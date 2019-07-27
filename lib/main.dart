@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/pages/comunicacao/noticia_lida_page.dart';
-import 'package:pmsbmibile3/pages/perfil/perfil_crud_page.dart';
-import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page.dart';
-import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
+import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -43,8 +40,7 @@ class MyApp extends StatelessWidget {
               return PerfilCRUDArqPage(settings.arguments);
             },
 
-            // "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),//apagar
-            "/perfil/configuracao": (context) => ConfiguracaoPage(),
+            "/perfil/configuracao": (context) => ConfiguracaoPage(authBloc),
 
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(),

@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/usuario_arquivo_model.dart';
-import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -103,62 +100,6 @@ class ComunicacaoHomePageBloc {
         .pipe(_noticiaModelListPublicadasController);
 
 
-      // Definir as urls dos arquivos de perfil.csv, perfil.md e perfil.pdf
-      _firestore
-          .collection(UsuarioArquivoModel.collection)
-          .where("usuarioID",
-              isEqualTo: _comunicacaoHomePageState.usuarioId)
-          .where("referencia", isEqualTo: 'noticia.csv')
-          .snapshots()
-          .map((snapDocs) => snapDocs.documents
-              .map((doc) =>
-                  UsuarioArquivoModel(id: doc.documentID).fromMap(doc.data))
-              .toList())
-          .listen((List<UsuarioArquivoModel> usuarioArquivoModelList) {
-        usuarioArquivoModelList.forEach((item) {
-          print('>>> item csv<<< ${item.url}');
-          _comunicacaoHomePageState.urlCSV = item.url;
-          comunicacaoHomePageStateSink(_comunicacaoHomePageState);
-        });
-      });
-
-      // Definir as urls dos arquivos de perfil.csv, perfil.md e perfil.pdf
-      _firestore
-          .collection(UsuarioArquivoModel.collection)
-          .where("usuarioID",
-              isEqualTo: _comunicacaoHomePageState.usuarioId)
-          .where("referencia", isEqualTo: 'noticia.pdf')
-          .snapshots()
-          .map((snapDocs) => snapDocs.documents
-              .map((doc) =>
-                  UsuarioArquivoModel(id: doc.documentID).fromMap(doc.data))
-              .toList())
-          .listen((List<UsuarioArquivoModel> usuarioArquivoModelList) {
-        usuarioArquivoModelList.forEach((item) {
-          print('>>> item pdf <<< ${item.url}');
-          _comunicacaoHomePageState.urlPDF = item.url;
-          comunicacaoHomePageStateSink(_comunicacaoHomePageState);
-        });
-      });
-
-      // Definir as urls dos arquivos de perfil.csv, perfil.md e perfil.pdf
-      _firestore
-          .collection(UsuarioArquivoModel.collection)
-          .where("usuarioID",
-              isEqualTo: _comunicacaoHomePageState.usuarioId)
-          .where("referencia", isEqualTo: 'noticia.md')
-          .snapshots()
-          .map((snapDocs) => snapDocs.documents
-              .map((doc) =>
-                  UsuarioArquivoModel(id: doc.documentID).fromMap(doc.data))
-              .toList())
-          .listen((List<UsuarioArquivoModel> usuarioArquivoModelList) {
-        usuarioArquivoModelList.forEach((item) {
-          print('>>> item md <<< ${item.url}');
-          _comunicacaoHomePageState.urlMD = item.url;
-          comunicacaoHomePageStateSink(_comunicacaoHomePageState);
-        });
-      });
       
 
 

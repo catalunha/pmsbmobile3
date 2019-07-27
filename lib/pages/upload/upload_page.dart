@@ -51,11 +51,15 @@ class UploadPage extends StatelessWidget {
           // }
           // +++ Com lista de uploading
           var lista = snapshot.data?.uploadingList;
-          return ListView(
-            children: lista
-                .map((uploading) => _listUpload(context, uploading))
-                .toList(),
-          );
+          if (lista == null) {
+            return Text("Nenhum upload pendente.");
+          } else {
+            return ListView(
+              children: lista
+                  .map((uploading) => _listUpload(context, uploading))
+                  .toList(),
+            );
+          }
           // --- Com lista de uploading
         });
   }

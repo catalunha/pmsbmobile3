@@ -8,7 +8,7 @@ class UsuarioModel extends FirestoreModel {
   String celular;
   String email;
   bool ativo;
-  UsuarioArquivoID usuarioArquivoID;
+  UploadID foto;
   List<RotaID> rotaID;
   SetorCensitarioID setorCensitarioID;
   CargoID cargoID;
@@ -22,7 +22,7 @@ class UsuarioModel extends FirestoreModel {
       this.celular,
       this.email,
       this.ativo,
-      this.usuarioArquivoID,
+      this.foto,
       this.rotaID,
       this.setorCensitarioID,
       this.cargoID,
@@ -37,9 +37,9 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('celular')) celular = map['celular'];
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
-    if (map.containsKey('usuarioArquivoID')) {
-      usuarioArquivoID = map['usuarioArquivoID'] != null
-          ? new UsuarioArquivoID.fromMap(map['usuarioArquivoID'])
+     if (map.containsKey('foto')) {
+      foto = map['foto'] != null
+          ? new UploadID.fromMap(map['foto'])
           : null;
     }
     if (map.containsKey('rotaID') && (map['rotaID'] != null)) {
@@ -81,8 +81,8 @@ class UsuarioModel extends FirestoreModel {
     if (celular != null) data['celular'] = this.celular;
     if (email != null) data['email'] = this.email;
     if (ativo != null) data['ativo'] = this.ativo;
-    if (this.usuarioArquivoID != null) {
-      data['usuarioArquivoID'] = this.usuarioArquivoID.toMap();
+    if (this.foto != null) {
+      data['foto'] = this.foto.toMap();
     }
     if (this.rotaID != null) {
       data['rotaID'] = this.rotaID.map((v) => v.toMap()).toList();

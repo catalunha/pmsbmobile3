@@ -6,7 +6,7 @@ class GeradorMdService {
 ${usuarioModel.nome}
 ====================================================
 
-![alt text](${usuarioModel.usuarioArquivoID.url})
+![alt text](${usuarioModel.foto.url})
 
 ### Id: ${usuarioModel.id}
 ### Celular: ${usuarioModel.celular}
