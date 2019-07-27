@@ -9,13 +9,13 @@ class AplicacaoHomePageBlocState {
 
 class AplicacaoHomePageBlocEvent {}
 
-class UpdateUserIDEvent extends AplicacaoHomePageBlocEvent {
+class UpdateUserIDAplicacaoHomePageBlocEvent extends AplicacaoHomePageBlocEvent {
   final String usuarioID;
 
-  UpdateUserIDEvent(this.usuarioID);
+  UpdateUserIDAplicacaoHomePageBlocEvent(this.usuarioID);
 }
 
-class UpdateQuesionarioAplicadoListEvent extends AplicacaoHomePageBlocEvent {}
+class UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent extends AplicacaoHomePageBlocEvent {}
 
 class AplicacaoHomePageBloc {
   final fsw.Firestore _firestore;
@@ -42,11 +42,13 @@ class AplicacaoHomePageBloc {
   }
 
   void _HandleInput(AplicacaoHomePageBlocEvent event) async {
-    if (event is UpdateUserIDEvent) {
-      _state.usuarioID = event.usuarioID;
-      dispatch(UpdateQuesionarioAplicadoListEvent());
+    if (event is UpdateUserIDAplicacaoHomePageBlocEvent) {
+      if(_state.usuarioID != event.usuarioID){
+        _state.usuarioID = event.usuarioID;
+        dispatch(UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent());
+      }
     }
-    if (event is UpdateQuesionarioAplicadoListEvent) {
+    if (event is UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent) {
       final querySnapshot =
           await _reference.where("aplicador.id", isEqualTo: _state.usuarioID).getDocuments();
       _state.questionariosAplicados = querySnapshot.documents
