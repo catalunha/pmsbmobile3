@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,31 +20,36 @@ class UpDateUsuarioPerfilIDEvent extends PerfilCRUDArqPageEvent {
   UpDateUsuarioPerfilIDEvent(this.usuarioPerfilID);
 }
 
-class UpDateArquivoPathEvent extends PerfilCRUDArqPageEvent {
-  final String arquivoPath;
+class UpDateArquivoEvent extends PerfilCRUDArqPageEvent {
+  final String arquivoLocalPath;
 
-  UpDateArquivoPathEvent(this.arquivoPath);
+  UpDateArquivoEvent(this.arquivoLocalPath);
 }
 
-class UpDateImagemEvent extends PerfilCRUDArqPageEvent {
-  final File imagem;
-
-  UpDateImagemEvent(this.imagem);
-}
-
-class UpLoadEvent extends PerfilCRUDArqPageEvent {}
+class SaveEvent extends PerfilCRUDArqPageEvent {}
 
 class PerfilCRUDArqPageState {
+  UsuarioPerfilModel usuarioPerfilModel;
+
   String usuarioPerfilID;
-  String arquivoPath;
-  File arquivo;
-  File imagem;
-  String usuarioArquivoIDurl;
-  String getDownloadURL;
-  @override
-  String toString() {
-    // TODO: implement toString
-    return 'PerfilCRUDArqPageState.toString: usuarioPerfilID: $usuarioPerfilID | arquivo: ${arquivo?.path} | usuarioArquivoIDurl: $usuarioArquivoIDurl';
+
+  String arquivoUploadID;
+  String arquivoUrl;
+  String arquivoLocalPath;
+
+  void updateStateFromUsuarioPerfilModel() {
+    arquivoUploadID = usuarioPerfilModel?.arquivo?.uploadID;
+    arquivoUrl = usuarioPerfilModel?.arquivo?.url;
+    arquivoLocalPath = usuarioPerfilModel?.arquivo?.localPath;
+  }
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['usuarioPerfilID'] = this.usuarioPerfilID;
+    data['arquivoUploadID'] = this.arquivoUploadID;
+    data['arquivoUrl'] = this.arquivoUrl;
+    data['arquivoLocalPath'] = this.arquivoLocalPath;
+    return data;
   }
 }
 
@@ -51,100 +58,91 @@ class PerfilCRUDArqPageBloc {
   final fsw.Firestore _firestore;
 
   // Eventos
-  final _perfilCRUDArqPageEventController =
-      BehaviorSubject<PerfilCRUDArqPageEvent>();
-  Function get perfilCRUDArqPageEventSink =>
-      _perfilCRUDArqPageEventController.sink.add;
-  Stream<PerfilCRUDArqPageEvent> get perfilCRUDArqPageEventStream =>
-      _perfilCRUDArqPageEventController.stream;
+  final _eventController = BehaviorSubject<PerfilCRUDArqPageEvent>();
+  Function get eventSink => _eventController.sink.add;
+  Stream<PerfilCRUDArqPageEvent> get eventStream => _eventController.stream;
 
   // Estados
-  PerfilCRUDArqPageState perfilCRUDArqPageState = PerfilCRUDArqPageState();
-  final _perfilCRUDArqPageStateController =
-      BehaviorSubject<PerfilCRUDArqPageState>();
-  Stream<PerfilCRUDArqPageState> get perfilCRUDArqPageStateStream =>
-      _perfilCRUDArqPageStateController.stream;
-  Function get perfilCRUDArqPageStateSink =>
-      _perfilCRUDArqPageStateController.sink.add;
+  PerfilCRUDArqPageState _state = PerfilCRUDArqPageState();
+  final _stateController = BehaviorSubject<PerfilCRUDArqPageState>();
+  Stream<PerfilCRUDArqPageState> get stateStream => _stateController.stream;
+  Function get stateSink => _stateController.sink.add;
 
   //UsuarioPerfilModel
   final _usuarioPerfilModelController = BehaviorSubject<UsuarioPerfilModel>();
   Stream<UsuarioPerfilModel> get usuarioPerfilModelStream =>
       _usuarioPerfilModelController.stream;
 
-  //UpLoadFile
-  final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
-
   PerfilCRUDArqPageBloc(this._firestore) {
-    perfilCRUDArqPageEventStream.listen(_mapEventToState);
+    eventStream.listen(_mapEventToState);
   }
 
   void dispose() {
-    _perfilCRUDArqPageStateController.close();
+    _stateController.close();
     _usuarioPerfilModelController.close();
   }
 
-
-  _mapEventToState(PerfilCRUDArqPageEvent event) {
+  _mapEventToState(PerfilCRUDArqPageEvent event) async {
     if (event is UpDateUsuarioPerfilIDEvent) {
-      perfilCRUDArqPageState.usuarioPerfilID = event.usuarioPerfilID;
-      _firestore
+      _state.usuarioPerfilID = event.usuarioPerfilID;
+      final docRef = _firestore
           .collection(UsuarioPerfilModel.collection)
-          .document(event.usuarioPerfilID)
-          .snapshots()
-          .map((snapDocs) => UsuarioPerfilModel(id: snapDocs.documentID)
-              .fromMap(snapDocs.data))
-          .pipe(_usuarioPerfilModelController);
-      usuarioPerfilModelStream.listen((usuarioPerfilModel) {
-        print('>> usuarioPerfilModel CRUDArqPage >> ${usuarioPerfilModel}');
-        perfilCRUDArqPageState.usuarioArquivoIDurl =
-            usuarioPerfilModel.arquivo?.url;
-      });
+          .document(event.usuarioPerfilID);
+      final docSnap = await docRef.get();
+
+      if (docSnap.exists) {
+        final usuarioPerfilModel =
+            UsuarioPerfilModel(id: docSnap.documentID).fromMap(docSnap.data);
+        _state.usuarioPerfilModel = usuarioPerfilModel;
+        _state.updateStateFromUsuarioPerfilModel();
+      } else {
+        print('>>> Perfil Nao econtrado <<< ');
+      }
     }
-    if (event is UpDateArquivoPathEvent) {
-      perfilCRUDArqPageState.arquivoPath = event.arquivoPath;
-      File arquivo = File(perfilCRUDArqPageState.arquivoPath);
-      perfilCRUDArqPageState.arquivo = arquivo;
+    if (event is UpDateArquivoEvent) {
+      _state.arquivoLocalPath = event.arquivoLocalPath;
+      _state.arquivoUrl = null;
     }
-    if (event is UpDateImagemEvent) {
-      perfilCRUDArqPageState.imagem = event.imagem;
-      perfilCRUDArqPageState.arquivo = perfilCRUDArqPageState.imagem;
-    }
-    if (event is UpLoadEvent) {
-      if (perfilCRUDArqPageState.arquivo != null) {
-        saveStateToFirebaseEvent(perfilCRUDArqPageState.arquivo);
+    if (event is SaveEvent) {
+      if (_state.arquivoUploadID != null && _state.arquivoUrl == null) {
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.arquivoUploadID);
+        await docRef.delete();
+        _state.arquivoUploadID = null;
+      }
+      if (_state.arquivoLocalPath != null) {
+        //+++ Cria doc em UpLoadCollection
+        final upLoadModel = UploadModel(
+          usuario: _state.usuarioPerfilModel.usuarioID.id,
+          localPath: _state.arquivoLocalPath,
+          upload: false,
+          updateCollection: UpdateCollection(
+              collection: UsuarioPerfilModel.collection,
+              field: "${_state.usuarioPerfilID}.arquivo.uploadID"),
+        );
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.arquivoUploadID);
+        await docRef.setData(upLoadModel.toMap(), merge: true);
+        _state.arquivoUploadID = docRef.documentID;
+        //--- Cria doc em UpLoadCollection
+
+        UsuarioPerfilModel usuarioPerfilModel = UsuarioPerfilModel(
+          arquivo: UploadID(
+              uploadID: _state.arquivoUploadID,
+              localPath: _state.arquivoLocalPath),
+        );
+        final docRef2 = _firestore
+            .collection(UsuarioPerfilModel.collection)
+            .document(_state.usuarioPerfilID);
+        await docRef2.setData(usuarioPerfilModel.toMap(), merge: true);
       }
     }
 
-    perfilCRUDArqPageStateSink(perfilCRUDArqPageState);
-  }
-
-  Future<String> uploadfirebaseStorage(File file) async {
-    print('Storaging to ${file}');
-    File _file = file;
-
-    final uuid = Uuid();
-    final String filename = uuid.v4();
-    final storageRef = await FirebaseStorage.instance.ref().child(filename);
-
-    final StorageTaskSnapshot task = await storageRef.putFile(file).onComplete;
-    final String fileUrl = await task.ref.getDownloadURL();
-    print('Storage in url ${fileUrl}');
-    perfilCRUDArqPageState.getDownloadURL = fileUrl;
-
-    return fileUrl;
-  }
-
-  void saveStateToFirebaseEvent(File file) async {
-    await uploadfirebaseStorage(file);
-    _firestore
-        .collection(UsuarioPerfilModel.collection)
-        .document(perfilCRUDArqPageState.usuarioPerfilID)
-        .setData({
-      "usuarioArquivoID": {
-        "id": "${perfilCRUDArqPageState.usuarioPerfilID}",
-        "url": perfilCRUDArqPageState.getDownloadURL
-      }
-    }, merge: true);
+    if (!_stateController.isClosed) _stateController.add(_state);
+    print('>>> _state.toMap() <<< ${_state.toMap()}');
+    print('>>> _state.toMap() <<< ${_state.usuarioPerfilModel.toMap()}');
+    print('ccc: PerfilCRUDArqPageBloc ${event.runtimeType}');
   }
 }

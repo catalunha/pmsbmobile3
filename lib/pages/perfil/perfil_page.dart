@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_page_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:pmsbmibile3/state/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:pmsbmibile3/pages/perfil/perfil_bloc.dart';
 
 class PerfilPage extends StatelessWidget {
   // const PerfilPage({Key key}) : super(key: key);
@@ -59,13 +53,13 @@ class PerfilPage extends StatelessWidget {
           }
         },
         child: ListTile(
-          title: Text('${usuarioPerfil.perfilID.nome}'),
+          title: Text('${usuarioPerfil?.perfilID?.nome}'),
           subtitle: usuarioPerfil.textPlain != null
-              ? Text('${usuarioPerfil.textPlain}')
+              ? Text('${usuarioPerfil?.textPlain}')
               : usuarioPerfil.arquivo != null
                   ? Text('Arquivo anexado com sucesso.')
                   : Text('Informe o que se pede.'),
-          trailing: usuarioPerfil.perfilID.contentType == 'text' ? Icon(Icons.edit):Icon(Icons.art_track),
+          trailing: usuarioPerfil.perfilID?.contentType == 'text' ? Icon(Icons.edit):Icon(Icons.art_track),
         ),
       ),
     );

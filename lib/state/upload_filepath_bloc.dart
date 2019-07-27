@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:mime/mime.dart';
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/arquivo_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
