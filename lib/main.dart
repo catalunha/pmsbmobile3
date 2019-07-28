@@ -81,6 +81,7 @@ class MyApp extends StatelessWidget {
             "/aplicacao/momento_aplicacao": (context) {
               final settings = ModalRoute.of(context).settings;
               return MomentoAplicacaoPage(
+                authBloc,
                 questionarioAplicadoID: settings.arguments,
               );
             },
