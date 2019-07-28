@@ -9,13 +9,22 @@ class AplicacaoHomePageBlocState {
 
 class AplicacaoHomePageBlocEvent {}
 
-class UpdateUserIDAplicacaoHomePageBlocEvent extends AplicacaoHomePageBlocEvent {
+class QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent
+    extends AplicacaoHomePageBlocEvent {}
+
+class UpdateUserIDAplicacaoHomePageBlocEvent
+    extends AplicacaoHomePageBlocEvent {
   final String usuarioID;
 
   UpdateUserIDAplicacaoHomePageBlocEvent(this.usuarioID);
 }
 
-class UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent extends AplicacaoHomePageBlocEvent {}
+class UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent
+    extends AplicacaoHomePageBlocEvent {
+  final fsw.QuerySnapshot snapshot;
+
+  UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent(this.snapshot);
+}
 
 class AplicacaoHomePageBloc {
   final fsw.Firestore _firestore;
@@ -43,15 +52,22 @@ class AplicacaoHomePageBloc {
 
   void _HandleInput(AplicacaoHomePageBlocEvent event) async {
     if (event is UpdateUserIDAplicacaoHomePageBlocEvent) {
-      if(_state.usuarioID != event.usuarioID){
+      if (_state.usuarioID != event.usuarioID) {
         _state.usuarioID = event.usuarioID;
-        dispatch(UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent());
+        dispatch(QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent());
       }
     }
+    if (event is QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent) {
+      _reference
+          .where("aplicador.id", isEqualTo: _state.usuarioID)
+          .snapshots()
+          .listen((snapshot) {
+        dispatch(
+            UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent(snapshot));
+      });
+    }
     if (event is UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent) {
-      final querySnapshot =
-          await _reference.where("aplicador.id", isEqualTo: _state.usuarioID).getDocuments();
-      _state.questionariosAplicados = querySnapshot.documents
+      _state.questionariosAplicados = event.snapshot.documents
           .map((doc) =>
               QuestionarioAplicadoModel(id: doc.documentID).fromMap(doc.data))
           .toList();
