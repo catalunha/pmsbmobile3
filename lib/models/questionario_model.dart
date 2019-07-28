@@ -176,7 +176,7 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
 
   @override
   QuestionarioAplicadoModel fromMap(Map<String, dynamic> map) {
-    super.fromMap(map);
+
 
     referencia = map["referencia"];
 
@@ -187,6 +187,7 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
     } else {
       aplicador = UsuarioQuestionario();
     }
+    return super.fromMap(map);
   }
 
   @override
