@@ -16,7 +16,7 @@ class AplicacaoHomePage extends StatefulWidget {
   }
 }
 
-class _AplicacaoHomePageState extends State<AplicacaoHomePage>{
+class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   final String _eixo = "eixo exemplo";
   final String _setor = "setor exemplo";
   final AplicacaoHomePageBloc bloc =
@@ -149,8 +149,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             CardText("Questionario: ${_questionario.nome}"),
-            CardText("Local: #local_exemplo"),
-            CardText("Requisitos: #questionario01 => #local"),
+            CardText("Referencia: ${_questionario.referencia}"),
             ButtonTheme.bar(
               child: ButtonBar(
                 children: <Widget>[
