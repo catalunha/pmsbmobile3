@@ -2,6 +2,8 @@ import 'package:pmsbmibile3/models/base_model.dart';
 
 class PerguntaAplicadaModel extends PerguntaModel {
   static final String collection = "PerguntaAplicada";
+
+  PerguntaAplicadaModel({String id}) : super(id: id);
 }
 
 /// Classe que representa um modelo da coleção Pergunta
@@ -66,7 +68,6 @@ class PerguntaModel extends FirestoreModel {
     this.dataCriacao,
     this.dataEdicao,
     this.observacao,
-
     this.texto,
     this.arquivo,
     this.coordenada,
@@ -152,7 +153,6 @@ class PerguntaModel extends FirestoreModel {
     if (referencia != null) map["referencia"] = referencia;
 
     if (ordem != null) map["ordem"] = ordem;
-
 
     if (titulo != null) map["titulo"] = titulo;
 
