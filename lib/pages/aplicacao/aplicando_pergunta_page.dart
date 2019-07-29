@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart';
 
@@ -34,37 +35,43 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     return Row(
       children: <Widget>[
         Expanded(
-            flex: 2,
-            child: Padding(
-                padding: EdgeInsets.all(5),
-                child: RaisedButton(
-                    color: Colors.green,
-                    onPressed: () {
-                      bloc.dispatch(PularAplicandoPerguntaPageBlocEvent());
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text('Pular', style: TextStyle(fontSize: 20)),
-                        Icon(Icons.undo, textDirection: TextDirection.rtl)
-                      ],
-                    )))),
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.all(5),
+            child: RaisedButton(
+              color: Colors.green,
+              onPressed: () {
+                bloc.dispatch(PularAplicandoPerguntaPageBlocEvent());
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text('Pular', style: TextStyle(fontSize: 20)),
+                  Icon(Icons.undo, textDirection: TextDirection.rtl)
+                ],
+              ),
+            ),
+          ),
+        ),
         Expanded(
-            flex: 2,
-            child: Padding(
-                padding: EdgeInsets.all(5),
-                child: RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {
-                      bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent());
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text('Salvar', style: TextStyle(fontSize: 20)),
-                        Icon(Icons.thumb_up)
-                      ],
-                    )))),
+          flex: 2,
+          child: Padding(
+            padding: EdgeInsets.all(5),
+            child: RaisedButton(
+              color: Colors.blue,
+              onPressed: () {
+                bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent());
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text('Salvar', style: TextStyle(fontSize: 20)),
+                  Icon(Icons.thumb_up)
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -122,6 +129,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                   title: Text(snapshot.data.perguntaAtual.titulo),
                   subtitle: Text(snapshot.data.perguntaAtual.textoMarkdown),
                 )),
+            Text(snapshot.data.perguntaAtual.tipo.nome),
             Divider(color: Colors.black54),
             Padding(
                 padding: EdgeInsets.all(5),
@@ -139,7 +147,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 )),
             Divider(color: Colors.black54),
             // Widget de tipo pergunta
-            PerguntaAplicada(snapshot.data.perguntaAtual),
+            PerguntaAplicada(bloc, snapshot.data.perguntaAtual),
             Padding(padding: EdgeInsets.all(5)),
             _botoes()
           ],
@@ -170,21 +178,18 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
 }
 
 class PerguntaAplicada extends StatelessWidget {
-  PerguntaAplicada(this.perguntaAplicada, {Key key})
+  PerguntaAplicada(this.bloc, this.perguntaAplicada, {Key key})
       : assert(perguntaAplicada != null),
         super(key: key);
-
-  final mapaTipoPergunta = MapaPerguntasWidget();
+  final AplicandoPerguntaPageBloc bloc;
   final PerguntaAplicadaModel perguntaAplicada;
 
   @override
   Widget build(BuildContext context) {
-//    mapaTipoPergunta.getWigetPergunta(
-//      tipo: PerguntaTipoModel.ENUM[perguntaAplicada.tipo],
-//      entrada: perguntaAplicada,
-//    );
-    return Center(
-      child: Text("Pergutna "),
+    return MapaPerguntasWidget.getWigetPergunta(
+      bloc,
+      PerguntaTipoModel.ENUM[perguntaAplicada.tipo.id],
+      perguntaAplicada,
     );
   }
 }

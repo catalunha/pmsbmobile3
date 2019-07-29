@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 
 List<Map<String, dynamic>> perguntasquesitoescolhamultipla = [
   {'pergunta': 'Opcao ', 'checkbox': false},
@@ -11,10 +12,10 @@ List<Map<String, dynamic>> perguntasquesitoescolhamultipla = [
 ];
 
 class PerguntaEscolhaMultiplaWidget extends StatefulWidget {
-  final List entrada;
-
-  const PerguntaEscolhaMultiplaWidget({Key key, @required this.entrada,})
+  const PerguntaEscolhaMultiplaWidget(this.pergunta,{Key key, @required this.entrada,})
       : super(key: key);
+  final List entrada;
+  final PerguntaAplicadaModel pergunta;
 
   @override
   _PerguntaEscolhaMultiplaWidgetState createState() =>
