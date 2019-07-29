@@ -1,15 +1,46 @@
 import 'package:pmsbmibile3/models/base_model.dart';
+import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 
 class PerguntaAplicadaModel extends PerguntaModel {
   static final String collection = "PerguntaAplicada";
 
-  PerguntaAplicadaModel({String id}) : super(id: id);
+  PerguntaAplicadaModel({String id, this.temPendencias: true}) : super(id: id);
+
+  bool temPendencias;
+
+  bool get foiRespondida {
+    //TODO: completar implementação desta flag
+    final tipoEnum = PerguntaTipoModel.ENUM[tipo];
+    switch (tipoEnum) {
+      case PerguntaTipoEnum.Texto:
+        if (texto != null) return true;
+        break;
+      case PerguntaTipoEnum.Imagem:
+        // TODO: Handle this case.
+        break;
+      case PerguntaTipoEnum.Arquivo:
+        // TODO: Handle this case.
+        break;
+      case PerguntaTipoEnum.Numero:
+        if (numero != null) return true;
+        break;
+      case PerguntaTipoEnum.Coordenada:
+        if (coordenada != null && coordenada.isNotEmpty) return true;
+        break;
+      case PerguntaTipoEnum.EscolhaUnica:
+        // TODO: Handle this case.
+        break;
+      case PerguntaTipoEnum.EscolhaMultipla:
+        // TODO: Handle this case.
+        break;
+    }
+    return false;
+  }
 
   @override
   PerguntaAplicadaModel fromMap(Map<String, dynamic> map) {
     return super.fromMap(map);
   }
-
 }
 
 /// Classe que representa um modelo da coleção Pergunta
@@ -195,6 +226,7 @@ class Questionario {
   String nome;
 
   String referencia;
+
   /// Referencia do questionarioAplicado
   Questionario(this.id, this.nome, {this.referencia});
 
