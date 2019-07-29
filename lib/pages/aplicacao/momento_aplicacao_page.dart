@@ -22,6 +22,7 @@ class MomentoAplicacaoPage extends StatefulWidget {
 class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
   final bloc = MomentoAplicacaoPageBloc(Bootstrap.instance.firestore);
 
+  //TODO: subistituir o preambulo desta pagina
   final String _eixo = "eixo exemplo";
   final String _questionario = "questionarios exemplo";
   final String _local = "local exemplo";
@@ -196,8 +197,9 @@ class ListaRequisitos extends StatelessWidget {
               title: Text("Lista de requisitos:"),
             ),
             ...requisitosMap
-                .map((k, r) {
-                  return MapEntry(
+                .map(
+                  (k, r) {
+                    return MapEntry(
                       k,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,8 +232,10 @@ class ListaRequisitos extends StatelessWidget {
                                   color: Colors.red,
                                 ),
                         ],
-                      ));
-                })
+                      ),
+                    );
+                  },
+                )
                 .values
                 .toList(),
             Divider(color: Colors.black87),
@@ -270,19 +274,20 @@ class _ReferenciaInput extends State<ReferenciaInput> {
           _controller.text = snapshot.data.referencia;
         }
         return Padding(
-            padding: EdgeInsets.all(5.0),
-            child: TextField(
-              controller: _controller,
-              onChanged: (text) {
-                widget.bloc.dispatch(
-                    UpdateReferenciaMomentoAplicacaoPageBlocEvent(text));
-              },
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-            ));
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            controller: _controller,
+            onChanged: (text) {
+              widget.bloc.dispatch(
+                  UpdateReferenciaMomentoAplicacaoPageBlocEvent(text));
+            },
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+        );
       },
     );
   }
