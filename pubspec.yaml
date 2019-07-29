@@ -52,7 +52,7 @@ dependencies:
   markdown: ^2.0.3
   flutter_html_to_pdf: ^0.4.3
   webview_flutter: ^0.3.10+3
-  #simple_permissions: ^0.1.9
+  permission_handler: ^3.2.1+1
 
 dev_dependencies:
   flutter_test:

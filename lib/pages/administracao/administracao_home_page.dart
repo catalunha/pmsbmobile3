@@ -111,7 +111,8 @@ class _ImagemUnica extends StatelessWidget {
           color: Colors.yellow,
           child: Padding(
             padding: const EdgeInsets.all(2.0),
-            child: Icon(Icons.people, size: 75),//Image.asset(fotoLocalPath),
+            // child: Icon(Icons.people, size: 75),//Image.asset(fotoLocalPath),
+            child: Image.asset(fotoLocalPath),
           ));
     }
     
