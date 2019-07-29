@@ -93,7 +93,10 @@ class MyApp extends StatelessWidget {
               final args = ModalRoute.of(context).settings.arguments;
               return AplicacaoPerguntaPage(args);
             },
-            "/aplicacao/pendencias": (context) => PendenciasPage(),
+            "/aplicacao/pendencias": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return PendenciasPage(args);
+            },
             "/aplicacao/visualizar_respostas": (context) =>
                 VisualizarRespostasPage(),
             "/aplicacao/definir_requisitos": (context) {

@@ -163,7 +163,8 @@ class QuestionarioAplicadoItem extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.person_add),
                     onPressed: () {
-                      Navigator.pushNamed(context, "/aplicacao/pendencias");
+                      Navigator.pushNamed(context, "/aplicacao/pendencias",
+                          arguments: _questionario.id);
                     },
                   ),
                   IconButton(
