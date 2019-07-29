@@ -116,7 +116,9 @@ class QuestionarioItem extends StatelessWidget {
         //mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: _questionario?.nome==null ? Text('Sem nome'):Text(_questionario?.nome),
+            title: _questionario?.nome == null
+                ? Text('Sem nome')
+                : Text(_questionario?.nome),
             subtitle: Text("Último editor: ${_questionario.editou.nome}"),
           ),
           // Text("Eixo: ${_questionario.eixo.nome}"),
@@ -126,6 +128,7 @@ class QuestionarioItem extends StatelessWidget {
               alignment: MainAxisAlignment.start,
               children: <Widget>[
                 IconButton(
+                  tooltip: 'Criar perguntas neste questionário',
                   icon: Icon(Icons.list),
                   onPressed: () {
                     // Listar paginas de perguntas
@@ -137,6 +140,19 @@ class QuestionarioItem extends StatelessWidget {
                   },
                 ),
                 IconButton(
+                  tooltip: 'Conferir todas as perguntas criadas',
+                  icon: Icon(Icons.assignment_turned_in),
+                  onPressed: () {
+                    // Listar paginas de perguntas
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   '/pergunta/home',
+                    //   arguments: _questionario.id,
+                    // );
+                  },
+                ),
+                IconButton(
+                  tooltip: 'Editar este questionario.',
                   icon: Icon(Icons.edit),
                   onPressed: () {
                     Navigator.pushNamed(

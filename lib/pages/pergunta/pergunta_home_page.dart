@@ -145,6 +145,7 @@ class PerguntaItem extends StatelessWidget {
             child: ButtonBar(
               children: <Widget>[
                 IconButton(
+                  tooltip: 'Descer ordem da pergunta',
                   icon: Icon(Icons.arrow_downward),
                   onPressed: down
                       ? () {
@@ -155,6 +156,7 @@ class PerguntaItem extends StatelessWidget {
                       : null,
                 ),
                 IconButton(
+                  tooltip: 'Subir ordem na pergunta',
                   icon: Icon(Icons.arrow_upward),
                   onPressed: up
                       ? () {
@@ -165,6 +167,7 @@ class PerguntaItem extends StatelessWidget {
                       : null,
                 ),
                 IconButton(
+                  tooltip: 'Editar esta pergunta',
                   icon: Icon(Icons.edit),
                   onPressed: () {
                     final result = Navigator.pushNamed(
