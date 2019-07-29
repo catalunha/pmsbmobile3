@@ -116,10 +116,11 @@ class QuestionarioItem extends StatelessWidget {
         //mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: Text(_questionario.nome),
+            title: _questionario?.nome==null ? Text('Sem nome'):Text(_questionario?.nome),
+            subtitle: Text("Último editor: ${_questionario.editou.nome}"),
           ),
-          Text("Eixo: ${_questionario.eixo.nome}"),
-          Text("Editado por: ${_questionario.editou.nome}"),
+          // Text("Eixo: ${_questionario.eixo.nome}"),
+          // Text("Último editor: ${_questionario.editou.nome}"),
           ButtonTheme.bar(
             child: ButtonBar(
               alignment: MainAxisAlignment.start,

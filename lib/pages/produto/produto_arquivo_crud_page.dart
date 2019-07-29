@@ -267,8 +267,8 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
               icon: Icon(Icons.delete),
               onPressed: () {
                 //Ir para a pagina visuais do produto
-                bloc.eventSink(DeleteEvent());
                 if (_textFieldController.text == 'CONCORDO') {
+                bloc.eventSink(DeleteEvent());
                   Navigator.of(context).pop();
                 }
               },

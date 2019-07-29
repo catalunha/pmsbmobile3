@@ -10,37 +10,37 @@ class QuestionarioFormPage extends StatelessWidget {
   final bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore);
   String _questionarioId;
 
-  Widget _btnApagar(BuildContext context) {
-    return StreamBuilder<QuestionarioModel>(
-        stream: bloc.instance,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
-          return SafeArea(
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: RaisedButton(
-                    color: Colors.red,
-                    onPressed: () {
-                      bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Text('Apagar', style: TextStyle(fontSize: 20)),
-                        Icon(Icons.delete)
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-  }
+  // Widget _btnApagar(BuildContext context) {
+  //   return StreamBuilder<QuestionarioModel>(
+  //       stream: bloc.instance,
+  //       builder: (context, snapshot) {
+  //         if (!snapshot.hasData) {
+  //           return Container();
+  //         }
+  //         return SafeArea(
+  //           child: Row(
+  //             children: <Widget>[
+  //               Padding(
+  //                 padding: EdgeInsets.all(5.0),
+  //                 child: RaisedButton(
+  //                   color: Colors.red,
+  //                   onPressed: () {
+  //                     bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
+  //                     Navigator.pop(context);
+  //                   },
+  //                   child: Row(
+  //                     children: <Widget>[
+  //                       Text('Apagar', style: TextStyle(fontSize: 20)),
+  //                       Icon(Icons.delete)
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       });
+  // }
 
   _body(context) {
     return StreamBuilder<QuestionarioModel>(
@@ -68,7 +68,11 @@ class QuestionarioFormPage extends StatelessWidget {
                 padding: EdgeInsets.all(5.0),
                 child: NomeFormItem(),
               ),
-              _btnApagar(context),
+              // _btnApagar(context),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: _DeleteDocumentOrField(),
+              )
             ],
           );
         });
@@ -142,6 +146,54 @@ class NomeFormItemState extends State<NomeFormItem> {
           onChanged: (text) {
             bloc.dispatch(UpdateNomeQuestionarioFormPageBlocEvent(text));
           },
+        );
+      },
+    );
+  }
+}
+
+class _DeleteDocumentOrField extends StatefulWidget {
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState();
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<QuestionarioFormPageBloc>(context);
+    return StreamBuilder<QuestionarioModel>(
+      stream: bloc.instance,
+      builder:
+          (BuildContext context, AsyncSnapshot<QuestionarioModel> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                  // onChanged: (text) {
+                  //   bloc.eventSink(DeleteProdutoIDEvent);
+                  // },
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                //Ir para a pagina visuais do produto
+                if (_textFieldController.text == 'CONCORDO') {
+                  bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
         );
       },
     );
