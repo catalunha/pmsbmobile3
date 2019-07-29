@@ -97,13 +97,14 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
             TituloArquivo(),
             ButtonTheme.bar(
                 child: ButtonBar(children: <Widget>[
-              Text('Rascunho'),
+              Text('Apagar rascunho'),
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () async {
                   bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
                 },
               ),
+              Text('Trocar rascunho'),
               IconButton(
                 icon: Icon(Icons.file_download),
                 onPressed: () async {
@@ -113,13 +114,18 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
                   bloc.eventSink(UpdateArquivoRascunhoEvent(rascunhoLocalPath));
                 },
               ),
-              Text('Editado'),
+                ])),
+            ButtonTheme.bar(
+                child: ButtonBar(children: <Widget>[
+              Text('Apagar editado'),
+
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () async {
                   bloc.eventSink(DeleteArquivoEvent('arquivoEditado'));
                 },
               ),
+              Text('Trocar editado'),
               IconButton(
                 icon: Icon(Icons.file_download),
                 onPressed: () async {

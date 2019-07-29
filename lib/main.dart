@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (context) => HomePage(),
-            //Desenvolvimento
-            "/desenvolvimento": (context) => Desenvolvimento(),
+            // //Desenvolvimento
+            // "/desenvolvimento": (context) => Desenvolvimento(),
 
             //Upload
             "/upload": (context) => UploadPage(authBloc),

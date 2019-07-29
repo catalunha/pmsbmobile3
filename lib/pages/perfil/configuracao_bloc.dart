@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
@@ -177,6 +178,11 @@ class ConfiguracaoPageBloc {
       }
       UploadID foto = UploadID(
           uploadID: _state.fotoUploadID, localPath: _state.fotoLocalPath);
+      // final Map<dynamic, dynamic> foto = new Map<dynamic, dynamic>();
+      // foto['uploadID'] = _state.fotoUploadID;
+      // foto['localPath'] = _state.fotoLocalPath;
+      // foto['url'] = Bootstrap.instance.FieldValue.delete();
+
       SetorCensitarioID setorCensitarioID = SetorCensitarioID(
           id: _state.setorCensitarioIDId, nome: _state.setorCensitarioIDnome);
       EixoID eixoIDAtual =
@@ -184,14 +190,17 @@ class ConfiguracaoPageBloc {
       final docRef2 = _firestore
           .collection(UsuarioModel.collection)
           .document(_state.usuarioID);
-      UsuarioModel usuarioModel = UsuarioModel(
-        nome: _state.nome,
-        celular: _state.celular,
-        foto: foto,
-        setorCensitarioID: setorCensitarioID,
-        eixoIDAtual: eixoIDAtual,
-      );
-      await docRef2.setData(usuarioModel.toMap(), merge: true);
+      final Map<String, dynamic> usuarioModel = new Map<String, dynamic>();
+
+      // UsuarioModel usuarioModel = UsuarioModel(
+        usuarioModel['nome']= _state.nome;
+        usuarioModel['celular']= _state.celular;
+        usuarioModel['foto']= foto.toMapFirestore();
+        usuarioModel['setorCensitarioID']= setorCensitarioID.toMap();
+        usuarioModel['eixoIDAtual']= eixoIDAtual.toMap();
+      // );
+
+      await docRef2.setData(usuarioModel, merge: true);
     }
     if (event is UpdateNomeEvent) {
       _state.nome = event.nomeProjeto;

@@ -45,14 +45,29 @@ class DefaultDrawer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Expanded(
-                              flex: 4,
-                              child: snap.data?.foto?.url == null
-                                  ? Icon(Icons.people, size: 75)
-                                  : CircleImage(
-                                      image: NetworkImage(
-                                          snap.data.foto?.url),
-                                    ),
-                            ),
+                                flex: 4,
+                                child: snap.data?.foto?.url == null
+                                    ? Container(
+                                        color: Colors.yellow,
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: CircleAvatar(
+                                              backgroundImage: ExactAssetImage(
+                                                  snap.data?.foto?.localPath),
+                                              minRadius: 50,
+                                              maxRadius: 50,
+                                            )))
+
+                                    // ? Icon(Icons.people, size: 75)
+                                    // : CircleImage(
+                                    //     image: NetworkImage(snap.data.foto?.url),
+                                    //   ),
+                                    : CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(snap.data?.foto?.url),
+                                        minRadius: 50,
+                                        maxRadius: 50,
+                                      )),
                             Expanded(
                               flex: 8,
                               child: Container(
@@ -84,13 +99,13 @@ class DefaultDrawer extends StatelessWidget {
                 );
               },
             ),
-            ListTile(
-              title: Text('Desenvolvimento'),
-              trailing: Icon(Icons.hourglass_empty),
-              onTap: () {
-                Navigator.pushReplacementNamed(context, "/desenvolvimento");
-              },
-            ),
+            // ListTile(
+            //   title: Text('Desenvolvimento'),
+            //   trailing: Icon(Icons.hourglass_empty),
+            //   onTap: () {
+            //     Navigator.pushReplacementNamed(context, "/desenvolvimento");
+            //   },
+            // ),
             ListTile(
               title: Text('Upload'),
               trailing: Icon(Icons.file_upload),

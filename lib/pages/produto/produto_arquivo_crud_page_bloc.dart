@@ -141,36 +141,45 @@ class ProdutoArquivoCRUDPageBloc {
     if (event is UpdateArquivoRascunhoEvent) {
       _state.rascunhoLocalPath = event.arquivoRascunho;
       _state.rascunhoUrl = null;
+      _state.rascunhoIdUpload = null;
     }
     if (event is UpdateArquivoEditadoEvent) {
       _state.editadoLocalPath = event.arquivoEditado;
       _state.editadoUrl = null;
+      _state.editadoIdUpload = null;
     }
-
+    if (event is DeleteArquivoEvent) {
+      if (event.arquivoTipo == 'arquivoRascunho') {
+        _state.rascunhoLocalPath = null;
+        _state.rascunhoUrl = null;
+        _state.rascunhoIdUpload = null;
+      } else {
+        _state.editadoLocalPath = null;
+        _state.editadoUrl = null;
+        _state.editadoIdUpload = null;
+      }
+    }
     if (event is SaveEvent) {
       if (_state.arquivoID == null) {
         final uuid = Uuid();
         _state.arquivoID = uuid.v4();
       }
       if (!_stateController.isClosed) _stateController.add(_state);
-      //TODO: colocar as funcoes abaixo em apagar arquivo.
-      //+++
-      if (_state.rascunhoIdUpload != null && _state.rascunhoUrl == null) {
+      //+++ Se novo localPath apagar uploads
+      if (_state.rascunhoUrl == null) {
         final docRef = _firestore
             .collection(UploadModel.collection)
-            .document(_state.rascunhoIdUpload);
+            .document(_state.arquivo.rascunhoIdUpload);
         await docRef.delete();
-        _state.rascunhoIdUpload = null;
       }
-      if (_state.editadoIdUpload != null && _state.editadoUrl == null) {
+      if (_state.editadoUrl == null) {
         final docRef = _firestore
             .collection(UploadModel.collection)
-            .document(_state.editadoIdUpload);
+            .document(_state.arquivo.editadoIdUpload);
         await docRef.delete();
-        _state.editadoIdUpload = null;
       }
       if (!_stateController.isClosed) _stateController.add(_state);
-      //+++
+      //---
 
       if (_state.rascunhoLocalPath != null) {
         //+++ Cria doc em UpLoadCollection
@@ -202,7 +211,8 @@ class ProdutoArquivoCRUDPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
-              field: "${_state.produtoID}.arquivo.${_state.arquivoID}.editadoUrl"),
+              field:
+                  "${_state.produtoID}.arquivo.${_state.arquivoID}.editadoUrl"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)
@@ -212,36 +222,6 @@ class ProdutoArquivoCRUDPageBloc {
         //--- Cria doc em UpLoadCollection
       }
       if (!_stateController.isClosed) _stateController.add(_state);
-
-      if (!_stateController.isClosed) _stateController.add(_state);
-      print('>>> _state.toMap() 2 <<< ${_state.toMap()}');
-
-      //+++ Apagar rascunho em UpLoadCollection
-      if (_state.rascunhoLocalPath == null && _state.rascunhoUrl == null) {
-        if (_state.rascunhoIdUpload != null) {
-          final docRef = _firestore
-              .collection(UploadModel.collection)
-              .document(_state.rascunhoIdUpload);
-          await docRef.delete();
-          _state.rascunhoIdUpload = null;
-        }
-      }
-      //--- Apagar rascunho em UpLoadCollection
-
-      if (!_stateController.isClosed) _stateController.add(_state);
-      print('>>> _state.toMap() 3 <<< ${_state.toMap()}');
-
-      //+++ Apagar editado em UpLoadCollection
-      if (_state.editadoLocalPath == null && _state.editadoUrl == null) {
-        if (_state.editadoIdUpload != null) {
-          final docRef = _firestore
-              .collection(UploadModel.collection)
-              .document(_state.editadoIdUpload);
-          await docRef.delete();
-          _state.editadoIdUpload = null;
-        }
-      }
-      //--- Apagar editado em UpLoadCollection
 
       ArquivoProduto imagemSave;
       if (_state.arquivoID == null) {
@@ -282,16 +262,6 @@ class ProdutoArquivoCRUDPageBloc {
 
       if (!_stateController.isClosed) _stateController.add(_state);
       print('>>> _state.toMap() 4 <<< ${_state.toMap()}');
-    }
-
-    if (event is DeleteArquivoEvent) {
-      if (event.arquivoTipo == 'arquivoRascunho') {
-        _state.rascunhoLocalPath = null;
-        _state.rascunhoUrl = null;
-      } else {
-        _state.editadoLocalPath = null;
-        _state.editadoUrl = null;
-      }
     }
 
     if (event is DeleteEvent) {
