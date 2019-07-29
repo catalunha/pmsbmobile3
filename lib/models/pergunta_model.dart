@@ -4,6 +4,12 @@ class PerguntaAplicadaModel extends PerguntaModel {
   static final String collection = "PerguntaAplicada";
 
   PerguntaAplicadaModel({String id}) : super(id: id);
+
+  @override
+  PerguntaAplicadaModel fromMap(Map<String, dynamic> map) {
+    return super.fromMap(map);
+  }
+
 }
 
 /// Classe que representa um modelo da coleção Pergunta
@@ -188,17 +194,21 @@ class Questionario {
   /// Nome do Questionario para que não seja necessario buscar em outra coleção
   String nome;
 
-  Questionario(this.id, this.nome);
+  String referencia;
+  /// Referencia do questionarioAplicado
+  Questionario(this.id, this.nome, {this.referencia});
 
   Questionario.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     nome = map["nome"];
+    referencia = map["referencia"];
   }
 
   Map<dynamic, dynamic> toMap() {
     final map = Map<dynamic, dynamic>();
     if (id != null) map["id"] = id;
     if (nome != null) map["nome"] = nome;
+    if (referencia != null) map["referencia"] = referencia;
     return map;
   }
 }

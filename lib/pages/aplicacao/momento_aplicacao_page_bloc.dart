@@ -45,6 +45,14 @@ class UpdateUsuarioMomentoAplicacaoPageBlocEvent
   UpdateUsuarioMomentoAplicacaoPageBlocEvent(this.usuario);
 }
 
+class SelecionarRequisitoMomentoAplicacaoPageBlocEvent
+    extends MomentoAplicacaoPageBlocEvent {
+  final String referencia;
+  final String id;
+
+  SelecionarRequisitoMomentoAplicacaoPageBlocEvent(this.referencia, this.id);
+}
+
 class MomentoAplicacaoPageBlocState {
   String questionarioAplicadoID;
   String referencia;
@@ -84,7 +92,7 @@ class MomentoAplicacaoPageBloc
   void validateState() {
     bool valid = true;
 
-    if(!currentState.isBound && currentState.questionario == null){
+    if (!currentState.isBound && currentState.questionario == null) {
       valid = false;
     }
 
@@ -98,7 +106,6 @@ class MomentoAplicacaoPageBloc
 
   @override
   Future<void> mapEventToState(MomentoAplicacaoPageBlocEvent event) async {
-
     if (event is UpdateUsuarioMomentoAplicacaoPageBlocEvent) {
       currentState.usuarioNome = event.usuario.nome;
       currentState.usuarioID = event.usuario.id;
@@ -171,6 +178,10 @@ class MomentoAplicacaoPageBloc
       }
     }
 
+    if(event is SelecionarRequisitoMomentoAplicacaoPageBlocEvent){
+      currentState.requisitosSelecionados[event.referencia] = event.id;
+    }
+
     if (event is DeleteMomentoAplicacaoPageBlocEvent) {
       final ref = _firestore
           .collection(QuestionarioAplicadoModel.collection)
@@ -187,6 +198,7 @@ class MomentoAplicacaoPageBloc
       });
     }
     if (event is SaveMomentoAplicacaoPageBlocEvent) {
+      //TODO: quando salvar atualizar os requisitos
       if (!currentState.isBound) {
         final ref = _firestore
             .collection(QuestionarioAplicadoModel.collection)
@@ -204,26 +216,27 @@ class MomentoAplicacaoPageBloc
 
   void criar_questionario_aplicado(fsw.DocumentReference ref) {
     //criar questionario aplicado
-    QuestionarioAplicadoModel model =
+    QuestionarioAplicadoModel qmodel =
         QuestionarioAplicadoModel().fromMap(currentState.questionario.toMap());
     final usuario = UsuarioQuestionario(
         id: currentState.usuarioID, nome: currentState.usuarioNome);
 
-    model.referencia = currentState.referencia;
-    model.aplicador = usuario;
-    model.aplicado = DateTime.now();
+    qmodel.referencia = currentState.referencia;
+    qmodel.aplicador = usuario;
+    qmodel.aplicado = DateTime.now();
 
-    ref.setData(model.toMap(), merge: true);
+    ref.setData(qmodel.toMap(), merge: true);
 
     //cria pergutnas aplicadas
     final perguntasAplicadasRef =
         _firestore.collection(PerguntaAplicadaModel.collection);
     currentState.perguntas.forEach((pergunta) {
-      final model =
+      PerguntaAplicadaModel pmodel =
           PerguntaAplicadaModel(id: pergunta.id).fromMap(pergunta.toMap());
-      model.questionario.id = ref.documentID;
+      pmodel.questionario.id = ref.documentID;
+      pmodel.questionario.referencia = currentState.referencia;
       final perguntaAplicadaRef = perguntasAplicadasRef.document();
-      perguntaAplicadaRef.setData(model.toMap());
+      perguntaAplicadaRef.setData(pmodel.toMap());
     });
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 
 class MomentoAplicacaoPage extends StatefulWidget {
   final String usuarioID;
@@ -42,19 +43,21 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         child: Row(
       children: <Widget>[
         Padding(
-            padding: EdgeInsets.all(5.0),
-            child: RaisedButton(
-                color: Colors.red,
-                onPressed: () {
-                  bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
-                  Navigator.pop(context);
-                },
-                child: Row(
-                  children: <Widget>[
-                    Text('Apagar', style: TextStyle(fontSize: 20)),
-                    Icon(Icons.delete)
-                  ],
-                ))),
+          padding: EdgeInsets.all(5.0),
+          child: RaisedButton(
+            color: Colors.red,
+            onPressed: () {
+              bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+              Navigator.pop(context);
+            },
+            child: Row(
+              children: <Widget>[
+                Text('Apagar', style: TextStyle(fontSize: 20)),
+                Icon(Icons.delete)
+              ],
+            ),
+          ),
+        ),
       ],
     ));
   }
@@ -190,13 +193,6 @@ class ListaRequisitos extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              trailing: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    //selecionar requisitos
-                    Navigator.pushNamed(
-                        context, '/aplicacao/definir_requisitos');
-                  }),
               title: Text("Lista de requisitos:"),
             ),
             ...requisitosMap
@@ -207,19 +203,30 @@ class ListaRequisitos extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           FlatButton(
-                            child: Text(
-                              "${r.referencia}",
-                              style: TextStyle(fontSize: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "${r.referencia}",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                Icon(Icons.search),
+                              ],
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/aplicacao/definir_requisitos',
+                                  arguments: DefinirRequisitosPageArguments(
+                                      bloc, r.referencia));
+                            },
                           ),
-                          snapshot.data.requisitosSelecionados.containsKey(k)
+                          snapshot.data.requisitosSelecionados
+                                  .containsKey(r.referencia)
                               ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.blue,
+                                  Icons.check,
+                                  color: Colors.green,
                                 )
                               : Icon(
-                                  Icons.check_circle_outline,
+                                  Icons.check,
                                   color: Colors.red,
                                 ),
                         ],
