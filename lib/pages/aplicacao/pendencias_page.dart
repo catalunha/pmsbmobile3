@@ -25,15 +25,7 @@ class _PendenciasPageState extends State<PendenciasPage> {
         widget.questionarioAplicadoID));
   }
 
-  List<String> _tipoperguntas = [
-    "01 - Pergunta texto",
-    "02 - Pergunta imagem",
-    "03 - Pergunta numero",
-    "04 - Pergunta coordenada",
-    "05 - Pergunta escolha unica",
-    "06 - Pergunta escolha multipla"
-  ];
-
+  //TODO: substituir o preambulo desta pagina
   String _eixo = "eixo exemplo";
   String _setor = "setor exemplo";
   String _questionario = "questionario exemplo";
@@ -122,7 +114,6 @@ class PerguntaAplicadaListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return ListTile(
       title: Text(_perguntaAplicada.titulo),
       trailing: IconButton(
