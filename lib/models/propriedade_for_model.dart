@@ -1,6 +1,5 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 
-
 class UploadID {
   String uploadID;
   String url;
@@ -21,8 +20,16 @@ class UploadID {
     if (localPath != null) data['localPath'] = this.localPath;
     return data;
   }
-}
 
+  Map<dynamic, dynamic> toMapFirestore() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    data['uploadID'] = this.uploadID ?? Bootstrap.instance.FieldValue.delete();
+    data['url'] = this.url ?? Bootstrap.instance.FieldValue.delete();
+    data['localPath'] =
+        this.localPath ?? Bootstrap.instance.FieldValue.delete();
+    return data;
+  }
+}
 
 class ArquivoProduto {
   // String id;
@@ -37,7 +44,7 @@ class ArquivoProduto {
 
   ArquivoProduto(
       {
-        // this.id,
+      // this.id,
       this.titulo,
       this.tipo,
       this.rascunhoIdUpload,
@@ -73,8 +80,7 @@ class ArquivoProduto {
     if (rascunhoUrl != null) data['rascunhoUrl'] = this.rascunhoUrl;
     if (rascunhoLocalPath != null)
       data['rascunhoLocalPath'] = this.rascunhoLocalPath;
-    if (editadoIdUpload != null)
-      data['editadoIdUpload'] = this.editadoIdUpload;
+    if (editadoIdUpload != null) data['editadoIdUpload'] = this.editadoIdUpload;
     if (editadoUrl != null) data['editadoUrl'] = this.editadoUrl;
     if (editadoLocalPath != null)
       data['editadoLocalPath'] = this.editadoLocalPath;
