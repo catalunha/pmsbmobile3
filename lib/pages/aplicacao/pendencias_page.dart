@@ -18,11 +18,11 @@ class PendenciasPage extends StatefulWidget {
 class _PendenciasPageState extends State<PendenciasPage> {
   final bloc = PendenciasPageBloc(Bootstrap.instance.firestore);
 
-
   @override
   void initState() {
     super.initState();
-    bloc.dispatch(UpdateQuestionarioIDPendenciasPageBlocEvent(widget.questionarioAplicadoID));
+    bloc.dispatch(UpdateQuestionarioIDPendenciasPageBlocEvent(
+        widget.questionarioAplicadoID));
   }
 
   List<String> _tipoperguntas = [
@@ -126,8 +126,10 @@ class PerguntaAplicadaListItem extends StatelessWidget {
     return ListTile(
       title: Text(_perguntaAplicada.titulo),
       trailing: IconButton(
-        icon: Icon(Icons.check),
-        onPressed: onPressed,
+        icon: _perguntaAplicada.temPendencias
+            ? Icon(Icons.clear, color: Colors.red)
+            : Icon(Icons.check, color: Colors.green),
+        onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
       ),
     );
   }
