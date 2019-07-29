@@ -59,7 +59,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
         if (!snapshot.hasData) {
           return Text("SEM DADOS");
         }
-        return _textoTopo("Questionario - ${snapshot.data.questionario?.nome}");
+        return _textoTopo("Questionario: ${snapshot.data.questionario?.nome}");
       },
     );
   }
@@ -75,9 +75,9 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
           return Text("SEM DADOS");
         }
         if (snapshot.data.instance != null) {
-          return _textoTopo("Pergunta - ${snapshot.data.instance.titulo}");
+          return _textoTopo("Pergunta: ${snapshot.data.instance.titulo}");
         } else {
-          return _textoTopo("Pergunta - criando");
+          return _textoTopo("Pergunta: criando");
         }
       },
     );
@@ -132,27 +132,27 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     );
   }
 
-  _botaoDeletarPergunta() {
-    return SafeArea(
-        child: Row(
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.all(5.0),
-            child: RaisedButton(
-                color: Colors.red,
-                onPressed: () {
-                  bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
-                  Navigator.pop(context, "pergunta deletada");
-                },
-                child: Row(
-                  children: <Widget>[
-                    Text('Apagar', style: TextStyle(fontSize: 20)),
-                    Icon(Icons.delete)
-                  ],
-                ))),
-      ],
-    ));
-  }
+  // _botaoDeletarPergunta() {
+  //   return SafeArea(
+  //       child: Row(
+  //     children: <Widget>[
+  //       Padding(
+  //           padding: EdgeInsets.all(5.0),
+  //           child: RaisedButton(
+  //               color: Colors.red,
+  //               onPressed: () {
+  //                 bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+  //                 Navigator.pop(context, "pergunta deletada");
+  //               },
+  //               child: Row(
+  //                 children: <Widget>[
+  //                   Text('Apagar', style: TextStyle(fontSize: 20)),
+  //                   Icon(Icons.delete)
+  //                 ],
+  //               ))),
+  //     ],
+  //   ));
+  // }
 
   _textoMarkdownField() {
     return StreamBuilder<EditarApagarPerguntaBlocState>(
@@ -256,7 +256,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               _texto("Texto da pergunta:"),
               _textoMarkdownField(),
               Padding(padding: EdgeInsets.all(10)),
-              _botaoDeletarPergunta(),
+              // _botaoDeletarPergunta(),
+              _DeleteDocumentOrField(),
             ],
           ),
         ),
@@ -474,6 +475,55 @@ class TituloInputFieldState extends State<TituloInputField> {
           );
         },
       ),
+    );
+  }
+}
+
+
+class _DeleteDocumentOrField extends StatefulWidget {
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState();
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+      stream: bloc.state,
+      builder:
+          (BuildContext context, AsyncSnapshot<EditarApagarPerguntaBlocState> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                  // onChanged: (text) {
+                  //   bloc.eventSink(DeleteProdutoIDEvent);
+                  // },
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                //Ir para a pagina visuais do produto
+                if (_textFieldController.text == 'CONCORDO') {
+                  bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }

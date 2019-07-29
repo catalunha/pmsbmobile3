@@ -21,7 +21,7 @@ class EixoAtualUsuario extends StatelessWidget {
           );
         }
         return Text(
-          "Eixo - ${snapshot.data.eixoIDAtual.nome}",
+          "Eixo: ${snapshot.data.eixoIDAtual.nome}",
           style: TextStyle(fontSize: 16, color: Colors.blue),
         );
       },

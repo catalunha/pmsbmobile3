@@ -35,7 +35,7 @@ class PerguntaHomePage extends StatelessWidget {
           }
           final questionario = snapshot.data.questionarioInstance;
           return Text(
-            "Questionario - ${questionario.nome}",
+            "Questionario: ${questionario.nome}",
             style: TextStyle(fontSize: 16, color: Colors.blue),
           );
         });
@@ -135,6 +135,7 @@ class PerguntaItem extends StatelessWidget {
             trailing: Text("${_pergunta.ordem}"),
             subtitle: Column(
               children: <Widget>[
+                Text("Tipo: ${_pergunta.tipo.nome}"),
                 Text("${_pergunta.id}"),
                 Text("${_pergunta.referencia}"),
               ],
