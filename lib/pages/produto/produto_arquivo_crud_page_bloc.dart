@@ -153,7 +153,8 @@ class ProdutoArquivoCRUDPageBloc {
         _state.arquivoID = uuid.v4();
       }
       if (!_stateController.isClosed) _stateController.add(_state);
-
+      //TODO: colocar as funcoes abaixo em apagar arquivo.
+      //+++
       if (_state.rascunhoIdUpload != null && _state.rascunhoUrl == null) {
         final docRef = _firestore
             .collection(UploadModel.collection)
@@ -169,6 +170,7 @@ class ProdutoArquivoCRUDPageBloc {
         _state.editadoIdUpload = null;
       }
       if (!_stateController.isClosed) _stateController.add(_state);
+      //+++
 
       if (_state.rascunhoLocalPath != null) {
         //+++ Cria doc em UpLoadCollection
@@ -179,7 +181,7 @@ class ProdutoArquivoCRUDPageBloc {
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
               field:
-                  "${_state.produtoID}.${_state.arquivoID}.rascunhoIdUpload"),
+                  "${_state.produtoID}.arquivo.${_state.arquivoID}.rascunhoUrl"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)
@@ -200,7 +202,7 @@ class ProdutoArquivoCRUDPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
-              field: "${_state.produtoID}.${_state.arquivoID}.editadoIdUpload"),
+              field: "${_state.produtoID}.arquivo.${_state.arquivoID}.editadoUrl"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)
@@ -311,74 +313,3 @@ class ProdutoArquivoCRUDPageBloc {
     _eventController.close();
   }
 }
-// Future<String> uploadStorage(String filePath) async {
-//   final uuid = Uuid();
-//   File file = File(filePath);
-
-//   final String filename = uuid.v4();
-//   final storageRef = await FirebaseStorage.instance.ref().child(filename);
-
-//   final StorageTaskSnapshot task =
-//       await storageRef.putFile(file).onComplete;
-
-//   final String fileUrl = await task.ref.getDownloadURL();
-//   print('Storage in url ${fileUrl}');
-
-//   return fileUrl;
-// }
-
-// void saveStateToFirebaseEvent(File file) async {
-//   await uploadfirebaseStorage(file);
-//   _firestore
-//       .collection(UsuarioPerfilModel.collection)
-//       .document(perfilCRUDArqPageState.usuarioPerfilID)
-//       .setData({
-//     "usuarioArquivoID": {
-//       "id": "${perfilCRUDArqPageState.usuarioPerfilID}",
-//       "url": perfilCRUDArqPageState.getDownloadURL
-//     }
-//   }, merge: true);
-// }
-
-// if (_state.arquivoRascunho != null) {
-//   var a = uploadStorage(_state.arquivoRascunho);
-//   a.then((arqPath) {
-//     print('then Storage in url ${arqPath}');
-
-//     _state.arquivoRascunho = arqPath;
-//   });
-// }
-// if (_state.arquivoEditado != null) {
-//   var b = uploadStorage(_state.arquivoEditado);
-//   b.then((arqPath) {
-//     _state.arquivoEditado = arqPath;
-//   });
-// }
-// print('>>> _state.toMap() <<< ${_state.toMap()}');
-
-// if (_state.arquivoID == null) {
-//   final uuid = Uuid();
-//   final imagemSave = Arquivo(
-//       id: uuid.v4(),
-//       titulo: _state.titulo,
-//       produtoArquivoIDRascunho: _state.arquivoRascunho,
-//       produtoArquivoIDEditado: _state.arquivoEditado);
-//   if (_state.imagemList == null) {
-//     _state.imagemList = List<Arquivo>();
-//   }
-//   _state.imagemList.add(imagemSave);
-// } else {
-//   _state.imagemList.removeWhere((img) => img.id == _state.arquivoID);
-//   final imagemSave = Arquivo(
-//       id: _state.arquivoID,
-//       titulo: _state.titulo,
-//       produtoArquivoIDRascunho: _state.arquivoRascunho,
-//       produtoArquivoIDEditado: _state.arquivoEditado);
-//   _state.imagemList.add(imagemSave);
-// }
-// final docRef = _firestore
-//     .collection(ProdutoModel.collection)
-//     .document(_state.produtoID);
-// final doc = await docRef.setData(
-//     {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
-//     merge: true);
