@@ -1,73 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
+  const AplicacaoPerguntaPage(this.questionarioAplicadoID, {Key key})
+      : super(key: key);
+
+  final String questionarioAplicadoID;
+
   @override
   _AplicacaoPerguntaPageState createState() => _AplicacaoPerguntaPageState();
 }
 
 class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
+  final bloc = AplicandoPerguntaPageBloc(Bootstrap.instance.firestore);
   TextEditingController _observacoesControler = new TextEditingController();
 
-  List<Map<dynamic, dynamic>> _listaPergunta = [
-    {
-      "tipo": PerguntaTipoEnum.EscolhaUnica,
-      'parametros': perguntasquesitoescolhaunica,
-      'titulo': "Pergunta escolha unica",
-      "texto":
-          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
-    },
-    {
-      "tipo": PerguntaTipoEnum.EscolhaMultipla,
-      'parametros': perguntasquesitoescolhaunica,
-      'titulo': "Pergunta escolha_multipla",
-      "texto":
-          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
-    },
-    {
-      "tipo": PerguntaTipoEnum.Imagem,
-      'parametros': null,
-      'titulo': "Pergunta imagem",
-      "texto":
-          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
-    },
-    {
-      "tipo": PerguntaTipoEnum.Arquivo,
-      'parametros': null,
-      'titulo': "Pergunta arquivo",
-      "texto":
-          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
-    },
-    {
-      "tipo": PerguntaTipoEnum.Texto,
-      'parametros': null,
-      'titulo': "Pergunta texto",
-      "texto":
-          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
-    },
-    {
-      "tipo": PerguntaTipoEnum.Numero,
-      'parametros': null,
-      'titulo': "Pergunta numero",
-      "texto":
-          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
-    },
-    {
-      "tipo": PerguntaTipoEnum.Coordenada,
-      'parametros': null,
-      'titulo': "Pergunta coordenada",
-      "texto":
-          "texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta - texto da pergunta"
-    }
-  ];
-
-  MapaPerguntasWidget mapaTipoPergunta = MapaPerguntasWidget();
-
-  var _indice = 0;
-
-  var perguntaref;
-  var _aplicadorpergunta;
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatch(UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent(
+        widget.questionarioAplicadoID));
+  }
 
   String _eixo = "eixo exemplo";
   String _questionario = "questionarios exemplo";
@@ -84,14 +41,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 child: RaisedButton(
                     color: Colors.green,
                     onPressed: () {
-                      // Pular pra proxima pergunta
-                      setState(() {
-                        if (_indice + 1 >= _listaPergunta.length) {
-                          _indice = 0;
-                        } else {
-                          _indice = _indice + 1;
-                        }
-                      });
+                      bloc.dispatch(PularAplicandoPerguntaPageBlocEvent());
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -107,7 +57,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 child: RaisedButton(
                     color: Colors.blue,
                     onPressed: () {
-                      // Responder a pergunta
+                      bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent());
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -156,41 +106,46 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
   }
 
   Widget _body() {
-    // seleciona a pergunta de acordo com o tipo
-    perguntaref = _listaPergunta[_indice]['tipo'];
-    //usa o MapaPerguntasWidget - passa o tipo e os parametros e recebe como retorno um widget relativo ao tipo
-    _aplicadorpergunta = mapaTipoPergunta.getWigetPergunta(
-        tipo: perguntaref, entrada: _listaPergunta[_indice]['parametros']);
-
-    return ListView(
-      children: <Widget>[
-        _listaDadosSuperior(),
-        Divider(height: 50, indent: 5, color: Colors.black54),
-        Padding(
-            padding: EdgeInsets.all(5),
-            child: ListTile(
-                title: Text(_listaPergunta[_indice]['titulo']),
-                subtitle: Text(_listaPergunta[_indice]['texto']))),
-        Divider(color: Colors.black54),
-        Padding(
-            padding: EdgeInsets.all(5),
-            child: Text("Observações:", style: TextStyle(color: Colors.blue))),
-        Padding(
-            padding: EdgeInsets.all(5.0),
-            child: TextField(
-              controller: _observacoesControler,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-            )),
-        Divider(color: Colors.black54),
-        // Widget de tipo pergunta
-        _aplicadorpergunta,
-        Padding(padding: EdgeInsets.all(5)),
-        _botoes()
-      ],
+    return StreamBuilder<AplicandoPerguntaPageBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Text("SEM DADOS");
+        if (!snapshot.data.perguntasOk) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return ListView(
+          children: <Widget>[
+            _listaDadosSuperior(),
+            Divider(height: 50, indent: 5, color: Colors.black54),
+            Padding(
+                padding: EdgeInsets.all(5),
+                child: ListTile(
+                  title: Text(snapshot.data.perguntaAtual.titulo),
+                  subtitle: Text(snapshot.data.perguntaAtual.textoMarkdown),
+                )),
+            Divider(color: Colors.black54),
+            Padding(
+                padding: EdgeInsets.all(5),
+                child:
+                    Text("Observações:", style: TextStyle(color: Colors.blue))),
+            Padding(
+                padding: EdgeInsets.all(5.0),
+                child: TextField(
+                  controller: _observacoesControler,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                )),
+            Divider(color: Colors.black54),
+            // Widget de tipo pergunta
+            PerguntaAplicada(snapshot.data.perguntaAtual),
+            Padding(padding: EdgeInsets.all(5)),
+            _botoes()
+          ],
+        );
+      },
     );
   }
 
@@ -211,6 +166,26 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         ],
       ),
       body: _body(),
+    );
+  }
+}
+
+class PerguntaAplicada extends StatelessWidget {
+  PerguntaAplicada(this.perguntaAplicada, {Key key})
+      : assert(perguntaAplicada != null),
+        super(key: key);
+
+  final mapaTipoPergunta = MapaPerguntasWidget();
+  final PerguntaAplicadaModel perguntaAplicada;
+
+  @override
+  Widget build(BuildContext context) {
+//    mapaTipoPergunta.getWigetPergunta(
+//      tipo: PerguntaTipoModel.ENUM[perguntaAplicada.tipo],
+//      entrada: perguntaAplicada,
+//    );
+    return Center(
+      child: Text("Pergutna "),
     );
   }
 }

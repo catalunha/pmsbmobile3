@@ -89,13 +89,16 @@ class MyApp extends StatelessWidget {
               final args = ModalRoute.of(context).settings.arguments;
               return AplicacaoSelecionarQuestionarioPage(args);
             },
-            "/aplicacao/aplicando_pergunta": (context) =>
-                AplicacaoPerguntaPage(),
+            "/aplicacao/aplicando_pergunta": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return AplicacaoPerguntaPage(args);
+            },
             "/aplicacao/pendencias": (context) => PendenciasPage(),
             "/aplicacao/visualizar_respostas": (context) =>
                 VisualizarRespostasPage(),
             "/aplicacao/definir_requisitos": (context) {
-              final DefinirRequisitosPageArguments args = ModalRoute.of(context).settings.arguments;
+              final DefinirRequisitosPageArguments args =
+                  ModalRoute.of(context).settings.arguments;
               return DefinirRequisistosPage(args.bloc, args.referencia);
             },
 
