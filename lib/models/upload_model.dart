@@ -4,7 +4,7 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class UploadModel extends FirestoreModel {
   static final String collection = "Upload";
   String usuario;
-  // String nome;
+  String nome;
   String localPath;
   bool upload;
   String storagePath;
@@ -16,7 +16,7 @@ class UploadModel extends FirestoreModel {
   UploadModel(
       {String id,
       this.usuario,
-      // this.nome,
+      this.nome,
       this.localPath,
       this.upload,
       this.storagePath,
@@ -29,7 +29,7 @@ class UploadModel extends FirestoreModel {
   @override
   UploadModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('usuario')) usuario = map['usuario'];
-    // if (map.containsKey('nome')) nome = map['nome'];
+    if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('localPath')) localPath = map['localPath'];
     if (map.containsKey('upload')) upload = map['upload'];
     if (map.containsKey('storagePath')) storagePath = map['storagePath'];
@@ -47,7 +47,7 @@ class UploadModel extends FirestoreModel {
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (usuario != null) data['usuario'] = this.usuario;
-    // if (nome != null) data['nome'] = this.nome;
+    if (nome != null) data['nome'] = this.nome;
     if (localPath != null) data['localPath'] = this.localPath;
     if (upload != null) data['upload'] = this.upload;
     if (storagePath != null) data['storagePath'] = this.storagePath;
