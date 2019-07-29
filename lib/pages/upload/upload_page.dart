@@ -72,7 +72,7 @@ class UploadPage extends StatelessWidget {
             title: Text('${uploading.upload.localPath}'),
             subtitle: Text('${uploading.id}'),
             trailing: IconButton(
-              icon: uploading.uploading ? Icon(Icons.send) : Icon(Icons.close),
+              icon: uploading.uploading ? Icon(Icons.cloud_upload) : Icon(Icons.send),
               onPressed: () {
                 bloc.eventSink(StartUploadEvent(uploading.id));
               },
@@ -82,7 +82,7 @@ class UploadPage extends StatelessWidget {
         uploading.uploading
             ? CircularProgressIndicator()
             : IconButton(
-                icon: Icon(Icons.cloud_off),
+                icon: Icon(Icons.cloud_queue),
                 onPressed: () {},
               ),
       ],
