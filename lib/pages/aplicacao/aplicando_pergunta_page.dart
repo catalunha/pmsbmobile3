@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
-import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart';
 
