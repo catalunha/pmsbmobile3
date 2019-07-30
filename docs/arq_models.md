@@ -32,3 +32,26 @@ https://jsoneditoronline.org/
 http://jsonviewer.stack.hu/
 
 # Comentario de cada modelo
+
+## Perfil
+
+O aplicativo se encarregará de dependendo do contentType criar a parte de texto. Ou
+~~~json
+{
+"UsuarioPerfil": {
+    "textPlain": "textPlain-valor"
+  }
+}
+~~~
+De arquivo.
+~~~json
+{
+  "UsuarioPerfil": {
+    "usuarioArquivoID": {
+      "id": "UsuarioArquivoID",
+      "url": "url-valor"
+    }
+  }
+ }
+~~~
+Nao precisa ser automatico, pode ser manual.
