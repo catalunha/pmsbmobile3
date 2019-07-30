@@ -106,7 +106,7 @@ class PerguntaEscolhaCRUDPageBloc {
     if (event is SaveEvent) {
       Escolha escolha;
       if (_state.escolhaUID == null) {
-        _state.ultimaOrdemEscolha = 1;
+        _state.ultimaOrdemEscolha += 1;
         escolha = Escolha(
           key: true,
           marcada: false,
@@ -131,6 +131,8 @@ class PerguntaEscolhaCRUDPageBloc {
       }, merge: true);
     }
     if (event is DeleteEvent) {
+      // print('>>>>>>>>>>>>>>>>>>>>>>>> ${_state.perguntaID}');
+      // print(_state.escolhaUID);
       final docRef = _firestore
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
