@@ -245,8 +245,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                         onPressed: () {
                           // SELECIONAR ESCOLHA
                           Navigator.pushNamed(
-                              context, "/pergunta/criar_ordenar_escolha",
-                              arguments: bloc);
+                              context, "/pergunta/escolha_list",
+                              arguments: widget.perguntaID);
                         }),
                   ));
                 },

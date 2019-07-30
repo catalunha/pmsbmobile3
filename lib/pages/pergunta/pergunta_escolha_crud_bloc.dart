@@ -89,10 +89,9 @@ class PerguntaEscolhaCRUDPageBloc {
         perguntaModel =
             PerguntaModel(id: docSnap.documentID).fromMap(docSnap.data);
       }
-      if (event.escolhaUID == null) {
         _state.ultimaOrdemEscolha = perguntaModel.ultimaOrdemEscolha;
-      } else {
-        // print('>>> perguntaModel <<< ${perguntaModel.toMap()}');
+      if (event.escolhaUID != null) {
+         // print('>>> perguntaModel <<< ${perguntaModel.toMap()}');
         perguntaModel.escolhas.forEach((k, v) {
           if (k == _state.escolhaUID) {
             _state.escolha = v;
@@ -107,7 +106,7 @@ class PerguntaEscolhaCRUDPageBloc {
     if (event is SaveEvent) {
       Escolha escolha;
       if (_state.escolhaUID == null) {
-        _state.ultimaOrdemEscolha += 1;
+        _state.ultimaOrdemEscolha = 1;
         escolha = Escolha(
           key: true,
           marcada: false,

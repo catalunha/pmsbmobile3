@@ -8,8 +8,8 @@ class PerguntaEscolhaCRUDPage extends StatefulWidget {
   final String escolhaUID;
 
   PerguntaEscolhaCRUDPage(this.perguntaID, this.escolhaUID) {
-    print('>>> perguntaID <<< ${perguntaID}');
-    print('>>> escolhaUID <<< ${escolhaUID}');
+    // print('>>> perguntaID <<< ${perguntaID}');
+    // print('>>> escolhaUID <<< ${escolhaUID}');
   }
 
   @override
