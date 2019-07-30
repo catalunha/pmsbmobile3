@@ -15,3 +15,9 @@ class EditarApagarEscolhaPageArguments{
   final escolhaID;
   EditarApagarEscolhaPageArguments(this.bloc, this.escolhaID);
 }
+
+class PerguntaIDEscolhaIDPageArguments{
+  final perguntaID;
+  final escolhaUID;
+  PerguntaIDEscolhaIDPageArguments(this.perguntaID, this.escolhaUID);
+}

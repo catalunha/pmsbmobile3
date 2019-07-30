@@ -301,11 +301,13 @@ class EditarApagarPerguntaBloc {
           tipo: _state.tipo,
           requisitos: _state.requisitos,
           escolhas: _state.escolhas,
+          ultimaOrdemEscolha: _state.escolhas.length,
           ordem: _state.ordem,
           dataEdicao: DateTime.now(),
         );
         if (_state.id == null) {
           instance.dataCriacao = DateTime.now();
+          instance.ultimaOrdemEscolha = 0;
         }
         final map = instance.toMap();
         map["requisitos"].addAll(_state.requisitosRemovidos);

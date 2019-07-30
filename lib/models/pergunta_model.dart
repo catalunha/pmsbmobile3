@@ -23,6 +23,8 @@ class PerguntaModel extends FirestoreModel {
 
   int ordem;
 
+  int ultimaOrdemEscolha;
+
   String titulo;
 
   String textoMarkdown;
@@ -61,12 +63,12 @@ class PerguntaModel extends FirestoreModel {
     this.requisitos,
     this.escolhas,
     this.ordem,
+    this.ultimaOrdemEscolha,
     this.titulo,
     this.textoMarkdown,
     this.dataCriacao,
     this.dataEdicao,
     this.observacao,
-
     this.texto,
     this.arquivo,
     this.coordenada,
@@ -90,6 +92,7 @@ class PerguntaModel extends FirestoreModel {
     referencia = map["referencia"];
 
     ordem = map['ordem'];
+    ultimaOrdemEscolha = map['ultimaOrdemEscolha'];
 
     titulo = map['titulo'];
 
@@ -152,7 +155,7 @@ class PerguntaModel extends FirestoreModel {
     if (referencia != null) map["referencia"] = referencia;
 
     if (ordem != null) map["ordem"] = ordem;
-
+    if (ultimaOrdemEscolha != null) map["ultimaOrdemEscolha"] = ultimaOrdemEscolha;
 
     if (titulo != null) map["titulo"] = titulo;
 
