@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -74,6 +76,17 @@ class MyApp extends StatelessWidget {
               final EditarApagarEscolhaPageArguments args = settings.arguments;
               return EditarApagarEscolhaPage(args.bloc, args.escolhaID);
             },
+            //Pergunta item Escolha
+            "/pergunta/escolha_list": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaEscolhaListPage(settings.arguments);
+            },
+            "/pergunta/escolha_crud": (context) {
+              final settings = ModalRoute.of(context).settings;
+              final PerguntaIDEscolhaIDPageArguments args = settings.arguments;
+              return PerguntaEscolhaCRUDPage(args.perguntaID,args.escolhaUID);
+            },
+
 
             //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
