@@ -4,43 +4,46 @@ import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 class PerguntaAplicadaModel extends PerguntaModel {
   static final String collection = "PerguntaAplicada";
 
-  PerguntaAplicadaModel({String id, this.temPendencias: true}) : super(id: id);
+  PerguntaAplicadaModel({
+    String id,
+    bool temPendencias: true,
+    bool foiRespondida: false,
+  })  : _temPendencias = temPendencias,
+        _foiRespondida = foiRespondida,
+        super(id: id);
 
-  bool temPendencias;
+  bool _temPendencias;
 
-  bool get foiRespondida {
-    //TODO: completar implementação desta flag
-    final tipoEnum = PerguntaTipoModel.ENUM[tipo];
-    switch (tipoEnum) {
-      case PerguntaTipoEnum.Texto:
-        if (texto != null) return true;
-        break;
-      case PerguntaTipoEnum.Imagem:
-        // TODO: Handle this case.
-        break;
-      case PerguntaTipoEnum.Arquivo:
-        // TODO: Handle this case.
-        break;
-      case PerguntaTipoEnum.Numero:
-        if (numero != null) return true;
-        break;
-      case PerguntaTipoEnum.Coordenada:
-        if (coordenada != null && coordenada.isNotEmpty) return true;
-        break;
-      case PerguntaTipoEnum.EscolhaUnica:
-        // TODO: Handle this case.
-        break;
-      case PerguntaTipoEnum.EscolhaMultipla:
-        // TODO: Handle this case.
-        break;
-    }
-    return false;
+  set temPendencias(bool p) {
+    _temPendencias = p != null ? p : true;
   }
+
+  bool get temPendencias => _temPendencias != null ? _temPendencias : false;
+
+  bool _foiRespondida;
+
+  set foiRespondida(bool f) {
+    _foiRespondida = f != null ? f : false;
+  }
+
+  bool get foiRespondida => _foiRespondida != null ? _foiRespondida : false;
 
   @override
   PerguntaAplicadaModel fromMap(Map<String, dynamic> map) {
+    temPendencias = map["temPendencias"];
+    foiRespondida = map["foiRespondida"];
     return super.fromMap(map);
   }
+
+  @override
+  Map<String, dynamic> toMap() {
+    final map = super.toMap();
+    map["temPendencias"] = temPendencias;
+    map["foiRespondida"] = foiRespondida;
+    return map;
+  }
+
+
 }
 
 /// Classe que representa um modelo da coleção Pergunta
