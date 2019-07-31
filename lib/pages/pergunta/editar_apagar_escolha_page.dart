@@ -61,7 +61,7 @@ class EditarApagarEscolhaPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(5.0),
             child: RaisedButton(
-              color: Colors.red,
+              // color: Colors.red,
               onPressed: () {
                 // DELETAR ESTA PERGUNTA
                 bloc.dispatch(
@@ -137,7 +137,7 @@ class EditarApagarEscolhaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red,
+          // backgroundColor: Colors.red,
           automaticallyImplyLeading: true,
           title: Text('Editar ou apagar escolha'),
         ),

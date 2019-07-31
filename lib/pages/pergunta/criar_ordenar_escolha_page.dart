@@ -115,7 +115,7 @@ class CriarOrdenarEscolha extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red,
+          // backgroundColor: Colors.red,
           automaticallyImplyLeading: true,
           title: Text('Criar ordenar escolha'),
         ),

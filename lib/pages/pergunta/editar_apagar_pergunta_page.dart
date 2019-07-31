@@ -297,7 +297,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.red,
+            // backgroundColor: Colors.red,
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
