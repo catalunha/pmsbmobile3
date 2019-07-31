@@ -56,9 +56,6 @@ class SalvarAplicandoPerguntaPageBlocEvent
 class PularAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {}
 
-class VoltarAplicandoPerguntaPageBlocEvent
-    extends AplicandoPerguntaPageBlocEvent {}
-
 // eventos de respostas
 class UpdateTextoRespostaAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {
@@ -100,11 +97,6 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
         currentState.perguntaAtualIndex += 1;
       } else {
         currentState.perguntaAtualIndex = 0;
-      }
-    }
-    if (event is VoltarAplicandoPerguntaPageBlocEvent) {
-      if (currentState.perguntaAtualIndex > 0) {
-        currentState.perguntaAtualIndex -= 1;
       }
     }
     if (event is UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent) {
