@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InitialValueTextField extends StatefulWidget {
-  final void Function(String) onChange;
+  final void Function(String) onChanged;
   final bool Function() initialize;
   final String value;
   final String id;
@@ -12,7 +12,7 @@ class InitialValueTextField extends StatefulWidget {
   const InitialValueTextField({
     Key key,
     this.id,
-    this.onChange,
+    this.onChanged,
     this.initialize,
     this.value,
     this.keyboardType,
@@ -45,7 +45,7 @@ class _InitialValueTextFieldState extends State<InitialValueTextField> {
 
     return Container(
       child: TextField(
-        onChanged: (text) => widget.onChange(text),
+        onChanged: (text) => widget.onChanged(text),
         controller: controller,
         keyboardType: widget.keyboardType,
         maxLines: widget.maxLines,
