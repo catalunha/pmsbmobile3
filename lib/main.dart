@@ -137,7 +137,7 @@ class MyApp extends StatelessWidget {
             },
 
             //comunicacao
-            "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
+            "/comunicacao/home": (context) => ComunicacaoHomePage(),
             "/noticias/noticias_visualizadas": (context) => NoticiaLidaPage(),
             "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
