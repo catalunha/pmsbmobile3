@@ -5,8 +5,10 @@ import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:pmsbmibile3/services/services.dart';
 
 class QuestionarioHomePage extends StatelessWidget {
   final bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore);
@@ -143,14 +145,11 @@ class QuestionarioItem extends StatelessWidget {
                 ),
                 IconButton(
                   tooltip: 'Conferir todas as perguntas criadas',
-                  icon: Icon(Icons.assignment_turned_in),
-                  onPressed: () {
-                    // Listar paginas de perguntas
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   '/pergunta/home',
-                    //   arguments: _questionario.id,
-                    // );
+                  icon: Icon(Icons.picture_as_pdf),
+                  onPressed: () async {
+                      var mdtext = await GeradorMdService.generateMdFromQuestionarioModel(
+                          _questionario);
+                      GeradorPdfService.generatePdfFromMd(mdtext);
                   },
                 ),
                 IconButton(
