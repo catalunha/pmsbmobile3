@@ -21,8 +21,13 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   final String _setor = "setor exemplo";
   final AplicacaoHomePageBloc bloc =
       AplicacaoHomePageBloc(Bootstrap.instance.firestore);
+  final AuthBloc authBloc;
 
-  _AplicacaoHomePageState(AuthBloc authBloc) {
+  _AplicacaoHomePageState(this.authBloc);
+
+  @override
+  void initState() {
+    super.initState();
     authBloc.userId.listen((userID) {
       bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(userID));
     });
