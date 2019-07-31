@@ -102,11 +102,11 @@ class AdministracaoPerfilPage extends StatelessWidget {
                 child: Text("Error"),
               );
             }
-            if (!snapshotState.hasData) {
-              return Center(
-                child: Text("Sem dados de perfil"),
-              );
-            }
+            // if (!snapshotState.hasData) {
+            //   return Center(
+            //     child: Text("Sem dados de perfil"),
+            //   );
+            // }
             return ButtonTheme.bar(
               child: ButtonBar(
                 children: <Widget>[

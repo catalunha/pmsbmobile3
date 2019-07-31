@@ -45,8 +45,8 @@ class PerguntaEscolhaListPage extends StatelessWidget {
         if (snapshot.data.isDataValid) {
           int lengthEscolha = snapshot.data?.escolhaMap?.length;
           int ordemLocal = 1;
-
           snapshot.data.escolhaMap.forEach((k, v) {
+            final i = ordemLocal;
             list.add(Card(
               elevation: 10,
               child: Row(
@@ -54,7 +54,8 @@ class PerguntaEscolhaListPage extends StatelessWidget {
                   Expanded(
                       flex: 3,
                       child: ListTile(
-                        leading: Text('${ordemLocal} (${v.ordem})'),
+                        // leading: Text('${ordemLocal} (${v.ordem})'),
+                        leading: Text('${ordemLocal}'),
                         title: Text(v.texto),
                       )),
                   Expanded(
@@ -67,8 +68,9 @@ class PerguntaEscolhaListPage extends StatelessWidget {
                             onPressed: (ordemLocal) < lengthEscolha
                                 ? () {
                                     // print(
-                                    //     'em  down => ${ordemLocal} (${v.ordem})');
+                                    //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
                                     // Mover pra baixo na ordem
+                                    //TODO: refatorar este codigo com o i fica mais fácil
                                     bloc.eventSink(OrdenarEscolhaEvent(
                                         k, false));
                                   }
@@ -78,9 +80,10 @@ class PerguntaEscolhaListPage extends StatelessWidget {
                             onPressed: ordemLocal > 1
                                 ? () {
                                     // print(
-                                    //     'em up => ${ordemLocal} (${v.ordem})');
+                                    //     'em up => ${i} ${ordemLocal} (${v.ordem})');
 
                                     // Mover pra cima na ordem
+                                    //TODO: refatorar este codigo com o i fica mais fácil
                                     bloc.eventSink(OrdenarEscolhaEvent(
                                         k, true));
                                   }
