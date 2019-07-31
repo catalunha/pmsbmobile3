@@ -26,6 +26,15 @@ class AplicandoPerguntaPageBlocState {
     else
       return 0;
   }
+
+  bool get isValid {
+    if (perguntaAtual.tipo.nome == "texto") {
+      if (perguntaAtual.texto.isEmpty) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 class AplicandoPerguntaPageBlocEvent {}
@@ -49,6 +58,29 @@ class PularAplicandoPerguntaPageBlocEvent
 
 class VoltarAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {}
+
+// eventos de respostas
+class UpdateTextoRespostaAplicandoPerguntaPageBlocEvent
+    extends AplicandoPerguntaPageBlocEvent {
+  final String texto;
+
+  UpdateTextoRespostaAplicandoPerguntaPageBlocEvent(this.texto);
+}
+
+class UpdateNumeroRespostaAplicandoPerguntaPageBlocEvent
+    extends AplicandoPerguntaPageBlocEvent {
+  final String _texto;
+
+  double get numero {
+    try {
+      return double.parse(_texto);
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  UpdateNumeroRespostaAplicandoPerguntaPageBlocEvent(this._texto);
+}
 
 class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     AplicandoPerguntaPageBlocState> {
@@ -84,7 +116,8 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
       final query = _firestore
           .collection(PerguntaAplicadaModel.collection)
           .where("questionario.id",
-              isEqualTo: currentState.questionarioAplicadoID).orderBy("ordem");
+              isEqualTo: currentState.questionarioAplicadoID)
+          .orderBy("ordem");
       final snap = await query.getDocuments();
       currentState.perguntas = snap.documents
           .map((doc) =>
@@ -92,7 +125,26 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
           .toList();
     }
     if (event is SalvarAplicandoPerguntaPageBlocEvent) {
+      if (currentState.isValid) {
+        currentState.perguntaAtual.foiRespondida = true;
+        // TODO: remover apos testes
+        currentState.perguntaAtual.temPendencias = false;
+        final map = currentState.perguntaAtual.toMap();
+        final ref = _firestore
+            .collection(PerguntaAplicadaModel.collection)
+            .document(currentState.perguntaAtual.id);
+        ref.setData(map, merge: true);
+      }
+
       dispatch(PularAplicandoPerguntaPageBlocEvent());
+    }
+
+    //respostas
+    if (event is UpdateTextoRespostaAplicandoPerguntaPageBlocEvent) {
+      currentState.perguntaAtual.texto = event.texto;
+    }
+    if (event is UpdateNumeroRespostaAplicandoPerguntaPageBlocEvent) {
+      currentState.perguntaAtual.numero = event.numero;
     }
   }
 }
