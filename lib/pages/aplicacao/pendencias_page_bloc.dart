@@ -58,7 +58,7 @@ class PendenciasPageBloc
       _firestore
           .collection(PerguntaAplicadaModel.collection)
           .where("questionario.id",
-              isEqualTo: currentState.questionarioAplicadoID)
+              isEqualTo: currentState.questionarioAplicadoID).orderBy("ordem")
           .snapshots()
           .listen((snapshot) {
         dispatch(
