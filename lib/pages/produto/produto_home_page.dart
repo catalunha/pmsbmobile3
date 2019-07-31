@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -172,12 +173,10 @@ class ProdutoHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Colors.red,
-        centerTitle: true,
+    return DefaultScaffold(
+
         title: Text("Produto"),
-      ),
+
       body: _body(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
