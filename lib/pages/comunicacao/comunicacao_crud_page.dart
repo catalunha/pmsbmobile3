@@ -198,7 +198,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                                 bloc.comunicacaoCRUDPageEventSink(
                                     DeleteNoticiaIDEvent());
                                 Navigator.pushNamed(
-                                    context, '/comunicacao/home_page');
+                                    context, '/comunicacao/home');
                               },
                               child: Text("sim"),
                             ),

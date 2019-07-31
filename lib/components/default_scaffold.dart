@@ -27,7 +27,7 @@ class DefaultDrawer extends StatelessWidget {
         Rota("Aplicar Questionário", Icons.directions_walk);
     rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
     rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
-    rotas["/comunicacao/home_page"] = Rota("Comunicação", Icons.contact_mail);
+    rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
     rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
     rotas["/controle/home"] = Rota("Controle", Icons.control_point);
   }
