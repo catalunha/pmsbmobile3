@@ -14,6 +14,10 @@ class PerguntaModel extends FirestoreModel {
   ///Questionario do qual esta pergunta pertence
   Questionario questionario;
 
+  ///Eixo do qual esta pergunta pertence
+  //Vamos precisar deste campos pra filtrar perguntas para requisito.
+  // EixoID eixo;
+
   PerguntaTipo tipo;
 
   Map<String, Requisito> requisitos;

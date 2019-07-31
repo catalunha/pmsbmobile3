@@ -35,6 +35,7 @@ class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
                 child: CheckboxListTile(
                   value: e['checkbox'],
                   title: new Text('${e['pergunta']}'),
+                  subtitle: Text('${e['questionario']}'),
                   controlAffinity: ListTileControlAffinity.trailing,
                   onChanged: (bool val) {
                     bloc.dispatch(

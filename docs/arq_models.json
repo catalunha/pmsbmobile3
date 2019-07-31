@@ -193,7 +193,8 @@
       "uid": {
         "referencia": "Pergunta/perguntaID$referencia",
         "perguntaID": "Pergunta/perguntaID. Quando escolhidas das referencias em diferentes questionarios",
-        "pergunta": "Pergunta/perguntaID$escolha || Pergunta/perguntaID$texto || Pergunta/perguntaID$<se o tipo existe> ",
+        "perguntaTipo": "Paulo colocou o tipo da pergunta",
+        "pergunta": "Paulo nao usou este campo. Pergunta/perguntaID$escolha || Pergunta/perguntaID$texto || Pergunta/perguntaID$<se o tipo existe> ",
         "escolha": {
           "id": "Pergunta/perguntaID$escolha#uid",
           "marcada": true

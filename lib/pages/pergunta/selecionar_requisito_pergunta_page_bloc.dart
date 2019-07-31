@@ -114,7 +114,8 @@ class SelecionarRequisitoPerguntaPageBloc {
             final tipoEnum = PerguntaTipoModel.ENUM[pergunta.tipo.id];
             final contains = event.requisitos.containsKey(pergunta.id);
             _state.requisitos[pergunta.id] = {
-              "pergunta": pergunta.titulo,
+              "questionario": '${pergunta.questionario.nome}',
+              "pergunta": '${pergunta.titulo}',
               "requisito": contains
                   ? event.requisitos[pergunta.id]
                   : Requisito(
@@ -139,6 +140,7 @@ class SelecionarRequisitoPerguntaPageBloc {
                         escolha: EscolhaRequisito(id: k, marcada: false),
                       );
                 _state.requisitos[requisitoKey] = {
+              "questionario": '${pergunta.questionario.nome}',
                   "pergunta": "${pergunta.titulo}/${v.texto}",
                   "requisito": requisito,
                   "checkbox": contains,
