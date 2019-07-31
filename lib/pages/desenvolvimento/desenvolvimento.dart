@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
@@ -63,29 +64,56 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
                   ListTile(
-                    title: Text('Atualizar menu de acesso'),
+                    title: Text('Atualizar routes de usuario.'),
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
-                        List<dynamic> routes = [
-                          '/',
-                          '/desenvolvimento',
-                          '/upload',
-                          '/questionario/home',
-                          '/aplicacao/home',
-                          '/resposta/home',
-                          '/sintese/home',
-                          '/produto/home',
-                          '/comunicacao/home_page',
-                          '/administracao/home',
-                          '/controle/home'
-                        ];
+                        // List<dynamic> routes = [
+                        //   '/',
+                        //   '/desenvolvimento',
+                        //   '/upload',
+                        //   '/questionario/home',
+                        //   '/aplicacao/home',
+                        //   '/resposta/home',
+                        //   '/sintese/home',
+                        //   '/produto/home',
+                        //   '/comunicacao/home_page',
+                        //   '/administracao/home',
+                        //   '/controle/home'
+                        // ];
+                        // final docRef = _firestore
+                        //     .collection(UsuarioModel.collection)
+                        //     .document('nsD07Jb8cqRy9liyX82JwDSq8d22');
+
+                        // await docRef.setData({"routes": routes}, merge: true);
+                        // print('>>> ok <<< ');
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Criar Usuario em UsuarioCollection.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        UsuarioModel usuarioModel = UsuarioModel(
+                          id: 'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2',
+                          ativo: true,
+                          nome: 'uft',
+                          celular: '0',
+                          email: 'catalunha@uft.edu.br',
+                          routes: ['/'],
+                          cargoID: CargoID(id: 'coordenador',nome: 'Coo'),
+                          eixoID: EixoID(id: 'estatisticadsti',nome: ''),
+                          eixoIDAcesso: [EixoID(id: 'estatisticadsti',nome: '')],
+                          eixoIDAtual: EixoID(id: 'estatisticadsti',nome: ''),
+                          setorCensitarioID: SetorCensitarioID(id: 'palmas',nome: 'pal'),
+                        );
                         final docRef = _firestore
                             .collection(UsuarioModel.collection)
-                            .document('nsD07Jb8cqRy9liyX82JwDSq8d22');
+                            .document('mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
 
-                        await docRef.setData({"routes": routes}, merge: true);
-                        print('>>> ok <<< ');
+                        await docRef.setData(usuarioModel.toMap(), merge: true);
+                        // print('>>> ok <<< ');
                       },
                     ),
                   ),
