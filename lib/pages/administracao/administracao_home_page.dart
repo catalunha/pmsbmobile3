@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 
 import 'package:pmsbmibile3/models/usuario_model.dart';
@@ -10,12 +11,8 @@ class AdministracaoHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Colors.red,
-        centerTitle: true,
-        title: Text("Administração"),
-      ),
+    return DefaultScaffold(
+      title: Text("Administração"),
       body: Container(
         child: StreamBuilder<List<UsuarioModel>>(
             stream: bloc.usuarioModelListStream,
@@ -61,8 +58,11 @@ class ItemListView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                  flex: 2,
-                  child: _ImagemUnica(fotoLocalPath: usuario?.foto?.localPath,fotoUrl: usuario?.foto?.url,),
+                flex: 2,
+                child: _ImagemUnica(
+                  fotoLocalPath: usuario?.foto?.localPath,
+                  fotoUrl: usuario?.foto?.url,
+                ),
               ),
               Expanded(
                 flex: 5,
@@ -87,7 +87,6 @@ class ItemListView extends StatelessWidget {
     );
   }
 }
-
 
 class _ImagemUnica extends StatelessWidget {
   final String fotoUrl;

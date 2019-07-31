@@ -125,6 +125,7 @@ class AuthBloc {
     }
     else if(event is LogoutAuthBlocEvent){
       _authApi.logout();
+      
     }
   }
 

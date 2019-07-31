@@ -85,8 +85,8 @@ class PerguntaEscolhaListPageBloc {
         // stateSink();
       });
     }
-
     if (event is OrdenarEscolhaEvent) {
+      // print('>>>>>>>>>>>>TTT>>> ${event.ordem} <<<<<<<<<<<<<<<<');
       List<Escolha> valuesList = _state.escolhaMap.values.toList();
       List<String> keyList = _state.escolhaMap.keys.toList();
       final ordemOrigem = keyList.indexOf(event.escolhaUid);
@@ -111,8 +111,11 @@ class PerguntaEscolhaListPageBloc {
           "${keyOutra}": {"ordem": escolhaOrigem.ordem}
         }
       }, merge: true);
-
     }
+
+
+
+
     _validateData();
     if (!_stateController.isClosed) stateSink(_state);
     print('ccc PerguntaEscolhaListPageBloc ${event.runtimeType}');

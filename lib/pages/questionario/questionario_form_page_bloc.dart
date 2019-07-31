@@ -1,4 +1,5 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 
@@ -108,8 +109,8 @@ class QuestionarioFormPageBloc {
             : null,
         editou: UsuarioEditou(id: _state.userId, nome: _state.userName),
         eixo: Eixo(id: _state.eixoAtualID, nome: _state.eixoAtualNome),
-        criado: _state.id == null ? DateTime.now() : null,
-        modificado: DateTime.now(),
+        criado: _state.id == null ? Bootstrap.instance.FieldValue.serverTimestamp() : null,
+        modificado: Bootstrap.instance.FieldValue.serverTimestamp(),
         editando: false,
       );
 
