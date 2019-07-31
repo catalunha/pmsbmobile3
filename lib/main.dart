@@ -24,15 +24,18 @@ class MyApp extends StatelessWidget {
           //theme: ThemeData.dark(),
           initialRoute: "/",
           routes: {
+            //homePage
             "/": (context) => HomePage(),
-            // //Desenvolvimento
-            // "/desenvolvimento": (context) => Desenvolvimento(),
 
-            //Upload
+            //Desenvolvimento
+            "/desenvolvimento": (context) => Desenvolvimento(),
+
+            //upload
             "/upload": (context) => UploadPage(authBloc),
 
             //perfil
             "/perfil": (context) => PerfilPage(),
+            "/perfil/configuracao": (context) => ConfiguracaoPage(authBloc),
             "/perfil/crudtext": (context) {
               final settings = ModalRoute.of(context).settings;
               return PerfilCRUDPage(settings.arguments);
@@ -41,8 +44,6 @@ class MyApp extends StatelessWidget {
               final settings = ModalRoute.of(context).settings;
               return PerfilCRUDArqPage(settings.arguments);
             },
-
-            "/perfil/configuracao": (context) => ConfiguracaoPage(authBloc),
 
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(),
@@ -84,9 +85,8 @@ class MyApp extends StatelessWidget {
             "/pergunta/escolha_crud": (context) {
               final settings = ModalRoute.of(context).settings;
               final PerguntaIDEscolhaIDPageArguments args = settings.arguments;
-              return PerguntaEscolhaCRUDPage(args.perguntaID,args.escolhaUID);
+              return PerguntaEscolhaCRUDPage(args.perguntaID, args.escolhaUID);
             },
-
 
             //aplicacao
             "/aplicacao/home": (context) => AplicacaoHomePage(),
@@ -124,7 +124,6 @@ class MyApp extends StatelessWidget {
             "/produto/arquivo_list": (context) {
               final settings = ModalRoute.of(context).settings;
               ProdutoArguments args = settings.arguments;
-
               return ProdutoArquivoListPage(
                   produtoID: args.produtoID, tipo: args.tipo);
             },
