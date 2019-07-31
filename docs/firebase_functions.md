@@ -96,6 +96,23 @@ A function deverá atualizar as seguintes coleções que se referenciam a ela
   },
 }
 ~~~
+### Function UsuarioToUsuarioPerfil
+Quando um novo **UsuarioDocument** for criado a function de pegar a **PerfilCollection** toda e cadastrar estes perfis em **UsuarioPerfil** constando apenas as partes
+~~~json
+{
+  "UsuarioPerfil": {
+    "usuarioID": {
+      "id": "UsuarioID",
+      "nome": "UsuarioID->Nome"
+    },
+    "perfilID": {
+      "id": "PerfilID",
+      "nome": "nome-valor",
+      "contentType": "contentType-valor"
+    }
+  }
+}
+~~~
 
 
 ## Cargo

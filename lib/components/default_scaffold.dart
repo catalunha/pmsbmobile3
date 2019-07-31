@@ -7,14 +7,37 @@ import 'package:provider/provider.dart';
 
 var db = DatabaseService();
 
+class Rota {
+  final String nome;
+  final Icons;
+
+  Rota(this.nome, this.Icons);
+}
+
 class DefaultDrawer extends StatelessWidget {
+  Map<String, Rota> rotas;
+  DefaultDrawer() {
+    // Map<String, Rota>
+    rotas = Map<String, Rota>();
+    rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
+    rotas["/"] = Rota("Home", Icons.home);
+    rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
+    rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
+    rotas["/aplicacao/home"] =
+        Rota("Aplicar Questionário", Icons.directions_walk);
+    rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
+    rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
+    rotas["/comunicacao/home_page"] = Rota("Comunicação", Icons.contact_mail);
+    rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
+    rotas["/controle/home"] = Rota("Controle", Icons.control_point);
+  }
   @override
   Widget build(BuildContext context) {
     var authBloc = Provider.of<AuthBloc>(context);
     return Drawer(
-      child: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: SafeArea(
+      child: Column(
+          // padding: EdgeInsets.zero,
           children: <Widget>[
             StreamBuilder<UsuarioModel>(
               stream: authBloc.perfil,
@@ -99,132 +122,44 @@ class DefaultDrawer extends StatelessWidget {
                 );
               },
             ),
-            // ListTile(
-            //   title: Text('Desenvolvimento'),
-            //   trailing: Icon(Icons.hourglass_empty),
-            //   onTap: () {
-            //     Navigator.pushReplacementNamed(context, "/desenvolvimento");
-            //   },
-            // ),
-            ListTile(
-              title: Text('Upload'),
-              trailing: Icon(Icons.file_upload),
-              onTap: () {
-                Navigator.pushReplacementNamed(context, "/upload");
-              },
-            ),
-            ListTile(
-              title: Text('Home'),
-              trailing: Icon(Icons.home),
-              onTap: () {
-                Navigator.pushReplacementNamed(context, "/");
-              },
-            ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Questionarios'),
-              trailing: Icon(Icons.assignment),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/questionario/home');
-              },
-            ),
-            /**
-            Divider(color: Colors.black45,),
-            ListTile(
-              title: Text('Perguntas'),
-              trailing: Icon(Icons.chat_bubble),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/pergunta/home');
-              },
-            ),
-            */
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Aplicação'),
-              trailing: Icon(
-                Icons.directions_walk,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/aplicacao/home');
-              },
-            ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Respostas'),
-              trailing: Icon(Icons.chat),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/resposta/home');
-              },
-            ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Síntese'),
-              trailing: Icon(Icons.equalizer),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/sintese/home');
-              },
-            ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Produto'),
-              trailing: Icon(Icons.chrome_reader_mode),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/produto/home');
-                // Navigator.pushNamed(context, '/produto/setor_page');
-              },
-            ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Comunicação'),
-              trailing: Icon(Icons.contact_mail),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/comunicacao/home_page');
-              },
-            ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-                title: Text('Administração'),
-                trailing: Icon(Icons.business_center),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/administracao/home');
-                }),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Controle'),
-              trailing: Icon(Icons.control_point),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/controle/home');
-              },
-            )
-          ],
-        ),
-      ),
-    );
+            StreamBuilder<UsuarioModel>(
+                stream: authBloc.perfil,
+                builder: (context, snap) {
+                  if (snap.hasError) {
+                    return Center(
+                      child: Text("Erro"),
+                    );
+                  }
+                  // if (!snap.hasData) {
+                  //   return Center(
+                  //     child: CircularProgressIndicator(),
+                  //   );
+                  // }
+                  List<Widget> list = List<Widget>();
+                  if (snap.data == null ||
+                      snap.data.routes == null ||
+                      snap.data.routes.isEmpty) {
+                    list.add(Container());
+                  } else {
+                    rotas.forEach((k, v) {
+                      if (snap.data.routes.contains(k)) {
+                        list.add(ListTile(
+                          title: Text(v.nome),
+                          trailing: Icon(v.Icons),
+                          onTap: () {
+                            Navigator.pushReplacementNamed(context, k);
+                          },
+                        ));
+                      }
+                    });
+                  }
+                  if (list.isEmpty || list == null) {
+                    list.add(Container());
+                  }
+                  return Expanded(child: ListView(children: list));
+                })
+          ]),
+    ));
   }
 }
 

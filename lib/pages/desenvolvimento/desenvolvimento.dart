@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,6 +20,8 @@ import 'package:pmsbmibile3/state/upload_bloc.dart';
 
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/perfil_model.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
+import 'package:pmsbmibile3/bootstrap.dart';
 
 class Desenvolvimento extends StatefulWidget {
   @override
@@ -27,6 +30,7 @@ class Desenvolvimento extends StatefulWidget {
 
 class _DesenvolvimentoState extends State<Desenvolvimento> {
   final bloc = DesenvolvimentoPageBloc(Bootstrap.instance.firestore);
+  final fw.Firestore _firestore = Bootstrap.instance.firestore;
 
   @override
   void initState() {
@@ -34,6 +38,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     // bloc.eventSink(
     //     UpdateProdutoIDArquivoIDEvent(widget.produtoID, widget.arquivoID));
   }
+
   @override
   void dispose() {
     bloc.dispose();
@@ -53,72 +58,68 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                   child: Center(child: Text('Erro.')),
                 );
               }
-
-              // if (!snapshot.hasData) {
-              //   return Container(
-              //     child: Center(child: CircularProgressIndicator()),
-              //   );
-              // }
               return ListView(
                 children: <Widget>[
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
-                  ButtonTheme.bar(
-                      child: ButtonBar(children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.delete),
+                  ListTile(
+                    title: Text('Atualizar menu de acesso'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
                       onPressed: () async {
-                        // bloc.eventSink(DeleteArquivoEvent('arquivoRascunho'));
-                        bloc.eventSink(
-                            UpdateArquivoEvent('-LkjTBbXbHxqob2t2SZS'));
+                        List<dynamic> routes = [
+                          '/',
+                          '/desenvolvimento',
+                          '/upload',
+                          '/questionario/home',
+                          '/aplicacao/home',
+                          '/resposta/home',
+                          '/sintese/home',
+                          '/produto/home',
+                          '/comunicacao/home_page',
+                          '/administracao/home',
+                          '/controle/home'
+                        ];
+                        final docRef = _firestore
+                            .collection(UsuarioModel.collection)
+                            .document('nsD07Jb8cqRy9liyX82JwDSq8d22');
+
+                        await docRef.setData({"routes": routes}, merge: true);
+                        print('>>> ok <<< ');
                       },
                     ),
-                    IconButton(
-                      icon: Icon(Icons.file_download),
-                      onPressed: () async {
-                        bloc.eventSink(
-                            UpdateArquivoEvent('-LkjTBXRb1-w9_Xr7fzn'));
+                  ),
 
-                        // await _selecionarNovoArquivo().then((arq) {
-                        //   bloc.eventSink(UpdateArquivoEvent(arq));
-                        // });
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.cloud_upload),
-                      onPressed: () {},
-                    ),
-                  ])),
-                  Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
-
-                  // StreamBuilder<UploadModel>(
-                  //     stream: bloc.uploadBloc.uploadModelStream,
-                  //     builder: (context, snapshot) {
-                  //       dynamic image = FlutterLogo();
-                  //       return Container(
-                  //         child: snapshot.data == null
-                  //             ? image
-                  //             : SquareImage(
-                  //                 image: NetworkImage(snapshot.data.url)),
-                  //       );
-                  //     })
+                  // Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
                 ],
               );
             }));
   }
-
-  Future<String> _selecionarNovoArquivo() async {
-    try {
-      var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
-      if (arquivoPath != null) {
-        // print('>> newfilepath 1 >> ${arquivoPath}');
-        return arquivoPath;
-      }
-    } catch (e) {
-      print("Unsupported operation" + e.toString());
-    }
-  }
 }
+//   Future<String> _selecionarNovoArquivo() async {
+//     try {
+//       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
+//       if (arquivoPath != null) {
+//         // print('>> newfilepath 1 >> ${arquivoPath}');
+//         return arquivoPath;
+//       }
+//     } catch (e) {
+//       print("Unsupported operation" + e.toString());
+//     }
+//   }
+// }
+
+// StreamBuilder<UploadModel>(
+//     stream: bloc.uploadBloc.uploadModelStream,
+//     builder: (context, snapshot) {
+//       dynamic image = FlutterLogo();
+//       return Container(
+//         child: snapshot.data == null
+//             ? image
+//             : SquareImage(
+//                 image: NetworkImage(snapshot.data.url)),
+//       );
+//     })
 
 // RaisedButton(
 //   onPressed: () {
