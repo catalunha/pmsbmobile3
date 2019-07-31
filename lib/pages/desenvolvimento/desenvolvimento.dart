@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:pmsbmibile3/components/square_image.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
@@ -95,25 +96,38 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
-                        UsuarioModel usuarioModel = UsuarioModel(
-                          id: 'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2',
-                          ativo: true,
-                          nome: 'uft',
-                          celular: '0',
-                          email: 'catalunha@uft.edu.br',
-                          routes: ['/'],
-                          cargoID: CargoID(id: 'coordenador',nome: 'Coo'),
-                          eixoID: EixoID(id: 'estatisticadsti',nome: ''),
-                          eixoIDAcesso: [EixoID(id: 'estatisticadsti',nome: '')],
-                          eixoIDAtual: EixoID(id: 'estatisticadsti',nome: ''),
-                          setorCensitarioID: SetorCensitarioID(id: 'palmas',nome: 'pal'),
-                        );
-                        final docRef = _firestore
-                            .collection(UsuarioModel.collection)
-                            .document('mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
+                        // UsuarioModel usuarioModel = UsuarioModel(
+                        //   id: 'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2',
+                        //   ativo: true,
+                        //   nome: 'uft',
+                        //   celular: '0',
+                        //   email: 'catalunha@uft.edu.br',
+                        //   routes: ['/'],
+                        //   cargoID: CargoID(id: 'coordenador',nome: 'Coo'),
+                        //   eixoID: EixoID(id: 'estatisticadsti',nome: ''),
+                        //   eixoIDAcesso: [EixoID(id: 'estatisticadsti',nome: '')],
+                        //   eixoIDAtual: EixoID(id: 'estatisticadsti',nome: ''),
+                        //   setorCensitarioID: SetorCensitarioID(id: 'palmas',nome: 'pal'),
+                        // );
+                        // final docRef = _firestore
+                        //     .collection(UsuarioModel.collection)
+                        //     .document('mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
 
-                        await docRef.setData(usuarioModel.toMap(), merge: true);
+                        // await docRef.setData(usuarioModel.toMap(), merge: true);
                         // print('>>> ok <<< ');
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Timestamp'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        final docRef = _firestore
+                            .collection(QuestionarioModel.collection)
+                            .document('-LkcyH14YG3LUeRwQhlM');
+
+                        await docRef.setData({"modificado":Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
                       },
                     ),
                   ),

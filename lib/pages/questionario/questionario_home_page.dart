@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
@@ -110,6 +111,7 @@ class QuestionarioItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Card(
       elevation: 10,
       child: Column(
@@ -119,7 +121,7 @@ class QuestionarioItem extends StatelessWidget {
             title: _questionario?.nome == null
                 ? Text('Sem nome')
                 : Text(_questionario?.nome),
-            subtitle: Text("Último editor: ${_questionario.editou.nome}"),
+            subtitle: Text("Editado por: ${_questionario.editou.nome}\nem ${_questionario?.modificado?.toDate()}"),
           ),
           // Text("Eixo: ${_questionario.eixo.nome}"),
           // Text("Último editor: ${_questionario.editou.nome}"),
