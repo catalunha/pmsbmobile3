@@ -51,7 +51,25 @@ class DefaultDrawer extends StatelessWidget {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-
+                Widget imagem = Icon(Icons.people, size: 75);
+                if (snap.data?.foto?.localPath != null) {
+                  imagem = Container(
+                      color: Colors.yellow,
+                      child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: CircleAvatar(
+                            backgroundImage:
+                                ExactAssetImage(snap.data?.foto?.localPath),
+                            minRadius: 50,
+                            maxRadius: 50,
+                          )));
+                } else if (snap.data?.foto?.url != null) {
+                  imagem = CircleAvatar(
+                    backgroundImage: NetworkImage(snap.data?.foto?.url),
+                    minRadius: 50,
+                    maxRadius: 50,
+                  );
+                }
                 return DrawerHeader(
                   child: Container(
                     decoration: BoxDecoration(
@@ -67,30 +85,7 @@ class DefaultDrawer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Expanded(
-                                flex: 4,
-                                child: snap.data?.foto?.url == null
-                                    ? Container(
-                                        color: Colors.yellow,
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: CircleAvatar(
-                                              backgroundImage: ExactAssetImage(
-                                                  snap.data?.foto?.localPath),
-                                              minRadius: 50,
-                                              maxRadius: 50,
-                                            )))
-
-                                    // ? Icon(Icons.people, size: 75)
-                                    // : CircleImage(
-                                    //     image: NetworkImage(snap.data.foto?.url),
-                                    //   ),
-                                    : CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(snap.data?.foto?.url),
-                                        minRadius: 50,
-                                        maxRadius: 50,
-                                      )),
+                            Expanded(flex: 4, child: imagem),
                             Expanded(
                               flex: 8,
                               child: Container(
