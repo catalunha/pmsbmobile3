@@ -26,6 +26,13 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         widget.questionarioAplicadoID));
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
+  }
+
   String _eixo = "eixo exemplo";
   String _questionario = "questionarios exemplo";
   String _local = "local exemplo";
@@ -186,7 +193,7 @@ class PerguntaAplicada extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MapaPerguntasWidget.getWigetPergunta(
+    return getWigetPergunta(
       bloc,
       PerguntaTipoModel.ENUM[perguntaAplicada.tipo.id],
       perguntaAplicada,
