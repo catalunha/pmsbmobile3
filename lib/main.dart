@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_marcado_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -86,6 +87,10 @@ class MyApp extends StatelessWidget {
               final settings = ModalRoute.of(context).settings;
               final PerguntaIDEscolhaIDPageArguments args = settings.arguments;
               return PerguntaEscolhaCRUDPage(args.perguntaID, args.escolhaUID);
+            },
+            "/pergunta/pergunta_requisito_marcado": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaRequisitoMarcadoPage(perguntaID:settings.arguments);
             },
 
             //aplicacao

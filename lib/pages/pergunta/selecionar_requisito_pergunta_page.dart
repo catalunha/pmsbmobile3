@@ -66,15 +66,29 @@ class SelecionarQuequisitoPerguntaPage extends StatelessWidget {
           automaticallyImplyLeading: true,
           title: Text('Selecionar Requisitos'),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            bloc.dispatch(
-                UpdateRequisitosSelecionarRequisitoPerguntaPageBlocEvent());
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.thumb_up),
-          backgroundColor: Colors.blue,
-        ),
+        floatingActionButton:
+            StreamBuilder<SelecionarRequisitoPerguntaPageBlocState>(
+                stream: bloc.state,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text("ERROR");
+                  }
+                  if (!snapshot.hasData) {
+                    return Text("SEM DADOS");
+                  }
+                  return FloatingActionButton(
+                    onPressed: () {
+                      bloc.dispatch(
+                          UpdateRequisitosSelecionarRequisitoPerguntaPageBlocEvent());
+                      Navigator.pushNamed(
+                                        context, "/pergunta/pergunta_requisito_marcado",
+                                        arguments: snapshot.data.perguntaID);
+
+                      // Navigator.pop(context);
+                    },
+                    child: Icon(Icons.thumb_up),
+                  );
+                }),
         body: _body());
   }
 }
