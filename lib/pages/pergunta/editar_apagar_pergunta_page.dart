@@ -88,7 +88,10 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   Widget _preambulo() {
     return Column(
       children: <Widget>[
-        Center(child: EixoAtualUsuario()),
+        Center(child: 
+        // EixoAtualUsuario()
+        Container(),
+        ),
         _questionario(),
         _pergunta(),
       ],

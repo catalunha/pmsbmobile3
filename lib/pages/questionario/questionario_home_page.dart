@@ -12,7 +12,7 @@ import 'package:pmsbmibile3/services/services.dart';
 
 class QuestionarioHomePage extends StatelessWidget {
   final QuestionarioHomePageBloc bloc;
-AuthBloc authBloc;
+  final AuthBloc authBloc;
   QuestionarioHomePage(this.authBloc)
       : bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore);
 
@@ -30,7 +30,7 @@ AuthBloc authBloc;
         Container(
           padding: EdgeInsets.only(top: 15, bottom: 15),
           child: Center(
-            child: EixoAtualUsuario(),
+            child: EixoAtualUsuario(authBloc),
           ),
         ),
         StreamBuilder<List<QuestionarioModel>>(
@@ -82,28 +82,28 @@ AuthBloc authBloc;
     });
 
     return
-    //  Provider<QuestionarioHomePageBloc>.value(
-    //   value: bloc,
-    //   child: 
-      DefaultTabController(
-        length: 2,
-        child: DefaultScaffold(
-          bottom: TabBar(
-            tabs: [
-              Tab(text: "Todos"),
-              Tab(text: "Pastas"),
-            ],
-          ),
-          title: Text('Questionarios'),
-          body: _body(context),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              // Adicionar novo questionario a lista
-              Navigator.pushNamed(context, "/questionario/form");
-            },
-          ),
+        //  Provider<QuestionarioHomePageBloc>.value(
+        //   value: bloc,
+        //   child:
+        DefaultTabController(
+      length: 2,
+      child: DefaultScaffold(
+        bottom: TabBar(
+          tabs: [
+            Tab(text: "Todos"),
+            Tab(text: "Pastas"),
+          ],
         ),
+        title: Text('Questionarios'),
+        body: _body(context),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            // Adicionar novo questionario a lista
+            Navigator.pushNamed(context, "/questionario/form");
+          },
+        ),
+      ),
       // ),
     );
   }

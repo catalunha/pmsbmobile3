@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
@@ -18,17 +19,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
-    return Provider.value(
-      value: authBloc,
-      child: Provider<DatabaseService>.value(
-        value: DatabaseService(),
-        child: MaterialApp(
+    return 
+    // Provider.value(
+    //   value: authBloc,
+    //   child: Provider<DatabaseService>.value(
+    //     value: DatabaseService(),
+    //     child: 
+        MaterialApp(
           title: 'PMSB',
           //theme: ThemeData.dark(),
           initialRoute: "/",
           routes: {
             //homePage
-            "/": (context) => HomePage(),
+            "/": (context) => HomePage(authBloc),
 
             //Desenvolvimento
             "/desenvolvimento": (context) => Desenvolvimento(),
@@ -50,7 +53,7 @@ class MyApp extends StatelessWidget {
 
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(authBloc),
-            "/questionario/form": (context) => QuestionarioFormPage(),
+            "/questionario/form": (context) => QuestionarioFormPage(authBloc),
 
             //pergunta
             "/pergunta/home": (context) {
@@ -165,8 +168,8 @@ class MyApp extends StatelessWidget {
             //controle
             "/controle/home": (context) => ControleHomePage(),
           },
-        ),
-      ),
+      //   ),
+      // ),
     );
   }
 }

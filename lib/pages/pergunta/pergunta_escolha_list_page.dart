@@ -121,7 +121,8 @@ class PerguntaEscolhaListPage extends StatelessWidget {
         child: Column(children: <Widget>[
           Container(
             padding: EdgeInsets.only(top: 10),
-            child: EixoAtualUsuario(),
+            child: Container(),
+            // child: EixoAtualUsuario(),
           ),
           // StreamBuilder<EditarApagarPerguntaBlocState>(
           //   stream: bloc.state,

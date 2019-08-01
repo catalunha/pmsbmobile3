@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/api/auth_api_mobile.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/circle_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -15,8 +17,9 @@ class Rota {
 }
 
 class DefaultDrawer extends StatelessWidget {
+  final AuthBloc authBloc;
   Map<String, Rota> rotas;
-  DefaultDrawer() {
+  DefaultDrawer(): authBloc= AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore){
     // Map<String, Rota>
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
@@ -35,7 +38,7 @@ class DefaultDrawer extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthBloc>(context);
+    // var authBloc = Provider.of<AuthBloc>(context);
     return Drawer(
         child: SafeArea(
       child: Column(
@@ -161,9 +164,14 @@ class DefaultDrawer extends StatelessWidget {
 }
 
 class DefaultEndDrawer extends StatelessWidget {
+
+  final AuthBloc authBloc;
+  DefaultEndDrawer(): authBloc= AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+
+
   @override
   Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthBloc>(context);
+    // var authBloc = Provider.of<AuthBloc>(context);
     return Drawer(
       child: SafeArea(
         child: ListView(
