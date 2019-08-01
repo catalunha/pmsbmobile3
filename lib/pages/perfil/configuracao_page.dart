@@ -40,9 +40,11 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ConfiguracaoPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
+    return
+    //  Provider<ConfiguracaoPageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      Scaffold(
         appBar: AppBar(
           title: Text("Configurações"),
         ),
@@ -50,17 +52,17 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
           padding: const EdgeInsets.only(left: 12, right: 12),
           child: ListView(
             children: <Widget>[
-              SelecionarEixo(),
-              SelecionarSetorCensitario(),
+              SelecionarEixo(bloc),
+              SelecionarSetorCensitario(bloc),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: AtualizarNumeroCelular(),
+                child: AtualizarNumeroCelular(bloc),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: AtualizarNomeNoProjeto(),
+                child: AtualizarNomeNoProjeto(bloc),
               ),
-              FotoUsuario(),
+              FotoUsuario(bloc),
             ],
           ),
         ),
@@ -71,15 +73,18 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
           },
           child: Icon(Icons.check),
         ),
-      ),
+      // ),
     );
   }
 }
 
 class SelecionarEixo extends StatelessWidget {
+  final ConfiguracaoPageBloc bloc;
+
+  const SelecionarEixo(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ConfiguracaoPageBloc>(context);
+    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return InkWell(
       onTap: () {
         showDialog(context: context, builder: (context) => OpcoesEixo(bloc));
@@ -143,9 +148,13 @@ class OpcoesEixo extends StatelessWidget {
 }
 
 class SelecionarSetorCensitario extends StatelessWidget {
+    final ConfiguracaoPageBloc bloc;
+
+  const SelecionarSetorCensitario(this.bloc);
+
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ConfiguracaoPageBloc>(context);
+    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return InkWell(
       onTap: () {
         showDialog(
@@ -250,18 +259,26 @@ class OpcoesTema extends StatelessWidget {
 }
 
 class AtualizarNumeroCelular extends StatefulWidget {
+    final ConfiguracaoPageBloc bloc;
+
+  const AtualizarNumeroCelular(this.bloc);
+
   @override
   State<StatefulWidget> createState() {
-    return AtualizarNumeroCelularState();
+    return AtualizarNumeroCelularState(bloc);
   }
 }
 
 class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
+   final ConfiguracaoPageBloc bloc;
+
   final _controller = TextEditingController();
+
+  AtualizarNumeroCelularState(this.bloc);
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ConfiguracaoPageBloc>(context);
+    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return StreamBuilder<UsuarioModel>(
         stream: bloc.usuarioModelStream,
         builder: (context, snapshot) {
@@ -285,18 +302,26 @@ class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
 }
 
 class AtualizarNomeNoProjeto extends StatefulWidget {
+    final ConfiguracaoPageBloc bloc;
+
+  AtualizarNomeNoProjeto(this.bloc);
+
   @override
   State<StatefulWidget> createState() {
-    return AtualizarNomeNoProjetoState();
+    return AtualizarNomeNoProjetoState(bloc);
   }
 }
 
 class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
+    final ConfiguracaoPageBloc bloc;
+
   final _controller = TextEditingController();
+
+  AtualizarNomeNoProjetoState(this.bloc);
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ConfiguracaoPageBloc>(context);
+    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return StreamBuilder<UsuarioModel>(
         stream: bloc.usuarioModelStream,
         builder: (context, snapshot) {
@@ -322,10 +347,14 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
 class FotoUsuario extends StatelessWidget {
   String fotoUrl;
   String fotoLocalPath;
+    final ConfiguracaoPageBloc bloc;
+
+  FotoUsuario(this.bloc);
+
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ConfiguracaoPageBloc>(context);
+    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
 
     return StreamBuilder<ConfiguracaoPageState>(
       stream: bloc.stateStream,

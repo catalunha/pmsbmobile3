@@ -35,9 +35,11 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
-        child: Provider<ProdutoTextoPageBloc>.value(
-            value: bloc,
-            child: Scaffold(
+        child:
+        //  Provider<ProdutoTextoPageBloc>.value(
+        //     value: bloc,
+        //     child: 
+            Scaffold(
               appBar: AppBar(
                 title: Text("Editar texto do produto"),
                 // backgroundColor: Colors.red,
@@ -52,7 +54,7 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
                 children: [
                   // Tab(text: "Dados"),
                   _bodyPreview(context),
-                  UpDateProdutoIDTexto(),
+                  UpDateProdutoIDTexto(bloc),
 
                   // ViewProdutoIDTexto(),
                   // _bodyTexto(),
@@ -69,7 +71,8 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
                 },
                 // backgroundColor: Colors.blue,
               ),
-            )));
+            // )
+            ));
   }
 
   _bodyPreview(context) {
@@ -88,18 +91,21 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
 }
 
 class UpDateProdutoIDTexto extends StatefulWidget {
+  final ProdutoTextoPageBloc bloc;
+  UpDateProdutoIDTexto(this.bloc);
   @override
   State<StatefulWidget> createState() {
-    return UpDateProdutoIDTextoState();
+    return UpDateProdutoIDTextoState(bloc);
   }
 }
 
 class UpDateProdutoIDTextoState extends State<UpDateProdutoIDTexto> {
   final _controller = TextEditingController();
-
+final ProdutoTextoPageBloc bloc;
+UpDateProdutoIDTextoState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ProdutoTextoPageBloc>(context);
+    // final bloc = Provider.of<ProdutoTextoPageBloc>(context);
     return StreamBuilder<ProdutoTextoPageState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,

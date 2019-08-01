@@ -88,7 +88,10 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   Widget _preambulo() {
     return Column(
       children: <Widget>[
-        Center(child: EixoAtualUsuario()),
+        Center(child: 
+        // EixoAtualUsuario()
+        Container(),
+        ),
         _questionario(),
         _pergunta(),
       ],
@@ -216,7 +219,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               _preambulo(),
               Padding(padding: EdgeInsets.all(10)),
               _texto("Tipo da pergunta:"),
-              PerguntaTipoInput(),
+              PerguntaTipoInput(bloc),
               // Card(
               //     child: ListTile(
               //   title: Text('Selecione perguntas ou escolha requisito:'),
@@ -262,7 +265,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               _textoMarkdownField(),
               Padding(padding: EdgeInsets.all(10)),
               // _botaoDeletarPergunta(),
-              _DeleteDocumentOrField(),
+              _DeleteDocumentOrField(bloc),
             ],
           ),
         ),
@@ -282,9 +285,11 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   Widget build(BuildContext context) {
     myController.setTextAndPosition(myController.text);
 
-    return Provider<EditarApagarPerguntaBloc>.value(
-      value: bloc,
-      child: Scaffold(
+    return
+    //  Provider<EditarApagarPerguntaBloc>.value(
+    //   value: bloc,
+    //   child: 
+      Scaffold(
         appBar: AppBar(
           // backgroundColor: Colors.red,
           leading: new IconButton(
@@ -313,15 +318,19 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             );
           },
         ),
-      ),
+      // ),
     );
   }
 }
 
 class PerguntaTipoInput extends StatelessWidget {
+  final EditarApagarPerguntaBloc bloc;
+  PerguntaTipoInput(this.bloc);
+  
+
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
+    // final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
 
     return StreamBuilder<EditarApagarPerguntaBlocState>(
         stream: bloc.state,
@@ -460,18 +469,22 @@ class TituloInputFieldState extends State<TituloInputField> {
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
+final EditarApagarPerguntaBloc bloc;
+
+  _DeleteDocumentOrField(this.bloc);
   @override
   _DeleteDocumentOrFieldState createState() {
-    return _DeleteDocumentOrFieldState();
+    return _DeleteDocumentOrFieldState(bloc);
   }
 }
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-
+final EditarApagarPerguntaBloc bloc;
+_DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
+    // final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
     return StreamBuilder<EditarApagarPerguntaBlocState>(
       stream: bloc.state,
       builder: (BuildContext context,

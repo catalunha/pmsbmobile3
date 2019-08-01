@@ -7,40 +7,13 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 
 class QuestionarioFormPage extends StatelessWidget {
-  final bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore);
-  String _questionarioId;
+  final AuthBloc authBloc;
+  final QuestionarioFormPageBloc bloc;
 
-  // Widget _btnApagar(BuildContext context) {
-  //   return StreamBuilder<QuestionarioModel>(
-  //       stream: bloc.instance,
-  //       builder: (context, snapshot) {
-  //         if (!snapshot.hasData) {
-  //           return Container();
-  //         }
-  //         return SafeArea(
-  //           child: Row(
-  //             children: <Widget>[
-  //               Padding(
-  //                 padding: EdgeInsets.all(5.0),
-  //                 child: RaisedButton(
-  //                   color: Colors.red,
-  //                   onPressed: () {
-  //                     bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
-  //                     Navigator.pop(context);
-  //                   },
-  //                   child: Row(
-  //                     children: <Widget>[
-  //                       Text('Apagar', style: TextStyle(fontSize: 20)),
-  //                       Icon(Icons.delete)
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       });
-  // }
+  QuestionarioFormPage(this.authBloc)
+      : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore,authBloc);
+
+  String _questionarioId;
 
   _body(context) {
     return StreamBuilder<QuestionarioModel>(
@@ -55,7 +28,8 @@ class QuestionarioFormPage extends StatelessWidget {
             children: <Widget>[
               Padding(padding: EdgeInsets.all(5.0)),
               Center(
-                child: EixoAtualUsuario(),
+                child: Container(),
+                // child: EixoAtualUsuario(this.authBloc),
               ),
               Padding(padding: EdgeInsets.all(5.0)),
               Padding(
@@ -66,12 +40,12 @@ class QuestionarioFormPage extends StatelessWidget {
                   )),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: NomeFormItem(),
+                child: NomeFormItem(bloc),
               ),
               // _btnApagar(context),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: _DeleteDocumentOrField(),
+                child: _DeleteDocumentOrField(bloc),
               )
             ],
           );
@@ -85,53 +59,51 @@ class QuestionarioFormPage extends StatelessWidget {
     bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(_questionarioId));
 
     //manda o id do usuario atual
-    final authBloc = Provider.of<AuthBloc>(context);
-    authBloc.perfil.listen((usuario) {
-      bloc.dispatch(UpdateUserInfoQuestionarioFormPageBlocEvent(
-        usuario.id,
-        usuario.nome,
-        usuario.eixoIDAtual.id,
-        usuario.eixoIDAtual.nome,
-      ));
-    });
+    // final authBloc = Provider.of<AuthBloc>(context);
 
-    return Provider<QuestionarioFormPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
-        appBar: AppBar(
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
-                " Questionario")),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.thumb_up),
-          onPressed: () {
-            // salvar e voltar
-            bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
-            Navigator.pop(context);
-          },
-        ),
-        body: _body(context),
+
+    return
+        //  Provider<QuestionarioFormPageBloc>.value(
+        //   value: bloc,
+        //   child:
+        Scaffold(
+      appBar: AppBar(
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
+              " Questionario")),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.thumb_up),
+        onPressed: () {
+          // salvar e voltar
+          bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
+          Navigator.pop(context);
+        },
       ),
+      body: _body(context),
+      // ),
     );
   }
 }
 
 class NomeFormItem extends StatefulWidget {
+  final QuestionarioFormPageBloc bloc;
+  NomeFormItem(this.bloc);
   @override
   NomeFormItemState createState() {
-    return NomeFormItemState();
+    return NomeFormItemState(bloc);
   }
 }
 
 class NomeFormItemState extends State<NomeFormItem> {
   final _textFieldController = TextEditingController();
-
+  final QuestionarioFormPageBloc bloc;
+  NomeFormItemState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<QuestionarioFormPageBloc>(context);
+    // final bloc = Provider.of<QuestionarioFormPageBloc>(context);
     return StreamBuilder<QuestionarioModel>(
       stream: bloc.instance,
       builder: (context, snapshot) {
@@ -153,18 +125,21 @@ class NomeFormItemState extends State<NomeFormItem> {
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
+  final QuestionarioFormPageBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
   @override
   _DeleteDocumentOrFieldState createState() {
-    return _DeleteDocumentOrFieldState();
+    return _DeleteDocumentOrFieldState(bloc);
   }
 }
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-
+  final QuestionarioFormPageBloc bloc;
+  _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<QuestionarioFormPageBloc>(context);
+    // final bloc = Provider.of<QuestionarioFormPageBloc>(context);
     return StreamBuilder<QuestionarioModel>(
       stream: bloc.instance,
       builder:

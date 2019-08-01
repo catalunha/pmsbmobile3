@@ -56,6 +56,7 @@ class QuestionarioFormPageBlocState {
 class QuestionarioFormPageBloc {
   final _state = QuestionarioFormPageBlocState();
   final fsw.Firestore _firestore;
+  final _authBloc;
 
   final _inputController = BehaviorSubject<QuestionarioFormPageBlocEvent>();
   final _outputController = BehaviorSubject<QuestionarioFormPageBlocState>();
@@ -65,7 +66,15 @@ class QuestionarioFormPageBloc {
 
   Function get dispatch => _inputController.add;
 
-  QuestionarioFormPageBloc(this._firestore) {
+  QuestionarioFormPageBloc(this._firestore,this._authBloc) {
+        _authBloc.perfil.listen((usuario) {
+      dispatch(UpdateUserInfoQuestionarioFormPageBlocEvent(
+        usuario.id,
+        usuario.nome,
+        usuario.eixoIDAtual.id,
+        usuario.eixoIDAtual.nome,
+      ));
+    });
     _inputController.listen(_handleInput);
   }
 
@@ -109,11 +118,13 @@ class QuestionarioFormPageBloc {
             : null,
         editou: UsuarioEditou(id: _state.userId, nome: _state.userName),
         eixo: Eixo(id: _state.eixoAtualID, nome: _state.eixoAtualNome),
-        criado: _state.id == null ? Bootstrap.instance.FieldValue.serverTimestamp() : null,
+        criado: _state.id == null
+            ? Bootstrap.instance.FieldValue.serverTimestamp()
+            : null,
         modificado: Bootstrap.instance.FieldValue.serverTimestamp(),
         editando: false,
       );
-
+print('>>> modelInstance <<< ${modelInstance.toMap()}');
       docRef.setData(modelInstance.toMap(), merge: true);
     }
 
@@ -123,5 +134,6 @@ class QuestionarioFormPageBloc {
           .document(_state.id)
           .delete();
     }
+    _outputController.add(_state);
   }
 }

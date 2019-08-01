@@ -2,10 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pmsbmibile3/api/auth_api_mobile.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
+  final AuthBloc authBloc =
+      AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  LoginPage();
+
   @override
   LoginPageState createState() {
     return LoginPageState();
@@ -47,7 +53,7 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthBloc>(context);
+    // var authBloc = Provider.of<AuthBloc>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -77,7 +83,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           onSaved: (email) {
-                            authBloc.dispatch(UpdateEmailAuthBlocEvent(email));
+                            widget.authBloc.dispatch(UpdateEmailAuthBlocEvent(email));
                           },
                           decoration: InputDecoration(
                             hintText: "Informe seu email",
@@ -90,7 +96,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           onSaved: (password) {
-                            authBloc.dispatch(
+                            widget.authBloc.dispatch(
                                 UpdatePasswordAuthBlocEvent(password));
                           },
                           obscureText: true,
@@ -112,7 +118,7 @@ class LoginPageState extends State<LoginPage> {
                           child: Text("Acessar com email e senha"),
                           onPressed: () {
                             _formKey.currentState.save();
-                            authBloc.dispatch(LoginAuthBlocEvent());
+                            widget.authBloc.dispatch(LoginAuthBlocEvent());
                           },
                         ),
                       ),

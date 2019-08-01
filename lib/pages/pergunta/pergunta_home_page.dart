@@ -46,7 +46,8 @@ class PerguntaHomePage extends StatelessWidget {
       Padding(
         padding: EdgeInsets.only(top: 10),
         child: Center(
-          child: EixoAtualUsuario(),
+          child: Container(),
+          // child: EixoAtualUsuario(),
         ),
       ),
       Padding(
