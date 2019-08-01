@@ -62,8 +62,14 @@ class _RespostaHomePageState extends State<RespostaHomePage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backgroundColor: Colors.red,
-      body: _body(context),
-      title: Text("Setores com resposta"),
+      // body: _body(context),
+      body: Center(
+        child: Text(
+          "Em construção.",
+          style: Theme.of(context).textTheme.display1,
+        ),
+      ),
+      title: Text("Resposta dos questionários"),
     );
   }
 }
