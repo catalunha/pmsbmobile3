@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -304,6 +305,7 @@ class EditarApagarPerguntaBloc {
           // requisitos: _state.requisitos,
           // escolhas: _state.escolhas,
           // ultimaOrdemEscolha: _state.escolhas.length,
+          eixo: EixoID(id: _state.questionarioInstance.eixo.id,nome: _state.questionarioInstance.eixo.nome),
           ordem: _state.ordem,
           dataEdicao: DateTime.now(),
         );
