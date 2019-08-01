@@ -11,7 +11,12 @@ import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/services/services.dart';
 
 class QuestionarioHomePage extends StatelessWidget {
-  final bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore);
+  final QuestionarioHomePageBloc bloc;
+AuthBloc authBloc;
+  QuestionarioHomePage(this.authBloc)
+      : bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore);
+
+  // final bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore);
 
   _bodyPastas(context) {
     return Container(
@@ -68,7 +73,7 @@ class QuestionarioHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //manda o id do usuario atual
-    final authBloc = Provider.of<AuthBloc>(context);
+    // final authBloc = Provider.of<AuthBloc>(context);
     authBloc.perfil.listen((user) {
       bloc.dispatch(UpdateUserInfoQuestionarioHomePageBlocEvent(
         user.id,
@@ -76,9 +81,11 @@ class QuestionarioHomePage extends StatelessWidget {
       ));
     });
 
-    return Provider<QuestionarioHomePageBloc>.value(
-      value: bloc,
-      child: DefaultTabController(
+    return
+    //  Provider<QuestionarioHomePageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      DefaultTabController(
         length: 2,
         child: DefaultScaffold(
           bottom: TabBar(
@@ -97,7 +104,7 @@ class QuestionarioHomePage extends StatelessWidget {
             },
           ),
         ),
-      ),
+      // ),
     );
   }
 
@@ -113,7 +120,6 @@ class QuestionarioItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
       elevation: 10,
       child: Column(
@@ -123,7 +129,8 @@ class QuestionarioItem extends StatelessWidget {
             title: _questionario?.nome == null
                 ? Text('Sem nome')
                 : Text(_questionario?.nome),
-            subtitle: Text("Editado por: ${_questionario.editou.nome}\nem ${_questionario?.modificado?.toDate()}"),
+            subtitle: Text(
+                "Editado por: ${_questionario.editou.nome}\nem ${_questionario?.modificado?.toDate()}"),
           ),
           // Text("Eixo: ${_questionario.eixo.nome}"),
           // Text("Último editor: ${_questionario.editou.nome}"),
@@ -147,9 +154,10 @@ class QuestionarioItem extends StatelessWidget {
                   tooltip: 'Conferir todas as perguntas criadas',
                   icon: Icon(Icons.picture_as_pdf),
                   onPressed: () async {
-                      var mdtext = await GeradorMdService.generateMdFromQuestionarioModel(
-                          _questionario);
-                      GeradorPdfService.generatePdfFromMd(mdtext);
+                    var mdtext =
+                        await GeradorMdService.generateMdFromQuestionarioModel(
+                            _questionario);
+                    GeradorPdfService.generatePdfFromMd(mdtext);
                   },
                 ),
                 IconButton(

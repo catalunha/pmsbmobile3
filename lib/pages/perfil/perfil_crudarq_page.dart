@@ -31,9 +31,11 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<PerfilCRUDArqPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
+    return 
+    // Provider<PerfilCRUDArqPageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      Scaffold(
         appBar: AppBar(
           title: Text("Configurações"),
         ),
@@ -41,7 +43,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
           padding: const EdgeInsets.only(left: 12, right: 12),
           child: ListView(
             children: <Widget>[
-              _FotoUsuario(),
+              _FotoUsuario(bloc),
             ],
           ),
         ),
@@ -52,7 +54,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
           },
           child: Icon(Icons.check),
         ),
-      ),
+      // ),
     );
   }
 }
@@ -60,10 +62,14 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
 class _FotoUsuario extends StatelessWidget {
   String fotoUrl;
   String fotoLocalPath;
+  final PerfilCRUDArqPageBloc bloc;
+
+  _FotoUsuario(this.bloc);
+
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<PerfilCRUDArqPageBloc>(context);
+    // final bloc = Provider.of<PerfilCRUDArqPageBloc>(context);
 
     return StreamBuilder<PerfilCRUDArqPageState>(
       stream: bloc.stateStream,

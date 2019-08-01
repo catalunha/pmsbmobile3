@@ -25,7 +25,7 @@ class _PerguntaEscolhaCRUDPageState extends State<PerguntaEscolhaCRUDPage> {
       : bloc = PerguntaEscolhaCRUDPageBloc(Bootstrap.instance.firestore);
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     bloc.eventSink(UpdatePerguntaIDPageEvent(widget.perguntaID));
     bloc.eventSink(UpdateEscolhaIDPageEvent(widget.escolhaUID));
@@ -39,9 +39,11 @@ class _PerguntaEscolhaCRUDPageState extends State<PerguntaEscolhaCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<PerguntaEscolhaCRUDPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
+    return 
+    // Provider<PerguntaEscolhaCRUDPageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      Scaffold(
         appBar: AppBar(
             title: Text((widget.escolhaUID != null ? "Editar" : "Adicionar") +
                 " escolha")),
@@ -63,33 +65,36 @@ class _PerguntaEscolhaCRUDPageState extends State<PerguntaEscolhaCRUDPage> {
                 )),
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: TextoDaEscolha(),
+              child: TextoDaEscolha(bloc),
             ),
             Divider(),
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: _DeleteDocumentOrField(),
+              child: _DeleteDocumentOrField(bloc),
             ),
           ],
         ),
-      ),
+      // ),
     );
   }
 }
 
 class TextoDaEscolha extends StatefulWidget {
+  final PerguntaEscolhaCRUDPageBloc bloc;
+  TextoDaEscolha(this.bloc);
   @override
   TextoDaEscolhaState createState() {
-    return TextoDaEscolhaState();
+    return TextoDaEscolhaState(bloc);
   }
 }
 
 class TextoDaEscolhaState extends State<TextoDaEscolha> {
   final _textFieldController = TextEditingController();
-
+  final PerguntaEscolhaCRUDPageBloc bloc;
+  TextoDaEscolhaState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<PerguntaEscolhaCRUDPageBloc>(context);
+    // final bloc = Provider.of<PerguntaEscolhaCRUDPageBloc>(context);
     return StreamBuilder<PerguntaEscolhaCRUDPageState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
@@ -114,18 +119,21 @@ class TextoDaEscolhaState extends State<TextoDaEscolha> {
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
+  final PerguntaEscolhaCRUDPageBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
   @override
   _DeleteDocumentOrFieldState createState() {
-    return _DeleteDocumentOrFieldState();
+    return _DeleteDocumentOrFieldState(bloc);
   }
 }
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-
+final PerguntaEscolhaCRUDPageBloc bloc;
+_DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<PerguntaEscolhaCRUDPageBloc>(context);
+    // final bloc = Provider.of<PerguntaEscolhaCRUDPageBloc>(context);
     return StreamBuilder<PerguntaEscolhaCRUDPageState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,

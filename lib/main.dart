@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             },
 
             //questionario
-            "/questionario/home": (context) => QuestionarioHomePage(),
+            "/questionario/home": (context) => QuestionarioHomePage(authBloc),
             "/questionario/form": (context) => QuestionarioFormPage(),
 
             //pergunta

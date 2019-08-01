@@ -40,9 +40,11 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ConfiguracaoPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
+    return
+    //  Provider<ConfiguracaoPageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      Scaffold(
         appBar: AppBar(
           title: Text("Configurações"),
         ),
@@ -58,9 +60,9 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: AtualizarNomeNoProjeto(),
+                child: AtualizarNomeNoProjeto(bloc),
               ),
-              FotoUsuario(),
+              FotoUsuario(bloc),
             ],
           ),
         ),
@@ -71,7 +73,7 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
           },
           child: Icon(Icons.check),
         ),
-      ),
+      // ),
     );
   }
 }

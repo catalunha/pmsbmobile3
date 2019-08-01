@@ -38,9 +38,11 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ProdutoCRUDPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
+    return
+    //  Provider<ProdutoCRUDPageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      Scaffold(
         appBar: AppBar(
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
@@ -66,33 +68,36 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
                 )),
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: ProdutoTitulo(),
+              child: ProdutoTitulo(bloc),
             ),
             Divider(),
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: _DeleteDocumentOrField(),
+              child: _DeleteDocumentOrField(bloc),
             ),
           ],
         ),
-      ),
+      // ),
     );
   }
 }
 
 class ProdutoTitulo extends StatefulWidget {
+  final ProdutoCRUDPageBloc bloc;
+  ProdutoTitulo(this.bloc);
   @override
   ProdutoTituloState createState() {
-    return ProdutoTituloState();
+    return ProdutoTituloState(bloc);
   }
 }
 
 class ProdutoTituloState extends State<ProdutoTitulo> {
   final _textFieldController = TextEditingController();
-
+final ProdutoCRUDPageBloc bloc;
+ProdutoTituloState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
+    // final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoCRUDPageState>(
       stream: bloc.stateStream,
       builder:
@@ -117,18 +122,21 @@ class ProdutoTituloState extends State<ProdutoTitulo> {
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
+  final ProdutoCRUDPageBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
   @override
   _DeleteDocumentOrFieldState createState() {
-    return _DeleteDocumentOrFieldState();
+    return _DeleteDocumentOrFieldState(bloc);
   }
 }
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-
+final ProdutoCRUDPageBloc bloc;
+_DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
+    // final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoCRUDPageState>(
       stream: bloc.stateStream,
       builder:

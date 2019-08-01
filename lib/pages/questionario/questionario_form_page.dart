@@ -66,12 +66,12 @@ class QuestionarioFormPage extends StatelessWidget {
                   )),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: NomeFormItem(),
+                child: NomeFormItem(bloc),
               ),
               // _btnApagar(context),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: _DeleteDocumentOrField(),
+                child: _DeleteDocumentOrField(bloc),
               )
             ],
           );
@@ -95,9 +95,11 @@ class QuestionarioFormPage extends StatelessWidget {
       ));
     });
 
-    return Provider<QuestionarioFormPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
+    return
+    //  Provider<QuestionarioFormPageBloc>.value(
+    //   value: bloc,
+    //   child: 
+      Scaffold(
         appBar: AppBar(
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
@@ -114,24 +116,27 @@ class QuestionarioFormPage extends StatelessWidget {
           },
         ),
         body: _body(context),
-      ),
+      // ),
     );
   }
 }
 
 class NomeFormItem extends StatefulWidget {
+  final QuestionarioFormPageBloc bloc;
+  NomeFormItem(this.bloc);
   @override
   NomeFormItemState createState() {
-    return NomeFormItemState();
+    return NomeFormItemState(bloc);
   }
 }
 
 class NomeFormItemState extends State<NomeFormItem> {
   final _textFieldController = TextEditingController();
-
+  final QuestionarioFormPageBloc bloc;
+  NomeFormItemState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<QuestionarioFormPageBloc>(context);
+    // final bloc = Provider.of<QuestionarioFormPageBloc>(context);
     return StreamBuilder<QuestionarioModel>(
       stream: bloc.instance,
       builder: (context, snapshot) {
@@ -153,18 +158,21 @@ class NomeFormItemState extends State<NomeFormItem> {
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
+  final QuestionarioFormPageBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
   @override
   _DeleteDocumentOrFieldState createState() {
-    return _DeleteDocumentOrFieldState();
+    return _DeleteDocumentOrFieldState(bloc);
   }
 }
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-
+  final QuestionarioFormPageBloc bloc;
+  _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<QuestionarioFormPageBloc>(context);
+    // final bloc = Provider.of<QuestionarioFormPageBloc>(context);
     return StreamBuilder<QuestionarioModel>(
       stream: bloc.instance,
       builder:

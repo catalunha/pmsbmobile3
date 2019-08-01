@@ -52,21 +52,23 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ProdutoArquivoCRUDPageBloc>.value(
-        value: bloc,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Editar ${widget.tipo}"),
-          ),
-          body: _bodyDados(context),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.save),
-            onPressed: () {
-              bloc.eventSink(SaveEvent());
-              Navigator.of(context).pop();
-            },
-          ),
-        ));
+    return
+        //  Provider<ProdutoArquivoCRUDPageBloc>.value(
+        //     value: bloc,
+        //     child:
+        Scaffold(
+            appBar: AppBar(
+              title: Text("Editar ${widget.tipo}"),
+            ),
+            body: _bodyDados(context),
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.save),
+              onPressed: () {
+                bloc.eventSink(SaveEvent());
+                Navigator.of(context).pop();
+              },
+              // ),
+            ));
   }
 
   _bodyDados(BuildContext context) {
@@ -94,7 +96,7 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
           padding: EdgeInsets.all(5),
           children: <Widget>[
             Text("Editar titulo da ${widget.tipo}"),
-            TituloArquivo(),
+            TituloArquivo(bloc),
             ButtonTheme.bar(
                 child: ButtonBar(children: <Widget>[
               Text('Apagar rascunho'),
@@ -114,11 +116,10 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
                   bloc.eventSink(UpdateArquivoRascunhoEvent(rascunhoLocalPath));
                 },
               ),
-                ])),
+            ])),
             ButtonTheme.bar(
                 child: ButtonBar(children: <Widget>[
               Text('Apagar editado'),
-
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () async {
@@ -144,7 +145,7 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
             Divider(),
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: _DeleteDocumentOrField(),
+              child: _DeleteDocumentOrField(bloc),
             ),
 
             //TODO: Comentar/Apagar esta informação após testes.
@@ -189,18 +190,22 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
 }
 
 class TituloArquivo extends StatefulWidget {
+  final ProdutoArquivoCRUDPageBloc bloc;
+  TituloArquivo(this.bloc);
   @override
   State<StatefulWidget> createState() {
-    return TituloArquivoState();
+    return TituloArquivoState(bloc);
   }
 }
 
 class TituloArquivoState extends State<TituloArquivo> {
   final _controller = TextEditingController();
 
+  final ProdutoArquivoCRUDPageBloc bloc;
+  TituloArquivoState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ProdutoArquivoCRUDPageBloc>(context);
+    // final bloc = Provider.of<ProdutoArquivoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoArquivoCRUDPageState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
@@ -233,18 +238,21 @@ class TituloArquivoState extends State<TituloArquivo> {
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
+  final ProdutoArquivoCRUDPageBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
   @override
   _DeleteDocumentOrFieldState createState() {
-    return _DeleteDocumentOrFieldState();
+    return _DeleteDocumentOrFieldState(bloc);
   }
 }
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-
+  final ProdutoArquivoCRUDPageBloc bloc;
+  _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<ProdutoArquivoCRUDPageBloc>(context);
+    // final bloc = Provider.of<ProdutoArquivoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoArquivoCRUDPageState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
@@ -268,7 +276,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
               onPressed: () {
                 //Ir para a pagina visuais do produto
                 if (_textFieldController.text == 'CONCORDO') {
-                bloc.eventSink(DeleteEvent());
+                  bloc.eventSink(DeleteEvent());
                   Navigator.of(context).pop();
                 }
               },
