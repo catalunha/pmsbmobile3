@@ -16,6 +16,7 @@ class UpdateEscolhaIDPageEvent extends PerguntaEscolhaCRUDPageEvent {
   final String escolhaUID;
 
   UpdateEscolhaIDPageEvent(this.escolhaUID);
+
 }
 
 class UpdateTextoEvent extends PerguntaEscolhaCRUDPageEvent {
@@ -80,6 +81,7 @@ class PerguntaEscolhaCRUDPageBloc {
 
     if (event is UpdateEscolhaIDPageEvent) {
       _state.escolhaUID = event.escolhaUID;
+      print('>>>>>>>>>> _state.perguntaID <<< ${_state.perguntaID}');
       final docRef = _firestore
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
@@ -89,9 +91,16 @@ class PerguntaEscolhaCRUDPageBloc {
         perguntaModel =
             PerguntaModel(id: docSnap.documentID).fromMap(docSnap.data);
       }
-        _state.ultimaOrdemEscolha = perguntaModel.ultimaOrdemEscolha;
+      print('>>> perguntaModel <<< ${perguntaModel.toMap()}');
+      // if (perguntaModel.ultimaOrdemEscolha == null) {
+      //   _state.ultimaOrdemEscolha = 0;
+      // } else {
+      //   _state.ultimaOrdemEscolha = perguntaModel.ultimaOrdemEscolha;
+      // }
+      _state.ultimaOrdemEscolha = perguntaModel.ultimaOrdemEscolha;
+
       if (event.escolhaUID != null) {
-         // print('>>> perguntaModel <<< ${perguntaModel.toMap()}');
+        // print('>>> perguntaModel <<< ${perguntaModel.toMap()}');
         perguntaModel.escolhas.forEach((k, v) {
           if (k == _state.escolhaUID) {
             _state.escolha = v;
