@@ -162,7 +162,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, "/aplicacao/aplicando_pergunta");
+                          context, "/aplicacao/aplicando_pergunta", arguments: _questionario.id);
                     },
                   ),
                   IconButton(
