@@ -61,11 +61,18 @@ class AplicacaoHomePageBloc {
       _reference
           .where("aplicador.id", isEqualTo: _state.usuarioID)
           .snapshots()
-          .listen((snapshot) {
-        dispatch(
-            UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent(snapshot));
-      });
+          .listen(
+        (snapshot) {
+          if (!_inputController.isClosed) {
+            //isto não deveria acontecer, não sei porque o inputController
+            //foi fechado nem onde
+            dispatch(UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent(
+                snapshot));
+          }
+        },
+      );
     }
+
     if (event is UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent) {
       _state.questionariosAplicados = event.snapshot.documents
           .map((doc) =>
