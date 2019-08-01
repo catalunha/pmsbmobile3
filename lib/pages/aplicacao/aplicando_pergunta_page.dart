@@ -7,7 +7,8 @@ import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart
 
 class AplicacaoPerguntaPage extends StatefulWidget {
   const AplicacaoPerguntaPage(this.questionarioAplicadoID, {Key key})
-      : super(key: key);
+      : assert(questionarioAplicadoID != null),
+        super(key: key);
 
   final String questionarioAplicadoID;
 
@@ -25,7 +26,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     bloc.dispatch(UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent(
         widget.questionarioAplicadoID));
   }
-
 
   @override
   void dispose() {
@@ -48,7 +48,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
             child: RaisedButton(
               color: Colors.green,
               onPressed: () {
-                bloc.dispatch(PularAplicandoPerguntaPageBlocEvent());
+                bloc.dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent());
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -125,6 +125,14 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         if (!snapshot.hasData) return Text("SEM DADOS");
         if (!snapshot.data.perguntasOk) {
           return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.data.isUltimaPergunta &&
+            snapshot.data.perguntaAtual.foiRespondida) {
+          return Center(
+            child: InkWell(onTap: () {
+              Navigator.pushNamed(context, "/aplicacao/pendencias");
+            }, child: Text("Ultima"),),
+          );
         }
         return ListView(
           children: <Widget>[

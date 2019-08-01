@@ -9,13 +9,14 @@ class AplicandoPerguntaPageBlocState {
   List<PerguntaAplicadaModel> _perguntas;
 
   PerguntaAplicadaModel get perguntaAtual {
-    if (_perguntas != null)
+    if (_perguntas != null && perguntaAtualIndexValido)
       return _perguntas[perguntaAtualIndex];
     else
       return null;
   }
 
   set perguntas(List<PerguntaAplicadaModel> p) {
+    _perguntas?.clear();
     _perguntas = p;
     if (p != null) perguntasOk = true;
   }
@@ -35,6 +36,16 @@ class AplicandoPerguntaPageBlocState {
     }
     return true;
   }
+
+  bool get perguntaAtualIndexValido {
+    return perguntaAtualIndex >= 0 &&
+        perguntaAtualIndex <= _perguntas.length - 1;
+  }
+
+  bool get isUltimaPergunta {
+    if (!perguntasOk) return false;
+    return perguntaAtualIndex >= _perguntas.length - 1;
+  }
 }
 
 class AplicandoPerguntaPageBlocEvent {}
@@ -53,8 +64,16 @@ class CarregaListaPerguntasAplicadasAplicandoPerguntaPageBlocEvent
 class SalvarAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {}
 
-class PularAplicandoPerguntaPageBlocEvent
-    extends AplicandoPerguntaPageBlocEvent {}
+class ProximaPerguntaAplicandoPerguntaPageBlocEvent
+    extends AplicandoPerguntaPageBlocEvent {
+  final bool reset;
+  final int index;
+
+  ProximaPerguntaAplicandoPerguntaPageBlocEvent({
+    this.reset = false,
+    this.index,
+  });
+}
 
 // eventos de respostas
 class UpdateTextoRespostaAplicandoPerguntaPageBlocEvent
@@ -92,11 +111,21 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
 
   @override
   Future<void> mapEventToState(AplicandoPerguntaPageBlocEvent event) async {
-    if (event is PularAplicandoPerguntaPageBlocEvent) {
-      if (currentState.perguntaAtualIndex < currentState.totalPerguntas - 1) {
-        currentState.perguntaAtualIndex += 1;
+    if (event is ProximaPerguntaAplicandoPerguntaPageBlocEvent) {
+      if (event.index != null) {
+        currentState.perguntaAtualIndex = event.index;
       } else {
-        currentState.perguntaAtualIndex = 0;
+        if (event.reset) {
+          currentState.perguntaAtualIndex = 0;
+        } else {
+          currentState.perguntaAtualIndex += 1;
+        }
+        while (!currentState.isUltimaPergunta) {
+          if (currentState.perguntaAtual.foiRespondida == false) {
+            break;
+          }
+          currentState.perguntaAtualIndex += 1;
+        }
       }
     }
     if (event is UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent) {
@@ -115,6 +144,7 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
           .map((doc) =>
               PerguntaAplicadaModel(id: doc.documentID).fromMap(doc.data))
           .toList();
+      dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(reset: true));
     }
     if (event is SalvarAplicandoPerguntaPageBlocEvent) {
       if (currentState.isValid) {
@@ -128,7 +158,7 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
         ref.setData(map, merge: true);
       }
 
-      dispatch(PularAplicandoPerguntaPageBlocEvent());
+      dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent());
     }
 
     //respostas
