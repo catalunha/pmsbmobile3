@@ -24,10 +24,10 @@ class EditarApagarPerguntaBlocState {
   String posterior;
   Map requisitosSelecionado = Map<String, Map<String, dynamic>>();
 
-  Map<String, Requisito> requisitos;
-  Map<String, dynamic> requisitosRemovidos = Map<String, dynamic>();
-  Map<String, Escolha> escolhas;
-  Map<String, dynamic> escolhasRemovidas = Map<String, dynamic>();
+  // Map<String, Requisito> requisitos;
+  // Map<String, dynamic> requisitosRemovidos = Map<String, dynamic>();
+  // Map<String, Escolha> escolhas;
+  // Map<String, dynamic> escolhasRemovidas = Map<String, dynamic>();
   bool isValid;
   bool isBaund;
 
@@ -41,8 +41,8 @@ class EditarApagarPerguntaBlocState {
     tipo = instance.tipo;
     ordem = instance.ordem;
     if (tipo != null) tipoEnum = PerguntaTipoModel.ENUM[instance.tipo.id];
-    requisitos = instance.requisitos != null ? instance.requisitos : requisitos;
-    escolhas = instance.escolhas;
+    // requisitos = instance.requisitos != null ? instance.requisitos : requisitos;
+    // escolhas = instance.escolhas;
   }
 }
 
@@ -111,12 +111,12 @@ class AddItemEscolhaEditarApagarPerguntaBlocEvent
 class DeletarItemEscolhaEditarApagarPerguntaBlocEvent
     extends EditarApagarPerguntaBlocEvent {}
 
-class UpdateRequisitosEditarApagarPerguntaBlocEvent
-    extends EditarApagarPerguntaBlocEvent {
-  final Map<String, Map<String, dynamic>> requisitos;
+// class UpdateRequisitosEditarApagarPerguntaBlocEvent
+//     extends EditarApagarPerguntaBlocEvent {
+//   final Map<String, Map<String, dynamic>> requisitos;
 
-  UpdateRequisitosEditarApagarPerguntaBlocEvent(this.requisitos);
-}
+//   UpdateRequisitosEditarApagarPerguntaBlocEvent(this.requisitos);
+// }
 
 class SaveEditarApagarPerguntaBlocEvent extends EditarApagarPerguntaBlocEvent {}
 
@@ -168,8 +168,8 @@ class EditarApagarPerguntaBloc {
       dispatch(UpdateTipoPerguntaEditarApagarPerguntaBlocEvent(
           event.defaultTipoPergunta));
       _state.textoMarkdown = event.defaultTextoMarkdown;
-      _state.requisitos = Map<String, Requisito>();
-      _state.escolhas = Map<String, Escolha>();
+      // _state.requisitos = Map<String, Requisito>();
+      // _state.escolhas = Map<String, Escolha>();
     }
 
     if (event is UpdateIDEditarApagarPerguntaBlocEvent) {
@@ -219,26 +219,26 @@ class EditarApagarPerguntaBloc {
           PerguntaTipoModel.NOMES[event.tipo]);
     }
 
-    //adicionar, editar e remover requisito
-    if (event is UpdateRequisitosEditarApagarPerguntaBlocEvent) {
-      event.requisitos.forEach((key, value) {
-        if (value["checkbox"] != null) {
-          if (value["checkbox"]) {
-            _state.requisitos[key] = value["requisito"];
-            _state.requisitosSelecionado[key]=value;
-          } else {
-            _state.requisitosRemovidos[key] =
-                Bootstrap.instance.FieldValue.delete();
-          }
-        }
-      });
-    }
+    // //adicionar, editar e remover requisito
+    // if (event is UpdateRequisitosEditarApagarPerguntaBlocEvent) {
+    //   event.requisitos.forEach((key, value) {
+    //     if (value["checkbox"] != null) {
+    //       if (value["checkbox"]) {
+    //         _state.requisitos[key] = value["requisito"];
+    //         _state.requisitosSelecionado[key]=value;
+    //       } else {
+    //         _state.requisitosRemovidos[key] =
+    //             Bootstrap.instance.FieldValue.delete();
+    //       }
+    //     }
+    //   });
+    // }
 
     //adicionar , editar e remover escolha
     if (event is UpdateItemEscolhaIDEditarApagarPerguntaBlocEvent) {
       _state.itemEscolhaID = event.itemEscolhaID;
-      if (event.itemEscolhaID != null)
-        _state.itemEscolha = _state.escolhas[event.itemEscolhaID].texto;
+      // if (event.itemEscolhaID != null)
+      //   _state.itemEscolha = _state.escolhas[event.itemEscolhaID].texto;
     }
     if (event is UpdateItemEscolhaEditarApagarPerguntaBlocEvent) {
       _state.itemEscolha = event.itemEscolha;
@@ -249,22 +249,22 @@ class EditarApagarPerguntaBloc {
       final escolhaID =
           _state.itemEscolhaID == null ? uuidG.v4() : _state.itemEscolhaID;
 
-      _state.escolhas[escolhaID] = Escolha(
-        uid: escolhaID,
-        key: true,
-        marcada: false,
-        ordem: 0,
-        texto: _state.itemEscolha,
-      );
-      _state.itemEscolha = null;
-      _state.itemEscolhaID = null;
+      // _state.escolhas[escolhaID] = Escolha(
+      //   uid: escolhaID,
+      //   key: true,
+      //   marcada: false,
+      //   ordem: 0,
+      //   texto: _state.itemEscolha,
+      // );
+      // _state.itemEscolha = null;
+      // _state.itemEscolhaID = null;
     }
 
-    if (event is DeletarItemEscolhaEditarApagarPerguntaBlocEvent) {
-      _state.escolhas.remove(_state.itemEscolhaID);
-      _state.escolhasRemovidas[_state.itemEscolhaID] =
-          Bootstrap.instance.FieldValue.delete();
-    }
+    // if (event is DeletarItemEscolhaEditarApagarPerguntaBlocEvent) {
+    //   _state.escolhas.remove(_state.itemEscolhaID);
+    //   _state.escolhasRemovidas[_state.itemEscolhaID] =
+    //       Bootstrap.instance.FieldValue.delete();
+    // }
 
     //salvar e deletar geral
     if (event is SaveEditarApagarPerguntaBlocEvent) {
@@ -301,9 +301,9 @@ class EditarApagarPerguntaBloc {
           textoMarkdown: _state.textoMarkdown,
           questionario: _state.questionario,
           tipo: _state.tipo,
-          requisitos: _state.requisitos,
-          escolhas: _state.escolhas,
-          ultimaOrdemEscolha: _state.escolhas.length,
+          // requisitos: _state.requisitos,
+          // escolhas: _state.escolhas,
+          // ultimaOrdemEscolha: _state.escolhas.length,
           ordem: _state.ordem,
           dataEdicao: DateTime.now(),
         );
@@ -312,9 +312,9 @@ class EditarApagarPerguntaBloc {
           instance.ultimaOrdemEscolha = 0;
         }
         final map = instance.toMap();
-        map["requisitos"].addAll(_state.requisitosRemovidos);
-        map["escolhas"].addAll(_state.escolhasRemovidas);
-        ref.setData(map, merge: true);
+        // map["requisitos"].addAll(_state.requisitosRemovidos);
+        // map["escolhas"].addAll(_state.escolhasRemovidas);
+        await ref.setData(map, merge: true);
 
         final snap = await ref.get();
         _state.id = snap.documentID;

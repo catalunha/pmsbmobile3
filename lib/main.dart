@@ -3,6 +3,9 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -63,21 +66,21 @@ class MyApp extends StatelessWidget {
                 perguntaID: args.perguntaID,
               );
             },
-            "/pergunta/selecionar_requisito": (context) {
-              final settings = ModalRoute.of(context).settings;
-              return SelecionarQuequisitoPerguntaPage(
-                  authBloc, settings.arguments);
-            },
-            "/pergunta/criar_ordenar_escolha": (context) {
-              final settings = ModalRoute.of(context).settings;
-              return CriarOrdenarEscolha(settings.arguments);
-            },
-            "/pergunta/editar_apagar_escolha": (context) {
-              final settings = ModalRoute.of(context).settings;
-              final EditarApagarEscolhaPageArguments args = settings.arguments;
-              return EditarApagarEscolhaPage(args.bloc, args.escolhaID);
-            },
-            //Pergunta item Escolha
+            // "/pergunta/selecionar_requisito": (context) {
+            //   final settings = ModalRoute.of(context).settings;
+            //   return SelecionarQuequisitoPerguntaPage(
+            //       authBloc, settings.arguments);
+            // },
+            // "/pergunta/criar_ordenar_escolha": (context) {
+            //   final settings = ModalRoute.of(context).settings;
+            //   return CriarOrdenarEscolha(settings.arguments);
+            // },
+            // "/pergunta/editar_apagar_escolha": (context) {
+            //   final settings = ModalRoute.of(context).settings;
+            //   final EditarApagarEscolhaPageArguments args = settings.arguments;
+            //   return EditarApagarEscolhaPage(args.bloc, args.escolhaID);
+            // },
+            //Pergunta Acrescimos Prof Catalunha
             "/pergunta/escolha_list": (context) {
               final settings = ModalRoute.of(context).settings;
               return PerguntaEscolhaListPage(settings.arguments);
@@ -86,6 +89,20 @@ class MyApp extends StatelessWidget {
               final settings = ModalRoute.of(context).settings;
               final PerguntaIDEscolhaIDPageArguments args = settings.arguments;
               return PerguntaEscolhaCRUDPage(args.perguntaID, args.escolhaUID);
+            },
+            "/pergunta/pergunta_preview": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaPreviewPage(perguntaID: settings.arguments);
+            },
+            "/pergunta/pergunta_requisito_marcar": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaRequisitoEscolhaMarcarPage(
+                  perguntaID: settings.arguments);
+            },
+            "/pergunta/pergunta_requisito": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaRequisitoPage(
+                  perguntaID: settings.arguments);
             },
 
             //aplicacao

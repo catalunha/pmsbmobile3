@@ -70,19 +70,21 @@ class PerguntaEscolhaListPageBloc {
       docRef.snapshots().listen((snap) {
         final perguntaModel =
             PerguntaModel(id: snap.documentID).fromMap(snap.data);
-        // Fonte: https://stackoverflow.com/questions/50875873/sort-maps-in-dart-by-key-or-by-value
-        var dicEscolhas = Dictionary.fromMap(perguntaModel.escolhas);
-        var escolhasAscOrder = dicEscolhas
-            // Sort Ascending order by value ordem
-            .orderBy((kv) => kv.value.ordem)
-            // Sort Descending order by value ordem
-            // .orderByDescending((kv) => kv.value.ordem)
-            .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-        print(escolhasAscOrder.toMap());
-        _state.escolhaMap = escolhasAscOrder.toMap();
-        // _state.escolhaMap = perguntaModel.escolhas;
-        stateSink(_state);
-        // stateSink();
+        if (perguntaModel.escolhas != null) {
+          // Fonte: https://stackoverflow.com/questions/50875873/sort-maps-in-dart-by-key-or-by-value
+          var dicEscolhas = Dictionary.fromMap(perguntaModel.escolhas);
+          var escolhasAscOrder = dicEscolhas
+              // Sort Ascending order by value ordem
+              .orderBy((kv) => kv.value.ordem)
+              // Sort Descending order by value ordem
+              // .orderByDescending((kv) => kv.value.ordem)
+              .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+          print(escolhasAscOrder.toMap());
+          _state.escolhaMap = escolhasAscOrder.toMap();
+          // _state.escolhaMap = perguntaModel.escolhas;
+          stateSink(_state);
+          // stateSink();
+        }
       });
     }
     if (event is OrdenarEscolhaEvent) {
@@ -112,9 +114,6 @@ class PerguntaEscolhaListPageBloc {
         }
       }, merge: true);
     }
-
-
-
 
     _validateData();
     if (!_stateController.isClosed) stateSink(_state);

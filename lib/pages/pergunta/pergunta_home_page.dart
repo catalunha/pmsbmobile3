@@ -167,6 +167,21 @@ class PerguntaItem extends StatelessWidget {
                       : null,
                 ),
                 IconButton(
+                    tooltip: 'Visão geral da pergunta',
+                    icon: Icon(Icons.remove_red_eye),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/pergunta/pergunta_preview",
+                          arguments: _pergunta.id);
+                    }),
+                IconButton(
+                    tooltip: 'Definir Requisitos',
+                    icon: Icon(Icons.rotate_90_degrees_ccw),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, "/pergunta/pergunta_requisito",
+                          arguments: _pergunta.id);
+                    }),
+                IconButton(
                   tooltip: 'Editar esta pergunta',
                   icon: Icon(Icons.edit),
                   onPressed: () {

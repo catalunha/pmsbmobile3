@@ -159,7 +159,8 @@ class PerguntaModel extends FirestoreModel {
     if (referencia != null) map["referencia"] = referencia;
 
     if (ordem != null) map["ordem"] = ordem;
-    if (ultimaOrdemEscolha != null) map["ultimaOrdemEscolha"] = ultimaOrdemEscolha;
+    if (ultimaOrdemEscolha != null)
+      map["ultimaOrdemEscolha"] = ultimaOrdemEscolha;
 
     if (titulo != null) map["titulo"] = titulo;
 
@@ -263,9 +264,14 @@ class Requisito {
   String perguntaID;
   String perguntaTipo;
   EscolhaRequisito escolha;
+  String label;
 
   Requisito(
-      {this.referencia, this.perguntaID, this.perguntaTipo, this.escolha});
+      {this.referencia,
+      this.perguntaID,
+      this.perguntaTipo,
+      this.escolha,
+      this.label});
 
   Requisito.fromMap(Map<dynamic, dynamic> map) {
     referencia = map["referencia"];
@@ -273,6 +279,7 @@ class Requisito {
     perguntaTipo = map["perguntaTipo"];
     if (map["escolha"] != null && map["escolha"] is Map)
       escolha = EscolhaRequisito.fromMap(map["escolha"]);
+    label = map["label"];
   }
 
   Map<String, dynamic> toMap() {
@@ -282,6 +289,7 @@ class Requisito {
     if (perguntaTipo != null) map["perguntaTipo"] = perguntaTipo;
     if (escolha != null && escolha is EscolhaRequisito)
       map["escolha"] = escolha.toMap();
+    if (label != null) map["label"] = label;
     return map;
   }
 }
@@ -295,18 +303,20 @@ class Requisito {
 class EscolhaRequisito {
   String id;
   bool marcada;
-
-  EscolhaRequisito({this.id, this.marcada});
+  String label;
+  EscolhaRequisito({this.id, this.marcada, this.label});
 
   EscolhaRequisito.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     marcada = map["marcada"];
+    label = map["label"];
   }
 
   Map<String, dynamic> toMap() {
     return {
       if (id != null) "id": id,
       if (marcada != null) "marcada": marcada,
+      if (label != null) "label": label,
     };
   }
 }

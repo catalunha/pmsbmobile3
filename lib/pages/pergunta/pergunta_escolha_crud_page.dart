@@ -25,7 +25,7 @@ class _PerguntaEscolhaCRUDPageState extends State<PerguntaEscolhaCRUDPage> {
       : bloc = PerguntaEscolhaCRUDPageBloc(Bootstrap.instance.firestore);
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     bloc.eventSink(UpdatePerguntaIDPageEvent(widget.perguntaID));
     bloc.eventSink(UpdateEscolhaIDPageEvent(widget.escolhaUID));

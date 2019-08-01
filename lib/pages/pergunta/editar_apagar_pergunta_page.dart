@@ -217,18 +217,18 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               Padding(padding: EdgeInsets.all(10)),
               _texto("Tipo da pergunta:"),
               PerguntaTipoInput(),
-              Card(
-                  child: ListTile(
-                title: Text('Selecione perguntas ou escolha requisito:'),
-                trailing: IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
-                      Navigator.pushNamed(
-                          context, "/pergunta/selecionar_requisito",
-                          arguments: bloc);
-                    }),
-              )),
+              // Card(
+              //     child: ListTile(
+              //   title: Text('Selecione perguntas ou escolha requisito:'),
+              //   trailing: IconButton(
+              //       icon: Icon(Icons.search),
+              //       onPressed: () {
+              //         // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
+              //         Navigator.pushNamed(
+              //             context, "/pergunta/selecionar_requisito",
+              //             arguments: bloc);
+              //       }),
+              // )),
               Padding(padding: EdgeInsets.all(10)),
               StreamBuilder<EditarApagarPerguntaBlocState>(
                 stream: bloc.state,
@@ -244,10 +244,14 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                     title: Text('Defina as escolhas:'),
                     trailing: IconButton(
                         icon: Icon(Icons.search),
-                        onPressed: () {
+                        onPressed: () async {
                           // SELECIONAR ESCOLHA
-                          Navigator.pushNamed(context, "/pergunta/escolha_list",
-                              arguments: widget.perguntaID);
+                          bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
+                          if (snapshot.data.isValid) {
+                            Navigator.pushNamed(
+                                context, "/pergunta/escolha_list",
+                                arguments: snapshot.data.instance.id);
+                          }
                         }),
                   ));
                 },
@@ -274,137 +278,40 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     );
   }
 
-  _bodyPreview() {
-    return StreamBuilder<EditarApagarPerguntaBlocState>(
-        stream: bloc.state,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text("ERROR");
-          }
-          if (!snapshot.hasData) {
-            return Text("SEM DADOS");
-          }
-          // return Markdown(data: snapshot.data.textoMarkdown);
-          List<Widget> escolhas = List<Widget>();
-          Map<String, Escolha> escolhaMap = Map<String, Escolha>();
-          var dicEscolhas = Dictionary.fromMap(snapshot.data.escolhas);
-          var escolhasAscOrder = dicEscolhas
-              .orderBy((kv) => kv.value.ordem)
-              .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-          escolhaMap = escolhasAscOrder.toMap();
-
-          escolhaMap.forEach((k, v) {
-            escolhas.add(
-              Text(v.texto),
-            );
-          });
-          List<Widget> requisitos = List<Widget>();
-          snapshot.data.requisitosSelecionado?.forEach((k, v) {
-            requisitos.add(
-              Text(v['pergunta']),
-            );
-          });
-          return Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Título:',
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
-              ),
-              Text(snapshot.data.titulo),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Escolhas:',
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
-              ),
-              escolhas.isNotEmpty
-                  ? Expanded(
-                      flex: 2,
-                      child: ListView(
-                        children: escolhas,
-                      ),
-                    )
-                  : Container(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Requisitos:',
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
-              ),
-              requisitos.isNotEmpty
-                  ? Expanded(
-                      flex: 2,
-                      child: ListView(
-                        children: requisitos,
-                      ),
-                    )
-                  : Container(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Texto da pergunta:',
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
-              ),
-              Expanded(
-                flex: 7,
-                child: Markdown(data: snapshot.data.textoMarkdown),
-              )
-            ],
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     myController.setTextAndPosition(myController.text);
 
     return Provider<EditarApagarPerguntaBloc>.value(
       value: bloc,
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            // backgroundColor: Colors.red,
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            bottom: TabBar(
-              tabs: [
-                Tab(text: "Edição"),
-                Tab(text: "Preview"),
-              ],
-            ),
-            title: Text("Editar apagar pergunta"),
+      child: Scaffold(
+        appBar: AppBar(
+          // backgroundColor: Colors.red,
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          body: TabBarView(
-            children: [_bodyTexto(context), _bodyPreview()],
-          ),
-          floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
-            stream: bloc.state,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Text("SEM DADOS");
-              }
-              return FloatingActionButton(
-                onPressed: !snapshot.data.isValid
-                    ? null
-                    : () {
-                        bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
-                        Navigator.of(context).pop();
-                      },
-                child: Icon(Icons.thumb_up),
-                backgroundColor:
-                    !snapshot.data.isValid ? Colors.grey : Colors.blue,
-              );
-            },
-          ),
+          title: Text("Editar apagar pergunta"),
+        ),
+        body: _bodyTexto(context),
+        floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
+          stream: bloc.state,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Text("SEM DADOS");
+            }
+            return FloatingActionButton(
+              onPressed: !snapshot.data.isValid
+                  ? null
+                  : () {
+                      bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
+                      Navigator.of(context).pop();
+                    },
+              child: Icon(Icons.thumb_up),
+              backgroundColor:
+                  !snapshot.data.isValid ? Colors.grey : Colors.blue,
+            );
+          },
         ),
       ),
     );
