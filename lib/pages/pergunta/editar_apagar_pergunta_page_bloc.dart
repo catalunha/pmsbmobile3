@@ -22,6 +22,7 @@ class EditarApagarPerguntaBlocState {
   //TODO: removido do model e bloc
   String anterior;
   String posterior;
+  Map requisitosSelecionado = Map<String, Map<String, dynamic>>();
 
   Map<String, Requisito> requisitos;
   Map<String, dynamic> requisitosRemovidos = Map<String, dynamic>();
@@ -224,6 +225,7 @@ class EditarApagarPerguntaBloc {
         if (value["checkbox"] != null) {
           if (value["checkbox"]) {
             _state.requisitos[key] = value["requisito"];
+            _state.requisitosSelecionado[key]=value;
           } else {
             _state.requisitosRemovidos[key] =
                 Bootstrap.instance.FieldValue.delete();

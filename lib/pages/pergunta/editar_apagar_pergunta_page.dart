@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
+import 'package:queries/collections.dart';
 
 import '../user_files.dart';
 
@@ -244,8 +246,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                         icon: Icon(Icons.search),
                         onPressed: () {
                           // SELECIONAR ESCOLHA
-                          Navigator.pushNamed(
-                              context, "/pergunta/escolha_list",
+                          Navigator.pushNamed(context, "/pergunta/escolha_list",
                               arguments: widget.perguntaID);
                         }),
                   ));
@@ -283,7 +284,79 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
           if (!snapshot.hasData) {
             return Text("SEM DADOS");
           }
-          return Markdown(data: snapshot.data.textoMarkdown);
+          // return Markdown(data: snapshot.data.textoMarkdown);
+          List<Widget> escolhas = List<Widget>();
+          Map<String, Escolha> escolhaMap = Map<String, Escolha>();
+          var dicEscolhas = Dictionary.fromMap(snapshot.data.escolhas);
+          var escolhasAscOrder = dicEscolhas
+              .orderBy((kv) => kv.value.ordem)
+              .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+          escolhaMap = escolhasAscOrder.toMap();
+
+          escolhaMap.forEach((k, v) {
+            escolhas.add(
+              Text(v.texto),
+            );
+          });
+          List<Widget> requisitos = List<Widget>();
+          snapshot.data.requisitosSelecionado?.forEach((k, v) {
+            requisitos.add(
+              Text(v['pergunta']),
+            );
+          });
+          return Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Título:',
+                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                ),
+              ),
+              Text(snapshot.data.titulo),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Escolhas:',
+                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                ),
+              ),
+              escolhas.isNotEmpty
+                  ? Expanded(
+                      flex: 2,
+                      child: ListView(
+                        children: escolhas,
+                      ),
+                    )
+                  : Container(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Requisitos:',
+                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                ),
+              ),
+              requisitos.isNotEmpty
+                  ? Expanded(
+                      flex: 2,
+                      child: ListView(
+                        children: requisitos,
+                      ),
+                    )
+                  : Container(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Texto da pergunta:',
+                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                ),
+              ),
+              Expanded(
+                flex: 7,
+                child: Markdown(data: snapshot.data.textoMarkdown),
+              )
+            ],
+          );
         });
   }
 
@@ -479,7 +552,6 @@ class TituloInputFieldState extends State<TituloInputField> {
   }
 }
 
-
 class _DeleteDocumentOrField extends StatefulWidget {
   @override
   _DeleteDocumentOrFieldState createState() {
@@ -495,8 +567,8 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
     final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
     return StreamBuilder<EditarApagarPerguntaBlocState>(
       stream: bloc.state,
-      builder:
-          (BuildContext context, AsyncSnapshot<EditarApagarPerguntaBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<EditarApagarPerguntaBlocState> snapshot) {
         return Row(
           children: <Widget>[
             Divider(),
