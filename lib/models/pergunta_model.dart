@@ -1,4 +1,5 @@
 import 'package:pmsbmibile3/models/base_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class PerguntaAplicadaModel extends PerguntaModel {
   static final String collection = "PerguntaAplicada";
@@ -30,6 +31,8 @@ class PerguntaModel extends FirestoreModel {
   int ultimaOrdemEscolha;
 
   String titulo;
+
+  EixoID eixo;
 
   String textoMarkdown;
 
@@ -74,6 +77,8 @@ class PerguntaModel extends FirestoreModel {
     this.dataEdicao,
     this.observacao,
     this.texto,
+          this.eixo,
+
     this.arquivo,
     this.coordenada,
     this.numero,
@@ -130,7 +135,9 @@ class PerguntaModel extends FirestoreModel {
         coordenada.add(Coordenada.fromMap(e));
       });
     }
-
+    if (map.containsKey('eixo')) {
+      eixo = map['eixo'] != null ? new EixoID.fromMap(map['eixo']) : null;
+    }
     return this;
   }
 
@@ -183,7 +190,9 @@ class PerguntaModel extends FirestoreModel {
         map["coordenada"].add(e.toMap());
       });
     }
-
+    if (this.eixo != null) {
+      map['eixo'] = this.eixo.toMap();
+    }
     return map;
   }
 }

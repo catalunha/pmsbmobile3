@@ -74,7 +74,6 @@ class PerguntaRequisitoBloc {
   _mapEventToState(PerguntaRequisitoPageEvent event) async {
     if (event is UpdatePerguntaIDEvent) {
       _state.perguntaID = event.perguntaID;
-      // _state.eixoID = event.eixoID;
       final docRef = _firestore
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
@@ -85,11 +84,13 @@ class PerguntaRequisitoBloc {
         final perguntaModel =
             PerguntaModel(id: docSnap.documentID).fromMap(docSnap.data);
         _state.perguntaModel = perguntaModel;
+        _state.eixoID = _state.perguntaModel.eixo.id;
         _state.updateStateFromPerguntaModel();
       }
 
-      final perguntasRef = _firestore.collection(PerguntaModel.collection);
-      // .where("eixo.id", isEqualTo: _state.eixoID);
+      final perguntasRef = _firestore
+          .collection(PerguntaModel.collection)
+          .where("eixo.id", isEqualTo: _state.eixoID);
 
       final fw.QuerySnapshot perguntasSnapshot =
           await perguntasRef.getDocuments();
@@ -154,7 +155,6 @@ class PerguntaRequisitoBloc {
     }
 
     if (event is SaveEvent) {
-
       _state.requisitosPerguntaList.forEach((key, value) {
         if (value["checkbox"] != null) {
           if (value["checkbox"]) {
@@ -182,14 +182,13 @@ class PerguntaRequisitoBloc {
     }
 
     if (event is CheckRequisitoEscolhaEvent) {
-      _state.temReqEscolha=false;
-     _state.requisitosPergunta.forEach((k, v) {
-      if (v.escolha != null) {
-        _state.temReqEscolha=true;
-      }
-    });
+      _state.temReqEscolha = false;
+      _state.requisitosPergunta.forEach((k, v) {
+        if (v.escolha != null) {
+          _state.temReqEscolha = true;
+        }
+      });
     }
-
 
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
