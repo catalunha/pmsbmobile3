@@ -39,6 +39,13 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         UpdateIDMomentoAplicacaoPageBlocEvent(widget.questionarioAplicadoID));
   }
 
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   _botaoDeletar() {
     return SafeArea(
         child: Row(
