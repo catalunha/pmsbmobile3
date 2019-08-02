@@ -28,8 +28,8 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   @override
   void initState() {
     super.initState();
-    authBloc.userId.listen((userID) {
-      bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(userID));
+    authBloc.perfil.listen((usuario) {
+      bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(usuario.id, usuario.eixoIDAtual.id));
     });
   }
 

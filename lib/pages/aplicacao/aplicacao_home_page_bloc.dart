@@ -5,6 +5,7 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 class AplicacaoHomePageBlocState {
   String usuarioID;
   List<QuestionarioAplicadoModel> questionariosAplicados;
+  String usuarioEixoID;
 }
 
 class AplicacaoHomePageBlocEvent {}
@@ -16,7 +17,9 @@ class UpdateUserIDAplicacaoHomePageBlocEvent
     extends AplicacaoHomePageBlocEvent {
   final String usuarioID;
 
-  UpdateUserIDAplicacaoHomePageBlocEvent(this.usuarioID);
+  final String usuarioEixoID;
+
+  UpdateUserIDAplicacaoHomePageBlocEvent(this.usuarioID, this.usuarioEixoID);
 }
 
 class UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent
@@ -54,12 +57,14 @@ class AplicacaoHomePageBloc {
     if (event is UpdateUserIDAplicacaoHomePageBlocEvent) {
       if (_state.usuarioID != event.usuarioID) {
         _state.usuarioID = event.usuarioID;
+        _state.usuarioEixoID = event.usuarioEixoID;
         dispatch(QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent());
       }
     }
     if (event is QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent) {
       _reference
           .where("aplicador.id", isEqualTo: _state.usuarioID)
+          .where("eixo.id", isEqualTo: _state.usuarioEixoID)
           .snapshots()
           .listen(
         (snapshot) {
