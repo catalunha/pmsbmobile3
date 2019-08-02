@@ -1,8 +1,87 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 
 class PerguntaAplicadaModel extends PerguntaModel {
   static final String collection = "PerguntaAplicada";
+
+  PerguntaAplicadaModel({
+    String id,
+    bool temPendencias: true,
+    bool foiRespondida: false,
+  })  : _temPendencias = temPendencias,
+        _foiRespondida = foiRespondida,
+        super(id: id);
+
+  bool _temPendencias;
+
+  set temPendencias(bool p) {
+    _temPendencias = p != null ? p : true;
+  }
+
+  bool get temPendencias => _temPendencias != null ? _temPendencias : false;
+
+  bool _foiRespondida;
+
+  set foiRespondida(bool f) {
+    _foiRespondida = f != null ? f : false;
+  }
+
+  bool get temRespostaValida {
+    final tipoEnum = PerguntaTipoModel.ENUM[tipo.id];
+    switch (tipoEnum) {
+      case PerguntaTipoEnum.Texto:
+        return texto != null && texto.isNotEmpty;
+      case PerguntaTipoEnum.Imagem:
+        return arquivo != null && arquivo.length > 0;
+      case PerguntaTipoEnum.Arquivo:
+        return arquivo != null && arquivo.length > 0;
+      case PerguntaTipoEnum.Numero:
+        return numero != null;
+      case PerguntaTipoEnum.Coordenada:
+        return coordenada != null && coordenada.length > 0;
+      case PerguntaTipoEnum.EscolhaUnica:
+      case PerguntaTipoEnum.EscolhaMultipla:
+        for(var escolha in escolhas.values){
+          if(escolha.marcada) return true;
+        }
+        return false;
+    }
+  }
+
+  bool get foiRespondida => _foiRespondida != null ? _foiRespondida : false;
+
+  bool get foiPulada {
+    if (foiRespondida) return true;
+    return temRespostaValida;
+  }
+
+  bool get temRequisitos {
+    return requisitos.length > 0;
+  }
+
+  bool get referenciasRequitosDefinidas {
+    if (!temRequisitos) return false;
+    for (var requisito in requisitos.values) {
+      if (requisito.perguntaID == null) return false;
+    }
+    return true;
+  }
+
+  @override
+  PerguntaAplicadaModel fromMap(Map<String, dynamic> map) {
+    temPendencias = map["temPendencias"];
+    foiRespondida = map["foiRespondida"];
+    return super.fromMap(map);
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    final map = super.toMap();
+    map["temPendencias"] = temPendencias;
+    map["foiRespondida"] = foiRespondida;
+    return map;
+  }
 }
 
 /// Classe que representa um modelo da coleção Pergunta
@@ -166,6 +245,7 @@ class PerguntaModel extends FirestoreModel {
     if (referencia != null) map["referencia"] = referencia;
 
     if (ordem != null) map["ordem"] = ordem;
+    
     if (ultimaOrdemEscolha != null)
       map["ultimaOrdemEscolha"] = ultimaOrdemEscolha;
 
@@ -205,17 +285,22 @@ class Questionario {
   /// Nome do Questionario para que não seja necessario buscar em outra coleção
   String nome;
 
-  Questionario(this.id, this.nome);
+  String referencia;
+
+  /// Referencia do questionarioAplicado
+  Questionario(this.id, this.nome, {this.referencia});
 
   Questionario.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     nome = map["nome"];
+    referencia = map["referencia"];
   }
 
   Map<dynamic, dynamic> toMap() {
     final map = Map<dynamic, dynamic>();
     if (id != null) map["id"] = id;
     if (nome != null) map["nome"] = nome;
+    if (referencia != null) map["referencia"] = referencia;
     return map;
   }
 }

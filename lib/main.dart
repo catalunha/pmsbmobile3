@@ -45,7 +45,11 @@ class MyApp extends StatelessWidget {
 
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(authBloc),
-            "/questionario/form": (context) => QuestionarioFormPage(authBloc),
+            "/questionario/home": (context) => QuestionarioHomePage(),
+            "/questionario/form": (context) => QuestionarioFormPage(
+                  authBloc,
+                  ModalRoute.of(context).settings.arguments,
+                ),
 
             //pergunta
             "/pergunta/home": (context) {
@@ -86,15 +90,33 @@ class MyApp extends StatelessWidget {
             },
 
             //aplicacao
-            "/aplicacao/home": (context) => AplicacaoHomePage(),
-            "/aplicacao/momento_aplicacao": (context) => MomentoAplicacaoPage(),
-            "/aplicacao/aplicando_pergunta": (context) =>
-                AplicacaoPerguntaPage(),
-            "/aplicacao/pendencias": (context) => PendenciasPage(),
+            "/aplicacao/home": (context) => AplicacaoHomePage(authBloc),
+            "/aplicacao/momento_aplicacao": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return MomentoAplicacaoPage(
+                authBloc,
+                questionarioAplicadoID: settings.arguments,
+              );
+            },
+            "/aplicacao/selecionar_questionario": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return AplicacaoSelecionarQuestionarioPage(args);
+            },
+            "/aplicacao/aplicando_pergunta": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return AplicacaoPerguntaPage(args);
+            },
+            "/aplicacao/pendencias": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return PendenciasPage(args);
+            },
             "/aplicacao/visualizar_respostas": (context) =>
                 VisualizarRespostasPage(),
-            "/aplicacao/definir_requisitos": (context) =>
-                DefinirRequisistosPage(),
+            "/aplicacao/definir_requisitos": (context) {
+              final DefinirRequisitosPageArguments args =
+                  ModalRoute.of(context).settings.arguments;
+              return DefinirRequisistosPage(args.bloc, args.referencia);
+            },
 
             //resposta
             "/resposta/home": (context) => RespostaHomePage(),

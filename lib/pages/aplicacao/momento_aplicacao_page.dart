@@ -1,53 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 
 class MomentoAplicacaoPage extends StatefulWidget {
+  final String usuarioID;
+  final String questionarioAplicadoID;
+  final AuthBloc authBloc;
+
+  const MomentoAplicacaoPage(this.authBloc,
+      {Key key, this.usuarioID, this.questionarioAplicadoID})
+      : super(key: key);
+
   @override
-  _MomentoAplicacaoPageState createState() => _MomentoAplicacaoPageState();
+  State<StatefulWidget> createState() {
+    return _MomentoAplicacaoPageState();
+  }
 }
 
 class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
-  
-  List<String> _requisitos = [
-    "QuestSel02Perg01 -> QuestAp01RefAPerg02",
-    "QuestSel02Perg02 -> QuestAp01RefBPerg02",
-  ];
-  
-  String _eixo = "eixo exemplo";
-  String _questionario = "questionarios exemplo";
-  String _local = "local exemplo";
-  String _setor = "setor exemplo";
+  final bloc = MomentoAplicacaoPageBloc(Bootstrap.instance.firestore);
+
+  //TODO: subistituir o preambulo desta pagina
+  final String _eixo = "eixo exemplo";
+  final String _questionario = "questionarios exemplo";
+  final String _local = "local exemplo";
+  final String _setor = "setor exemplo";
+
+  @override
+  void initState() {
+    super.initState();
+    widget.authBloc.perfil.listen((usuario) {
+      bloc.dispatch(UpdateUsuarioMomentoAplicacaoPageBlocEvent(usuario));
+    });
+
+    bloc.dispatch(
+        UpdateIDMomentoAplicacaoPageBlocEvent(widget.questionarioAplicadoID));
+  }
+
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
 
   _botaoDeletar() {
     return SafeArea(
         child: Row(
       children: <Widget>[
         Padding(
-            padding: EdgeInsets.all(5.0),
-            child: RaisedButton(
-                color: Colors.red,
-                onPressed: () {
-                  // Deletar essa aplicacao de questionario
-                },
-                child: Row(
-                  children: <Widget>[
-                    Text('Apagar', style: TextStyle(fontSize: 20)),
-                    Icon(Icons.delete)
-                  ],
-                ))),
+          padding: EdgeInsets.all(5.0),
+          child: RaisedButton(
+            color: Colors.red,
+            onPressed: () {
+              bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+              Navigator.pop(context);
+            },
+            child: Row(
+              children: <Widget>[
+                Text('Apagar', style: TextStyle(fontSize: 20)),
+                Icon(Icons.delete)
+              ],
+            ),
+          ),
+        ),
       ],
     ));
-  }
-
-  _referenciaTexto() {
-    return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-        ));
   }
 
   _listaDadosSuperior() {
@@ -85,43 +105,45 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     );
   }
 
-  Widget _body() {
+  Widget _body(context) {
     return ListView(
       children: <Widget>[
         _listaDadosSuperior(),
         Divider(color: Colors.black87),
-        ListTile(
-          trailing: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                //selecionar o questionario
-              }),
-          title: Text("Escolha um questionario: "),
-          subtitle: Text("  $_questionario", style: TextStyle(fontSize: 18)),
-        ),
+        StreamBuilder<MomentoAplicacaoPageBlocState>(
+            stream: bloc.state,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return Container();
+              final questionario = snapshot?.data?.questionario;
+              final nomeQuestionario =
+                  questionario?.nome != null ? questionario.nome : "";
+              final isBound = snapshot.data.isBound;
+              return ListTile(
+                trailing: isBound
+                    ? null
+                    : IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          bloc.dispatch(
+                              CarregarListaQuestionarioMomentoAplicacaoPageBlocEvent());
+                          Navigator.pushNamed(
+                              context, "/aplicacao/selecionar_questionario",
+                              arguments: bloc);
+                          //selecionar o questionario
+                        }),
+                title: isBound ? null : Text("Escolha um questionario: "),
+                subtitle:
+                    Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
+              );
+            }),
         Divider(color: Colors.black87),
         Padding(
             padding: EdgeInsets.all(5),
             child: Text("Referencia: Local/Pessoa/Momento na aplicação:",
                 style: TextStyle(color: Colors.blue, fontSize: 15))),
-        _referenciaTexto(),
+        ReferenciaInput(bloc),
         Divider(color: Colors.black87),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-          ListTile(
-            trailing: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  //selecionar requisitos
-                  Navigator.pushNamed(context, '/aplicacao/definir_requisitos');
-                }),
-            title: Text("Lista de requisitos:"),
-          ),
-          for (var requisito in _requisitos)
-            Padding(
-                padding: EdgeInsets.only(left: 10, top: 5),
-                child: Text(requisito, style: TextStyle(fontSize: 15)))
-        ]),
-        Divider(color: Colors.black87),
+        ListaRequisitos(bloc),
         _botaoDeletar()
       ],
     );
@@ -135,15 +157,145 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         centerTitle: true,
         title: Text("Local/Pessoa/Momento de aplicação"),
       ),
-      body: _body(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //salvar e voltar
-          Navigator.pop(context);
-        },
-        child: Icon(Icons.thumb_up),
-        backgroundColor: Colors.blue,
-      ),
+      body: _body(context),
+      floatingActionButton: StreamBuilder<MomentoAplicacaoPageBlocState>(
+          stream: bloc.state,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Container();
+
+            return FloatingActionButton(
+              onPressed: snapshot.data.isValid
+                  ? () {
+                      //salvar e voltar
+                      bloc.dispatch(SaveMomentoAplicacaoPageBlocEvent());
+                      Navigator.pop(context);
+                    }
+                  : null,
+              child: Icon(Icons.thumb_up),
+              backgroundColor:
+                  snapshot.data.isValid ? Colors.blue : Colors.grey,
+            );
+          }),
+    );
+  }
+}
+
+class ListaRequisitos extends StatelessWidget {
+  final MomentoAplicacaoPageBloc bloc;
+
+  const ListaRequisitos(this.bloc, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<MomentoAplicacaoPageBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || !snapshot.data.isBound)
+          return Center(
+            child: Text("Escolher requisitos depois de salvar"),
+          );
+        final requisitos = snapshot?.data?.requisitos;
+        final requisitosMap = requisitos != null ? requisitos : {};
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              title: Text("Lista de requisitos:"),
+            ),
+            ...requisitosMap
+                .map(
+                  (k, r) {
+                    return MapEntry(
+                      k,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          FlatButton(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "${r.referencia}",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                Icon(Icons.search),
+                              ],
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/aplicacao/definir_requisitos',
+                                  arguments: DefinirRequisitosPageArguments(
+                                      bloc, r.referencia));
+                            },
+                          ),
+                          snapshot.data.requisitosSelecionados
+                                  .containsKey(r.referencia)
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.check,
+                                  color: Colors.red,
+                                ),
+                        ],
+                      ),
+                    );
+                  },
+                )
+                .values
+                .toList(),
+            Divider(color: Colors.black87),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class ReferenciaInput extends StatefulWidget {
+  final MomentoAplicacaoPageBloc bloc;
+
+  const ReferenciaInput(this.bloc, {Key key}) : super(key: key);
+
+  @override
+  _ReferenciaInput createState() {
+    return _ReferenciaInput();
+  }
+}
+
+class _ReferenciaInput extends State<ReferenciaInput> {
+  final _controller = TextEditingController();
+  bool initial = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<MomentoAplicacaoPageBlocState>(
+      stream: widget.bloc.state,
+      builder: (context, snapshot) {
+        if (initial &&
+            _controller.text.isEmpty &&
+            snapshot.hasData &&
+            snapshot.data.referencia != null) {
+          initial = false;
+          _controller.text = snapshot.data.referencia;
+        }
+        return Padding(
+          padding: EdgeInsets.all(5.0),
+          child: TextField(
+            controller: _controller,
+            onChanged: (text) {
+              widget.bloc.dispatch(
+                  UpdateReferenciaMomentoAplicacaoPageBlocEvent(text));
+            },
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

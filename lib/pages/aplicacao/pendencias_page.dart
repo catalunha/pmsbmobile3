@@ -1,48 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pendencias_page_bloc.dart';
 
 //Aplicação 03
 
 class PendenciasPage extends StatefulWidget {
+  const PendenciasPage(this.questionarioAplicadoID, {Key key})
+      : super(key: key);
+
+  final String questionarioAplicadoID;
+
   @override
   _PendenciasPageState createState() => _PendenciasPageState();
 }
 
 class _PendenciasPageState extends State<PendenciasPage> {
-  List<String> _tipoperguntas = [
-    "01 - Pergunta texto",
-    "02 - Pergunta imagem",
-    "03 - Pergunta numero",
-    "04 - Pergunta coordenada",
-    "05 - Pergunta escolha unica",
-    "06 - Pergunta escolha multipla"
-  ];
+  final bloc = PendenciasPageBloc(Bootstrap.instance.firestore);
 
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatch(UpdateQuestionarioIDPendenciasPageBlocEvent(
+        widget.questionarioAplicadoID));
+  }
+
+  //TODO: substituir o preambulo desta pagina
   String _eixo = "eixo exemplo";
   String _setor = "setor exemplo";
   String _questionario = "questionario exemplo";
   String _local = "local exemplo";
 
   _listaPerguntas() {
-    return Builder(
-        builder: (BuildContext context) => new Container(
-              child: _tipoperguntas.length >= 0
-                  ? new ListView.separated(
-                      itemCount: _tipoperguntas.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          title: Text(_tipoperguntas[index]),
-                          trailing: IconButton(
-                            icon: Icon(Icons.check),
-                            onPressed: () {},
-                          ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          new Divider(),
-                    )
-                  : new Container(),
-            ));
+    return StreamBuilder<PendenciasPageBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Center(
+            child: Text("SEM DADOS"),
+          );
+        return ListView(
+          children: snapshot.data.perguntas
+              .map((pergunta) => PerguntaAplicadaListItem(
+                    pergunta,
+                    onPressed: () {
+                      //bloc.dispatch();
+                    },
+                  ))
+              .toList(),
+        );
+      },
+    );
   }
 
   _bodyTodos(context) {
@@ -91,6 +99,58 @@ class _PendenciasPageState extends State<PendenciasPage> {
         title: Text("Pendências"),
       ),
       body: _bodyTodos(context),
+    );
+  }
+}
+
+class PerguntaAplicadaListItem extends StatelessWidget {
+  const PerguntaAplicadaListItem(this._perguntaAplicada,
+      {Key key, this.onPressed})
+      : super(key: key);
+
+  final void Function() onPressed;
+
+  final PerguntaAplicadaModel _perguntaAplicada;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: Text(_perguntaAplicada.titulo),
+          trailing: IconButton(
+            icon: _perguntaAplicada.temPendencias
+                ? Icon(Icons.clear, color: Colors.red)
+                : Icon(Icons.check, color: Colors.green),
+            onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              if (_perguntaAplicada.foiRespondida)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+              if (!_perguntaAplicada.foiRespondida &&
+                  _perguntaAplicada.temRespostaValida)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+              if (_perguntaAplicada.temPendencias)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+              if (_perguntaAplicada.referenciasRequitosDefinidas)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

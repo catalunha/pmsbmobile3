@@ -1,62 +1,50 @@
 import 'package:flutter/material.dart';
-
-List<Map<String, dynamic>> perguntasquesitoescolhaunica = [
-  {'pergunta': 'Pergunta texto ', 'checkbox': true},
-  {'pergunta': 'Pergunta unica / sim', 'checkbox': false},
-  {'pergunta': 'Pergunta unicao / Nâo', 'checkbox': false},
-  {'pergunta': 'Pergunta texto ', 'checkbox': true},
-  {'pergunta': 'Pergunta unica / sim', 'checkbox': false},
-  {'pergunta': 'Pergunta unicao / Nâo', 'checkbox': false}
-];
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 
 class PerguntaEscolhaUnicaWidget extends StatefulWidget {
-  final int valor;
-  final List listaOpcoes;
+  final PerguntaAplicadaModel pergunta;
 
-  const PerguntaEscolhaUnicaWidget(
-      {Key key, @required this.listaOpcoes, this.valor = 0})
-      : super(key: key);
+  const PerguntaEscolhaUnicaWidget(this.pergunta, {Key key}) : super(key: key);
 
   @override
   _PerguntaEscolhaUnicaWidgetState createState() =>
-      _PerguntaEscolhaUnicaWidgetState(valor);
+      _PerguntaEscolhaUnicaWidgetState();
 }
 
 class _PerguntaEscolhaUnicaWidgetState
     extends State<PerguntaEscolhaUnicaWidget> {
-  int valor;
-
-  _PerguntaEscolhaUnicaWidgetState(this.valor);
-
-  void _setvalue2(int value) => setState(() => {valor = value});
-
-  Widget makeRadioTiles() {
-    List<Widget> list = new List<Widget>();
-
-    for (int i = 0; i < widget.listaOpcoes.length; i++) {
-      list.add(new RadioListTile(
-        value: i,
-        groupValue: valor,
-        onChanged: _setvalue2,
-        activeColor: Colors.green,
-        controlAffinity: ListTileControlAffinity.trailing,
-        // dependendo de como o valor for recebido alterar essa parte o codigo
-        title: new Text(widget.listaOpcoes[i]['pergunta']),
-      ));
-    }
-
-    Column column = new Column(
-      children: list,
-    );
-    return column;
-  }
+  _PerguntaEscolhaUnicaWidgetState();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Column(children: <Widget>[
-      Padding(padding: EdgeInsets.all(5), child: Text("Selecione uma opcao:")),
-      makeRadioTiles()
-    ]));
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: Text("Selecione uma opcao:"),
+          ),
+          Column(
+            children: widget.pergunta.escolhas
+                .map((key, escolha) {
+                  return MapEntry(
+                    key,
+                    RadioListTile<String>(
+                      value: key,
+                      groupValue: "",
+                      onChanged: (novovalor) {},
+                      activeColor: Colors.green,
+                      controlAffinity: ListTileControlAffinity.trailing,
+                      // dependendo de como o valor for recebido alterar essa parte o codigo
+                      title: new Text(escolha.texto),
+                    ),
+                  );
+                })
+                .values
+                .toList(),
+          ),
+        ],
+      ),
+    );
   }
 }

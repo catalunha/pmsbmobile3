@@ -4,7 +4,6 @@ import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart'
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-
 class QuestionarioFormPage extends StatefulWidget {
     final AuthBloc authBloc;
 
@@ -25,7 +24,7 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
     return StreamBuilder<QuestionarioModel>(
         stream: bloc.instance,
         builder: (context, snapshot) {
-          if (!snapshot.hasData && _questionarioId != null) {
+          if (!snapshot.hasData && widget.questionarioID != null) {
             return Center(
               child: CircularProgressIndicator(),
             );

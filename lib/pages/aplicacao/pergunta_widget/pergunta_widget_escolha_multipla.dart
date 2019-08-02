@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-
-List<Map<String, dynamic>> perguntasquesitoescolhamultipla = [
-  {'pergunta': 'Opcao ', 'checkbox': false},
-  {'pergunta': 'Opcao ', 'checkbox': false},
-  {'pergunta': 'Opcao ', 'checkbox': false},
-  {'pergunta': 'Opcao ', 'checkbox': false},
-  {'pergunta': 'Opcao ', 'checkbox': false},
-  {'pergunta': 'Opcao ', 'checkbox': false},
-  {'pergunta': 'Opcao ', 'checkbox': false},
-];
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 
 class PerguntaEscolhaMultiplaWidget extends StatefulWidget {
-  final List entrada;
+  const PerguntaEscolhaMultiplaWidget(
+    this.pergunta, {
+    Key key,
+  }) : super(key: key);
 
-  const PerguntaEscolhaMultiplaWidget({Key key, @required this.entrada,})
-      : super(key: key);
+  final PerguntaAplicadaModel pergunta;
 
   @override
   _PerguntaEscolhaMultiplaWidgetState createState() =>
@@ -24,27 +17,16 @@ class PerguntaEscolhaMultiplaWidget extends StatefulWidget {
 class _PerguntaEscolhaMultiplaWidgetState
     extends State<PerguntaEscolhaMultiplaWidget> {
   Widget makeRadioTiles() {
-    List<Widget> list = new List<Widget>();
-
-    for (int i = 0; i < widget.entrada.length; i++) {
-      list.add(new CheckboxListTile(
-        value: widget.entrada[i]['checkbox'],
-        onChanged: (bool value) {
-          setState(() {
-            widget.entrada[i]['checkbox'] = value;
-          });
-        },
-        activeColor: Colors.green,
-        controlAffinity: ListTileControlAffinity.trailing,
-        // dependendo de como o valor for recebido alterar essa parte o codigo
-        title: new Text(widget.entrada[i]['pergunta']),
-      ));
-    }
-
-    Column column = new Column(
-      children: list,
+    final map = widget.pergunta.escolhas.map(
+      (k, v) {
+        return MapEntry(k, MultiplaEscolhaTile(v, onChanged: (value) {
+          //bloc.dispatch(); //marcar na resposta
+        }));
+      },
     );
-    return column;
+    return Column(
+      children: map.values.toList(),
+    );
   }
 
   @override
@@ -54,5 +36,27 @@ class _PerguntaEscolhaMultiplaWidgetState
       Padding(padding: EdgeInsets.all(5), child: Text("Selecione as opçoes:")),
       makeRadioTiles()
     ]));
+  }
+}
+
+class MultiplaEscolhaTile extends StatelessWidget {
+  final Escolha escolha;
+  final void Function(bool) onChanged;
+
+  const MultiplaEscolhaTile(
+    this.escolha, {
+    Key key,
+    this.onChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      value: escolha.marcada,
+      onChanged: onChanged,
+      activeColor: Colors.green,
+      controlAffinity: ListTileControlAffinity.trailing,
+      title: new Text(escolha.texto),
+    );
   }
 }
