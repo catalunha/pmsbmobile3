@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/initial_value_text_field.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_numero_bloc.dart';
 
-class PerguntaTipoNumeroWidget extends StatelessWidget {
-  final void Function(String) onChanged;
-  final void Function() initialize;
-  final String perguntaAplicadaID;
-  final String initialValue;
+class PerguntaNumero extends StatefulWidget {
+  final PerguntaAplicadaModel perguntaAplicada;
 
-  const PerguntaTipoNumeroWidget({
-    Key key,
-    this.onChanged,
-    this.initialize,
-    this.perguntaAplicadaID,
-    this.initialValue,
-  }) : super(key: key);
+  const PerguntaNumero(this.perguntaAplicada, {Key key}) : super(key: key);
+
+  @override
+  _PerguntaNumeroState createState() {
+    return _PerguntaNumeroState();
+  }
+}
+
+class _PerguntaNumeroState extends State<PerguntaNumero> {
+  PerguntaNumeroBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = PerguntaNumeroBloc(widget.perguntaAplicada);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +37,15 @@ class PerguntaTipoNumeroWidget extends StatelessWidget {
       Padding(
         padding: EdgeInsets.all(5.0),
         child: InitialValueTextField(
-          initialize: initialize,
-          value: initialValue,
-          id: perguntaAplicadaID,
-          onChanged: onChanged,
+          id: widget.perguntaAplicada.id,
+          initialize: () {
+            if (widget.perguntaAplicada.numero == null) return false;
+            return true;
+          },
+          value: widget.perguntaAplicada.numero.toString(),
+          onChanged: (text) {
+            bloc.dispatch(UpdateNumeroRespostaPerguntaNumeroBlocEvent(text));
+          },
           keyboardType: TextInputType.number,
           maxLines: null,
           decoration: InputDecoration(
