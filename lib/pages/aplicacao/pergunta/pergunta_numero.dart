@@ -24,6 +24,12 @@ class _PerguntaNumeroState extends State<PerguntaNumero> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(children: <Widget>[
