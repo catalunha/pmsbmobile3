@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/circle_image.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/state/services.dart';
-import 'package:provider/provider.dart';
 
 var db = DatabaseService();
 
@@ -38,7 +36,6 @@ class DefaultDrawer extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    // var authBloc = Provider.of<AuthBloc>(context);
     return Drawer(
         child: SafeArea(
       child: Column(
@@ -171,7 +168,6 @@ class DefaultEndDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var authBloc = Provider.of<AuthBloc>(context);
     return Drawer(
       child: SafeArea(
         child: ListView(

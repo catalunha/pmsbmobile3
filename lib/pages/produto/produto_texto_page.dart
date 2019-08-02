@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_texto_page_bloc.dart';
-import 'package:provider/provider.dart';
 
 class ProdutoTextoPage extends StatefulWidget {
   final String produtoID;
@@ -36,13 +35,9 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
     return DefaultTabController(
         length: 2,
         child:
-        //  Provider<ProdutoTextoPageBloc>.value(
-        //     value: bloc,
-        //     child: 
             Scaffold(
               appBar: AppBar(
                 title: Text("Editar texto do produto"),
-                // backgroundColor: Colors.red,
                 bottom: TabBar(
                   tabs: [
                     Tab(text: "Preview"),
@@ -52,13 +47,8 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
               ),
               body: TabBarView(
                 children: [
-                  // Tab(text: "Dados"),
                   _bodyPreview(context),
                   UpDateProdutoIDTexto(bloc),
-
-                  // ViewProdutoIDTexto(),
-                  // _bodyTexto(),
-                  // _bodyPreview(context)
                 ],
               ),
               floatingActionButton: FloatingActionButton(
@@ -66,12 +56,8 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   bloc.eventSink(SaveProdutoTextoIDTextoEvent());
-
-                  // Navigator.pushNamed(context, '/produto/crud_texto');
                 },
-                // backgroundColor: Colors.blue,
               ),
-            // )
             ));
   }
 
@@ -79,9 +65,6 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
     return StreamBuilder<ProdutoTextoPageState>(
         stream: bloc.stateStream,
         builder: (context, snapshot) {
-          // if (snapshot.hasData) {
-          //   myController.text = snapshot.data.produtoTextoIDTextoMarkdown;
-          // }
           if (!snapshot.hasData) {
             return Text('Sem dados');
           }
@@ -105,7 +88,6 @@ final ProdutoTextoPageBloc bloc;
 UpDateProdutoIDTextoState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ProdutoTextoPageBloc>(context);
     return StreamBuilder<ProdutoTextoPageState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
@@ -116,7 +98,6 @@ UpDateProdutoIDTextoState(this.bloc);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Text("Atualizar nome no produto"),
               TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: null,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -16,14 +15,6 @@ class QuestionarioFormPage extends StatefulWidget {
 
 class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
   final QuestionarioFormPageBloc bloc;
-
-
-// class QuestionarioFormPage extends StatelessWidget {
-//   // final AuthBloc authBloc;
-//   final QuestionarioFormPageBloc bloc;
-
-//   QuestionarioFormPage(AuthBloc authBloc)
-//       : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore,authBloc);
 
   String _questionarioId;
 
@@ -69,18 +60,10 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    //manda id do questionario se existir ou null no caso de settings.arguments = null
     _questionarioId = ModalRoute.of(context).settings.arguments;
     bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(_questionarioId));
 
-    //manda o id do usuario atual
-    // final authBloc = Provider.of<AuthBloc>(context);
-
-
     return
-        //  Provider<QuestionarioFormPageBloc>.value(
-        //   value: bloc,
-        //   child:
         Scaffold(
       appBar: AppBar(
           leading: new IconButton(
@@ -98,7 +81,6 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
         },
       ),
       body: _body(context),
-      // ),
     );
   }
 }
@@ -118,7 +100,6 @@ class NomeFormItemState extends State<NomeFormItem> {
   NomeFormItemState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<QuestionarioFormPageBloc>(context);
     return StreamBuilder<QuestionarioModel>(
       stream: bloc.instance,
       builder: (context, snapshot) {
@@ -154,7 +135,6 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<QuestionarioFormPageBloc>(context);
     return StreamBuilder<QuestionarioModel>(
       stream: bloc.instance,
       builder:
@@ -167,9 +147,6 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
               child: Flexible(
                 child: TextField(
                   controller: _textFieldController,
-                  // onChanged: (text) {
-                  //   bloc.eventSink(DeleteProdutoIDEvent);
-                  // },
                 ),
               ),
             ),

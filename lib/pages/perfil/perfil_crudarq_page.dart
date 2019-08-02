@@ -1,15 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page_bloc.dart';
-import 'package:provider/provider.dart';
 
 class PerfilCRUDArqPage extends StatefulWidget {
   final String usuarioPerfilID;
@@ -32,9 +24,7 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
   @override
   Widget build(BuildContext context) {
     return 
-    // Provider<PerfilCRUDArqPageBloc>.value(
-    //   value: bloc,
-    //   child: 
+ 
       Scaffold(
         appBar: AppBar(
           title: Text("Configurações"),
@@ -69,8 +59,6 @@ class _FotoUsuario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<PerfilCRUDArqPageBloc>(context);
-
     return StreamBuilder<PerfilCRUDArqPageState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
@@ -111,7 +99,6 @@ class _FotoUsuario extends StatelessWidget {
     try {
       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
       if (arquivoPath != null) {
-        // print('>> newfilepath 1 >> ${arquivoPath}');
         return arquivoPath;
       }
     } catch (e) {

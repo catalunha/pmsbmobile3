@@ -3,25 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page_bloc.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page.dart';
-import 'package:provider/provider.dart';
-// import 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page_bloc.dart';
-// import 'package:pmsbmibile3/pages/produto/produto_imagem_crud_page_bloc.dart';
 
 class ProdutoArquivoCRUDPage extends StatefulWidget {
   final String produtoID;
   final String arquivoID;
   final String tipo;
-  // final ProdutoArquivoCRUDPageBloc bloc;
   ProdutoArquivoCRUDPage({this.produtoID, this.arquivoID, this.tipo}) {
     print('instancia de ProdutoArquivoCRUDPage 2');
   }
-
-  // ProdutoArquivoCRUDPage({this.produtoID, this.arquivoID, this.tipo})
-  //     : bloc = ProdutoArquivoCRUDPageBloc(Bootstrap.instance.firestore) {
-  //   print('instancia de ProdutoArquivoCRUDPage');
-  //   bloc.eventSink(
-  //       UpdateProdutoIDArquivoIDTipoEvent(produtoID, arquivoID, tipo));
-  // }
 
   @override
   State<StatefulWidget> createState() {
@@ -53,9 +42,6 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
   @override
   Widget build(BuildContext context) {
     return
-        //  Provider<ProdutoArquivoCRUDPageBloc>.value(
-        //     value: bloc,
-        //     child:
         Scaffold(
             appBar: AppBar(
               title: Text("Editar ${widget.tipo}"),
@@ -67,7 +53,6 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
                 bloc.eventSink(SaveEvent());
                 Navigator.of(context).pop();
               },
-              // ),
             ));
   }
 
@@ -81,12 +66,6 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
             child: Center(child: Text('Erro.')),
           );
         }
-
-        // if (!snapshot.hasData) {
-        //   return Container(
-        //     child: Center(child: CircularProgressIndicator()),
-        //   );
-        // }
         rascunhoUrl = snapshot.data?.rascunhoUrl; // ?? 'Sem arquivo';
         rascunhoLocalPath =
             snapshot.data?.rascunhoLocalPath; //?? 'Sem arquivo';
@@ -147,29 +126,7 @@ class _ProdutoArquivoCRUDPageState extends State<ProdutoArquivoCRUDPage> {
               padding: EdgeInsets.all(5.0),
               child: _DeleteDocumentOrField(bloc),
             ),
-
-            //TODO: Comentar/Apagar esta informação após testes.
-            //+++ informações da stream
-            // snapshot.data?.produtoID == null
-            //     ? Text("produtoID: null")
-            //     : Text("produtoID: " + (snapshot.data?.produtoID ?? '...')),
-            // Text('snapshot.data?.produtoID: ' +
-            //     (snapshot.data?.produtoID ?? '...')),
-            // snapshot.data?.arquivoID == null
-            //     ? Text("arquivoID: null")
-            //     : Text("arquivoID: ${snapshot.data.arquivoID}"),
-            // snapshot.data?.titulo == null
-            //     ? Text("titulo: null")
-            //     : Text("titulo: ${snapshot.data.titulo}"),
-            // Text('idUsuario: ' +
-            //     (snapshot.data?.produtoModel?.usuarioID?.id ?? '...')),
-            // Text('uidParArquivos: ${snapshot.data?.arquivoID}'),
-            // Text('rascunhoUrl: $rascunhoUrl'),
-            // Text('rascunhoLocalPath: $rascunhoLocalPath'),
-            // Text('editadoUrl: $editadoUrl'),
-            // Text('editadoLocalPath: $editadoLocalPath')
-            //--- informações da stream
-          ],
+         ],
         );
       },
     );
@@ -205,7 +162,6 @@ class TituloArquivoState extends State<TituloArquivo> {
   TituloArquivoState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ProdutoArquivoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoArquivoCRUDPageState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
@@ -217,7 +173,6 @@ class TituloArquivoState extends State<TituloArquivo> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Text("Atualizar nome no produto"),
               TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
@@ -252,7 +207,6 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ProdutoArquivoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoArquivoCRUDPageState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
@@ -265,16 +219,12 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
               child: Flexible(
                 child: TextField(
                   controller: _textFieldController,
-                  // onChanged: (text) {
-                  //   bloc.eventSink(DeleteProdutoIDEvent);
-                  // },
                 ),
               ),
             ),
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                //Ir para a pagina visuais do produto
                 if (_textFieldController.text == 'CONCORDO') {
                   bloc.eventSink(DeleteEvent());
                   Navigator.of(context).pop();

@@ -5,7 +5,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthBloc authBloc =
@@ -53,7 +52,6 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // var authBloc = Provider.of<AuthBloc>(context);
 
     return Scaffold(
       body: SafeArea(
