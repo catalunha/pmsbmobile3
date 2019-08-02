@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
-    return 
+    return
         MaterialApp(
           title: 'PMSB-TO-22',
           //theme: ThemeData.dark(),
@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
 
             //questionario
             "/questionario/home": (context) => QuestionarioHomePage(authBloc),
-            "/questionario/home": (context) => QuestionarioHomePage(),
             "/questionario/form": (context) => QuestionarioFormPage(
                   authBloc,
                   ModalRoute.of(context).settings.arguments,
