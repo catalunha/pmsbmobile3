@@ -26,7 +26,46 @@ class PerguntaAplicadaModel extends PerguntaModel {
     _foiRespondida = f != null ? f : false;
   }
 
+  bool get temRespostaValida {
+    final tipoEnum = PerguntaTipoModel.ENUM[tipo.id];
+    switch (tipoEnum) {
+      case PerguntaTipoEnum.Texto:
+        return texto != null && texto.isNotEmpty;
+      case PerguntaTipoEnum.Imagem:
+        return arquivo != null && arquivo.length > 0;
+      case PerguntaTipoEnum.Arquivo:
+        return arquivo != null && arquivo.length > 0;
+      case PerguntaTipoEnum.Numero:
+        return numero != null;
+      case PerguntaTipoEnum.Coordenada:
+        return coordenada != null && coordenada.length > 0;
+      case PerguntaTipoEnum.EscolhaUnica:
+      case PerguntaTipoEnum.EscolhaMultipla:
+        for(var escolha in escolhas.values){
+          if(escolha.marcada) return true;
+        }
+        return false;
+    }
+  }
+
   bool get foiRespondida => _foiRespondida != null ? _foiRespondida : false;
+
+  bool get foiPulada {
+    if (foiRespondida) return true;
+    return temRespostaValida;
+  }
+
+  bool get temRequisitos {
+    return requisitos.length > 0;
+  }
+
+  bool get requisitosDefinidos {
+    if (!temRequisitos) return false;
+    for (var requisito in requisitos.values) {
+      if (requisito.perguntaID == null) return false;
+    }
+    return true;
+  }
 
   @override
   PerguntaAplicadaModel fromMap(Map<String, dynamic> map) {
@@ -42,8 +81,6 @@ class PerguntaAplicadaModel extends PerguntaModel {
     map["foiRespondida"] = foiRespondida;
     return map;
   }
-
-
 }
 
 /// Classe que representa um modelo da coleção Pergunta
