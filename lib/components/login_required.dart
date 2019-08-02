@@ -23,7 +23,7 @@ class LoginRequired extends StatelessWidget {
     return StreamBuilder<AuthStatus>(
       stream: bloc.status,
       builder: (context, snapshot) {
-        Widget r;
+        Widget r = loadingPage;
         if (snapshot.hasError) {
           r = Center(
             child: Text("ERROR"),
