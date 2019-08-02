@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/noticia_page_bloc.dart';
-import 'package:provider/provider.dart';
-
-import 'comunicacao_home_page_bloc.dart';
 
 class NoticiaLidaPage extends StatelessWidget {
   final bloc = NoticiaPageBloc(firestore:Bootstrap.instance.firestore,visualizada:true);

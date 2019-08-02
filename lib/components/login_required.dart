@@ -1,11 +1,8 @@
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/autenticacao/login.dart';
-import 'package:pmsbmibile3/pages/geral/splash.dart';
-import 'package:pmsbmibile3/pages/geral/loading.dart';
 
 class LoginRequired extends StatelessWidget {
   final Widget loginPage;
@@ -22,7 +19,6 @@ class LoginRequired extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<AuthBloc>(context);
 
     return StreamBuilder<AuthStatus>(
       stream: bloc.status,

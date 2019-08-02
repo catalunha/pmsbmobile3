@@ -22,6 +22,7 @@ class QuestionarioHomePageBlocState {
 class QuestionarioHomePageBloc {
   final _state = QuestionarioHomePageBlocState();
   final fsw.Firestore _firestore;
+  final _authBloc;
 
   final _inputController = BehaviorSubject<QuestionarioHomePageEvent>();
 
@@ -40,8 +41,14 @@ class QuestionarioHomePageBloc {
     _questionarioSubscription?.cancel();
   }
 
-  QuestionarioHomePageBloc(this._firestore) {
+  QuestionarioHomePageBloc(this._firestore, this._authBloc) {
     _inputController.listen(_handleInput);
+    _authBloc.perfil.listen((user) {
+      dispatch(UpdateUserInfoQuestionarioHomePageBlocEvent(
+        user.id,
+        user.eixoIDAtual.id,
+      ));
+    });
   }
 
   void _handleInput(QuestionarioHomePageEvent event) async {
@@ -49,7 +56,9 @@ class QuestionarioHomePageBloc {
       _state.userId = event.userId;
       _state.eixoAtualID = event.eixoAtualID;
 
-      final ref = _firestore.collection(QuestionarioModel.collection).where("eixo.id", isEqualTo: _state.eixoAtualID);
+      final ref = _firestore
+          .collection(QuestionarioModel.collection)
+          .where("eixo.id", isEqualTo: _state.eixoAtualID);
       final snap = ref.snapshots();
       final snapList = snap.map((q) => q.documents
           .map((d) => QuestionarioModel(id: d.documentID).fromMap(d.data))

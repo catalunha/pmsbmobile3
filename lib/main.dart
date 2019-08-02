@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
-import 'package:provider/provider.dart';
-import 'package:pmsbmibile3/state/services.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 import 'package:pmsbmibile3/api/api.dart';
@@ -20,13 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
     return 
-    // Provider.value(
-    //   value: authBloc,
-    //   child: Provider<DatabaseService>.value(
-    //     value: DatabaseService(),
-    //     child: 
         MaterialApp(
-          title: 'PMSB',
+          title: 'PMSB-TO-22',
           //theme: ThemeData.dark(),
           initialRoute: "/",
           routes: {
@@ -69,21 +61,6 @@ class MyApp extends StatelessWidget {
                 perguntaID: args.perguntaID,
               );
             },
-            // "/pergunta/selecionar_requisito": (context) {
-            //   final settings = ModalRoute.of(context).settings;
-            //   return SelecionarQuequisitoPerguntaPage(
-            //       authBloc, settings.arguments);
-            // },
-            // "/pergunta/criar_ordenar_escolha": (context) {
-            //   final settings = ModalRoute.of(context).settings;
-            //   return CriarOrdenarEscolha(settings.arguments);
-            // },
-            // "/pergunta/editar_apagar_escolha": (context) {
-            //   final settings = ModalRoute.of(context).settings;
-            //   final EditarApagarEscolhaPageArguments args = settings.arguments;
-            //   return EditarApagarEscolhaPage(args.bloc, args.escolhaID);
-            // },
-            //Pergunta Acrescimos Prof Catalunha
             "/pergunta/escolha_list": (context) {
               final settings = ModalRoute.of(context).settings;
               return PerguntaEscolhaListPage(settings.arguments);

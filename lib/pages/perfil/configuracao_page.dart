@@ -4,7 +4,6 @@ import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
@@ -41,9 +40,7 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
   @override
   Widget build(BuildContext context) {
     return
-    //  Provider<ConfiguracaoPageBloc>.value(
-    //   value: bloc,
-    //   child: 
+
       Scaffold(
         appBar: AppBar(
           title: Text("Configurações"),
@@ -73,7 +70,6 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
           },
           child: Icon(Icons.check),
         ),
-      // ),
     );
   }
 }
@@ -84,7 +80,6 @@ class SelecionarEixo extends StatelessWidget {
   const SelecionarEixo(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return InkWell(
       onTap: () {
         showDialog(context: context, builder: (context) => OpcoesEixo(bloc));
@@ -154,7 +149,6 @@ class SelecionarSetorCensitario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return InkWell(
       onTap: () {
         showDialog(
@@ -278,7 +272,6 @@ class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
 
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return StreamBuilder<UsuarioModel>(
         stream: bloc.usuarioModelStream,
         builder: (context, snapshot) {
@@ -321,7 +314,6 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
 
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
     return StreamBuilder<UsuarioModel>(
         stream: bloc.usuarioModelStream,
         builder: (context, snapshot) {
@@ -354,8 +346,6 @@ class FotoUsuario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ConfiguracaoPageBloc>(context);
-
     return StreamBuilder<ConfiguracaoPageState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
@@ -393,7 +383,6 @@ class FotoUsuario extends StatelessWidget {
     try {
       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
       if (arquivoPath != null) {
-        // print('>> newfilepath 1 >> ${arquivoPath}');
         return arquivoPath;
       }
     } catch (e) {

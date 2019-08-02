@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:provider/provider.dart';
 
 class ProdutoCRUDPage extends StatefulWidget {
   final String produtoID;
@@ -39,9 +38,6 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
   @override
   Widget build(BuildContext context) {
     return
-    //  Provider<ProdutoCRUDPageBloc>.value(
-    //   value: bloc,
-    //   child: 
       Scaffold(
         appBar: AppBar(
             leading: new IconButton(
@@ -77,7 +73,6 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
             ),
           ],
         ),
-      // ),
     );
   }
 }
@@ -97,7 +92,6 @@ final ProdutoCRUDPageBloc bloc;
 ProdutoTituloState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoCRUDPageState>(
       stream: bloc.stateStream,
       builder:
@@ -136,7 +130,6 @@ final ProdutoCRUDPageBloc bloc;
 _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    // final bloc = Provider.of<ProdutoCRUDPageBloc>(context);
     return StreamBuilder<ProdutoCRUDPageState>(
       stream: bloc.stateStream,
       builder:
@@ -149,16 +142,12 @@ _DeleteDocumentOrFieldState(this.bloc);
               child: Flexible(
                 child: TextField(
                   controller: _textFieldController,
-                  // onChanged: (text) {
-                  //   bloc.eventSink(DeleteProdutoIDEvent);
-                  // },
                 ),
               ),
             ),
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                //Ir para a pagina visuais do produto
                 if (_textFieldController.text == 'CONCORDO') {
                 bloc.eventSink(DeleteProdutoIDEvent());
                   Navigator.of(context).pop();
