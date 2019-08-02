@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_texto.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_numero.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_escolha_unica.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget_escolha_multipla.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_imagem_arquivo.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_wigdet_coordenada.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_texto.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_numero.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_escolha_unica.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_escolha_multipla.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_imagem_arquivo.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_coordenada.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
@@ -39,14 +39,8 @@ Widget getWigetPergunta(AplicandoPerguntaPageBloc bloc, PerguntaTipoEnum tipo,
           );
           break;
         case PerguntaTipoEnum.Imagem:
-          returnWidget = PerguntaWigdetImagemArquivo(
-            arquivoTipo: ArquivoTipo.image,
-          );
-          break;
         case PerguntaTipoEnum.Arquivo:
-          returnWidget = PerguntaWigdetImagemArquivo(
-            arquivoTipo: ArquivoTipo.aplication,
-          );
+          returnWidget = PerguntaWigdetImagemArquivo();
           break;
         case PerguntaTipoEnum.Numero:
           returnWidget = PerguntaTipoNumeroWidget(

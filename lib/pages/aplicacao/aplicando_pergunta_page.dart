@@ -3,7 +3,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
-import 'package:pmsbmibile3/pages/aplicacao/pergunta_widget/pergunta_widget.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
   const AplicacaoPerguntaPage(this.questionarioAplicadoID, {Key key})
