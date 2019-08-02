@@ -4,16 +4,31 @@ import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:provider/provider.dart';
 
-class QuestionarioFormPage extends StatelessWidget {
-  final AuthBloc authBloc;
+
+class QuestionarioFormPage extends StatefulWidget {
+    final AuthBloc authBloc;
+
+  QuestionarioFormPage(this.authBloc);
+
+  _QuestionarioFormPageState createState() => _QuestionarioFormPageState(authBloc);
+}
+
+class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
   final QuestionarioFormPageBloc bloc;
 
-  QuestionarioFormPage(this.authBloc)
-      : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore,authBloc);
+
+// class QuestionarioFormPage extends StatelessWidget {
+//   // final AuthBloc authBloc;
+//   final QuestionarioFormPageBloc bloc;
+
+//   QuestionarioFormPage(AuthBloc authBloc)
+//       : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore,authBloc);
 
   String _questionarioId;
+
+  _QuestionarioFormPageState(AuthBloc authBloc)
+      : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore,authBloc);
 
   _body(context) {
     return StreamBuilder<QuestionarioModel>(

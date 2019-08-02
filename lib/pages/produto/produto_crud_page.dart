@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:provider/provider.dart';
 
 class ProdutoCRUDPage extends StatefulWidget {
   final String produtoID;
