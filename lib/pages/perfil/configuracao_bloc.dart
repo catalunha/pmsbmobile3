@@ -126,10 +126,10 @@ class ConfiguracaoPageBloc {
     eventStream.listen(_mapEventToState);
   }
   void dispose() {
-    _usuarioModelController.close();
-    _setorCensitarioModelListController.close();
     _eventController.close();
     _stateController.close();
+    _usuarioModelController.close();
+    _setorCensitarioModelListController.close();
   }
 
   void _mapEventToState(ConfiguracaoPageEvent event) async {
