@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/initial_value_text_field.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_texto_bloc.dart';
 
-class PerguntaTipoTextoWidget extends StatelessWidget {
+class PerguntaTexto extends StatefulWidget {
+  final PerguntaAplicadaModel perguntaAplicada;
 
-  final void Function(String) updateText;
-  final bool Function() initialize;
-  final String initialValue;
-  final String perguntaAplicadaID;
+  const PerguntaTexto(this.perguntaAplicada, {Key key}) : super(key: key);
 
-  const PerguntaTipoTextoWidget({
-    Key key,
-    this.perguntaAplicadaID,
-    this.updateText,
-    this.initialize,
-    this.initialValue,
-  })  : assert(initialize != null),
-        super(key: key);
+  @override
+  State<StatefulWidget> createState() {
+    return _PerguntaTextoState();
+  }
+}
+
+class _PerguntaTextoState extends State<PerguntaTexto> {
+  PerguntaTextoBloc bloc;
+
+  @override
+  void initState() {
+    bloc = PerguntaTextoBloc(widget.perguntaAplicada);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +41,15 @@ class PerguntaTipoTextoWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(5.0),
             child: InitialValueTextField(
-              initialize: initialize,
-              value: initialValue,
-              id: perguntaAplicadaID,
-              onChanged: updateText,
+              initialize: () {
+                if (widget.perguntaAplicada.texto == null) return false;
+                return widget.perguntaAplicada.texto.isNotEmpty;
+              },
+              value: widget.perguntaAplicada.texto,
+              id: widget.perguntaAplicada.id,
+              onChanged: (text) {
+                bloc.dispatch(UpdateTextoRespostaPerguntaTextoBlocEvent(text));
+              },
               keyboardType: TextInputType.multiline,
               maxLines: null,
               decoration: InputDecoration(
