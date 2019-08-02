@@ -62,7 +62,11 @@ class CarregaListaPerguntasAplicadasAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {}
 
 class SalvarAplicandoPerguntaPageBlocEvent
-    extends AplicandoPerguntaPageBlocEvent {}
+    extends AplicandoPerguntaPageBlocEvent {
+  final bool foiRespondida;
+
+  SalvarAplicandoPerguntaPageBlocEvent(this.foiRespondida);
+}
 
 class ProximaPerguntaAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {
@@ -147,8 +151,9 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
       dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(reset: true));
     }
     if (event is SalvarAplicandoPerguntaPageBlocEvent) {
+      currentState.perguntaAtual.foiRespondida = event.foiRespondida;
+
       if (currentState.isValid) {
-        currentState.perguntaAtual.foiRespondida = true;
         // TODO: remover apos testes
         currentState.perguntaAtual.temPendencias = false;
         final map = currentState.perguntaAtual.toMap();
