@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -13,10 +14,10 @@ class ProdutoHomePage extends StatelessWidget {
       : bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc) {
     // bloc.eventSink(UpdateUsuarioIDEvent());
   }
- void dispose() {
+  void dispose() {
     bloc.dispose();
   }
-  
+
   _listaProdutos(BuildContext context) {
     return StreamBuilder<List<ProdutoModel>>(
         stream: bloc.produtoModelListStream,
@@ -52,9 +53,12 @@ class ProdutoHomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: Text(produto.nome),
+              title: produto.titulo != null
+                  ? Text(produto.titulo)
+                  : Text('Sem titulo'),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
+                    tooltip: 'Editar titulo e apagar este produto',
                 onPressed: () {
                   //Ir a pagina de Adicionar ou editar Produtos
                   Navigator.pushNamed(context, '/produto/crud',
@@ -67,6 +71,7 @@ class ProdutoHomePage extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.text_fields),
+                    tooltip: 'Editar texto do produto',
                     onPressed: () {
                       //Ir para a pagina visuais do produto
                       Navigator.pushNamed(context, '/produto/texto',
@@ -75,6 +80,7 @@ class ProdutoHomePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.note_add),
+                    tooltip: 'Editar uma mensagem sobre este produto',
                     onPressed: () {
                       // Navigator.pushNamed(context, '/produto/imagem',
                       //     arguments: produto.id);
@@ -82,6 +88,7 @@ class ProdutoHomePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.image),
+                    tooltip: 'Gerenciar imagens para este produto',
                     onPressed: () {
                       Navigator.pushNamed(context, '/produto/arquivo_list',
                           arguments: ProdutoArguments(
@@ -90,23 +97,29 @@ class ProdutoHomePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.border_bottom),
+                    tooltip: 'Gerenciar tabelas para este produto',
                     onPressed: () {
-                      // Navigator.pushNamed(context, '/produto/tabela',
-                      //     arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(
+                              produtoID: produto.id, tipo: 'tabela'));
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.insert_chart),
+                    tooltip: 'Gerenciar gráficos para este produto',
                     onPressed: () {
-                      // Navigator.pushNamed(context, '/produto/grafico',
-                      //     arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(
+                              produtoID: produto.id, tipo: 'grafico'));
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.zoom_out_map),
+                    icon: Icon(Icons.location_on),
+                    tooltip: 'Gerenciar mapas para este produto',
                     onPressed: () {
-                      // Navigator.pushNamed(context, '/produto/mapa',
-                      //     arguments: produto.id);
+                      Navigator.pushNamed(context, '/produto/arquivo_list',
+                          arguments: ProdutoArguments(
+                              produtoID: produto.id, tipo: 'mapa'));
                     },
                   ),
                 ],
@@ -160,12 +173,10 @@ class ProdutoHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Colors.red,
-        centerTitle: true,
+    return DefaultScaffold(
+
         title: Text("Produto"),
-      ),
+
       body: _body(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -177,49 +188,3 @@ class ProdutoHomePage extends StatelessWidget {
     );
   }
 }
-
-// return Builder(
-//     builder: (BuildContext context) => new Container(
-//           child: _produtos.length >= 0
-//               ? new ListView.builder(
-//                   itemCount: _produtos.length,
-//                   itemBuilder: (BuildContext context, int index) {
-//                     return Card(
-//                         elevation: 10,
-//                         child: Column(
-//                           mainAxisSize: MainAxisSize.min,
-//                           children: <Widget>[
-//                             ListTile(
-//                               title: Text(_produtos[index]),
-//                             ),
-//                             ButtonTheme.bar(
-//                               child: ButtonBar(
-//                                 children: <Widget>[
-//                                   IconButton(
-//                                     icon: Icon(Icons.print),
-//                                     onPressed: () {
-//                                       // Gerar pdf do produto e imprimir
-//                                     },
-//                                   ),
-//                                   IconButton(
-//                                     icon: Icon(Icons.attach_file),
-//                                      onPressed: () {
-//                                        //Ir para a pagina visuais do produto
-//                                        Navigator.pushNamed(context, '/produto/visual');
-//                                      },
-//                                   ),
-//                                   IconButton(
-//                                     icon: Icon(Icons.edit),
-//                                      onPressed: () {
-//                                        //Ir a pagina de Adicionar ou editar Produtos
-//                                        Navigator.pushNamed(context, '/produto/adicionar_editar');
-//                                      },
-//                                   ),
-//                                 ],
-//                               ),
-//                             )
-//                           ],
-//                         ));
-//                   })
-//               : Container(),
-//         ));

@@ -98,6 +98,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
+        backgroundColor: Colors.red,
         bottom: TabBar(
           tabs: [
             Tab(text: "Todos"),

@@ -1,13 +1,8 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/produto_texto_model.dart';
-import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:pmsbmibile3/bootstrap.dart';
 
 class ProdutoTextoPageEvent {}
 
@@ -75,7 +70,7 @@ class ProdutoTextoPageBloc {
 
       if (docSnap.exists) {
         _state.produtoID = docSnap.documentID;
-        _state.produtoTextoID = docSnap.data['textoMarkdownID'];
+        _state.produtoTextoID = docSnap.data['produtoTextoID'];
 
         final docRefSubColl = docRefColl
             .collection(ProdutoTextoModel.collection)
@@ -117,93 +112,3 @@ class ProdutoTextoPageBloc {
     _eventController.close();
   }
 }
-
-// if (event is UpdateUsuarioIDEvent) {
-//   //Atualiza estado com usuario logado
-//   _firestore
-//       .collection(UsuarioModel.collection)
-//       .document(event.usuarioID)
-//       .snapshots()
-//       .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
-//       .listen((usuarioModel) async {
-//     _produtoTextoPageState.usuarioModel = usuarioModel;
-//     // print('>> usuarioModel 1 >> ${usuarioModel.toMap()}');
-//     await produtoTextoPageStateSink(_produtoTextoPageState);
-//     // print('>> usuarioModel 2 >> ${_produtoTextoPageState.usuarioModel.toMap()}');
-//   });
-
-//   // le todos os produtos associados e ele, setor e eixo.
-//   produtoTextoPageStateStream.listen((state) {
-//       // print('>> usuarioModel 3 >> ${state.usuarioModel.toMap()}');
-
-//     _firestore
-//         .collection(ProdutoModel.collection)
-//         .where("eixoID.id", isEqualTo: state.usuarioModel.eixoIDAtual.id)
-//         .where("setorCensitarioID.id",
-//             isEqualTo: state.usuarioModel.setorCensitarioID.id)
-//         .snapshots()
-//         .map((snapDocs) => snapDocs.documents
-//             .map(
-//                 (doc) => ProdutoModel(id: doc.documentID).fromMap(doc.data))
-//             .toList())
-//         .listen((List<ProdutoModel> produtoModelList) {
-//       produtoModelListSink(produtoModelList);
-//     });
-//   });
-// }
-
-// if (event.produtoID == null) {
-//   print('>>> <<< Novo');
-//   _produtoTextoPageState.produtoModel = ProdutoModel();
-// } else {
-//   _firestore
-//       .collection(ProdutoTextoModel.collection)
-//       .document(event.produtoID)
-//       .snapshots()
-//       .map((snap) =>
-//           ProdutoTextoModel(id: snap.documentID).fromMap(snap.data))
-//       .listen((produtoTexto) async {
-//     _produtoTextoPageState.produtoTexto = produtoTexto;
-//     await produtoTextoPageStateSink(_produtoTextoPageState);
-//     // print('>> produtoModel >> ${produtoModel.toMap()}');
-//   });
-// }
-// _firestore
-//     .collection(ProdutoModel.collection)
-//     .document(_produtoTextoPageState.produtoID)
-//     .collection(ProdutoTextoModel.collection)
-//     .document(_produtoTextoPageState.produtoTextoID)
-//     .setData({"editando": true}, merge: true);
-// _firestore
-//     .collection(ProdutoModel.collection)
-//     .document(_produtoTextoPageState.produtoID)
-//     .collection(ProdutoTextoModel.collection)
-//     .document(_produtoTextoPageState.produtoTextoID)
-//     .setData({"editando": true}, merge: true);
-// if (event is UpdateProdutoIDNomeEvent) {
-//   _produtoTextoPageState.produtoModelIDNome = event.produtoIDNome;
-//   produtoTextoPageStateSink(_produtoTextoPageState);
-// }
-// _produtoTextoPageState.produtoTextoIDTexto = event.produtoTextoIDTexto;
-// produtoTextoPageStateSink(_produtoTextoPageState);
-
-// //ProdutoModel
-// final _produtoModelController = BehaviorSubject<ProdutoModel>();
-// Stream<ProdutoModel> get produtoModelStream => _produtoModelController.stream;
-// Function get produtoModelSink => _produtoModelController.sink.add;
-// // Authenticacação
-// final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
-      // print('>>> event. <<<');
-      // Map<String, dynamic> produtoTextoModelMap = Map<String, dynamic>();
-      // produtoTextoModelMap['textoMarkdown'] =
-      //     _state.produtoTextoIDTextoMarkdown;
-      // produtoTextoModelMap['editando'] = false;
-
-      // ProdutoTextoModel produtoTextoModel =
-      //     ProdutoTextoModel().fromMap(produtoTextoModelMap);
-      // produtoTextoModel.modificado = DateTime.now().toUtc();
-      // final mapProdutoTextoModel = produtoTextoModel.toMap();
-      // print('>>> mapProdutoTextoModel <<< ${mapProdutoTextoModel}');
-      // print('>>> _produtoTextoPageState.produtoID 2 <<< ${_state.produtoID}');
-      // print(
-      //     '>>> _produtoTextoPageState.produtoTextoID <<< ${_state.produtoTextoID}');

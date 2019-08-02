@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_bloc.dart';
 
-class ProdutoCRUDPage extends StatefulWidget {
-  final String produtoID;
-  final AuthBloc authBloc;
+class PerguntaEscolhaCRUDPage extends StatefulWidget {
+  final String perguntaID;
+  final String escolhaUID;
 
-  ProdutoCRUDPage(this.produtoID, this.authBloc);
+  PerguntaEscolhaCRUDPage(this.perguntaID, this.escolhaUID) {
+    // print('>>> perguntaID <<< ${perguntaID}');
+    // print('>>> escolhaUID <<< ${escolhaUID}');
+  }
 
-  // @override
   @override
-  State<StatefulWidget> createState() {
-    return _ProdutoCRUDPageState(authBloc);
+  _PerguntaEscolhaCRUDPageState createState() {
+    return _PerguntaEscolhaCRUDPageState();
   }
 }
 
-class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
-  final ProdutoCRUDPageBloc bloc;
+class _PerguntaEscolhaCRUDPageState extends State<PerguntaEscolhaCRUDPage> {
+  final PerguntaEscolhaCRUDPageBloc bloc;
 
-  _ProdutoCRUDPageState(AuthBloc authBloc)
-      : bloc = ProdutoCRUDPageBloc(Bootstrap.instance.firestore, authBloc);
+  _PerguntaEscolhaCRUDPageState()
+      : bloc = PerguntaEscolhaCRUDPageBloc(Bootstrap.instance.firestore);
 
   @override
   void initState() {
     super.initState();
-    bloc.eventSink(UpdateUsuarioIDEvent());
-    bloc.eventSink(UpdateProdutoIDEvent(widget.produtoID));
+    bloc.eventSink(UpdatePerguntaIDPageEvent(widget.perguntaID));
+    bloc.eventSink(UpdateEscolhaIDPageEvent(widget.escolhaUID));
   }
 
   @override
@@ -37,20 +38,16 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return
+    return 
       Scaffold(
         appBar: AppBar(
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            title: Text((widget.produtoID != null ? "Editar" : "Adicionar") +
-                " Produto")),
+            title: Text((widget.escolhaUID != null ? "Editar" : "Adicionar") +
+                " escolha")),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.thumb_up),
           onPressed: () {
             // salvar e voltar
-            bloc.eventSink(SaveProdutoIDEvent());
+            bloc.eventSink(SaveEvent());
             Navigator.pop(context);
           },
         ),
@@ -59,12 +56,12 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
             Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  "Titulo do questionario:",
+                  "Texto da escolha:",
                   style: TextStyle(fontSize: 15, color: Colors.blue),
                 )),
             Padding(
               padding: EdgeInsets.all(5.0),
-              child: ProdutoTitulo(bloc),
+              child: TextoDaEscolha(bloc),
             ),
             Divider(),
             Padding(
@@ -77,27 +74,27 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
   }
 }
 
-class ProdutoTitulo extends StatefulWidget {
-  final ProdutoCRUDPageBloc bloc;
-  ProdutoTitulo(this.bloc);
+class TextoDaEscolha extends StatefulWidget {
+  final PerguntaEscolhaCRUDPageBloc bloc;
+  TextoDaEscolha(this.bloc);
   @override
-  ProdutoTituloState createState() {
-    return ProdutoTituloState(bloc);
+  TextoDaEscolhaState createState() {
+    return TextoDaEscolhaState(bloc);
   }
 }
 
-class ProdutoTituloState extends State<ProdutoTitulo> {
+class TextoDaEscolhaState extends State<TextoDaEscolha> {
   final _textFieldController = TextEditingController();
-final ProdutoCRUDPageBloc bloc;
-ProdutoTituloState(this.bloc);
+  final PerguntaEscolhaCRUDPageBloc bloc;
+  TextoDaEscolhaState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ProdutoCRUDPageState>(
+    return StreamBuilder<PerguntaEscolhaCRUDPageState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<PerguntaEscolhaCRUDPageState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.produtoModelIDTitulo;
+          _textFieldController.text = snapshot.data?.texto;
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -107,7 +104,7 @@ ProdutoTituloState(this.bloc);
           ),
           controller: _textFieldController,
           onChanged: (text) {
-            bloc.eventSink(UpdateProdutoIDNomeEvent(text));
+            bloc.eventSink(UpdateTextoEvent(text));
           },
         );
       },
@@ -116,7 +113,7 @@ ProdutoTituloState(this.bloc);
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
-  final ProdutoCRUDPageBloc bloc;
+  final PerguntaEscolhaCRUDPageBloc bloc;
   _DeleteDocumentOrField(this.bloc);
   @override
   _DeleteDocumentOrFieldState createState() {
@@ -126,14 +123,14 @@ class _DeleteDocumentOrField extends StatefulWidget {
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-final ProdutoCRUDPageBloc bloc;
+final PerguntaEscolhaCRUDPageBloc bloc;
 _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ProdutoCRUDPageState>(
+    return StreamBuilder<PerguntaEscolhaCRUDPageState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<ProdutoCRUDPageState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<PerguntaEscolhaCRUDPageState> snapshot) {
         return Row(
           children: <Widget>[
             Divider(),
@@ -148,8 +145,9 @@ _DeleteDocumentOrFieldState(this.bloc);
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
+                //Ir para a pagina visuais do produto
                 if (_textFieldController.text == 'CONCORDO') {
-                bloc.eventSink(DeleteProdutoIDEvent());
+                  bloc.eventSink(DeleteEvent());
                   Navigator.of(context).pop();
                 }
               },

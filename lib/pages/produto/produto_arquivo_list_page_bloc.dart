@@ -1,14 +1,7 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
-import 'package:pmsbmibile3/models/produto_texto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
-import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'package:pmsbmibile3/bootstrap.dart';
 
 class ProdutoArquivoListPageEvent {}
 
@@ -44,14 +37,6 @@ class ProdutoArquivoListPageState {
       });
     }
   }
-
-  // Map<String, dynamic> toMap() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['produtoID'] = this.produtoID;
-  //   data['produtoModel'] = this.produtoModel.toMap();
-  //   data['arquivoList'] = this.arquivoList.map((v) => v.toMap()).toList();
-  //   return data;
-  // }
 }
 
 class ProdutoArquivoListPageBloc {
@@ -113,12 +98,3 @@ class ProdutoArquivoListPageBloc {
     _eventController.close();
   }
 }
-
-// _produtoModelListController.close();
-// _produtoModelController.close();
-// //ProdutoModel
-// final _produtoModelController = BehaviorSubject<ProdutoModel>();
-// Stream<ProdutoModel> get produtoModelStream => _produtoModelController.stream;
-// Function get produtoModelSink => _produtoModelController.sink.add;
-// Authenticacação
-// final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);

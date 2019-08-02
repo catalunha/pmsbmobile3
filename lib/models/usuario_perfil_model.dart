@@ -6,14 +6,14 @@ class UsuarioPerfilModel extends FirestoreModel {
   UsuarioID usuarioID;
   PerfilID perfilID;
   String textPlain;
-  UsuarioArquivoID usuarioArquivoID;
+  UploadID arquivo;
 
   UsuarioPerfilModel(
       {String id,
       this.usuarioID,
       this.perfilID,
       this.textPlain,
-      this.usuarioArquivoID})
+      this.arquivo})
       : super(id);
 
   @override
@@ -29,9 +29,9 @@ class UsuarioPerfilModel extends FirestoreModel {
           : null;
     }
     if (map.containsKey('textPlain')) textPlain = map['textPlain'];
-    if (map.containsKey('usuarioArquivoID')) {
-      usuarioArquivoID = map['usuarioArquivoID'] != null
-          ? new UsuarioArquivoID.fromMap(map['usuarioArquivoID'])
+    if (map.containsKey('arquivo')) {
+      arquivo = map['arquivo'] != null
+          ? new UploadID.fromMap(map['arquivo'])
           : null;
     }
     return this;
@@ -47,8 +47,8 @@ class UsuarioPerfilModel extends FirestoreModel {
       data['perfilID'] = this.perfilID.toMap();
     }
     if (textPlain != null) data['textPlain'] = this.textPlain;
-    if (this.usuarioArquivoID != null) {
-      data['usuarioArquivoID'] = this.usuarioArquivoID.toMap();
+    if (this.arquivo != null) {
+      data['arquivo'] = this.arquivo.toMap();
     }
     return data;
   }

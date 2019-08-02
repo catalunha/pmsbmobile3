@@ -34,25 +34,33 @@ class AuthBlocState {
 }
 
 class AuthBloc {
+  // Database
   final fsw.Firestore _firestore;
-  final _state = AuthBlocState();
+
+  //API
   final AuthApi _authApi;
-  final _userId = BehaviorSubject<String>();
 
-  Stream<String> get userId => _userId.stream;
-
+  //AuthStatus
   final _statusController = BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);
-
   Stream<AuthStatus> get status => _statusController.stream;
 
+  //State
+  final _state = AuthBlocState();
+  
+  //UserId
+  final _userId = BehaviorSubject<String>();
+  Stream<String> get userId => _userId.stream;
+
+  //Usuario Model
   final _perfilController = BehaviorSubject<UsuarioModel>();
   StreamSubscription<UsuarioModel> _perfilSubscription;
-
   Stream<UsuarioModel> get perfil => _perfilController.stream;
 
+  //Event
   final _inputController = BehaviorSubject<AuthBlocEvent>();
   Function get dispatch => _inputController.sink.add;
 
+  //Construtor AuthBloc
   AuthBloc(this._authApi, this._firestore) : assert(_authApi != null) {
     _statusController.sink.add(AuthStatus.Unauthenticated);
     var stream = _authApi.onUserIdChange.where((userId) => userId != null);
@@ -63,6 +71,7 @@ class AuthBloc {
     _inputController.stream.listen(_handleInputEvent);
   }
 
+  //Destrutor AuthBloc
   void dispose() {
     _perfilController.close();
     _userId.close();
@@ -102,7 +111,6 @@ class AuthBloc {
     else{
       _statusController.sink.add(AuthStatus.Authenticated);
     }
-
   }
 
   void _handleInputEvent(AuthBlocEvent event) {
@@ -117,6 +125,7 @@ class AuthBloc {
     }
     else if(event is LogoutAuthBlocEvent){
       _authApi.logout();
+      
     }
   }
 

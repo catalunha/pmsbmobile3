@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../user_files.dart';
 import 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page_bloc.dart';
 
+//TODO: Mudar esta abordagem para authBloc de main e revisar bloc
 class ComunicacaoCRUDPage extends StatefulWidget {
   @override
   _ComunicacaoCRUDPageState createState() => _ComunicacaoCRUDPageState();
@@ -197,7 +198,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                                 bloc.comunicacaoCRUDPageEventSink(
                                     DeleteNoticiaIDEvent());
                                 Navigator.pushNamed(
-                                    context, '/comunicacao/home_page');
+                                    context, '/comunicacao/home');
                               },
                               child: Text("sim"),
                             ),

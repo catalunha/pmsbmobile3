@@ -1,73 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:provider/provider.dart';
 
 class QuestionarioFormPage extends StatefulWidget {
-  final String questionarioID;
-  final AuthBloc authBloc;
+    final AuthBloc authBloc;
 
-  const QuestionarioFormPage(this.authBloc, this.questionarioID, {Key key}) : super(key: key);
+  QuestionarioFormPage(this.authBloc);
 
-  @override
-  _QuestionarioFormPageState createState() {
-    return _QuestionarioFormPageState();
-  }
+  _QuestionarioFormPageState createState() => _QuestionarioFormPageState(authBloc);
 }
 
 class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
-  final bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore);
+  final QuestionarioFormPageBloc bloc;
 
-  _QuestionarioFormPageState();
+  String _questionarioId;
 
-  @override
-  void initState() {
-    super.initState();
-    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(widget.questionarioID));
-    widget.authBloc.perfil.listen((usuario) {
-      bloc.dispatch(UpdateUserInfoQuestionarioFormPageBlocEvent(
-        usuario.id,
-        usuario.nome,
-        usuario.eixoIDAtual.id,
-        usuario.eixoIDAtual.nome,
-      ));
-    });
-  }
-
-  Widget _btnApagar(BuildContext context) {
-    return StreamBuilder<QuestionarioModel>(
-        stream: bloc.instance,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
-          return SafeArea(
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: RaisedButton(
-                    color: Colors.red,
-                    onPressed: () {
-                      bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Text('Apagar', style: TextStyle(fontSize: 20)),
-                        Icon(Icons.delete)
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-  }
+  _QuestionarioFormPageState(AuthBloc authBloc)
+      : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore,authBloc);
 
   _body(context) {
     return StreamBuilder<QuestionarioModel>(
@@ -82,7 +33,8 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
             children: <Widget>[
               Padding(padding: EdgeInsets.all(5.0)),
               Center(
-                child: EixoAtualUsuario(),
+                child: Container(),
+                // child: EixoAtualUsuario(this.authBloc),
               ),
               Padding(padding: EdgeInsets.all(5.0)),
               Padding(
@@ -93,9 +45,13 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
                   )),
               Padding(
                 padding: EdgeInsets.all(5.0),
-                child: NomeFormItem(),
+                child: NomeFormItem(bloc),
               ),
-              _btnApagar(context),
+              // _btnApagar(context),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: _DeleteDocumentOrField(bloc),
+              )
             ],
           );
         });
@@ -103,43 +59,46 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<QuestionarioFormPageBloc>.value(
-      value: bloc,
-      child: Scaffold(
-        appBar: AppBar(
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            title: Text((widget.questionarioID != null ? "Editar" : "Adicionar") +
-                " Questionario")),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.thumb_up),
-          onPressed: () {
-            // salvar e voltar
-            bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
-            Navigator.pop(context);
-          },
-        ),
-        body: _body(context),
+    _questionarioId = ModalRoute.of(context).settings.arguments;
+    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(_questionarioId));
+
+    return
+        Scaffold(
+      appBar: AppBar(
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
+              " Questionario")),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.thumb_up),
+        onPressed: () {
+          // salvar e voltar
+          bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
+          Navigator.pop(context);
+        },
       ),
+      body: _body(context),
     );
   }
 }
 
 class NomeFormItem extends StatefulWidget {
+  final QuestionarioFormPageBloc bloc;
+  NomeFormItem(this.bloc);
   @override
   NomeFormItemState createState() {
-    return NomeFormItemState();
+    return NomeFormItemState(bloc);
   }
 }
 
 class NomeFormItemState extends State<NomeFormItem> {
   final _textFieldController = TextEditingController();
-
+  final QuestionarioFormPageBloc bloc;
+  NomeFormItemState(this.bloc);
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<QuestionarioFormPageBloc>(context);
     return StreamBuilder<QuestionarioModel>(
       stream: bloc.instance,
       builder: (context, snapshot) {
@@ -154,6 +113,53 @@ class NomeFormItemState extends State<NomeFormItem> {
           onChanged: (text) {
             bloc.dispatch(UpdateNomeQuestionarioFormPageBlocEvent(text));
           },
+        );
+      },
+    );
+  }
+}
+
+class _DeleteDocumentOrField extends StatefulWidget {
+  final QuestionarioFormPageBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState(bloc);
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+  final QuestionarioFormPageBloc bloc;
+  _DeleteDocumentOrFieldState(this.bloc);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuestionarioModel>(
+      stream: bloc.instance,
+      builder:
+          (BuildContext context, AsyncSnapshot<QuestionarioModel> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                //Ir para a pagina visuais do produto
+                if (_textFieldController.text == 'CONCORDO') {
+                  bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
         );
       },
     );

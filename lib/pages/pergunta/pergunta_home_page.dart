@@ -35,7 +35,7 @@ class PerguntaHomePage extends StatelessWidget {
           }
           final questionario = snapshot.data.questionarioInstance;
           return Text(
-            "Questionario - ${questionario.nome}",
+            "Questionario: ${questionario.nome}",
             style: TextStyle(fontSize: 16, color: Colors.blue),
           );
         });
@@ -46,7 +46,8 @@ class PerguntaHomePage extends StatelessWidget {
       Padding(
         padding: EdgeInsets.only(top: 10),
         child: Center(
-          child: EixoAtualUsuario(),
+          child: Container(),
+          // child: EixoAtualUsuario(),
         ),
       ),
       Padding(
@@ -94,7 +95,7 @@ class PerguntaHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Lista de Perguntas"),
       ),
@@ -135,6 +136,7 @@ class PerguntaItem extends StatelessWidget {
             trailing: Text("${_pergunta.ordem}"),
             subtitle: Column(
               children: <Widget>[
+                Text("Tipo: ${_pergunta.tipo.nome}"),
                 Text("${_pergunta.id}"),
                 Text("${_pergunta.referencia}"),
               ],
@@ -144,6 +146,7 @@ class PerguntaItem extends StatelessWidget {
             child: ButtonBar(
               children: <Widget>[
                 IconButton(
+                  tooltip: 'Descer ordem da pergunta',
                   icon: Icon(Icons.arrow_downward),
                   onPressed: down
                       ? () {
@@ -154,6 +157,7 @@ class PerguntaItem extends StatelessWidget {
                       : null,
                 ),
                 IconButton(
+                  tooltip: 'Subir ordem na pergunta',
                   icon: Icon(Icons.arrow_upward),
                   onPressed: up
                       ? () {
@@ -164,6 +168,22 @@ class PerguntaItem extends StatelessWidget {
                       : null,
                 ),
                 IconButton(
+                    tooltip: 'Visão geral da pergunta',
+                    icon: Icon(Icons.remove_red_eye),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/pergunta/pergunta_preview",
+                          arguments: _pergunta.id);
+                    }),
+                IconButton(
+                    tooltip: 'Definir Requisitos',
+                    icon: Icon(Icons.rotate_90_degrees_ccw),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, "/pergunta/pergunta_requisito",
+                          arguments: _pergunta.id);
+                    }),
+                IconButton(
+                  tooltip: 'Editar esta pergunta',
                   icon: Icon(Icons.edit),
                   onPressed: () {
                     final result = Navigator.pushNamed(

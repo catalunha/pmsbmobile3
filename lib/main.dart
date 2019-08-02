@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/pages/comunicacao/noticia_lida_page.dart';
-import 'package:pmsbmibile3/pages/perfil/perfil_crud_page.dart';
-import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page.dart';
-import 'package:provider/provider.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
-import 'package:pmsbmibile3/state/services.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 import 'package:pmsbmibile3/api/api.dart';
@@ -16,31 +16,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
-    return Provider.value(
-      value: authBloc,
-      child: Provider<DatabaseService>.value(
-        value: DatabaseService(),
-        child: MaterialApp(
-          title: 'PMSB',
+    return 
+        MaterialApp(
+          title: 'PMSB-TO-22',
           //theme: ThemeData.dark(),
           initialRoute: "/",
           routes: {
-            "/": (context) => HomePage(),
+            //homePage
+            "/": (context) => HomePage(authBloc),
+
             //Desenvolvimento
             "/desenvolvimento": (context) => Desenvolvimento(),
 
-            //Upload
+            //upload
             "/upload": (context) => UploadPage(authBloc),
 
             //perfil
             "/perfil": (context) => PerfilPage(),
-            "/perfil/crudtext": (context) => PerfilCRUDPage(),
-            "/perfil/crudarq": (context) => PerfilCRUDArqPage(),
-
-            // "/perfil/editar_variavel": (context) => PerfilEditarVariavelPage(),//apagar
-            "/perfil/configuracao": (context) => ConfiguracaoPage(),
+            "/perfil/configuracao": (context) => ConfiguracaoPage(authBloc),
+            "/perfil/crudtext": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerfilCRUDPage(settings.arguments);
+            },
+            "/perfil/crudarq": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerfilCRUDArqPage(settings.arguments);
+            },
 
             //questionario
+            "/questionario/home": (context) => QuestionarioHomePage(authBloc),
             "/questionario/home": (context) => QuestionarioHomePage(),
             "/questionario/form": (context) => QuestionarioFormPage(
                   authBloc,
@@ -61,19 +65,28 @@ class MyApp extends StatelessWidget {
                 perguntaID: args.perguntaID,
               );
             },
-            "/pergunta/selecionar_requisito": (context) {
+            "/pergunta/escolha_list": (context) {
               final settings = ModalRoute.of(context).settings;
-              return SelecionarQuequisitoPerguntaPage(
-                  authBloc, settings.arguments);
+              return PerguntaEscolhaListPage(settings.arguments);
             },
-            "/pergunta/criar_ordenar_escolha": (context) {
+            "/pergunta/escolha_crud": (context) {
               final settings = ModalRoute.of(context).settings;
-              return CriarOrdenarEscolha(settings.arguments);
+              final PerguntaIDEscolhaIDPageArguments args = settings.arguments;
+              return PerguntaEscolhaCRUDPage(args.perguntaID, args.escolhaUID);
             },
-            "/pergunta/editar_apagar_escolha": (context) {
+            "/pergunta/pergunta_preview": (context) {
               final settings = ModalRoute.of(context).settings;
-              final EditarApagarEscolhaPageArguments args = settings.arguments;
-              return EditarApagarEscolhaPage(args.bloc, args.escolhaID);
+              return PerguntaPreviewPage(perguntaID: settings.arguments);
+            },
+            "/pergunta/pergunta_requisito_marcar": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaRequisitoEscolhaMarcarPage(
+                  perguntaID: settings.arguments);
+            },
+            "/pergunta/pergunta_requisito": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaRequisitoPage(
+                  perguntaID: settings.arguments);
             },
 
             //aplicacao
@@ -119,16 +132,17 @@ class MyApp extends StatelessWidget {
             "/produto/home": (context) => ProdutoHomePage(authBloc),
             "/produto/crud": (context) {
               final settings = ModalRoute.of(context).settings;
-              return ProdutoCRUDPage(settings.arguments);
+              return ProdutoCRUDPage(settings.arguments, authBloc);
             },
             "/produto/texto": (context) {
               final settings = ModalRoute.of(context).settings;
-              return ProdutoTextoPage(settings.arguments);
+              return ProdutoTextoPage(
+                settings.arguments,
+              );
             },
             "/produto/arquivo_list": (context) {
               final settings = ModalRoute.of(context).settings;
               ProdutoArguments args = settings.arguments;
-
               return ProdutoArquivoListPage(
                   produtoID: args.produtoID, tipo: args.tipo);
             },
@@ -141,15 +155,8 @@ class MyApp extends StatelessWidget {
                   tipo: args.tipo);
             },
 
-            //produto0
-            // "/produto": (context) => ProductPage(),
-            "/produto/adicionar_editar": (context) => AddEditProduct(),
-            "/produto/lista": (context) => ProductList(),
-            "/produto/visual": (context) => ProductVisual(),
-            "/produto/editar_visual": (context) => EditVisual(),
-
             //comunicacao
-            "/comunicacao/home_page": (context) => ComunicacaoHomePage(),
+            "/comunicacao/home": (context) => ComunicacaoHomePage(),
             "/noticias/noticias_visualizadas": (context) => NoticiaLidaPage(),
             "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
@@ -160,8 +167,8 @@ class MyApp extends StatelessWidget {
             //controle
             "/controle/home": (context) => ControleHomePage(),
           },
-        ),
-      ),
+      //   ),
+      // ),
     );
   }
 }

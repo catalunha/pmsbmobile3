@@ -1,4 +1,4 @@
-import 'package:pmsbmibile3/models/eixo_arquivo_model.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
@@ -52,11 +52,12 @@ class ProdutoArquivoCRUDPageState {
   String arquivoID;
   String tipo;
 
+  // String id;
   String titulo;
-  String rascunhoEixoArquivoID;
+  String rascunhoIdUpload;
   String rascunhoUrl;
   String rascunhoLocalPath;
-  String editadoEixoArquivoID;
+  String editadoIdUpload;
   String editadoUrl;
   String editadoLocalPath;
 
@@ -64,12 +65,13 @@ class ProdutoArquivoCRUDPageState {
     // arquivo = produtoModel.arquivo;
     if (this.arquivoID != null) {
       arquivo = produtoModel.arquivo[arquivoID];
+      // id = arquivo.id;
       titulo = arquivo.titulo;
       tipo = arquivo.tipo;
-      rascunhoEixoArquivoID = arquivo.rascunhoEixoArquivoID;
+      rascunhoIdUpload = arquivo.rascunhoIdUpload;
       rascunhoUrl = arquivo.rascunhoUrl;
       rascunhoLocalPath = arquivo.rascunhoLocalPath;
-      editadoEixoArquivoID = arquivo.editadoEixoArquivoID;
+      editadoIdUpload = arquivo.editadoIdUpload;
       editadoUrl = arquivo.editadoUrl;
       editadoLocalPath = arquivo.editadoLocalPath;
     }
@@ -81,10 +83,10 @@ class ProdutoArquivoCRUDPageState {
     data['arquivoID'] = this.arquivoID;
     data['titulo'] = this.titulo;
     data['tipo'] = this.tipo;
-    data['rascunhoEixoArquivoID'] = this.rascunhoEixoArquivoID;
+    // data['rascunhoIdUpload'] = this.rascunhoIdUpload;
     data['rascunhoUrl'] = this.rascunhoUrl;
     data['rascunhoLocalPath'] = this.rascunhoLocalPath;
-    data['editadoEixoArquivoID'] = this.editadoEixoArquivoID;
+    // data['editadoIdUpload'] = this.editadoIdUpload;
     data['editadoUrl'] = this.editadoUrl;
     data['editadoLocalPath'] = this.editadoLocalPath;
     return data;
@@ -138,139 +140,142 @@ class ProdutoArquivoCRUDPageBloc {
     }
     if (event is UpdateArquivoRascunhoEvent) {
       _state.rascunhoLocalPath = event.arquivoRascunho;
+      _state.rascunhoUrl = null;
+      _state.rascunhoIdUpload = null;
     }
     if (event is UpdateArquivoEditadoEvent) {
       _state.editadoLocalPath = event.arquivoEditado;
+      _state.editadoUrl = null;
+      _state.editadoIdUpload = null;
     }
-
+    if (event is DeleteArquivoEvent) {
+      if (event.arquivoTipo == 'arquivoRascunho') {
+        _state.rascunhoLocalPath = null;
+        _state.rascunhoUrl = null;
+        _state.rascunhoIdUpload = null;
+      } else {
+        _state.editadoLocalPath = null;
+        _state.editadoUrl = null;
+        _state.editadoIdUpload = null;
+      }
+    }
     if (event is SaveEvent) {
-      if (_state.rascunhoLocalPath != null) {
-        // Cria doc em UpLoad collection para upload futuro
-        final upLoadModel = UploadModel(
-          usuarioID: _state.produtoModel.usuarioID,
-          localPath: _state.rascunhoLocalPath,
-          upload: false,
-          atualizar: 'EixoArquivo',
-        );
-        final docRef = _firestore
-            .collection(UploadModel.collection)
-            .document(_state.rascunhoEixoArquivoID);
-        await docRef.setData(upLoadModel.toMap(), merge: true);
-        _state.rascunhoEixoArquivoID = docRef.documentID;
-        // criar doc em EixoArquivo
-        final eixoArquivoModel = EixoArquivoModel(
-          produtoID:
-              ProdutoID(id: _state.produtoID, nome: _state.produtoModel.nome),
-          titulo: _state.titulo,
-        );
-        final docRef2 = _firestore
-            .collection(EixoArquivoModel.collection)
-            .document(_state.rascunhoEixoArquivoID);
-        await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
-      }
-      if (_state.editadoLocalPath != null) {
-        final upLoadModel = UploadModel(
-          usuarioID: _state.produtoModel.usuarioID,
-          localPath: _state.editadoLocalPath,
-          upload: false,
-          atualizar: 'EixoArquivo',
-        );
-        final docRef = _firestore
-            .collection(UploadModel.collection)
-            .document(_state.editadoEixoArquivoID);
-        await docRef.setData(upLoadModel.toMap(), merge: true);
-        _state.editadoEixoArquivoID = docRef.documentID;
-        // criar doc em EixoArquivo
-        final eixoArquivoModel = EixoArquivoModel(
-          produtoID:
-              ProdutoID(id: _state.produtoID, nome: _state.produtoModel.nome),
-          titulo: _state.titulo,
-        );
-        final docRef2 = _firestore
-            .collection(EixoArquivoModel.collection)
-            .document(_state.editadoEixoArquivoID);
-        await docRef2.setData(eixoArquivoModel.toMap(), merge: true);
-      }
-      if (_state.rascunhoLocalPath == null && _state.rascunhoUrl == null) {
-        if (_state.rascunhoEixoArquivoID != null) {
-          final docRef = _firestore
-              .collection(UploadModel.collection)
-              .document(_state.rascunhoEixoArquivoID);
-          await docRef.delete();
-          _state.rascunhoEixoArquivoID = null;
-        }
-      }
-      if (_state.editadoLocalPath == null && _state.editadoUrl == null) {
-        if (_state.editadoEixoArquivoID != null) {
-          final docRef = _firestore
-              .collection(UploadModel.collection)
-              .document(_state.editadoEixoArquivoID);
-          await docRef.delete();
-          _state.editadoEixoArquivoID = null;
-        }
-      }
-      ArquivoProduto imagemSave;
       if (_state.arquivoID == null) {
         final uuid = Uuid();
-          _state.arquivoID = uuid.v4();
-         imagemSave = ArquivoProduto(
-          id: _state.arquivoID,
+        _state.arquivoID = uuid.v4();
+      }
+      if (!_stateController.isClosed) _stateController.add(_state);
+      //+++ Se novo localPath apagar uploads
+      if (_state.rascunhoUrl == null) {
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.arquivo.rascunhoIdUpload);
+        await docRef.delete();
+      }
+      if (_state.editadoUrl == null) {
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.arquivo.editadoIdUpload);
+        await docRef.delete();
+      }
+      if (!_stateController.isClosed) _stateController.add(_state);
+      //---
+
+      if (_state.rascunhoLocalPath != null) {
+        //+++ Cria doc em UpLoadCollection
+        final upLoadModel = UploadModel(
+          usuario: _state.produtoModel.usuarioID.id,
+          localPath: _state.rascunhoLocalPath,
+          upload: false,
+          updateCollection: UpdateCollection(
+              collection: ProdutoModel.collection,
+              field:
+                  "${_state.produtoID}.arquivo.${_state.arquivoID}.rascunhoUrl"),
+        );
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.rascunhoIdUpload);
+        await docRef.setData(upLoadModel.toMap(), merge: true);
+        _state.rascunhoIdUpload = docRef.documentID;
+
+        //--- Cria doc em UpLoadCollection
+      }
+      if (!_stateController.isClosed) _stateController.add(_state);
+      // print('>>> _state.toMap() 1 <<< ${_state.toMap()}');
+
+      if (_state.editadoLocalPath != null) {
+        //+++ Cria doc em UpLoadCollection
+        final upLoadModel = UploadModel(
+          usuario: _state.produtoModel.usuarioID.id,
+          localPath: _state.editadoLocalPath,
+          upload: false,
+          updateCollection: UpdateCollection(
+              collection: ProdutoModel.collection,
+              field:
+                  "${_state.produtoID}.arquivo.${_state.arquivoID}.editadoUrl"),
+        );
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.editadoIdUpload);
+        await docRef.setData(upLoadModel.toMap(), merge: true);
+        _state.editadoIdUpload = docRef.documentID;
+        //--- Cria doc em UpLoadCollection
+      }
+      if (!_stateController.isClosed) _stateController.add(_state);
+
+      ArquivoProduto imagemSave;
+      if (_state.arquivoID == null) {
+        imagemSave = ArquivoProduto(
+          // id: _state.arquivoID,
           titulo: _state.titulo,
           tipo: _state.tipo,
-          rascunhoEixoArquivoID: _state.rascunhoEixoArquivoID,
+          rascunhoIdUpload: _state.rascunhoIdUpload,
           rascunhoUrl: _state.rascunhoUrl,
           rascunhoLocalPath: _state.rascunhoLocalPath,
-          editadoEixoArquivoID: _state.editadoEixoArquivoID,
+          editadoIdUpload: _state.editadoIdUpload,
           editadoUrl: _state.editadoUrl,
           editadoLocalPath: _state.editadoLocalPath,
         );
       } else {
-         imagemSave = ArquivoProduto(
-          id: _state.arquivoID,
+        imagemSave = ArquivoProduto(
+          // id: _state.arquivoID,
           titulo: _state.titulo,
           tipo: _state.tipo,
-          rascunhoEixoArquivoID: _state.rascunhoEixoArquivoID,
+          rascunhoIdUpload: _state.rascunhoIdUpload,
           rascunhoUrl: _state.rascunhoUrl,
           rascunhoLocalPath: _state.rascunhoLocalPath,
-          editadoEixoArquivoID: _state.editadoEixoArquivoID,
+          editadoIdUpload: _state.editadoIdUpload,
           editadoUrl: _state.editadoUrl,
           editadoLocalPath: _state.editadoLocalPath,
         );
       }
+      if (!_stateController.isClosed) _stateController.add(_state);
+      // print('>>> _state.toMap() 5 <<< ${_state.toMap()}');
+      // print('>>> imagemSave.toMap2() 5 <<< ${imagemSave.toMap()}');
 
       final docRef = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoID);
-          // Map<dynamic,dynamic> map = Map<dynamic,dynamic>();
-          // map[_state.arquivoID]=imagemSave.toMap();
-      final doc = await docRef.setData(
-          {"arquivo": {_state.arquivoID:imagemSave.toMap()}},
-          merge: true);
+      await docRef.setData({
+        "arquivo": {_state.arquivoID: imagemSave.toMapFirestore()}
+      }, merge: true);
+
+      if (!_stateController.isClosed) _stateController.add(_state);
+      print('>>> _state.toMap() 4 <<< ${_state.toMap()}');
     }
 
     if (event is DeleteEvent) {
-      // if (_state.imagemList != null) {
-      //   _state.imagemList.removeWhere((img) => img.id == _state.arquivoID);
-      //   final docRef = _firestore
-      //       .collection(ProdutoModel.collection)
-      //       .document(_state.produtoID);
-      //   docRef.setData(
-      //       {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
-      //       merge: true);
-      // }
+      final docRef = _firestore
+          .collection(ProdutoModel.collection)
+          .document(_state.produtoID);
+      docRef.setData({
+        "arquivo": {_state.arquivoID: Bootstrap.instance.FieldValue.delete()}
+      }, merge: true);
     }
-    if (event is DeleteArquivoEvent) {
-      // if (event.arquivoTipo == 'arquivoEditado') {
-      //   _state.rascunhoLocalPath = null;
-      //   _state.rascunhoUrl = null;
-      // } else {
-      //   _state.editadoLocalPath = null;
-      //   _state.editadoUrl = null;
-      // }
-    }
+
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
-    // print('>>> event.runtimeType <<< ${event.runtimeType}');
+    print('>>> _state.toMap() <<< ${_state.toMap()}');
+    print('>>> event.runtimeType <<< ${event.runtimeType}');
   }
 
   void dispose() {
@@ -278,74 +283,3 @@ class ProdutoArquivoCRUDPageBloc {
     _eventController.close();
   }
 }
-// Future<String> uploadStorage(String filePath) async {
-//   final uuid = Uuid();
-//   File file = File(filePath);
-
-//   final String filename = uuid.v4();
-//   final storageRef = await FirebaseStorage.instance.ref().child(filename);
-
-//   final StorageTaskSnapshot task =
-//       await storageRef.putFile(file).onComplete;
-
-//   final String fileUrl = await task.ref.getDownloadURL();
-//   print('Storage in url ${fileUrl}');
-
-//   return fileUrl;
-// }
-
-// void saveStateToFirebaseEvent(File file) async {
-//   await uploadfirebaseStorage(file);
-//   _firestore
-//       .collection(UsuarioPerfilModel.collection)
-//       .document(perfilCRUDArqPageState.usuarioPerfilID)
-//       .setData({
-//     "usuarioArquivoID": {
-//       "id": "${perfilCRUDArqPageState.usuarioPerfilID}",
-//       "url": perfilCRUDArqPageState.getDownloadURL
-//     }
-//   }, merge: true);
-// }
-
-// if (_state.arquivoRascunho != null) {
-//   var a = uploadStorage(_state.arquivoRascunho);
-//   a.then((arqPath) {
-//     print('then Storage in url ${arqPath}');
-
-//     _state.arquivoRascunho = arqPath;
-//   });
-// }
-// if (_state.arquivoEditado != null) {
-//   var b = uploadStorage(_state.arquivoEditado);
-//   b.then((arqPath) {
-//     _state.arquivoEditado = arqPath;
-//   });
-// }
-// print('>>> _state.toMap() <<< ${_state.toMap()}');
-
-// if (_state.arquivoID == null) {
-//   final uuid = Uuid();
-//   final imagemSave = Arquivo(
-//       id: uuid.v4(),
-//       titulo: _state.titulo,
-//       produtoArquivoIDRascunho: _state.arquivoRascunho,
-//       produtoArquivoIDEditado: _state.arquivoEditado);
-//   if (_state.imagemList == null) {
-//     _state.imagemList = List<Arquivo>();
-//   }
-//   _state.imagemList.add(imagemSave);
-// } else {
-//   _state.imagemList.removeWhere((img) => img.id == _state.arquivoID);
-//   final imagemSave = Arquivo(
-//       id: _state.arquivoID,
-//       titulo: _state.titulo,
-//       produtoArquivoIDRascunho: _state.arquivoRascunho,
-//       produtoArquivoIDEditado: _state.arquivoEditado);
-//   _state.imagemList.add(imagemSave);
-// }
-// final docRef = _firestore
-//     .collection(ProdutoModel.collection)
-//     .document(_state.produtoID);
-// final doc = await docRef.setData(
-//     {"imagem": _state.imagemList.map((v) => v.toMap()).toList()},
-//     merge: true);

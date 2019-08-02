@@ -94,7 +94,7 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
     final _questionarioId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Lista de perguntas"),
       ),

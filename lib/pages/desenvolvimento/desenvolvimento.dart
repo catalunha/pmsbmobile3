@@ -2,8 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/components/square_image.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-import 'package:pmsbmibile3/models/usuario_arquivo_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+import 'package:pmsbmibile3/models/upload_model.dart';
+import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,6 +22,8 @@ import 'package:pmsbmibile3/state/upload_bloc.dart';
 
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/perfil_model.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
+import 'package:pmsbmibile3/bootstrap.dart';
 
 class Desenvolvimento extends StatefulWidget {
   @override
@@ -26,7 +32,7 @@ class Desenvolvimento extends StatefulWidget {
 
 class _DesenvolvimentoState extends State<Desenvolvimento> {
   final bloc = DesenvolvimentoPageBloc(Bootstrap.instance.firestore);
-  String arquivoRascunho;
+  final fw.Firestore _firestore = Bootstrap.instance.firestore;
 
   @override
   void initState() {
@@ -36,74 +42,126 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // fsw.Firestore _firestore = Bootstrap.instance.firestore;
     return DefaultScaffold(
         title: Text('Desenvolvimento'),
         body: StreamBuilder<PageState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<PageState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<PageState> snapshot) {
               if (snapshot.hasError) {
                 return Container(
                   child: Center(child: Text('Erro.')),
                 );
               }
-
-              // if (!snapshot.hasData) {
-              //   return Container(
-              //     child: Center(child: CircularProgressIndicator()),
-              //   );
-              // }
-              arquivoRascunho = snapshot.data?.arquivo ?? 'Sem arquivo 1';
-              arquivoRascunho = snapshot.data.arquivo ?? 'Sem arquivo 2';
-
               return ListView(
                 children: <Widget>[
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
                   ListTile(
-                    leading: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () async {
-                          // bloc.eventSink(
-                          //     DeleteArquivoEvent('arquivoRascunho'));
-                        }),
-                    title: Text('Selecione o arquivo'),
+                    title: Text('Atualizar routes de usuario.'),
                     trailing: IconButton(
-                        icon: Icon(Icons.file_download),
-                        onPressed: () async {
-                          await _selecionarNovoArquivo().then((arq) {
-                            arquivoRascunho = arq;
-                          });
-                          // print('>> arquivoPath 1 >> ${arquivoRascunho}');
-                          setState(() {
-                            // ALTERA SE VAI OU NAO SER INCORPORADO O EDITADO
-                            arquivoRascunho == null
-                                ? 'Nenhum arquivo selecionado'
-                                : arquivoRascunho;
-                          });
-                          bloc.eventSink(UpdateArquivoEvent(arquivoRascunho));
-                        }),
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // List<dynamic> routes = [
+                        //   '/',
+                        //   '/desenvolvimento',
+                        //   '/upload',
+                        //   '/questionario/home',
+                        //   '/aplicacao/home',
+                        //   '/resposta/home',
+                        //   '/sintese/home',
+                        //   '/produto/home',
+                        //   '/comunicacao/home_page',
+                        //   '/administracao/home',
+                        //   '/controle/home'
+                        // ];
+                        // final docRef = _firestore
+                        //     .collection(UsuarioModel.collection)
+                        //     .document('nsD07Jb8cqRy9liyX82JwDSq8d22');
+
+                        // await docRef.setData({"routes": routes}, merge: true);
+                        // print('>>> ok <<< ');
+                      },
+                    ),
                   ),
-                  Text(arquivoRascunho),
+                  ListTile(
+                    title: Text('Criar Usuario em UsuarioCollection.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // UsuarioModel usuarioModel = UsuarioModel(
+                        //   id: 'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2',
+                        //   ativo: true,
+                        //   nome: 'uft',
+                        //   celular: '0',
+                        //   email: 'catalunha@uft.edu.br',
+                        //   routes: ['/'],
+                        //   cargoID: CargoID(id: 'coordenador',nome: 'Coo'),
+                        //   eixoID: EixoID(id: 'estatisticadsti',nome: ''),
+                        //   eixoIDAcesso: [EixoID(id: 'estatisticadsti',nome: '')],
+                        //   eixoIDAtual: EixoID(id: 'estatisticadsti',nome: ''),
+                        //   setorCensitarioID: SetorCensitarioID(id: 'palmas',nome: 'pal'),
+                        // );
+                        // final docRef = _firestore
+                        //     .collection(UsuarioModel.collection)
+                        //     .document('mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
+
+                        // await docRef.setData(usuarioModel.toMap(), merge: true);
+                        // print('>>> ok <<< ');
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Timestamp'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        final docRef = _firestore
+                            .collection(QuestionarioModel.collection)
+                            .document('-LkcyH14YG3LUeRwQhlM');
+
+                        await docRef.setData({"modificado":Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
+                      },
+                    ),
+                  ),
+
+                  // Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
                 ],
               );
             }));
   }
-
-  Future<String> _selecionarNovoArquivo() async {
-    try {
-      var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
-      if (arquivoPath != null) {
-        // print('>> newfilepath 1 >> ${arquivoPath}');
-        return arquivoPath;
-      }
-    } catch (e) {
-      print("Unsupported operation" + e.toString());
-    }
-  }
 }
+//   Future<String> _selecionarNovoArquivo() async {
+//     try {
+//       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
+//       if (arquivoPath != null) {
+//         // print('>> newfilepath 1 >> ${arquivoPath}');
+//         return arquivoPath;
+//       }
+//     } catch (e) {
+//       print("Unsupported operation" + e.toString());
+//     }
+//   }
+// }
+
+// StreamBuilder<UploadModel>(
+//     stream: bloc.uploadBloc.uploadModelStream,
+//     builder: (context, snapshot) {
+//       dynamic image = FlutterLogo();
+//       return Container(
+//         child: snapshot.data == null
+//             ? image
+//             : SquareImage(
+//                 image: NetworkImage(snapshot.data.url)),
+//       );
+//     })
 
 // RaisedButton(
 //   onPressed: () {

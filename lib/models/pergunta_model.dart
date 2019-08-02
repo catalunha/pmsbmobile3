@@ -1,4 +1,5 @@
 import 'package:pmsbmibile3/models/base_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 
 class PerguntaAplicadaModel extends PerguntaModel {
@@ -93,6 +94,10 @@ class PerguntaModel extends FirestoreModel {
   ///Questionario do qual esta pergunta pertence
   Questionario questionario;
 
+  ///Eixo do qual esta pergunta pertence
+  //Vamos precisar deste campos pra filtrar perguntas para requisito.
+  // EixoID eixo;
+
   PerguntaTipo tipo;
 
   Map<String, Requisito> requisitos;
@@ -102,7 +107,11 @@ class PerguntaModel extends FirestoreModel {
 
   int ordem;
 
+  int ultimaOrdemEscolha;
+
   String titulo;
+
+  EixoID eixo;
 
   String textoMarkdown;
 
@@ -140,12 +149,15 @@ class PerguntaModel extends FirestoreModel {
     this.requisitos,
     this.escolhas,
     this.ordem,
+    this.ultimaOrdemEscolha,
     this.titulo,
     this.textoMarkdown,
     this.dataCriacao,
     this.dataEdicao,
     this.observacao,
     this.texto,
+          this.eixo,
+
     this.arquivo,
     this.coordenada,
     this.numero,
@@ -168,6 +180,7 @@ class PerguntaModel extends FirestoreModel {
     referencia = map["referencia"];
 
     ordem = map['ordem'];
+    ultimaOrdemEscolha = map['ultimaOrdemEscolha'];
 
     titulo = map['titulo'];
 
@@ -201,7 +214,9 @@ class PerguntaModel extends FirestoreModel {
         coordenada.add(Coordenada.fromMap(e));
       });
     }
-
+    if (map.containsKey('eixo')) {
+      eixo = map['eixo'] != null ? new EixoID.fromMap(map['eixo']) : null;
+    }
     return this;
   }
 
@@ -230,6 +245,9 @@ class PerguntaModel extends FirestoreModel {
     if (referencia != null) map["referencia"] = referencia;
 
     if (ordem != null) map["ordem"] = ordem;
+    
+    if (ultimaOrdemEscolha != null)
+      map["ultimaOrdemEscolha"] = ultimaOrdemEscolha;
 
     if (titulo != null) map["titulo"] = titulo;
 
@@ -252,7 +270,9 @@ class PerguntaModel extends FirestoreModel {
         map["coordenada"].add(e.toMap());
       });
     }
-
+    if (this.eixo != null) {
+      map['eixo'] = this.eixo.toMap();
+    }
     return map;
   }
 }
@@ -338,9 +358,14 @@ class Requisito {
   String perguntaID;
   String perguntaTipo;
   EscolhaRequisito escolha;
+  String label;
 
   Requisito(
-      {this.referencia, this.perguntaID, this.perguntaTipo, this.escolha});
+      {this.referencia,
+      this.perguntaID,
+      this.perguntaTipo,
+      this.escolha,
+      this.label});
 
   Requisito.fromMap(Map<dynamic, dynamic> map) {
     referencia = map["referencia"];
@@ -348,6 +373,7 @@ class Requisito {
     perguntaTipo = map["perguntaTipo"];
     if (map["escolha"] != null && map["escolha"] is Map)
       escolha = EscolhaRequisito.fromMap(map["escolha"]);
+    label = map["label"];
   }
 
   Map<String, dynamic> toMap() {
@@ -357,6 +383,7 @@ class Requisito {
     if (perguntaTipo != null) map["perguntaTipo"] = perguntaTipo;
     if (escolha != null && escolha is EscolhaRequisito)
       map["escolha"] = escolha.toMap();
+    if (label != null) map["label"] = label;
     return map;
   }
 }
@@ -370,18 +397,20 @@ class Requisito {
 class EscolhaRequisito {
   String id;
   bool marcada;
-
-  EscolhaRequisito({this.id, this.marcada});
+  String label;
+  EscolhaRequisito({this.id, this.marcada, this.label});
 
   EscolhaRequisito.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     marcada = map["marcada"];
+    label = map["label"];
   }
 
   Map<String, dynamic> toMap() {
     return {
       if (id != null) "id": id,
       if (marcada != null) "marcada": marcada,
+      if (label != null) "label": label,
     };
   }
 }

@@ -8,8 +8,9 @@ class UsuarioModel extends FirestoreModel {
   String celular;
   String email;
   bool ativo;
-  UsuarioArquivoID usuarioArquivoID;
-  List<RotaID> rotaID;
+  UploadID foto;
+  // List<RotaID> rotaID;
+  List<dynamic> routes;
   SetorCensitarioID setorCensitarioID;
   CargoID cargoID;
   EixoID eixoIDAtual;
@@ -22,8 +23,9 @@ class UsuarioModel extends FirestoreModel {
       this.celular,
       this.email,
       this.ativo,
-      this.usuarioArquivoID,
-      this.rotaID,
+      this.foto,
+      // this.rotaID,
+      this.routes,
       this.setorCensitarioID,
       this.cargoID,
       this.eixoIDAtual,
@@ -37,17 +39,19 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('celular')) celular = map['celular'];
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
-    if (map.containsKey('usuarioArquivoID')) {
-      usuarioArquivoID = map['usuarioArquivoID'] != null
-          ? new UsuarioArquivoID.fromMap(map['usuarioArquivoID'])
+     if (map.containsKey('foto')) {
+      foto = map['foto'] != null
+          ? new UploadID.fromMap(map['foto'])
           : null;
     }
-    if (map.containsKey('rotaID') && (map['rotaID'] != null)) {
-      rotaID = new List<RotaID>();
-      map['rotaID'].forEach((v) {
-        rotaID.add(new RotaID.fromMap(v));
-      });
-    }
+    // if (map.containsKey('routes') && (map['routes'] != null)) {
+    //   routes = new List<String>();
+    //   map['routes'].forEach((v) {
+    //     routes.add(new routes.fromMap(v));
+    //   });
+    // }
+        if (map.containsKey('routes')) routes = map['routes'];
+
     if (map.containsKey('setorCensitarioID')) {
       setorCensitarioID = map['setorCensitarioID'] != null
           ? new SetorCensitarioID.fromMap(map['setorCensitarioID'])
@@ -81,12 +85,14 @@ class UsuarioModel extends FirestoreModel {
     if (celular != null) data['celular'] = this.celular;
     if (email != null) data['email'] = this.email;
     if (ativo != null) data['ativo'] = this.ativo;
-    if (this.usuarioArquivoID != null) {
-      data['usuarioArquivoID'] = this.usuarioArquivoID.toMap();
+    if (this.foto != null) {
+      data['foto'] = this.foto.toMap();
     }
-    if (this.rotaID != null) {
-      data['rotaID'] = this.rotaID.map((v) => v.toMap()).toList();
-    }
+    // if (this.rotaID != null) {
+    //   data['rotaID'] = this.rotaID.map((v) => v.toMap()).toList();
+    // }
+        if (routes != null) data['routes'] = this.routes;
+
     if (this.setorCensitarioID != null) {
       data['setorCensitarioID'] = this.setorCensitarioID.toMap();
     }

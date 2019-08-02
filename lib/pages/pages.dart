@@ -5,13 +5,12 @@ export 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento.dart';
 //upload
 export 'package:pmsbmibile3/pages/upload/upload_page.dart';
 
-// Noticias
-export 'package:pmsbmibile3/pages/noticias/noticias_page.dart';
 
 //perfil
 export 'package:pmsbmibile3/pages/perfil/perfil_page.dart';
-export 'package:pmsbmibile3/pages/perfil/editar_variavel.dart';
 export 'package:pmsbmibile3/pages/perfil/configuracao_page.dart';
+export 'package:pmsbmibile3/pages/perfil/perfil_crud_page.dart';
+export 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page.dart';
 
 //autenticação
 export 'package:pmsbmibile3/pages/autenticacao/login.dart';
@@ -24,7 +23,7 @@ export 'package:pmsbmibile3/pages/geral/splash.dart';
 //comunicação
 export 'package:pmsbmibile3/pages/comunicacao/comunicacao_home_page.dart';
 export 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page.dart';
-// export 'package:pmsbmibile3/pages/comunicacao/modal_filter_list.dart';
+export 'package:pmsbmibile3/pages/comunicacao/noticia_lida_page.dart';
 
 //produto
 export 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
@@ -33,13 +32,6 @@ export 'package:pmsbmibile3/pages/produto/produto_crud_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page.dart';
-
-//produto0
-export 'package:pmsbmibile3/pages/produto/product.dart';
-export 'package:pmsbmibile3/pages/produto/product_list.dart';
-export 'package:pmsbmibile3/pages/produto/product_visual.dart';
-export 'package:pmsbmibile3/pages/produto/add_edit_product.dart';
-export 'package:pmsbmibile3/pages/produto/edit_visual.dart';
 
 //pergunta
 export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
@@ -78,3 +70,6 @@ export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page.dart';
 
 //controle
 export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
+
+
+

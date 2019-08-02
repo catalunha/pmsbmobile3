@@ -18,6 +18,12 @@ class EditarApagarEscolhaPageArguments {
   EditarApagarEscolhaPageArguments(this.bloc, this.escolhaID);
 }
 
+class PerguntaIDEscolhaIDPageArguments{
+  final perguntaID;
+  final escolhaUID;
+  PerguntaIDEscolhaIDPageArguments(this.perguntaID, this.escolhaUID);
+}
+
 class DefinirRequisitosPageArguments {
   final bloc;
   final referencia;

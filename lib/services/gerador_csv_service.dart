@@ -18,7 +18,7 @@ class GeradorCsvService {
 
     List<dynamic> colunaFoto = List();
     colunaFoto.add("Foto");
-    colunaFoto.add("${usuarioModel.usuarioArquivoID.url}");
+    colunaFoto.add("${usuarioModel.foto.url}");
     colunas.add(colunaFoto);
 
     List<dynamic> colunaId = List();

@@ -3,11 +3,10 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/services/gerador_md_service.dart';
+import 'package:pmsbmibile3/services/gerador_pdf_service.dart';
 
 import 'comunicacao_home_page_bloc.dart';
-// import 'modal_filter_list.dart';
 
 class ComunicacaoHomePage extends StatefulWidget {
   @override
@@ -16,12 +15,11 @@ class ComunicacaoHomePage extends StatefulWidget {
 
 class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
   final bloc = ComunicacaoHomePageBloc(Bootstrap.instance.firestore);
+  var noticiaModelListData;
 
   @override
   Widget build(BuildContext context) {
-    // return Provider<ComunicacaoHomePageBloc>.value(
-    //   value: bloc,
-    //   child:
+
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
@@ -37,14 +35,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
         ),
         title: Text("Notícias"),
 
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(choices[0].icon),
-        //     onPressed: () {
-        //       _select(choices[0]);
-        //     },
-        //   ),
-        // ],
+
         body: _body(context),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -129,52 +120,6 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
     return Column(
       children: <Widget>[
         Expanded(
-          flex: 1,
-          child: StreamBuilder<ComunicacaoHomePageState>(
-              stream: bloc.comunicacaoHomePageStateStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<ComunicacaoHomePageState> snapshotState) {
-                if (snapshotState.hasError) {
-                  return Center(
-                    child: Text("Error"),
-                  );
-                }
-                if (!snapshotState.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return ButtonTheme.bar(
-                  child: ButtonBar(
-                    children: <Widget>[
-                      Text('csv'),
-                      IconButton(
-                        icon: Icon(Icons.border_bottom),
-                        onPressed: () {
-                          launch(snapshotState.data.urlCSV);
-                        },
-                      ),
-                      Text('web'),
-                      IconButton(
-                        icon: Icon(Icons.web),
-                        onPressed: () {
-                          launch(snapshotState.data.urlMD);
-                        },
-                      ),
-                      Text('pdf'),
-                      IconButton(
-                        icon: Icon(Icons.picture_as_pdf),
-                        onPressed: () {
-                          launch(snapshotState.data.urlPDF);
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-        ),
-        Expanded(
           flex: 9,
           child: StreamBuilder<List<NoticiaModel>>(
               stream: bloc.noticiaModelListPublicadasStream,
@@ -194,10 +139,35 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
                     child: Text("Nenhuma notícia criada."),
                   );
                 } else {
-                  return ListView(
-                    children: snapshot.data
-                        .map((noticia) => _cardBuildPublicada(noticia))
-                        .toList(),
+                  noticiaModelListData = snapshot.data;
+                  return Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ButtonTheme.bar(
+                          child: ButtonBar(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.picture_as_pdf),
+                                onPressed: () {
+                                  var mdtext = GeradorMdService
+                                      .generateMdFromNoticiaModelList(
+                                          noticiaModelListData);
+                                  GeradorPdfService.generatePdfFromMd(mdtext);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 9,
+                        child: ListView(
+                          children: snapshot.data
+                              .map((noticia) => _cardBuildPublicada(noticia))
+                              .toList(),
+                        ),
+                      ),
+                    ],
                   );
                 }
               }),

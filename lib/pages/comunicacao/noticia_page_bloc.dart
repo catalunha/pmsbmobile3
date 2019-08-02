@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/models/usuario_noticia_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -50,13 +49,13 @@ class NoticiaPageBloc {
       _noticiaPageStateController.stream;
   Function get noticiaPageStateSink => _noticiaPageStateController.sink.add;
 
-  //UsuarioNoticiaModel
-  final _usuarioNoticiaModelListController =
-      BehaviorSubject<List<UsuarioNoticiaModel>>();
-  Stream<List<UsuarioNoticiaModel>> get usuarioNoticiaModelListStream =>
-      _usuarioNoticiaModelListController.stream;
-  Function get usuarioNoticiaModelListSink =>
-      _usuarioNoticiaModelListController.sink.add;
+  // //UsuarioNoticiaModel
+  // final _usuarioNoticiaModelListController =
+  //     BehaviorSubject<List<UsuarioNoticiaModel>>();
+  // Stream<List<UsuarioNoticiaModel>> get usuarioNoticiaModelListStream =>
+  //     _usuarioNoticiaModelListController.stream;
+  // Function get usuarioNoticiaModelListSink =>
+  //     _usuarioNoticiaModelListController.sink.add;
 
   //NoticiaModel
   final _noticiaModelListController = BehaviorSubject<List<NoticiaModel>>();
@@ -73,7 +72,7 @@ class NoticiaPageBloc {
   void dispose() {
     _noticiaPageEventController.close();
     _noticiaPageStateController.close();
-    _usuarioNoticiaModelListController.close();
+    // _usuarioNoticiaModelListController.close();
     _noticiaModelListController.close();
   }
 

@@ -1,281 +1,152 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/square_image.dart';
-import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page_bloc.dart';
 
 class PerfilCRUDArqPage extends StatefulWidget {
-  // PerfilCRUDPage({Key key}) : super(key: key);
+  final String usuarioPerfilID;
+
+  PerfilCRUDArqPage(this.usuarioPerfilID);
 
   _PerfilCRUDArqPageState createState() => _PerfilCRUDArqPageState();
 }
 
 class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
-  String arquivoPath;
-  File imagem;
+  final PerfilCRUDArqPageBloc bloc =
+      PerfilCRUDArqPageBloc(Bootstrap.instance.firestore);
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.eventSink(UpDateUsuarioPerfilIDEvent(widget.usuarioPerfilID));
+  }
 
   @override
   Widget build(BuildContext context) {
-    final String usuarioPerfilID = ModalRoute.of(context).settings.arguments;
-    final bloc = PerfilCRUDArqPageBloc(Bootstrap.instance.firestore);
-    dynamic image = FlutterLogo();
-    bloc.perfilCRUDArqPageEventSink(
-        UpDateUsuarioPerfilIDEvent(usuarioPerfilID));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Anexar arquivo no perfil '),
-        // title: Text('Item de ${usuarioPerfilID.substring(0, 5)}'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          StreamBuilder<UsuarioPerfilModel>(
-            stream: bloc.usuarioPerfilModelStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<UsuarioPerfilModel> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              print(snapshot.data.usuarioArquivoID?.url);
-              if (snapshot.data.usuarioArquivoID != null) {
-                image = SquareImage(
-                  image: NetworkImage(snapshot.data.usuarioArquivoID?.url),
-                );
-              }
-              return Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(snapshot.data.perfilID.nome),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Spacer(
-                        flex: 2,
-                      ),
-                      Expanded(
-                        flex: 6,
-                        child: image,
-                      ),
-                      Spacer(
-                        flex: 2,
-                      ),
-                    ],
-                  )
-                ],
-              );
-              // return Text('...');
-            },
+    return 
+ 
+      Scaffold(
+        appBar: AppBar(
+          title: Text("Configurações"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: ListView(
+            children: <Widget>[
+              _FotoUsuario(bloc),
+            ],
           ),
-          Card(
-            child: ListTile(
-              title: Text('Selecione o arquivo'),
-              trailing: IconButton(
-                  icon: Icon(Icons.file_download),
-                  onPressed: () async {
-                    await _selecionarNovosArquivos();
-                    bloc.perfilCRUDArqPageEventSink(
-                        UpDateArquivoPathEvent(arquivoPath));
-                    print('>> arquivoPath 2 >> ${arquivoPath}');
-                  }),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text('Use a camera para fotografar'),
-              trailing: IconButton(
-                  icon: Icon(Icons.file_download),
-                  onPressed: () async {
-                    await _selecionarNovaImagem();
-                    if (imagem != null && imagem.path != null) {
-                      bloc.perfilCRUDArqPageEventSink(
-                          UpDateImagemEvent(imagem));
-                    }
-                  }),
-            ),
-          ),
-          StreamBuilder<PerfilCRUDArqPageState>(
-            stream: bloc.perfilCRUDArqPageStateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<PerfilCRUDArqPageState> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: Text('Nenhuma imagem nova'),
-                );
-              }
-              dynamic imageNova = FlutterLogo();
-              print(
-                  'snapshot.data.arquivoPath 1 ${snapshot.data.arquivo?.path}');
-              if (snapshot.data.arquivo != null) {
-                // imageNova = AssetImage(snapshot.data.arquivoPath);
-                imageNova = SquareImage(
-                  image: AssetImage(snapshot.data.arquivo?.path),
-                );
-                print(
-                    'snapshot.data.arquivoLocal 2 ${snapshot.data.arquivo?.path}');
-              }
-              return Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text('Nova imagem:'),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Spacer(
-                        flex: 2,
-                      ),
-                      Expanded(
-                        flex: 6,
-                        child: imageNova,
-                      ),
-                      Spacer(
-                        flex: 2,
-                      ),
-                    ],
-                  )
-                ],
-              );
-              // return Text('...');
-            },
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          bloc.perfilCRUDArqPageEventSink(UpLoadEvent());
-          Navigator.pop(context);
-        },
-        child: Icon(Icons.check),
-      ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            bloc.eventSink(SaveEvent());
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.check),
+        ),
+      // ),
+    );
+  }
+}
+
+class _FotoUsuario extends StatelessWidget {
+  String fotoUrl;
+  String fotoLocalPath;
+  final PerfilCRUDArqPageBloc bloc;
+
+  _FotoUsuario(this.bloc);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<PerfilCRUDArqPageState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<PerfilCRUDArqPageState> snapshot) {
+        if (snapshot.hasError) {
+          return Container(
+            child: Center(child: Text('Erro.')),
+          );
+        }
+        return Column(
+          children: <Widget>[
+            snapshot.data?.usuarioPerfilModel?.perfilID?.nome != null
+                ? Text(snapshot.data?.usuarioPerfilModel?.perfilID?.nome)
+                : Text('...'),
+            ButtonTheme.bar(
+                child: ButtonBar(children: <Widget>[
+              Text('Atualizar arquivo'),
+              IconButton(
+                icon: Icon(Icons.file_download),
+                onPressed: () async {
+                  await _selecionarNovoArquivo().then((arq) {
+                    fotoLocalPath = arq;
+                  });
+                  bloc.eventSink(UpDateArquivoEvent(fotoLocalPath));
+                },
+              ),
+            ])),
+            _ImagemUnica(
+                fotoUrl: snapshot.data?.arquivoUrl,
+                fotoLocalPath: snapshot.data?.arquivoLocalPath),
+          ],
+        );
+      },
     );
   }
 
-  Future<String> _selecionarNovosArquivos() async {
+  Future<String> _selecionarNovoArquivo() async {
     try {
-      arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
+      var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
       if (arquivoPath != null) {
-        print('>> newfilepath 1 >> ${arquivoPath}');
         return arquivoPath;
       }
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
-    }
-  }
-
-  Future<File> _selecionarNovaImagem() async {
-    imagem = null;
-    try {
-      imagem = await ImagePicker.pickImage(source: ImageSource.camera);
-      if (imagem != null) {
-        print('>> camera 1 >> ${imagem}');
-        return imagem;
-      }
-    } on PlatformException catch (e) {
+    } catch (e) {
       print("Unsupported operation" + e.toString());
     }
   }
 }
 
-class Lixo {
-  // Row(
-  //   children: <Widget>[
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //     Expanded(
-  //       flex: 6,
-  //       child: FlutterLogo(),
-  //     ),
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //   ],
-  // ),
-  // Row(
-  //   children: <Widget>[
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //     Expanded(
-  //       flex: 96,
-  //       child: SquareImage(
-  //         image: NetworkImage(
-  //             // 'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/catalunha2.JPG?alt=media&token=cd0ed0da-3c59-46a8-b107-ab5a1c82f326'),
-  //             'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/cpf-1-not1397.jpg?alt=media&token=a0e520ca-5f6e-48bf-96e4-1448caa01b9e'),
-  //       ),
-  //     ),
-  //     Spacer(
-  //       flex:ressed: () async {
-  //   var filepath =
-  //       await FilePicker.getFilePath(type: FileType.IMAGE);
-  //   bloc.perfilCRUDArqPageEventSink(
-  //       UpDateArquivoLocalEvent(filepath));
-  // } 2,
-  //     ),
-  //   ],
-  // ),
-  // Row(
-  //   children: <Widget>[
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //     Expanded(
-  //       flex: 96,
-  //       child: Image.network(
-  //           'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/cpf-1-not1397.jpg?alt=media&token=a0e520ca-5f6e-48bf-96e4-1448caa01b9e'),
-  //     ),
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //   ],
-  // )
-  // Row(
-  //   children: <Widget>[
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //     Expanded(
-  //       flex: 6,
-  //       child: Image.asset(
-  //         'assets/images/logos/Splash_PMSB.png',
-  //         // '/storage/emulated/0/DCIM/Camera/20190717_102238.jpg',
-  //         // '/storage/emulated/0/DCIM/Camera/20190711_194559.jpg',
-  //         width: 100,
-  //       ),
-  //     ),
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //   ],
-  // ),
-  // ListTile(
-  //     leading: CircleAvatar(
-  //   backgroundImage: AssetImage(
-  //       '/storage/emulated/0/DCIM/Camera/20190717_073039.jpg'),
-  // )),
-  // Row(
-  //   children: <Widget>[
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //     Expanded(
-  //       flex: 96,
-  //       child: SquareImage(
-  //         image: AssetImage(
-  //             // '/storage/emulated/0/DCIM/Camera/20190717_073039.jpg'),
-  //             '/storage/emulated/0/DCIM/Camera/20190711_194559.jpg'),
-  //             // '/storage/emulated/0/DCIM/Camera/20190709_141433.jpg'),
-  //       ),
-  //     ),
-  //     Spacer(
-  //       flex: 2,
-  //     ),
-  //   ],
-  // ),
+class _ImagemUnica extends StatelessWidget {
+  final String fotoUrl;
+  final String fotoLocalPath;
+
+  const _ImagemUnica({this.fotoUrl, this.fotoLocalPath});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget foto;
+    if (fotoUrl == null && fotoLocalPath == null) {
+      foto = Center(child: Text('Sem imagem.'));
+    } else if (fotoUrl != null) {
+      foto = Container(
+          child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Image.network(fotoUrl),
+      ));
+    } else {
+      foto = Container(
+          color: Colors.yellow,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            // child: Icon(Icons.people, size: 75),
+            child: Image.asset(fotoLocalPath),
+          ));
+    }
+
+    return Row(
+      children: <Widget>[
+        Spacer(
+          flex: 3,
+        ),
+        Expanded(
+          flex: 4,
+          child: foto,
+        ),
+        Spacer(
+          flex: 3,
+        ),
+      ],
+    );
+  }
 }

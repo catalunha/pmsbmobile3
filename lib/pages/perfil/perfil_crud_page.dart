@@ -2,28 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crud_page_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:file_picker/file_picker.dart';
 
-import 'package:pmsbmibile3/models/models.dart';
-import 'package:pmsbmibile3/state/services.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
-
-import 'package:pmsbmibile3/pages/perfil/editar_variavel_bloc.dart';
 
 class PerfilCRUDPage extends StatefulWidget {
-  // PerfilCRUDPage({Key key}) : super(key: key);
+  final String usuarioPerfilID;
+  final PerfilCRUDPageBloc bloc;
+
+  PerfilCRUDPage(this.usuarioPerfilID)
+      : bloc = PerfilCRUDPageBloc(Bootstrap.instance.firestore) {
+    bloc.perfilCRUDPageEventSink(UpDateUsuarioPerfilIDEvent(usuarioPerfilID));
+  }
 
   _PerfilCRUDPageState createState() => _PerfilCRUDPageState();
 }
 
 class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
   final textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final String usuarioPerfilID = ModalRoute.of(context).settings.arguments;
-    final bloc = PerfilCRUDPageBloc(Bootstrap.instance.firestore);
-    bloc.perfilCRUDPageEventSink(UpDateUsuarioPerfilIDEvent(usuarioPerfilID));
     return Scaffold(
       appBar: AppBar(
         title: Text('Editar item do perfil '),
@@ -32,7 +29,7 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
       body: ListView(
         children: <Widget>[
           StreamBuilder<UsuarioPerfilModel>(
-            stream: bloc.usuarioPerfilModelStream,
+            stream: widget.bloc.usuarioPerfilModelStream,
             // initialData: null,
             builder: (BuildContext context,
                 AsyncSnapshot<UsuarioPerfilModel> snapshot) {
@@ -54,7 +51,7 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
                     TextField(
                       controller: textEditingController,
                       onChanged: (textPlain) {
-                        return bloc.perfilCRUDPageEventSink(
+                        return widget.bloc.perfilCRUDPageEventSink(
                             UpDateTextPlainEvent(textPlain));
                       },
                       keyboardType: TextInputType.multiline,
@@ -72,11 +69,17 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          bloc.perfilCRUDPageEventSink(SaveStateToFirebaseEvent());
+          widget.bloc.perfilCRUDPageEventSink(SaveStateToFirebaseEvent());
           Navigator.pop(context);
         },
         child: Icon(Icons.check),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    widget.bloc.dispose();
+    super.dispose();
   }
 }

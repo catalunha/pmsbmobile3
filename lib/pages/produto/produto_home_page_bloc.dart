@@ -1,12 +1,8 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:pmsbmibile3/bootstrap.dart';
 
 class ProdutoHomePageEvent {}
 
@@ -91,52 +87,3 @@ class ProdutoHomePageBloc {
     _produtoModelListController.close();
   }
 }
-
-// if (event is UpdateProdutoIDEvent) {
-//   // if (event.produtoID == null) {
-//   //   print('>>> <<< Novo');
-//   //   _produtoHomePageState.produtoModel = ProdutoModel();
-//   // } else {
-//   _firestore
-//       .collection(ProdutoModel.collection)
-//       .document(event.produtoID)
-//       .snapshots()
-//       .map((snap) => ProdutoModel(id: snap.documentID).fromMap(snap.data))
-//       .listen((produtoModel) async {
-//     _produtoHomePageState.produtoModel = produtoModel;
-//     await produtoHomePageStateSink(_produtoHomePageState);
-//     // print('>> produtoModel >> ${produtoModel.toMap()}');
-//   });
-// }
-
-// if (event is UpdateProdutoIDNomeEvent) {
-//   _produtoHomePageState.produtoModelIDNome = event.produtoIDNome;
-//   produtoHomePageStateSink(_produtoHomePageState);
-// }
-
-// if (event is UpdateProdutoIDTextoEvent) {
-//   _produtoHomePageState.produtoModelIDTexto = event.produtoIDTexto;
-//   produtoHomePageStateSink(_produtoHomePageState);
-// }
-
-// if (event is SaveProdutoIDEvent) {
-//   Map<String, dynamic> produtoModelMap = Map<String, dynamic>();
-//   produtoModelMap['nome'] = _produtoHomePageState.produtoModelIDNome;
-//   produtoModelMap['eixoID'] =
-//       _produtoHomePageState.usuarioModel.eixoIDAtual.toMap();
-//   produtoModelMap['setorCensitarioID'] =
-//       _produtoHomePageState.usuarioModel.setorCensitarioID.toMap();
-//   produtoModelMap['usuarioIDEditou'] = {
-//     "id": _produtoHomePageState.usuarioModel.id,
-//     "nome": _produtoHomePageState.usuarioModel.nome
-//   };
-
-//   ProdutoModel produtoModel = ProdutoModel().fromMap(produtoModelMap);
-//   produtoModel.modificado=DateTime.now().toUtc();
-//   final map = produtoModel.toMap();
-//   // print('>>> map <<< ${map}');
-//   _firestore
-//       .collection(ProdutoModel.collection)
-//       .document(_produtoHomePageState.produtoModelID)
-//       .setData(map, merge: true);
-// }

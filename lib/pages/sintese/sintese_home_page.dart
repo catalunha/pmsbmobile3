@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 
-class SinteseHomePage extends StatelessWidget{
+class SinteseHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultScaffold(
+      backgroundColor: Colors.red,
+      title: Text("Síntese dos questionários"),
       body: Center(
         child: Text(
-          "Sintese Home",
+          "Em construção.",
           style: Theme.of(context).textTheme.display1,
         ),
       ),
     );
   }
-
 }

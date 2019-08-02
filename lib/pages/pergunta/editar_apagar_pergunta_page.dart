@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:provider/provider.dart';
-import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 
 import '../user_files.dart';
@@ -59,7 +56,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
         if (!snapshot.hasData) {
           return Text("SEM DADOS");
         }
-        return _textoTopo("Questionario - ${snapshot.data.questionario?.nome}");
+        return _textoTopo("Questionario: ${snapshot.data.questionario?.nome}");
       },
     );
   }
@@ -75,9 +72,9 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
           return Text("SEM DADOS");
         }
         if (snapshot.data.instance != null) {
-          return _textoTopo("Pergunta - ${snapshot.data.instance.titulo}");
+          return _textoTopo("Pergunta: ${snapshot.data.instance.titulo}");
         } else {
-          return _textoTopo("Pergunta - criando");
+          return _textoTopo("Pergunta: criando");
         }
       },
     );
@@ -86,7 +83,10 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   Widget _preambulo() {
     return Column(
       children: <Widget>[
-        Center(child: EixoAtualUsuario()),
+        Center(child: 
+        // EixoAtualUsuario()
+        Container(),
+        ),
         _questionario(),
         _pergunta(),
       ],
@@ -132,27 +132,27 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     );
   }
 
-  _botaoDeletarPergunta() {
-    return SafeArea(
-        child: Row(
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.all(5.0),
-            child: RaisedButton(
-                color: Colors.red,
-                onPressed: () {
-                  bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
-                  Navigator.pop(context, "pergunta deletada");
-                },
-                child: Row(
-                  children: <Widget>[
-                    Text('Apagar', style: TextStyle(fontSize: 20)),
-                    Icon(Icons.delete)
-                  ],
-                ))),
-      ],
-    ));
-  }
+  // _botaoDeletarPergunta() {
+  //   return SafeArea(
+  //       child: Row(
+  //     children: <Widget>[
+  //       Padding(
+  //           padding: EdgeInsets.all(5.0),
+  //           child: RaisedButton(
+  //               color: Colors.red,
+  //               onPressed: () {
+  //                 bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+  //                 Navigator.pop(context, "pergunta deletada");
+  //               },
+  //               child: Row(
+  //                 children: <Widget>[
+  //                   Text('Apagar', style: TextStyle(fontSize: 20)),
+  //                   Icon(Icons.delete)
+  //                 ],
+  //               ))),
+  //     ],
+  //   ));
+  // }
 
   _textoMarkdownField() {
     return StreamBuilder<EditarApagarPerguntaBlocState>(
@@ -214,19 +214,19 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               _preambulo(),
               Padding(padding: EdgeInsets.all(10)),
               _texto("Tipo da pergunta:"),
-              PerguntaTipoInput(),
-              Card(
-                  child: ListTile(
-                title: Text('Selecione perguntas ou escolha requisito:'),
-                trailing: IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
-                      Navigator.pushNamed(
-                          context, "/pergunta/selecionar_requisito",
-                          arguments: bloc);
-                    }),
-              )),
+              PerguntaTipoInput(bloc),
+              // Card(
+              //     child: ListTile(
+              //   title: Text('Selecione perguntas ou escolha requisito:'),
+              //   trailing: IconButton(
+              //       icon: Icon(Icons.search),
+              //       onPressed: () {
+              //         // SELECIONAR ESCOLHA OU PERGUNTA QUESITO
+              //         Navigator.pushNamed(
+              //             context, "/pergunta/selecionar_requisito",
+              //             arguments: bloc);
+              //       }),
+              // )),
               Padding(padding: EdgeInsets.all(10)),
               StreamBuilder<EditarApagarPerguntaBlocState>(
                 stream: bloc.state,
@@ -242,11 +242,14 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                     title: Text('Defina as escolhas:'),
                     trailing: IconButton(
                         icon: Icon(Icons.search),
-                        onPressed: () {
+                        onPressed: () async {
                           // SELECIONAR ESCOLHA
-                          Navigator.pushNamed(
-                              context, "/pergunta/criar_ordenar_escolha",
-                              arguments: bloc);
+                          bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
+                          if (snapshot.data.isValid) {
+                            Navigator.pushNamed(
+                                context, "/pergunta/escolha_list",
+                                arguments: snapshot.data.instance.id);
+                          }
                         }),
                   ));
                 },
@@ -256,7 +259,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               _texto("Texto da pergunta:"),
               _textoMarkdownField(),
               Padding(padding: EdgeInsets.all(10)),
-              _botaoDeletarPergunta(),
+              // _botaoDeletarPergunta(),
+              _DeleteDocumentOrField(bloc),
             ],
           ),
         ),
@@ -272,75 +276,51 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     );
   }
 
-  _bodyPreview() {
-    return StreamBuilder<EditarApagarPerguntaBlocState>(
-        stream: bloc.state,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text("ERROR");
-          }
-          if (!snapshot.hasData) {
-            return Text("SEM DADOS");
-          }
-          return Markdown(data: snapshot.data.textoMarkdown);
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     myController.setTextAndPosition(myController.text);
 
-    return Provider<EditarApagarPerguntaBloc>.value(
-      value: bloc,
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.red,
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            bottom: TabBar(
-              tabs: [
-                Tab(text: "Edição"),
-                Tab(text: "Preview"),
-              ],
-            ),
-            title: Text("Editar apagar pergunta"),
+    return
+
+      Scaffold(
+        appBar: AppBar(
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          body: TabBarView(
-            children: [_bodyTexto(context), _bodyPreview()],
-          ),
-          floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
-            stream: bloc.state,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Text("SEM DADOS");
-              }
-              return FloatingActionButton(
-                onPressed: !snapshot.data.isValid
-                    ? null
-                    : () {
-                        bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
-                        Navigator.of(context).pop();
-                      },
-                child: Icon(Icons.thumb_up),
-                backgroundColor:
-                    !snapshot.data.isValid ? Colors.grey : Colors.blue,
-              );
-            },
-          ),
+          title: Text("Editar apagar pergunta"),
         ),
-      ),
+        body: _bodyTexto(context),
+        floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
+          stream: bloc.state,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Text("SEM DADOS");
+            }
+            return FloatingActionButton(
+              onPressed: !snapshot.data.isValid
+                  ? null
+                  : () {
+                      bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
+                      Navigator.of(context).pop();
+                    },
+              child: Icon(Icons.thumb_up),
+              backgroundColor:
+                  !snapshot.data.isValid ? Colors.grey : Colors.blue,
+            );
+          },
+        ),
     );
   }
 }
 
 class PerguntaTipoInput extends StatelessWidget {
+  final EditarApagarPerguntaBloc bloc;
+  PerguntaTipoInput(this.bloc);
+  
+
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<EditarApagarPerguntaBloc>(context);
 
     return StreamBuilder<EditarApagarPerguntaBlocState>(
         stream: bloc.state,
@@ -474,6 +454,54 @@ class TituloInputFieldState extends State<TituloInputField> {
           );
         },
       ),
+    );
+  }
+}
+
+class _DeleteDocumentOrField extends StatefulWidget {
+final EditarApagarPerguntaBloc bloc;
+
+  _DeleteDocumentOrField(this.bloc);
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState(bloc);
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+final EditarApagarPerguntaBloc bloc;
+_DeleteDocumentOrFieldState(this.bloc);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<EditarApagarPerguntaBlocState>(
+      stream: bloc.state,
+      builder: (BuildContext context,
+          AsyncSnapshot<EditarApagarPerguntaBlocState> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                //Ir para a pagina visuais do produto
+                if (_textFieldController.text == 'CONCORDO') {
+                  bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }
