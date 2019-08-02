@@ -48,12 +48,12 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
             child: RaisedButton(
               color: Colors.green,
               onPressed: () {
-                bloc.dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent());
+                bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent(false));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Text('Pular', style: TextStyle(fontSize: 20)),
+                  Text('Não Responder', style: TextStyle(fontSize: 20)),
                   Icon(Icons.undo, textDirection: TextDirection.rtl)
                 ],
               ),
@@ -67,12 +67,12 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
             child: RaisedButton(
               color: Colors.blue,
               onPressed: () {
-                bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent());
+                bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent(true));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Text('Salvar', style: TextStyle(fontSize: 20)),
+                  Text('Responder', style: TextStyle(fontSize: 20)),
                   Icon(Icons.thumb_up)
                 ],
               ),
