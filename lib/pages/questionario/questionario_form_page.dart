@@ -5,11 +5,12 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class QuestionarioFormPage extends StatefulWidget {
-    final AuthBloc authBloc;
+  final AuthBloc authBloc;
+  final String questionarioID;
+  QuestionarioFormPage(this.authBloc, this.questionarioID);
 
-  QuestionarioFormPage(this.authBloc);
-
-  _QuestionarioFormPageState createState() => _QuestionarioFormPageState(authBloc);
+  _QuestionarioFormPageState createState() =>
+      _QuestionarioFormPageState(authBloc);
 }
 
 class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
@@ -18,7 +19,14 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
   String _questionarioId;
 
   _QuestionarioFormPageState(AuthBloc authBloc)
-      : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore,authBloc);
+      : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore, authBloc);
+
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(widget.questionarioID));
+  }
 
   _body(context) {
     return StreamBuilder<QuestionarioModel>(
@@ -59,11 +67,7 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    _questionarioId = ModalRoute.of(context).settings.arguments;
-    bloc.dispatch(UpdateIdQuestionarioFormPageBlocEvent(_questionarioId));
-
-    return
-        Scaffold(
+    return Scaffold(
       appBar: AppBar(
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
@@ -86,7 +90,9 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
 
 class NomeFormItem extends StatefulWidget {
   final QuestionarioFormPageBloc bloc;
+
   NomeFormItem(this.bloc);
+
   @override
   NomeFormItemState createState() {
     return NomeFormItemState(bloc);
@@ -96,7 +102,9 @@ class NomeFormItem extends StatefulWidget {
 class NomeFormItemState extends State<NomeFormItem> {
   final _textFieldController = TextEditingController();
   final QuestionarioFormPageBloc bloc;
+
   NomeFormItemState(this.bloc);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuestionarioModel>(
@@ -121,7 +129,9 @@ class NomeFormItemState extends State<NomeFormItem> {
 
 class _DeleteDocumentOrField extends StatefulWidget {
   final QuestionarioFormPageBloc bloc;
+
   _DeleteDocumentOrField(this.bloc);
+
   @override
   _DeleteDocumentOrFieldState createState() {
     return _DeleteDocumentOrFieldState(bloc);
@@ -131,7 +141,9 @@ class _DeleteDocumentOrField extends StatefulWidget {
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
   final QuestionarioFormPageBloc bloc;
+
   _DeleteDocumentOrFieldState(this.bloc);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuestionarioModel>(
