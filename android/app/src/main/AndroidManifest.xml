@@ -19,7 +19,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="pmsbmibile3"
+        android:label="PMSB-TO-22"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
