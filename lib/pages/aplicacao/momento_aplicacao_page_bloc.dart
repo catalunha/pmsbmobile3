@@ -58,6 +58,7 @@ class MomentoAplicacaoPageBlocState {
   String referencia;
   String usuarioID;
   String usuarioNome;
+  String usuarioEixoID;
 
   bool isBound = false;
   bool isValid = false;
@@ -109,6 +110,7 @@ class MomentoAplicacaoPageBloc
     if (event is UpdateUsuarioMomentoAplicacaoPageBlocEvent) {
       currentState.usuarioNome = event.usuario.nome;
       currentState.usuarioID = event.usuario.id;
+      currentState.usuarioEixoID = event.usuario.eixoIDAtual.id;
     }
     if (event is UpdateIDMomentoAplicacaoPageBlocEvent) {
       if (event.questionarioAplicadoID != null) {
@@ -138,6 +140,7 @@ class MomentoAplicacaoPageBloc
     if (event is CarregarListaQuestionarioMomentoAplicacaoPageBlocEvent) {
       final questionariosSnap = await _firestore
           .collection(QuestionarioModel.collection)
+          .where("eixo.id", isEqualTo: currentState.usuarioEixoID)
           .getDocuments();
       currentState.questionarios = questionariosSnap.documents
           .map((doc) => QuestionarioModel(id: doc.documentID).fromMap(doc.data))
@@ -178,7 +181,7 @@ class MomentoAplicacaoPageBloc
       }
     }
 
-    if(event is SelecionarRequisitoMomentoAplicacaoPageBlocEvent){
+    if (event is SelecionarRequisitoMomentoAplicacaoPageBlocEvent) {
       currentState.requisitosSelecionados[event.referencia] = event.id;
     }
 
