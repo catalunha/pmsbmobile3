@@ -114,14 +114,43 @@ class PerguntaAplicadaListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(_perguntaAplicada.titulo),
-      trailing: IconButton(
-        icon: _perguntaAplicada.temPendencias
-            ? Icon(Icons.clear, color: Colors.red)
-            : Icon(Icons.check, color: Colors.green),
-        onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
-      ),
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: Text(_perguntaAplicada.titulo),
+          trailing: IconButton(
+            icon: _perguntaAplicada.temPendencias
+                ? Icon(Icons.clear, color: Colors.red)
+                : Icon(Icons.check, color: Colors.green),
+            onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              if (_perguntaAplicada.foiRespondida)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+              if (!_perguntaAplicada.foiRespondida &&
+                  _perguntaAplicada.temRespostaValida)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+              if (_perguntaAplicada.temPendencias)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+              if (_perguntaAplicada.referenciasRequitosDefinidas)
+                Icon(Icons.check)
+              else
+                Icon(Icons.cancel),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
