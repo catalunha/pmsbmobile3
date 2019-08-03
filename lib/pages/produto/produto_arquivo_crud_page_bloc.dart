@@ -189,8 +189,9 @@ class ProdutoArquivoCRUDPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
+              document: _state.produtoID,
               field:
-                  "${_state.produtoID}.arquivo.${_state.arquivoID}.rascunhoUrl"),
+                  "arquivo.${_state.arquivoID}.rascunhoUrl"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)
@@ -211,8 +212,9 @@ class ProdutoArquivoCRUDPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
+              document: _state.produtoID,
               field:
-                  "${_state.produtoID}.arquivo.${_state.arquivoID}.editadoUrl"),
+                  "arquivo.${_state.arquivoID}.editadoUrl"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)

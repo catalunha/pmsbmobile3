@@ -15,8 +15,8 @@ class AdministracaoHomePageBloc {
         .collection(UsuarioModel.collection)
         .where("ativo", isEqualTo: true)
         .snapshots()
-        .map((listaPerfil) => listaPerfil.documents
-            .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
+        .map((querySnapshot) => querySnapshot.documents
+            .map((docSnap) => UsuarioModel(id: docSnap.documentID).fromMap(docSnap.data))
             .toList())
         .pipe(usuarioModelListController);
   }

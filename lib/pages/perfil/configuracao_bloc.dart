@@ -166,7 +166,8 @@ class ConfiguracaoPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: UsuarioModel.collection,
-              field: "${_state.usuarioID}.foto.uploadID"),
+              document: _state.usuarioID,
+              field: "foto.url"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)
