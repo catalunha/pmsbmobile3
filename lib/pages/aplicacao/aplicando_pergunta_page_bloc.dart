@@ -6,6 +6,7 @@ class AplicandoPerguntaPageBlocState {
   String questionarioAplicadoID;
   int perguntaAtualIndex = 0;
   bool perguntasOk = false;
+  String primeiraPerguntaID;
   List<PerguntaAplicadaModel> _perguntas;
 
   PerguntaAplicadaModel get perguntaAtual {
@@ -68,12 +69,13 @@ class UpdateObservacaoAplicandoPerguntaPageBlocEvent
   UpdateObservacaoAplicandoPerguntaPageBlocEvent(this.observacao);
 }
 
-class UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent
+class IniciarQuestionarioAplicadoAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {
   final String questionarioAplicadoID;
+  final String perguntaID;
 
-  UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent(
-      this.questionarioAplicadoID);
+  IniciarQuestionarioAplicadoAplicandoPerguntaPageBlocEvent(
+      this.questionarioAplicadoID, this.perguntaID);
 }
 
 class CarregaListaPerguntasAplicadasAplicandoPerguntaPageBlocEvent
@@ -130,8 +132,9 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
         }
       }
     }
-    if (event is UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent) {
+    if (event is IniciarQuestionarioAplicadoAplicandoPerguntaPageBlocEvent) {
       currentState.questionarioAplicadoID = event.questionarioAplicadoID;
+      currentState.primeiraPerguntaID = event.perguntaID;
       dispatch(CarregaListaPerguntasAplicadasAplicandoPerguntaPageBlocEvent());
     }
 
@@ -150,7 +153,19 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
       //verificar pendencias de requisitos
       verificarRequisitosPerguntas();
 
-      dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(reset: true));
+      int primeiraPerguntaIndex;
+      if (currentState.primeiraPerguntaID != null) {
+        for (int index = 0; index < currentState.perguntas.length; index++) {
+          if (currentState.perguntas[index].id ==
+              currentState.primeiraPerguntaID) {
+            primeiraPerguntaIndex = index;
+          }
+        }
+        currentState.primeiraPerguntaID = null;
+      }
+
+      dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(
+          reset: true, index: primeiraPerguntaIndex));
     }
     if (event is SalvarAplicandoPerguntaPageBlocEvent) {
       currentState.perguntaAtual.foiRespondida = event.foiRespondida;
