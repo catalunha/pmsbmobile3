@@ -1,18 +1,20 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pmsbmibile3/models/arquivo_local_model.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 
 enum ArquivoTipo { image, aplication }
 
 class PerguntaWigdetImagemArquivo extends StatefulWidget {
+  final PerguntaAplicadaModel perguntaAplicada;
   final ArquivoTipo arquivoTipo;
 
-  PerguntaWigdetImagemArquivo({Key key, @required this.arquivoTipo})
+  PerguntaWigdetImagemArquivo(this.perguntaAplicada, {Key key, this.arquivoTipo})
       : super(key: key);
 
   @override
@@ -23,8 +25,7 @@ class PerguntaWigdetImagemArquivo extends StatefulWidget {
 class _PerguntaWigdetImagemArquivoState
     extends State<PerguntaWigdetImagemArquivo> {
   //o objeto ArquivoLocalListModel tem um metodo 'arquivos.getListaFormatoFirebase( )' que vai retornar a lista de arquivos de acordo com o formato que vai ser enviado ao firebase
-  
-  
+
   ArquivoLocalListModel arquivos = new ArquivoLocalListModel();
 
   String _mensageaquivo = "Adicionar um novo arquivo :";
@@ -39,7 +40,7 @@ class _PerguntaWigdetImagemArquivoState
   }
 
   Future _selecionarNovaImagem() async {
-    File newfile = null; 
+    File newfile = null;
     try {
       newfile = await ImagePicker.pickImage(source: ImageSource.camera);
 

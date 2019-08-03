@@ -8,7 +8,7 @@ class Preambulo extends StatelessWidget {
   final String pergunta;
   final String local;
 
-  const Preambulo({
+  Preambulo({
     Key key,
     this.usuario,
     this.eixo,
@@ -42,10 +42,10 @@ class PreambuloTexto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4),
+      padding: EdgeInsets.only(top: 2),
       child: Text(
         text,
-        style: TextStyle(color: Colors.blueAccent),
+        style: TextStyle(fontSize: 16, color: Colors.blue),
       ),
     );
   }
