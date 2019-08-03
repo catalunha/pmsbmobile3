@@ -65,6 +65,8 @@ class QuestionarioModel extends FirestoreModel {
 
   int ultimaOrdem;
 
+  int ordem;
+
   QuestionarioModel({
     String id,
     this.nome,
@@ -74,6 +76,7 @@ class QuestionarioModel extends FirestoreModel {
     this.editou,
     this.eixo,
     this.editando,
+    this.ordem,
     this.ultimaOrdem,
   }) : super(id);
 
@@ -83,6 +86,7 @@ class QuestionarioModel extends FirestoreModel {
     criado = map["criado"];
     modificado = map["modificado"];
     editando = map["editando"];
+    ordem = map["ordem"];
     ultimaOrdem = map["ultimaOrdem"];
 
     if (map["criou"] != null) {
@@ -115,6 +119,7 @@ class QuestionarioModel extends FirestoreModel {
     if (editou != null) data['editou'] = editou.toMap();
     if (eixo != null) data['eixo'] = eixo.toMap();
     if (editando != null) data['editando'] = editando;
+    if (ordem != null) data['ordem'] = ordem;
     if (ultimaOrdem != null) data['ultimaOrdem'] = ultimaOrdem;
     return data;
   }

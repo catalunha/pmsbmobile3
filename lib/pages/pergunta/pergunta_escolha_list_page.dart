@@ -122,26 +122,7 @@ class PerguntaEscolhaListPage extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: 10),
             child: Container(),
-            // child: EixoAtualUsuario(),
           ),
-          // StreamBuilder<EditarApagarPerguntaBlocState>(
-          //   stream: bloc.state,
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasError) {
-          //       return Text("ERROR");
-          //     }
-          //     if (!snapshot.hasData) {
-          //       return Text("SEM DADOS");
-          //     }
-          //     return Column(
-          //       children: <Widget>[
-          //         _textoTopo(
-          //             "Questionario: ${snapshot.data.questionario.nome}"),
-          //         _textoTopo("Pergunta: ${snapshot.data.titulo}"),
-          //       ],
-          //     );
-          //   },
-          // ),
           Padding(padding: EdgeInsets.all(10)),
           Expanded(child: _listarPerguntaEscolha())
         ]));
