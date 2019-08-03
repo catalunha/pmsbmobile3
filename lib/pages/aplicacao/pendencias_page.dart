@@ -45,7 +45,8 @@ class _PendenciasPageState extends State<PendenciasPage> {
               .map((pergunta) => PerguntaAplicadaListItem(
                     pergunta,
                     onPressed: () {
-                      Navigator.pushNamed(context, "/aplicacao/aplicando_pergunta",
+                      Navigator.pushNamed(
+                          context, "/aplicacao/aplicando_pergunta",
                           arguments: AplicandoPerguntaPageArguments(
                               widget.questionarioAplicadoID,
                               perguntaID: pergunta.id));
@@ -60,35 +61,38 @@ class _PendenciasPageState extends State<PendenciasPage> {
   _bodyTodos(context) {
     return Column(
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            "Eixo : $_eixo",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            "Setor censitário: $_setor",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            "Questionário: $_questionario",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            "Local: $_local",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Expanded(child: _listaPerguntas())
+        //TODO: Preambulo()
+//        Padding(
+//          padding: EdgeInsets.only(top: 10),
+//          child: Text(
+//            "Eixo : $_eixo",
+//            style: TextStyle(fontSize: 16, color: Colors.blue),
+//          ),
+//        ),
+//        Padding(
+//          padding: EdgeInsets.only(top: 10),
+//          child: Text(
+//            "Setor censitário: $_setor",
+//            style: TextStyle(fontSize: 16, color: Colors.blue),
+//          ),
+//        ),
+//        Padding(
+//          padding: EdgeInsets.only(top: 10),
+//          child: Text(
+//            "Questionário: $_questionario",
+//            style: TextStyle(fontSize: 16, color: Colors.blue),
+//          ),
+//        ),
+//        Padding(
+//          padding: EdgeInsets.only(top: 10),
+//          child: Text(
+//            "Local: $_local",
+//            style: TextStyle(fontSize: 16, color: Colors.blue),
+//          ),
+//        ),
+        Expanded(
+          child: _listaPerguntas(),
+        )
       ],
     );
   }
@@ -97,7 +101,6 @@ class _PendenciasPageState extends State<PendenciasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
         actions: <Widget>[],
         centerTitle: true,
         title: Text("Pendências"),

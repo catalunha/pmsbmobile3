@@ -153,7 +153,6 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Local/Pessoa/Momento de aplicação"),
       ),

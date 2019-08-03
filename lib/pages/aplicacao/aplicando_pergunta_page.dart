@@ -53,7 +53,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
           child: Padding(
             padding: EdgeInsets.all(5),
             child: RaisedButton(
-              color: Colors.green,
+              color: Colors.blue,
               onPressed: () {
                 bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent(false));
               },
@@ -72,7 +72,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
           child: Padding(
             padding: EdgeInsets.all(5),
             child: RaisedButton(
-              color: Colors.blue,
+              color: Colors.green,
               onPressed: () {
                 bloc.dispatch(SalvarAplicandoPerguntaPageBlocEvent(true));
               },
@@ -120,7 +120,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         }
         return ListView(
           children: <Widget>[
-            _listaDadosSuperior(),
+//            _listaDadosSuperior(),
             Divider(height: 50, indent: 5, color: Colors.black54),
             Padding(
                 padding: EdgeInsets.all(5),
@@ -169,7 +169,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Aplicando pergunta"),
       ),
