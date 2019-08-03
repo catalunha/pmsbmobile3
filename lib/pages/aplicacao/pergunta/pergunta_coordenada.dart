@@ -64,7 +64,7 @@ class _PerguntaCoordenadaState extends State<PerguntaCoordenada> {
           return Container();
         }
         return Column(
-          children: snapshot.data.listaLocalizao
+          children: widget.perguntaAplicada.coordenada
               .map((coordenada) => _listTileCoordenada(coordenada))
               .toList(),
         );

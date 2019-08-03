@@ -3,9 +3,6 @@ import 'package:pmsbmibile3/state/bloc.dart';
 
 class PerguntaCoordenadaBlocEvent {}
 
-class SaveCoordenadaPerguntaCoordenadaBlocEvent
-    extends PerguntaCoordenadaBlocEvent {}
-
 class AdicionarCoordenadaPerguntaCoordenadaBlocEvent
     extends PerguntaCoordenadaBlocEvent {
   final double latitude;
@@ -21,29 +18,13 @@ class RemoverCoordenadaPerguntaCoordenadaBlocEvent
   RemoverCoordenadaPerguntaCoordenadaBlocEvent(this.coordenada);
 }
 
-class PerguntaCoordenadaBlocState {
-  List<Coordenada> _listaLocalizao = List<Coordenada>();
-
-  set listaLocalizao(List<Coordenada> coordenadas) {
-    if (coordenadas != null) _listaLocalizao = coordenadas;
-  }
-
-  List<Coordenada> get listaLocalizao {
-    return _listaLocalizao != null ? _listaLocalizao : [];
-  }
-}
+class PerguntaCoordenadaBlocState {}
 
 class PerguntaCoordenadaBloc
     extends Bloc<PerguntaCoordenadaBlocEvent, PerguntaCoordenadaBlocState> {
   final PerguntaAplicadaModel _perguntaAplicada;
 
-  PerguntaCoordenadaBloc(this._perguntaAplicada) : super() {
-    updateState();
-  }
-
-  void updateState() {
-    currentState.listaLocalizao = _perguntaAplicada.coordenada;
-  }
+  PerguntaCoordenadaBloc(this._perguntaAplicada);
 
   @override
   PerguntaCoordenadaBlocState getInitialState() {
@@ -53,15 +34,12 @@ class PerguntaCoordenadaBloc
   @override
   Future<void> mapEventToState(PerguntaCoordenadaBlocEvent event) async {
     if (event is AdicionarCoordenadaPerguntaCoordenadaBlocEvent) {
-      currentState.listaLocalizao
-          .add(Coordenada(latitude: event.latitude, longitude: event.latitude));
+      final coordenada =
+          Coordenada(latitude: event.latitude, longitude: event.latitude);
+      _perguntaAplicada.coordenada.add(coordenada);
     }
     if (event is RemoverCoordenadaPerguntaCoordenadaBlocEvent) {
-      currentState.listaLocalizao.remove(event.coordenada);
-    }
-    if (event is SaveCoordenadaPerguntaCoordenadaBlocEvent) {
-      //TODO: arrayUnion
-      //TODO: arrayRemove
+      _perguntaAplicada.coordenada.remove(event.coordenada);
     }
   }
 }
