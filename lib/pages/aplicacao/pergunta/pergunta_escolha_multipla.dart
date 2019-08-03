@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 
-class PerguntaEscolhaMultiplaWidget extends StatefulWidget {
-  const PerguntaEscolhaMultiplaWidget(
+class PerguntaEscolhaMultipla extends StatefulWidget {
+  const PerguntaEscolhaMultipla(
     this.pergunta, {
     Key key,
   }) : super(key: key);
@@ -10,18 +10,19 @@ class PerguntaEscolhaMultiplaWidget extends StatefulWidget {
   final PerguntaAplicadaModel pergunta;
 
   @override
-  _PerguntaEscolhaMultiplaWidgetState createState() =>
-      _PerguntaEscolhaMultiplaWidgetState();
+  _PerguntaEscolhaMultiplaState createState() =>
+      _PerguntaEscolhaMultiplaState();
 }
 
-class _PerguntaEscolhaMultiplaWidgetState
-    extends State<PerguntaEscolhaMultiplaWidget> {
+class _PerguntaEscolhaMultiplaState extends State<PerguntaEscolhaMultipla> {
   Widget makeRadioTiles() {
     final map = widget.pergunta.escolhas.map(
       (k, v) {
-        return MapEntry(k, MultiplaEscolhaTile(v, onChanged: (value) {
-          //bloc.dispatch(); //marcar na resposta
-        }));
+        return MapEntry(
+            k,
+            MultiplaEscolhaTile(v, onChanged: (value) {
+              //bloc.dispatch(); //marcar na resposta
+            }));
       },
     );
     return Column(

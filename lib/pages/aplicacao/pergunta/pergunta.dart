@@ -35,10 +35,10 @@ class PerguntaAplicada extends StatelessWidget {
         returnWidget = PerguntaCoordenada(perguntaAplicada);
         break;
       case PerguntaTipoEnum.EscolhaUnica:
-        returnWidget = PerguntaEscolhaUnicaWidget(perguntaAplicada);
+        returnWidget = PerguntaEscolhaUnica(perguntaAplicada);
         break;
       case PerguntaTipoEnum.EscolhaMultipla:
-        returnWidget = PerguntaEscolhaMultiplaWidget(perguntaAplicada);
+        returnWidget = PerguntaEscolhaMultipla(perguntaAplicada);
         break;
     }
     return returnWidget;

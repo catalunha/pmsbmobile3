@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 
-class PerguntaEscolhaUnicaWidget extends StatefulWidget {
+class PerguntaEscolhaUnica extends StatefulWidget {
   final PerguntaAplicadaModel pergunta;
 
-  const PerguntaEscolhaUnicaWidget(this.pergunta, {Key key}) : super(key: key);
+  const PerguntaEscolhaUnica(this.pergunta, {Key key}) : super(key: key);
 
   @override
-  _PerguntaEscolhaUnicaWidgetState createState() =>
-      _PerguntaEscolhaUnicaWidgetState();
+  _PerguntaEscolhaUnicaState createState() =>
+      _PerguntaEscolhaUnicaState();
 }
 
-class _PerguntaEscolhaUnicaWidgetState
-    extends State<PerguntaEscolhaUnicaWidget> {
-  _PerguntaEscolhaUnicaWidgetState();
+class _PerguntaEscolhaUnicaState
+    extends State<PerguntaEscolhaUnica> {
 
   @override
   Widget build(BuildContext context) {
