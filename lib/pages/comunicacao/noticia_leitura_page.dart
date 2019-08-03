@@ -5,10 +5,14 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/noticia_page_bloc.dart';
 
-
 class NoticiaLeituraPage extends StatelessWidget {
   final bloc = NoticiaPageBloc(
       firestore: Bootstrap.instance.firestore, visualizada: false);
+
+  void dispose() {
+    bloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
@@ -65,11 +69,9 @@ class NoticiaLeituraPage extends StatelessWidget {
                             data: "${noticia.textoMarkdown}",
                           ),
                         ),
-
                       ],
                     ),
                   );
-
                 }).toList(),
               );
             }),
@@ -77,8 +79,6 @@ class NoticiaLeituraPage extends StatelessWidget {
     );
   }
 }
-
-
 
 // import 'package:simple_permissions/simple_permissions.dart';
 
