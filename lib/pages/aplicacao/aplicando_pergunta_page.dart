@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
   const AplicacaoPerguntaPage(this.questionarioAplicadoID, {Key key})
@@ -84,37 +85,11 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
   }
 
   _listaDadosSuperior() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 2),
-          child: Text(
-            "Eixo - $_eixo",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 2),
-          child: Text(
-            "Setor - $_setor",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 2),
-          child: Text(
-            "Questionario - $_questionario",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 2, bottom: 5),
-          child: Text(
-            "Local - $_local",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        )
-      ],
+    return Preambulo(
+      eixo: _eixo,
+      setor: _setor,
+      questionario: _questionario,
+      local: _local,
     );
   }
 
@@ -129,9 +104,12 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         if (snapshot.data.isUltimaPergunta &&
             snapshot.data.perguntaAtual.foiRespondida) {
           return Center(
-            child: InkWell(onTap: () {
-              Navigator.pushNamed(context, "/aplicacao/pendencias");
-            }, child: Text("Ultima"),),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, "/aplicacao/pendencias");
+              },
+              child: Text("Ultima"),
+            ),
           );
         }
         return ListView(
@@ -162,7 +140,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 )),
             Divider(color: Colors.black54),
             // Widget de tipo pergunta
-            PerguntaAplicada(bloc, snapshot.data.perguntaAtual),
+            PerguntaAplicada(snapshot.data.perguntaAtual),
             Padding(padding: EdgeInsets.all(5)),
             _botoes()
           ],
@@ -188,23 +166,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         ],
       ),
       body: _body(),
-    );
-  }
-}
-
-class PerguntaAplicada extends StatelessWidget {
-  PerguntaAplicada(this.bloc, this.perguntaAplicada, {Key key})
-      : assert(perguntaAplicada != null),
-        super(key: key);
-  final AplicandoPerguntaPageBloc bloc;
-  final PerguntaAplicadaModel perguntaAplicada;
-
-  @override
-  Widget build(BuildContext context) {
-    return getWigetPergunta(
-      bloc,
-      PerguntaTipoModel.ENUM[perguntaAplicada.tipo.id],
-      perguntaAplicada,
     );
   }
 }

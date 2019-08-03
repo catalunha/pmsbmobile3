@@ -6,13 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:pmsbmibile3/models/arquivo_local_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 
 enum ArquivoTipo { image, aplication }
 
 class PerguntaWigdetImagemArquivo extends StatefulWidget {
+  final PerguntaAplicadaModel perguntaAplicada;
   final ArquivoTipo arquivoTipo;
 
-  PerguntaWigdetImagemArquivo({Key key, @required this.arquivoTipo})
+  PerguntaWigdetImagemArquivo(this.perguntaAplicada, {Key key, this.arquivoTipo})
       : super(key: key);
 
   @override

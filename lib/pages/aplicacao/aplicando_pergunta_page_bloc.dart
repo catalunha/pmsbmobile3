@@ -87,20 +87,6 @@ class UpdateTextoRespostaAplicandoPerguntaPageBlocEvent
   UpdateTextoRespostaAplicandoPerguntaPageBlocEvent(this.texto);
 }
 
-class UpdateNumeroRespostaAplicandoPerguntaPageBlocEvent
-    extends AplicandoPerguntaPageBlocEvent {
-  final String _texto;
-
-  double get numero {
-    try {
-      return double.parse(_texto);
-    } catch (e) {
-      return 0;
-    }
-  }
-
-  UpdateNumeroRespostaAplicandoPerguntaPageBlocEvent(this._texto);
-}
 
 class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     AplicandoPerguntaPageBlocState> {
@@ -169,9 +155,6 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     //respostas
     if (event is UpdateTextoRespostaAplicandoPerguntaPageBlocEvent) {
       currentState.perguntaAtual.texto = event.texto;
-    }
-    if (event is UpdateNumeroRespostaAplicandoPerguntaPageBlocEvent) {
-      currentState.perguntaAtual.numero = event.numero;
     }
   }
 }

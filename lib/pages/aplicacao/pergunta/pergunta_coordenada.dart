@@ -1,86 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:location/location.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_coordenada_bloc.dart';
 
-class PerguntaWigdetCoordenada extends StatefulWidget {
+class PerguntaCoordenada extends StatefulWidget {
+  final PerguntaAplicadaModel perguntaAplicada;
+
+  const PerguntaCoordenada(this.perguntaAplicada, {Key key}) : super(key: key);
+
   @override
-  _PerguntaWigdetCoordenadaState createState() =>
-      _PerguntaWigdetCoordenadaState();
+  _PerguntaCoordenadaState createState() {
+    return _PerguntaCoordenadaState();
+  }
 }
 
-class _PerguntaWigdetCoordenadaState extends State<PerguntaWigdetCoordenada> {
-  
-  var currentLocation;
-  Location location = new Location();
-  List<Coordenada> _listaLocalizao = List<Coordenada>();
+class _PerguntaCoordenadaState extends State<PerguntaCoordenada> {
+  PerguntaCoordenadaBloc bloc;
 
-  final key = new GlobalKey<ScaffoldState>();
+  final Location location = Location();
 
   @override
   void initState() {
+    bloc = PerguntaCoordenadaBloc(widget.perguntaAplicada);
     super.initState();
   }
 
-  _salvarLocalizacao() async {
-    try {
-      currentLocation = await location.getLocation();  
-      setState(() {
-         _listaLocalizao.add(new Coordenada(latitude:currentLocation.latitude, longitude: currentLocation.longitude ));
-      });
-    } on PlatformException catch (e) {
+  void _salvarLocalizacao() {
+    location.getLocation().then((LocationData currentLocation) {
+      bloc.dispatch(AdicionarCoordenadaPerguntaCoordenadaBlocEvent(
+          currentLocation.latitude, currentLocation.longitude));
+    }, onError: (e) {
       if (e.code == 'PERMISSION_DENIED') {
-        var error = 'Permission denied';
         print("ERROR: ${e.code} ");
       }
-      currentLocation = null;
-    }
+    });
   }
 
-  _listTileCoordenada(Coordenada coordenada, int index) {
-
+  Widget _listTileCoordenada(Coordenada coordenada) {
     return ListTile(
       leading: Icon(Icons.location_on),
       trailing: IconButton(
         icon: Icon(Icons.delete),
         onPressed: () {
-          //apagar esta imagem
-          setState(() {
-            _listaLocalizao.remove(coordenada);
-          });
+          bloc.dispatch(
+              RemoverCoordenadaPerguntaCoordenadaBlocEvent(coordenada));
         },
       ),
-      title: Text("Latitude: ${coordenada.latitude}\nLongitude: ${coordenada.longitude} "),
+      title: Text(
+          "Latitude: ${coordenada.latitude}\nLongitude: ${coordenada.longitude} "),
     );
   }
 
-  Widget makeList() {
-    Set<Widget> list = new Set<Widget>();
-
-    for (int i = 0; i < _listaLocalizao.length; i++) {
-      list.add(_listTileCoordenada(_listaLocalizao[i],i));
-    }
-
-    Column column = new Column(
-      children: list.toList(),
+  Widget _makeList() {
+    StreamBuilder<PerguntaCoordenadaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        return Column(
+          children: snapshot.data.listaLocalizao
+              .map((coordenada) => _listTileCoordenada(coordenada))
+              .toList(),
+        );
+      },
     );
-    return column;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Column(children: <Widget>[
-      ListTile(
-          title: Text("Adicionar nova coordenada"),
-          trailing: IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              _salvarLocalizacao();
-            },
-          )),
-      _listaLocalizao != null || _listaLocalizao != null ? makeList() : Container()
-    ]));
+      child: Column(
+        children: <Widget>[
+          ListTile(
+              title: Text("Adicionar nova coordenada"),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  _salvarLocalizacao();
+                },
+              )),
+          _makeList()
+        ],
+      ),
+    );
   }
 }
