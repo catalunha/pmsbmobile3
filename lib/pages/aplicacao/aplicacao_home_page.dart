@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class AplicacaoHomePage extends StatefulWidget {
@@ -163,7 +164,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
                     icon: Icon(Icons.record_voice_over),
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, "/aplicacao/aplicando_pergunta", arguments: _questionario.id);
+                          context, "/aplicacao/aplicando_pergunta", arguments: AplicandoPerguntaPageArguments(_questionario.id));
                     },
                   ),
                   IconButton(
