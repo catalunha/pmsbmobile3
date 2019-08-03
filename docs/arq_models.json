@@ -162,20 +162,13 @@
     "texto": "valor",
     "numero": "valor",
     "respondida": false,
-    "arquivo1": {
+    "arquivo": {
       "uploadID": {
         "id ou key": true,
         "url": "null || obtida do storage após upload",
         "localPath": "path local do arquivo no celular do usuario."
       }
     },
-    "arquivo2": [
-      {
-        "uploadID": "Upload/uploadID",
-        "url": "null || obtida do storage após upload",
-        "localPath": "path local do arquivo no celular do usuario."
-      }
-    ],
     "coordenada": [
       {
         "latitude": "Coordenada",
