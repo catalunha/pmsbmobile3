@@ -114,7 +114,8 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
           currentState.perguntaAtualIndex += 1;
         }
         while (!currentState.isUltimaPergunta) {
-          if (currentState.perguntaAtual.foiRespondida == false) {
+          if (!(currentState.perguntaAtual.foiRespondida) &&
+              !(currentState.perguntaAtual.temPendencias)) {
             break;
           }
           currentState.perguntaAtualIndex += 1;
@@ -140,6 +141,7 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
           .toList();
       //verificar pendencias de requisitos
       verificarRequisitosPerguntas();
+
       dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(reset: true));
     }
     if (event is SalvarAplicandoPerguntaPageBlocEvent) {
