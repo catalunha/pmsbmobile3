@@ -18,9 +18,10 @@ class EditarApagarEscolhaPageArguments {
   EditarApagarEscolhaPageArguments(this.bloc, this.escolhaID);
 }
 
-class PerguntaIDEscolhaIDPageArguments{
+class PerguntaIDEscolhaIDPageArguments {
   final perguntaID;
   final escolhaUID;
+
   PerguntaIDEscolhaIDPageArguments(this.perguntaID, this.escolhaUID);
 }
 
@@ -29,4 +30,11 @@ class DefinirRequisitosPageArguments {
   final referencia;
 
   DefinirRequisitosPageArguments(this.bloc, this.referencia);
+}
+
+class AplicandoPerguntaPageArguments {
+  final String questionarioID;
+  final String perguntaID;
+
+  AplicandoPerguntaPageArguments(this.questionarioID, this.perguntaID);
 }
