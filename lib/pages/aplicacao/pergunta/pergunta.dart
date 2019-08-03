@@ -19,26 +19,45 @@ class PerguntaAplicada extends StatelessWidget {
     final tipo = PerguntaTipoModel.ENUM[perguntaAplicada.tipo.id];
 
     Widget returnWidget;
+    final idKey = ValueKey<String>(perguntaAplicada.id);
 
     switch (tipo) {
       case PerguntaTipoEnum.Texto:
-        returnWidget = PerguntaTexto(perguntaAplicada);
+        returnWidget = PerguntaTexto(
+          perguntaAplicada,
+          key: idKey,
+        );
         break;
       case PerguntaTipoEnum.Imagem:
       case PerguntaTipoEnum.Arquivo:
-        returnWidget = PerguntaWigdetImagemArquivo(perguntaAplicada);
+        returnWidget = PerguntaWigdetImagemArquivo(
+          perguntaAplicada,
+          key: idKey,
+        );
         break;
       case PerguntaTipoEnum.Numero:
-        returnWidget = PerguntaNumero(perguntaAplicada);
+        returnWidget = PerguntaNumero(
+          perguntaAplicada,
+          key: idKey,
+        );
         break;
       case PerguntaTipoEnum.Coordenada:
-        returnWidget = PerguntaCoordenada(perguntaAplicada);
+        returnWidget = PerguntaCoordenada(
+          perguntaAplicada,
+          key: idKey,
+        );
         break;
       case PerguntaTipoEnum.EscolhaUnica:
-        returnWidget = PerguntaEscolhaUnica(perguntaAplicada);
+        returnWidget = PerguntaEscolhaUnica(
+          perguntaAplicada,
+          key: idKey,
+        );
         break;
       case PerguntaTipoEnum.EscolhaMultipla:
-        returnWidget = PerguntaEscolhaMultipla(perguntaAplicada);
+        returnWidget = PerguntaEscolhaMultipla(
+          perguntaAplicada,
+          key: idKey,
+        );
         break;
     }
     return returnWidget;
