@@ -146,8 +146,6 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
       currentState.perguntaAtual.foiRespondida = event.foiRespondida;
 
       if (currentState.isValid) {
-        // TODO: remover apos testes
-        currentState.perguntaAtual.temPendencias = false;
         final map = currentState.perguntaAtual.toMap();
         final ref = _firestore
             .collection(PerguntaAplicadaModel.collection)
