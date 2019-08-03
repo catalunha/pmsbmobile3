@@ -53,7 +53,7 @@ class DefaultDrawer extends StatelessWidget {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                Widget imagem = Icon(Icons.people, size: 75);
+                Widget imagem;
                 if (snap.data?.foto?.localPath != null) {
                   imagem = Container(
                       color: Colors.yellow,
@@ -259,6 +259,7 @@ class DefaultEndDrawer extends StatelessWidget {
             ListTile(
               title: Text('Trocar de usuário'),
               onTap: () {
+                Navigator.pop(context);
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
               leading: Icon(Icons.exit_to_app),
