@@ -17,7 +17,8 @@ class Rota {
 class DefaultDrawer extends StatelessWidget {
   final AuthBloc authBloc;
   Map<String, Rota> rotas;
-  DefaultDrawer(): authBloc= AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore){
+  DefaultDrawer()
+      : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore) {
     // Map<String, Rota>
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
@@ -32,7 +33,6 @@ class DefaultDrawer extends StatelessWidget {
     rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
     rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
     rotas["/controle/home"] = Rota("Controle", Icons.control_point);
-    
   }
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,12 @@ class DefaultDrawer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Expanded(flex: 4, child: imagem),
+                            // Expanded(flex: 4, child: imagem),
+                            Expanded(
+                                flex: 4,
+                                child: _ImagemUnica(
+                                    fotoUrl: snap.data?.foto?.url,
+                                    fotoLocalPath: snap.data?.foto?.localPath)),
                             Expanded(
                               flex: 8,
                               child: Container(
@@ -160,11 +165,54 @@ class DefaultDrawer extends StatelessWidget {
   }
 }
 
+class _ImagemUnica extends StatelessWidget {
+  final String fotoUrl;
+  final String fotoLocalPath;
+
+  const _ImagemUnica({this.fotoUrl, this.fotoLocalPath});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget foto;
+    if (fotoUrl == null && fotoLocalPath == null) {
+      foto = Center(child: Text('Sem imagem.'));
+    } else if (fotoUrl != null) {
+      foto = CircleAvatar(
+        minRadius: 40,
+        maxRadius: 50,
+        backgroundImage: NetworkImage(fotoUrl),
+      );
+    } else {
+      foto = Container(
+          color: Colors.yellow,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            // child: Icon(Icons.people, size: 75),
+            child: Image.asset(fotoLocalPath),
+          ));
+    }
+
+    return Row(
+      children: <Widget>[
+        Spacer(
+          flex: 1,
+        ),
+        Expanded(
+          flex: 8,
+          child: foto,
+        ),
+        Spacer(
+          flex: 1,
+        ),
+      ],
+    );
+  }
+}
+
 class DefaultEndDrawer extends StatelessWidget {
-
   final AuthBloc authBloc;
-  DefaultEndDrawer(): authBloc= AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
-
+  DefaultEndDrawer()
+      : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {

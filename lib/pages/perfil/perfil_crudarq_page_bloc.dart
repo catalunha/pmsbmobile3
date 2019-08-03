@@ -119,7 +119,8 @@ class PerfilCRUDArqPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: UsuarioPerfilModel.collection,
-              field: "${_state.usuarioPerfilID}.arquivo.uploadID"),
+              document: _state.usuarioPerfilID,
+              field: "arquivo.url"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)

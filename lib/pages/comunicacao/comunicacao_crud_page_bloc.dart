@@ -121,31 +121,31 @@ class ComunicacaoCRUDPageBloc {
   final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
   //Eventos da página
-  final _comunicacaoCRUDPageEventController =
+  final _eventController =
       BehaviorSubject<ComunicacaoCRUDPageEvent>();
-  Stream<ComunicacaoCRUDPageEvent> get comunicacaoCRUDPageEventStream =>
-      _comunicacaoCRUDPageEventController.stream;
-  Function get comunicacaoCRUDPageEventSink =>
-      _comunicacaoCRUDPageEventController.sink.add;
+  Stream<ComunicacaoCRUDPageEvent> get eventStream =>
+      _eventController.stream;
+  Function get eventSink =>
+      _eventController.sink.add;
 
   //Estados da página
-  final comunicacaoCRUDPageState = ComunicacaoCRUDPageState();
-  final _comunicacaoCRUDPageStateController =
+  final _state = ComunicacaoCRUDPageState();
+  final _stateController =
       BehaviorSubject<ComunicacaoCRUDPageState>();
-  Stream<ComunicacaoCRUDPageState> get comunicacaoCRUDPageStateStream =>
-      _comunicacaoCRUDPageStateController.stream;
+  Stream<ComunicacaoCRUDPageState> get stateStream =>
+      _stateController.stream;
 
   ComunicacaoCRUDPageBloc() {
     // _authBloc.userId.listen(_dispatchUpdateUserId);
     _authBloc.userId.listen((userId) =>
-        comunicacaoCRUDPageEventSink(UpDateUsuarioIDEditorEvent(userId)));
-    comunicacaoCRUDPageEventStream.listen(_mapEventToState);
+        eventSink(UpDateUsuarioIDEditorEvent(userId)));
+    eventStream.listen(_mapEventToState);
   }
 
   void dispose() {
     _authBloc.dispose();
-    _comunicacaoCRUDPageEventController.close();
-    _comunicacaoCRUDPageStateController.close();
+    _eventController.close();
+    _stateController.close();
   }
 
   // void _dispatchUpdateUserId(String userId) {
@@ -162,8 +162,8 @@ class ComunicacaoCRUDPageBloc {
         UsuarioIDEditor usuarioIDEditor = UsuarioIDEditor(
             id: documentSnapshot.documentID,
             nome: documentSnapshot.data['nome']);
-        comunicacaoCRUDPageState.usuarioIDEditor = usuarioIDEditor;
-        _comunicacaoCRUDPageStateController.sink.add(comunicacaoCRUDPageState);
+        _state.usuarioIDEditor = usuarioIDEditor;
+        _stateController.sink.add(_state);
       });
     }
     if (event is UpdateNoticiaIDEvent) {
@@ -173,20 +173,20 @@ class ComunicacaoCRUDPageBloc {
       _deleteNoticiaIdEvent();
     }
     if (event is UpdateTituloEvent) {
-      comunicacaoCRUDPageState.titulo = event.titulo;
+      _state.titulo = event.titulo;
     }
     if (event is UpdateDestinatarioListEvent) {
-      comunicacaoCRUDPageState.destinatarioListMap = event.destinatarioList;
+      _state.destinatarioListMap = event.destinatarioList;
     }
     if (event is UpdateTextoMarkdownEvent) {
-      comunicacaoCRUDPageState.textoMarkdown = event.textoMarkdown;
+      _state.textoMarkdown = event.textoMarkdown;
     }
     if (event is UpdatePublicarEvent) {
       if (event.data != null) {
-        comunicacaoCRUDPageState.data = event.data;
+        _state.data = event.data;
       }
       if (event.hora != null) {
-        comunicacaoCRUDPageState.hora = event.hora;
+        _state.hora = event.hora;
       }
 
       // print('No event.data: ${event.data.toString()}');
@@ -198,38 +198,38 @@ class ComunicacaoCRUDPageBloc {
       // print(
       // 'No comunicacaoCRUDPageState.publicar: ${comunicacaoCRUDPageState.publicar.toString()}');
       final newDate = DateTime(
-          comunicacaoCRUDPageState.data != null
-              ? comunicacaoCRUDPageState.data.year
-              : comunicacaoCRUDPageState.publicar.year,
-          comunicacaoCRUDPageState.data != null
-              ? comunicacaoCRUDPageState.data.month
-              : comunicacaoCRUDPageState.publicar.month,
-          comunicacaoCRUDPageState.data != null
-              ? comunicacaoCRUDPageState.data.day
-              : comunicacaoCRUDPageState.publicar.day,
-          comunicacaoCRUDPageState.hora != null
-              ? comunicacaoCRUDPageState.hora.hour
-              : comunicacaoCRUDPageState.publicar.hour,
-          comunicacaoCRUDPageState.hora != null
-              ? comunicacaoCRUDPageState.hora.minute
-              : comunicacaoCRUDPageState.publicar.minute);
-      comunicacaoCRUDPageState.publicar = newDate;
+          _state.data != null
+              ? _state.data.year
+              : _state.publicar.year,
+          _state.data != null
+              ? _state.data.month
+              : _state.publicar.month,
+          _state.data != null
+              ? _state.data.day
+              : _state.publicar.day,
+          _state.hora != null
+              ? _state.hora.hour
+              : _state.publicar.hour,
+          _state.hora != null
+              ? _state.hora.minute
+              : _state.publicar.minute);
+      _state.publicar = newDate;
       // print(
       // 'Após comunicacaoCRUDPageState.publicar: ${comunicacaoCRUDPageState.publicar.toString()}'); // }
-      _comunicacaoCRUDPageStateController.sink.add(comunicacaoCRUDPageState);
+      _stateController.sink.add(_state);
     }
     if (event is SaveStateToFirebaseEvent) {
       _saveStateToFirebase();
     }
-    return comunicacaoCRUDPageState;
+    return _state;
   }
 
   _saveStateToFirebase() {
-    final map = comunicacaoCRUDPageState.toNoticiaModel().toMap();
+    final map = _state.toNoticiaModel().toMap();
     // // print(map);
     final docRef = Firestore.instance
         .collection(NoticiaModel.collection)
-        .document(comunicacaoCRUDPageState.noticiaID);
+        .document(_state.noticiaID);
     // docRef.setData(map, merge: true); // se deixar merge ele amplia a lista e nao exclui.
     docRef.setData(map);
   }
@@ -237,19 +237,19 @@ class ComunicacaoCRUDPageBloc {
   _deleteNoticiaIdEvent() {
     Firestore.instance
         .collection(NoticiaModel.collection)
-        .document(comunicacaoCRUDPageState.noticiaID)
+        .document(_state.noticiaID)
         .delete();
   }
 
   void _mapUpdateNoticiaIdEvent(UpdateNoticiaIDEvent event) {
-    if (event.noticiaID == comunicacaoCRUDPageState.noticiaID) return;
+    if (event.noticiaID == _state.noticiaID) return;
     var ref = Firestore.instance
         .collection(NoticiaModel.collection)
         .document(event.noticiaID);
     ref.snapshots().listen((DocumentSnapshot snap) {
       var noticia = NoticiaModel(id: snap.documentID).fromMap(snap.data);
-      comunicacaoCRUDPageState.fromNoticiaModel(noticia);
-      _comunicacaoCRUDPageStateController.sink.add(comunicacaoCRUDPageState);
+      _state.fromNoticiaModel(noticia);
+      _stateController.sink.add(_state);
     });
   }
 }

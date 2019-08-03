@@ -228,3 +228,38 @@ A function deverá atualizar as seguintes coleções que se referenciam a ela
 ~~~
 
 
+# Upload
+A Aplicação criará o UploadCollection com esta estrutura
+~~~json
+  "Upload": {
+    "usuario": "idUsuario",
+    "localPath": "path local do arquivo no celular do usuario.",
+    "upload": false,
+    "updateCollection": {
+      "collection": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
+      "document": "ID do documento nesta coleção",
+      "field": "foto (UsuarioID) || arquivo (UsuarioPerfilID) || uid.rascunhoIdUpload ou uid.editadoIdUpload (ProdutoID) || arquivo (PerguntaAplicadaID)"
+    },
+  },
+~~~
+O usuario então solicitará o upload no aplicativo e o UploadCollection ficará com esta estrutura.
+~~~json
+  "Upload": {
+    "usuario": "idUsuario",
+    "localPath": "path local do arquivo no celular do usuario.",
+    "upload": true,
+    "updateCollection": {
+      "collection": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
+      "document": "ID do documento nesta coleção",
+      "field": "foto (UsuarioID) || arquivo (UsuarioPerfilID) || uid.rascunhoIdUpload ou uid.editadoIdUpload (ProdutoID) || arquivo (PerguntaAplicadaID)"
+    },
+    "storagePath": "obtida do storage após upload",
+    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
+    "url": "obtida do storage após upload",
+    "hash": "gerado pelo dart na leitura local do arquivo"
+  },
+~~~
+
+Neste momento o campo upload=false foi atualizado para upload=true bem como os demai campos.
+
+Então a function deverá considerar o campo updateCollection e atualizar a collection, document e field correspondente.

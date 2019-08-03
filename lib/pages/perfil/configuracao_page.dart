@@ -370,7 +370,7 @@ class FotoUsuario extends StatelessWidget {
                 },
               ),
             ])),
-            ImagemUnica(
+            _ImagemUnica(
                 fotoUrl: snapshot.data?.fotoUrl,
                 fotoLocalPath: snapshot.data?.fotoLocalPath),
           ],
@@ -391,11 +391,11 @@ class FotoUsuario extends StatelessWidget {
   }
 }
 
-class ImagemUnica extends StatelessWidget {
+class _ImagemUnica extends StatelessWidget {
   final String fotoUrl;
   final String fotoLocalPath;
 
-  const ImagemUnica({this.fotoUrl, this.fotoLocalPath});
+  const _ImagemUnica({this.fotoUrl, this.fotoLocalPath});
 
   @override
   Widget build(BuildContext context) {

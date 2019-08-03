@@ -110,18 +110,21 @@ class ArquivoProduto {
 
 class UpdateCollection {
   String collection;
+  String document;
   String field;
 
-  UpdateCollection({this.collection, this.field});
+  UpdateCollection({this.collection, this.document ,this.field});
 
   UpdateCollection.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('collection')) collection = map['collection'];
+    if (map.containsKey('document')) document = map['document'];
     if (map.containsKey('field')) field = map['field'];
   }
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (collection != null) data['collection'] = this.collection;
+    if (document != null) data['document'] = this.document;
     if (field != null) data['field'] = this.field;
     return data;
   }

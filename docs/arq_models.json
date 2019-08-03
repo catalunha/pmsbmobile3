@@ -22,7 +22,8 @@
     "upload": false,
     "updateCollection": {
       "collection": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
-      "field": "UsuarioID.foto || UsuarioPerfilID.arquivo || ProdutoID.uid.rascunhoIdUpload ou ProdutoID.uid.editadoIdUpload  || PerguntaAplicadaID.arquivo "
+      "document": "ID do documento nesta coleção",
+      "field": "foto (UsuarioID) || arquivo (UsuarioPerfilID) || uid.rascunhoIdUpload ou uid.editadoIdUpload (ProdutoID) || arquivo (PerguntaAplicadaID)"
     },
     "storagePath": "obtida do storage após upload",
     "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",

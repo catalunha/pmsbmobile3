@@ -126,10 +126,10 @@ class ConfiguracaoPageBloc {
     eventStream.listen(_mapEventToState);
   }
   void dispose() {
-    _usuarioModelController.close();
-    _setorCensitarioModelListController.close();
     _eventController.close();
     _stateController.close();
+    _usuarioModelController.close();
+    _setorCensitarioModelListController.close();
   }
 
   void _mapEventToState(ConfiguracaoPageEvent event) async {
@@ -166,7 +166,8 @@ class ConfiguracaoPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: UsuarioModel.collection,
-              field: "${_state.usuarioID}.foto.uploadID"),
+              document: _state.usuarioID,
+              field: "foto.url"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)

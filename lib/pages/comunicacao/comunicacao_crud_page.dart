@@ -41,7 +41,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
 
   _tituloNoticia() {
     return StreamBuilder<ComunicacaoCRUDPageState>(
-        stream: bloc.comunicacaoCRUDPageStateStream,
+        stream: bloc.stateStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             _tituloController.text = snapshot.data.titulo;
@@ -51,7 +51,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
               child: TextField(
                 controller: _tituloController,
                 onChanged: (String t) =>
-                    bloc.comunicacaoCRUDPageEventSink(UpdateTituloEvent(t)),
+                    bloc.eventSink(UpdateTituloEvent(t)),
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -80,7 +80,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       // }
     );
     if (selectedDate != null) {
-      bloc.comunicacaoCRUDPageEventSink(
+      bloc.eventSink(
           UpdatePublicarEvent(data: selectedDate));
       setState(() {
         _date = selectedDate;
@@ -102,7 +102,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     );
     if (selectedTime != null) {
       setState(() {
-        bloc.comunicacaoCRUDPageEventSink(
+        bloc.eventSink(
             UpdatePublicarEvent(hora: selectedTime));
         _hora = selectedTime;
       });
@@ -136,7 +136,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
           //   ),
           // ),
           StreamBuilder<ComunicacaoCRUDPageState>(
-              stream: bloc.comunicacaoCRUDPageStateStream,
+              stream: bloc.stateStream,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data.publicar != null) {
@@ -168,53 +168,53 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     );
   }
 
-  _botaoDeletarDocumento() {
-    return SafeArea(
-        child: Row(
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.all(5.0),
-            child: RaisedButton(
-                // color: Colors.red,
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) {
-                        return SimpleDialog(
-                          children: <Widget>[
-                            SimpleDialogOption(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("CANCELAR EXCLUSÃO"),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(20),
-                            ),
-                            Divider(),
-                            SimpleDialogOption(
-                              onPressed: () {
-                                bloc.comunicacaoCRUDPageEventSink(
-                                    DeleteNoticiaIDEvent());
-                                Navigator.pushNamed(
-                                    context, '/comunicacao/home');
-                              },
-                              child: Text("sim"),
-                            ),
-                          ],
-                        );
-                      });
-                },
-                child: Row(
-                  children: <Widget>[
-                    // Text('Apagar notícia', style: TextStyle(fontSize: 20)),
-                    Icon(Icons.delete)
-                  ],
-                ))),
-      ],
-    ));
-  }
+  // _botaoDeletarDocumento() {
+  //   return SafeArea(
+  //       child: Row(
+  //     children: <Widget>[
+  //       Padding(
+  //           padding: EdgeInsets.all(5.0),
+  //           child: RaisedButton(
+  //               // color: Colors.red,
+  //               onPressed: () {
+  //                 showDialog(
+  //                     context: context,
+  //                     barrierDismissible: true,
+  //                     builder: (context) {
+  //                       return SimpleDialog(
+  //                         children: <Widget>[
+  //                           SimpleDialogOption(
+  //                             onPressed: () {
+  //                               Navigator.pop(context);
+  //                             },
+  //                             child: Text("CANCELAR EXCLUSÃO"),
+  //                           ),
+  //                           Container(
+  //                             padding: EdgeInsets.all(20),
+  //                           ),
+  //                           Divider(),
+  //                           SimpleDialogOption(
+  //                             onPressed: () {
+  //                               bloc.comunicacaoCRUDPageEventSink(
+  //                                   DeleteNoticiaIDEvent());
+  //                               Navigator.pushNamed(
+  //                                   context, '/comunicacao/home');
+  //                             },
+  //                             child: Text("sim"),
+  //                           ),
+  //                         ],
+  //                       );
+  //                     });
+  //               },
+  //               child: Row(
+  //                 children: <Widget>[
+  //                   // Text('Apagar notícia', style: TextStyle(fontSize: 20)),
+  //                   Icon(Icons.delete)
+  //                 ],
+  //               ))),
+  //     ],
+  //   ));
+  // }
 
   _destinatarios(context) {
     // List<Map<String, dynamic>> litems = [
@@ -231,14 +231,14 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
               return ComunicacaoDestinatariosPage();
             }));
             if (destinatarioList != null) {
-              bloc.comunicacaoCRUDPageEventSink(
+              bloc.eventSink(
                   UpdateDestinatarioListEvent(destinatarioList));
             }
             // print('>>>> Retorno ${result}');
           },
         ),
         StreamBuilder<ComunicacaoCRUDPageState>(
-            stream: bloc.comunicacaoCRUDPageStateStream,
+            stream: bloc.stateStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Text('Sem destinatarios');
@@ -305,7 +305,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             _texto("Escolha o(s) destinatário(s):"),
             _destinatarios(context),
             Divider(),
-            _botaoDeletarDocumento()
+            _DeleteDocumentOrField(bloc),
           ],
         ));
   }
@@ -314,7 +314,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
 
   _textoNoticia() {
     return StreamBuilder<ComunicacaoCRUDPageState>(
-        stream: bloc.comunicacaoCRUDPageStateStream,
+        stream: bloc.stateStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             myController.text = snapshot.data.textoMarkdown;
@@ -323,7 +323,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
               padding: EdgeInsets.all(5.0),
               child: TextField(
                 onChanged: (text) {
-                  bloc.comunicacaoCRUDPageEventSink(
+                  bloc.eventSink(
                       UpdateTextoMarkdownEvent(text));
                   _textoMarkdown = text;
                   // print(myController.selection);
@@ -427,7 +427,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
 
   _bodyPreview(context) {
     return StreamBuilder<ComunicacaoCRUDPageState>(
-        stream: bloc.comunicacaoCRUDPageStateStream,
+        stream: bloc.stateStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             myController.text = snapshot.data.textoMarkdown;
@@ -446,7 +446,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     //TODO: isso talvez não seja aqui
     var noticiaId = ModalRoute.of(context).settings.arguments;
     if (noticiaId != null) {
-      bloc.comunicacaoCRUDPageEventSink(UpdateNoticiaIDEvent(noticiaId));
+      bloc.eventSink(UpdateNoticiaIDEvent(noticiaId));
     }
     return DefaultTabController(
       length: 3,
@@ -478,13 +478,60 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                   onPressed: () {
                     //TODO: remover o pop?
                     Navigator.of(context).pop();
-                    bloc.comunicacaoCRUDPageEventSink(
+                    bloc.eventSink(
                         SaveStateToFirebaseEvent());
                   },
                   child: Icon(Icons.save),
                   backgroundColor: Colors.blue,
                 )
               : null),
+    );
+  }
+}
+
+
+class _DeleteDocumentOrField extends StatefulWidget {
+  final ComunicacaoCRUDPageBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState(bloc);
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+final ComunicacaoCRUDPageBloc bloc;
+_DeleteDocumentOrFieldState(this.bloc);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<ComunicacaoCRUDPageState>(
+      stream: bloc.stateStream,
+      builder:
+          (BuildContext context, AsyncSnapshot<ComunicacaoCRUDPageState> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                if (_textFieldController.text == 'CONCORDO') {
+                bloc.eventSink(DeleteNoticiaIDEvent());
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }
