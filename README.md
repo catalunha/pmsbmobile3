@@ -2,16 +2,24 @@
 
 PMSB Versão Dart/Flutter
 
-## Getting Started
+## Configurações
 
-This project is a starting point for a Flutter application.
+### Firebase
 
-A few resources to get you started if this is your first Flutter project:
+Entre no console do firebase e faça download do arquivo e coloqueo `android/app/google-services.json`
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+### Assinatura
+[Referencia](https://flutter.dev/docs/deployment/android)
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
-=======
+Se ainda não tiver uma chave para assinatura do app crie uma com o seguinte comando:
+
+```keytool -genkey -v -keystore ~/key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias key```
+
+Tenha certeza que o arquivo key.properties existe em `<app dir>/android/key.properties` com o seguinte conteúdo:
+
+```
+storePassword=<password from previous step>
+keyPassword=<password from previous step>
+keyAlias=key
+storeFile=<location of the key store file, such as /Users/<user name>/key.jks>
+```

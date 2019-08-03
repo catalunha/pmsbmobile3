@@ -1,111 +1,173 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/pages.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
+import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
+
+import 'package:pmsbmibile3/api/api.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+    final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+    return
+        MaterialApp(
+          title: 'PMSB-TO-22',
+          //theme: ThemeData.dark(),
+          initialRoute: "/",
+          routes: {
+            //homePage
+            "/": (context) => HomePage(authBloc),
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+            //Desenvolvimento
+            "/desenvolvimento": (context) => Desenvolvimento(),
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+            //upload
+            "/upload": (context) => UploadPage(authBloc),
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+            //perfil
+            "/perfil": (context) => PerfilPage(),
+            "/perfil/configuracao": (context) => ConfiguracaoPage(authBloc),
+            "/perfil/crudtext": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerfilCRUDPage(settings.arguments);
+            },
+            "/perfil/crudarq": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerfilCRUDArqPage(settings.arguments);
+            },
 
-  final String title;
+            //questionario
+            "/questionario/home": (context) => QuestionarioHomePage(authBloc),
+            "/questionario/form": (context) => QuestionarioFormPage(
+                  authBloc,
+                  ModalRoute.of(context).settings.arguments,
+                ),
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+            //pergunta
+            "/pergunta/home": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaHomePage(settings.arguments);
+            },
+            "/pergunta/criar_pergunta": (context) => CriarPerguntaTipoPage(),
+            "/pergunta/criar_editar": (context) {
+              final settings = ModalRoute.of(context).settings;
+              final EditarApagarPerguntaPageArguments args = settings.arguments;
+              return EditarApagarPerguntaPage(
+                questionarioID: args.questionarioID,
+                perguntaID: args.perguntaID,
+              );
+            },
+            "/pergunta/escolha_list": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaEscolhaListPage(settings.arguments);
+            },
+            "/pergunta/escolha_crud": (context) {
+              final settings = ModalRoute.of(context).settings;
+              final PerguntaIDEscolhaIDPageArguments args = settings.arguments;
+              return PerguntaEscolhaCRUDPage(args.perguntaID, args.escolhaUID);
+            },
+            "/pergunta/pergunta_preview": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaPreviewPage(perguntaID: settings.arguments);
+            },
+            "/pergunta/pergunta_requisito_marcar": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaRequisitoEscolhaMarcarPage(
+                  perguntaID: settings.arguments);
+            },
+            "/pergunta/pergunta_requisito": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return PerguntaRequisitoPage(
+                  perguntaID: settings.arguments);
+            },
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+            //aplicacao
+            "/aplicacao/home": (context) => AplicacaoHomePage(authBloc),
+            "/aplicacao/momento_aplicacao": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return MomentoAplicacaoPage(
+                authBloc,
+                questionarioAplicadoID: settings.arguments,
+              );
+            },
+            "/aplicacao/selecionar_questionario": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return AplicacaoSelecionarQuestionarioPage(args);
+            },
+            "/aplicacao/aplicando_pergunta": (context) {
+              final AplicandoPerguntaPageArguments args = ModalRoute.of(context).settings.arguments;
+              return AplicacaoPerguntaPage(authBloc, args.questionarioID, args.perguntaID);
+            },
+            "/aplicacao/pendencias": (context) {
+              final args = ModalRoute.of(context).settings.arguments;
+              return PendenciasPage(args);
+            },
+            "/aplicacao/visualizar_respostas": (context) =>
+                VisualizarRespostasPage(),
+            "/aplicacao/definir_requisitos": (context) {
+              final DefinirRequisitosPageArguments args =
+                  ModalRoute.of(context).settings.arguments;
+              return DefinirRequisistosPage(args.bloc, args.referencia);
+            },
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+            //resposta
+            "/resposta/home": (context) => RespostaHomePage(),
+            "/resposta/resposta_questionario": (context) =>
+                RespostaQuestionarioPage(),
+            "/resposta/questionario_resposta": (context) =>
+                QuestionarioRespostaPage(),
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            //sintese
+            "/sintese/home": (context) => SinteseHomePage(),
+
+            //produto
+            "/produto/home": (context) => ProdutoHomePage(authBloc),
+            "/produto/crud": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return ProdutoCRUDPage(settings.arguments, authBloc);
+            },
+            "/produto/texto": (context) {
+              final settings = ModalRoute.of(context).settings;
+              return ProdutoTextoPage(
+                settings.arguments,
+              );
+            },
+            "/produto/arquivo_list": (context) {
+              final settings = ModalRoute.of(context).settings;
+              ProdutoArguments args = settings.arguments;
+              return ProdutoArquivoListPage(
+                  produtoID: args.produtoID, tipo: args.tipo);
+            },
+            "/produto/arquivo_crud": (context) {
+              final settings = ModalRoute.of(context).settings;
+              ProdutoArguments args = settings.arguments;
+              return ProdutoArquivoCRUDPage(
+                  produtoID: args.produtoID,
+                  arquivoID: args.arquivoID,
+                  tipo: args.tipo);
+            },
+
+            //comunicacao
+            "/comunicacao/home": (context) => ComunicacaoHomePage(),
+            "/noticias/noticias_visualizadas": (context) => NoticiaLidaPage(),
+            "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
+
+            //administração
+            "/administracao/home": (context) => AdministracaoHomePage(),
+            "/administracao/perfil": (context) => AdministracaoPerfilPage(),
+
+            //controle
+            "/controle/home": (context) => ControleHomePage(),
+          },
+      //   ),
+      // ),
     );
   }
 }

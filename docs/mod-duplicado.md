@@ -1,0 +1,11 @@
+- p1a
+  - questionario: 1a
+  - referencia: A
+  - requisito.referencia: A
+  - requisito.perguntaID: ID.p1a
+
+- p2a
+  - questionario: 1a
+  - referencia: B
+  - requisito.referencia: A
+  - requisito.perguntaID: ID.p2a

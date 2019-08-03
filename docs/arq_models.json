@@ -1,0 +1,250 @@
+{
+  "Cargo": {
+    "nome": "nome-valor"
+  },
+  "Eixo": {
+    "nome": "nome-valor"
+  },
+  "SetorCensitario": {
+    "nome": "nome-valor"
+  },
+  "Rota": {
+    "url": "nome-valor"
+  },
+  "Perfil": {
+    "_comment": "serão uma parte do padrao mime: text | image | application | audio | video ",
+    "nome": "nome-valor",
+    "contentType": "contentType-valor"
+  },
+  "Upload": {
+    "usuario": "idUsuario",
+    "localPath": "path local do arquivo no celular do usuario.",
+    "upload": false,
+    "updateCollection": {
+      "collection": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
+      "document": "ID do documento nesta coleção",
+      "field": "foto (UsuarioID) || arquivo (UsuarioPerfilID) || uid.rascunhoIdUpload ou uid.editadoIdUpload (ProdutoID) || arquivo (PerguntaAplicadaID)"
+    },
+    "storagePath": "obtida do storage após upload",
+    "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
+    "url": "obtida do storage após upload",
+    "hash": "gerado pelo dart na leitura local do arquivo"
+  },
+  "Usuario": {
+    "ID": "mesmo ID do userID do authentication(email/senha)",
+    "nome": "nome-valor",
+    "celular": "celular-valor",
+    "email": "email-valor",
+    "ativo": true,
+    "foto": {
+      "uploadID": "Upload/uploadID",
+      "url": "null || obtida do storage após upload",
+      "localPath": "path local do arquivo no celular do usuario."
+    },
+    "rotaID": [
+      {
+        "id": "Rota/rotaID",
+        "url": "Rota/rotaID$url"
+      }
+    ],
+    "setorCensitario": {
+      "setorCensitarioID": "SetorCensitario/setorCensitarioID",
+      "nome": "SetorCensitario/setorCensitarioID$nome"
+    },
+    "cargo": {
+      "cargoID": "Cargo/cargoID",
+      "nome": "Cargo/cargoID$nome"
+    },
+    "eixoAtual": {
+      "eixoID": "Eixo/eixoID",
+      "nome": "Eixo/eixoID$nome"
+    },
+    "eixo": {
+      "eixoID": "Eixo/eixoID",
+      "nome": "Eixo/eixoID$nome"
+    },
+    "eixoAcesso": [
+      {
+        "eixoID": "Eixo/eixoID",
+        "nome": "Eixo/eixoID$nome"
+      }
+    ]
+  },
+  "Noticia": {
+    "titulo": "titulo-valor",
+    "textoMarkdown": "textoMarkdown-valor",
+    "editor": {
+      "usuarioID": "Usuario/usuarioID",
+      "nome": "Usuario/usuarioID$ome"
+    },
+    "publicar": "2019-01-01 00:00:00",
+    "destinatario": {
+      "usuarioID": {
+        "id": true,
+        "nome": "/Usuario/usuarioID$nome",
+        "visualizada": false
+      }
+    }
+  },
+  "UsuarioPerfil": {
+    "usuario": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "perfilID": {
+      "id": "PerfilID",
+      "nome": "nome-valor",
+      "contentType": "contentType-valor"
+    },
+    "_comment": "quando criar o perfil nao criar o campo textPlain ou usuarioArquivoID. nao os dois",
+    "_comment2": "quanto o usuario editar o perfil é que cria estes campos dependendo da situação",
+    "texto": "textPlain-valor",
+    "arquivo": {
+      "uploadID": "Upload/uploadID",
+      "url": "null || obtida do storage após upload",
+      "localPath": "path local do arquivo no celular do usuario."
+    }
+  },
+  "QuestionarioProposto": {
+    "nome": "nome-valor",
+    "eixo": {
+      "eixoID": "Eixo/eixoID",
+      "nome": "Eixo/eixoID$nome"
+    },
+    "editou": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "modificado": "data-valor",
+    "editando": false,
+    "ultimaOrdem": "inteiro com o valor do maior campor ordem das perguntas deste questionario"
+  },
+  "QuestionarioAplicado": {
+    "nome": "nome-valor",
+    "local": "Local ou Pessoa ou Momento da aplicação.",
+    "eixo": {
+      "eixoID": "Eixo/eixoID",
+      "nome": "Eixo/eixoID$nome"
+    },
+    "setorCensitario": {
+      "setorCensitarioID": "SetorCensitario/setorCensitarioID",
+      "nome": "SetorCensitario/setorCensitarioID$nome"
+    },
+    "editou": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "aplicou": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "criado": "data-valor",
+    "modificado": "data-valor"
+  },
+  "PerguntaTipo": {
+    "ID": "texto / imagem / arquivo / numero / coordenada / escolhaunica / escolhamultipla",
+    "nome": "texto / Imagem / Arquivo / Numero / Coordenada / Escolha Única / Escolha Múltipla"
+  },
+  "Pergunta": {
+    "referencia": "familia da pergunta. uid - gerado internamente pelo dart",
+    "ordem": 0,
+    "questionarioID": {
+      "id": "Questionario/questionarioID",
+      "nome": "Questionario/questionarioID$nome"
+    },
+    "titulo": "titulo-valor",
+    "textoMarkdown": "texto-valor",
+    "observacao": "observacao-valor",
+    "perguntaTipoID": {
+      "id": "PerguntaTipoID",
+      "nome": "PerguntaTipoID->nome"
+    },
+    "texto": "valor",
+    "numero": "valor",
+    "respondida": false,
+    "arquivo": {
+      "uploadID": {
+        "id ou key": true,
+        "url": "null || obtida do storage após upload",
+        "localPath": "path local do arquivo no celular do usuario."
+      }
+    },
+    "coordenada": [
+      {
+        "latitude": "Coordenada",
+        "longitude": "Coordenada"
+      }
+    ],
+    "escolha": {
+      "uid": {
+        "key": true,
+        "ordem": 0,
+        "texto": "texto-valor",
+        "marcada": true
+      }
+    },
+    "requisito": {
+      "uid": {
+        "referencia": "Pergunta/perguntaID$referencia",
+        "perguntaID": "Pergunta/perguntaID. Quando escolhidas das referencias em diferentes questionarios",
+        "perguntaTipo": "Paulo colocou o tipo da pergunta",
+        "pergunta": "Paulo nao usou este campo. Pergunta/perguntaID$escolha || Pergunta/perguntaID$texto || Pergunta/perguntaID$<se o tipo existe> ",
+        "escolha": {
+          "id": "Pergunta/perguntaID$escolha#uid",
+          "marcada": true
+        }
+      }
+    }
+  },
+  "PerguntaAplicada": {
+    "_comment": "idem a Pergunta. Com as devidas alterações."
+  },
+  "Produto": {
+    "nome": "nome-valor",
+    "eixo": {
+      "eixoID": "Eixo/eixoID",
+      "nome": "Eixo/eixoID$nome"
+    },
+    "setorCensitario": {
+      "setorCensitarioID": "SetorCensitario/setorCensitarioID",
+      "nome": "SetorCensitario/setorCensitarioID$nome"
+    },
+    "editou": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "modificado": "data-valor",
+    "produtoTextoID": "Produto/produtoID/ProdutoTexto/produtoTextoID",
+    "arquivo": {
+      "uid": {
+        "tipo": "imagem || tabela || grafico || mapa",
+        "titulo": "titulo-valor",
+        "rascunhoIdUpload": "Upload/uploadID",
+        "rascunhoUrl": "null || obtida do storage após upload",
+        "rascunhoLocalPath": "path local do arquivo no celular do usuario.",
+        "editadoIdUpload": "Upload/uploadID",
+        "editadoUrl": "null || obtida do storage após upload",
+        "editadoLocalPath": "path local do arquivo no celular do usuario."
+      }
+    }
+  },
+  "Produto/produtoID/ProdutoTexto": {
+    "editou": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "modificado": "data-valor",
+    "editando": false,
+    "textoMarkdown": "textoMarkdown-valor"
+  },
+  "Produto/produtoID/ProdutoPost": {
+    "assunto": "palavra chave. automatica. opções: texto, imagem, tabela, grafico, mapa ",
+    "numero": 1,
+    "modificado": "data-valor",
+    "editou": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "textoMarkdown": "textoMarkdown-valor"
+  }
+}
