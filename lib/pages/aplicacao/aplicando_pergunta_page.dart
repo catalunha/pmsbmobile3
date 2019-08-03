@@ -100,12 +100,12 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         if (!snapshot.data.perguntasOk) {
           return Center(child: CircularProgressIndicator());
         }
-        if (snapshot.data.isUltimaPergunta &&
-            snapshot.data.perguntaAtual.foiRespondida) {
+        if (snapshot.data.questionarioFinalizado) {
           return Center(
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(context, "/aplicacao/pendencias");
+                Navigator.pushNamed(context, "/aplicacao/pendencias",
+                    arguments: snapshot.data.questionarioAplicadoID);
               },
               child: Text("Ultima"),
             ),
