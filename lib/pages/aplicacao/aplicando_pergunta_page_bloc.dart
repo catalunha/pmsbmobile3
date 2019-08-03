@@ -4,6 +4,7 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class AplicandoPerguntaPageBlocState {
   String questionarioAplicadoID;
+  String usuarioID;
   int perguntaAtualIndex = 0;
   bool perguntasOk = false;
   String primeiraPerguntaID;
@@ -62,6 +63,13 @@ class AplicandoPerguntaPageBlocState {
 
 class AplicandoPerguntaPageBlocEvent {}
 
+class UpdateUserIDAplicandoPerguntaPageBlocEvent
+    extends AplicandoPerguntaPageBlocEvent {
+  final String usuarioID;
+
+  UpdateUserIDAplicandoPerguntaPageBlocEvent(this.usuarioID);
+}
+
 class UpdateObservacaoAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {
   final String observacao;
@@ -112,6 +120,10 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
 
   @override
   Future<void> mapEventToState(AplicandoPerguntaPageBlocEvent event) async {
+    if(event is UpdateUserIDAplicandoPerguntaPageBlocEvent){
+      currentState.usuarioID = event.usuarioID;
+    }
+
     if (event is ProximaPerguntaAplicandoPerguntaPageBlocEvent) {
       if (event.index != null) {
         currentState.perguntaAtualIndex = event.index;
@@ -175,7 +187,7 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
         final ref = _firestore
             .collection(PerguntaAplicadaModel.collection)
             .document(currentState.perguntaAtual.id);
-        ref.setData(map, merge: true);
+        ref.setData(map, merge: false);
       }
 
       dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent());

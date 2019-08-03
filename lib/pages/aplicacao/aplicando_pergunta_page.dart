@@ -4,15 +4,18 @@ import 'package:pmsbmibile3/components/initial_value_text_field.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
-  const AplicacaoPerguntaPage(this.questionarioAplicadoID, this.perguntaID,
+  const AplicacaoPerguntaPage(this.authBloc,
+      this.questionarioAplicadoID, this.perguntaID,
       {Key key})
       : assert(questionarioAplicadoID != null),
         super(key: key);
 
   final String questionarioAplicadoID;
   final String perguntaID;
+  final AuthBloc authBloc;
 
   @override
   _AplicacaoPerguntaPageState createState() => _AplicacaoPerguntaPageState();
@@ -26,6 +29,9 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     super.initState();
     bloc.dispatch(IniciarQuestionarioAplicadoAplicandoPerguntaPageBlocEvent(
         widget.questionarioAplicadoID, widget.perguntaID));
+    widget.authBloc.userId.listen((id){
+      bloc.dispatch(UpdateUserIDAplicandoPerguntaPageBlocEvent(id));
+    });
   }
 
   @override
@@ -150,7 +156,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 )),
             Divider(color: Colors.black54),
             // Widget de tipo pergunta
-            PerguntaAplicada(snapshot.data.perguntaAtual),
+            PerguntaAplicada(snapshot.data.perguntaAtual, snapshot.data.usuarioID),
             Padding(padding: EdgeInsets.all(5)),
             _botoes()
           ],
