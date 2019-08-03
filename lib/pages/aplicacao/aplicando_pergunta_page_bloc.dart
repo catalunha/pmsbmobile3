@@ -15,6 +15,13 @@ class AplicandoPerguntaPageBlocState {
       return null;
   }
 
+  bool get perguntaAtualOk {
+    if (perguntaAtual != null && !perguntaAtual.temPendencias)
+      return true;
+    else
+      return false;
+  }
+
   set perguntas(List<PerguntaAplicadaModel> p) {
     _perguntas?.clear();
     _perguntas = p;
@@ -46,9 +53,9 @@ class AplicandoPerguntaPageBlocState {
         perguntaAtualIndex <= _perguntas.length - 1;
   }
 
-  bool get isUltimaPergunta {
+  bool get questionarioFinalizado {
     if (!perguntasOk) return false;
-    return perguntaAtualIndex >= _perguntas.length - 1;
+    return perguntaAtualIndex >= _perguntas.length;
   }
 }
 
@@ -112,9 +119,11 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
         } else {
           currentState.perguntaAtualIndex += 1;
         }
-        while (!currentState.isUltimaPergunta) {
-          if (!(currentState.perguntaAtual.foiRespondida) &&
-              !(currentState.perguntaAtual.temPendencias)) {
+        while (true) {
+          if (currentState.questionarioFinalizado ||
+              (currentState.perguntaAtualOk &&
+                  !(currentState.perguntaAtual.foiRespondida) &&
+                  !(currentState.perguntaAtual.temPendencias))) {
             break;
           }
           currentState.perguntaAtualIndex += 1;
@@ -171,6 +180,10 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
       } else {
         pergunta.temPendencias = false;
       }
+      _firestore
+          .collection(PerguntaAplicadaModel.collection)
+          .document(pergunta.id)
+          .setData({"temPendencias": pergunta.temPendencias}, merge: true);
     }
   }
 }
