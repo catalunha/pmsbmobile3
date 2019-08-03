@@ -54,6 +54,13 @@ class AplicandoPerguntaPageBlocState {
 
 class AplicandoPerguntaPageBlocEvent {}
 
+class UpdateObservacaoAplicandoPerguntaPageBlocEvent
+    extends AplicandoPerguntaPageBlocEvent {
+  final String observacao;
+
+  UpdateObservacaoAplicandoPerguntaPageBlocEvent(this.observacao);
+}
+
 class UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent
     extends AplicandoPerguntaPageBlocEvent {
   final String questionarioAplicadoID;
@@ -81,14 +88,6 @@ class ProximaPerguntaAplicandoPerguntaPageBlocEvent
     this.reset = false,
     this.index,
   });
-}
-
-// eventos de respostas
-class UpdateTextoRespostaAplicandoPerguntaPageBlocEvent
-    extends AplicandoPerguntaPageBlocEvent {
-  final String texto;
-
-  UpdateTextoRespostaAplicandoPerguntaPageBlocEvent(this.texto);
 }
 
 class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
@@ -159,8 +158,8 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     }
 
     //respostas
-    if (event is UpdateTextoRespostaAplicandoPerguntaPageBlocEvent) {
-      currentState.perguntaAtual.texto = event.texto;
+    if (event is UpdateObservacaoAplicandoPerguntaPageBlocEvent) {
+      currentState.perguntaAtual.observacao = event.observacao;
     }
   }
 
