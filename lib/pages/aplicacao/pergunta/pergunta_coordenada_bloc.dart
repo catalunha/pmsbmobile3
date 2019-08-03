@@ -7,8 +7,15 @@ class AdicionarCoordenadaPerguntaCoordenadaBlocEvent
     extends PerguntaCoordenadaBlocEvent {
   final double latitude;
   final double longitude;
+  final double altitude;
+  final double accuracy;
 
-  AdicionarCoordenadaPerguntaCoordenadaBlocEvent(this.latitude, this.longitude);
+  AdicionarCoordenadaPerguntaCoordenadaBlocEvent(
+    this.latitude,
+    this.longitude,
+    this.altitude,
+    this.accuracy,
+  );
 }
 
 class RemoverCoordenadaPerguntaCoordenadaBlocEvent
@@ -34,8 +41,12 @@ class PerguntaCoordenadaBloc
   @override
   Future<void> mapEventToState(PerguntaCoordenadaBlocEvent event) async {
     if (event is AdicionarCoordenadaPerguntaCoordenadaBlocEvent) {
-      final coordenada =
-          Coordenada(latitude: event.latitude, longitude: event.latitude);
+      final coordenada = Coordenada(
+        latitude: event.latitude,
+        longitude: event.latitude,
+        altitude: event.altitude,
+        accuracy: event.accuracy,
+      );
       _perguntaAplicada.coordenada.add(coordenada);
     }
     if (event is RemoverCoordenadaPerguntaCoordenadaBlocEvent) {
