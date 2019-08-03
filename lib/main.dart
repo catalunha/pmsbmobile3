@@ -102,8 +102,8 @@ class MyApp extends StatelessWidget {
               return AplicacaoSelecionarQuestionarioPage(args);
             },
             "/aplicacao/aplicando_pergunta": (context) {
-              final args = ModalRoute.of(context).settings.arguments;
-              return AplicacaoPerguntaPage(args);
+              final AplicandoPerguntaPageArguments args = ModalRoute.of(context).settings.arguments;
+              return AplicacaoPerguntaPage(args.questionarioID, args.perguntaID);
             },
             "/aplicacao/pendencias": (context) {
               final args = ModalRoute.of(context).settings.arguments;

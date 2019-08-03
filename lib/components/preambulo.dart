@@ -16,8 +16,7 @@ class Preambulo extends StatelessWidget {
     this.setor,
     this.pergunta,
     this.local,
-  })  : assert(usuario is String),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

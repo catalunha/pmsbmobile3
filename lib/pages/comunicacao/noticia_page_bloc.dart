@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
@@ -6,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'dart:async';
 
 class NoticiaPageEvent {}
 
@@ -30,6 +30,7 @@ class NoticiaPageState {
 
 class NoticiaPageBloc {
   final bool visualizada;
+
   // Database
   final fsw.Firestore firestore;
 
@@ -38,16 +39,22 @@ class NoticiaPageBloc {
 
   //Evento
   final _noticiaPageEventController = BehaviorSubject<NoticiaPageEvent>();
+
   Stream<NoticiaPageEvent> get noticiaPageEventStream =>
       _noticiaPageEventController.stream;
+
   Function get noticiaPageEventSink => _noticiaPageEventController.sink.add;
 
   //Estado
   final _noticiaPageState = NoticiaPageState();
   final _noticiaPageStateController = BehaviorSubject<NoticiaPageState>();
+
   Stream<NoticiaPageState> get noticiaPageStateStream =>
       _noticiaPageStateController.stream;
+
   Function get noticiaPageStateSink => _noticiaPageStateController.sink.add;
+
+  StreamSubscription firestoreSubscription;
 
   // //UsuarioNoticiaModel
   // final _usuarioNoticiaModelListController =
@@ -59,24 +66,27 @@ class NoticiaPageBloc {
 
   //NoticiaModel
   final _noticiaModelListController = BehaviorSubject<List<NoticiaModel>>();
+
   Stream<List<NoticiaModel>> get noticiaModelListStream =>
       _noticiaModelListController.stream;
+
   Function get noticiaModelListSink => _noticiaModelListController.sink.add;
 
   NoticiaPageBloc({this.firestore, this.visualizada}) {
-
     noticiaPageEventStream.listen(_mapEventToState);
     _authBloc.userId
         .listen((userId) => noticiaPageEventSink(UpdateUsuarioIDEvent(userId)));
   }
+
   void dispose() {
     _noticiaPageEventController.close();
     _noticiaPageStateController.close();
     // _usuarioNoticiaModelListController.close();
     _noticiaModelListController.close();
+    firestoreSubscription?.cancel();
   }
 
-  void _mapEventToState(NoticiaPageEvent event) {
+  void _mapEventToState(NoticiaPageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
       _noticiaPageState.usuarioID = event.usuarioID;
       firestore
@@ -93,7 +103,7 @@ class NoticiaPageBloc {
         // print('>> event >> ${event.usuarioID}');
         // print('>> event >> ${event.usuarioIDNome}');
       });
-      firestore
+      final stream = firestore
           .collection(NoticiaModel.collection)
           .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.id",
               isEqualTo: true)
@@ -104,8 +114,18 @@ class NoticiaPageBloc {
           .snapshots()
           .map((snap) => snap.documents
               .map((doc) => NoticiaModel(id: doc.documentID).fromMap(doc.data))
-              .toList())
-          .pipe(_noticiaModelListController);
+              .toList());
+
+      if (firestoreSubscription != null) {
+        try {
+          await firestoreSubscription.cancel();
+          firestoreSubscription = null;
+        } catch (e) {}
+      }
+      firestoreSubscription = stream.listen((data) {
+        _noticiaModelListController.add(data);
+      });
+
       noticiaModelListStream.listen((noticia) {
         noticia.forEach((item) {
           // print('>> item. >> ${item.titulo}');

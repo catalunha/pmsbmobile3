@@ -22,7 +22,15 @@ class RemoverCoordenadaPerguntaCoordenadaBlocEvent
 }
 
 class PerguntaCoordenadaBlocState {
-  List<Coordenada> listaLocalizao = List<Coordenada>();
+  List<Coordenada> _listaLocalizao = List<Coordenada>();
+
+  set listaLocalizao(List<Coordenada> coordenadas) {
+    if (coordenadas != null) _listaLocalizao = coordenadas;
+  }
+
+  List<Coordenada> get listaLocalizao {
+    return _listaLocalizao != null ? _listaLocalizao : [];
+  }
 }
 
 class PerguntaCoordenadaBloc

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/pergunta_model.dart';
-import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
+import 'package:pmsbmibile3/components/initial_value_text_field.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
-  const AplicacaoPerguntaPage(this.questionarioAplicadoID, {Key key})
+  const AplicacaoPerguntaPage(this.questionarioAplicadoID, this.perguntaID,
+      {Key key})
       : assert(questionarioAplicadoID != null),
         super(key: key);
 
   final String questionarioAplicadoID;
+  final String perguntaID;
 
   @override
   _AplicacaoPerguntaPageState createState() => _AplicacaoPerguntaPageState();
@@ -19,13 +20,12 @@ class AplicacaoPerguntaPage extends StatefulWidget {
 
 class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
   final bloc = AplicandoPerguntaPageBloc(Bootstrap.instance.firestore);
-  TextEditingController _observacoesControler = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    bloc.dispatch(UpdateQuestionarioAplicadoIDAplicandoPerguntaPageBlocEvent(
-        widget.questionarioAplicadoID));
+    bloc.dispatch(IniciarQuestionarioAplicadoAplicandoPerguntaPageBlocEvent(
+        widget.questionarioAplicadoID, widget.perguntaID));
   }
 
   @override
@@ -101,12 +101,12 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         if (!snapshot.data.perguntasOk) {
           return Center(child: CircularProgressIndicator());
         }
-        if (snapshot.data.isUltimaPergunta &&
-            snapshot.data.perguntaAtual.foiRespondida) {
+        if (snapshot.data.questionarioFinalizado) {
           return Center(
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(context, "/aplicacao/pendencias");
+                Navigator.pushNamed(context, "/aplicacao/pendencias",
+                    arguments: snapshot.data.questionarioAplicadoID);
               },
               child: Text("Ultima"),
             ),
@@ -130,8 +130,18 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                     Text("Observações:", style: TextStyle(color: Colors.blue))),
             Padding(
                 padding: EdgeInsets.all(5.0),
-                child: TextField(
-                  controller: _observacoesControler,
+                child: InitialValueTextField(
+                  id: snapshot.data.perguntaAtual.id,
+                  value: snapshot.data.perguntaAtual.observacao,
+                  onChanged: (observacao) {
+                    bloc.dispatch(
+                        UpdateObservacaoAplicandoPerguntaPageBlocEvent(
+                            observacao));
+                  },
+                  initialize: () =>
+                      snapshot.data.perguntaAtual.observacao != null
+                          ? true
+                          : false,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -156,14 +166,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Aplicando pergunta"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: () {
-              // ---
-            },
-          )
-        ],
       ),
       body: _body(),
     );

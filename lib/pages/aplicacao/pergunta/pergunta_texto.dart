@@ -35,9 +35,12 @@ class _PerguntaTextoState extends State<PerguntaTexto> {
       child: Column(
         children: <Widget>[
           Padding(
-              padding: EdgeInsets.all(5),
-              child: Text("Resposta da pergunta:",
-                  style: TextStyle(color: Colors.blue))),
+            padding: EdgeInsets.all(5),
+            child: Text(
+              "Resposta da pergunta:",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
           Padding(
             padding: EdgeInsets.all(5.0),
             child: InitialValueTextField(

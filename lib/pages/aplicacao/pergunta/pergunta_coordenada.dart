@@ -52,7 +52,7 @@ class _PerguntaCoordenadaState extends State<PerguntaCoordenada> {
   }
 
   Widget _makeList() {
-    StreamBuilder<PerguntaCoordenadaBlocState>(
+    return StreamBuilder<PerguntaCoordenadaBlocState>(
       stream: bloc.state,
       builder: (context, snapshot) {
         return Column(
@@ -77,7 +77,7 @@ class _PerguntaCoordenadaState extends State<PerguntaCoordenada> {
                   _salvarLocalizacao();
                 },
               )),
-          _makeList()
+          _makeList(),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pendencias_page_bloc.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 
 //Aplicação 03
 
@@ -44,7 +45,10 @@ class _PendenciasPageState extends State<PendenciasPage> {
               .map((pergunta) => PerguntaAplicadaListItem(
                     pergunta,
                     onPressed: () {
-                      //bloc.dispatch();
+                      Navigator.pushNamed(context, "/aplicacao/aplicando_pergunta",
+                          arguments: AplicandoPerguntaPageArguments(
+                              widget.questionarioAplicadoID,
+                              perguntaID: pergunta.id));
                     },
                   ))
               .toList(),

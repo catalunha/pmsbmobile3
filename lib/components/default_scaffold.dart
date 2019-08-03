@@ -259,6 +259,7 @@ class DefaultEndDrawer extends StatelessWidget {
             ListTile(
               title: Text('Trocar de usuário'),
               onTap: () {
+                Navigator.pop(context);
                 authBloc.dispatch(LogoutAuthBlocEvent());
               },
               leading: Icon(Icons.exit_to_app),
