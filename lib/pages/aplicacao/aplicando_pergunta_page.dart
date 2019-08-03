@@ -166,14 +166,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
         backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Aplicando pergunta"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: () {
-              // ---
-            },
-          )
-        ],
       ),
       body: _body(),
     );
