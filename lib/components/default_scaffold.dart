@@ -17,6 +17,7 @@ class Rota {
 class DefaultDrawer extends StatelessWidget {
   final AuthBloc authBloc;
   Map<String, Rota> rotas;
+
   DefaultDrawer()
       : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore) {
     // Map<String, Rota>
@@ -34,6 +35,7 @@ class DefaultDrawer extends StatelessWidget {
     rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
     rotas["/controle/home"] = Rota("Controle", Icons.control_point);
   }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -211,6 +213,7 @@ class _ImagemUnica extends StatelessWidget {
 
 class DefaultEndDrawer extends StatelessWidget {
   final AuthBloc authBloc;
+
   DefaultEndDrawer()
       : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
 
@@ -290,16 +293,18 @@ class DefaultScaffold extends StatelessWidget {
   final Widget actions;
   final Widget bottom;
   final Color backgroundColor;
+  final FloatingActionButtonLocation floatingActionButtonLocation;
 
-  const DefaultScaffold(
-      {Key key,
-      this.body,
-      this.floatingActionButton,
-      this.title,
-      this.actions,
-      this.backgroundColor,
-      this.bottom})
-      : super(key: key);
+  const DefaultScaffold({
+    Key key,
+    this.body,
+    this.floatingActionButton,
+    this.title,
+    this.actions,
+    this.backgroundColor,
+    this.bottom,
+    this.floatingActionButtonLocation,
+  }) : super(key: key);
 
   Widget _appBarBuild(BuildContext context) {
     return AppBar(
@@ -321,6 +326,7 @@ class DefaultScaffold extends StatelessWidget {
       endDrawer: DefaultEndDrawer(),
       appBar: _appBarBuild(context),
       floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
       body: body,
     );
   }

@@ -64,20 +64,21 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   _bodyTodos() {
     return Column(
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            "Eixo : $_eixo",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            "Setor censitário: $_setor",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
+        //TODO: preambulo
+//        Padding(
+//          padding: EdgeInsets.only(top: 10),
+//          child: Text(
+//            "Eixo : $_eixo",
+//            style: TextStyle(fontSize: 16, color: Colors.blue),
+//          ),
+//        ),
+//        Padding(
+//          padding: EdgeInsets.only(top: 10),
+//          child: Text(
+//            "Setor censitário: $_setor",
+//            style: TextStyle(fontSize: 16, color: Colors.blue),
+//          ),
+//        ),
         Expanded(child: _listaQuestionarioAplicado())
       ],
     );
@@ -99,7 +100,6 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
-        backgroundColor: Colors.red,
         bottom: TabBar(
           tabs: [
             Tab(text: "Todos"),
@@ -120,6 +120,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
             Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
           },
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
