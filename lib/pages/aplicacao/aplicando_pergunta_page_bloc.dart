@@ -21,6 +21,10 @@ class AplicandoPerguntaPageBlocState {
     if (p != null) perguntasOk = true;
   }
 
+  List<PerguntaAplicadaModel> get perguntas {
+    return _perguntas != null ? _perguntas : [];
+  }
+
   int get totalPerguntas {
     if (_perguntas != null)
       return _perguntas.length;
@@ -87,7 +91,6 @@ class UpdateTextoRespostaAplicandoPerguntaPageBlocEvent
   UpdateTextoRespostaAplicandoPerguntaPageBlocEvent(this.texto);
 }
 
-
 class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     AplicandoPerguntaPageBlocState> {
   AplicandoPerguntaPageBloc(this._firestore);
@@ -130,10 +133,13 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
               isEqualTo: currentState.questionarioAplicadoID)
           .orderBy("ordem");
       final snap = await query.getDocuments();
+
       currentState.perguntas = snap.documents
           .map((doc) =>
               PerguntaAplicadaModel(id: doc.documentID).fromMap(doc.data))
           .toList();
+      //verificar pendencias de requisitos
+      verificarRequisitosPerguntas();
       dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(reset: true));
     }
     if (event is SalvarAplicandoPerguntaPageBlocEvent) {
@@ -155,6 +161,17 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     //respostas
     if (event is UpdateTextoRespostaAplicandoPerguntaPageBlocEvent) {
       currentState.perguntaAtual.texto = event.texto;
+    }
+  }
+
+  void verificarRequisitosPerguntas() {
+    for (var pergunta in currentState.perguntas) {
+      if (pergunta.requisitos.length > 0) {
+        pergunta.temPendencias = true;
+        //TODO: verificação completa de requisitos
+      } else {
+        pergunta.temPendencias = false;
+      }
     }
   }
 }
