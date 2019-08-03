@@ -55,6 +55,14 @@ class _PerguntaCoordenadaState extends State<PerguntaCoordenada> {
     return StreamBuilder<PerguntaCoordenadaBlocState>(
       stream: bloc.state,
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("ERROR"),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Container();
+        }
         return Column(
           children: snapshot.data.listaLocalizao
               .map((coordenada) => _listTileCoordenada(coordenada))
