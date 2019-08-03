@@ -9,7 +9,13 @@ class PerguntaAplicadaModel extends PerguntaModel {
     String id,
     bool temPendencias: true,
     bool foiRespondida: false,
-  })  : _temPendencias = temPendencias,
+    this.observacao,
+    this.numero,
+    this.texto,
+    this.arquivo,
+    List<Coordenada> coordenada,
+  })  : _coordenada = coordenada,
+        _temPendencias = temPendencias,
         _foiRespondida = foiRespondida,
         super(id: id);
 
@@ -18,6 +24,31 @@ class PerguntaAplicadaModel extends PerguntaModel {
   /// [observacao] é um campo disponivel para informações adicionais durante
   /// a aplicação da pergunta
   String observacao;
+
+  ///Atributos que armazenam as respostos da aplicação das perguntas
+
+  ///No caso de pergunta do tipo Texto a resposta é armazenada no atributo
+  ///[texto]
+  String texto;
+
+  ///No caso de pergunta do tipo Numero a resposta é armazenada no atributo
+  ///[numero]
+  num numero;
+
+  ///No caso de pergunta do tipo Arquivo ou Imagem a resposta é armazenada no atributo
+  ///[arquivo]
+  List<String> arquivo;
+
+  ///No caso de pergunta do tipo Coordenada a resposta é armazenada no atributo
+  ///[coordenada]
+  List<Coordenada> _coordenada;
+
+  set coordenada(List<Coordenada> coordenada) => _coordenada = coordenada;
+
+  List<Coordenada> get coordenada {
+    if (_coordenada == null) _coordenada = List<Coordenada>();
+    return _coordenada;
+  }
 
   set temPendencias(bool p) {
     _temPendencias = p != null ? p : true;
@@ -77,6 +108,15 @@ class PerguntaAplicadaModel extends PerguntaModel {
     temPendencias = map["temPendencias"];
     foiRespondida = map["foiRespondida"];
     observacao = map['observacao'];
+    texto = map["texto"];
+    numero = map["numero"];
+    arquivo = map["arquivo"];
+    if (map["coordenada"] is List) {
+      coordenada = List<Coordenada>();
+      map["coordenada"].forEach((e) {
+        coordenada.add(Coordenada.fromMap(e));
+      });
+    }
 
     return super.fromMap(map);
   }
@@ -87,6 +127,15 @@ class PerguntaAplicadaModel extends PerguntaModel {
     map["temPendencias"] = temPendencias;
     map["foiRespondida"] = foiRespondida;
     map["observacao"] = observacao;
+    if (texto != null) map["texto"] = texto;
+    if (numero != null) map["numero"] = numero;
+    if (arquivo != null) map["arquivo"] = arquivo;
+    if (coordenada != null) {
+      map["coordenada"] = List<Map<String, dynamic>>();
+      coordenada.forEach((e) {
+        map["coordenada"].add(e.toMap());
+      });
+    }
     return map;
   }
 }
@@ -126,24 +175,6 @@ class PerguntaModel extends FirestoreModel {
 
   dynamic dataEdicao;
 
-  ///Atributos que armazenam as respostos da aplicação das perguntas
-
-  ///No caso de pergunta do tipo Texto a resposta é armazenada no atributo
-  ///[texto]
-  String texto;
-
-  ///No caso de pergunta do tipo Numero a resposta é armazenada no atributo
-  ///[numero]
-  num numero;
-
-  ///No caso de pergunta do tipo Arquivo ou Imagem a resposta é armazenada no atributo
-  ///[arquivo]
-  List<String> arquivo;
-
-  ///No caso de pergunta do tipo Coordenada a resposta é armazenada no atributo
-  ///[coordenada]
-  List<Coordenada> coordenada;
-
   PerguntaModel({
     String id,
     this.referencia,
@@ -157,11 +188,7 @@ class PerguntaModel extends FirestoreModel {
     this.textoMarkdown,
     this.dataCriacao,
     this.dataEdicao,
-    this.texto,
     this.eixo,
-    this.arquivo,
-    this.coordenada,
-    this.numero,
   }) : super(id);
 
   @override
@@ -201,18 +228,6 @@ class PerguntaModel extends FirestoreModel {
       });
     }
 
-    texto = map["texto"];
-
-    numero = map["numero"];
-
-    arquivo = map["arquivo"];
-
-    if (map["coordenada"] is List) {
-      coordenada = List<Coordenada>();
-      map["coordenada"].forEach((e) {
-        coordenada.add(Coordenada.fromMap(e));
-      });
-    }
     if (map.containsKey('eixo')) {
       eixo = map['eixo'] != null ? new EixoID.fromMap(map['eixo']) : null;
     }
@@ -256,19 +271,6 @@ class PerguntaModel extends FirestoreModel {
 
     if (dataEdicao != null) map["dataEdicao"] = dataEdicao;
 
-    //respostas
-    if (texto != null) map["texto"] = texto;
-
-    if (numero != null) map["numero"] = numero;
-
-    if (arquivo != null) map["arquivo"] = arquivo;
-
-    if (coordenada != null) {
-      map["coordenada"] = List<Map<String, dynamic>>();
-      coordenada.forEach((e) {
-        map["coordenada"].add(e.toMap());
-      });
-    }
     if (this.eixo != null) {
       map['eixo'] = this.eixo.toMap();
     }
