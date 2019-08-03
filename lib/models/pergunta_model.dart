@@ -2,6 +2,33 @@ import 'package:pmsbmibile3/models/base_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 
+class PerguntaAplicadaArquivo {
+  final bool key = true;
+  String nome;
+  String uploadID;
+  String url;
+  String localPath;
+
+  PerguntaAplicadaArquivo({this.uploadID, this.url, this.localPath, this.nome});
+
+  PerguntaAplicadaArquivo.fromMap(Map<dynamic, dynamic> map) {
+    nome = map["nome"];
+    uploadID = map["uploadID"];
+    url = map["url"];
+    localPath = map["localPath"];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    return {
+      "nome": nome,
+      "key": key,
+      "url": url,
+      "localPath": localPath,
+      "uploadID": uploadID,
+    };
+  }
+}
+
 class PerguntaAplicadaModel extends PerguntaModel {
   static final String collection = "PerguntaAplicada";
 
@@ -12,9 +39,10 @@ class PerguntaAplicadaModel extends PerguntaModel {
     this.observacao,
     this.numero,
     this.texto,
-    this.arquivo,
+    Map<String, PerguntaAplicadaArquivo> arquivo,
     List<Coordenada> coordenada,
-  })  : _coordenada = coordenada,
+  })  : _arquivo = arquivo,
+        _coordenada = coordenada,
         _temPendencias = temPendencias,
         _foiRespondida = foiRespondida,
         super(id: id);
@@ -37,7 +65,16 @@ class PerguntaAplicadaModel extends PerguntaModel {
 
   ///No caso de pergunta do tipo Arquivo ou Imagem a resposta é armazenada no atributo
   ///[arquivo]
-  List<String> arquivo;
+  Map<String, PerguntaAplicadaArquivo> _arquivo;
+
+  Map<String, PerguntaAplicadaArquivo> get arquivo {
+    if (_arquivo == null) _arquivo = Map<String, PerguntaAplicadaArquivo>();
+    return _arquivo;
+  }
+
+  set arquivo(Map<String, PerguntaAplicadaArquivo> arquivos) {
+    _arquivo = arquivos;
+  }
 
   ///No caso de pergunta do tipo Coordenada a resposta é armazenada no atributo
   ///[coordenada]
@@ -110,7 +147,13 @@ class PerguntaAplicadaModel extends PerguntaModel {
     observacao = map['observacao'];
     texto = map["texto"];
     numero = map["numero"];
-    arquivo = map["arquivo"];
+
+    if (map["arquivo"] is Map) {
+      arquivo = Map<String, PerguntaAplicadaArquivo>();
+      for (var item in map["arquivo"].entries) {
+        arquivo[item.key] = PerguntaAplicadaArquivo.fromMap(item.value);
+      }
+    }
     if (map["coordenada"] is List) {
       coordenada = List<Coordenada>();
       map["coordenada"].forEach((e) {
@@ -129,7 +172,12 @@ class PerguntaAplicadaModel extends PerguntaModel {
     map["observacao"] = observacao;
     if (texto != null) map["texto"] = texto;
     if (numero != null) map["numero"] = numero;
-    if (arquivo != null) map["arquivo"] = arquivo;
+    if (arquivo != null && arquivo is Map){
+      map["arquivo"] = Map<String, dynamic>();
+      for (var item in arquivo.entries){
+        map["arquivo"][item.value.uploadID] = item.value.toMap();
+      }
+    }
     if (coordenada != null) {
       map["coordenada"] = List<Map<String, dynamic>>();
       coordenada.forEach((e) {
