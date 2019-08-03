@@ -1,19 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_escolha_unica_bloc.dart';
 
-class PerguntaEscolhaUnicaWidget extends StatefulWidget {
-  final PerguntaAplicadaModel pergunta;
+class PerguntaEscolhaUnica extends StatefulWidget {
+  final PerguntaAplicadaModel perguntaAplicada;
 
-  const PerguntaEscolhaUnicaWidget(this.pergunta, {Key key}) : super(key: key);
+  const PerguntaEscolhaUnica(this.perguntaAplicada, {Key key})
+      : super(key: key);
 
   @override
-  _PerguntaEscolhaUnicaWidgetState createState() =>
-      _PerguntaEscolhaUnicaWidgetState();
+  _PerguntaEscolhaUnicaState createState() => _PerguntaEscolhaUnicaState();
 }
 
-class _PerguntaEscolhaUnicaWidgetState
-    extends State<PerguntaEscolhaUnicaWidget> {
-  _PerguntaEscolhaUnicaWidgetState();
+class _PerguntaEscolhaUnicaState extends State<PerguntaEscolhaUnica> {
+  PerguntaEscolhaUnicaBloc bloc;
+
+  @override
+  void initState() {
+    bloc = PerguntaEscolhaUnicaBloc(widget.perguntaAplicada);
+    super.initState();
+  }
+
+  Widget _listaDeEscolhas() {
+    return StreamBuilder<PerguntaEscolhaUnicaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("ERROR"),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: Text("CARREGANDO"),
+          );
+        }
+        return Column(
+          children: widget.perguntaAplicada.escolhas
+              .map((key, escolha) {
+                return MapEntry(
+                  key,
+                  RadioListTile<String>(
+                    value: key,
+                    groupValue: snapshot.data.escolhaID,
+                    onChanged: (id) {
+                      bloc.dispatch(
+                          MudarEscolhaPerguntaEscolhaUnicaBlocEvent(id));
+                    },
+                    activeColor: Colors.green,
+                    controlAffinity: ListTileControlAffinity.trailing,
+                    title: new Text(escolha.texto),
+                  ),
+                );
+              })
+              .values
+              .toList(),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +69,7 @@ class _PerguntaEscolhaUnicaWidgetState
             padding: EdgeInsets.all(5),
             child: Text("Selecione uma opcao:"),
           ),
-          Column(
-            children: widget.pergunta.escolhas
-                .map((key, escolha) {
-                  return MapEntry(
-                    key,
-                    RadioListTile<String>(
-                      value: key,
-                      groupValue: "",
-                      onChanged: (novovalor) {},
-                      activeColor: Colors.green,
-                      controlAffinity: ListTileControlAffinity.trailing,
-                      // dependendo de como o valor for recebido alterar essa parte o codigo
-                      title: new Text(escolha.texto),
-                    ),
-                  );
-                })
-                .values
-                .toList(),
-          ),
+          _listaDeEscolhas(),
         ],
       ),
     );

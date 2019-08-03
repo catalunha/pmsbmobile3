@@ -1,31 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta_escolha_multipla_bloc.dart';
 
-class PerguntaEscolhaMultiplaWidget extends StatefulWidget {
-  const PerguntaEscolhaMultiplaWidget(
-    this.pergunta, {
+class PerguntaEscolhaMultipla extends StatefulWidget {
+  const PerguntaEscolhaMultipla(
+    this.perguntaAplicada, {
     Key key,
   }) : super(key: key);
 
-  final PerguntaAplicadaModel pergunta;
+  final PerguntaAplicadaModel perguntaAplicada;
 
   @override
-  _PerguntaEscolhaMultiplaWidgetState createState() =>
-      _PerguntaEscolhaMultiplaWidgetState();
+  _PerguntaEscolhaMultiplaState createState() =>
+      _PerguntaEscolhaMultiplaState();
 }
 
-class _PerguntaEscolhaMultiplaWidgetState
-    extends State<PerguntaEscolhaMultiplaWidget> {
+class _PerguntaEscolhaMultiplaState extends State<PerguntaEscolhaMultipla> {
+  PerguntaEscolhaMultiplaBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = PerguntaEscolhaMultiplaBloc(widget.perguntaAplicada);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
+  }
+
   Widget makeRadioTiles() {
-    final map = widget.pergunta.escolhas.map(
-      (k, v) {
-        return MapEntry(k, MultiplaEscolhaTile(v, onChanged: (value) {
-          //bloc.dispatch(); //marcar na resposta
-        }));
+    return StreamBuilder<PerguntaEscolhaMultiplaBlocState>(
+      stream: bloc.state,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("ERROR"),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: Text("CARREGANDO"),
+          );
+        }
+
+        final map = widget.perguntaAplicada.escolhas.map(
+          (id, escolha) {
+            return MapEntry(
+              id,
+              MultiplaEscolhaTile(
+                escolha,
+                onChanged: (value) {
+                  bloc.dispatch(
+                      AlternarEstadoEscolhaPerguntaEscolhaMultiplaBlocEvent(
+                          id));
+                },
+              ),
+            );
+          },
+        );
+        return Column(
+          children: map.values.toList(),
+        );
       },
-    );
-    return Column(
-      children: map.values.toList(),
     );
   }
 
