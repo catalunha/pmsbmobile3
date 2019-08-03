@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/pergunta_model.dart';
-import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
+import 'package:pmsbmibile3/components/initial_value_text_field.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
@@ -130,8 +129,18 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                     Text("Observações:", style: TextStyle(color: Colors.blue))),
             Padding(
                 padding: EdgeInsets.all(5.0),
-                child: TextField(
-                  controller: _observacoesControler,
+                child: InitialValueTextField(
+                  id: snapshot.data.perguntaAtual.id,
+                  value: snapshot.data.perguntaAtual.observacao,
+                  onChanged: (observacao) {
+                    bloc.dispatch(
+                        UpdateObservacaoAplicandoPerguntaPageBlocEvent(
+                            observacao));
+                  },
+                  initialize: () =>
+                      snapshot.data.perguntaAtual.observacao != null
+                          ? true
+                          : false,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   decoration: InputDecoration(
