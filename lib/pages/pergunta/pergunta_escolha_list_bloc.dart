@@ -51,7 +51,12 @@ class PerguntaEscolhaListPageBloc {
   PerguntaEscolhaListPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
-
+  void dispose() {
+    _stateController.close();
+    _eventController.close();
+    _escolhaMapController.close();
+  }
+  
   _validateData() {
     bool isValid = true;
     if (_state.escolhaMap != null) {
@@ -121,9 +126,5 @@ class PerguntaEscolhaListPageBloc {
     print('>>> _state.escolhaMap <<< ${_state.escolhaMap}');
   }
 
-  void dispose() {
-    _stateController.close();
-    _eventController.close();
-    _escolhaMapController.close();
-  }
+
 }

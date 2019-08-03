@@ -5,6 +5,7 @@ import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_home_page_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart'
     show EditarApagarPerguntaPageArguments;
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class PerguntaHomePage extends StatelessWidget {
   final String _questionarioId;
@@ -41,24 +42,6 @@ class PerguntaHomePage extends StatelessWidget {
         });
   }
 
-  List<Widget> _preambulo(context) {
-    return [
-      Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Center(
-          child: Container(),
-          // child: EixoAtualUsuario(),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(bottom: 10),
-        child: Center(
-          child: _questionarioAtual(context),
-        ),
-      ),
-    ];
-  }
-
   Widget _body(context) {
     return StreamBuilder<PerguntaHomePageBlocState>(
       stream: bloc.state,
@@ -77,14 +60,24 @@ class PerguntaHomePage extends StatelessWidget {
         final downs = snapshot.data.downs;
         final perguntas =
             snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
-        return ListView(
-          children: [
-            ..._preambulo(context),
-            ...perguntas
-                .map((pergunta) => PerguntaItem(
-                    pergunta, ups[pergunta.id], downs[pergunta.id], bloc))
-                .toList(),
-            Padding(padding: EdgeInsets.all(30)),
+        return Column(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: _questionarioAtual(context),
+            ),
+            Expanded(
+              flex: 12,
+              child: ListView(
+                children: [
+                  ...perguntas
+                      .map((pergunta) => PerguntaItem(
+                          pergunta, ups[pergunta.id], downs[pergunta.id], bloc))
+                      .toList(),
+                  Padding(padding: EdgeInsets.all(30)),
+                ],
+              ),
+            ),
           ],
         );
       },

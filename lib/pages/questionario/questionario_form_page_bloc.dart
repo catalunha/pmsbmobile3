@@ -1,5 +1,6 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 
@@ -46,6 +47,7 @@ class QuestionarioFormPageBlocState {
   String userName;
   String eixoAtualID;
   String eixoAtualNome;
+  String ordem;
 
   @override
   String toString() {
@@ -66,8 +68,8 @@ class QuestionarioFormPageBloc {
 
   Function get dispatch => _inputController.add;
 
-  QuestionarioFormPageBloc(this._firestore,this._authBloc) {
-        _authBloc.perfil.listen((usuario) {
+  QuestionarioFormPageBloc(this._firestore, this._authBloc) {
+    _authBloc.perfil.listen((usuario) {
       dispatch(UpdateUserInfoQuestionarioFormPageBlocEvent(
         usuario.id,
         usuario.nome,
@@ -84,7 +86,7 @@ class QuestionarioFormPageBloc {
     _instanceOutputController.close();
   }
 
-  void _handleInput(QuestionarioFormPageBlocEvent event) {
+  void _handleInput(QuestionarioFormPageBlocEvent event) async {
     if (event is UpdateNomeQuestionarioFormPageBlocEvent) {
       _state.nome = event.nome;
     }
@@ -102,6 +104,7 @@ class QuestionarioFormPageBloc {
         docRef.get().then((docSnap) {
           final modelInstance =
               QuestionarioModel(id: docSnap.documentID).fromMap(docSnap.data);
+
           _instanceOutputController.add(modelInstance);
         });
       }
@@ -110,6 +113,7 @@ class QuestionarioFormPageBloc {
     if (event is SaveQuestionarioFormPageBlocEvent) {
       final colRef = _firestore.collection(QuestionarioModel.collection);
       final docRef = colRef.document(_state.id);
+
       final modelInstance = QuestionarioModel(
         id: _state.id,
         nome: _state.nome,
@@ -124,7 +128,17 @@ class QuestionarioFormPageBloc {
         modificado: Bootstrap.instance.FieldValue.serverTimestamp(),
         editando: false,
       );
-print('>>> modelInstance <<< ${modelInstance.toMap()}');
+
+      if (_state.id == null) {
+        final eixoRef = _firestore
+            .collection(EixoModel.collection)
+            .document(_state.eixoAtualID);
+        var docSnap = await eixoRef.get();
+        int ultimaOrdemQuestionario = docSnap.data['ultimaOrdemQuestionario'];
+        modelInstance.ordem = ultimaOrdemQuestionario+1;
+        eixoRef.setData({"ultimaOrdemQuestionario":modelInstance.ordem },merge:true);
+      }
+
       docRef.setData(modelInstance.toMap(), merge: true);
     }
 
