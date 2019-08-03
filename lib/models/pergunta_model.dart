@@ -326,20 +326,26 @@ class PerguntaTipo {
 }
 
 class Coordenada {
-  Coordenada({this.latitude, this.longitude});
+  Coordenada({this.latitude, this.longitude, this.accuracy, this.altitude});
 
-  num latitude;
-  num longitude;
+  double latitude;
+  double longitude;
+  double accuracy;
+  double altitude;
 
   Coordenada.fromMap(Map<dynamic, dynamic> map) {
     latitude = map["latitude"];
     longitude = map["longitude"];
+    accuracy = map["accuracy"];
+    altitude = map["altitude"];
   }
 
   Map<String, dynamic> toMap() {
     return {
       if (latitude != null) "latitude": latitude,
       if (longitude != null) "longitude": longitude,
+      if (accuracy != null) "accuracy": accuracy,
+      if (altitude != null) "altitude": altitude,
     };
   }
 }

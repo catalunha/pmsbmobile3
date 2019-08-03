@@ -28,7 +28,11 @@ class _PerguntaCoordenadaState extends State<PerguntaCoordenada> {
   void _salvarLocalizacao() {
     location.getLocation().then((LocationData currentLocation) {
       bloc.dispatch(AdicionarCoordenadaPerguntaCoordenadaBlocEvent(
-          currentLocation.latitude, currentLocation.longitude));
+        currentLocation.latitude,
+        currentLocation.longitude,
+        currentLocation.altitude,
+        currentLocation.accuracy,
+      ));
     }, onError: (e) {
       if (e.code == 'PERMISSION_DENIED') {
         print("ERROR: ${e.code} ");
@@ -47,7 +51,7 @@ class _PerguntaCoordenadaState extends State<PerguntaCoordenada> {
         },
       ),
       title: Text(
-          "Latitude: ${coordenada.latitude}\nLongitude: ${coordenada.longitude} "),
+          "Latitude: ${coordenada.latitude}\nLongitude: ${coordenada.longitude} \nAltitude: ${coordenada.altitude} \nAccuracy: ${coordenada.accuracy} "),
     );
   }
 
