@@ -53,7 +53,7 @@ class DefaultDrawer extends StatelessWidget {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                Widget imagem;
+                Widget imagem = Icon(Icons.people, size: 75);
                 if (snap.data?.foto?.localPath != null) {
                   imagem = Container(
                       color: Colors.yellow,
