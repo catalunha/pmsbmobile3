@@ -9,10 +9,11 @@ import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
 
 class PerguntaAplicada extends StatelessWidget {
-  PerguntaAplicada(this.perguntaAplicada, {Key key})
+  PerguntaAplicada(this.perguntaAplicada, this.usuarioID, {Key key})
       : assert(perguntaAplicada != null),
         super(key: key);
   final PerguntaAplicadaModel perguntaAplicada;
+  final String usuarioID;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,18 @@ class PerguntaAplicada extends StatelessWidget {
         );
         break;
       case PerguntaTipoEnum.Imagem:
+        returnWidget = PerguntaWigdetImagemArquivo(
+          perguntaAplicada,
+          usuarioID,
+          arquivoTipo: ArquivoTipo.image,
+          key: idKey,
+        );
+        break;
       case PerguntaTipoEnum.Arquivo:
         returnWidget = PerguntaWigdetImagemArquivo(
           perguntaAplicada,
+          usuarioID,
+          arquivoTipo: ArquivoTipo.aplication,
           key: idKey,
         );
         break;
