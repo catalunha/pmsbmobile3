@@ -15,6 +15,10 @@ class PerguntaAplicadaModel extends PerguntaModel {
 
   bool _temPendencias;
 
+  /// [observacao] é um campo disponivel para informações adicionais durante
+  /// a aplicação da pergunta
+  String observacao;
+
   set temPendencias(bool p) {
     _temPendencias = p != null ? p : true;
   }
@@ -42,8 +46,8 @@ class PerguntaAplicadaModel extends PerguntaModel {
         return coordenada != null && coordenada.length > 0;
       case PerguntaTipoEnum.EscolhaUnica:
       case PerguntaTipoEnum.EscolhaMultipla:
-        for(var escolha in escolhas.values){
-          if(escolha.marcada) return true;
+        for (var escolha in escolhas.values) {
+          if (escolha.marcada) return true;
         }
         return false;
     }
@@ -72,6 +76,8 @@ class PerguntaAplicadaModel extends PerguntaModel {
   PerguntaAplicadaModel fromMap(Map<String, dynamic> map) {
     temPendencias = map["temPendencias"];
     foiRespondida = map["foiRespondida"];
+    observacao = map['observacao'];
+
     return super.fromMap(map);
   }
 
@@ -80,6 +86,7 @@ class PerguntaAplicadaModel extends PerguntaModel {
     final map = super.toMap();
     map["temPendencias"] = temPendencias;
     map["foiRespondida"] = foiRespondida;
+    map["observacao"] = observacao;
     return map;
   }
 }
@@ -114,10 +121,6 @@ class PerguntaModel extends FirestoreModel {
   EixoID eixo;
 
   String textoMarkdown;
-
-  /// [observacao] é um campo disponivel para informações adicionais durante
-  /// a aplicação da pergunta
-  String observacao;
 
   dynamic dataCriacao;
 
@@ -154,10 +157,8 @@ class PerguntaModel extends FirestoreModel {
     this.textoMarkdown,
     this.dataCriacao,
     this.dataEdicao,
-    this.observacao,
     this.texto,
-          this.eixo,
-
+    this.eixo,
     this.arquivo,
     this.coordenada,
     this.numero,
@@ -185,8 +186,6 @@ class PerguntaModel extends FirestoreModel {
     titulo = map['titulo'];
 
     textoMarkdown = map['textoMarkdown'];
-
-    observacao = map['observacao'];
 
     dataCriacao = map['dataCriacao'];
 
@@ -245,7 +244,7 @@ class PerguntaModel extends FirestoreModel {
     if (referencia != null) map["referencia"] = referencia;
 
     if (ordem != null) map["ordem"] = ordem;
-    
+
     if (ultimaOrdemEscolha != null)
       map["ultimaOrdemEscolha"] = ultimaOrdemEscolha;
 
@@ -398,6 +397,7 @@ class EscolhaRequisito {
   String id;
   bool marcada;
   String label;
+
   EscolhaRequisito({this.id, this.marcada, this.label});
 
   EscolhaRequisito.fromMap(Map<dynamic, dynamic> map) {
