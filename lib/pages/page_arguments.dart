@@ -36,5 +36,5 @@ class AplicandoPerguntaPageArguments {
   final String questionarioID;
   final String perguntaID;
 
-  AplicandoPerguntaPageArguments(this.questionarioID, this.perguntaID);
+  AplicandoPerguntaPageArguments(this.questionarioID, {this.perguntaID});
 }
