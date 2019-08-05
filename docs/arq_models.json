@@ -31,7 +31,7 @@
     "hash": "gerado pelo dart na leitura local do arquivo"
   },
   "Usuario": {
-    "ID": "mesmo ID do userID do authentication(email/senha)",
+    "comment": "O ID é o mesmo do userId do authentication(email/senha)",
     "nome": "nome-valor",
     "celular": "celular-valor",
     "email": "email-valor",
@@ -41,11 +41,8 @@
       "url": "null || obtida do storage após upload",
       "localPath": "path local do arquivo no celular do usuario."
     },
-    "rotaID": [
-      {
-        "id": "Rota/rotaID",
-        "url": "Rota/rotaID$url"
-      }
+    "routes": [
+        "Rota/rotaID$url"
     ],
     "setorCensitario": {
       "setorCensitarioID": "SetorCensitario/setorCensitarioID",
