@@ -196,11 +196,12 @@ class ConfiguracaoPageBloc {
       // UsuarioModel usuarioModel = UsuarioModel(
         usuarioModel['nome']= _state.nome;
         usuarioModel['celular']= _state.celular;
-        usuarioModel['foto']= foto.toMapFirestore();
         usuarioModel['setorCensitarioID']= setorCensitarioID.toMap();
         usuarioModel['eixoIDAtual']= eixoIDAtual.toMap();
       // );
-
+      if (_state.fotoUrl == null) {
+        usuarioModel['foto'] = foto.toMapFirestore();
+      }
       await docRef2.setData(usuarioModel, merge: true);
     }
     if (event is UpdateNomeEvent) {

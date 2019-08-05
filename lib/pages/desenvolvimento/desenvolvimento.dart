@@ -65,79 +65,196 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
                   ListTile(
-                    title: Text('Atualizar routes de usuario.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        // List<dynamic> routes = [
-                        //   '/',
-                        //   '/desenvolvimento',
-                        //   '/upload',
-                        //   '/questionario/home',
-                        //   '/aplicacao/home',
-                        //   '/resposta/home',
-                        //   '/sintese/home',
-                        //   '/produto/home',
-                        //   '/comunicacao/home_page',
-                        //   '/administracao/home',
-                        //   '/controle/home'
-                        // ];
-                        // final docRef = _firestore
-                        //     .collection(UsuarioModel.collection)
-                        //     .document('nsD07Jb8cqRy9liyX82JwDSq8d22');
-
-                        // await docRef.setData({"routes": routes}, merge: true);
-                        // print('>>> ok <<< ');
-                      },
-                    ),
-                  ),
-                  ListTile(
                     title: Text('Criar Usuario em UsuarioCollection.'),
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
-                        // UsuarioModel usuarioModel = UsuarioModel(
-                        //   id: 'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2',
-                        //   ativo: true,
-                        //   nome: 'uft',
-                        //   celular: '0',
-                        //   email: 'catalunha@uft.edu.br',
-                        //   routes: ['/'],
-                        //   cargoID: CargoID(id: 'coordenador',nome: 'Coo'),
-                        //   eixoID: EixoID(id: 'estatisticadsti',nome: ''),
-                        //   eixoIDAcesso: [EixoID(id: 'estatisticadsti',nome: '')],
-                        //   eixoIDAtual: EixoID(id: 'estatisticadsti',nome: ''),
-                        //   setorCensitarioID: SetorCensitarioID(id: 'palmas',nome: 'pal'),
-                        // );
-                        // final docRef = _firestore
-                        //     .collection(UsuarioModel.collection)
-                        //     .document('mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
-
-                        // await docRef.setData(usuarioModel.toMap(), merge: true);
-                        // print('>>> ok <<< ');
+                        // await usuarioPMSBWEB('Aq96qoxA0zgLfNDPGPCzFRAYtkl2');
+                        await usuarioAurelio('hQ5HviPFAsN74tDBDqD3KCABOf32');
+                        await usuarioJoaquina('98daMqALQRO1rpsakt5d6Dx26742');
                       },
                     ),
                   ),
                   ListTile(
-                    title: Text('Timestamp'),
+                    title: Text('Atualizar routes de UsuarioCollection.'),
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
-                        final docRef = _firestore
-                            .collection(QuestionarioModel.collection)
-                            .document('-LkcyH14YG3LUeRwQhlM');
-
-                        await docRef.setData({"modificado":Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
+                        // await atualizarRoutes('nsD07Jb8cqRy9liyX82JwDSq8d22');
                       },
                     ),
                   ),
+
+                  // ListTile(
+                  //   title: Text('Timestamp'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       // final docRef = _firestore
+                  //       //     .collection(QuestionarioModel.collection)
+                  //       //     .document('-LkcyH14YG3LUeRwQhlM');
+
+                  //       // await docRef.setData({"modificado":Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
+                  //     },
+                  //   ),
+                  // ),
 
                   // Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
                 ],
               );
             }));
   }
+
+  Future atualizarRoutes(String usuario) async {
+    List<dynamic> routes = [
+      '/',
+      '/desenvolvimento',
+      '/upload',
+      '/questionario/home',
+      '/aplicacao/home',
+      '/resposta/home',
+      '/sintese/home',
+      '/produto/home',
+      '/comunicacao/home_page',
+      '/administracao/home',
+      '/controle/home'
+    ];
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(usuario);
+
+    await docRef.setData({"routes": routes}, merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioCatalunhaUFT(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'uft',
+      celular: '0',
+      email: 'catalunha@uft.edu.br',
+      routes: ['/'],
+      cargoID: CargoID(id: 'coordenador', nome: 'Coo'),
+      eixoID: EixoID(id: 'estatisticadsti', nome: ''),
+      eixoIDAcesso: [EixoID(id: 'estatisticadsti', nome: '')],
+      eixoIDAtual: EixoID(id: 'estatisticadsti', nome: ''),
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'pal'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioPMSBWEB(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'PMSB TO 22',
+      celular: '22',
+      email: 'pmsb.web@gmail.com',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+        '/comunicacao/home_page',
+        '/administracao/home',
+        '/controle/home',
+      ],
+      cargoID: CargoID(id: 'coordenador', nome: 'Coo'),
+      eixoID: EixoID(id: 'estatisticadsti', nome: ''),
+      eixoIDAcesso: [EixoID(id: 'estatisticadsti', nome: '')],
+      eixoIDAtual: EixoID(id: 'estatisticadsti', nome: ''),
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'pal'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioAurelio(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'Aurelio',
+      celular: '123',
+      email: 'aureliopicanco@gmail.com',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/comunicacao/home_page',
+        '/administracao/home',
+        '/controle/home',
+      ],
+      cargoID: CargoID(id: 'coordenador', nome: 'Coordenador'),
+      eixoID: EixoID(id: 'direcao', nome: 'Direção'),
+      eixoIDAtual: EixoID(id: 'direcao', nome: 'Direção'),
+      eixoIDAcesso: [
+        EixoID(id: 'direcao', nome: 'Direção'),
+        EixoID(id: 'administracao', nome: 'Administração'),
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+        EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
+        EixoID(id: 'residuosolido', nome: 'Resíduo Sólido')
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioJoaquina(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'Joaquina',
+      celular: '123',
+      email: 'joaquinagoulart@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/comunicacao/home_page',
+        '/administracao/home',
+        '/controle/home',
+      ],
+      cargoID: CargoID(id: 'coordenador', nome: 'Coordenador'),
+      eixoID: EixoID(id: 'administracao', nome: 'Administração'),
+      eixoIDAtual: EixoID(id: 'administracao', nome: 'Administração'),
+      eixoIDAcesso: [
+        EixoID(id: 'administracao', nome: 'Administração'),
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+        EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
+        EixoID(id: 'residuosolido', nome: 'Resíduo Sólido')
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
 }
+
 //   Future<String> _selecionarNovoArquivo() async {
 //     try {
 //       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);

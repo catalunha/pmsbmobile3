@@ -167,16 +167,16 @@ class ProdutoArquivoCRUDPageBloc {
       if (!_stateController.isClosed) _stateController.add(_state);
       //+++ Se novo localPath apagar uploads
       if (_state.rascunhoUrl == null) {
-        final docRef = _firestore
+        print('>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.rascunhoIdUpload}');
+        _firestore
             .collection(UploadModel.collection)
-            .document(_state.arquivo.rascunhoIdUpload);
-        await docRef.delete();
+            .document(_state.arquivo?.rascunhoIdUpload).delete();
       }
       if (_state.editadoUrl == null) {
-        final docRef = _firestore
+        print('>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.editadoIdUpload}');
+        _firestore
             .collection(UploadModel.collection)
-            .document(_state.arquivo.editadoIdUpload);
-        await docRef.delete();
+            .document(_state.arquivo?.editadoIdUpload).delete();
       }
       if (!_stateController.isClosed) _stateController.add(_state);
       //---
