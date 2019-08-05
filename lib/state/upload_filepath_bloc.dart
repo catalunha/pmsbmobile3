@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:mime/mime.dart';
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:rxdart/rxdart.dart';
@@ -28,7 +27,7 @@ class UploadFilePathBloc {
 
   //authBloc
   final AuthBloc _authBloc =
-      AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+      AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   //Arquivo
   final _fileController = BehaviorSubject<String>();

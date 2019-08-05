@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/api/auth_api.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-
+import 'package:firebaseauth_wrapper/firebaseauth_wrapper.dart' as fba;
 enum AuthStatus {
   Uninitialized,
   Authenticated,
@@ -38,7 +37,7 @@ class AuthBloc {
   final fsw.Firestore _firestore;
 
   //API
-  final AuthApi _authApi;
+  final fba.FirebaseAuth _authApi;
 
   //AuthStatus
   final _statusController = BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);

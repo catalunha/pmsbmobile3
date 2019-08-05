@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
@@ -25,7 +24,7 @@ class ComunicacaoHomePageState {
 class ComunicacaoHomePageBloc {
   final fsw.Firestore _firestore;
   // Auth
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final _authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   // Eventos da Página
   final _comunicacaoHomePageEventController =

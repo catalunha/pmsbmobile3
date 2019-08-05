@@ -1,6 +1,5 @@
 import 'dart:async';
 // import 'package:pmsbmibile3/models/arquivo_model.dart';
-import 'package:pmsbmibile3/api/api.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,7 +22,7 @@ class PerfilPageBloc {
   //Database
   final fsw.Firestore _firestore;
   //Autenticacao
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final _authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   //Eventos
   final _perfilPageEventController = BehaviorSubject<PerfilPageEvent>();
