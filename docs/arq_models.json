@@ -212,7 +212,12 @@
     },
     "modificado": "data-valor",
     "produtoTextoID": "Produto/produtoID/ProdutoTexto/produtoTextoID",
-    "arquivo": {
+    "pdf": {
+      "uploadID": "Upload/uploadID",
+      "url": "null || obtida do storage após upload",
+      "localPath": "path local do arquivo no celular do usuario. || null após upload"
+    },
+   "arquivo": {
       "uid": {
         "tipo": "imagem || tabela || grafico || mapa",
         "titulo": "titulo-valor",

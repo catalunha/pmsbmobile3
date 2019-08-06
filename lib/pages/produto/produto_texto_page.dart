@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_texto_page_bloc.dart';
+import 'package:markdown/markdown.dart' as md;
+import 'package:url_launcher/url_launcher.dart';
 
 class ProdutoTextoPage extends StatefulWidget {
   final String produtoID;
@@ -29,36 +31,35 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
     bloc.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
-        child:
-            Scaffold(
-              appBar: AppBar(
-                title: Text("Editar texto do produto"),
-                bottom: TabBar(
-                  tabs: [
-                    Tab(text: "Preview"),
-                    Tab(text: "Texto"),
-                  ],
-                ),
-              ),
-              body: TabBarView(
-                children: [
-                  _bodyPreview(context),
-                  UpDateProdutoIDTexto(bloc),
-                ],
-              ),
-              floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.save_alt),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  bloc.eventSink(SaveProdutoTextoIDTextoEvent());
-                },
-              ),
-            ));
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Editar texto do produto"),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: "Preview"),
+                Tab(text: "Texto"),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              _bodyPreview(context),
+              UpDateProdutoIDTexto(bloc),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.save_alt),
+            onPressed: () {
+              Navigator.of(context).pop();
+              bloc.eventSink(SaveProdutoTextoIDTextoEvent());
+            },
+          ),
+        ));
   }
 
   _bodyPreview(context) {
@@ -68,7 +69,8 @@ class _ProdutoTextoPageState extends State<ProdutoTextoPage> {
           if (!snapshot.hasData) {
             return Text('Sem dados');
           }
-          return Markdown(data: snapshot.data.produtoTextoIDTextoMarkdown);
+          // return Text(md.markdownToHtml(snapshot.data.produtoTextoIDTextoMarkdown));
+          return Markdown(data:snapshot.data.produtoTextoIDTextoMarkdown);
         });
   }
 }
@@ -84,8 +86,8 @@ class UpDateProdutoIDTexto extends StatefulWidget {
 
 class UpDateProdutoIDTextoState extends State<UpDateProdutoIDTexto> {
   final _controller = TextEditingController();
-final ProdutoTextoPageBloc bloc;
-UpDateProdutoIDTextoState(this.bloc);
+  final ProdutoTextoPageBloc bloc;
+  UpDateProdutoIDTextoState(this.bloc);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ProdutoTextoPageState>(
@@ -98,17 +100,20 @@ UpDateProdutoIDTextoState(this.bloc);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextField(
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+              Expanded(
+                child: TextField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: _controller,
+                  onChanged: (produtoTexto) {
+                    bloc.eventSink(
+                        UpdateProdutoTextoIDTextoEvent(produtoTexto));
+                  },
                 ),
-                controller: _controller,
-                onChanged: (produtoTexto) {
-                  bloc.eventSink(UpdateProdutoTextoIDTextoEvent(produtoTexto));
-                },
-              ),
+              )
             ],
           );
         });
