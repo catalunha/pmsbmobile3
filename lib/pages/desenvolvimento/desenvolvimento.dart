@@ -74,11 +74,12 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                         // await usuarioJoaquina('98daMqALQRO1rpsakt5d6Dx26742');
                         // await usuarioSergio('jkKgYjZ3zSf6cZ6T7ZrLxp5R9Am2');
                         // await usuarioPortela('0s0pMoclpwPs2CwUWDAmeCdPz5s1');
-                        // // await usuarioTatiana('');
                         // await usuarioGirlene('qnbwLQuiuXYJxKUFx5sHPZ3CgG92');
                         // await usuarioBob('SftB5Ix0d4MaHLEs8LASoT7KKl13');
                         // await usuarioCleiton('9MZTcuTI3ofGW67tO5J1mTLHPl03');
                         // await usuarioRui('I2hXlyGuTHdXufAiu6jDp05m3ft1');
+                        // await usuarioJuniezer('ysqq0XARJnZoxIzIc43suDm7gaK2');
+                        // await usuarioTatiana('oPZZYu1MOSU6AGcggVqptuLtVqn1');
                       },
                     ),
                   ),
@@ -91,28 +92,23 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       },
                     ),
                   ),
-
-                  // ListTile(
-                  //   title: Text('Timestamp'),
-                  //   trailing: IconButton(
-                  //     icon: Icon(Icons.menu),
-                  //     onPressed: () async {
-                  //       // final docRef = _firestore
-                  //       //     .collection(QuestionarioModel.collection)
-                  //       //     .document('-LkcyH14YG3LUeRwQhlM');
-
-                  //       // await docRef.setData({"modificado":Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
-                  //     },
-                  //   ),
-                  // ),
-
-                  // Text('arquivoRascunho: ' + (snapshot.data?.arquivo ?? '...')),
+                  ListTile(
+                    title:
+                        Text('Atualizar eixo de acesso de UsuarioCollection.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // await atualizarEixoAcesso('SftB5Ix0d4MaHLEs8LASoT7KKl13');
+                        // await atualizarEixoAcesso('ysqq0XARJnZoxIzIc43suDm7gaK2');
+                      },
+                    ),
+                  ),
                 ],
               );
             }));
   }
 
-  Future atualizarRoutes(String usuario) async {
+  Future atualizarRoutes(String userId) async {
     List<dynamic> routes = [
       '/',
       '/desenvolvimento',
@@ -127,10 +123,26 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       '/controle/home'
     ];
     final docRef =
-        _firestore.collection(UsuarioModel.collection).document(usuario);
+        _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData({"routes": routes}, merge: true);
     print('>>> ok <<< ');
+  }
+
+  Future atualizarEixoAcesso(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+        EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
+        EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+        EixoID(id: 'comunicacao', nome: 'Comunicação'),
+      ],
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+
+    await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
   Future usuarioCatalunhaUFT(String userId) async {
@@ -338,9 +350,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
       ativo: true,
-      nome: '',
+      nome: 'Tatiana',
       celular: '123',
-      email: '@uft.edu.br',
+      email: 'tatyfw@gmail.com',
       routes: [
         '/',
         '/upload',
@@ -411,7 +423,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     print('>>> ok <<< ');
   }
 
-
   Future usuarioBob(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -422,7 +433,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       routes: [
         '/',
         '/upload',
+        '/produto/home',
         '/comunicacao/home_page',
+        '/administracao/home',
         '/controle/home',
       ],
       cargoID: CargoID(id: 'coordenador', nome: 'Coordenador'),
@@ -439,7 +452,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
     print('>>> ok <<< ');
   }
-
 
   Future usuarioCleiton(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
@@ -468,7 +480,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
     print('>>> ok <<< ');
   }
-
 
   Future usuarioRui(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
@@ -506,6 +517,39 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     print('>>> ok <<< ');
   }
 
+  Future usuarioJuniezer(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'Juniezer Souza',
+      celular: '123',
+      email: 'juniezersouza@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/produto/home',
+        '/comunicacao/home_page',
+        '/administracao/home',
+        '/controle/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'comunicacao', nome: 'Comunicação'),
+      eixoIDAtual: EixoID(id: 'comunicacao', nome: 'Comunicação'),
+      eixoIDAcesso: [
+        EixoID(id: 'comunicacao', nome: 'Comunicação'),
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+        EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
+        EixoID(id: 'residuosolido', nome: 'Resíduo Sólido')
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
 }
 
 //   Future<String> _selecionarNovoArquivo() async {
