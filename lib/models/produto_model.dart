@@ -11,12 +11,14 @@ class ProdutoModel extends FirestoreModel {
   SetorCensitarioID setorCensitarioID;
   UsuarioID usuarioID;
   Map<String, ArquivoProduto> arquivo;
+  UploadID pdf;
 
   ProdutoModel({
     String id,
     this.titulo,
     this.produtoTextoID,
     this.eixoID,
+    this.pdf,
     this.setorCensitarioID,
     this.usuarioID,
     this.modificado,
@@ -25,11 +27,16 @@ class ProdutoModel extends FirestoreModel {
   @override
   ProdutoModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('titulo')) titulo = map['titulo'];
+    if (map.containsKey('pdf')) {
+      pdf = map['pdf'] != null ? new UploadID.fromMap(map['pdf']) : null;
+    }
+
     if (map.containsKey('produtoTextoID'))
       produtoTextoID = map['produtoTextoID'];
     if (map.containsKey('eixoID')) {
       eixoID = map['eixoID'] != null ? new EixoID.fromMap(map['eixoID']) : null;
     }
+
     if (map.containsKey('setorCensitarioID')) {
       setorCensitarioID = map['setorCensitarioID'] != null
           ? new SetorCensitarioID.fromMap(map['setorCensitarioID'])
@@ -58,6 +65,10 @@ class ProdutoModel extends FirestoreModel {
     if (this.eixoID != null) {
       data['eixoID'] = this.eixoID.toMap();
     }
+    if (this.pdf != null) {
+      data['pdf'] = this.pdf.toMap();
+    }
+
     if (this.setorCensitarioID != null) {
       data['setorCensitarioID'] = this.setorCensitarioID.toMap();
     }
@@ -74,4 +85,3 @@ class ProdutoModel extends FirestoreModel {
     return data;
   }
 }
-

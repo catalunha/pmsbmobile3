@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -97,8 +99,11 @@ class ProdutoArquivoListPage extends StatelessWidget {
                   ? Text('Sem id')
                   : Text(produtoID + '\n' + key),
             ),
-            ParDeImagens(rascunhoUrl:arquivo.rascunhoUrl, rascunhoLocalPath:arquivo.rascunhoLocalPath,
-                editadoUrl:arquivo.editadoUrl, editadoLocalPath:arquivo.editadoLocalPath),
+            ParDeImagens(
+                rascunhoUrl: arquivo.rascunhoUrl,
+                rascunhoLocalPath: arquivo.rascunhoLocalPath,
+                editadoUrl: arquivo.editadoUrl,
+                editadoLocalPath: arquivo.editadoLocalPath),
             ButtonTheme.bar(
               child: ButtonBar(
                 alignment: MainAxisAlignment.center,
@@ -106,8 +111,8 @@ class ProdutoArquivoListPage extends StatelessWidget {
                   arquivo?.rascunhoUrl != null
                       ? IconButton(
                           icon: Icon(Icons.content_copy),
-                                  tooltip: 'Click para copiar e colar o caminho desta imagem no produto',
-
+                          tooltip:
+                              'Click para copiar e colar o caminho desta imagem no produto',
                           onPressed: () {
                             String txt = '![](${arquivo.rascunhoUrl})';
                             Clipboard.setData(new ClipboardData(text: txt));
@@ -128,7 +133,8 @@ class ProdutoArquivoListPage extends StatelessWidget {
                   arquivo?.editadoUrl != null
                       ? IconButton(
                           icon: Icon(Icons.content_copy),
-                                  tooltip: 'Click para copiar e colar o caminho desta imagem no produto',
+                          tooltip:
+                              'Click para copiar e colar o caminho desta imagem no produto',
                           onPressed: () {
                             String txt = '![](${arquivo.editadoUrl})';
                             Clipboard.setData(new ClipboardData(text: txt));
@@ -141,7 +147,6 @@ class ProdutoArquivoListPage extends StatelessWidget {
           ],
         ));
   }
-
 }
 
 class ParDeImagens extends StatelessWidget {
@@ -168,12 +173,22 @@ class ParDeImagens extends StatelessWidget {
         child: Image.network(rascunhoUrl),
       ));
     } else {
-      rascunho = Container(
-          color: Colors.yellow,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Image.asset(rascunhoLocalPath),
-          ));
+      bool rascunhoLocalPathExiste = File(rascunhoLocalPath).existsSync();
+      if (rascunhoLocalPathExiste) {
+        rascunho = Container(
+            color: Colors.yellow,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Image.asset(rascunhoLocalPath),
+            ));
+      } else {
+        rascunho = Container(
+            color: Colors.yellow,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text('Editor nao fez upload'),
+            ));
+      }
     }
 
     Widget editado;
@@ -186,12 +201,22 @@ class ParDeImagens extends StatelessWidget {
         child: Image.network(editadoUrl),
       ));
     } else {
-      editado = Container(
-          color: Colors.yellow,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Image.asset(editadoLocalPath),
-          ));
+      bool editadoLocalPathExiste = File(editadoLocalPath).existsSync();
+      if (editadoLocalPathExiste) {
+        editado = Container(
+            color: Colors.yellow,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Image.asset(editadoLocalPath),
+            ));
+      } else {
+        editado = Container(
+            color: Colors.yellow,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text('Editor nao fez upload'),
+            ));
+      }
     }
     return Row(
       children: <Widget>[

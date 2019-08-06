@@ -39,18 +39,11 @@ class UsuarioModel extends FirestoreModel {
     if (map.containsKey('celular')) celular = map['celular'];
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
-     if (map.containsKey('foto')) {
-      foto = map['foto'] != null
-          ? new UploadID.fromMap(map['foto'])
-          : null;
+    if (map.containsKey('foto')) {
+      foto = map['foto'] != null ? new UploadID.fromMap(map['foto']) : null;
     }
-    // if (map.containsKey('routes') && (map['routes'] != null)) {
-    //   routes = new List<String>();
-    //   map['routes'].forEach((v) {
-    //     routes.add(new routes.fromMap(v));
-    //   });
-    // }
-        if (map.containsKey('routes')) routes = map['routes'];
+
+    if (map.containsKey('routes')) routes = map['routes'];
 
     if (map.containsKey('setorCensitarioID')) {
       setorCensitarioID = map['setorCensitarioID'] != null
@@ -88,10 +81,8 @@ class UsuarioModel extends FirestoreModel {
     if (this.foto != null) {
       data['foto'] = this.foto.toMap();
     }
-    // if (this.rotaID != null) {
-    //   data['rotaID'] = this.rotaID.map((v) => v.toMap()).toList();
-    // }
-        if (routes != null) data['routes'] = this.routes;
+
+    if (routes != null) data['routes'] = this.routes;
 
     if (this.setorCensitarioID != null) {
       data['setorCensitarioID'] = this.setorCensitarioID.toMap();
@@ -111,4 +102,3 @@ class UsuarioModel extends FirestoreModel {
     return data;
   }
 }
-

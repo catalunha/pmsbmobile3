@@ -1,6 +1,7 @@
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/produto_texto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -22,6 +23,12 @@ class UpdateProdutoIDNomeEvent extends ProdutoCRUDPageEvent {
   UpdateProdutoIDNomeEvent(this.produtoIDNome);
 }
 
+class UpdatePDFEvent extends ProdutoCRUDPageEvent {
+  final String pdfLocalPath;
+
+  UpdatePDFEvent(this.pdfLocalPath);
+}
+
 class SaveProdutoIDEvent extends ProdutoCRUDPageEvent {}
 
 class DeleteProdutoIDEvent extends ProdutoCRUDPageEvent {}
@@ -33,8 +40,15 @@ class ProdutoCRUDPageState {
   String produtoModelID;
   String produtoModelIDTitulo;
 
+  String pdfLocalPath;
+  String pdfUrl;
+  String pdfUploadID;
+
   void updateStateFromProdutoModel() {
     produtoModelIDTitulo = produtoModel.titulo;
+    pdfLocalPath = produtoModel?.pdf?.localPath;
+    pdfUrl = produtoModel?.pdf?.url;
+    pdfUploadID = produtoModel?.pdf?.uploadID;
   }
 
   Map<String, dynamic> toMap() {
@@ -78,20 +92,6 @@ class ProdutoCRUDPageBloc {
       _authBloc.perfil.listen((usuario) {
         _state.usuarioModel = usuario;
       });
-      // _authBloc.userId.listen((userId) async{
-      //   final docRef = _firestore
-      //       .collection(UsuarioModel.collection)
-      //       .document(userId);
-
-      //   final snap = await docRef.get();
-
-      //   if (snap.exists) {
-      //     _state.usuarioModel =
-      //         UsuarioModel(id: snap.documentID).fromMap(snap.data);
-      //   }
-      // });
-
-      //Atualiza estado com usuario logado
     }
 
     if (event is UpdateProdutoIDEvent) {
@@ -116,6 +116,37 @@ class ProdutoCRUDPageBloc {
     }
 
     if (event is SaveProdutoIDEvent) {
+      if (_state.pdfUploadID != null && _state.pdfUrl == null) {
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.pdfUploadID);
+        await docRef.delete();
+        _state.pdfUploadID = null;
+      }
+
+      final docRefColl = _firestore
+          .collection(ProdutoModel.collection)
+          .document(_state.produtoModelID);
+
+
+      //+++ Cria doc em UpLoadCollection
+      if (_state.pdfLocalPath != null) {
+        final upLoadModel = UploadModel(
+          usuario: _state.usuarioModel.id,
+          localPath: _state.pdfLocalPath,
+          upload: false,
+          updateCollection: UpdateCollection(
+              collection: ProdutoModel.collection,
+              document: docRefColl.documentID,
+              field: "pdf"),
+        );
+        final docRef = _firestore
+            .collection(UploadModel.collection)
+            .document(_state.pdfUploadID);
+        await docRef.setData(upLoadModel.toMap(), merge: true);
+        _state.pdfUploadID = docRef.documentID;
+      }
+
       final produtoModelSave = ProdutoModel(
         titulo: _state.produtoModelIDTitulo,
         eixoID: _state.usuarioModel.eixoIDAtual,
@@ -123,16 +154,32 @@ class ProdutoCRUDPageBloc {
         usuarioID: UsuarioID(
             id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
         modificado: DateTime.now().toUtc(),
+        pdf: UploadID(uploadID:_state.pdfUploadID,url:_state.pdfUrl,localPath:_state.pdfLocalPath),
       );
 
-      final docRefColl = _firestore
-          .collection(ProdutoModel.collection)
-          .document(_state.produtoModelID);
+
+      //--- Cria doc em UpLoadCollection
       await docRefColl.setData(produtoModelSave.toMap(), merge: true);
 
       if (_state.produtoModelID == null) {
         final produtoTextoModelSave = ProdutoTextoModel(
-          textoMarkdown: "Pronto para iniciar edição.",
+          textoMarkdown: """
+Pronto para iniciar edição com estilo markdown.
+#  Titulo 1
+
+## Titulo 2
+
+### Titulo 3
+
+**negrito**
+
+[Clique aqui para ver a imagem editada](http://www.google.com.br/)
+
+Lista
+- a
+- b
+- c
+          """,
           editando: false,
           usuarioID: UsuarioID(
               id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
@@ -147,6 +194,10 @@ class ProdutoCRUDPageBloc {
               .setData({"produtoTextoID": docSnap.documentID}, merge: true);
         });
       }
+    }
+    if (event is UpdatePDFEvent) {
+      _state.pdfLocalPath = event.pdfLocalPath;
+      _state.pdfUrl = null;
     }
 
     if (event is DeleteProdutoIDEvent) {

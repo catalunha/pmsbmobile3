@@ -79,8 +79,12 @@ class UploadBloc {
     }
 
     String filePath = _blocState.uploadModel.localPath;
+
     final uuid = new Uuid();
     File file = File(filePath);
+    // String nameOriginal = file.path.split('/').last;
+    // Map<String, String> customMetadata = Map<String, String>();
+    // customMetadata['nameOriginal']=nameOriginal;
     final String filename = uuid.v4();
     final fileContentType =
         lookupMimeType(filePath, headerBytes: file.readAsBytesSync());
@@ -90,6 +94,7 @@ class UploadBloc {
       file,
       StorageMetadata(
         contentType: fileContentType,
+        // customMetadata:customMetadata,
       ),
     );
     _eventsSubscription = _uploadTask.events.listen((event) {
@@ -127,8 +132,28 @@ class UploadBloc {
     //   url: await storageTaskEvent.snapshot.ref.getDownloadURL(),
     //   upload: true,
     // );
+
+// print('>>> storageTaskEvent.snapshot.storageMetadata.getBucket.toString <<< ${ storageTaskEvent.snapshot.ref.getBucket().toString()}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.getBucket1 <<< ${await storageTaskEvent.snapshot.ref.getBucket()}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.getName <<< ${await storageTaskEvent.snapshot.ref.getName()}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.getPath <<< ${await storageTaskEvent.snapshot.ref.getPath()}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.getDownloadURL <<< ${await storageTaskEvent.snapshot.ref.getDownloadURL()}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.getParent <<< ${storageTaskEvent.snapshot.ref.path}');
+// // print('>>> storageTaskEvent.snapshot.storageMetadata.getRoot <<< ${storageTaskEvent.snapshot.ref.getRoot().getStorage()}');
+// // print('>>> storageTaskEvent.snapshot.storageMetadata.getRoot <<< ${storageTaskEvent.snapshot.ref.getRoot().getRoot()}');
+// // print('>>> storageTaskEvent.snapshot.storageMetadata.getStorage <<< ${storageTaskEvent.snapshot.ref.getStorage()}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.name <<< ${storageTaskEvent.snapshot.storageMetadata.bucket}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.name <<< ${storageTaskEvent.snapshot.storageMetadata.name}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.path <<< ${storageTaskEvent.snapshot.storageMetadata.path}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.contentType <<< ${storageTaskEvent.snapshot.storageMetadata.contentType}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.md5Hash <<< ${storageTaskEvent.snapshot.storageMetadata.md5Hash}');
+// print('>>> storageTaskEvent.snapshot.storageMetadata.md5Hash <<< ${storageTaskEvent.snapshot.}');
+
+
+    // _blocState.uploadModel.nome =
+    //     storageTaskEvent.snapshot.storageMetadata.customMetadata['nameOriginal'];
     _blocState.uploadModel.storagePath =
-        storageTaskEvent.snapshot.storageMetadata.path;
+        await storageTaskEvent.snapshot.ref.getBucket();
     _blocState.uploadModel.contentType =
         storageTaskEvent.snapshot.storageMetadata.contentType;
     _blocState.uploadModel.url =

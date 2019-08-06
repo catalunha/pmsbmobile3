@@ -1,3 +1,23 @@
+
+- [Regras](#regras)
+- [Diretrizes](#diretrizes)
+- [Functions](#functions)
+  - [Perfil](#perfil)
+    - [Function PerfilToUsuarioPerfil](#function-perfiltousuarioperfil)
+  - [Usuario](#usuario)
+    - [Function UsuarioUpdateNome](#function-usuarioupdatenome)
+    - [Function UsuarioToUsuarioPerfil - Ok.](#function-usuariotousuarioperfil---ok)
+  - [Cargo](#cargo)
+    - [Function CargoUpdateNome](#function-cargoupdatenome)
+  - [Eixo](#eixo)
+    - [Function EixoUpdateNome](#function-eixoupdatenome)
+  - [SetorCensitario](#setorcensitario)
+    - [Function SetorCensitarioUpdateNome](#function-setorcensitarioupdatenome)
+- [Upload](#upload)
+
+---
+---
+
 # Regras
 
 # Diretrizes
@@ -251,7 +271,7 @@ O usuario então solicitará o upload no aplicativo e o UploadCollection ficará
     "updateCollection": {
       "collection": "Usuario || UsuarioPerfil || Produto || PerguntaAplicada",
       "document": "ID do documento nesta coleção",
-      "field": "foto (UsuarioID) || arquivo (UsuarioPerfilID) || uid.rascunhoIdUpload ou uid.editadoIdUpload (ProdutoID) || arquivo (PerguntaAplicadaID)"
+      "field": "foto (UsuarioID) || arquivo (UsuarioPerfilID) || uid.rascunhoIdUpload ou uid.editadoIdUpload ou pdf em (ProdutoID) || arquivo (PerguntaAplicadaID)"
     },
     "storagePath": "obtida do storage após upload",
     "contentType": "definido pelo metadata text/plain | text/markdown | text/csv | text/html | image/png | image/jpeg | image/svg+xml  | application/pdf | application/msword | application/zip | video/x-msvideo | video/mpeg | audio/aac",
@@ -259,7 +279,7 @@ O usuario então solicitará o upload no aplicativo e o UploadCollection ficará
     "hash": "gerado pelo dart na leitura local do arquivo"
   },
 ~~~
-
 Neste momento o campo upload=false foi atualizado para upload=true bem como os demai campos.
 
-Então a function deverá considerar o campo updateCollection e atualizar a collection, document e field correspondente.
+Então.
+A function deverá considerar o campo updateCollection e atualizar a collection, document e field correspondente.

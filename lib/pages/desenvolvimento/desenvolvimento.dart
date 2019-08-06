@@ -33,6 +33,7 @@ class Desenvolvimento extends StatefulWidget {
 class _DesenvolvimentoState extends State<Desenvolvimento> {
   final bloc = DesenvolvimentoPageBloc(Bootstrap.instance.firestore);
   final fw.Firestore _firestore = Bootstrap.instance.firestore;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   @override
   void initState() {
@@ -100,6 +101,22 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       onPressed: () async {
                         // await atualizarEixoAcesso('SftB5Ix0d4MaHLEs8LASoT7KKl13');
                         // await atualizarEixoAcesso('ysqq0XARJnZoxIzIc43suDm7gaK2');
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Teste delete.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // await atualizarEixoAcesso('SftB5Ix0d4MaHLEs8LASoT7KKl13');
+                        // await atualizarEixoAcesso('ysqq0XARJnZoxIzIc43suDm7gaK2');
+
+                        Future<StorageReference> a = _storage.getReferenceFromUrl(
+                            'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/05bcd37e-d1ad-4d0e-84c2-4ad27e8b05a0?alt=media&token=b727c190-4bae-4e8e-b45c-8569395dbf60');
+                        a.then((doc) {
+                          doc.delete();
+                        });
                       },
                     ),
                   ),
