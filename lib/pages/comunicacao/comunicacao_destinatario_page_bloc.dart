@@ -1,7 +1,5 @@
-import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
