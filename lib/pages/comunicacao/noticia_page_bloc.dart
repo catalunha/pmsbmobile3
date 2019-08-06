@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
@@ -35,7 +34,7 @@ class NoticiaPageBloc {
   final fsw.Firestore firestore;
 
   // Authenticacação
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final _authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   //Evento
   final _noticiaPageEventController = BehaviorSubject<NoticiaPageEvent>();

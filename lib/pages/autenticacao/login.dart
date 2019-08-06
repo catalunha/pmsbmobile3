@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthBloc authBloc =
-      AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+      AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
   LoginPage();
 
   @override

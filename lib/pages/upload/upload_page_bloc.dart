@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;

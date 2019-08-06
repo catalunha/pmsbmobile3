@@ -8,14 +8,13 @@ import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_pag
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-import 'package:pmsbmibile3/api/api.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+    final authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
     return
         MaterialApp(
           title: 'PMSB-TO-22',

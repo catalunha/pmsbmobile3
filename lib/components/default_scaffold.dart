@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -19,7 +18,7 @@ class DefaultDrawer extends StatelessWidget {
   Map<String, Rota> rotas;
 
   DefaultDrawer()
-      : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore) {
+      : authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore) {
     // Map<String, Rota>
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
@@ -215,7 +214,7 @@ class DefaultEndDrawer extends StatelessWidget {
   final AuthBloc authBloc;
 
   DefaultEndDrawer()
-      : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+      : authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {

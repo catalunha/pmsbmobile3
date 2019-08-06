@@ -106,6 +106,24 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.4"
+  firebaseauth_wrapper:
+    dependency: transitive
+    description:
+      path: firebaseauth_wrapper
+      ref: HEAD
+      resolved-ref: "00348e4b9b0ee7e0dea5df622bc1a49e689de003"
+      url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
+    source: git
+    version: "0.0.1"
+  firebaseauth_wrapper_flutter:
+    dependency: "direct main"
+    description:
+      path: firebaseauth_wrapper_flutter
+      ref: HEAD
+      resolved-ref: "00348e4b9b0ee7e0dea5df622bc1a49e689de003"
+      url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
+    source: git
+    version: "0.0.1"
   firestore_wrapper:
     dependency: transitive
     description:
