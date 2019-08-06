@@ -2,10 +2,9 @@ import 'package:flutter/material.dart' show TimeOfDay;
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class ComunicacaoCRUDPageEvent {}
 class UpDateUsuarioIDEditorEvent extends ComunicacaoCRUDPageEvent {
@@ -117,6 +116,7 @@ class ComunicacaoCRUDPageState {
 }
 
 class ComunicacaoCRUDPageBloc {
+  final _firestore = Bootstrap.instance.firestore;
   final _authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   //Eventos da página
@@ -153,7 +153,7 @@ class ComunicacaoCRUDPageBloc {
 
   _mapEventToState(ComunicacaoCRUDPageEvent event) {
     if (event is UpDateUsuarioIDEditorEvent) {
-      Firestore.instance
+      _firestore
           .collection(UsuarioModel.collection)
           .document(event.usuarioIDEditorId)
           .snapshots()
@@ -226,7 +226,7 @@ class ComunicacaoCRUDPageBloc {
   _saveStateToFirebase() {
     final map = _state.toNoticiaModel().toMap();
     // // print(map);
-    final docRef = Firestore.instance
+    final docRef = _firestore
         .collection(NoticiaModel.collection)
         .document(_state.noticiaID);
     // docRef.setData(map, merge: true); // se deixar merge ele amplia a lista e nao exclui.
@@ -234,7 +234,7 @@ class ComunicacaoCRUDPageBloc {
   }
 
   _deleteNoticiaIdEvent() {
-    Firestore.instance
+    _firestore
         .collection(NoticiaModel.collection)
         .document(_state.noticiaID)
         .delete();
@@ -242,10 +242,10 @@ class ComunicacaoCRUDPageBloc {
 
   void _mapUpdateNoticiaIdEvent(UpdateNoticiaIDEvent event) {
     if (event.noticiaID == _state.noticiaID) return;
-    var ref = Firestore.instance
+    var ref = _firestore
         .collection(NoticiaModel.collection)
         .document(event.noticiaID);
-    ref.snapshots().listen((DocumentSnapshot snap) {
+    ref.snapshots().listen((fsw.DocumentSnapshot snap) {
       var noticia = NoticiaModel(id: snap.documentID).fromMap(snap.data);
       _state.fromNoticiaModel(noticia);
       _stateController.sink.add(_state);
