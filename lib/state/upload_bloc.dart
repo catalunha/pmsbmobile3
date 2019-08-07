@@ -150,8 +150,8 @@ class UploadBloc {
 // print('>>> storageTaskEvent.snapshot.storageMetadata.md5Hash <<< ${storageTaskEvent.snapshot.}');
 
 
-    // _blocState.uploadModel.nome =
-    //     storageTaskEvent.snapshot.storageMetadata.customMetadata['nameOriginal'];
+    _blocState.uploadModel.nome =
+        storageTaskEvent.snapshot.storageMetadata.name;
     _blocState.uploadModel.storagePath =
         await storageTaskEvent.snapshot.ref.getBucket();
     _blocState.uploadModel.contentType =
