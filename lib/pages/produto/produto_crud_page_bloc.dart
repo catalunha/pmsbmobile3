@@ -231,32 +231,34 @@ Link para imagem do projeto. (clique no icone cole aqui)
     }
 
     if (event is DeleteProdutoIDEvent) {
-      for (var arq in _state.produtoModel.arquivo.entries) {
-        if (arq.value?.rascunhoIdUpload != null) {
-          _firestore
-              .collection(UploadModel.collection)
-              .document(arq.value?.rascunhoIdUpload)
-              .delete();
-        }
-        if (arq.value?.editadoIdUpload != null) {
-          _firestore
-              .collection(UploadModel.collection)
-              .document(arq.value?.editadoIdUpload)
-              .delete();
-        }
-        if (arq.value?.rascunhoUrl != null) {
-          Future<StorageReference> storageRefFut =
-              _storage.getReferenceFromUrl(arq.value.rascunhoUrl);
-          storageRefFut.then((storageRef) {
-            storageRef.delete();
-          });
-        }
-        if (arq.value?.editadoUrl != null) {
-          Future<StorageReference> storageRefFut =
-              _storage.getReferenceFromUrl(arq.value.editadoUrl);
-          storageRefFut.then((storageRef) {
-            storageRef.delete();
-          });
+      if (_state.produtoModel?.arquivo != null) {
+        for (var arq in _state.produtoModel.arquivo.entries) {
+          if (arq.value?.rascunhoIdUpload != null) {
+            _firestore
+                .collection(UploadModel.collection)
+                .document(arq.value?.rascunhoIdUpload)
+                .delete();
+          }
+          if (arq.value?.editadoIdUpload != null) {
+            _firestore
+                .collection(UploadModel.collection)
+                .document(arq.value?.editadoIdUpload)
+                .delete();
+          }
+          if (arq.value?.rascunhoUrl != null) {
+            Future<StorageReference> storageRefFut =
+                _storage.getReferenceFromUrl(arq.value.rascunhoUrl);
+            storageRefFut.then((storageRef) {
+              storageRef.delete();
+            });
+          }
+          if (arq.value?.editadoUrl != null) {
+            Future<StorageReference> storageRefFut =
+                _storage.getReferenceFromUrl(arq.value.editadoUrl);
+            storageRefFut.then((storageRef) {
+              storageRef.delete();
+            });
+          }
         }
       }
 
