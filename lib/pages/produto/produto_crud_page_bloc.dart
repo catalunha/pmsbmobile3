@@ -130,8 +130,8 @@ class ProdutoCRUDPageBloc {
         _state.pdfUploadID = null;
 
         if (_state.produtoModel.pdf?.url != null) {
-          Future<StorageReference> storageRefFut = _storage.getReferenceFromUrl(
-              _state.produtoModel.pdf.url);
+          Future<StorageReference> storageRefFut =
+              _storage.getReferenceFromUrl(_state.produtoModel.pdf.url);
           storageRefFut.then((storageRef) {
             storageRef.delete();
           });
@@ -231,6 +231,49 @@ Link para imagem do projeto. (clique no icone cole aqui)
     }
 
     if (event is DeleteProdutoIDEvent) {
+      for (var arq in _state.produtoModel.arquivo.entries) {
+        if (arq.value?.rascunhoIdUpload != null) {
+          _firestore
+              .collection(UploadModel.collection)
+              .document(arq.value?.rascunhoIdUpload)
+              .delete();
+        }
+        if (arq.value?.editadoIdUpload != null) {
+          _firestore
+              .collection(UploadModel.collection)
+              .document(arq.value?.editadoIdUpload)
+              .delete();
+        }
+        if (arq.value?.rascunhoUrl != null) {
+          Future<StorageReference> storageRefFut =
+              _storage.getReferenceFromUrl(arq.value.rascunhoUrl);
+          storageRefFut.then((storageRef) {
+            storageRef.delete();
+          });
+        }
+        if (arq.value?.editadoUrl != null) {
+          Future<StorageReference> storageRefFut =
+              _storage.getReferenceFromUrl(arq.value.editadoUrl);
+          storageRefFut.then((storageRef) {
+            storageRef.delete();
+          });
+        }
+      }
+
+      if (_state.produtoModel?.pdf?.uploadID != null) {
+        _firestore
+            .collection(UploadModel.collection)
+            .document(_state.produtoModel?.pdf?.uploadID)
+            .delete();
+        if (_state.produtoModel?.pdf?.url != null) {
+          Future<StorageReference> storageRefFut =
+              _storage.getReferenceFromUrl(_state.produtoModel?.pdf?.url);
+          storageRefFut.then((storageRef) {
+            storageRef.delete();
+          });
+        }
+      }
+
       final docRef = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoModelID)

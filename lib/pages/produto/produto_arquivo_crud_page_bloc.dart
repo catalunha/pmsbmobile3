@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
@@ -97,6 +98,9 @@ class ProdutoArquivoCRUDPageBloc {
   //Firestore
   final fw.Firestore _firestore;
 
+  //Storage
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
   //Eventos
   final _eventController = BehaviorSubject<ProdutoArquivoCRUDPageEvent>();
   Stream<ProdutoArquivoCRUDPageEvent> get eventStream =>
@@ -167,16 +171,35 @@ class ProdutoArquivoCRUDPageBloc {
       if (!_stateController.isClosed) _stateController.add(_state);
       //+++ Se novo localPath apagar uploads
       if (_state.rascunhoUrl == null) {
-        print('>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.rascunhoIdUpload}');
+        print(
+            '>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.rascunhoIdUpload}');
         _firestore
             .collection(UploadModel.collection)
-            .document(_state.arquivo?.rascunhoIdUpload).delete();
+            .document(_state.arquivo?.rascunhoIdUpload)
+            .delete();
+
+        if (_state.arquivo?.rascunhoUrl != null) {
+          Future<StorageReference> storageRefFut =
+              _storage.getReferenceFromUrl(_state.arquivo.rascunhoUrl);
+          storageRefFut.then((storageRef) {
+            storageRef.delete();
+          });
+        }
       }
       if (_state.editadoUrl == null) {
-        print('>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.editadoIdUpload}');
+        print(
+            '>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.editadoIdUpload}');
         _firestore
             .collection(UploadModel.collection)
-            .document(_state.arquivo?.editadoIdUpload).delete();
+            .document(_state.arquivo?.editadoIdUpload)
+            .delete();
+        if (_state.arquivo?.editadoUrl != null) {
+          Future<StorageReference> storageRefFut =
+              _storage.getReferenceFromUrl(_state.arquivo.editadoUrl);
+          storageRefFut.then((storageRef) {
+            storageRef.delete();
+          });
+        }
       }
       if (!_stateController.isClosed) _stateController.add(_state);
       //---
@@ -190,8 +213,7 @@ class ProdutoArquivoCRUDPageBloc {
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
               document: _state.produtoID,
-              field:
-                  "arquivo.${_state.arquivoID}.rascunhoUrl"),
+              field: "arquivo.${_state.arquivoID}.rascunhoUrl"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)
@@ -213,8 +235,7 @@ class ProdutoArquivoCRUDPageBloc {
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
               document: _state.produtoID,
-              field:
-                  "arquivo.${_state.arquivoID}.editadoUrl"),
+              field: "arquivo.${_state.arquivoID}.editadoUrl"),
         );
         final docRef = _firestore
             .collection(UploadModel.collection)
