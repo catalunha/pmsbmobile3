@@ -190,8 +190,15 @@ class ArquivoPDF extends StatelessWidget {
           children: <Widget>[
             ButtonTheme.bar(
                 child: ButtonBar(children: <Widget>[
-              Text('Atualizar pdf do produto.'),
+              Text('Atualizar pdf do produto:'),
               IconButton(
+                icon: Icon(Icons.delete_forever),
+                onPressed: ()  {
+                  bloc.eventSink(UpdateDeletePDFEvent());
+
+                },
+              ),
+                            IconButton(
                 icon: Icon(Icons.file_download),
                 onPressed: () async {
                   await _selecionarNovoArquivo().then((arq) {
@@ -203,11 +210,11 @@ class ArquivoPDF extends StatelessWidget {
               ),
             ])),
             pdfLocalPath==null
-            ? Text('Sem arquivo local.')
+            ? Container()
             : Text('Arquivo local: ${pdfLocalPath}'),
             pdfUrl==null
-            ? Text('Sem arquivo em nuvem.')
-            : Text('Arquivo na núvem: ${pdfLocalPath}'),
+            ? Text('Sem arquivo na núvem.')
+            : Text('Arquivo já esta na núvem !'),
           ],
         );
       },

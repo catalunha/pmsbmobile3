@@ -69,8 +69,8 @@ class UploadPage extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListTile(
-            title: Text('${uploading.upload.localPath}'),
-            subtitle: Text('${uploading.upload.updateCollection.collection}'),
+            title: Text('${uploading.upload.updateCollection.collection}'),
+            subtitle: Text('${uploading.upload.localPath}\n${uploading.upload.id}'),
             trailing: IconButton(
               icon: uploading.uploading ? Icon(Icons.cloud_upload) : Icon(Icons.send),
               onPressed: () {

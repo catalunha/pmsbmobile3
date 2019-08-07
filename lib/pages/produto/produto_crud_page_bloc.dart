@@ -1,3 +1,5 @@
+import 'package:rxdart/rxdart.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/produto_texto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
@@ -5,7 +7,6 @@ import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 class ProdutoCRUDPageEvent {}
 
@@ -32,6 +33,8 @@ class UpdatePDFEvent extends ProdutoCRUDPageEvent {
 class SaveProdutoIDEvent extends ProdutoCRUDPageEvent {}
 
 class DeleteProdutoIDEvent extends ProdutoCRUDPageEvent {}
+
+class UpdateDeletePDFEvent extends ProdutoCRUDPageEvent {}
 
 class ProdutoCRUDPageState {
   UsuarioModel usuarioModel;
@@ -65,6 +68,9 @@ class ProdutoCRUDPageBloc {
 
   // Authenticacação
   AuthBloc _authBloc;
+
+  //Storage
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   //Eventos
   final _eventController = BehaviorSubject<ProdutoCRUDPageEvent>();
@@ -122,12 +128,19 @@ class ProdutoCRUDPageBloc {
             .document(_state.pdfUploadID);
         await docRef.delete();
         _state.pdfUploadID = null;
+
+        if (_state.produtoModel.pdf?.url != null) {
+          Future<StorageReference> storageRefFut = _storage.getReferenceFromUrl(
+              _state.produtoModel.pdf.url);
+          storageRefFut.then((storageRef) {
+            storageRef.delete();
+          });
+        }
       }
 
       final docRefColl = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoModelID);
-
 
       //+++ Cria doc em UpLoadCollection
       if (_state.pdfLocalPath != null) {
@@ -154,9 +167,11 @@ class ProdutoCRUDPageBloc {
         usuarioID: UsuarioID(
             id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
         modificado: DateTime.now().toUtc(),
-        pdf: UploadID(uploadID:_state.pdfUploadID,url:_state.pdfUrl,localPath:_state.pdfLocalPath),
+        pdf: UploadID(
+            uploadID: _state.pdfUploadID,
+            url: _state.pdfUrl,
+            localPath: _state.pdfLocalPath),
       );
-
 
       //--- Cria doc em UpLoadCollection
       await docRefColl.setData(produtoModelSave.toMap(), merge: true);
@@ -164,7 +179,7 @@ class ProdutoCRUDPageBloc {
       if (_state.produtoModelID == null) {
         final produtoTextoModelSave = ProdutoTextoModel(
           textoMarkdown: """
-Pronto para iniciar edição com estilo markdown.
+Pronto para iniciar edição ? Use estilo markdown, veja exemplos abaixo.
 #  Titulo 1
 
 ## Titulo 2
@@ -173,12 +188,22 @@ Pronto para iniciar edição com estilo markdown.
 
 **negrito**
 
-[Clique aqui para ver a imagem editada](http://www.google.com.br/)
-
 Lista
 - a
 - b
 - c
+
+Link para image use o formato: ![](Link para imagem)
+
+---
+
+Link para imagem externa. (copiar lá colar aqui)
+![](https://ww2.uft.edu.br/images/monumento-palmas_foto_poliana_macedo-19-web.JPG)
+
+---
+
+Link para imagem do projeto. (clique no icone cole aqui)
+![](https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/tipos-de-graficos-matematica.jpg?alt=media&token=51452f1d-fb4f-4b35-8a42-61416666d299)
           """,
           editando: false,
           usuarioID: UsuarioID(
@@ -197,6 +222,11 @@ Lista
     }
     if (event is UpdatePDFEvent) {
       _state.pdfLocalPath = event.pdfLocalPath;
+      _state.pdfUrl = null;
+    }
+
+    if (event is UpdateDeletePDFEvent) {
+      _state.pdfLocalPath = null;
       _state.pdfUrl = null;
     }
 
