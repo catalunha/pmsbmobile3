@@ -6,6 +6,7 @@ import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
+import 'package:pmsbmibile3/pages/produto/chat/produto_chat_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 
@@ -151,6 +152,12 @@ class MyApp extends StatelessWidget {
                   produtoID: args.produtoID,
                   arquivoID: args.arquivoID,
                   tipo: args.tipo);
+            },
+             //produto - chat
+            "/produto/chat": (context) {
+              final settings = ModalRoute.of(context).settings;
+              ProdutoArguments args = settings.arguments;
+              return ProdutoChatPage();
             },
 
             //comunicacao
