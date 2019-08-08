@@ -11,6 +11,10 @@ import 'package:pmsbmibile3/bootstrap.dart';
 class AdministracaoHomePage extends StatelessWidget {
   final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
 
+  void dispose() {
+    bloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
@@ -154,7 +158,6 @@ class ItemListView extends StatelessWidget {
 //   }
 // }
 
-
 class _ImagemUnica extends StatelessWidget {
   final String fotoUrl;
   final String fotoLocalPath;
@@ -178,10 +181,12 @@ class _ImagemUnica extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             // child: Icon(Icons.people, size: 75),
-            child: io.File(fotoLocalPath).existsSync()? Image.asset(fotoLocalPath):Text('Sem upload'),
+            child: io.File(fotoLocalPath).existsSync()
+                ? Image.asset(fotoLocalPath)
+                : Text('Sem upload'),
           ));
     }
-    
+
     return Row(
       children: <Widget>[
         Spacer(

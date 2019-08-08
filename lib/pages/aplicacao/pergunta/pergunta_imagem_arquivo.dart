@@ -41,8 +41,8 @@ class _PerguntaWigdetImagemArquivoState
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   Future _selecionarNovaImagem() async {
