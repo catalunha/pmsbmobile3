@@ -85,7 +85,7 @@ class AplicacaoHomePageBloc {
           .toList();
     }
 
-    _outputController.add(_state);
+    if (!_outputController.isClosed) _outputController.add(_state);
     print('event.runtimeType em AplicacaoHomePageBloc  = ${event.runtimeType}');
   }
 }
