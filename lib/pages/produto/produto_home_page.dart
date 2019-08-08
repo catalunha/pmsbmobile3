@@ -121,9 +121,11 @@ class ProdutoHomePage extends StatelessWidget {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.note_add),
+                  icon: Icon(Icons.message),
                   tooltip: 'chat para o produto',
-                  onPressed: null,
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/chat/home');
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.picture_as_pdf),

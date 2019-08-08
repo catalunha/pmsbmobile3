@@ -42,7 +42,7 @@
       "localPath": "path local do arquivo no celular do usuario."
     },
     "routes": [
-        "Rota/rotaID$url"
+      "Rota/rotaID$url"
     ],
     "setorCensitario": {
       "setorCensitarioID": "SetorCensitario/setorCensitarioID",
@@ -217,7 +217,7 @@
       "url": "null || obtida do storage após upload",
       "localPath": "path local do arquivo no celular do usuario. || null após upload"
     },
-   "arquivo": {
+    "arquivo": {
       "uid": {
         "tipo": "imagem || tabela || grafico || mapa",
         "titulo": "titulo-valor",
@@ -248,5 +248,23 @@
       "nome": "/Usuario/usuarioID$nome"
     },
     "textoMarkdown": "textoMarkdown-valor"
+  },
+  "Chat": {
+    "ID": "ProdutoID || QuestionarioID || ID para outro seguimento",
+    "usuario": {
+      "usuarioID": {
+        "id": true,
+        "nome": "/Usuario/usuarioID$nome",
+        "lido": false
+      }
+    }
+  },
+  "Chat/chatID/ChatMessagem": {
+    "usuario": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "texto": "texto",
+    "datahora": "Firebase timestamp"
   }
 }
