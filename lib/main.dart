@@ -1,4 +1,11 @@
+//
+import 'dart:convert';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+//
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
@@ -11,8 +18,65 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
+
+  void registerNotification() {
+    firebaseMessaging.requestNotificationPermissions();
+
+    firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+      print(' ----------------- \n onMessage: $message');
+      showNotification(message['notification']);
+      return;
+    }, onResume: (Map<String, dynamic> message) {
+      print('----------------- \n onResume: $message');
+      return;
+    }, onLaunch: (Map<String, dynamic> message) {
+      print('----------------- \n onLaunch: $message');
+      return;
+    });
+
+    // firebaseMessaging.getToken().then((token) {
+    //   print('token: $token');
+    //   Firestore.instance
+    //       .collection('Usuario')
+    //       .document('nsD07Jb8cqRy9liyX82JwDSq8d22')
+    //       .updateData({'pushToken': token});
+    // }).catchError((err) {
+    //   print(err.message.toString());
+    // });
+  }
+
+  void showNotification(message) async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+      Platform.isAndroid
+          ? 'com.dfa.flutterchatdemo'
+          : 'com.duytq.flutterchatdemo',
+      'Flutter chat demo',
+      'your channel description',
+      playSound: true,
+      enableVibration: true,
+      importance: Importance.Max,
+      priority: Priority.High,
+    );
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    dynamic valueInt = 0;
+    await flutterLocalNotificationsPlugin.show(valueInt, message['title'].toString(),
+        message['body'].toString(), platformChannelSpecifics,
+        payload: json.encode(message));
+  }
+
+  @override
+  void initState() {
+    registerNotification();
+  }
+
   @override
   Widget build(BuildContext context) {
+    registerNotification();
     final authBloc =
         AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
     return MaterialApp(
