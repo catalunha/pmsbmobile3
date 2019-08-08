@@ -56,7 +56,7 @@ class PerguntaEscolhaListPageBloc {
     _eventController.close();
     _escolhaMapController.close();
   }
-  
+
   _validateData() {
     bool isValid = true;
     if (_state.escolhaMap != null) {
@@ -122,9 +122,8 @@ class PerguntaEscolhaListPageBloc {
 
     _validateData();
     if (!_stateController.isClosed) stateSink(_state);
-    print('ccc PerguntaEscolhaListPageBloc ${event.runtimeType}');
     print('>>> _state.escolhaMap <<< ${_state.escolhaMap}');
+    print(
+        'event.runtimeType em PerguntaEscolhaListPageBloc  = ${event.runtimeType}');
   }
-
-
 }

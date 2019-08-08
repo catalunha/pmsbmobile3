@@ -57,7 +57,7 @@ class UploadFilePathBloc {
       fileStream.where((String filePath) => filePath != null),
       _uploadFromPathHandler,
     );
-    uploadTasks.listen((_) => print("uploadTask iniciada"));
+    // uploadTasks.listen((_) => print("uploadTask iniciada"));
     storageTaskEventStream.listen(_handleStorageTaskEvent);
   }
 

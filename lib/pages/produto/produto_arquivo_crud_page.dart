@@ -9,7 +9,7 @@ class ProdutoArquivoCRUDPage extends StatefulWidget {
   final String arquivoID;
   final String tipo;
   ProdutoArquivoCRUDPage({this.produtoID, this.arquivoID, this.tipo}) {
-    print('instancia de ProdutoArquivoCRUDPage 2');
+    // print('instancia de ProdutoArquivoCRUDPage 2');
   }
 
   @override

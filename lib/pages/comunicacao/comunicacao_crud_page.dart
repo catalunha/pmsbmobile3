@@ -85,7 +85,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       setState(() {
         _date = selectedDate;
       });
-      print('selectedDate: ${_date.toString()}');
+      // print('selectedDate: ${_date.toString()}');
     }
   }
 
@@ -106,7 +106,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             UpdatePublicarEvent(hora: selectedTime));
         _hora = selectedTime;
       });
-      print('selectedTime: ${_hora.toString()}');
+      // print('selectedTime: ${_hora.toString()}');
     }
   }
 

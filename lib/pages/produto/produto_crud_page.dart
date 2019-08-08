@@ -205,7 +205,7 @@ class ArquivoPDF extends StatelessWidget {
                     pdfLocalPath = arq;
                   });
                   bloc.eventSink(UpdatePDFEvent(pdfLocalPath));
-                  print('>>> pdfLocalPath <<< ${pdfLocalPath}');
+                  // print('>>> pdfLocalPath <<< ${pdfLocalPath}');
                 },
               ),
             ])),

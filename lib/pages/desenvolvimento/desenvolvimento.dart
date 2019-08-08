@@ -70,29 +70,34 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
+                        //Desenvolvimento
                         // await usuarioPMSBWEB('Aq96qoxA0zgLfNDPGPCzFRAYtkl2');
+                        await usuarioCatalunhaUFT(
+                            'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
+                        //Administração
                         // await usuarioAurelio('hQ5HviPFAsN74tDBDqD3KCABOf32');
                         // await usuarioJoaquina('98daMqALQRO1rpsakt5d6Dx26742');
+                        // await usuarioGirlene('qnbwLQuiuXYJxKUFx5sHPZ3CgG92');
+                        //Coordenadores
                         // await usuarioSergio('jkKgYjZ3zSf6cZ6T7ZrLxp5R9Am2');
                         // await usuarioPortela('0s0pMoclpwPs2CwUWDAmeCdPz5s1');
-                        // await usuarioGirlene('qnbwLQuiuXYJxKUFx5sHPZ3CgG92');
                         // await usuarioBob('SftB5Ix0d4MaHLEs8LASoT7KKl13');
                         // await usuarioCleiton('9MZTcuTI3ofGW67tO5J1mTLHPl03');
                         // await usuarioRui('I2hXlyGuTHdXufAiu6jDp05m3ft1');
-                        // await usuarioJuniezer('ysqq0XARJnZoxIzIc43suDm7gaK2');
                         // await usuarioTatiana('oPZZYu1MOSU6AGcggVqptuLtVqn1');
+                        //Outros
+                        // await usuarioJuniezer('ysqq0XARJnZoxIzIc43suDm7gaK2');
                         //+++Equipe do sergio
-                        await usuarioDaise('3QQj89dTIzP2agsab2cDURfNRrx2');//daise1992@uft.edu.br
-                       
-                        await usuarioIcaro('otFKSENFI5Y5fkqsQCUrisVtcCh2');//oliveiraicaro386@gmail.com
-                        await usuarioRenan('5rdZil1Vg5XD0mX9ZE1fM42q7wz2');//renanaquilliscb@gmail.com
-                        await usuarioBruno('KvM6uM9U0MeTupzhj9TPuSdT55k1');//brunoferronatobarros@gmail.com
-                        
-                        await usuarioWesley('wEcNvxpSt8d30pfoXMdH53jrSKu1');//wesley.pinheiro@uft.edu.br
-                        await usuarioJucilene('qgCxh7Rw2CRGmzySw8DGBUSDj9B2');//jucilene@uft.edu.br
-                        await usuarioJuliana('6xReJevwK0d3DCQHmkRYpIoGN0g1');//juliana_costa@uft.edu.br
+                        // await usuarioDaise('3QQj89dTIzP2agsab2cDURfNRrx2');//daise1992@uft.edu.br
+
+                        // await usuarioIcaro('otFKSENFI5Y5fkqsQCUrisVtcCh2');//oliveiraicaro386@gmail.com
+                        // await usuarioRenan('5rdZil1Vg5XD0mX9ZE1fM42q7wz2');//renanaquilliscb@gmail.com
+                        // await usuarioBruno('KvM6uM9U0MeTupzhj9TPuSdT55k1');//brunoferronatobarros@gmail.com
+
+                        // await usuarioJucilene('qgCxh7Rw2CRGmzySw8DGBUSDj9B2');//jucilene@uft.edu.br
+                        // await usuarioJuliana('6xReJevwK0d3DCQHmkRYpIoGN0g1');//juliana_costa@uft.edu.br
+                        // await usuarioWesley('wEcNvxpSt8d30pfoXMdH53jrSKu1');//wesley.pinheiro@uft.edu.br
                         //---Equipe do sergio
-                        
                       },
                     ),
                   ),
@@ -155,7 +160,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData({"routes": routes}, merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future atualizarEixoAcesso(String userId) async {
@@ -166,6 +171,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
         EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
         EixoID(id: 'comunicacao', nome: 'Comunicação'),
+        EixoID(id: 'direcao', nome: 'Direção'),
+        EixoID(id: 'saude', nome: 'Saúde'),
+        EixoID(id: 'administracao', nome: 'Administração'),
       ],
     );
     final docRef =
@@ -178,21 +186,42 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
       ativo: true,
-      nome: 'uft',
+      nome: 'Catalunha UFT',
       celular: '0',
       email: 'catalunha@uft.edu.br',
-      routes: ['/'],
-      cargoID: CargoID(id: 'coordenador', nome: 'Coo'),
+      routes: [
+        '/',
+        '/desenvolvimento',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+        '/comunicacao/home',
+        '/administracao/home',
+        '/controle/home'
+      ],
+      cargoID: CargoID(id: 'coordenador', nome: 'Coord'),
       eixoID: EixoID(id: 'estatisticadsti', nome: ''),
-      eixoIDAcesso: [EixoID(id: 'estatisticadsti', nome: '')],
       eixoIDAtual: EixoID(id: 'estatisticadsti', nome: ''),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+        EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
+        EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+        EixoID(id: 'comunicacao', nome: 'Comunicação'),
+        EixoID(id: 'direcao', nome: 'Direção'),
+        EixoID(id: 'administracao', nome: 'Administração'),
+        EixoID(id: 'saude', nome: 'Saúde'),
+      ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'pal'),
     );
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioPMSBWEB(String userId) async {
@@ -224,7 +253,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioAurelio(String userId) async {
@@ -262,7 +291,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioJoaquina(String userId) async {
@@ -299,7 +328,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioSergio(String userId) async {
@@ -336,7 +365,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioPortela(String userId) async {
@@ -372,7 +401,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioTatiana(String userId) async {
@@ -409,7 +438,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioGirlene(String userId) async {
@@ -449,7 +478,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioBob(String userId) async {
@@ -479,7 +508,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioCleiton(String userId) async {
@@ -507,7 +536,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioRui(String userId) async {
@@ -543,7 +572,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioJuniezer(String userId) async {
@@ -577,9 +606,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
-
 
   Future usuarioDaise(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
@@ -599,8 +627,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
       eixoID: EixoID(id: 'saude', nome: 'Saúde'),
-      eixoIDAtual:
-          EixoID(id: 'saude', nome: 'Saúde'),
+      eixoIDAtual: EixoID(id: 'saude', nome: 'Saúde'),
       eixoIDAcesso: [
         EixoID(id: 'saude', nome: 'Saúde'),
       ],
@@ -609,7 +636,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioIcaro(String userId) async {
@@ -640,7 +667,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioRenan(String userId) async {
@@ -671,7 +698,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioBruno(String userId) async {
@@ -702,7 +729,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 
   Future usuarioWesley(String userId) async {
@@ -733,8 +760,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
+
   Future usuarioJucilene(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -763,8 +791,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
+
   Future usuarioJuliana(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -793,7 +822,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
-    print('>>> ok <<< ');
+    // print('>>> ok <<< ');
   }
 }
 
@@ -801,11 +830,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
 //     try {
 //       var arquivoPath = await FilePicker.getFilePath(type: FileType.ANY);
 //       if (arquivoPath != null) {
-//         // print('>> newfilepath 1 >> ${arquivoPath}');
+//         // // print('>> newfilepath 1 >> ${arquivoPath}');
 //         return arquivoPath;
 //       }
 //     } catch (e) {
-//       print("Unsupported operation" + e.toString());
+//       // print("Unsupported operation" + e.toString());
 //     }
 //   }
 // }
@@ -857,9 +886,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
 //     //     .document('-LkB9elzgUkl5OHFyjoB')
 //     //     .snapshots()
 //     //     .listen((snap) {
-//     //   print('>> snap.data.toString() >> ${snap.data.toString()}');
+//     //   // print('>> snap.data.toString() >> ${snap.data.toString()}');
 //     //   NoticiaModel noticia = NoticiaModel(id:snap.documentID).fromMap(snap.data);
-//     //   print(noticia.toMap());
+//     //   // print(noticia.toMap());
 //     // });
 //     // ---
 //     // +++ Criar NoticiaModel
@@ -881,7 +910,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
 //     //   }
 //     // };
 
-//     // print('>> noticiaModel >> ${noticiaModel}');
+//     // // print('>> noticiaModel >> ${noticiaModel}');
 //     // _firestore
 //     //     .collection(NoticiaModel.collection)
 //     //     .document()

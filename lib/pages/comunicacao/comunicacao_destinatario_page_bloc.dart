@@ -84,7 +84,7 @@ class ComunicacaoDestinatarioPageBloc {
       _cargoModelListController.stream;
 
   ComunicacaoDestinatarioPageBloc(this._firestore) {
-    print('ComunicacaoDestinatarioPageBloc instanciada ....');
+    // print('ComunicacaoDestinatarioPageBloc instanciada ....');
     comunicacaoDestinatarioPageEventStream.listen(_mapEventToState);
 
     _firestore.collection(CargoModel.collection).snapshots().listen(
@@ -135,15 +135,15 @@ class ComunicacaoDestinatarioPageBloc {
 
   _mapEventToState(ComunicacaoDestinatarioPageEvent event) {
     if (event is UpDateCargoIDEvent) {
-      print('evento de cargo: ${event.cargoID}');
+      // print('evento de cargo: ${event.cargoID}');
       _updateCargoModeltoState(event.cargoID);
     }
     if (event is UpDateEixoIDEvent) {
-      print('evento de eixo: ${event.eixoID}');
+      // print('evento de eixo: ${event.eixoID}');
       _updateEixoModeltoState(event.eixoID);
     }
     if (event is UpDateUsuarioIDEvent) {
-      print('evento de usuario: ${event.usuarioID}');
+      // print('evento de usuario: ${event.usuarioID}');
       _updateUsuarioModeltoState(event.usuarioID);
     }
     _comunicacaoDestinatarioPageStateController.sink
@@ -151,7 +151,7 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _updateCargoModeltoState(String id) {
-    print('processando cargo: ${id}');
+    // print('processando cargo: ${id}');
 
     bool marcou = false;
     for (var item in comunicacaoDestinatarioPageState.cargoList) {
@@ -170,7 +170,7 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _updateEixoModeltoState(String id) {
-    print('processando eixo: ${id}');
+    // print('processando eixo: ${id}');
     bool marcou = false;
     for (var item in comunicacaoDestinatarioPageState.eixoList) {
       if (item.id == id) {
@@ -188,7 +188,7 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _updateUsuarioModeltoState(String id) {
-    print('processando eixo: ${id}');
+    // print('processando eixo: ${id}');
     for (var item in comunicacaoDestinatarioPageState.usuarioList) {
       if (item.id == id) {
         item.checked = !item.checked;

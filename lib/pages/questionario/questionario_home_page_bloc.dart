@@ -109,17 +109,17 @@ class QuestionarioHomePageBloc {
           _state.questionarioMap[questionario.id] = questionario;
         }
 
-          var dicDesordenado = Dictionary.fromMap( _state.questionarioMap);
-          var dicOrdenadado = dicDesordenado
-              // Sort Ascending order by value ordem
-              .orderBy((kv) => kv.value.ordem)
-              // Sort Descending order by value ordem
-              // .orderByDescending((kv) => kv.value.ordem)
-              .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-          // print(dicOrdenadado.toMap());
-          _state.questionarioMap = dicOrdenadado.toMap();
-          if (!_stateController.isClosed) stateSink(_state);
-        });
+        var dicDesordenado = Dictionary.fromMap(_state.questionarioMap);
+        var dicOrdenadado = dicDesordenado
+            // Sort Ascending order by value ordem
+            .orderBy((kv) => kv.value.ordem)
+            // Sort Descending order by value ordem
+            // .orderByDescending((kv) => kv.value.ordem)
+            .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+        // print(dicOrdenadado.toMap());
+        _state.questionarioMap = dicOrdenadado.toMap();
+        if (!_stateController.isClosed) stateSink(_state);
+      });
     }
 
     if (event is OrdenarQuestionarioEvent) {
@@ -144,23 +144,23 @@ class QuestionarioHomePageBloc {
 
     _validateData();
     if (!_stateController.isClosed) stateSink(_state);
-    print('ccc QuestionarioHomePageBloc ${event.runtimeType}');
     // print('>>> _state.escolhaMap <<< ${_state.escolhaMap}');
+    print(
+        'event.runtimeType em QuestionarioHomePageBloc  = ${event.runtimeType}');
   }
 }
 
+// List<QuestionarioModel> valuesList =
+//     _state.questionarioMap.values.toList();
+// final questionarioColl =
+//     _firestore.collection(QuestionarioModel.collection);
+// int ordem = 0;
+// for (var questionario in valuesList) {
+//   final docQuest = questionarioColl.document(questionario.id);
+//   docQuest.setData({"ordem": ordem}, merge: true);
+//   ordem += 1;
+// }
 
-      // List<QuestionarioModel> valuesList =
-      //     _state.questionarioMap.values.toList();
-      // final questionarioColl =
-      //     _firestore.collection(QuestionarioModel.collection);
-      // int ordem = 0;
-      // for (var questionario in valuesList) {
-      //   final docQuest = questionarioColl.document(questionario.id);
-      //   docQuest.setData({"ordem": ordem}, merge: true);
-      //   ordem += 1;
-      // }
-
-      // final eixoRef = _firestore.collection(EixoModel.collection);
-      // final docEixo = eixoRef.document(_state.eixoAtualID);
-      // docEixo.setData({"ultimaOrdemQuestionario": ordem}, merge: true);
+// final eixoRef = _firestore.collection(EixoModel.collection);
+// final docEixo = eixoRef.document(_state.eixoAtualID);
+// docEixo.setData({"ultimaOrdemQuestionario": ordem}, merge: true);
