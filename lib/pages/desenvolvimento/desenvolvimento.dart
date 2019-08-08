@@ -81,6 +81,18 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                         // await usuarioRui('I2hXlyGuTHdXufAiu6jDp05m3ft1');
                         // await usuarioJuniezer('ysqq0XARJnZoxIzIc43suDm7gaK2');
                         // await usuarioTatiana('oPZZYu1MOSU6AGcggVqptuLtVqn1');
+                        //+++Equipe do sergio
+                        await usuarioDaise('3QQj89dTIzP2agsab2cDURfNRrx2');//daise1992@uft.edu.br
+                       
+                        await usuarioIcaro('otFKSENFI5Y5fkqsQCUrisVtcCh2');//oliveiraicaro386@gmail.com
+                        await usuarioRenan('5rdZil1Vg5XD0mX9ZE1fM42q7wz2');//renanaquilliscb@gmail.com
+                        await usuarioBruno('KvM6uM9U0MeTupzhj9TPuSdT55k1');//brunoferronatobarros@gmail.com
+                        
+                        await usuarioWesley('wEcNvxpSt8d30pfoXMdH53jrSKu1');//wesley.pinheiro@uft.edu.br
+                        await usuarioJucilene('qgCxh7Rw2CRGmzySw8DGBUSDj9B2');//jucilene@uft.edu.br
+                        await usuarioJuliana('6xReJevwK0d3DCQHmkRYpIoGN0g1');//juliana_costa@uft.edu.br
+                        //---Equipe do sergio
+                        
                       },
                     ),
                   ),
@@ -564,6 +576,222 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
 
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+
+  Future usuarioDaise(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'daise1992',
+      celular: '123',
+      email: 'daise1992@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+      ],
+      cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
+      eixoID: EixoID(id: 'saude', nome: 'Saúde'),
+      eixoIDAtual:
+          EixoID(id: 'saude', nome: 'Saúde'),
+      eixoIDAcesso: [
+        EixoID(id: 'saude', nome: 'Saúde'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioIcaro(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'oliveiraicaro386',
+      celular: '123',
+      email: 'oliveiraicaro386@gmail.com',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+      ],
+      cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual:
+          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioRenan(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'renanaquilliscb',
+      celular: '123',
+      email: 'renanaquilliscb@gmail.com',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+      ],
+      cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual:
+          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioBruno(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'brunoferronatobarros',
+      celular: '123',
+      email: 'brunoferronatobarros@gmail.com',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+      ],
+      cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual:
+          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+
+  Future usuarioWesley(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'wesley.pinheiro',
+      celular: '123',
+      email: 'wesley.pinheiro@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual:
+          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+  Future usuarioJucilene(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'jucilene',
+      celular: '123',
+      email: 'jucilene@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual:
+          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    print('>>> ok <<< ');
+  }
+  Future usuarioJuliana(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'juliana_costa',
+      celular: '123',
+      email: 'juliana_costa@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+        '/resposta/home',
+        '/sintese/home',
+        '/produto/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual:
+          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     print('>>> ok <<< ');
   }
