@@ -118,7 +118,10 @@ class ProdutoArquivoCRUDPageBloc {
   ProdutoArquivoCRUDPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
-
+  void dispose() {
+    _stateController.close();
+    _eventController.close();
+  }
   _mapEventToState(ProdutoArquivoCRUDPageEvent event) async {
     if (event is UpdateProdutoIDArquivoIDTipoEvent) {
       _state.produtoID = event.produtoID;
@@ -302,8 +305,5 @@ class ProdutoArquivoCRUDPageBloc {
         'event.runtimeType em ProdutoArquivoCRUDPageBloc  = ${event.runtimeType}');
   }
 
-  void dispose() {
-    _stateController.close();
-    _eventController.close();
-  }
+
 }

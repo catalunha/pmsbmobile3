@@ -60,6 +60,10 @@ class ProdutoTextoPageBloc {
     eventStream.listen(_mapEventToState);
   }
 
+  void dispose() {
+    _stateController.close();
+    _eventController.close();
+  }
   _mapEventToState(ProdutoTextoPageEvent event) async {
     if (event is UpdateProdutoIDEvent) {
       final docRefColl = _firestore
@@ -107,8 +111,4 @@ class ProdutoTextoPageBloc {
     if (!_stateController.isClosed) _stateController.add(_state);
   }
 
-  void dispose() {
-    _stateController.close();
-    _eventController.close();
-  }
 }

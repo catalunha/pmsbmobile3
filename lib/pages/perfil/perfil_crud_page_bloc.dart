@@ -52,6 +52,7 @@ class PerfilCRUDPageBloc {
 
   void dispose() {
     _usuarioPerfilModelController.close();
+    _perfilCRUDPageEventController.close();
   }
 
   void _mapEventToState(PerfilCRUDPageEvent event) {

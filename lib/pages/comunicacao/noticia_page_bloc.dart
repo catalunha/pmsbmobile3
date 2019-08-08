@@ -80,7 +80,6 @@ class NoticiaPageBloc {
   void dispose() {
     _noticiaPageEventController.close();
     _noticiaPageStateController.close();
-    // _usuarioNoticiaModelListController.close();
     _noticiaModelListController.close();
     firestoreSubscription?.cancel();
   }
