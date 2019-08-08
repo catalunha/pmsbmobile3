@@ -192,7 +192,7 @@ class PerguntaRequisitoBloc {
 
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print(
-        '>>> PerguntaRequisitoBloc event.runtimeType <<< ${event.runtimeType}');
+
+    print('event.runtimeType em PerguntaRequisitoBloc  = ${event.runtimeType}');
   }
 }

@@ -96,7 +96,7 @@ class PerfilCRUDArqPageBloc {
         _state.usuarioPerfilModel = usuarioPerfilModel;
         _state.updateStateFromUsuarioPerfilModel();
       } else {
-        print('>>> Perfil Nao econtrado <<< ');
+        // print('>>> Perfil Nao econtrado <<< ');
       }
     }
     if (event is UpDateArquivoEvent) {
@@ -142,8 +142,8 @@ class PerfilCRUDArqPageBloc {
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print('>>> _state.toMap() <<< ${_state.usuarioPerfilModel.toMap()}');
-    print('ccc: PerfilCRUDArqPageBloc ${event.runtimeType}');
+    // print('>>> _state.toMap() <<< ${_state.toMap()}');
+    // print('>>> _state.toMap() <<< ${_state.usuarioPerfilModel.toMap()}');
+    print('event.runtimeType em PerfilCRUDArqPageBloc  = ${event.runtimeType}');
   }
 }

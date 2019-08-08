@@ -3,7 +3,6 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:rxdart/rxdart.dart';
 
-
 class ProdutoHomePageEvent {}
 
 class UpdateUsuarioIDEvent extends ProdutoHomePageEvent {
@@ -41,23 +40,24 @@ class ProdutoHomePageBloc {
   //Bloc
   ProdutoHomePageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
-    _authBloc.userId.listen((userId)  {
-    eventSink(UpdateUsuarioIDEvent(userId));
+    _authBloc.userId.listen((userId) {
+      eventSink(UpdateUsuarioIDEvent(userId));
     });
   }
 
   _mapEventToState(ProdutoHomePageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
-        //Atualiza estado com usuario logado
-        final docRef =
-            _firestore.collection(UsuarioModel.collection).document(event.usuarioID);
-        final docSnap = await docRef.get();
-        if (docSnap.exists) {
-          final usuarioModel =
-              UsuarioModel(id: docSnap.documentID).fromMap(docSnap.data);
-          _state.usuarioModel = usuarioModel;
-          if (!_stateController.isClosed) _stateController.add(_state);
-        }
+      //Atualiza estado com usuario logado
+      final docRef = _firestore
+          .collection(UsuarioModel.collection)
+          .document(event.usuarioID);
+      final docSnap = await docRef.get();
+      if (docSnap.exists) {
+        final usuarioModel =
+            UsuarioModel(id: docSnap.documentID).fromMap(docSnap.data);
+        _state.usuarioModel = usuarioModel;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      }
 
       // le todos os produtos associados e ele, setor e eixo.
       final streamDocs = _firestore
@@ -74,11 +74,10 @@ class ProdutoHomePageBloc {
       snapList.listen((List<ProdutoModel> produtoModelList) {
         produtoModelListSink(produtoModelList);
       });
-
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print(event.runtimeType);
+    print('event.runtimeType em ProdutoHomePageBloc  = ${event.runtimeType}');
   }
 
   void dispose() {

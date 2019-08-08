@@ -104,7 +104,7 @@ class DesenvolvimentoPageBloc {
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
     print(
-        '>>> DesenvolvimentoPageBloc event.runtimeType <<< ${event.runtimeType}');
+        'event.runtimeType em DesenvolvimentoPageBloc  = ${event.runtimeType}');
   }
 
   void dispose() {

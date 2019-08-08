@@ -288,8 +288,9 @@ Link para imagem do projeto. (clique no icone cole aqui)
       await docRef2.delete();
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print('ccc: ProdutoCRUDPageBloc ${event.runtimeType}');
+    // print('>>> _state.toMap() <<< ${_state.toMap()}');
+
+    print('event.runtimeType em ProdutoCRUDPageBloc  = ${event.runtimeType}');
   }
 
   void dispose() {

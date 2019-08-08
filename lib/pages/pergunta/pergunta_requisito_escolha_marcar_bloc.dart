@@ -94,13 +94,16 @@ class PerguntaRequisitoEscolhaMarcarBloc {
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
       _state.requisitoEscolha.forEach((k, v) {
-        docRef.setData({"requisitos":{k:v.toMap()}}, merge: true);
+        docRef.setData({
+          "requisitos": {k: v.toMap()}
+        }, merge: true);
       });
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
+
     print(
-        '>>> ProdutoArquivoCRUDPageBloc event.runtimeType <<< ${event.runtimeType}');
+        'event.runtimeType em PerguntaRequisitoEscolhaMarcarBloc  = ${event.runtimeType}');
   }
 }

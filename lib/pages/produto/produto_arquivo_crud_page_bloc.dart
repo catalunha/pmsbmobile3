@@ -140,7 +140,7 @@ class ProdutoArquivoCRUDPageBloc {
     }
     if (event is UpdateTituloEvent) {
       _state.titulo = event.titulo;
-      print('>>> _state.titulo <<< ${_state.titulo}');
+      // print('>>> _state.titulo <<< ${_state.titulo}');
     }
     if (event is UpdateArquivoRascunhoEvent) {
       _state.rascunhoLocalPath = event.arquivoRascunho;
@@ -171,8 +171,8 @@ class ProdutoArquivoCRUDPageBloc {
       if (!_stateController.isClosed) _stateController.add(_state);
       //+++ Se novo localPath apagar uploads
       if (_state.rascunhoUrl == null) {
-        print(
-            '>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.rascunhoIdUpload}');
+        // print(
+        //     '>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.rascunhoIdUpload}');
         _firestore
             .collection(UploadModel.collection)
             .document(_state.arquivo?.rascunhoIdUpload)
@@ -187,8 +187,8 @@ class ProdutoArquivoCRUDPageBloc {
         }
       }
       if (_state.editadoUrl == null) {
-        print(
-            '>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.editadoIdUpload}');
+        // print(
+        //     '>>> _state.arquivo.rascunhoIdUpload <<< ${_state.arquivo?.editadoIdUpload}');
         _firestore
             .collection(UploadModel.collection)
             .document(_state.arquivo?.editadoIdUpload)
@@ -284,7 +284,7 @@ class ProdutoArquivoCRUDPageBloc {
       }, merge: true);
 
       if (!_stateController.isClosed) _stateController.add(_state);
-      print('>>> _state.toMap() 4 <<< ${_state.toMap()}');
+      // print('>>> _state.toMap() 4 <<< ${_state.toMap()}');
     }
 
     if (event is DeleteEvent) {
@@ -297,8 +297,10 @@ class ProdutoArquivoCRUDPageBloc {
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print('>>> event.runtimeType <<< ${event.runtimeType}');
+    // print('>>> _state.toMap() <<< ${_state.toMap()}');
+
+    print(
+        'event.runtimeType em ProdutoArquivoCRUDPageBloc  = ${event.runtimeType}');
   }
 
   void dispose() {

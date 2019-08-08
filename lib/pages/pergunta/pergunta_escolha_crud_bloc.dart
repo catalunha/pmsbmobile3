@@ -16,7 +16,6 @@ class UpdateEscolhaIDPageEvent extends PerguntaEscolhaCRUDPageEvent {
   final String escolhaUID;
 
   UpdateEscolhaIDPageEvent(this.escolhaUID);
-
 }
 
 class UpdateTextoEvent extends PerguntaEscolhaCRUDPageEvent {
@@ -150,8 +149,9 @@ class PerguntaEscolhaCRUDPageBloc {
       }, merge: true);
     }
     if (!_stateController.isClosed) stateSink(_state);
-    print('ccc PerguntaEscolhaCRUDPageBloc ${event.runtimeType}');
     print('>>> _state.texto <<< ${_state.texto}');
     print('>>> _state.toString <<< ${_state.toString()}');
+    print(
+        'event.runtimeType em PerguntaEscolhaCRUDPageBloc  = ${event.runtimeType}');
   }
 }

@@ -29,7 +29,6 @@ class PageState {
   List<Uploading> uploadingList;
 
   Map<String, UploadBloc> uploading = Map<String, UploadBloc>();
-
 }
 
 class UploadPageBloc {
@@ -77,7 +76,7 @@ class UploadPageBloc {
                 .toList())
             .listen((List<Uploading> uploadingList) {
           _state.uploadingList = uploadingList;
-           _stateController.add(_state);
+          _stateController.add(_state);
         });
       });
     }
@@ -109,11 +108,10 @@ class UploadPageBloc {
           }
         });
       }
-
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print(event.runtimeType);
+    print('event.runtimeType em UploadPageBloc  = ${event.runtimeType}');
   }
 
   void dispose() {

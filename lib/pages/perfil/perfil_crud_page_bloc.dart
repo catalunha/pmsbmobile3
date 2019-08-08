@@ -65,7 +65,7 @@ class PerfilCRUDPageBloc {
               .fromMap(snapDocs.data))
           .pipe(_usuarioPerfilModelController);
       usuarioPerfilModelStream.listen((usuarioPerfilModel) {
-        print('>> usuarioPerfilModel >> ${usuarioPerfilModel}');
+        // print('>> usuarioPerfilModel >> ${usuarioPerfilModel}');
         perfilCRUDPageState.textPlain = usuarioPerfilModel.textPlain;
       });
     }
