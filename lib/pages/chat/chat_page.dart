@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ProdutoChatPage extends StatelessWidget {
+class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info),
+            onPressed: () {
+              Navigator.pushNamed(context, "/chat/lista_chat_visualizada");
+            },
+          )
+        ],
         title: new Text(
           'CHAT',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -112,7 +120,7 @@ class _TelaChatState extends State<TelaChat> {
   }
 
   Widget usuariosMarcados() {
-    String usuario = "Usuario";
+    String usuario = "Usuario_Nome";
     return Container(
       height: 30.0,
       color: Colors.white12,
@@ -121,28 +129,28 @@ class _TelaChatState extends State<TelaChat> {
         children: <Widget>[
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 3.0),
+          Container(width: 4.0),
           Center(
               child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
         ],
@@ -201,42 +209,11 @@ class _TelaChatState extends State<TelaChat> {
         buildMessageCard(false),
         buildMessageCard(true),
       ],
-    )
-        //           padding: EdgeInsets.all(10.0),
-        //           itemBuilder: (context, index) => buildItem(index, snapshot.data.documents[index]),
-        //           itemCount: snapshot.data.documents.length,
-        //           reverse: true,
-        //           controller: listScrollController,
-        //         );
-        //Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red)))
-        // : StreamBuilder(
-        //     stream: Firestore.instance
-        //         .collection('messages')
-        //         .document(groupChatId)
-        //         .collection(groupChatId)
-        //         .orderBy('timestamp', descending: true)
-        //         .limit(20)
-        //         .snapshots(),
-        //     builder: (context, snapshot) {
-        //       if (!snapshot.hasData) {
-        //         return Center(
-        //             child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor)));
-        //       } else {
-        //         listMessage = snapshot.data.documents;
-        //         return ListView.builder(
-        //           padding: EdgeInsets.all(10.0),
-        //           itemBuilder: (context, index) => buildItem(index, snapshot.data.documents[index]),
-        //           itemCount: snapshot.data.documents.length,
-        //           reverse: true,
-        //           controller: listScrollController,
-        //         );
-        //       }
-        //     },
-        //   ),
-        );
+    ));
   }
 }
 
+/// Selecao de usuario que vao receber alerta
 class UsuarioListaModalSelect extends StatefulWidget {
   @override
   _UsuarioListaModalSelectState createState() =>
@@ -244,41 +221,63 @@ class UsuarioListaModalSelect extends StatefulWidget {
 }
 
 class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
-  List<Map<dynamic, dynamic>> valores = [
-    {"nome": "Todos", "valor": false},
-    {"nome": "Usuario 01", "valor": false},
-    {"nome": "Usuario 02", "valor": false},
-    {"nome": "Usuario 03", "valor": false},
-    {"nome": "Usuario 04", "valor": false},
-    {"nome": "Usuario 01", "valor": false},
-    {"nome": "Usuario 02", "valor": false},
-    {"nome": "Usuario 03", "valor": false},
-    {"nome": "Usuario 04", "valor": false}
-  ];
+  Map<String, bool> valores = {
+    'Todos': false,
+    'Usuario 01': false,
+    'Usuario 02': false,
+    'Usuario 03': false,
+    'Usuario 04': false,
+    'Usuario 05': false,
+    'Usuario 04': false,
+  };
 
-  listOpcoesUsarios() {
-    var i;
-    Set<Widget> lista = new Set<Widget>();
+  _marcarTodosDaListaComoTrue(bool value) {
+    setState(() {
+      valores.keys.forEach((String key) {
+        valores[key] = value;
+      });
+    });
+  }
 
-    for (i = 0; i < valores.length; i++) {
-      lista.add(CheckboxListTile(
-        title: Text(valores[i]['nome']),
-        value: false,
-        onChanged: (boolValue) {
-          setState(() {
-            valores[i]['valor'] = boolValue;
-          });
-        },
-      ));
-    }
-
-    return lista.toList();
+  Widget _listaUsuarios() {
+    return ListView(
+      children: valores.keys.map((String key) {
+        return new CheckboxListTile(
+          title: new Text(key),
+          value: valores[key],
+          onChanged: (bool value) {
+            if (key == 'Todos') {
+              _marcarTodosDaListaComoTrue(value);
+            } else {
+              setState(() {
+                valores[key] = value;
+              });
+            }
+          },
+        );
+      }).toList(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: new ListView(children: listOpcoesUsarios()),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Alertar os usuários",
+            style: TextStyle(fontSize: 15, color: Colors.black45)),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+          RaisedButton(
+              child: Text("Salvar"),
+              textColor: Colors.blue,
+              color: Colors.white,
+              onPressed: () {
+                Navigator.pop(context);
+              })
+        ],
+      ),
+      body: _listaUsuarios(),
     );
   }
 }

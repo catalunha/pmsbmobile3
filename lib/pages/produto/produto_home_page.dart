@@ -124,7 +124,7 @@ class ProdutoHomePage extends StatelessWidget {
                   icon: Icon(Icons.message),
                   tooltip: 'chat para o produto',
                   onPressed: (){
-                    Navigator.pushNamed(context, '/produto/chat');
+                    Navigator.pushNamed(context, '/chat/home');
                   },
                 ),
                 IconButton(
