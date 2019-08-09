@@ -125,10 +125,14 @@ class ConfiguracaoPageBloc {
   ConfiguracaoPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
   }
-  void dispose() {
+  void dispose() async {
+    await _eventController.drain();
     _eventController.close();
+    await _stateController.drain();
     _stateController.close();
+    await _usuarioModelController.drain();
     _usuarioModelController.close();
+    await _setorCensitarioModelListController.drain();
     _setorCensitarioModelListController.close();
   }
 
