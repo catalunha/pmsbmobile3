@@ -10,7 +10,15 @@ class ComunicacaoDestinatariosPage extends StatefulWidget {
 
 class _ComunicacaoDestinatariosPageState
     extends State<ComunicacaoDestinatariosPage> {
-  final bloc = ComunicacaoDestinatarioPageBloc(Bootstrap.instance.firestore);
+  ComunicacaoDestinatarioPageBloc bloc;
+
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = ComunicacaoDestinatarioPageBloc(Bootstrap.instance.firestore);
+  }
+
   @override
   void dispose() {
     bloc.dispose();

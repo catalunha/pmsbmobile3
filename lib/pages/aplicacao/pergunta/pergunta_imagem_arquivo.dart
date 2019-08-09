@@ -34,9 +34,9 @@ class _PerguntaWigdetImagemArquivoState
 
   @override
   void initState() {
+    super.initState();
     bloc = PerguntaImagemArquivoBloc(widget.perguntaAplicada, widget.usuarioID,
         Bootstrap.instance.firestore);
-    super.initState();
   }
 
   @override
