@@ -46,7 +46,7 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
       body: ListView(
         children: <Widget>[
           StreamBuilder<UsuarioPerfilModel>(
-            stream: widget.bloc.usuarioPerfilModelStream,
+            stream: bloc.usuarioPerfilModelStream,
             // initialData: null,
             builder: (BuildContext context,
                 AsyncSnapshot<UsuarioPerfilModel> snapshot) {
@@ -68,7 +68,7 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
                     TextField(
                       controller: textEditingController,
                       onChanged: (textPlain) {
-                        return widget.bloc.perfilCRUDPageEventSink(
+                        return bloc.perfilCRUDPageEventSink(
                             UpDateTextPlainEvent(textPlain));
                       },
                       keyboardType: TextInputType.multiline,
@@ -86,7 +86,7 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          widget.bloc.perfilCRUDPageEventSink(SaveStateToFirebaseEvent());
+          bloc.perfilCRUDPageEventSink(SaveStateToFirebaseEvent());
           Navigator.pop(context);
         },
         child: Icon(Icons.check),
