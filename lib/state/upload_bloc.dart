@@ -72,6 +72,12 @@ class UploadBloc {
     storageTaskEventStream.listen(_handleStorageTaskEvent);
   }
 
+  void dispose() {
+    _storageTaskEventController.close();
+    _uploadModelController.close();
+    _stateController.close();
+  }
+
   bool _uploadFromPathHandler() {
     if (_blocState.storageUploadTask != null) {
       _blocState.storageUploadTask.cancel();
@@ -103,13 +109,6 @@ class UploadBloc {
     return true;
   }
 
-  void dispose() {
-    // _fileController.close();
-    _storageTaskEventController.close();
-    _uploadModelController.close();
-    // _uploadModelSubscriptionController.cancel();
-    _stateController.close();
-  }
 
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
     if (storageTaskEvent.type == StorageTaskEventType.resume) {}

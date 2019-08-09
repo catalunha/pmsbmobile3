@@ -61,6 +61,10 @@ class ProdutoArquivoListPageBloc {
     eventStream.listen(_mapEventToState);
   }
 
+  void dispose() {
+    _stateController.close();
+    _eventController.close();
+  }
   _mapEventToState(ProdutoArquivoListPageEvent event) async {
     if (event is UpdateProdutoIDTipoEvent) {
       _state.produtoID = event.produtoID;
@@ -93,8 +97,4 @@ class ProdutoArquivoListPageBloc {
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
   }
 
-  void dispose() {
-    _stateController.close();
-    _eventController.close();
-  }
 }

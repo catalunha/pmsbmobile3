@@ -26,8 +26,8 @@ class _PerguntaEscolhaMultiplaState extends State<PerguntaEscolhaMultipla> {
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   Widget makeRadioTiles() {

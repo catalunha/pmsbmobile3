@@ -34,15 +34,15 @@ class _PerguntaWigdetImagemArquivoState
 
   @override
   void initState() {
+    super.initState();
     bloc = PerguntaImagemArquivoBloc(widget.perguntaAplicada, widget.usuarioID,
         Bootstrap.instance.firestore);
-    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   Future _selecionarNovaImagem() async {

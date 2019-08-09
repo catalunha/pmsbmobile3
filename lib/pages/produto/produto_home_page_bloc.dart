@@ -44,7 +44,11 @@ class ProdutoHomePageBloc {
       eventSink(UpdateUsuarioIDEvent(userId));
     });
   }
-
+  void dispose() {
+    _stateController.close();
+    _eventController.close();
+    _produtoModelListController.close();
+  }
   _mapEventToState(ProdutoHomePageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
       //Atualiza estado com usuario logado
@@ -80,9 +84,5 @@ class ProdutoHomePageBloc {
     print('event.runtimeType em ProdutoHomePageBloc  = ${event.runtimeType}');
   }
 
-  void dispose() {
-    _stateController.close();
-    _eventController.close();
-    _produtoModelListController.close();
-  }
+
 }

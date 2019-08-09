@@ -36,8 +36,8 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   String _eixo = "eixo exemplo";

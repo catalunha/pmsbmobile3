@@ -76,7 +76,6 @@ class QuestionarioHomePageBloc {
   void dispose() {
     _eventController?.close();
     _stateController?.close();
-    // _questionariosController?.close();
     _questionarioSubscription?.cancel();
     _questionarioMapController?.close();
   }

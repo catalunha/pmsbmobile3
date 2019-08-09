@@ -73,6 +73,7 @@ class PerfilPageBloc {
       // });
 
     }
+    // if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em PerfilPageBloc  = ${event.runtimeType}');
   }
 }

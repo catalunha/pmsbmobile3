@@ -206,7 +206,7 @@ class AdministracaoPerfilPage extends StatelessWidget {
                                     "CLIQUE AQUI PARA VER O ARQUIVO",
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.blue),
-                                  ): Text('Url não disponivel. Usuario não fez upload.'),
+                                  ): Text('Arquivo não disponivel. Usuario não fez upload.'),
                                 )));
                       }
                     }

@@ -60,7 +60,12 @@ class UploadFilePathBloc {
     // uploadTasks.listen((_) => print("uploadTask iniciada"));
     storageTaskEventStream.listen(_handleStorageTaskEvent);
   }
-
+  void dispose() {
+    _fileController.close();
+    _storageTaskEventController.close();
+    _uploadModelController.close();
+    _uploadModelSubscriptionController.cancel();
+  }
   bool _uploadFromPathHandler(String userId, String filePath) {
     if (_blocState.storageUploadTask != null) {
       _blocState.storageUploadTask.cancel();
@@ -86,12 +91,7 @@ class UploadFilePathBloc {
     return true;
   }
 
-  void dispose() {
-    _fileController.close();
-    _storageTaskEventController.close();
-    _uploadModelController.close();
-    _uploadModelSubscriptionController.cancel();
-  }
+
 
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
     if (storageTaskEvent.type == StorageTaskEventType.resume) {}

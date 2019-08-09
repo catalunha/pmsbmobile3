@@ -188,14 +188,6 @@ class ComunicacaoCRUDPageBloc {
         _state.hora = event.hora;
       }
 
-      // print('No event.data: ${event.data.toString()}');
-      // print('No event.hora: ${event.hora.toString()}');
-      // print(
-      // 'No comunicacaoCRUDPageState data: ${comunicacaoCRUDPageState.data.toString()}');
-      // print(
-      // 'No comunicacaoCRUDPageState.hora: ${comunicacaoCRUDPageState.hora.toString()}');
-      // print(
-      // 'No comunicacaoCRUDPageState.publicar: ${comunicacaoCRUDPageState.publicar.toString()}');
       final newDate = DateTime(
           _state.data != null
               ? _state.data.year
@@ -220,7 +212,11 @@ class ComunicacaoCRUDPageBloc {
     if (event is SaveStateToFirebaseEvent) {
       _saveStateToFirebase();
     }
-    return _state;
+
+    if (!_stateController.isClosed) _stateController.add(_state);
+    print('event.runtimeType em ComunicacaoCRUDPageBloc  = ${event.runtimeType}');
+
+
   }
 
   _saveStateToFirebase() {
@@ -250,5 +246,6 @@ class ComunicacaoCRUDPageBloc {
       _state.fromNoticiaModel(noticia);
       _stateController.sink.add(_state);
     });
+
   }
 }

@@ -80,6 +80,7 @@ class PerfilCRUDArqPageBloc {
   void dispose() {
     _stateController.close();
     _usuarioPerfilModelController.close();
+    _eventController.close();
   }
 
   _mapEventToState(PerfilCRUDArqPageEvent event) async {

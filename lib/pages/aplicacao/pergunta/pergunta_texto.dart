@@ -19,8 +19,8 @@ class _PerguntaTextoState extends State<PerguntaTexto> {
 
   @override
   void initState() {
-    bloc = PerguntaTextoBloc(widget.perguntaAplicada);
     super.initState();
+    bloc = PerguntaTextoBloc(widget.perguntaAplicada);
   }
 
   @override
