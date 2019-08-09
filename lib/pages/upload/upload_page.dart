@@ -1,7 +1,7 @@
+import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/pages/upload/upload_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -65,26 +65,40 @@ class UploadPage extends StatelessWidget {
   }
 
   Widget _listUpload(BuildContext context, Uploading uploading) {
+    String dispositivo;
+    if (!io.File(uploading.upload.localPath).existsSync()) {
+      dispositivo =
+          'ESTE ARQUIVO ESTA EM OUTRO DISPOSITIVO. Fazer upload lá (Celular/Tablet/Web/...).';
+    }
+
     return Row(
       children: <Widget>[
         Expanded(
           child: ListTile(
             title: Text('${uploading.upload.updateCollection.collection}'),
-            subtitle: Text('${uploading.upload.localPath}\n${uploading.upload.id}'),
-            trailing: IconButton(
-              icon: uploading.uploading ? Icon(Icons.cloud_upload) : Icon(Icons.send),
-              onPressed: () {
-                bloc.eventSink(StartUploadEvent(uploading.id));
-              },
-            ),
+            subtitle: dispositivo != null
+                ? Text(dispositivo)
+                : Text('${uploading.upload.localPath}\n${uploading.upload.id}'),
+            trailing: dispositivo != null
+                ? Icon(Icons.cloud_off)
+                : IconButton(
+                    icon: uploading.uploading
+                        ? Icon(Icons.cloud_upload)
+                        : Icon(Icons.send),
+                    onPressed: () {
+                      bloc.eventSink(StartUploadEvent(uploading.id));
+                    },
+                  ),
           ),
         ),
-        uploading.uploading
-            ? CircularProgressIndicator()
-            : IconButton(
-                icon: Icon(Icons.cloud_queue),
-                onPressed: () {},
-              ),
+        dispositivo != null
+            ? Container()
+            : uploading.uploading
+                ? CircularProgressIndicator()
+                : IconButton(
+                    icon: Icon(Icons.cloud_queue),
+                    onPressed: () {},
+                  ),
       ],
     );
   }
