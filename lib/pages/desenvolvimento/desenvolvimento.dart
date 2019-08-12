@@ -52,7 +52,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   Widget build(BuildContext context) {
     // fsw.Firestore _firestore = Bootstrap.instance.firestore;
     return DefaultScaffold(
-        title: Text('Desenvolvimento'),
+        title: Text('Desenvolvimento - teste'),
         body: StreamBuilder<PageState>(
             stream: bloc.stateStream,
             builder: (BuildContext context, AsyncSnapshot<PageState> snapshot) {
