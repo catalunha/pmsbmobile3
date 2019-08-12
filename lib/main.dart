@@ -110,16 +110,16 @@ class _MyAppState extends State<MyApp> {
       print('----------------- \n onLaunch: $message');
       return;
     });
-    //TODO: mover pra apos a autentificacao do usuario
-    firebaseMessaging.getToken().then((token) {
-      print('token: $token');
-      Firestore.instance
-          .collection('Usuario')
-          .document('nsD07Jb8cqRy9liyX82JwDSq8d22')
-          .updateData({'pushToken': token});
-    }).catchError((err) {
-      print(err.message.toString());
-    });
+
+    // firebaseMessaging.getToken().then((token) {
+    //   print('token: $token');
+    //   Firestore.instance
+    //       .collection('Usuario')
+    //       .document('nsD07Jb8cqRy9liyX82JwDSq8d22')
+    //       .updateData({'pushToken': token});
+    // }).catchError((err) {
+    //   print(err.message.toString());
+    // });
   }
 
   void showNotification(message) async {
@@ -147,8 +147,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc =
-        AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+    final authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+    
     return MaterialApp(
       title: 'PMSB-TO-22',
       //theme: ThemeData.dark(),

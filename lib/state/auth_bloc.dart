@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -28,6 +30,7 @@ class LoginAuthBlocEvent extends AuthBlocEvent {}
 class LogoutAuthBlocEvent extends AuthBlocEvent {}
 
 class AuthBlocState {
+  String usuarioID;
   String email;
   String passord;
 }
@@ -46,6 +49,7 @@ class AuthBloc {
   //State
   final _state = AuthBlocState();
   
+  //TODO: Creio q esta stream foi abandonada no codigo.
   //UserId
   final _userId = BehaviorSubject<String>();
   Stream<String> get userId => _userId.stream;
@@ -59,15 +63,24 @@ class AuthBloc {
   final _inputController = BehaviorSubject<AuthBlocEvent>();
   Function get dispatch => _inputController.sink.add;
 
+  
+  //Instancia de firebase message
+  final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+
   //Construtor AuthBloc
   AuthBloc(this._authApi, this._firestore) : assert(_authApi != null) {
     _statusController.sink.add(AuthStatus.Unauthenticated);
     var stream = _authApi.onUserIdChange.where((userId) => userId != null);
     stream.listen(_getPerfilUsuarioFromFirebaseUser);
     stream.listen(_getUserId);
+    stream.listen(_setpushTokenfromUsuario);
 
     _authApi.onUserIdChange.listen(_updateStatus);
     _inputController.stream.listen(_handleInputEvent);
+
+
+
   }
 
   //Destrutor AuthBloc
@@ -79,7 +92,24 @@ class AuthBloc {
     _inputController.close();
   }
 
+
+  void _setpushTokenfromUsuario(String userId) {
+    // Ao logar atualiza o token do usuario.
+    firebaseMessaging.getToken().then((token) {
+      print('Novo token >> $token');
+      Firestore.instance
+          .collection(UsuarioModel.collection)
+          .document(userId)
+          .updateData({'pushToken': token});
+    }).catchError((err) {
+      print(err.message.toString());
+    });
+  }
+
+
   void _getPerfilUsuarioFromFirebaseUser(String userId) {
+    _state.usuarioID=userId;
+
     final perfilRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
 
