@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:pmsbmibile3/services/notificacao_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:firebaseauth_wrapper/firebaseauth_wrapper.dart' as fba;
@@ -64,9 +65,8 @@ class AuthBloc {
   Function get dispatch => _inputController.sink.add;
 
   
-  //Instancia de firebase message
+  // NOTIFICACAO
   final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-
 
   //Construtor AuthBloc
   AuthBloc(this._authApi, this._firestore) : assert(_authApi != null) {
@@ -78,9 +78,8 @@ class AuthBloc {
 
     _authApi.onUserIdChange.listen(_updateStatus);
     _inputController.stream.listen(_handleInputEvent);
-
-
-
+    //metodo que registra o servico da notificacao.
+    NotificacaoService.registerNotification();
   }
 
   //Destrutor AuthBloc
@@ -105,7 +104,6 @@ class AuthBloc {
       print(err.message.toString());
     });
   }
-
 
   void _getPerfilUsuarioFromFirebaseUser(String userId) {
     _state.usuarioID=userId;

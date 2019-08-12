@@ -1,11 +1,4 @@
-//
-import 'dart:convert';
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-//
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
@@ -17,138 +10,14 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
 
-class _MyAppState extends State<MyApp> {
-  final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
-
-//   Future _showNotificationWithSound() async {
-//     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-//         'your channel id', 'your channel name', 'your channel description',
-//         sound: 'slow_spring_board',
-//         importance: Importance.Max,
-//         priority: Priority.High);
-//     var iOSPlatformChannelSpecifics =
-//         new IOSNotificationDetails(sound: "slow_spring_board.aiff");
-//     var platformChannelSpecifics = new NotificationDetails(
-//         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-//     await flutterLocalNotificationsPlugin.show(
-//       0,
-//       'New Post',
-//       'How to Show Notification in Flutter',
-//       platformChannelSpecifics,
-//       payload: 'Custom_Sound',
-//     );
-//   }
-
-// // Method 2
-//   Future _showNotificationWithDefaultSound() async {
-//     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-//         'your channel id', 'your channel name', 'your channel description',
-//         importance: Importance.Max, priority: Priority.High);
-//     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-//     var platformChannelSpecifics = new NotificationDetails(
-//         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-//     await flutterLocalNotificationsPlugin.show(
-//       0,
-//       'New Post',
-//       'How to Show Notification in Flutter',
-//       platformChannelSpecifics,
-//       payload: 'Default_Sound',
-//     );
-//   }
-
-// // Method 3
-//   Future _showNotificationWithoutSound() async {
-//     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-//         'your channel id', 'your channel name', 'your channel description',
-//         playSound: false, importance: Importance.Max, priority: Priority.High);
-//     var iOSPlatformChannelSpecifics =
-//         new IOSNotificationDetails(presentSound: false);
-//     var platformChannelSpecifics = new NotificationDetails(
-//         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-//     await flutterLocalNotificationsPlugin.show(
-//       0,
-//       'New Post',
-//       'How to Show Notification in Flutter',
-//       platformChannelSpecifics,
-//       payload: 'No_Sound',
-//     );
-//   }
-
-  void initState() {
-    super.initState();
-    registerNotification();
-    configLocalNotification();
-  }
-
-  void configLocalNotification() {
-    // var initializationSettingsAndroid =
-    //     new AndroidInitializationSettings(null);
-    // var initializationSettingsIOS = new IOSInitializationSettings();
-    // var initializationSettings = new InitializationSettings(
-    //     initializationSettingsAndroid, initializationSettingsIOS);
-    // flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
-
-  void registerNotification() {
-    firebaseMessaging.requestNotificationPermissions();
-
-    firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
-      print(' ----------------- \n onMessage: $message');
-      showNotification(message['notification']);
-      return;
-    }, onResume: (Map<String, dynamic> message) {
-      print('----------------- \n onResume: $message');
-      return;
-    }, onLaunch: (Map<String, dynamic> message) {
-      print('----------------- \n onLaunch: $message');
-      return;
-    });
-
-    // firebaseMessaging.getToken().then((token) {
-    //   print('token: $token');
-    //   Firestore.instance
-    //       .collection('Usuario')
-    //       .document('nsD07Jb8cqRy9liyX82JwDSq8d22')
-    //       .updateData({'pushToken': token});
-    // }).catchError((err) {
-    //   print(err.message.toString());
-    // });
-  }
-
-  void showNotification(message) async {
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-      Platform.isAndroid
-          ? 'com.dfa.flutterchatdemo'
-          : 'com.duytq.flutterchatdemo',
-      'Flutter chat demo',
-      'your channel description',
-      playSound: true,
-      enableVibration: true,
-      importance: Importance.Max,
-      priority: Priority.High,
-    );
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        message['title'].toString(),
-        message['body'].toString(),
-        platformChannelSpecifics,
-        payload: json.encode(message));
-  }
+class MyApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
-    
+    final authBloc =
+        AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+
     return MaterialApp(
       title: 'PMSB-TO-22',
       //theme: ThemeData.dark(),
