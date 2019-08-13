@@ -7,6 +7,7 @@ class UsuarioModel extends FirestoreModel {
   String nome;
   String celular;
   String email;
+  String tokenFCM;
   bool ativo;
   UploadID foto;
   // List<RotaID> rotaID;
@@ -22,6 +23,7 @@ class UsuarioModel extends FirestoreModel {
       this.nome,
       this.celular,
       this.email,
+      this.tokenFCM,
       this.ativo,
       this.foto,
       // this.rotaID,
@@ -37,6 +39,7 @@ class UsuarioModel extends FirestoreModel {
   UsuarioModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('celular')) celular = map['celular'];
+    if (map.containsKey('tokenFCM')) tokenFCM = map['tokenFCM'];
     if (map.containsKey('email')) email = map['email'];
     if (map.containsKey('ativo')) ativo = map['ativo'];
     if (map.containsKey('foto')) {
@@ -76,6 +79,7 @@ class UsuarioModel extends FirestoreModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (nome != null) data['nome'] = this.nome;
     if (celular != null) data['celular'] = this.celular;
+    if (tokenFCM != null) data['tokenFCM'] = this.tokenFCM;
     if (email != null) data['email'] = this.email;
     if (ativo != null) data['ativo'] = this.ativo;
     if (this.foto != null) {

@@ -10,9 +10,7 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 void main() => runApp(MyApp());
 
-
-class MyApp extends StatelessWidget{
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc =
@@ -158,13 +156,18 @@ class MyApp extends StatelessWidget{
         //chat
         "/chat/home": (context) {
           final settings = ModalRoute.of(context).settings;
-          ProdutoArguments args = settings.arguments;
-          return ChatPage();
+          ChatPageArguments args = settings.arguments;
+          return ChatPage(
+            authBloc: authBloc,
+            modulo: args.modulo,
+            titulo: args.titulo,
+            chatID: args.chatID,
+          );
         },
-        "/chat/lista_chat_visualizada": (context) {
+        "/chat/lido": (context) {
           final settings = ModalRoute.of(context).settings;
-          ProdutoArguments args = settings.arguments;
-          return ChatLidoPage();
+          // ChatPageArguments args = settings.arguments;
+          return ChatLidoPage(settings.arguments);
         },
 
         //comunicacao

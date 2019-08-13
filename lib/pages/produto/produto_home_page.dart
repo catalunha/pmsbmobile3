@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_home_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -123,8 +124,14 @@ class ProdutoHomePage extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.message),
                   tooltip: 'chat para o produto',
-                  onPressed: (){
-                    Navigator.pushNamed(context, '/chat/home');
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/chat/home',
+                        arguments: ChatPageArguments(chatID:produto.id, modulo: 'Produto. ${produto.eixoID.nome}.${produto.setorCensitarioID.nome}',titulo: '${produto.titulo}'));
+                    // modulo: Produto(Eixo,Setor). Questionario (Eixo). Administração ('Administração')
+                    // print(produto.eixoID.nome);
+                    // print(produto.setorCensitarioID.nome);
+                    // // titulo: Titulo do ProdutoID. Titulo do QuestionarioID. 'Msg da Administração'
+                    // print(produto.titulo);
                   },
                 ),
                 IconButton(

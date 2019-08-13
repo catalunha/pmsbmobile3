@@ -1,42 +1,73 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/chat_model.dart';
+import 'package:pmsbmibile3/pages/chat/chat_lido_bloc.dart';
 
-class ChatLidoPage extends StatefulWidget {
-  ChatLidoPage({Key key}) : super(key: key);
-
-  _ChatLidoPageState createState() => _ChatLidoPageState();
-}
-
-class _ChatLidoPageState extends State<ChatLidoPage> {
-  Map<String, bool> usuarios = {
-    'Usuario 01': false,
-    'Usuario 02': true,
-    'Usuario 03': false,
-    'Usuario 04': false,
-    'Usuario 05': true,
-    'Usuario 04': true,
-  };
-
-  Widget _listaUsuarios() {
-    return ListView(
-      children: usuarios.keys.map((String key) {
-        return new ListTile(
-          trailing: Icon(usuarios[key]?Icons.check:Icons.not_interested),
-          leading: Icon(Icons.person_pin, size: 30,),
-          title: new Text(key),
-        );
-      }).toList(),
-    );
+class ChatLidoPage extends StatelessWidget {
+  final ChatLidoPageBloc bloc;
+  final String chatID;
+  ChatLidoPage(this.chatID)
+      : bloc = ChatLidoPageBloc(Bootstrap.instance.firestore) {
+        print('>>> ChatLidoPage this.chatID <<< ${this.chatID}');
+    bloc.eventSink(UpdateChatIDEvent(chatID:this.chatID));
+  }
+  void dispose() {
+    bloc.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chat lidos"),
-        automaticallyImplyLeading: true,
+        title: Text("Usuarios que leram este Chat"),
       ),
-      body: _listaUsuarios(),
+      body: StreamBuilder<ChatLidoPageState>(
+        stream: bloc.stateStream,
+        builder:
+            (BuildContext context, AsyncSnapshot<ChatLidoPageState> snapshot) {
+          if (snapshot.hasError)
+            return Center(
+              child: Text("Erro. Informe ao administrador do aplicativo"),
+            );
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.data.usuario == null) {
+            return Center(
+              child: Text("Nenhum usuario neste chat."),
+            );
+          }
+          if (snapshot.data.usuario.isEmpty) {
+            return Center(
+              child: Text("Vazio."),
+            );
+          }
+
+          var usuario = Map<String, UsuarioChat>();
+
+          usuario = snapshot.data?.usuario;
+          var lista = List<Widget>();
+          for (var item in usuario.entries) {
+            print('usuario: ${item.key}');
+            lista.add(_cardBuild(context, item.key, item.value));
+          }
+
+          return ListView(
+            children: lista,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _cardBuild(BuildContext context, String key, UsuarioChat usuario) {
+    print(usuario.nome);
+    return ListTile(
+      title: Text(usuario.nome),
+      leading: usuario.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
     );
   }
 }

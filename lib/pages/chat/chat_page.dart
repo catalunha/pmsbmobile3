@@ -1,35 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/chat/chat_bloc.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ChatPage extends StatelessWidget {
+  final String chatID;
+  final String modulo;
+  final String titulo;
+  final AuthBloc authBloc;
+
+  const ChatPage({this.authBloc, this.modulo, this.titulo, this.chatID});
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.info),
             onPressed: () {
-              Navigator.pushNamed(context, "/chat/lista_chat_visualizada");
+              Navigator.pushNamed(context, "/chat/lido",
+                  arguments: this.chatID);
             },
           )
         ],
-        title: new Text(
+        title: Text(
           'CHAT',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: TelaChat(),
+      body: TelaChat(
+          authBloc: this.authBloc,
+          modulo: this.modulo,
+          chatID: this.chatID,
+          titulo: this.titulo),
     );
   }
 }
 
 class TelaChat extends StatefulWidget {
+  final String chatID;
+  final String modulo;
+  final String titulo;
+  final AuthBloc authBloc;
+
+  const TelaChat({this.modulo, this.titulo, this.authBloc, this.chatID});
+
   @override
-  _TelaChatState createState() => _TelaChatState();
+  _TelaChatState createState() => _TelaChatState(this.authBloc);
 }
 
 class _TelaChatState extends State<TelaChat> {
+  final textEditingController = TextEditingController();
+  final ChatPageBloc bloc;
+
+  _TelaChatState(AuthBloc authBloc)
+      : bloc = ChatPageBloc(Bootstrap.instance.firestore, authBloc);
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.eventSink(UpdateChatIDModuloTituloEvent(
+        chatID: widget.chatID, modulo: widget.modulo, titulo: widget.titulo));
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -39,10 +80,8 @@ class _TelaChatState extends State<TelaChat> {
             children: <Widget>[
               // List of messages
               buildListaMensagens(),
-
               // // Sticker
               // (isShowSticker ? buildSticker() : Container()),
-
               // // Input content
               usuariosMarcados(),
               buildInput(context),
@@ -58,65 +97,104 @@ class _TelaChatState extends State<TelaChat> {
   }
 
   Widget buildInput(context) {
-    return Container(
-      child: Row(
-        children: <Widget>[
-          //escolher os usuarios que vão receber notificacao
-          Material(
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 1.0),
-              child: new IconButton(
-                icon: new Icon(Icons.supervised_user_circle),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext bc) {
-                        return UsuarioListaModalSelect();
-                      });
-                }, //getSticker,
-                color: Colors.black54,
-              ),
-            ),
-            color: Colors.white,
-          ),
+    return
 
-          // Caixa de texto
-          Flexible(
-            child: Container(
-              child: TextField(
-                style: TextStyle(color: Colors.black87, fontSize: 15.0),
-                //controller: textEditingController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Digite aqui ...',
-                  hintStyle: TextStyle(color: Colors.black87),
+        // Caixa de texto
+        // Flexible(
+        //   child: Container(
+        //     child: TextField(
+        //       style: TextStyle(color: Colors.black87, fontSize: 15.0),
+        //       //controller: textEditingController,
+        //       decoration: InputDecoration.collapsed(
+        //         hintText: 'Digite aqui ...',
+        //         hintStyle: TextStyle(color: Colors.black87),
+        //       ),
+        //       //focusNode: focusNode,
+        //     ),
+        //   ),
+        // ),
+        StreamBuilder<ChatPageState>(
+            stream: bloc.stateStream,
+            builder:
+                (BuildContext context, AsyncSnapshot<ChatPageState> snapshot) {
+              // if (!snapshot.hasData) {
+              //   return Text('Sem mensagens');
+              // }
+              if (textEditingController.text == null ||
+                  textEditingController.text.isEmpty) {
+                textEditingController.text = snapshot.data?.msgToSend;
+              }
+              // if (snapshot.hasData) {
+              return Container(
+                child: Row(
+                  children: <Widget>[
+                    //escolher os usuarios que vão receber notificacao
+                    Material(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 1.0),
+                        child: IconButton(
+                          icon: Icon(Icons.supervised_user_circle),
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext bc) {
+                                  return UsuarioListaModalSelect();
+                                });
+                          }, //getSticker,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      color: Colors.white,
+                    ),
+                    Flexible(
+                      child: Container(
+                        child: TextField(
+                          onChanged: (textPlain) {
+                            return bloc
+                                .eventSink(UpDateMsgToSendEvent(textPlain));
+                          },
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+
+                          style:
+                              TextStyle(color: Colors.black87, fontSize: 15.0),
+                          controller: textEditingController,
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Digite uma mensagem ',
+                            hintStyle: TextStyle(color: Colors.black26),
+                          ),
+                          //focusNode: focusNode,
+                        ),
+                      ),
+                    ),
+                    //+++ Botao enviar mensagem
+                    Material(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: IconButton(
+                          icon: Icon(Icons.send),
+                          onPressed: textEditingController.text.isEmpty
+                              ? null
+                              : () {
+                                  textEditingController.clear();
+                                  return bloc.eventSink(SendMsgEvent());
+                                },
+                          color: Colors.black54,
+                        ),
+                      ),
+                      color: Colors.white,
+                    ),
+                    //--- Botao enviar mensagem
+                  ],
                 ),
-                //focusNode: focusNode,
-              ),
-            ),
-          ),
-
-          // Botao enviar mensagem
-          Material(
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 8.0),
-              child: new IconButton(
-                icon: new Icon(Icons.send),
-                onPressed:
-                    null, //() => onSendMessage(textEditingController.text, 0),
-                color: Colors.black54,
-              ),
-            ),
-            color: Colors.white,
-          ),
-        ],
-      ),
-      width: double.infinity,
-      height: 50.0,
-      decoration: new BoxDecoration(
-          border:
-              new Border(top: new BorderSide(color: Colors.grey, width: 0.5)),
-          color: Colors.white),
-    );
+                width: double.infinity,
+                height: 60.0,
+                decoration: BoxDecoration(
+                    border:
+                        Border(top: BorderSide(color: Colors.grey, width: 0.5)),
+                    color: Colors.white),
+              );
+            });
   }
 
   Widget usuariosMarcados() {
@@ -160,12 +238,12 @@ class _TelaChatState extends State<TelaChat> {
 
   Widget buildMessageCard(bool marcador) {
     return Container(
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
           color: Colors.black12,
-          borderRadius: new BorderRadius.all(const Radius.circular(20.0))),
+          borderRadius: BorderRadius.all(const Radius.circular(20.0))),
       margin: marcador
-          ? new EdgeInsets.fromLTRB(60.0, 6.0, 6.0, 6.0)
-          : new EdgeInsets.fromLTRB(6.0, 6.0, 60.0, 6.0),
+          ? EdgeInsets.fromLTRB(60.0, 6.0, 6.0, 6.0)
+          : EdgeInsets.fromLTRB(6.0, 6.0, 60.0, 6.0),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -202,7 +280,7 @@ class _TelaChatState extends State<TelaChat> {
     return Flexible(
         child: ListView(
       children: <Widget>[
-        buildMessageCard(true),
+        buildMessageCard(false),
         buildMessageCard(false),
         buildMessageCard(true),
         buildMessageCard(true),
@@ -242,8 +320,8 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
   Widget _listaUsuarios() {
     return ListView(
       children: valores.keys.map((String key) {
-        return new CheckboxListTile(
-          title: new Text(key),
+        return CheckboxListTile(
+          title: Text(key),
           value: valores[key],
           onChanged: (bool value) {
             if (key == 'Todos') {

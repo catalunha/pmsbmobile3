@@ -33,7 +33,7 @@ class LogoutAuthBlocEvent extends AuthBlocEvent {}
 class AuthBlocState {
   String usuarioID;
   String email;
-  String passord;
+  String password;
 }
 
 class AuthBloc {
@@ -95,11 +95,11 @@ class AuthBloc {
   void _setpushTokenfromUsuario(String userId) {
     // Ao logar atualiza o token do usuario.
     firebaseMessaging.getToken().then((token) {
-      print('Novo token >> $token');
+      // print('Novo token >> $token');
       Firestore.instance
           .collection(UsuarioModel.collection)
           .document(userId)
-          .updateData({'pushToken': token});
+          .updateData({'tokenFCM': token});
     }).catchError((err) {
       print(err.message.toString());
     });
@@ -145,7 +145,7 @@ class AuthBloc {
       _state.email = event.email;
     }
     else if(event is UpdatePasswordAuthBlocEvent){
-      _state.passord = event.password;
+      _state.password = event.password;
     }
     else if(event is LoginAuthBlocEvent){
       _handleLoginAuthBlocEvent();
@@ -158,7 +158,7 @@ class AuthBloc {
 
   void _handleLoginAuthBlocEvent(){
     _statusController.sink.add(AuthStatus.Authenticating);
-    _authApi.loginWithEmailAndPassword(_state.email, _state.passord);
+    _authApi.loginWithEmailAndPassword(_state.email, _state.password);
   }
 
 }
