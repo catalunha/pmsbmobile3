@@ -283,3 +283,36 @@ Neste momento o campo upload=false foi atualizado para upload=true bem como os d
 
 Então.
 A function deverá considerar o campo updateCollection e atualizar a collection, document e field correspondente.
+
+# Chat
+
+Quando um novo document de ChatMesagem for criado.
+
+~~~json
+
+  "Chat/chatID/ChatMensagem": {
+    "autor": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "texto": "texto",
+    "datahora": "Firebase timestamp"
+  },
+
+~~~
+
+A function vai atualizar toda os usuarios de um chat fara a troca do valor de lido para false.
+
+~~~json
+
+"Chat": {
+    "ChatID": "ProdutoID || QuestionarioID || ID para outro seguimento",
+    "usuario": {
+      "usuarioID": {
+        "id": true,
+        "nome": "/Usuario/usuarioID$nome",
+        "lido": false
+      }
+    }
+  },
+~~~

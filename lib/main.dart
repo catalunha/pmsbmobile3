@@ -10,7 +10,6 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 void main() => runApp(MyApp());
 
-
 class MyApp extends StatelessWidget{
 
   @override
