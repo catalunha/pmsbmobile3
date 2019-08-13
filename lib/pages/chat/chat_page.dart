@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/chat_mensagem_model.dart';
 import 'package:pmsbmibile3/pages/chat/chat_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -236,7 +237,8 @@ class _TelaChatState extends State<TelaChat> {
     );
   }
 
-  Widget buildMessageCard(bool marcador) {
+  Widget buildMessageCard(
+      bool marcador, String usuario, String texto, String datahora) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.black12,
@@ -252,7 +254,7 @@ class _TelaChatState extends State<TelaChat> {
                 ? Padding(
                     padding: EdgeInsets.only(left: 5),
                     child: Text(
-                      "Nome Usuario",
+                      usuario,
                       style: TextStyle(color: Colors.blueGrey, fontSize: 14),
                     ))
                 : Container(),
@@ -260,14 +262,14 @@ class _TelaChatState extends State<TelaChat> {
             Padding(
                 padding: EdgeInsets.only(left: 5),
                 child: Text(
-                  "Olá message test, bla bla bla ... um dois tres ... teste teste teste",
+                  texto,
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 )),
             Container(height: 5.0),
             Padding(
                 padding: EdgeInsets.only(left: 5),
                 child: Text(
-                  "05 de julho as 19:00 horas",
+                  datahora,
                   style: TextStyle(color: Colors.black26, fontSize: 13),
                 )),
             Container(height: 10.0),
@@ -277,17 +279,54 @@ class _TelaChatState extends State<TelaChat> {
   }
 
   Widget buildListaMensagens() {
-    return Flexible(
-        child: ListView(
-      children: <Widget>[
-        buildMessageCard(false),
-        buildMessageCard(false),
-        buildMessageCard(true),
-        buildMessageCard(true),
-        buildMessageCard(false),
-        buildMessageCard(true),
-      ],
-    ));
+    return StreamBuilder<List<ChatMensagemModel>>(
+      stream: bloc.chatMensagemListStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<List<ChatMensagemModel>> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: Text("Erro. Informe ao administrador do aplicativo"),
+          );
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.data == null) {
+          return Center(
+            child: Text("Nenhum mensagem neste chat."),
+          );
+        }
+        if (snapshot.data.isEmpty) {
+          return Center(
+            child: Text("Lista de mensagens vazia."),
+          );
+        }
+        
+        String usuarioAtual=bloc.state.usuarioModel.id;
+
+        var lista = List<Widget>();
+        print(usuarioAtual);
+        for (var item in snapshot.data) {
+          if(item.enviada != null){
+          lista.add(buildMessageCard(item.autor.id!=usuarioAtual, item.autor.nome, item.texto,
+              item.enviada.toDate().toString()));
+          }
+        }
+
+        return Flexible(
+            child: ListView(
+          children: lista,
+        ));
+      },
+    );
+    // return Flexible(
+    //     child: ListView(
+    //   children: <Widget>[
+    //     buildMessageCard(false,'','',''),
+    //     buildMessageCard(true,'','',''),
+    //   ],
+    // ));
   }
 }
 

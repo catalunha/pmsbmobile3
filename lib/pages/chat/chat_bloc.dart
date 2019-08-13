@@ -32,10 +32,10 @@ class ChatPageBloc {
   Function get eventSink => _eventController.sink.add;
 
   //Estados
-  final ChatPageState _state = ChatPageState();
-  final _stateController = BehaviorSubject<ChatPageState>();
-  Stream<ChatPageState> get stateStream => _stateController.stream;
-  Function get stateSink => _stateController.sink.add;
+  final ChatPageState state = ChatPageState();
+  final stateController = BehaviorSubject<ChatPageState>();
+  Stream<ChatPageState> get stateStream => stateController.stream;
+  Function get stateSink => stateController.sink.add;
 
   //Stream para ChatMensagem
   final chatMensagemListController = BehaviorSubject<List<ChatMensagemModel>>();
@@ -47,8 +47,8 @@ class ChatPageBloc {
     eventStream.listen(_mapEventToState);
   }
   void dispose() async {
-    await _stateController.drain();
-    _stateController.close();
+    await stateController.drain();
+    stateController.close();
     await _eventController.drain();
     _eventController.close();
     await chatMensagemListController.drain();
@@ -57,42 +57,42 @@ class ChatPageBloc {
 
   _mapEventToState(ChatPageEvent event) async {
     if (event is UpdateChatIDModuloTituloEvent) {
-      _state.chatID = event.chatID;
-      _state.modulo = event.modulo;
-      _state.titulo = event.titulo;
+      state.chatID = event.chatID;
+      state.modulo = event.modulo;
+      state.titulo = event.titulo;
 
       _authBloc.perfil.listen((usuario) async {
-        _state.usuarioModel = usuario;
+        state.usuarioModel = usuario;
 
         final chatDocRef =
-            _firestore.collection(ChatModel.collection).document(_state.chatID);
+            _firestore.collection(ChatModel.collection).document(state.chatID);
         final chatDocSnapshot = await chatDocRef.get();
         // bool contemUsuario;
         // if (chatDocSnapshot.exists) {
         //   print('existe');
         //   Map<dynamic, dynamic> usuarios = chatDocSnapshot.data['usuario'];
-        //   contemUsuario = usuarios.containsKey(_state.usuarioModel.id);
+        //   contemUsuario = usuarios.containsKey(state.usuarioModel.id);
         //   // ChatModel chatModel = ChatModel(
-        //   //   id: _state.chatID,
+        //   //   id: state.chatID,
         //   //   usuario: {
-        //   //     '${_state.usuarioModel.id}': UsuarioChat(
-        //   //         id: true, nome: _state.usuarioModel.nome, lido: true)
+        //   //     '${state.usuarioModel.id}': UsuarioChat(
+        //   //         id: true, nome: state.usuarioModel.nome, lido: true)
         //   //   },
         //   // );
         //   // await chatDocRef.setData(chatModel.toMap(), merge: true);
         //   await chatDocRef.setData({
         //     "usuario": {
-        //       '${_state.usuarioModel.id}': {"lido": true}
+        //       '${state.usuarioModel.id}': {"lido": true}
         //     }
         //   }, merge: true);
         // }
         // if (!chatDocSnapshot.exists || !contemUsuario) {
         //   print('nao existe doc nem usuario. criando os dois');
         ChatModel chatModel = ChatModel(
-          id: _state.chatID,
+          id: state.chatID,
           usuario: {
-            '${_state.usuarioModel.id}': UsuarioChat(
-                id: true, nome: _state.usuarioModel.nome, lido: true)
+            '${state.usuarioModel.id}': UsuarioChat(
+                id: true, nome: state.usuarioModel.nome, lido: true)
           },
         );
         await chatDocRef.setData(chatModel.toMap(), merge: true);
@@ -102,7 +102,7 @@ class ChatPageBloc {
       // le todas as msgs deste chat
       final collectionRef = _firestore
           .collection(ChatModel.collection)
-          .document(_state.chatID)
+          .document(state.chatID)
           // .document('0W7B2AScdpfjOSmdsNk3')
           .collection(ChatModel.subcollectionMensagem);
 
@@ -121,30 +121,30 @@ class ChatPageBloc {
       // });
     }
     if (event is UpDateMsgToSendEvent) {
-      _state.msgToSend = event.msgToSend;
+      state.msgToSend = event.msgToSend;
       print(event.msgToSend);
     }
 
     if (event is SendMsgEvent) {
-      print('Send: ${_state.msgToSend}');
-      if (_state.msgToSend != null) {
+      print('Send: ${state.msgToSend}');
+      if (state.msgToSend != null) {
         final chatMsgDocRef =
             _firestore
             .collection(ChatModel.collection)
-            .document(_state.chatID)
+            .document(state.chatID)
             .collection(ChatModel.subcollectionMensagem)
             .document();
         ChatMensagemModel chatMsgModel = ChatMensagemModel(
           autor: UsuarioID(
-              id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
-          texto: _state.msgToSend,
+              id: state.usuarioModel.id, nome: state.usuarioModel.nome),
+          texto: state.msgToSend,
         );
         await chatMsgDocRef.setData(chatMsgModel.toMap(), merge: true);
       }
-      _state.msgToSend = null;
+      state.msgToSend = null;
     }
 
-    if (!_stateController.isClosed) _stateController.add(_state);
+    if (!stateController.isClosed) stateController.add(state);
     print('event.runtimeType em ChatPageBloc  = ${event.runtimeType}');
   }
 }
