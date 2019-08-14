@@ -173,7 +173,7 @@ class ChatPageBloc {
               .document();
           ChatNotificacaoModel chatNotificacaoModel = ChatNotificacaoModel(
             titulo: state.modulo,
-            texto: '${state.titulo}\n${state.msgToSend}',
+            texto: '${state.titulo}\nM: ${state.msgToSend}.',
             usuario: usuarioListAlertar,
           );
           await chatNotificacaoDocRef.setData(chatNotificacaoModel.toMap(), merge: true);
