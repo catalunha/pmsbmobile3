@@ -85,6 +85,7 @@
   },
   "UsuarioPerfil": {
     "usuario": {
+      "_comment":"UsuarioPerfil.usuario diverge do firebase",
       "usuarioID": "/Usuario/usuarioID",
       "nome": "/Usuario/usuarioID$nome"
     },
@@ -103,6 +104,7 @@
     }
   },
   "QuestionarioProposto": {
+    "_comment":"QuestionarioProposto diverge do firebase,",
     "nome": "nome-valor",
     "eixo": {
       "eixoID": "Eixo/eixoID",
@@ -117,6 +119,7 @@
     "ultimaOrdem": "inteiro com o valor do maior campor ordem das perguntas deste questionario"
   },
   "QuestionarioAplicado": {
+    "_comment":"QuestionarioProposto.setorCensitario não aparece no firebase,",
     "nome": "nome-valor",
     "local": "Local ou Pessoa ou Momento da aplicação.",
     "eixo": {
@@ -132,6 +135,7 @@
       "nome": "/Usuario/usuarioID$nome"
     },
     "aplicou": {
+      "_comment":"difere do firebase",
       "usuarioID": "/Usuario/usuarioID",
       "nome": "/Usuario/usuarioID$nome"
     },
@@ -197,16 +201,20 @@
     "_comment": "idem a Pergunta. Com as devidas alterações."
   },
   "Produto": {
+    "_comment":"difere do firebase",
     "nome": "nome-valor",
     "eixo": {
+      "_comment":"difere do firebase",
       "eixoID": "Eixo/eixoID",
       "nome": "Eixo/eixoID$nome"
     },
     "setorCensitario": {
+      "_comment":"difere do firebase",
       "setorCensitarioID": "SetorCensitario/setorCensitarioID",
       "nome": "SetorCensitario/setorCensitarioID$nome"
     },
     "editou": {
+      "_comment":"difere do firebase",
       "usuarioID": "/Usuario/usuarioID",
       "nome": "/Usuario/usuarioID$nome"
     },
