@@ -51,7 +51,7 @@ class ChatLidoPage extends StatelessWidget {
           usuario = snapshot.data?.usuario;
           var lista = List<Widget>();
           for (var item in usuario.entries) {
-            print('usuario: ${item.key}');
+            // print('usuario: ${item.key}');
             lista.add(_cardBuild(context, item.key, item.value));
           }
 

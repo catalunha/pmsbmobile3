@@ -1,10 +1,18 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:pmsbmibile3/models/chat_mensagem_model.dart';
 import 'package:pmsbmibile3/models/chat_model.dart';
+import 'package:pmsbmibile3/models/chat_notificacao_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+class Alerta {
+  final UsuarioModel usuarioModel;
+  final bool alerta;
+
+  Alerta(this.usuarioModel, this.alerta);
+}
 
 class ChatPageState {
   // objetos
@@ -17,6 +25,7 @@ class ChatPageState {
 
   // Estados secundarios
   String msgToSend;
+  Map<String, UsuarioChat> usuario = Map<String, UsuarioChat>();
 }
 
 class ChatPageBloc {
@@ -33,9 +42,9 @@ class ChatPageBloc {
 
   //Estados
   final ChatPageState state = ChatPageState();
-  final stateController = BehaviorSubject<ChatPageState>();
-  Stream<ChatPageState> get stateStream => stateController.stream;
-  Function get stateSink => stateController.sink.add;
+  final _stateController = BehaviorSubject<ChatPageState>();
+  Stream<ChatPageState> get stateStream => _stateController.stream;
+  Function get stateSink => _stateController.sink.add;
 
   //Stream para ChatMensagem
   final chatMensagemListController = BehaviorSubject<List<ChatMensagemModel>>();
@@ -47,8 +56,8 @@ class ChatPageBloc {
     eventStream.listen(_mapEventToState);
   }
   void dispose() async {
-    await stateController.drain();
-    stateController.close();
+    await _stateController.drain();
+    _stateController.close();
     await _eventController.drain();
     _eventController.close();
     await chatMensagemListController.drain();
@@ -66,7 +75,15 @@ class ChatPageBloc {
 
         final chatDocRef =
             _firestore.collection(ChatModel.collection).document(state.chatID);
-        final chatDocSnapshot = await chatDocRef.get();
+        final chatStreamDocSnapshot = chatDocRef.snapshots();
+
+        chatStreamDocSnapshot.listen((snapDocs) {
+          Map<dynamic, dynamic> usuarios = snapDocs.data['usuario'];
+          for (var item in usuarios.entries) {
+            state.usuario[item.key] = UsuarioChat.fromMap(item.value);
+          }
+          if (!_stateController.isClosed) _stateController.add(state);
+        });
         // bool contemUsuario;
         // if (chatDocSnapshot.exists) {
         //   print('existe');
@@ -91,8 +108,8 @@ class ChatPageBloc {
         ChatModel chatModel = ChatModel(
           id: state.chatID,
           usuario: {
-            '${state.usuarioModel.id}': UsuarioChat(
-                id: true, nome: state.usuarioModel.nome, lido: true)
+            '${state.usuarioModel.id}':
+                UsuarioChat(id: true, nome: state.usuarioModel.nome, lido: true)
           },
         );
         await chatDocRef.setData(chatModel.toMap(), merge: true);
@@ -106,11 +123,13 @@ class ChatPageBloc {
           // .document('0W7B2AScdpfjOSmdsNk3')
           .collection(ChatModel.subcollectionMensagem);
 
-      final snapList = collectionRef.snapshots().map((querySnapshot) =>
-          querySnapshot.documents
+      final snapList = collectionRef
+          .snapshots()
+          .map((querySnapshot) => querySnapshot.documents
               .map((docSnap) => ChatMensagemModel(id: docSnap.documentID)
                   .fromMap(docSnap.data))
-              .toList()).pipe(chatMensagemListController);
+              .toList())
+          .pipe(chatMensagemListController);
 
       // snapList.listen((List<ChatMensagemModel> chatMensagemModelList) {
       //   // print('chatMensagemModelList.length: ${chatMensagemModelList.length}');
@@ -128,8 +147,7 @@ class ChatPageBloc {
     if (event is SendMsgEvent) {
       print('Send: ${state.msgToSend}');
       if (state.msgToSend != null) {
-        final chatMsgDocRef =
-            _firestore
+        final chatMsgDocRef = _firestore
             .collection(ChatModel.collection)
             .document(state.chatID)
             .collection(ChatModel.subcollectionMensagem)
@@ -140,11 +158,55 @@ class ChatPageBloc {
           texto: state.msgToSend,
         );
         await chatMsgDocRef.setData(chatMsgModel.toMap(), merge: true);
+        List<String> usuarioListAlertar = List<String>();
+        for (var item in state.usuario.entries) {
+          if (state.usuario[item.key].alertar == true) {
+            usuarioListAlertar.add(item.key);
+          }
+          state.usuario[item.key].alertar = false;
+        }
+        if (usuarioListAlertar.isNotEmpty) {
+          final chatNotificacaoDocRef = _firestore
+              .collection(ChatModel.collection)
+              .document(state.chatID)
+              .collection(ChatModel.subcollectionNotificacao)
+              .document();
+          ChatNotificacaoModel chatNotificacaoModel = ChatNotificacaoModel(
+            titulo: state.modulo,
+            texto: '${state.titulo}\n${state.msgToSend}',
+            usuario: usuarioListAlertar,
+          );
+          await chatNotificacaoDocRef.setData(chatNotificacaoModel.toMap(), merge: true);
+        }
+        print('>>> usuarioListAlertar <<< ${usuarioListAlertar}');
       }
       state.msgToSend = null;
     }
 
-    if (!stateController.isClosed) stateController.add(state);
+    if (event is UpDateAlertaEvent) {
+      // print('>>> event.usuarioChatID <<< ${event.usuarioChatID}');
+      // print('>>> event.alertar <<< ${event.alertar}');
+      state.usuario[event.usuarioChatID].alertar = event.alertar;
+    }
+    if (event is UpDateAlertarTodosEvent) {
+      if (event.alertar == true) {
+        for (var item in state.usuario.entries) {
+          state.usuario[item.key].alertar = true;
+        }
+      }
+      if (event.alertar == false) {
+        for (var item in state.usuario.entries) {
+          state.usuario[item.key].alertar = false;
+        }
+      }
+      if (event.alertar == null) {
+        for (var item in state.usuario.entries) {
+          state.usuario[item.key].alertar = !state.usuario[item.key].alertar;
+        }
+      }
+    }
+
+    if (!_stateController.isClosed) _stateController.add(state);
     print('event.runtimeType em ChatPageBloc  = ${event.runtimeType}');
   }
 }
@@ -163,6 +225,19 @@ class UpDateMsgToSendEvent extends ChatPageEvent {
   final String msgToSend;
 
   UpDateMsgToSendEvent(this.msgToSend);
+}
+
+class UpDateAlertaEvent extends ChatPageEvent {
+  final String usuarioChatID;
+  final bool alertar;
+
+  UpDateAlertaEvent({this.usuarioChatID, this.alertar});
+}
+
+class UpDateAlertarTodosEvent extends ChatPageEvent {
+  final bool alertar;
+
+  UpDateAlertarTodosEvent(this.alertar);
 }
 
 class SendMsgEvent extends ChatPageEvent {}

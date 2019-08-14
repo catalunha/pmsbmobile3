@@ -34,6 +34,7 @@ class ChatModel extends FirestoreModel {
 
 class UsuarioChat {
   String usuarioID;
+  bool alertar;
   bool id;
   String nome;
   bool lido;
@@ -42,6 +43,7 @@ class UsuarioChat {
 
   UsuarioChat.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('usuarioID')) usuarioID = map['usuarioID'];
+    if (map.containsKey('alertar')) alertar = map['alertar'];
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('lido')) lido = map['lido'];
@@ -50,6 +52,7 @@ class UsuarioChat {
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (usuarioID != null) data['usuarioID'] = this.usuarioID;
+    if (alertar != null) data['alertar'] = this.alertar;
     if (id != null) data['id'] = this.id;
     if (nome != null) data['nome'] = this.nome;
     if (lido != null) data['lido'] = this.lido;

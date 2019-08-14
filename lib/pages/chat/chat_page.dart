@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/chat_mensagem_model.dart';
+import 'package:pmsbmibile3/models/chat_model.dart';
 import 'package:pmsbmibile3/pages/chat/chat_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -55,6 +58,7 @@ class TelaChat extends StatefulWidget {
 class _TelaChatState extends State<TelaChat> {
   final textEditingController = TextEditingController();
   final ChatPageBloc bloc;
+  ScrollController _scrollController = new ScrollController();
 
   _TelaChatState(AuthBloc authBloc)
       : bloc = ChatPageBloc(Bootstrap.instance.firestore, authBloc);
@@ -69,6 +73,7 @@ class _TelaChatState extends State<TelaChat> {
   @override
   void dispose() {
     bloc.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -129,7 +134,7 @@ class _TelaChatState extends State<TelaChat> {
               return Container(
                 child: Row(
                   children: <Widget>[
-                    //escolher os usuarios que vão receber notificacao
+                    //+++ escolher os usuarios que vão receber notificacao
                     Material(
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 1.0),
@@ -139,7 +144,7 @@ class _TelaChatState extends State<TelaChat> {
                             showModalBottomSheet(
                                 context: context,
                                 builder: (BuildContext bc) {
-                                  return UsuarioListaModalSelect();
+                                  return UsuarioListaModalSelect(bloc);
                                 });
                           }, //getSticker,
                           color: Colors.black54,
@@ -147,6 +152,8 @@ class _TelaChatState extends State<TelaChat> {
                       ),
                       color: Colors.white,
                     ),
+                    //--- escolher os usuarios que vão receber notificacao
+                    //+++ TextField escrever a msg
                     Flexible(
                       child: Container(
                         child: TextField(
@@ -168,6 +175,7 @@ class _TelaChatState extends State<TelaChat> {
                         ),
                       ),
                     ),
+                    //--- TextField escrever a msg
                     //+++ Botao enviar mensagem
                     Material(
                       child: Container(
@@ -199,41 +207,50 @@ class _TelaChatState extends State<TelaChat> {
   }
 
   Widget usuariosMarcados() {
-    String usuario = "Usuario_Nome";
-    return Container(
-      height: 30.0,
-      color: Colors.white12,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-          Container(width: 4.0),
-          Center(
-              child: Text('@$usuario', style: TextStyle(color: Colors.blue))),
-        ],
-      ),
+    return StreamBuilder<ChatPageState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context, AsyncSnapshot<ChatPageState> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: Text("Erro. Informe ao administrador do aplicativo"),
+          );
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.data.usuario == null) {
+          return Center(
+            child: Text("Nenhum usuario neste chat."),
+          );
+        }
+        if (snapshot.data.usuario.isEmpty) {
+          return Center(
+            child: Text("Vazio."),
+          );
+        }
+
+        var usuario = Map<String, UsuarioChat>();
+
+        usuario = snapshot.data?.usuario;
+        var lista = List<Widget>();
+        for (var item in usuario.entries) {
+          if (item.value?.alertar != null && item.value.alertar ) {
+            lista.add(Center(
+                child: Text('@${item.value.nome}. ',
+                    style: TextStyle(color: Colors.blue))));
+          }
+        }
+
+        // return ListView(
+        //   children: lista,
+        // );
+        return Container(
+          height: 30.0,
+          color: Colors.white12,
+          child: ListView(scrollDirection: Axis.horizontal, children: lista),
+        );
+      },
     );
   }
 
@@ -302,77 +319,131 @@ class _TelaChatState extends State<TelaChat> {
             child: Text("Lista de mensagens vazia."),
           );
         }
-        
-        String usuarioAtual=bloc.state.usuarioModel.id;
 
+        String usuarioAtual = bloc.state.usuarioModel.id;
         var lista = List<Widget>();
         print(usuarioAtual);
         for (var item in snapshot.data) {
-          if(item.enviada != null){
-          lista.add(buildMessageCard(item.autor.id!=usuarioAtual, item.autor.nome, item.texto,
-              item.enviada.toDate().toString()));
+          if (item.enviada != null) {
+            lista.add(buildMessageCard(item.autor.id == usuarioAtual,
+                item.autor.nome, item.texto, item.enviada.toDate().toString()));
           }
         }
-
+        //TODO: Precisamos retirar o time e colocar algo mais inteligente.
+        Timer(
+            Duration(milliseconds: 100),
+            () => _scrollController
+                .jumpTo(_scrollController.position.maxScrollExtent));
         return Flexible(
             child: ListView(
+          controller: _scrollController,
           children: lista,
         ));
       },
     );
-    // return Flexible(
-    //     child: ListView(
-    //   children: <Widget>[
-    //     buildMessageCard(false,'','',''),
-    //     buildMessageCard(true,'','',''),
-    //   ],
-    // ));
   }
 }
 
 /// Selecao de usuario que vao receber alerta
 class UsuarioListaModalSelect extends StatefulWidget {
+  final ChatPageBloc bloc;
+
+  const UsuarioListaModalSelect(this.bloc);
+
   @override
   _UsuarioListaModalSelectState createState() =>
-      _UsuarioListaModalSelectState();
+      _UsuarioListaModalSelectState(this.bloc);
 }
 
 class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
-  Map<String, bool> valores = {
-    'Todos': false,
-    'Usuario 01': false,
-    'Usuario 02': false,
-    'Usuario 03': false,
-    'Usuario 04': false,
-    'Usuario 05': false,
-    'Usuario 04': false,
-  };
+  final ChatPageBloc bloc;
 
-  _marcarTodosDaListaComoTrue(bool value) {
-    setState(() {
-      valores.keys.forEach((String key) {
-        valores[key] = value;
-      });
-    });
-  }
+  _UsuarioListaModalSelectState(this.bloc);
+
+  // Map<String, bool> valores = {
+  //   'Todos': false,
+  //   'Usuario 01': false,
+  //   'Usuario 02': false,
+  //   'Usuario 03': false,
+  //   'Usuario 04': false,
+  //   'Usuario 05': false,
+  //   'Usuario 04': false,
+  // };
+
+  // _marcarTodosDaListaComoTrue(bool value) {
+
+  // }
 
   Widget _listaUsuarios() {
-    return ListView(
-      children: valores.keys.map((String key) {
-        return CheckboxListTile(
-          title: Text(key),
-          value: valores[key],
-          onChanged: (bool value) {
-            if (key == 'Todos') {
-              _marcarTodosDaListaComoTrue(value);
-            } else {
-              setState(() {
-                valores[key] = value;
-              });
-            }
-          },
+    return StreamBuilder<ChatPageState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context, AsyncSnapshot<ChatPageState> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: Text("Erro. Informe ao administrador do aplicativo"),
+          );
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.data.usuario == null) {
+          return Center(
+            child: Text("Nenhum usuario neste chat."),
+          );
+        }
+        if (snapshot.data.usuario.isEmpty) {
+          return Center(
+            child: Text("Vazio."),
+          );
+        }
+
+        var usuario = Map<String, UsuarioChat>();
+
+        usuario = snapshot.data?.usuario;
+        var lista = List<Widget>();
+        for (var item in usuario.entries) {
+          // print('usuario: ${item.key}');
+          lista.add(_cardBuild(context, item.key, item.value));
+        }
+
+        return ListView(
+          children: lista,
         );
-      }).toList(),
+      },
+    );
+
+    // return ListView(
+    //   children: valores.keys.map((String key) {
+    //     return CheckboxListTile(
+    //       title: Text(key),
+    //       value: valores[key],
+    //       onChanged: (bool value) {
+    //         if (key == 'Todos') {
+    //           _marcarTodosDaListaComoTrue(value);
+    //         } else {
+    //           setState(() {
+    //             valores[key] = value;
+    //           });
+    //         }
+    //       },
+    //     );
+    //   }).toList(),
+    // );
+  }
+
+  Widget _cardBuild(BuildContext context, String key, UsuarioChat usuario) {
+    // print(usuario.nome);
+    // return ListTile(
+    //   title: Text(usuario.nome),
+    //   leading: usuario.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
+    // );
+    return CheckboxListTile(
+      title: Text(usuario.nome),
+      value: usuario.alertar == null ? false : usuario.alertar,
+      onChanged: (bool alertar) {
+        bloc.eventSink(UpDateAlertaEvent(usuarioChatID: key, alertar: alertar));
+      },
     );
   }
 
@@ -382,16 +453,41 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
       appBar: AppBar(
         title: Text("Alertar os usuários",
             style: TextStyle(fontSize: 15, color: Colors.black45)),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        // automaticallyImplyLeading: false,
+        backgroundColor: Colors.blueGrey,
         actions: <Widget>[
-          RaisedButton(
-              child: Text("Salvar"),
-              textColor: Colors.blue,
-              color: Colors.white,
-              onPressed: () {
-                Navigator.pop(context);
-              })
+          IconButton(
+            icon: Icon(Icons.check_box),
+            onPressed: () {
+              bloc.eventSink(UpDateAlertarTodosEvent(true));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.check_box_outline_blank),
+            onPressed: () {
+              bloc.eventSink(UpDateAlertarTodosEvent(false));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.repeat),
+            onPressed: () {
+              bloc.eventSink(UpDateAlertarTodosEvent(null));
+            },
+          ),
+          // RaisedButton(
+          //     child: Text("Marcar todos"),
+          //     textColor: Colors.blue,
+          //     color: Colors.white,
+          //     onPressed: () {
+          //       bloc.eventSink(UpDateAlertarTodosEvent());
+          //     }),
+          // RaisedButton(
+          //     child: Text("Salvar"),
+          //     textColor: Colors.blue,
+          //     color: Colors.white,
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //     })
         ],
       ),
       body: _listaUsuarios(),

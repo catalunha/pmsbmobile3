@@ -1,8 +1,5 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/models/chat_mensagem_model.dart';
 import 'package:pmsbmibile3/models/chat_model.dart';
-import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChatLidoPageState {
