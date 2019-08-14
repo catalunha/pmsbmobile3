@@ -258,11 +258,10 @@
     "textoMarkdown": "textoMarkdown-valor"
   },
   "Chat": {
-    "ChatID": "ProdutoID || QuestionarioID || ID para outro seguimento",
+    "chatID": "ProdutoID || QuestionarioID || ID para outro seguimento",
     "usuario": {
       "usuarioID": {
         "id": true,
-        "pushToken": "UsuarioID$pushToken",
         "nome": "/Usuario/usuarioID$nome",
         "lido": false
       }
@@ -270,11 +269,11 @@
   },
   "Chat/chatID/ChatMensagem": {
     "autor": {
-      "usuarioID": "/Usuario/usuarioID",
+      "id": "/Usuario/usuarioID",
       "nome": "/Usuario/usuarioID$nome"
     },
     "texto": "texto",
-    "datahora": "Firebase timestamp"
+    "enviada": "Firebase timestamp"
   },
   "Chat/chatID/ChatNoticacao": {
     "datahora": "Firebase timestamp",
@@ -285,7 +284,7 @@
     "titulo": "",
     "texto": "",
     "usuario": [
-      "UsuarioID$pushToken"
+      "UsuarioID$tokenFCM"
     ]
   }
 }

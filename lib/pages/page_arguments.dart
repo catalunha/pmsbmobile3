@@ -38,3 +38,11 @@ class AplicandoPerguntaPageArguments {
 
   AplicandoPerguntaPageArguments(this.questionarioID, {this.perguntaID});
 }
+
+class ChatPageArguments {
+  final String chatID;
+  final String modulo;
+  final String titulo;
+
+  ChatPageArguments({this.modulo, this.titulo, this.chatID});
+}
