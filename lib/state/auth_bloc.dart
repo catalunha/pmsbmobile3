@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/services/notificacao_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:firebaseauth_wrapper/firebaseauth_wrapper.dart' as fba;
+
 enum AuthStatus {
   Uninitialized,
   Authenticated,
@@ -28,6 +28,7 @@ class UpdatePasswordAuthBlocEvent extends AuthBlocEvent {
 }
 
 class LoginAuthBlocEvent extends AuthBlocEvent {}
+
 class LogoutAuthBlocEvent extends AuthBlocEvent {}
 
 class AuthBlocState {
@@ -44,27 +45,31 @@ class AuthBloc {
   final fba.FirebaseAuth _authApi;
 
   //AuthStatus
-  final _statusController = BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);
+  final _statusController =
+      BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);
+
   Stream<AuthStatus> get status => _statusController.stream;
 
   //State
   final _state = AuthBlocState();
-  
+
   //TODO: Creio q esta stream foi abandonada no codigo.
   //UserId
   final _userId = BehaviorSubject<String>();
+
   Stream<String> get userId => _userId.stream;
 
   //Usuario Model
   final _perfilController = BehaviorSubject<UsuarioModel>();
   StreamSubscription<UsuarioModel> _perfilSubscription;
+
   Stream<UsuarioModel> get perfil => _perfilController.stream;
 
   //Event
   final _inputController = BehaviorSubject<AuthBlocEvent>();
+
   Function get dispatch => _inputController.sink.add;
 
-  
   // NOTIFICACAO
   final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
@@ -91,29 +96,27 @@ class AuthBloc {
     _inputController.close();
   }
 
-
   void _setpushTokenfromUsuario(String userId) {
     // Ao logar atualiza o token do usuario.
     firebaseMessaging.getToken().then((token) {
       // print('Novo token >> $token');
-      Firestore.instance
+      _firestore
           .collection(UsuarioModel.collection)
           .document(userId)
-          .updateData({'tokenFCM': token});
+          .setData({'tokenFCM': token}, merge: true);
     }).catchError((err) {
       print(err.message.toString());
     });
   }
 
   void _getPerfilUsuarioFromFirebaseUser(String userId) {
-    _state.usuarioID=userId;
+    _state.usuarioID = userId;
 
     final perfilRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
 
     final perfilStream = perfilRef.snapshots().map((perfilSnap) =>
-        UsuarioModel(id: perfilSnap.documentID)
-            .fromMap(perfilSnap.data));
+        UsuarioModel(id: perfilSnap.documentID).fromMap(perfilSnap.data));
     if (_perfilSubscription != null) {
       _perfilSubscription.cancel().then((_) {
         _perfilSubscription = perfilStream.listen(_pipPerfil);
@@ -134,31 +137,25 @@ class AuthBloc {
   void _updateStatus(String userId) {
     if (userId == null) {
       _statusController.sink.add(AuthStatus.Unauthenticated);
-    }
-    else{
+    } else {
       _statusController.sink.add(AuthStatus.Authenticated);
     }
   }
 
   void _handleInputEvent(AuthBlocEvent event) {
-    if(event is UpdateEmailAuthBlocEvent){
+    if (event is UpdateEmailAuthBlocEvent) {
       _state.email = event.email;
-    }
-    else if(event is UpdatePasswordAuthBlocEvent){
+    } else if (event is UpdatePasswordAuthBlocEvent) {
       _state.password = event.password;
-    }
-    else if(event is LoginAuthBlocEvent){
+    } else if (event is LoginAuthBlocEvent) {
       _handleLoginAuthBlocEvent();
-    }
-    else if(event is LogoutAuthBlocEvent){
+    } else if (event is LogoutAuthBlocEvent) {
       _authApi.logout();
-      
     }
   }
 
-  void _handleLoginAuthBlocEvent(){
+  void _handleLoginAuthBlocEvent() {
     _statusController.sink.add(AuthStatus.Authenticating);
     _authApi.loginWithEmailAndPassword(_state.email, _state.password);
   }
-
 }

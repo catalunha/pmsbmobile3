@@ -153,12 +153,14 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
   String referencia;
   dynamic aplicado;
   UsuarioQuestionario aplicador;
+  SetorCensitario setorCensitarioID;
 
   QuestionarioAplicadoModel({
     String id,
     this.referencia,
     this.aplicado,
     this.aplicador,
+    this.setorCensitarioID,
     String nome,
     dynamic criado,
     dynamic modificado,
@@ -181,8 +183,6 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
 
   @override
   QuestionarioAplicadoModel fromMap(Map<String, dynamic> map) {
-
-
     referencia = map["referencia"];
 
     aplicado = map["aplicado"];
@@ -191,6 +191,12 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
       aplicador = UsuarioQuestionario.fromMap(map["aplicador"]);
     } else {
       aplicador = UsuarioQuestionario();
+    }
+
+    if (map["setorCensitarioID"] != null) {
+      setorCensitarioID = SetorCensitario.fromMap(map["setorCensitarioID"]);
+    } else {
+      setorCensitarioID = SetorCensitario();
     }
     return super.fromMap(map);
   }
@@ -203,6 +209,28 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
     if (aplicador != null) {
       map["aplicador"] = aplicador.toMap();
     }
+    if (setorCensitarioID != null) {
+      map["setorCensitarioID"] = setorCensitarioID.toMap();
+    }
     return map;
+  }
+}
+
+class SetorCensitario {
+  String id;
+  String nome;
+
+  SetorCensitario({this.id, this.nome});
+
+  SetorCensitario.fromMap(Map<dynamic, dynamic> map) {
+    id = map["id"];
+    nome = map["nome"];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "nome": nome,
+    };
   }
 }
