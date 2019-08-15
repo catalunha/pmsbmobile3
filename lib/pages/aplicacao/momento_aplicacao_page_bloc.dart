@@ -59,7 +59,8 @@ class MomentoAplicacaoPageBlocState {
   String usuarioID;
   String usuarioNome;
   String usuarioEixoID;
-
+  String setorCensitarioID;
+  String setorCensitarioNome;
   bool isBound = false;
   bool isValid = false;
 
@@ -111,6 +112,8 @@ class MomentoAplicacaoPageBloc
       currentState.usuarioNome = event.usuario.nome;
       currentState.usuarioID = event.usuario.id;
       currentState.usuarioEixoID = event.usuario.eixoIDAtual.id;
+      currentState.setorCensitarioID = event.usuario.setorCensitarioID.id;
+      currentState.setorCensitarioNome = event.usuario.setorCensitarioID.nome;
     }
     if (event is UpdateIDMomentoAplicacaoPageBlocEvent) {
       if (event.questionarioAplicadoID != null) {
@@ -227,6 +230,10 @@ class MomentoAplicacaoPageBloc
     qmodel.referencia = currentState.referencia;
     qmodel.aplicador = usuario;
     qmodel.aplicado = DateTime.now();
+    qmodel.setorCensitarioID = SetorCensitario(
+      id: currentState.setorCensitarioID,
+      nome: currentState.setorCensitarioNome,
+    );
 
     ref.setData(qmodel.toMap(), merge: true);
 
