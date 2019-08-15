@@ -209,6 +209,9 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
     if (aplicador != null) {
       map["aplicador"] = aplicador.toMap();
     }
+    if (setorCensitarioID != null) {
+      map["setorCensitarioID"] = setorCensitarioID.toMap();
+    }
     return map;
   }
 }
