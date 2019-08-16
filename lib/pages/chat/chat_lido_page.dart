@@ -9,8 +9,8 @@ class ChatLidoPage extends StatelessWidget {
   final String chatID;
   ChatLidoPage(this.chatID)
       : bloc = ChatLidoPageBloc(Bootstrap.instance.firestore) {
-        print('>>> ChatLidoPage this.chatID <<< ${this.chatID}');
-    bloc.eventSink(UpdateChatIDEvent(chatID:this.chatID));
+    print('>>> ChatLidoPage this.chatID <<< ${this.chatID}');
+    bloc.eventSink(UpdateChatIDEvent(chatID: this.chatID));
   }
   void dispose() {
     bloc.dispose();
@@ -67,7 +67,23 @@ class ChatLidoPage extends StatelessWidget {
     print(usuario.nome);
     return ListTile(
       title: Text(usuario.nome),
-      leading: usuario.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
+      leading: usuario.lido
+          ? IconButton(
+              icon: Icon(Icons.playlist_add_check),
+              tooltip: 'Este usuario viu as msgs deste chat',
+              onPressed: null)
+          : IconButton(
+              icon: Icon(Icons.not_interested),
+              tooltip: 'Este usuario ainda NÂO viu as msgs deste chat',
+              onPressed: null),
+      trailing: IconButton(
+          icon: Icon(Icons.delete),
+          tooltip: 'Retirar este usuario deste chat',
+          onPressed: () {
+            bloc.eventSink(DeleteUsuarioEvent(key));
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }),
     );
   }
 }

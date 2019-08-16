@@ -84,29 +84,10 @@ class ChatPageBloc {
           }
           if (!_stateController.isClosed) _stateController.add(state);
         });
-        // bool contemUsuario;
-        // if (chatDocSnapshot.exists) {
-        //   print('existe');
-        //   Map<dynamic, dynamic> usuarios = chatDocSnapshot.data['usuario'];
-        //   contemUsuario = usuarios.containsKey(state.usuarioModel.id);
-        //   // ChatModel chatModel = ChatModel(
-        //   //   id: state.chatID,
-        //   //   usuario: {
-        //   //     '${state.usuarioModel.id}': UsuarioChat(
-        //   //         id: true, nome: state.usuarioModel.nome, lido: true)
-        //   //   },
-        //   // );
-        //   // await chatDocRef.setData(chatModel.toMap(), merge: true);
-        //   await chatDocRef.setData({
-        //     "usuario": {
-        //       '${state.usuarioModel.id}': {"lido": true}
-        //     }
-        //   }, merge: true);
-        // }
-        // if (!chatDocSnapshot.exists || !contemUsuario) {
-        //   print('nao existe doc nem usuario. criando os dois');
         ChatModel chatModel = ChatModel(
           id: state.chatID,
+          modulo: state.modulo,
+          titulo: state.titulo,
           usuario: {
             '${state.usuarioModel.id}':
                 UsuarioChat(id: true, nome: state.usuarioModel.nome, lido: true)
