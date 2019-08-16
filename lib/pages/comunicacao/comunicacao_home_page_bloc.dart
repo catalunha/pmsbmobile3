@@ -109,8 +109,9 @@ class ComunicacaoHomePageBloc {
     _comunicacaoHomePageEventController.close();
     await _comunicacaoHomePageStateController.drain();
     _comunicacaoHomePageStateController.close();
-    _noticiaModelListEdicaoController.close();
     await _noticiaModelListEdicaoController.drain();
+    _noticiaModelListEdicaoController.close();
+    await _noticiaModelListPublicadaController.drain();
     _noticiaModelListPublicadaController.close();
   }
 }
