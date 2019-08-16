@@ -1,4 +1,5 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/chat_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -75,6 +76,15 @@ class ChatLidoPageBloc {
 
     }
 
+    if (event is DeleteUsuarioEvent) {
+      // print('>>> event.usuarioID <<< ${event.usuarioID}');
+            final docRef = _firestore
+          .collection(ChatModel.collection)
+          .document(_state.chatID);
+      docRef.setData({
+        "usuario": {event.usuarioID: Bootstrap.instance.FieldValue.delete()},
+      }, merge: true);
+    }
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('_state.toString()  = ${_state.toString()}');
     print('event.runtimeType em ChatLidoPageBloc  = ${event.runtimeType}');
@@ -87,4 +97,9 @@ class UpdateChatIDEvent extends ChatLidoPageEvent {
   final String chatID;
 
   UpdateChatIDEvent({this.chatID});
+}
+class DeleteUsuarioEvent extends ChatLidoPageEvent {
+  final String usuarioID;
+
+  DeleteUsuarioEvent(this.usuarioID);
 }

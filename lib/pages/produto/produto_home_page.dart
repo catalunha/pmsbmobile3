@@ -126,12 +126,11 @@ class ProdutoHomePage extends StatelessWidget {
                   tooltip: 'chat para o produto',
                   onPressed: () {
                     Navigator.pushNamed(context, '/chat/home',
-                        arguments: ChatPageArguments(chatID:produto.id, modulo: 'P: ${produto.eixoID.nome}. \nS: ${produto.setorCensitarioID.nome}',titulo: 'T: ${produto.titulo}. '));
-                    // modulo: Produto(Eixo,Setor). Questionario (Eixo). Administração ('Administração')
-                    // print(produto.eixoID.nome);
-                    // print(produto.setorCensitarioID.nome);
-                    // // titulo: Titulo do ProdutoID. Titulo do QuestionarioID. 'Msg da Administração'
-                    // print(produto.titulo);
+                        arguments: ChatPageArguments(
+                            chatID: produto.id,
+                            modulo:
+                                'P: ${produto.eixoID.nome}. \nS: ${produto.setorCensitarioID.nome}',
+                            titulo: 'T: ${produto.titulo}. '));
                   },
                 ),
                 IconButton(

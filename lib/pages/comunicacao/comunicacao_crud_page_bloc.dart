@@ -107,7 +107,7 @@ class ComunicacaoCRUDPageState {
     return NoticiaModel(
       usuarioIDEditor: usuarioIDEditor,
       titulo: titulo,
-      publicada: false,
+      // publicada: false,
       textoMarkdown: textoMarkdown,
       usuarioIDDestino: usuarioIDDestino,
       publicar: publicar ?? null,
@@ -141,7 +141,7 @@ class ComunicacaoCRUDPageBloc {
     eventStream.listen(_mapEventToState);
   }
 
-  void dispose() {
+  void dispose() async {
     _authBloc.dispose();
     _eventController.close();
     _stateController.close();

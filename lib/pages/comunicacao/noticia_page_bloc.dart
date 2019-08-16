@@ -107,8 +107,8 @@ class NoticiaPageBloc {
               isEqualTo: true)
           .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.visualizada",
               isEqualTo: visualizada)
-          // .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.publicar",
-          //     isGreaterThanOrEqualTo: DateTime.now())
+          .where("publicar",
+              isLessThan: DateTime.now().toUtc())
           .snapshots()
           .map((snap) => snap.documents
               .map((doc) => NoticiaModel(id: doc.documentID).fromMap(doc.data))

@@ -4,11 +4,16 @@ class ChatModel extends FirestoreModel {
   static final String collection = "Chat";
   static final String subcollectionMensagem = "ChatMensagem";
   static final String subcollectionNotificacao = "ChatNotificacao";
+
+  String modulo;
+  String titulo;
   Map<String, UsuarioChat> usuario;
-  ChatModel({String id, this.usuario}) : super(id);
+  ChatModel({String id, this.modulo, this.titulo, this.usuario}) : super(id);
 
   @override
   ChatModel fromMap(Map<String, dynamic> map) {
+    if (map.containsKey('modulo')) modulo = map['modulo'];
+    if (map.containsKey('titulo')) titulo = map['titulo'];
     if (map["usuario"] is Map) {
       usuario = Map<String, UsuarioChat>();
       map["usuario"].forEach((k, v) {
@@ -21,6 +26,8 @@ class ChatModel extends FirestoreModel {
   @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (modulo != null) data['modulo'] = this.modulo;
+    if (titulo != null) data['titulo'] = this.titulo;
     if (usuario != null) {
       Map<String, dynamic> dataFromField = Map<String, dynamic>();
       this.usuario.forEach((k, v) {
