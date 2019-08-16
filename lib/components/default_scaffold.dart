@@ -18,7 +18,8 @@ class DefaultDrawer extends StatelessWidget {
   Map<String, Rota> rotas;
 
   DefaultDrawer()
-      : authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore) {
+      : authBloc =
+            AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore) {
     // Map<String, Rota>
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
@@ -214,7 +215,8 @@ class DefaultEndDrawer extends StatelessWidget {
   final AuthBloc authBloc;
 
   DefaultEndDrawer()
-      : authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+      : authBloc =
+            AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   @override
   Widget build(BuildContext context) {
@@ -290,6 +292,7 @@ class DefaultScaffold extends StatelessWidget {
   final Widget floatingActionButton;
   final Widget title;
   final Widget actions;
+  final List<Widget> actionsMore;
   final Widget bottom;
   final Color backgroundColor;
   final FloatingActionButtonLocation floatingActionButtonLocation;
@@ -300,6 +303,7 @@ class DefaultScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.title,
     this.actions,
+    this.actionsMore,
     this.backgroundColor,
     this.bottom,
     this.floatingActionButtonLocation,
@@ -309,9 +313,9 @@ class DefaultScaffold extends StatelessWidget {
     return AppBar(
       backgroundColor: backgroundColor,
       actions: <Widget>[
+        if (actionsMore!=null) ...actionsMore,
         MoreAppAction(),
       ],
-      //leading: Text("leading"),
       centerTitle: true,
       title: title,
       bottom: bottom,
