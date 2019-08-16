@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/services/gerador_md_service.dart';
@@ -135,6 +136,17 @@ class QuestionarioHomePage extends StatelessWidget {
                                   }
                                 : null),
                         IconButton(
+                          icon: Icon(Icons.message),
+                          tooltip: 'Chat para o produto',
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/chat/home',
+                                arguments: ChatPageArguments(
+                                    chatID: questionario.id,
+                                    modulo: 'Q: ${questionario.eixo.nome}.',
+                                    titulo: 'T: ${questionario.nome}. '));
+                          },
+                        ),
+                        IconButton(
                             icon: Icon(Icons.edit),
                             onPressed: () {
                               // Editar uma nova escolha
@@ -157,11 +169,11 @@ class QuestionarioHomePage extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Container(
-          padding: EdgeInsets.only(top: 15, bottom: 15),
-          child: Center(
-            child: EixoAtualUsuario(authBloc),
-          ),
-        ),
+                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                  child: Center(
+                    child: EixoAtualUsuario(authBloc),
+                  ),
+                ),
               ),
               Expanded(
                 flex: 10,
@@ -216,4 +228,3 @@ class QuestionarioHomePage extends StatelessWidget {
     bloc.dispose();
   }
 }
-
