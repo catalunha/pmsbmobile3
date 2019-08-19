@@ -77,26 +77,26 @@ https://play.google.com/apps/publish/?hl=pt-BR&account=8452409294372920349#AppLi
 
 Sera exibido a lista de seu aplicativos, escolha o que quer enviar a nova versão
 
-![img01](./imgdocs/img04.png)
+![img01](./imagens/img04.png)
 
 
 ### Passo 3
 
 Vá em gerenciamento da versão e depois em versões de app 
 
-![img01](./imgdocs/img01.PNG)
+![img01](./imagens/img01.PNG)
 
 ### Passo 4
 
 Vá em faixa de produção clique em gereciar no card de produção
 
-![img02](./imgdocs/img02.PNG)
+![img02](./imagens/img02.PNG)
 
 ### Passo 5
 
 Apos isso vá em criar nova versão
 
-![img03](./imgdocs/img03.PNG)
+![img03](./imagens/img03.PNG)
 
 Vai abrir um formulario da nova versão do app
 
