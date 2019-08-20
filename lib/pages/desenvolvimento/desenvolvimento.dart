@@ -72,8 +72,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       onPressed: () async {
                         //Desenvolvimento
                         // await usuarioPMSBWEB('Aq96qoxA0zgLfNDPGPCzFRAYtkl2');
-                        await usuarioCatalunhaUFT(
-                            'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
+                        // await usuarioCatalunhaUFT(
+                        //     'mEYtvJ0QgkgcuvKI3Tr4xRH0OgQ2');
                         //Administração
                         // await usuarioAurelio('hQ5HviPFAsN74tDBDqD3KCABOf32');
                         // await usuarioJoaquina('98daMqALQRO1rpsakt5d6Dx26742');
@@ -129,11 +129,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                         // await atualizarEixoAcesso('SftB5Ix0d4MaHLEs8LASoT7KKl13');
                         // await atualizarEixoAcesso('ysqq0XARJnZoxIzIc43suDm7gaK2');
 
-                        Future<StorageReference> a = _storage.getReferenceFromUrl(
-                            'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/05bcd37e-d1ad-4d0e-84c2-4ad27e8b05a0?alt=media&token=b727c190-4bae-4e8e-b45c-8569395dbf60');
-                        a.then((doc) {
-                          doc.delete();
-                        });
+                        // Future<StorageReference> a = _storage.getReferenceFromUrl(
+                        //     'https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/05bcd37e-d1ad-4d0e-84c2-4ad27e8b05a0?alt=media&token=b727c190-4bae-4e8e-b45c-8569395dbf60');
+                        // a.then((doc) {
+                        //   doc.delete();
+                        // });
                       },
                     ),
                   ),
