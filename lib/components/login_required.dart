@@ -17,11 +17,13 @@ class LoginRequired extends StatelessWidget {
     @required this.loginPage,
     @required this.splashPage,
     @required this.child,
+    @required this.bloc,
   })  : assert(loadingPage != null),
         assert(loginPage != null),
         assert(splashPage != null),
-        assert(child != null),
-        bloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+        assert(child != null)
+  // bloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore)
+  ;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +69,9 @@ class DefaultLoginRequired extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoginRequired(
       splashPage: SplashPage(),
-      loginPage: LoginPage(),
+      loginPage: LoginPage(this.authBloc),
       loadingPage: LoadingPage(),
+      bloc: this.authBloc,
       child: child,
     );
   }

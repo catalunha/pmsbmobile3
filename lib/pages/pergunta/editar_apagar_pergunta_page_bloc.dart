@@ -134,8 +134,10 @@ class EditarApagarPerguntaBloc {
 
   Stream<EditarApagarPerguntaBlocState> get state => _outputController.stream;
 
-  void dispose() {
+  void dispose() async {
+    await _inputController.drain();
     _inputController.close();
+    await _outputController.drain();
     _outputController.close();
   }
 
@@ -305,7 +307,9 @@ class EditarApagarPerguntaBloc {
           // requisitos: _state.requisitos,
           // escolhas: _state.escolhas,
           // ultimaOrdemEscolha: _state.escolhas.length,
-          eixo: EixoID(id: _state.questionarioInstance.eixo.id,nome: _state.questionarioInstance.eixo.nome),
+          eixo: EixoID(
+              id: _state.questionarioInstance.eixo.id,
+              nome: _state.questionarioInstance.eixo.nome),
           ordem: _state.ordem,
           dataEdicao: DateTime.now(),
         );

@@ -44,6 +44,11 @@ class NoticiaLeituraPage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
+              if (snapshot.data.isEmpty) {
+                return Center(
+                  child: Text("Parabens ! \nVc já leu todas as suas notícias. \nAgora é acompanhar os Chat's."),
+                );
+              }
               return ListView(
                 children: snapshot.data.map((noticia) {
                   return Card(

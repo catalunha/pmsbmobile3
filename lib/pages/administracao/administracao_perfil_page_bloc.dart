@@ -67,10 +67,14 @@ class AdministracaoPerfilPageBloc {
     administracaoPerfilPageEventStream.listen(_mapEventToState);
   }
 
-  void dispose() {
+  void dispose() async{
+    await _usuarioModelController.drain();
     _usuarioModelController.close();
+    await _administracaoPerfilPageEventController.drain();
     _administracaoPerfilPageEventController.close();
+    await _usuarioPerfilModelController.drain();
     _usuarioPerfilModelController.close();
+    await _administracaoPerfilPageStateController.drain();
     _administracaoPerfilPageStateController.close();
   }
 
@@ -103,62 +107,6 @@ class AdministracaoPerfilPageBloc {
         usuarioPerfilModelSink(usuarioPerfilModelList);
       });
 
-      // // Definir as urls dos arquivos de perfil.csv, perfil.md e perfil.pdf
-      // _firestore
-      //     .collection(UsuarioArquivoModel.collection)
-      //     .where("usuarioID",
-      //         isEqualTo: _administracaoPerfilPageState.usuarioId)
-      //     .where("referencia", isEqualTo: 'perfil.csv')
-      //     .snapshots()
-      //     .map((snapDocs) => snapDocs.documents
-      //         .map((doc) =>
-      //             UsuarioArquivoModel(id: doc.documentID).fromMap(doc.data))
-      //         .toList())
-      //     .listen((List<UsuarioArquivoModel> usuarioArquivoModelList) {
-      //   usuarioArquivoModelList.forEach((item) {
-      //     print('>>> item csv<<< ${item.url}');
-      //     _administracaoPerfilPageState.urlCSV = item.url;
-      //     administracaoPerfilPageStateSink(_administracaoPerfilPageState);
-      //   });
-      // });
-
-      // // Definir as urls dos arquivos de perfil.csv, perfil.md e perfil.pdf
-      // _firestore
-      //     .collection(UsuarioArquivoModel.collection)
-      //     .where("usuarioID",
-      //         isEqualTo: _administracaoPerfilPageState.usuarioId)
-      //     .where("referencia", isEqualTo: 'perfil.pdf')
-      //     .snapshots()
-      //     .map((snapDocs) => snapDocs.documents
-      //         .map((doc) =>
-      //             UsuarioArquivoModel(id: doc.documentID).fromMap(doc.data))
-      //         .toList())
-      //     .listen((List<UsuarioArquivoModel> usuarioArquivoModelList) {
-      //   usuarioArquivoModelList.forEach((item) {
-      //     print('>>> item pdf <<< ${item.url}');
-      //     _administracaoPerfilPageState.urlPDF = item.url;
-      //     administracaoPerfilPageStateSink(_administracaoPerfilPageState);
-      //   });
-      // });
-
-      // // Definir as urls dos arquivos de perfil.csv, perfil.md e perfil.pdf
-      // _firestore
-      //     .collection(UsuarioArquivoModel.collection)
-      //     .where("usuarioID",
-      //         isEqualTo: _administracaoPerfilPageState.usuarioId)
-      //     .where("referencia", isEqualTo: 'perfil.md')
-      //     .snapshots()
-      //     .map((snapDocs) => snapDocs.documents
-      //         .map((doc) =>
-      //             UsuarioArquivoModel(id: doc.documentID).fromMap(doc.data))
-      //         .toList())
-      //     .listen((List<UsuarioArquivoModel> usuarioArquivoModelList) {
-      //   usuarioArquivoModelList.forEach((item) {
-      //     print('>>> item md <<< ${item.url}');
-      //     _administracaoPerfilPageState.urlMD = item.url;
-      //     administracaoPerfilPageStateSink(_administracaoPerfilPageState);
-      //   });
-      // });
       
     }
   }

@@ -80,9 +80,12 @@ class QuestionarioFormPageBloc {
     _inputController.listen(_handleInput);
   }
 
-  void dispose() {
+  void dispose() async {
+    await _inputController.drain();
     _inputController.close();
+    await _outputController.drain();
     _outputController.close();
+    await _instanceOutputController.drain();
     _instanceOutputController.close();
   }
 
@@ -135,8 +138,9 @@ class QuestionarioFormPageBloc {
             .document(_state.eixoAtualID);
         var docSnap = await eixoRef.get();
         int ultimaOrdemQuestionario = docSnap.data['ultimaOrdemQuestionario'];
-        modelInstance.ordem = ultimaOrdemQuestionario+1;
-        eixoRef.setData({"ultimaOrdemQuestionario":modelInstance.ordem },merge:true);
+        modelInstance.ordem = ultimaOrdemQuestionario + 1;
+        eixoRef.setData({"ultimaOrdemQuestionario": modelInstance.ordem},
+            merge: true);
       }
 
       docRef.setData(modelInstance.toMap(), merge: true);

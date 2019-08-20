@@ -88,11 +88,15 @@ class AuthBloc {
   }
 
   //Destrutor AuthBloc
-  void dispose() {
+  void dispose() async {
+    await _perfilController.drain();
     _perfilController.close();
+    await _userId.drain();
     _userId.close();
     _perfilSubscription.cancel();
+    await _statusController.drain();
     _statusController.close();
+    await _inputController.drain();
     _inputController.close();
   }
 

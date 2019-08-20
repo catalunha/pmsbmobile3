@@ -73,10 +73,13 @@ class QuestionarioHomePageBloc {
     });
   }
 
-  void dispose() {
+  void dispose() async {
+    await _eventController.drain();
     _eventController?.close();
+    await _stateController.drain();
     _stateController?.close();
     _questionarioSubscription?.cancel();
+    await _questionarioMapController.drain();
     _questionarioMapController?.close();
   }
 

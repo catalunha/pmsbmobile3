@@ -21,7 +21,8 @@ class AdministracaoHomePageBloc {
         .pipe(usuarioModelListController);
   }
 
-  void dispose() {
+  void dispose() async{
+    await usuarioModelListController.drain();
     usuarioModelListController.close();
   }
 }

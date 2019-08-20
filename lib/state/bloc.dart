@@ -12,8 +12,10 @@ abstract class Bloc<E, S> {
 
   S currentState;
 
-  void dispose() {
+  void dispose() async {
+    await _inputController.drain();
     _inputController?.close();
+    await _outputController.drain();
     _outputController?.close();
   }
 
