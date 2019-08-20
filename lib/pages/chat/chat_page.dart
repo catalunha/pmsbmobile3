@@ -7,13 +7,44 @@ import 'package:pmsbmibile3/models/chat_model.dart';
 import 'package:pmsbmibile3/pages/chat/chat_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   final String chatID;
   final String modulo;
   final String titulo;
   final AuthBloc authBloc;
 
-  const ChatPage({this.authBloc, this.modulo, this.titulo, this.chatID});
+  ChatPage({this.authBloc, this.modulo, this.titulo, this.chatID});
+
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class ChatPage extends StatelessWidget {
+//   final String chatID;
+//   final String modulo;
+//   final String titulo;
+//   final AuthBloc authBloc;
+
+//   const ChatPage({this.authBloc, this.modulo, this.titulo, this.chatID});
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +55,7 @@ class ChatPage extends StatelessWidget {
             icon: Icon(Icons.info),
             onPressed: () {
               Navigator.pushNamed(context, "/chat/lido",
-                  arguments: this.chatID);
+                  arguments: widget.chatID);
             },
           )
         ],
@@ -35,10 +66,10 @@ class ChatPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: TelaChat(
-          authBloc: this.authBloc,
-          modulo: this.modulo,
-          chatID: this.chatID,
-          titulo: this.titulo),
+          authBloc: widget.authBloc,
+          modulo: widget.modulo,
+          chatID: widget.chatID,
+          titulo: widget.titulo),
     );
   }
 }
@@ -235,7 +266,7 @@ class _TelaChatState extends State<TelaChat> {
         usuario = snapshot.data?.usuario;
         var lista = List<Widget>();
         for (var item in usuario.entries) {
-          if (item.value?.alertar != null && item.value.alertar ) {
+          if (item.value?.alertar != null && item.value.alertar) {
             lista.add(Center(
                 child: Text('@${item.value.nome}. ',
                     style: TextStyle(color: Colors.blue))));

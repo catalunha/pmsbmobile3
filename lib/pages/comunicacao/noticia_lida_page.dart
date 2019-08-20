@@ -4,8 +4,35 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/noticia_page_bloc.dart';
 
-class NoticiaLidaPage extends StatelessWidget {
-  final bloc = NoticiaPageBloc(firestore:Bootstrap.instance.firestore,visualizada:true);
+class NoticiaLidaPage extends StatefulWidget {
+  NoticiaLidaPage({Key key}) : super(key: key);
+
+  _NoticiaLidaPageState createState() => _NoticiaLidaPageState();
+}
+
+class _NoticiaLidaPageState extends State<NoticiaLidaPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class NoticiaLidaPage extends StatelessWidget {
+  final bloc = NoticiaPageBloc(
+      firestore: Bootstrap.instance.firestore, visualizada: true);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +66,9 @@ class NoticiaLidaPage extends StatelessWidget {
                           subtitle: Text(
                               "Editor: ${noticia.usuarioIDEditor.nome}\nem: ${noticia.publicar}\n"),
                           trailing: IconButton(
-                            icon: Icon(bloc.visualizada ? Icons.arrow_back : Icons.arrow_forward),
+                            icon: Icon(bloc.visualizada
+                                ? Icons.arrow_back
+                                : Icons.arrow_forward),
                             onPressed: () {
                               bloc.noticiaPageEventSink(
                                   UpdateNoticiaVisualizadaEvent(

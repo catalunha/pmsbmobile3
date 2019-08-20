@@ -3,10 +3,37 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_page_bloc.dart';
 
-class PerfilPage extends StatelessWidget {
+
+class PerfilPage extends StatefulWidget {
+  PerfilPage({Key key}) : super(key: key);
+
+  _PerfilPageState createState() => _PerfilPageState();
+}
+
+class _PerfilPageState extends State<PerfilPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class PerfilPage extends StatelessWidget {
   // const PerfilPage({Key key}) : super(key: key);
 
   final bloc = PerfilPageBloc(Bootstrap.instance.firestore);
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

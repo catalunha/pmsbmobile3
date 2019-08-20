@@ -5,14 +5,41 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/noticia_page_bloc.dart';
 
-class NoticiaLeituraPage extends StatelessWidget {
+
+class NoticiaLeituraPage extends StatefulWidget {
+  NoticiaLeituraPage({Key key}) : super(key: key);
+
+  _NoticiaLeituraPageState createState() => _NoticiaLeituraPageState();
+}
+
+class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+
+
+
+
+// class NoticiaLeituraPage extends StatelessWidget {
   final bloc = NoticiaPageBloc(
       firestore: Bootstrap.instance.firestore, visualizada: false);
 
-  void dispose() {
-    bloc.dispose();
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
