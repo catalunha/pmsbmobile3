@@ -55,7 +55,13 @@ class Usuario {
   String eixoNome;
   bool checked = false;
   int valor = 0;
-  Usuario({this.id, this.nome, this.cargo, this.eixo,this.cargoNome,this.eixoNome});
+  Usuario(
+      {this.id,
+      this.nome,
+      this.cargo,
+      this.eixo,
+      this.cargoNome,
+      this.eixoNome});
 }
 
 class ComunicacaoDestinatarioPageBloc {
@@ -121,15 +127,17 @@ class ComunicacaoDestinatarioPageBloc {
                   cargo: cargoMap['id'],
                   eixo: eixoMap['id'],
                   cargoNome: cargoMap['nome'],
-                  eixoNome: eixoMap['nome']
-                  ));
+                  eixoNome: eixoMap['nome']));
             }));
     _comunicacaoDestinatarioPageStateController.sink
         .add(comunicacaoDestinatarioPageState);
   }
-  void dispose() {
+  void dispose() async {
+    await _comunicacaoDestinatarioPageEventController.drain();
     _comunicacaoDestinatarioPageEventController.close();
+    await _comunicacaoDestinatarioPageStateController.drain();
     _comunicacaoDestinatarioPageStateController.close();
+    await _cargoModelListController.drain();
     _cargoModelListController.close();
   }
 
@@ -216,11 +224,12 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   List<Map<String, dynamic>> destinatarioList() {
-    List<Map<String, dynamic>> destinatarioList=[];
+    List<Map<String, dynamic>> destinatarioList = [];
     for (var usuario in comunicacaoDestinatarioPageState.usuarioList) {
       if (usuario.checked) {
-        destinatarioList
-            .add({'usuarioID': '${usuario.id}', 'nome':'${usuario.nome}'},);
+        destinatarioList.add(
+          {'usuarioID': '${usuario.id}', 'nome': '${usuario.nome}'},
+        );
       }
     }
     return destinatarioList;

@@ -72,9 +72,12 @@ class UploadBloc {
     storageTaskEventStream.listen(_handleStorageTaskEvent);
   }
 
-  void dispose() {
+  void dispose() async {
+    await _storageTaskEventController.drain();
     _storageTaskEventController.close();
+    await _uploadModelController.drain();
     _uploadModelController.close();
+    await _stateController.drain();
     _stateController.close();
   }
 

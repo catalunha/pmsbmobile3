@@ -62,8 +62,10 @@ class PerguntaRequisitoEscolhaMarcarBloc {
   PerguntaRequisitoEscolhaMarcarBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
-  void dispose() {
+  void dispose() async {
+    await _stateController.drain();
     _stateController.close();
+    await _eventController.drain();
     _eventController.close();
   }
 

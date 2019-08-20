@@ -48,9 +48,11 @@ class PerfilPageBloc {
         perfilPageEventSink(UpDateUsuarioIDEvent(usuarioID: userId)));
   }
 
-  void dispose() {
+  void dispose() async {
     _authBloc.dispose();
+    await _perfilPageEventController.drain();
     _perfilPageEventController.close();
+    await _usuarioPerfilModelListController.drain();
     _usuarioPerfilModelListController.close();
   }
 

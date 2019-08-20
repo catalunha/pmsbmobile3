@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';

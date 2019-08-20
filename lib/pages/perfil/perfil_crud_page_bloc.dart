@@ -51,10 +51,10 @@ class PerfilCRUDPageBloc {
   }
 
   void dispose() async {
-    _usuarioPerfilModelController.close();
     await _usuarioPerfilModelController.drain();
-    _perfilCRUDPageEventController.close();
+    _usuarioPerfilModelController.close();
     await _perfilCRUDPageEventController.drain();
+    _perfilCRUDPageEventController.close();
   }
 
   void _mapEventToState(PerfilCRUDPageEvent event) {

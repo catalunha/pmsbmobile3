@@ -34,7 +34,8 @@ class NoticiaPageBloc {
   final fsw.Firestore firestore;
 
   // Authenticacação
-  final _authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+  final _authBloc =
+      AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   //Evento
   final _noticiaPageEventController = BehaviorSubject<NoticiaPageEvent>();
@@ -77,9 +78,12 @@ class NoticiaPageBloc {
         .listen((userId) => noticiaPageEventSink(UpdateUsuarioIDEvent(userId)));
   }
 
-  void dispose() {
+  void dispose() async {
+    await _noticiaPageEventController.drain();
     _noticiaPageEventController.close();
+    await _noticiaPageStateController.drain();
     _noticiaPageStateController.close();
+    await _noticiaModelListController.drain();
     _noticiaModelListController.close();
     firestoreSubscription?.cancel();
   }
@@ -107,8 +111,7 @@ class NoticiaPageBloc {
               isEqualTo: true)
           .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.visualizada",
               isEqualTo: visualizada)
-          .where("publicar",
-              isLessThan: DateTime.now().toUtc())
+          .where("publicar", isLessThan: DateTime.now().toUtc())
           .snapshots()
           .map((snap) => snap.documents
               .map((doc) => NoticiaModel(id: doc.documentID).fromMap(doc.data))

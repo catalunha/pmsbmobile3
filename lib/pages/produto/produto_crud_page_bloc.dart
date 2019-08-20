@@ -92,11 +92,16 @@ class ProdutoCRUDPageBloc {
   ProdutoCRUDPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
   }
-  void dispose() {
+
+  void dispose() async {
+    await _stateController.drain();
     _stateController.close();
+    await _eventController.drain();
     _eventController.close();
+    await _produtoModelController.drain();
     _produtoModelController.close();
   }
+
   _mapEventToState(ProdutoCRUDPageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
       _authBloc.perfil.listen((usuario) {
@@ -295,6 +300,4 @@ Link para imagem do projeto. (clique no icone cole aqui)
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
     print('event.runtimeType em ProdutoCRUDPageBloc  = ${event.runtimeType}');
   }
-
-
 }

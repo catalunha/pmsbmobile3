@@ -7,40 +7,48 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class ComunicacaoCRUDPageEvent {}
+
 class UpDateUsuarioIDEditorEvent extends ComunicacaoCRUDPageEvent {
   final String usuarioIDEditorId;
 
   UpDateUsuarioIDEditorEvent(this.usuarioIDEditorId);
 }
+
 class UpdateNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   final String noticiaID;
 
   UpdateNoticiaIDEvent(this.noticiaID);
 }
+
 class DeleteNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   DeleteNoticiaIDEvent();
 }
+
 class UpdateTituloEvent extends ComunicacaoCRUDPageEvent {
   final String titulo;
 
   UpdateTituloEvent(this.titulo);
 }
+
 class UpdateDestinatarioListEvent extends ComunicacaoCRUDPageEvent {
   List<Map<dynamic, dynamic>> destinatarioList = List<Map<dynamic, dynamic>>();
 
   UpdateDestinatarioListEvent(this.destinatarioList);
 }
+
 class UpdatePublicarEvent extends ComunicacaoCRUDPageEvent {
   final DateTime data;
   final TimeOfDay hora;
 
   UpdatePublicarEvent({this.data, this.hora});
 }
+
 class UpdateTextoMarkdownEvent extends ComunicacaoCRUDPageEvent {
   final String textoMarkdown;
 
   UpdateTextoMarkdownEvent(this.textoMarkdown);
 }
+
 class SaveStateToFirebaseEvent extends ComunicacaoCRUDPageEvent {}
 
 class ComunicacaoCRUDPageState {
@@ -54,8 +62,7 @@ class ComunicacaoCRUDPageState {
   DateTime publicar = DateTime.now();
   DateTime data;
   TimeOfDay hora;
-  List<Map<String, dynamic>> destinatarioListMap =
-      List<Map<String, dynamic>>();
+  List<Map<String, dynamic>> destinatarioListMap = List<Map<String, dynamic>>();
 
 /*
 [
@@ -117,33 +124,31 @@ class ComunicacaoCRUDPageState {
 
 class ComunicacaoCRUDPageBloc {
   final _firestore = Bootstrap.instance.firestore;
-  final _authBloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+  final _authBloc =
+      AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 
   //Eventos da página
-  final _eventController =
-      BehaviorSubject<ComunicacaoCRUDPageEvent>();
-  Stream<ComunicacaoCRUDPageEvent> get eventStream =>
-      _eventController.stream;
-  Function get eventSink =>
-      _eventController.sink.add;
+  final _eventController = BehaviorSubject<ComunicacaoCRUDPageEvent>();
+  Stream<ComunicacaoCRUDPageEvent> get eventStream => _eventController.stream;
+  Function get eventSink => _eventController.sink.add;
 
   //Estados da página
   final _state = ComunicacaoCRUDPageState();
-  final _stateController =
-      BehaviorSubject<ComunicacaoCRUDPageState>();
-  Stream<ComunicacaoCRUDPageState> get stateStream =>
-      _stateController.stream;
+  final _stateController = BehaviorSubject<ComunicacaoCRUDPageState>();
+  Stream<ComunicacaoCRUDPageState> get stateStream => _stateController.stream;
 
   ComunicacaoCRUDPageBloc() {
     // _authBloc.userId.listen(_dispatchUpdateUserId);
-    _authBloc.userId.listen((userId) =>
-        eventSink(UpDateUsuarioIDEditorEvent(userId)));
+    _authBloc.userId
+        .listen((userId) => eventSink(UpDateUsuarioIDEditorEvent(userId)));
     eventStream.listen(_mapEventToState);
   }
 
   void dispose() async {
     _authBloc.dispose();
+    await _eventController.drain();
     _eventController.close();
+    await _stateController.drain();
     _stateController.close();
   }
 
@@ -189,21 +194,11 @@ class ComunicacaoCRUDPageBloc {
       }
 
       final newDate = DateTime(
-          _state.data != null
-              ? _state.data.year
-              : _state.publicar.year,
-          _state.data != null
-              ? _state.data.month
-              : _state.publicar.month,
-          _state.data != null
-              ? _state.data.day
-              : _state.publicar.day,
-          _state.hora != null
-              ? _state.hora.hour
-              : _state.publicar.hour,
-          _state.hora != null
-              ? _state.hora.minute
-              : _state.publicar.minute);
+          _state.data != null ? _state.data.year : _state.publicar.year,
+          _state.data != null ? _state.data.month : _state.publicar.month,
+          _state.data != null ? _state.data.day : _state.publicar.day,
+          _state.hora != null ? _state.hora.hour : _state.publicar.hour,
+          _state.hora != null ? _state.hora.minute : _state.publicar.minute);
       _state.publicar = newDate;
       // print(
       // 'Após comunicacaoCRUDPageState.publicar: ${comunicacaoCRUDPageState.publicar.toString()}'); // }
@@ -214,9 +209,8 @@ class ComunicacaoCRUDPageBloc {
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em ComunicacaoCRUDPageBloc  = ${event.runtimeType}');
-
-
+    print(
+        'event.runtimeType em ComunicacaoCRUDPageBloc  = ${event.runtimeType}');
   }
 
   _saveStateToFirebase() {
@@ -246,6 +240,5 @@ class ComunicacaoCRUDPageBloc {
       _state.fromNoticiaModel(noticia);
       _stateController.sink.add(_state);
     });
-
   }
 }

@@ -46,8 +46,10 @@ class ChatLidoPageBloc {
   ChatLidoPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
-  void dispose() {
+  void dispose() async {
+    await _stateController.drain();
     _stateController.close();
+    await _eventController.drain();
     _eventController.close();
     // chatMensagemListController.close();
   }
@@ -73,14 +75,12 @@ class ChatLidoPageBloc {
         }
         if (!_stateController.isClosed) _stateController.add(_state);
       });
-
     }
 
     if (event is DeleteUsuarioEvent) {
       // print('>>> event.usuarioID <<< ${event.usuarioID}');
-            final docRef = _firestore
-          .collection(ChatModel.collection)
-          .document(_state.chatID);
+      final docRef =
+          _firestore.collection(ChatModel.collection).document(_state.chatID);
       docRef.setData({
         "usuario": {event.usuarioID: Bootstrap.instance.FieldValue.delete()},
       }, merge: true);
@@ -98,6 +98,7 @@ class UpdateChatIDEvent extends ChatLidoPageEvent {
 
   UpdateChatIDEvent({this.chatID});
 }
+
 class DeleteUsuarioEvent extends ChatLidoPageEvent {
   final String usuarioID;
 
