@@ -4,7 +4,7 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/state/services.dart';
 
-var db = DatabaseService();
+// var db = DatabaseService();
 
 class Rota {
   final String nome;
@@ -13,11 +13,27 @@ class Rota {
   Rota(this.nome, this.Icons);
 }
 
-class DefaultDrawer extends StatelessWidget {
+
+class DefaultDrawer extends StatefulWidget {
+  // DefaultDrawer({Key key}) : super(key: key);
+
+  _DefaultDrawerState createState() => _DefaultDrawerState();
+}
+
+class _DefaultDrawerState extends State<DefaultDrawer> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class DefaultDrawer extends StatelessWidget {
   final AuthBloc authBloc;
   Map<String, Rota> rotas;
 
-  DefaultDrawer()
+  _DefaultDrawerState()
       : authBloc =
             AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore) {
     // Map<String, Rota>
@@ -211,10 +227,25 @@ class _ImagemUnica extends StatelessWidget {
   }
 }
 
-class DefaultEndDrawer extends StatelessWidget {
+class DefaultEndDrawer extends StatefulWidget {
+  DefaultEndDrawer({Key key}) : super(key: key);
+
+  _DefaultEndDrawerState createState() => _DefaultEndDrawerState();
+}
+
+class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class DefaultEndDrawer extends StatelessWidget {
   final AuthBloc authBloc;
 
-  DefaultEndDrawer()
+  _DefaultEndDrawerState()
       : authBloc =
             AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
 

@@ -5,7 +5,7 @@ import 'package:pmsbmibile3/pages/perfil/perfil_page_bloc.dart';
 
 
 class PerfilPage extends StatefulWidget {
-  PerfilPage({Key key}) : super(key: key);
+  // PerfilPage({Key key}) : super(key: key);
 
   _PerfilPageState createState() => _PerfilPageState();
 }

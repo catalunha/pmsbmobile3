@@ -9,15 +9,41 @@ import 'package:pmsbmibile3/pages/produto/produto_home_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProdutoHomePage extends StatelessWidget {
-  final ProdutoHomePageBloc bloc;
+class ProdutoHomePage extends StatefulWidget {
+AuthBloc authBloc;
+  ProdutoHomePage(this.authBloc);
 
-  ProdutoHomePage(AuthBloc authBloc)
-      : bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc) {
-    // bloc.eventSink(UpdateUsuarioIDEvent());
+  _ProdutoHomePageState createState() => _ProdutoHomePageState(this.authBloc);
+}
+
+class _ProdutoHomePageState extends State<ProdutoHomePage> {
+final ProdutoHomePageBloc bloc;
+    _ProdutoHomePageState( AuthBloc authBloc): bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc);
+  //   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class ProdutoHomePage extends StatelessWidget {
+  // final ProdutoHomePageBloc bloc;
+
+  // ProdutoHomePage(AuthBloc authBloc)
+  //     : bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc) {
+  //   // bloc.eventSink(UpdateUsuarioIDEvent());
+  // }
+
+  @override
+  void initState() { 
+    super.initState();
   }
+
+  @override
   void dispose() {
     bloc.dispose();
+    super.dispose();
   }
 
   _listaProdutos(BuildContext context) {

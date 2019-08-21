@@ -5,16 +5,39 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/upload/upload_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-class UploadPage extends StatelessWidget {
+class UploadPage extends StatefulWidget {
+  final AuthBloc authBloc;
+  UploadPage(this.authBloc);
+
+  _UploadPageState createState() => _UploadPageState(this.authBloc);
+}
+
+class _UploadPageState extends State<UploadPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class UploadPage extends StatelessWidget {
   final UploadPageBloc bloc;
 
-  UploadPage(AuthBloc authBloc)
-      : bloc = UploadPageBloc(Bootstrap.instance.firestore, authBloc) {
+  _UploadPageState(AuthBloc authBloc)
+      : bloc = UploadPageBloc(Bootstrap.instance.firestore, authBloc);
+
+
+  @override
+  void initState() {
+    super.initState();
     bloc.eventSink(UpdateUsuarioIDEvent());
   }
 
+  @override
   void dispose() {
-    // bloc.dispose();
+    bloc.dispose();
+    super.dispose();
   }
 
   @override
