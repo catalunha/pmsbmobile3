@@ -4,16 +4,38 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/chat_model.dart';
 import 'package:pmsbmibile3/pages/chat/chat_lido_bloc.dart';
 
-class ChatLidoPage extends StatelessWidget {
-  final ChatLidoPageBloc bloc;
+class ChatLidoPage extends StatefulWidget {
   final String chatID;
-  ChatLidoPage(this.chatID)
-      : bloc = ChatLidoPageBloc(Bootstrap.instance.firestore) {
-    print('>>> ChatLidoPage this.chatID <<< ${this.chatID}');
-    bloc.eventSink(UpdateChatIDEvent(chatID: this.chatID));
+  ChatLidoPage(this.chatID);
+
+  _ChatLidoPageState createState() => _ChatLidoPageState();
+}
+
+class _ChatLidoPageState extends State<ChatLidoPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class ChatLidoPage extends StatelessWidget {
+  final ChatLidoPageBloc bloc;
+  // final String chatID;
+  _ChatLidoPageState() : bloc = ChatLidoPageBloc(Bootstrap.instance.firestore);
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.eventSink(UpdateChatIDEvent(chatID: widget.chatID));
   }
+
+  @override
   void dispose() {
     bloc.dispose();
+    super.dispose();
   }
 
   @override

@@ -7,18 +7,46 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page_bloc.dart';
 
-class ProdutoArquivoListPage extends StatelessWidget {
+
+class ProdutoArquivoListPage extends StatefulWidget {
   final String produtoID;
   final String tipo;
-  final ProdutoArquivoListPageBloc bloc;
+  ProdutoArquivoListPage({this.produtoID, this.tipo});
 
-  ProdutoArquivoListPage({this.produtoID, this.tipo})
-      : bloc = ProdutoArquivoListPageBloc(Bootstrap.instance.firestore) {
-    bloc.eventSink(UpdateProdutoIDTipoEvent(this.produtoID, this.tipo));
-  }
+  _ProdutoArquivoListPageState createState() => _ProdutoArquivoListPageState();
+}
 
+class _ProdutoArquivoListPageState extends State<ProdutoArquivoListPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+
+// class ProdutoArquivoListPage extends StatelessWidget {
+  // final String produtoID;
+  // final String tipo;
+  final ProdutoArquivoListPageBloc bloc = ProdutoArquivoListPageBloc(Bootstrap.instance.firestore);
+
+  // ProdutoArquivoListPage({this.produtoID, this.tipo})
+  //     : bloc = ProdutoArquivoListPageBloc(Bootstrap.instance.firestore) {
+  //   bloc.eventSink(UpdateProdutoIDTipoEvent(this.produtoID, this.tipo));
+  // }
+
+@override
+void initState() { 
+  super.initState();
+      bloc.eventSink(UpdateProdutoIDTipoEvent(widget.produtoID, widget.tipo));
+
+}
+
+  @override
   void dispose() {
     bloc.dispose();
+    super.dispose();
   }
 
   var _tituloPag = Map<String, String>();
@@ -34,7 +62,7 @@ class ProdutoArquivoListPage extends StatelessWidget {
       appBar: AppBar(
         // backgroundColor: Colors.red,
         centerTitle: true,
-        title: Text("${_tituloPag[tipo]} para o produto"),
+        title: Text("${_tituloPag[widget.tipo]} para o produto"),
       ),
       body: _body(context),
       // body: Text('${produtoID} | ${tipo}'),
@@ -44,7 +72,7 @@ class ProdutoArquivoListPage extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(context, '/produto/arquivo_crud',
               arguments: ProdutoArguments(
-                  produtoID: this.produtoID, arquivoID: null, tipo: this.tipo));
+                  produtoID: widget.produtoID, arquivoID: null, tipo: widget.tipo));
         },
         // backgroundColor: Colors.blue,
       ),
@@ -62,7 +90,7 @@ class ProdutoArquivoListPage extends StatelessWidget {
             );
           if (snapshot.data?.arquivo == null) {
             return Center(
-              child: Text("Sem arquivo do tipo ${tipo} na lista."),
+              child: Text("Sem arquivo do tipo ${widget.tipo} na lista."),
             );
           }
           if (!snapshot.hasData) {
@@ -95,9 +123,9 @@ class ProdutoArquivoListPage extends StatelessWidget {
                   ? Text('Sem titulo')
                   : Text(arquivo.titulo),
               //TODO: Comentar esta informação após testes.
-              subtitle: produtoID == null
+              subtitle: widget.produtoID == null
                   ? Text('Sem id')
-                  : Text(produtoID + '\n' + key),
+                  : Text(widget.produtoID + '\n' + key),
             ),
             ParDeImagens(
                 rascunhoUrl: arquivo.rascunhoUrl,
@@ -125,7 +153,7 @@ class ProdutoArquivoListPage extends StatelessWidget {
                       //IR PRA PAGINA DE EDITAR VISUAL
                       Navigator.pushNamed(context, '/produto/arquivo_crud',
                           arguments: ProdutoArguments(
-                              produtoID: produtoID,
+                              produtoID: widget.produtoID,
                               arquivoID: key,
                               tipo: arquivo.tipo));
                     },

@@ -6,11 +6,36 @@ import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AdministracaoPerfilPage extends StatelessWidget {
-  final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
 
+class AdministracaoPerfilPage extends StatefulWidget {
+  // AdministracaoPerfilPage({Key key}) : super(key: key);
+
+  _AdministracaoPerfilPageState createState() => _AdministracaoPerfilPageState();
+}
+
+class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
+    final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class AdministracaoPerfilPage extends StatelessWidget {
+//   final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   void dispose() {
     bloc.dispose();
+    super.dispose();
   }
 
   //auxiliares

@@ -6,11 +6,34 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'administracao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 
-class AdministracaoHomePage extends StatelessWidget {
+class AdministracaoHomePage extends StatefulWidget {
+  // AdministracaoHomePage({Key key}) : super(key: key);
+
+  _AdministracaoHomePageState createState() => _AdministracaoHomePageState();
+}
+
+class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
   final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
 
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class AdministracaoHomePage extends StatelessWidget {
+//   final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     bloc.dispose();
+    super.dispose();
   }
 
   @override
