@@ -6,15 +6,13 @@ import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final authBloc =
-        AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+    final authBloc = Bootstrap.instance.authBloc;
 
     return MaterialApp(
       title: 'PMSB-TO-22',
