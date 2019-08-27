@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:pmsbmibile3/state/services.dart';
-
-// var db = DatabaseService();
 
 class Rota {
   final String nome;
@@ -12,7 +9,6 @@ class Rota {
 
   Rota(this.nome, this.Icons);
 }
-
 
 class DefaultDrawer extends StatefulWidget {
   // DefaultDrawer({Key key}) : super(key: key);
@@ -33,9 +29,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
   final AuthBloc authBloc;
   Map<String, Rota> rotas;
 
-  _DefaultDrawerState()
-      : authBloc =
-            AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore) {
+  _DefaultDrawerState() : authBloc = Bootstrap.instance.authBloc {
     // Map<String, Rota>
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
@@ -245,9 +239,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
 // class DefaultEndDrawer extends StatelessWidget {
   final AuthBloc authBloc;
 
-  _DefaultEndDrawerState()
-      : authBloc =
-            AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+  _DefaultEndDrawerState() : authBloc = Bootstrap.instance.authBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -344,7 +336,7 @@ class DefaultScaffold extends StatelessWidget {
     return AppBar(
       backgroundColor: backgroundColor,
       actions: <Widget>[
-        if (actionsMore!=null) ...actionsMore,
+        if (actionsMore != null) ...actionsMore,
         MoreAppAction(),
       ],
       centerTitle: true,
