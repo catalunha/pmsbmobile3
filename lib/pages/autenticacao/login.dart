@@ -7,7 +7,7 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   // final AuthBloc authBloc =
-  //     AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+  //     Bootstrap.instance.authBloc
   // LoginPage();
 
 

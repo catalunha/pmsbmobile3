@@ -22,7 +22,7 @@ class LoginRequired extends StatelessWidget {
         assert(loginPage != null),
         assert(splashPage != null),
         assert(child != null)
-  // bloc = AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore)
+  // bloc = Bootstrap.instance.authBloc
   ;
 
   @override
