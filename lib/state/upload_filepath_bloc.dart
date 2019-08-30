@@ -27,7 +27,7 @@ class UploadFilePathBloc {
 
   //authBloc
   final AuthBloc _authBloc =
-      AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+      Bootstrap.instance.authBloc;
 
   //Arquivo
   final _fileController = BehaviorSubject<String>();

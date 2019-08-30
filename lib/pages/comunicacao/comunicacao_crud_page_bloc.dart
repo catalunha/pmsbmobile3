@@ -125,7 +125,7 @@ class ComunicacaoCRUDPageState {
 class ComunicacaoCRUDPageBloc {
   final _firestore = Bootstrap.instance.firestore;
   final _authBloc =
-      AuthBloc(Bootstrap.instance.auth, Bootstrap.instance.firestore);
+      Bootstrap.instance.authBloc;
 
   //Eventos da página
   final _eventController = BehaviorSubject<ComunicacaoCRUDPageEvent>();
