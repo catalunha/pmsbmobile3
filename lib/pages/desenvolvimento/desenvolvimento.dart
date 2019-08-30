@@ -89,15 +89,35 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                         // await usuarioJuniezer('ysqq0XARJnZoxIzIc43suDm7gaK2');
                         //+++Equipe do sergio
                         // await usuarioDaise('3QQj89dTIzP2agsab2cDURfNRrx2');//daise1992@uft.edu.br
+                        // await usuarioIcaro(
+                        //     'otFKSENFI5Y5fkqsQCUrisVtcCh2'); //oliveiraicaro386@gmail.com
+                        // await usuarioRenan(
+                        //     '5rdZil1Vg5XD0mX9ZE1fM42q7wz2'); //renanaquilliscb@gmail.com
+                        // await usuarioBruno(
+                        //     'KvM6uM9U0MeTupzhj9TPuSdT55k1'); //brunoferronatobarros@gmail.com
 
-                        // await usuarioIcaro('otFKSENFI5Y5fkqsQCUrisVtcCh2');//oliveiraicaro386@gmail.com
-                        // await usuarioRenan('5rdZil1Vg5XD0mX9ZE1fM42q7wz2');//renanaquilliscb@gmail.com
-                        // await usuarioBruno('KvM6uM9U0MeTupzhj9TPuSdT55k1');//brunoferronatobarros@gmail.com
-
-                        // await usuarioJucilene('qgCxh7Rw2CRGmzySw8DGBUSDj9B2');//jucilene@uft.edu.br
-                        // await usuarioJuliana('6xReJevwK0d3DCQHmkRYpIoGN0g1');//juliana_costa@uft.edu.br
-                        // await usuarioWesley('wEcNvxpSt8d30pfoXMdH53jrSKu1');//wesley.pinheiro@uft.edu.br
+                        // // await usuarioJucilene(
+                        // //     'qgCxh7Rw2CRGmzySw8DGBUSDj9B2'); //jucilene@uft.edu.br
+                        // await usuarioJuliana(
+                        //     '6xReJevwK0d3DCQHmkRYpIoGN0g1'); //juliana_costa@uft.edu.br
+                        // await usuarioWesley(
+                        //     'wEcNvxpSt8d30pfoXMdH53jrSKu1'); //wesley.pinheiro@uft.edu.br
                         //---Equipe do sergio
+                        //+++Equipe do Portela
+                        // await usuarioIsabela(
+                        //     'db2zlu1yOyaIuirS1gaVf21wlhv2'); //isabela.moura@uft.edu.br
+                        //---Equipe do Portela
+                        //+++Equipe do Rui
+                        // await usuarioAlesi(
+                        //     'YaTtTki7PZPPHznqpVtZrW6mIa42'); //alesitmendes@gmail.com
+                        // await usuarioGuilherme(
+                        //     'dcQeO1sS8AQRKT7xu3PAVgSzRfq2'); //guilherme309m@gmail.com
+                        // await usuarioAna(
+                        //     'N4xPaHBcyJSJeMOlhbjn2IrWjF73'); //anapaulafelicio@mail.uft.edu.br
+                        // await usuarioAndre(
+                        //     'lecuW7fVRsT6hJjTKmUtrAxcI9F2'); //andrema@uft.edu.br
+
+                        //---Equipe do Rui
                       },
                     ),
                   ),
@@ -609,6 +629,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     // print('>>> ok <<< ');
   }
 
+  //+++Equipe do sergio
   Future usuarioDaise(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -621,9 +642,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/upload',
         '/questionario/home',
         '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
       eixoID: EixoID(id: 'saude', nome: 'Saúde'),
@@ -651,9 +669,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/upload',
         '/questionario/home',
         '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
@@ -682,9 +697,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/upload',
         '/questionario/home',
         '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
@@ -713,42 +725,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/upload',
         '/questionario/home',
         '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
-      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAcesso: [
-        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      ],
-      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
-    );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
-    await docRef.setData(usuarioModel.toMap(), merge: true);
-    // print('>>> ok <<< ');
-  }
-
-  Future usuarioWesley(String userId) async {
-    UsuarioModel usuarioModel = UsuarioModel(
-      id: userId,
-      ativo: true,
-      nome: 'wesley.pinheiro',
-      celular: '123',
-      email: 'wesley.pinheiro@uft.edu.br',
-      routes: [
-        '/',
-        '/upload',
-        '/questionario/home',
-        '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
-      ],
-      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAtual:
           EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
@@ -775,9 +753,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/upload',
         '/questionario/home',
         '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
       ],
       cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
@@ -806,9 +781,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         '/upload',
         '/questionario/home',
         '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
       ],
       cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
@@ -824,6 +796,171 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
+
+  Future usuarioWesley(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'wesley.pinheiro',
+      celular: '123',
+      email: 'wesley.pinheiro@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual:
+          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAcesso: [
+        EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    // print('>>> ok <<< ');
+  }
+  //---Equipe do sergio
+  //+++Equipe do Portela
+
+  Future usuarioIsabela(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'isabela.moura',
+      celular: '123',
+      email: 'isabela.moura@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+      eixoIDAtual: EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+      eixoIDAcesso: [
+        EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    // print('>>> ok <<< ');
+  }
+
+  //---Equipe do Portela
+  //+++Equipe do Rui
+  Future usuarioAlesi(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'alesitmendes',
+      celular: '123',
+      email: 'alesitmendes@gmail.com',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAtual: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAcesso: [
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+  }
+
+  Future usuarioGuilherme(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'guilherme309m',
+      celular: '123',
+      email: 'guilherme309m@gmail.com',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAtual: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAcesso: [
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+  }
+
+  Future usuarioAna(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'anapaulafelicio',
+      celular: '123',
+      email: 'anapaulafelicio@mail.uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAtual: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAcesso: [
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+  }
+
+  Future usuarioAndre(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'andrema',
+      celular: '123',
+      email: 'andrema@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAtual: EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      eixoIDAcesso: [
+        EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+  }
+  //---Equipe do Rui
+
 }
 
 //   Future<String> _selecionarNovoArquivo() async {
