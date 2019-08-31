@@ -26,12 +26,8 @@ export 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page.dart';
 export 'package:pmsbmibile3/pages/comunicacao/noticia_lida_page.dart';
 
 //produto
-export 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 export 'package:pmsbmibile3/pages/produto/produto_home_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_crud_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page.dart';
 
 //pergunta
 export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
@@ -74,5 +70,3 @@ export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
 //chat
 export 'package:pmsbmibile3/pages/chat/chat_page.dart';
 export 'package:pmsbmibile3/pages/chat/chat_lido_page.dart';
-
-
