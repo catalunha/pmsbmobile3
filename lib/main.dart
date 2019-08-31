@@ -178,7 +178,8 @@ class MyApp extends StatelessWidget {
         "/administracao/perfil": (context) => AdministracaoPerfilPage(),
 
         //controle
-        "/controle/home": (context) => ControleHomePage(),      },
+        "/controle/home": (context) => ControleHomePage(),
+      },
       //   ),
       // ),
     );
