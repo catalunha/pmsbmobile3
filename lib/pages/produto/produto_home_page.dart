@@ -89,10 +89,12 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
                 IconButton(
                   icon: Icon(Icons.wrap_text),
                   tooltip: 'Editar texto',
-                  onPressed: () {
-                    //Ir para a edição do produto,
-                    launch(produto.googleDocsUrl);
-                  },
+                  onPressed: produto?.googleDocsUrl != null
+                      ? () {
+                          //Ir para a edição do produto,
+                          launch(produto.googleDocsUrl);
+                        }
+                      : null,
                 ),
                 IconButton(
                   icon: Icon(Icons.picture_as_pdf),
