@@ -65,10 +65,10 @@ class _PerfilPageState extends State<PerfilPage> {
 
   Widget _listTile(BuildContext context, UsuarioPerfilModel usuarioPerfil) {
     return Card(
-      color: (usuarioPerfil.arquivo == null) ==
-              (usuarioPerfil.textPlain == null)
-          ? Colors.yellow
-          : Colors.white,
+      // color: (usuarioPerfil.arquivo == null) ==
+      //         (usuarioPerfil.textPlain == null)
+      //     ? Colors.yellow
+      //     : Colors.white,
       child: InkWell(
         onTap: () {
           if (usuarioPerfil.perfilID.contentType == 'text') {

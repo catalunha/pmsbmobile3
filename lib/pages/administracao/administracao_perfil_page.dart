@@ -187,9 +187,9 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                   ...snapshot.data.map((variavel) {
                     if (variavel.perfilID.contentType == 'text') {
                       return Card(
-                          color: variavel.textPlain == null
-                              ? Colors.yellowAccent
-                              : Colors.white,
+                          // color: variavel.textPlain == null
+                          //     ? Colors.yellowAccent
+                          //     : Colors.white,
                           child: ListTile(
                             title: Text(
                               "${variavel.perfilID.nome}:",
