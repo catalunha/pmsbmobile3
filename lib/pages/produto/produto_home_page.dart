@@ -4,21 +4,23 @@ import 'package:pmsbmibile3/models/produto_model.dart';
 
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
+import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 import 'package:pmsbmibile3/pages/produto/produto_home_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProdutoHomePage extends StatefulWidget {
-AuthBloc authBloc;
+  AuthBloc authBloc;
   ProdutoHomePage(this.authBloc);
 
   _ProdutoHomePageState createState() => _ProdutoHomePageState(this.authBloc);
 }
 
 class _ProdutoHomePageState extends State<ProdutoHomePage> {
-final ProdutoHomePageBloc bloc;
-    _ProdutoHomePageState( AuthBloc authBloc): bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc);
+  final ProdutoHomePageBloc bloc;
+  _ProdutoHomePageState(AuthBloc authBloc)
+      : bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc);
   //   @override
 //   Widget build(BuildContext context) {
 //     return Container(
@@ -28,7 +30,7 @@ final ProdutoHomePageBloc bloc;
 // }
 
 // class ProdutoHomePage extends StatelessWidget {
-  // final ProdutoHomePageBloc bloc;
+  // final ProdutoHomePageBloc  bloc;
 
   // ProdutoHomePage(AuthBloc authBloc)
   //     : bloc = ProdutoHomePageBloc(Bootstrap.instance.firestore, authBloc) {
@@ -36,7 +38,7 @@ final ProdutoHomePageBloc bloc;
   // }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
   }
 
@@ -103,63 +105,15 @@ final ProdutoHomePageBloc bloc;
             Wrap(
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.text_fields),
-                  tooltip: 'Editar texto do produto',
+                  icon: Icon(Icons.remove_red_eye),
+                  tooltip: 'Visualisar produto',
                   onPressed: () {
-                    //Ir para a pagina visuais do produto
-                    Navigator.pushNamed(context, '/produto/texto',
-                        arguments: produto.id);
+                    //Ir para a edição do produto, 
+                    launch(
+                        "https://docs.google.com/document/d/1XkRG2JExvlpBGPbIC86UYcI7eBFP1wdlMIlvWtSXIic/edit?usp=sharing");
                   },
                 ),
-                IconButton(
-                  icon: Icon(Icons.image),
-                  tooltip: 'Gerenciar imagens para este produto',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/produto/arquivo_list',
-                        arguments: ProdutoArguments(
-                            produtoID: produto.id, tipo: 'imagem'));
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.border_bottom),
-                  tooltip: 'Gerenciar tabelas para este produto',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/produto/arquivo_list',
-                        arguments: ProdutoArguments(
-                            produtoID: produto.id, tipo: 'tabela'));
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.insert_chart),
-                  tooltip: 'Gerenciar gráficos para este produto',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/produto/arquivo_list',
-                        arguments: ProdutoArguments(
-                            produtoID: produto.id, tipo: 'grafico'));
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.location_on),
-                  tooltip: 'Gerenciar mapas para este produto',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/produto/arquivo_list',
-                        arguments: ProdutoArguments(
-                            produtoID: produto.id, tipo: 'mapa'));
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.message),
-                  tooltip: 'chat para o produto',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/chat/home',
-                        arguments: ChatPageArguments(
-                            chatID: produto.id,
-                            modulo:
-                                'P: ${produto.eixoID.nome}. \nS: ${produto.setorCensitarioID.nome}',
-                            titulo: 'T: ${produto.titulo}. '));
-                  },
-                ),
-                IconButton(
+                 IconButton(
                   icon: Icon(Icons.picture_as_pdf),
                   tooltip: 'PDF finalizado do produto.',
                   onPressed: produto.pdf?.url != null
@@ -168,6 +122,65 @@ final ProdutoHomePageBloc bloc;
                         }
                       : null,
                 ),
+                // IconButton(
+                //   icon: Icon(Icons.text_fields),
+
+                //   tooltip: 'Editar texto do produto',
+                //   onPressed: () {
+                //     //Ir para a pagina visuais do produto
+                //     Navigator.pushNamed(context, '/produto/texto',
+                //         arguments: produto.id);
+                //   },
+                // ),
+                // IconButton(
+                //   icon: Icon(Icons.image),
+                //   tooltip: 'Gerenciar imagens para este produto',
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, '/produto/arquivo_list',
+                //         arguments: ProdutoArguments(
+                //             produtoID: produto.id, tipo: 'imagem'));
+                //   },
+                // ),
+                // IconButton(
+                //   icon: Icon(Icons.border_bottom),
+                //   tooltip: 'Gerenciar tabelas para este produto',
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, '/produto/arquivo_list',
+                //         arguments: ProdutoArguments(
+                //             produtoID: produto.id, tipo: 'tabela'));
+                //   },
+                // ),
+                // IconButton(
+                //   icon: Icon(Icons.insert_chart),
+                //   tooltip: 'Gerenciar gráficos para este produto',
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, '/produto/arquivo_list',
+                //         arguments: ProdutoArguments(
+                //             produtoID: produto.id, tipo: 'grafico'));
+                //   },
+                // ),
+                // IconButton(
+                //   icon: Icon(Icons.location_on),
+                //   tooltip: 'Gerenciar mapas para este produto',
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, '/produto/arquivo_list',
+                //         arguments: ProdutoArguments(
+                //             produtoID: produto.id, tipo: 'mapa'));
+                //   },
+                // ),
+                // IconButton(
+                //   icon: Icon(Icons.message),
+                //   tooltip: 'chat para o produto',
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, '/chat/home',
+                //         arguments: ChatPageArguments(
+                //             chatID: produto.id,
+                //             modulo:
+                //                 'P: ${produto.eixoID.nome}. \nS: ${produto.setorCensitarioID.nome}',
+                //             titulo: 'T: ${produto.titulo}. '));
+                //   },
+                // ),
+               
               ],
             )
           ],

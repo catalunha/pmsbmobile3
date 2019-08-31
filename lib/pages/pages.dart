@@ -74,5 +74,3 @@ export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
 //chat
 export 'package:pmsbmibile3/pages/chat/chat_page.dart';
 export 'package:pmsbmibile3/pages/chat/chat_lido_page.dart';
-
-
