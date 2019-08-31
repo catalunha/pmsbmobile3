@@ -125,33 +125,33 @@ class MyApp extends StatelessWidget {
         //sintese
         "/sintese/home": (context) => SinteseHomePage(),
 
-        //produto
+        //+++ produto
         "/produto/home": (context) => ProdutoHomePage(authBloc),
         "/produto/crud": (context) {
           final settings = ModalRoute.of(context).settings;
           return ProdutoCRUDPage(settings.arguments, authBloc);
         },
-        "/produto/texto": (context) {
-          final settings = ModalRoute.of(context).settings;
-          return ProdutoTextoPage(
-            settings.arguments,
-          );
-        },
-        "/produto/arquivo_list": (context) {
-          final settings = ModalRoute.of(context).settings;
-          ProdutoArguments args = settings.arguments;
-          return ProdutoArquivoListPage(
-              produtoID: args.produtoID, tipo: args.tipo);
-        },
-        "/produto/arquivo_crud": (context) {
-          final settings = ModalRoute.of(context).settings;
-          ProdutoArguments args = settings.arguments;
-          return ProdutoArquivoCRUDPage(
-              produtoID: args.produtoID,
-              arquivoID: args.arquivoID,
-              tipo: args.tipo);
-        },
-        //chat
+        // "/produto/texto": (context) {
+        //   final settings = ModalRoute.of(context).settings;
+        //   return ProdutoTextoPage(
+        //     settings.arguments,
+        //   );
+        // },
+        // "/produto/arquivo_list": (context) {
+        //   final settings = ModalRoute.of(context).settings;
+        //   ProdutoArguments args = settings.arguments;
+        //   return ProdutoArquivoListPage(
+        //       produtoID: args.produtoID, tipo: args.tipo);
+        // },
+        // "/produto/arquivo_crud": (context) {
+        //   final settings = ModalRoute.of(context).settings;
+        //   ProdutoArguments args = settings.arguments;
+        //   return ProdutoArquivoCRUDPage(
+        //       produtoID: args.produtoID,
+        //       arquivoID: args.arquivoID,
+        //       tipo: args.tipo);
+        // },
+        //+++ chat
         "/chat/home": (context) {
           final settings = ModalRoute.of(context).settings;
           ChatPageArguments args = settings.arguments;

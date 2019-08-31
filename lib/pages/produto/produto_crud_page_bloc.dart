@@ -184,50 +184,6 @@ class ProdutoCRUDPageBloc {
 
       //--- Cria doc em UpLoadCollection
       await docRefColl.setData(produtoModelSave.toMap(), merge: true);
-
-      if (_state.produtoModelID == null) {
-        final produtoTextoModelSave = ProdutoTextoModel(
-          textoMarkdown: """
-Pronto para iniciar edição ? Use estilo markdown, veja exemplos abaixo.
-#  Titulo 1
-
-## Titulo 2
-
-### Titulo 3
-
-**negrito**
-
-Lista
-- a
-- b
-- c
-
-Link para image use o formato: ![](Link para imagem)
-
----
-
-Link para imagem externa. (copiar lá colar aqui)
-![](https://ww2.uft.edu.br/images/monumento-palmas_foto_poliana_macedo-19-web.JPG)
-
----
-
-Link para imagem do projeto. (clique no icone cole aqui)
-![](https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/tipos-de-graficos-matematica.jpg?alt=media&token=51452f1d-fb4f-4b35-8a42-61416666d299)
-          """,
-          editando: false,
-          usuarioID: UsuarioID(
-              id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
-        );
-
-        final docRefSubColl =
-            docRefColl.collection(ProdutoTextoModel.collection).document();
-        await docRefSubColl.setData(produtoTextoModelSave.toMap(), merge: true);
-
-        await docRefSubColl.get().then((docSnap) {
-          docRefColl
-              .setData({"produtoTextoID": docSnap.documentID}, merge: true);
-        });
-      }
     }
     if (event is UpdatePDFEvent) {
       _state.pdfLocalPath = event.pdfLocalPath;
@@ -240,37 +196,6 @@ Link para imagem do projeto. (clique no icone cole aqui)
     }
 
     if (event is DeleteProdutoIDEvent) {
-      if (_state.produtoModel?.arquivo != null) {
-        for (var arq in _state.produtoModel.arquivo.entries) {
-          if (arq.value?.rascunhoIdUpload != null) {
-            _firestore
-                .collection(UploadModel.collection)
-                .document(arq.value?.rascunhoIdUpload)
-                .delete();
-          }
-          if (arq.value?.editadoIdUpload != null) {
-            _firestore
-                .collection(UploadModel.collection)
-                .document(arq.value?.editadoIdUpload)
-                .delete();
-          }
-          if (arq.value?.rascunhoUrl != null) {
-            Future<StorageReference> storageRefFut =
-                _storage.getReferenceFromUrl(arq.value.rascunhoUrl);
-            storageRefFut.then((storageRef) {
-              storageRef.delete();
-            });
-          }
-          if (arq.value?.editadoUrl != null) {
-            Future<StorageReference> storageRefFut =
-                _storage.getReferenceFromUrl(arq.value.editadoUrl);
-            storageRefFut.then((storageRef) {
-              storageRef.delete();
-            });
-          }
-        }
-      }
-
       if (_state.produtoModel?.pdf?.uploadID != null) {
         _firestore
             .collection(UploadModel.collection)
@@ -284,17 +209,6 @@ Link para imagem do projeto. (clique no icone cole aqui)
           });
         }
       }
-
-      final docRef = _firestore
-          .collection(ProdutoModel.collection)
-          .document(_state.produtoModelID)
-          .collection('ProdutoTexto')
-          .document(_state.produtoModel.produtoTextoID);
-      await docRef.delete();
-      final docRef2 = _firestore
-          .collection(ProdutoModel.collection)
-          .document(_state.produtoModelID);
-      await docRef2.delete();
     }
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');

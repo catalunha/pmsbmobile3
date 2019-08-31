@@ -5,31 +5,34 @@ class ProdutoModel extends FirestoreModel {
   static final String collection = "Produto";
 
   String titulo;
-  String googleDocsUrl;
+  String produtoTextoID;
   EixoID eixoID;
-  SetorCensitarioID setorCensitarioID;
   DateTime modificado;
+  SetorCensitarioID setorCensitarioID;
   UsuarioID usuarioID;
+  Map<String, ArquivoProduto> arquivo;
   UploadID pdf;
 
   ProdutoModel({
     String id,
     this.titulo,
-    this.googleDocsUrl,
+    this.produtoTextoID,
     this.eixoID,
     this.pdf,
     this.setorCensitarioID,
     this.usuarioID,
     this.modificado,
+    this.arquivo,
   }) : super(id);
   @override
   ProdutoModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('titulo')) titulo = map['titulo'];
-    if (map.containsKey('googleDocsUrl')) googleDocsUrl = map['googleDocsUrl'];
     if (map.containsKey('pdf')) {
       pdf = map['pdf'] != null ? new UploadID.fromMap(map['pdf']) : null;
     }
 
+    if (map.containsKey('produtoTextoID'))
+      produtoTextoID = map['produtoTextoID'];
     if (map.containsKey('eixoID')) {
       eixoID = map['eixoID'] != null ? new EixoID.fromMap(map['eixoID']) : null;
     }
@@ -45,15 +48,20 @@ class ProdutoModel extends FirestoreModel {
           : null;
     }
     if (map.containsKey('modificado')) modificado = map['modificado'].toDate();
-
+    if (map["arquivo"] is Map) {
+      arquivo = Map<String, ArquivoProduto>();
+      map["arquivo"].forEach((k, v) {
+        arquivo[k] = ArquivoProduto.fromMap(v);
+      });
+    }
     return this;
   }
 
   @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (produtoTextoID != null) data['produtoTextoID'] = this.produtoTextoID;
     if (titulo != null) data['titulo'] = this.titulo;
-    if (googleDocsUrl != null) data['googleDocsUrl'] = this.googleDocsUrl;
     if (this.eixoID != null) {
       data['eixoID'] = this.eixoID.toMap();
     }
@@ -68,6 +76,12 @@ class ProdutoModel extends FirestoreModel {
       data['usuarioID'] = this.usuarioID.toMap();
     }
     if (modificado != null) data['modificado'] = this.modificado.toUtc();
+    if (arquivo != null) {
+      data["arquivo"] = Map<String, Map<String, dynamic>>();
+      arquivo.forEach((key, value) {
+        if (value != null) data["arquivo"][key] = value.toMap();
+      });
+    }
     return data;
   }
 }
