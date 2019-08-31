@@ -289,7 +289,7 @@ class _TelaChatState extends State<TelaChat> {
       bool marcador, String usuario, String texto, String datahora) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.black12,
+          color: Colors.white70,
           borderRadius: BorderRadius.all(const Radius.circular(20.0))),
       margin: marcador
           ? EdgeInsets.fromLTRB(60.0, 6.0, 6.0, 6.0)

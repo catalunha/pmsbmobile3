@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'PMSB-TO-22',
-      //theme: ThemeData.dark(),
+      theme: ThemeData.dark(),
       initialRoute: "/",
       routes: {
         //homePage
