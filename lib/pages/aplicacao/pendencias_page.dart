@@ -152,21 +152,64 @@ class PerguntaAplicadaListItem extends StatelessWidget {
                 IconButton(
                     tooltip: 'Pergunta não foi respondida e tem resposta válida ?', icon: Icon(Icons.cancel), onPressed: () {}),
               if (_perguntaAplicada.temPendencias)
-                IconButton(
-                    tooltip: 'Pergunta tem pendências ?', icon: Icon(Icons.check), onPressed: () {},)
+Icon(Icons.cancel)
               else
-                IconButton(
-                    tooltip: 'Pergunta tem pendências ?', icon: Icon(Icons.cancel), onPressed: () {},),
-              if (_perguntaAplicada.referenciasRequitosDefinidas)
-                IconButton(
-                    tooltip: 'Referencia ao requisito foi definida ?', icon: Icon(Icons.cancel), onPressed: () {},)
-              else
-                IconButton(
-                    tooltip: 'Referencia ao requisito foi definida ?', icon: Icon(Icons.cancel), onPressed: () {},),
+                Icon(Icons.check),
+              IconButton(
+                icon: Icon(
+                  Icons.rotate_90_degrees_ccw,
+                  color: _perguntaAplicada.referenciasRequitosDefinidas
+                      ? Colors.green
+                      : Colors.red,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      elevation: 5,
+                      child: Column(
+                        children: <Widget>[
+                          Text("Requisitos"),
+                          for (var item in _perguntaAplicada.requisitos.entries)
+                            RequisitoListItem(item.value)
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class RequisitoListItem extends StatelessWidget {
+  final Requisito _requisito;
+
+  const RequisitoListItem(this._requisito, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(4),
+      child: Column(
+        children: <Widget>[
+          Text(_requisito.referencia),
+          Text("${_requisito.perguntaID}"),
+          Text("${_requisito.perguntaTipo}"),
+          if (_requisito.escolha != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("${_requisito.escolha.id}"),
+                Text("${_requisito.escolha.marcada}"),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }
