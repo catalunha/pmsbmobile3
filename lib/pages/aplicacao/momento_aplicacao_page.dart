@@ -23,11 +23,11 @@ class MomentoAplicacaoPage extends StatefulWidget {
 class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
   final bloc = MomentoAplicacaoPageBloc(Bootstrap.instance.firestore);
 
-  //TODO: subistituir o preambulo desta pagina
-  final String _eixo = "eixo exemplo";
-  final String _questionario = "questionarios exemplo";
-  final String _local = "local exemplo";
-  final String _setor = "setor exemplo";
+  // //TODO: subistituir o preambulo desta pagina
+  // final String _eixo = "eixo exemplo";
+  // final String _questionario = "questionarios exemplo";
+  // final String _local = "local exemplo";
+  // final String _setor = "setor exemplo";
 
   @override
   void initState() {
