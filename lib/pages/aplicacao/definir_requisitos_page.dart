@@ -106,13 +106,12 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
         actions: <Widget>[],
         centerTitle: true,
-        title: Text("Definindo requisitos"),
+        title: Text("Definindo referencias"),
       ),
       body: ListView(children: <Widget>[
-        _preambulo(),
+        //_preambulo(),
         _RadioTules(),
       ]),
     );
@@ -142,9 +141,13 @@ class RequisitoRadioTile extends StatelessWidget {
       },
       child: ListTile(
         title: Text(
-            "Questionario: ${perguntaAplicada.questionario.nome} Referencia: ${perguntaAplicada.questionario.referencia}"),
-        subtitle: Text(
-            "Pergunta: ${perguntaAplicada.titulo} ${perguntaSelecionadaId == perguntaAplicada.id ? "*selecionada*" : ""}"),
+          "${perguntaSelecionadaId == perguntaAplicada.id ? "(selecionado)" : ""} Questionario: ${perguntaAplicada.questionario.nome} Referencia: ${perguntaAplicada.questionario.referencia}",
+          style: TextStyle(
+              color: perguntaSelecionadaId == perguntaAplicada.id
+                  ? Colors.green
+                  : null),
+        ),
+        subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
       ),
     );
   }

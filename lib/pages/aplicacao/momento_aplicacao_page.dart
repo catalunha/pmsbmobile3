@@ -254,7 +254,7 @@ class ListaRequisitos extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text("Lista de requisitos:"),
+              title: Text("Lista de referencias:"),
             ),
             ...requisitosMap
                 .map(
