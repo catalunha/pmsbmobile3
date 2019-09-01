@@ -265,6 +265,7 @@ class MomentoAplicacaoPageBloc
     });
     qmodel.referencias = referencias;
     ref.setData(qmodel.toMap(), merge: true);
+    requisitosInternos();
   }
 
   Future<void> editar_questionario_aplicado(fsw.DocumentReference ref) async {
@@ -273,32 +274,52 @@ class MomentoAplicacaoPageBloc
     ref.setData(model.toMap(), merge: true);
 
     final q = currentState.questionario as QuestionarioAplicadoModel;
-    print(q.referencias);
+
     //atualiza requisitos
     for (var pergunta in currentState.perguntas) {
       for (var requisitoItem in pergunta.requisitos.entries) {
-        print(requisitoItem);
         final requisito = requisitoItem.value;
         final requisitoId = requisitoItem.key;
         String perguntaRequisitadaId;
         if (currentState.requisitosSelecionados
             .containsKey(requisito.referencia)) {
           //requisito externo
-          print("requisito externo");
           perguntaRequisitadaId =
               currentState.requisitosSelecionados[requisito.referencia];
         } else if (q.referencias.containsKey(requisito.referencia)) {
           //requisito interno
-          print("requisito interno");
+
           perguntaRequisitadaId = q.referencias[requisito.referencia];
         }
-        //salva requisito
         pergunta.requisitos[requisitoId].perguntaID = perguntaRequisitadaId;
-        final ref = _firestore
-            .collection(PerguntaAplicadaModel.collection)
-            .document(pergunta.id);
-        ref.setData(pergunta.toMap(), merge: true);
       }
+      //salva requisito
+      final ref = _firestore
+          .collection(PerguntaAplicadaModel.collection)
+          .document(pergunta.id);
+      ref.setData(pergunta.toMap(), merge: true);
+    }
+  }
+
+  void requisitosInternos() {
+    final q = currentState.questionario as QuestionarioAplicadoModel;
+
+    //atualiza requisitos
+    for (var pergunta in currentState.perguntas) {
+      for (var requisitoItem in pergunta.requisitos.entries) {
+        final requisito = requisitoItem.value;
+        final requisitoId = requisitoItem.key;
+        if (q.referencias.containsKey(requisito.referencia)) {
+          //requisito interno
+          pergunta.requisitos[requisitoId].perguntaID =
+              q.referencias[requisito.referencia];
+        }
+      }
+      //salva requisitos
+      final ref = _firestore
+          .collection(PerguntaAplicadaModel.collection)
+          .document(pergunta.id);
+      ref.setData(pergunta.toMap(), merge: true);
     }
   }
 }
