@@ -6,6 +6,7 @@ import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
+import 'package:pmsbmibile3/pages/questionario/pergunta_list_preview_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,7 +47,10 @@ class MyApp extends StatelessWidget {
               authBloc,
               ModalRoute.of(context).settings.arguments,
             ),
-
+        "/pergunta/pergunta_list_preview": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return PerguntaListPreviewPage(questionarioID: settings.arguments);
+        },
         //pergunta
         "/pergunta/home": (context) {
           final settings = ModalRoute.of(context).settings;
