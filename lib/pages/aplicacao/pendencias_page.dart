@@ -125,37 +125,58 @@ class PerguntaAplicadaListItem extends StatelessWidget {
       children: <Widget>[
         ListTile(
           title: Text(_perguntaAplicada.titulo),
-          trailing: IconButton(
-            tooltip: 'Pergunta tem pendências ?',
-            icon: _perguntaAplicada.temPendencias
-                ? Icon(Icons.clear, color: Colors.red)
-                : Icon(Icons.check, color: Colors.green),
-            onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
-          ),
+          // trailing: IconButton(
+          //   tooltip: 'Pergunta pode ser respondida ?',
+          //   //Sim.
+          //   //Nao. Pois tem pendencia e podem ser:
+          //   //- tem req e nao foi especificada a pergunta req
+          //   //- se tem o req ele pode nao ter sido atendido.
+          //   icon: _perguntaAplicada.temPendencias
+          //       ? Icon(Icons.clear, color: Colors.red)
+          //       : Icon(Icons.check, color: Colors.green),
+          //   onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+          // ),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              IconButton(
+                tooltip: 'Pergunta pode ser respondida ?',
+                icon: _perguntaAplicada.temPendencias
+                    ? Icon(Icons.clear, color: Colors.red)
+                    : Icon(Icons.check, color: Colors.green),
+                onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+              ),
               if (_perguntaAplicada.foiRespondida)
                 IconButton(
-                    tooltip: 'Pergunta foi respondida ?', icon: Icon(Icons.check), onPressed: () {},)
+                  tooltip: 'Pergunta foi respondida ?',
+                  icon: Icon(Icons.thumb_up, color: Colors.green),
+                  onPressed: () {},
+                )
               else
                 IconButton(
-                    tooltip: 'Pergunta foi respondida ?', icon: Icon(Icons.cancel), onPressed: () {},),
+                  tooltip: 'Pergunta foi respondida ?',
+                  icon: Icon(Icons.thumb_down),
+                  onPressed: () {},
+                ),
               if (!_perguntaAplicada.foiRespondida &&
                   _perguntaAplicada.temRespostaValida)
                 IconButton(
-                    tooltip: 'Pergunta não foi respondida e tem resposta válida ?', icon: Icon(Icons.check), onPressed: () {},)
+                  tooltip:
+                      'Pergunta não foi respondida e tem informação válida ?',
+                  icon: Icon(Icons.thumbs_up_down),
+                  onPressed: () {},
+                )
               else
                 IconButton(
-                    tooltip: 'Pergunta não foi respondida e tem resposta válida ?', icon: Icon(Icons.cancel), onPressed: () {}),
-              if (_perguntaAplicada.temPendencias)
-Icon(Icons.cancel)
-              else
-                Icon(Icons.check),
+                    tooltip:
+                        'Pergunta não foi respondida e tem informação válida ?',
+                    icon: Icon(Icons.thumb_down),
+                    onPressed: () {}),
               IconButton(
+                tooltip: 'Requisitos definidos ?',
                 icon: Icon(
                   Icons.rotate_90_degrees_ccw,
                   color: _perguntaAplicada.referenciasRequitosDefinidas
