@@ -256,35 +256,40 @@ class _RequisitoListItemState extends State<RequisitoListItem> {
         if (widget.requisito.escolha == null) {
           vencido = snap.data.foiRespondida;
         } else {
-          vencido = snap.data.escolhas[widget.requisito.escolha.id].marcada == widget.requisito.escolha.marcada;
+          vencido = snap.data.escolhas[widget.requisito.escolha.id].marcada ==
+              widget.requisito.escolha.marcada;
         }
         return Container(
           padding: EdgeInsets.all(4),
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Text(widget.requisito.referencia),
+                title: Text("${snap.data.questionario.nome}"),
+                subtitle: Text("QuestID: ${snap.data.questionario.id}"),
+              ),
+              ListTile(
+                title: Text("${snap.data.questionario.referencia}"),
                 subtitle: Text("Referencia"),
               ),
               ListTile(
-                title: Text(
-                    "${snap.data.questionario.nome} : ${snap.data.questionario.referencia}"),
-                subtitle: Text(snap.data.titulo),
-              ),
-              ListTile(
-                title: Text(widget.requisito.perguntaID),
-                subtitle: Text("Pergunta ID"),
+                title: Text("${snap.data.titulo}"),
+                subtitle: Text("PergID: ${widget.requisito.perguntaID}"),
               ),
               ListTile(
                 title: Text(widget.requisito.perguntaTipo),
-                subtitle: Text("Pergunta TIPO"),
+                subtitle: Text("Tipo de pergunta"),
               ),
               if (widget.requisito.escolha != null)
                 ListTile(
-                  title: Text("Escolha"),
                   subtitle: Text(
-                      "${snap.data.escolhas[widget.requisito.escolha.id].texto}: ${widget.requisito.escolha.marcada}"),
+                      "Esta escolha marcada como: ${widget.requisito.escolha.marcada}"),
+                  title: Text(
+                      "${snap.data.escolhas[widget.requisito.escolha.id].texto}"),
                 ),
+              ListTile(
+                title: Text(widget.requisito.referencia),
+                subtitle: Text("Referencia id"),
+              ),
               Icon(
                 vencido ? Icons.check : Icons.close,
                 color: vencido ? Colors.green : Colors.red,
