@@ -265,7 +265,7 @@ class MomentoAplicacaoPageBloc
     });
     qmodel.referencias = referencias;
     ref.setData(qmodel.toMap(), merge: true);
-    requisitosInternos();
+    requisitosInternos(ref);
   }
 
   Future<void> editar_questionario_aplicado(fsw.DocumentReference ref) async {
@@ -301,11 +301,21 @@ class MomentoAplicacaoPageBloc
     }
   }
 
-  void requisitosInternos() {
-    final q = currentState.questionario as QuestionarioAplicadoModel;
+  void requisitosInternos(fsw.DocumentReference ref) async {
+    final qsnap = await ref.get();
+    final q =
+        QuestionarioAplicadoModel(id: qsnap.documentID).fromMap(qsnap.data);
+    final perguntasSnap = await _firestore
+        .collection(PerguntaAplicadaModel.collection)
+        .where("questionario.id", isEqualTo: ref.documentID)
+        .getDocuments();
+    final perguntas = perguntasSnap.documents
+        .map((doc) =>
+            PerguntaAplicadaModel(id: doc.documentID).fromMap(doc.data))
+        .toList();
 
     //atualiza requisitos
-    for (var pergunta in currentState.perguntas) {
+    for (var pergunta in perguntas) {
       for (var requisitoItem in pergunta.requisitos.entries) {
         final requisito = requisitoItem.value;
         final requisitoId = requisitoItem.key;
