@@ -152,7 +152,7 @@ class ArquivoImagemItem extends StatelessWidget {
         padding: EdgeInsets.only(left: 16.0, bottom: 8.0, right: 16.0),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(localPath),
+            image: url != null ? NetworkImage(url) : AssetImage(localPath),
             fit: BoxFit.cover,
           ),
         ),
