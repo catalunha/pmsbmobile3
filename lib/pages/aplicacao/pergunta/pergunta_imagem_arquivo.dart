@@ -139,7 +139,7 @@ class ArquivoImagemItem extends StatelessWidget {
     this.onDeleted,
     this.localPath,
     this.url,
-  })  : assert(localPath == null && url == null),
+  })  : assert(localPath != null || url != null),
         super(key: key);
 
   @override
