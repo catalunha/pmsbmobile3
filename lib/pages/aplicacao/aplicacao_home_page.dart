@@ -30,7 +30,8 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   void initState() {
     super.initState();
     authBloc.perfil.listen((usuario) {
-      bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(usuario.id, usuario.eixoIDAtual.id));
+      bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(
+          usuario.id, usuario.eixoIDAtual.id));
     });
   }
 
@@ -162,20 +163,25 @@ class QuestionarioAplicadoItem extends StatelessWidget {
               child: ButtonBar(
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.record_voice_over),
+                    tooltip: 'Aplicando perguntas',
+                    icon: Icon(Icons.assignment),
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, "/aplicacao/aplicando_pergunta", arguments: AplicandoPerguntaPageArguments(_questionario.id));
+                          context, "/aplicacao/aplicando_pergunta",
+                          arguments:
+                              AplicandoPerguntaPageArguments(_questionario.id));
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.person_add),
+                    tooltip: 'Verificando pendencias',
+                    icon: Icon(Icons.assignment_turned_in),
                     onPressed: () {
                       Navigator.pushNamed(context, "/aplicacao/pendencias",
                           arguments: _questionario.id);
                     },
                   ),
                   IconButton(
+                    tooltip: 'Editar aplicação',
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       // Abrir questionário
