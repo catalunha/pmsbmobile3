@@ -23,11 +23,11 @@ class MomentoAplicacaoPage extends StatefulWidget {
 class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
   final bloc = MomentoAplicacaoPageBloc(Bootstrap.instance.firestore);
 
-  //TODO: subistituir o preambulo desta pagina
-  final String _eixo = "eixo exemplo";
-  final String _questionario = "questionarios exemplo";
-  final String _local = "local exemplo";
-  final String _setor = "setor exemplo";
+  // //TODO: subistituir o preambulo desta pagina
+  // final String _eixo = "eixo exemplo";
+  // final String _questionario = "questionarios exemplo";
+  // final String _local = "local exemplo";
+  // final String _setor = "setor exemplo";
 
   @override
   void initState() {
@@ -46,69 +46,69 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     super.dispose();
   }
 
-  _botaoDeletar() {
-    return SafeArea(
-        child: Row(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(5.0),
-          child: RaisedButton(
-            color: Colors.red,
-            onPressed: () {
-              bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
-              Navigator.pop(context);
-            },
-            child: Row(
-              children: <Widget>[
-                Text('Apagar', style: TextStyle(fontSize: 20)),
-                Icon(Icons.delete)
-              ],
-            ),
-          ),
-        ),
-      ],
-    ));
-  }
+  // _botaoDeletar() {
+  //   return SafeArea(
+  //       child: Row(
+  //     children: <Widget>[
+  //       Padding(
+  //         padding: EdgeInsets.all(5.0),
+  //         child: RaisedButton(
+  //           color: Colors.red,
+  //           onPressed: () {
+  //             bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+  //             Navigator.pop(context);
+  //           },
+  //           child: Row(
+  //             children: <Widget>[
+  //               Text('Apagar', style: TextStyle(fontSize: 20)),
+  //               Icon(Icons.delete)
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   ));
+  // }
 
-  _listaDadosSuperior() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: Text(
-            "Eixo - $_eixo",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: Text(
-            "Setor - $_setor",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: Text(
-            "Questionario - $_questionario",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5, bottom: 5),
-          child: Text(
-            "Local - $_local",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        )
-      ],
-    );
-  }
+  // _listaDadosSuperior() {
+  //   return Column(
+  //     children: <Widget>[
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5),
+  //         child: Text(
+  //           "Eixo - $_eixo",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       ),
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5),
+  //         child: Text(
+  //           "Setor - $_setor",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       ),
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5),
+  //         child: Text(
+  //           "Questionario - $_questionario",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       ),
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5, bottom: 5),
+  //         child: Text(
+  //           "Local - $_local",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
 
   Widget _body(context) {
     return ListView(
       children: <Widget>[
-        _listaDadosSuperior(),
+        // _listaDadosSuperior(),
         Divider(color: Colors.black87),
         StreamBuilder<MomentoAplicacaoPageBlocState>(
             stream: bloc.state,
@@ -133,7 +133,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                           //selecionar o questionario
                         }),
                 title: isBound
-                    ? Text("${questionario.id}")
+                    ? Text("Escolhido: ${questionario.id}")
                     : Text("Escolha um questionario: "),
                 subtitle:
                     Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
@@ -147,7 +147,8 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         ReferenciaInput(bloc),
         Divider(color: Colors.black87),
         ListaRequisitos(bloc),
-        _botaoDeletar()
+        // _botaoDeletar(),
+        _DeleteDocumentOrField(bloc),
       ],
     );
   }
@@ -178,6 +179,57 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                   snapshot.data.isValid ? Colors.blue : Colors.grey,
             );
           }),
+    );
+  }
+}
+
+class _DeleteDocumentOrField extends StatefulWidget {
+  final MomentoAplicacaoPageBloc bloc;
+
+  _DeleteDocumentOrField(this.bloc);
+
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState(bloc);
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+  final MomentoAplicacaoPageBloc bloc;
+
+  _DeleteDocumentOrFieldState(this.bloc);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<MomentoAplicacaoPageBlocState>(
+      stream: bloc.state,
+      builder: (BuildContext context,
+          AsyncSnapshot<MomentoAplicacaoPageBlocState> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                //Ir para a pagina visuais do produto
+                if (_textFieldController.text == 'CONCORDO') {
+                  bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }
@@ -226,7 +278,10 @@ class ListaRequisitos extends StatelessWidget {
                               Navigator.pushNamed(
                                   context, '/aplicacao/definir_requisitos',
                                   arguments: DefinirRequisitosPageArguments(
-                                      bloc, r.referencia, k, snapshot.data.requisitosSelecionados[k]));
+                                      bloc,
+                                      r.referencia,
+                                      k,
+                                      snapshot.data.requisitosSelecionados[k]));
                             },
                           ),
                           snapshot.data.requisitosSelecionados.containsKey(k)

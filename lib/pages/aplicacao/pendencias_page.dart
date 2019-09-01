@@ -126,6 +126,7 @@ class PerguntaAplicadaListItem extends StatelessWidget {
         ListTile(
           title: Text(_perguntaAplicada.titulo),
           trailing: IconButton(
+            tooltip: 'Pergunta tem pendências ?',
             icon: _perguntaAplicada.temPendencias
                 ? Icon(Icons.clear, color: Colors.red)
                 : Icon(Icons.check, color: Colors.green),
@@ -138,16 +139,20 @@ class PerguntaAplicadaListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               if (_perguntaAplicada.foiRespondida)
-                Icon(Icons.check)
+                IconButton(
+                    tooltip: 'Pergunta foi respondida ?', icon: Icon(Icons.check), onPressed: () {},)
               else
-                Icon(Icons.cancel),
+                IconButton(
+                    tooltip: 'Pergunta foi respondida ?', icon: Icon(Icons.cancel), onPressed: () {},),
               if (!_perguntaAplicada.foiRespondida &&
                   _perguntaAplicada.temRespostaValida)
-                Icon(Icons.check)
+                IconButton(
+                    tooltip: 'Pergunta não foi respondida e tem resposta válida ?', icon: Icon(Icons.check), onPressed: () {},)
               else
-                Icon(Icons.cancel),
+                IconButton(
+                    tooltip: 'Pergunta não foi respondida e tem resposta válida ?', icon: Icon(Icons.cancel), onPressed: () {}),
               if (_perguntaAplicada.temPendencias)
-                Icon(Icons.cancel)
+Icon(Icons.cancel)
               else
                 Icon(Icons.check),
               IconButton(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
-import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -110,6 +109,14 @@ class QuestionarioHomePage extends StatelessWidget {
                             GeradorPdfService.generatePdfFromMd(mdtext);
                           },
                         ),
+                        IconButton(
+                            tooltip: 'Listar perguntas criadas',
+                            icon: Icon(Icons.text_fields),
+                            onPressed: () async {
+                              Navigator.pushNamed(
+                                  context, "/pergunta/pergunta_list_preview",
+                                  arguments: questionario.id);
+                            }),
                         IconButton(
                             icon: Icon(Icons.arrow_downward),
                             onPressed: (ordemLocal) < lengthEscolha

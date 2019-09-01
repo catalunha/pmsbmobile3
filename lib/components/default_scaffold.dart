@@ -293,14 +293,15 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               leading: Icon(Icons.exit_to_app),
             ),
             ListTile(
-              title: Text("Cache"),
+              title: Text("Habilitar modo offline"),
               onTap: () async {
                 final cacheService = CacheService(Bootstrap.instance.firestore);
                 await cacheService.load();
                 Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text("Cache completo")));
+                    .showSnackBar(SnackBar(content: Text("Modo offline completo.")));
                 Navigator.pop(context);
               },
+              leading: Icon(Icons.save),
             ),
           ],
         ),

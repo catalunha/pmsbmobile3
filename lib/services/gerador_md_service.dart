@@ -46,7 +46,106 @@ ${noticia.textoMarkdown}
     texto.writeln("""
 # Questionário: ${questionarioModel.nome}
 
-<sub>Questionário id: ${questionarioModel.id}</sub>
+Questionário id: ${questionarioModel.id}
+
+Último editor: ${questionarioModel.editou.nome}
+
+Última edição em: ${questionarioModel.modificado.toDate()}
+
+Lista de perguntas: 
+
+---
+---
+
+""");
+    final perguntasRef = _firestore
+        .collection(PerguntaModel.collection)
+        .where("questionario.id", isEqualTo: questionarioModel.id)
+        .orderBy("ordem", descending: false);
+
+    final fsw.QuerySnapshot perguntasSnapshot =
+        await perguntasRef.getDocuments();
+    final perguntasList =
+        perguntasSnapshot.documents.map((fsw.DocumentSnapshot doc) {
+      return PerguntaModel(id: doc.documentID).fromMap(doc.data);
+    }).toList();
+
+    // perguntasList.forEach((pergunta) {
+    for (var pergunta in perguntasList) {
+      escolhaList.clear();
+      requisitoList.clear();
+      // Imprimindo as escolhas
+      if (pergunta.escolhas != null) {
+        escolhaList.writeln("#### Escolhas");
+        pergunta.escolhas?.forEach((k, v) {
+          escolhaList.writeln("""
+1. **${v.texto}**
+""");
+        });
+      } //fim escolhas
+
+      //+++ Imprimindo os requisitos
+      if (pergunta.requisitos != null) {
+        requisitoList.writeln("#### Requisitos");
+
+        for (var perReq in pergunta.requisitos.values) {
+          String label;
+          label=perReq?.escolha?.label ?? "Pergunta.";
+//           requisitoList.writeln("""
+// - ${perReq.label}
+// """);
+
+          final perguntasReqRef = _firestore
+              .collection(PerguntaModel.collection)
+              .where("questionario.id", isEqualTo: questionarioModel.id)
+              .where("referencia", isEqualTo: perReq.referencia);
+          final fsw.QuerySnapshot perguntasDoReqSnapshot =
+              await perguntasReqRef.getDocuments();
+          final perguntasReqList =
+              perguntasDoReqSnapshot.documents.map((fsw.DocumentSnapshot doc) {
+            return PerguntaModel(id: doc.documentID).fromMap(doc.data);
+          }).toList();
+
+          perguntasReqList.forEach((pergReq) {
+            requisitoList.writeln("""
+- ${pergReq.titulo}.
+  - ${label}
+""");
+          });
+        }
+      } //--- Imprimindo os requisitos
+
+      texto.writeln("""
+## ${contador} - ${pergunta.titulo}
+
+### ${pergunta.textoMarkdown}
+
+${escolhaList}
+
+${requisitoList}
+
+
+Pergunta tipo: ${pergunta.tipo.nome}. Ordem: ${pergunta.ordem}
+
+-----
+
+""");
+      contador++;
+    } //Fim pergunta
+    return texto.toString();
+  }
+
+  static generateMdFromQuestionarioModelWithIds(
+      QuestionarioModel questionarioModel) async {
+    final fsw.Firestore _firestore = Bootstrap.instance.firestore;
+    StringBuffer texto = new StringBuffer();
+    StringBuffer escolhaList = new StringBuffer();
+    StringBuffer requisitoList = new StringBuffer();
+    int contador = 1;
+    texto.writeln("""
+# Questionário: ${questionarioModel.nome}
+
+Questionário id: ${questionarioModel.id}
 
 Último editor: ${questionarioModel.editou.nome}
 
@@ -79,7 +178,7 @@ Lista de perguntas:
         escolhaList.writeln("#### Escolhas");
         pergunta.escolhas?.forEach((k, v) {
           escolhaList.writeln("""
-1. **${v.texto}** <sub>(id: ${k})</sub>
+1. **${v.texto}** (id: ${k})
 """);
         });
       } //fim escolhas
@@ -106,7 +205,9 @@ Lista de perguntas:
 
           perguntasReqList.forEach((pergReq) {
             requisitoList.writeln(
-                "- ${pergReq.titulo} <sub>(id: ${pergReq.id} ref: ${pergReq.referencia})</sub>");
+              """
+- ${pergReq.titulo}
+""");
           });
         }
       } //--- Imprimindo os requisitos
@@ -121,7 +222,7 @@ ${escolhaList}
 ${requisitoList}
 
 
-Pergunta tipo: ${pergunta.tipo.nome}. <sub>Pergunta id: ${pergunta.id} ordem: ${pergunta.ordem}</sub>
+Pergunta tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id} ordem: ${pergunta.ordem}
 
 -----
 
