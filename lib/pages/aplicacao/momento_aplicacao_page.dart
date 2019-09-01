@@ -70,45 +70,45 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     ));
   }
 
-  _listaDadosSuperior() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: Text(
-            "Eixo - $_eixo",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: Text(
-            "Setor - $_setor",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: Text(
-            "Questionario - $_questionario",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 5, bottom: 5),
-          child: Text(
-            "Local - $_local",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          ),
-        )
-      ],
-    );
-  }
+  // _listaDadosSuperior() {
+  //   return Column(
+  //     children: <Widget>[
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5),
+  //         child: Text(
+  //           "Eixo - $_eixo",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       ),
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5),
+  //         child: Text(
+  //           "Setor - $_setor",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       ),
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5),
+  //         child: Text(
+  //           "Questionario - $_questionario",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       ),
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 5, bottom: 5),
+  //         child: Text(
+  //           "Local - $_local",
+  //           style: TextStyle(fontSize: 16, color: Colors.blue),
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
 
   Widget _body(context) {
     return ListView(
       children: <Widget>[
-        _listaDadosSuperior(),
+        // _listaDadosSuperior(),
         Divider(color: Colors.black87),
         StreamBuilder<MomentoAplicacaoPageBlocState>(
             stream: bloc.state,
@@ -133,7 +133,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                           //selecionar o questionario
                         }),
                 title: isBound
-                    ? Text("${questionario.id}")
+                    ? Text("Escolhido: ${questionario.id}")
                     : Text("Escolha um questionario: "),
                 subtitle:
                     Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
