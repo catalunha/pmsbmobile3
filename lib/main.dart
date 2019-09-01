@@ -112,7 +112,12 @@ class MyApp extends StatelessWidget {
         "/aplicacao/definir_requisitos": (context) {
           final DefinirRequisitosPageArguments args =
               ModalRoute.of(context).settings.arguments;
-          return DefinirRequisistosPage(args.bloc, args.referencia);
+          return DefinirRequisistosPage(
+            args.bloc,
+            args.referencia,
+            args.requisitoId,
+            args.perguntaSelecionadaId,
+          );
         },
 
         //resposta

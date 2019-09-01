@@ -172,9 +172,9 @@ class PerguntaAplicadaModel extends PerguntaModel {
     map["observacao"] = observacao;
     if (texto != null) map["texto"] = texto;
     if (numero != null) map["numero"] = numero;
-    if (arquivo != null && arquivo is Map){
+    if (arquivo != null && arquivo is Map) {
       map["arquivo"] = Map<String, dynamic>();
-      for (var item in arquivo.entries){
+      for (var item in arquivo.entries) {
         map["arquivo"][item.value.uploadID] = item.value.toMap();
       }
     }
@@ -421,6 +421,11 @@ class Requisito {
       this.perguntaTipo,
       this.escolha,
       this.label});
+
+  @override
+  String toString() {
+    return "Requisito(${referencia}, ${perguntaTipo})";
+  }
 
   Requisito.fromMap(Map<dynamic, dynamic> map) {
     referencia = map["referencia"];
