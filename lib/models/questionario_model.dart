@@ -151,6 +151,7 @@ class QuestionarioModel extends FirestoreModel {
 class QuestionarioAplicadoModel extends QuestionarioModel {
   static String collection = "QuestionarioAplicado";
   String referencia;
+  Map<String, String> referencias;
   dynamic aplicado;
   UsuarioQuestionario aplicador;
   SetorCensitario setorCensitarioID;
@@ -158,6 +159,7 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
   QuestionarioAplicadoModel({
     String id,
     this.referencia,
+    this.referencias,
     this.aplicado,
     this.aplicador,
     this.setorCensitarioID,
@@ -184,6 +186,13 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
   @override
   QuestionarioAplicadoModel fromMap(Map<String, dynamic> map) {
     referencia = map["referencia"];
+    referencias = Map<String, String>();
+    if (map["referencias"] != null) {
+      final refs = map["referencias"] as Map<dynamic, dynamic>;
+      for (var ref in refs.entries) {
+        referencias[ref.key] = ref.value;
+      }
+    }
 
     aplicado = map["aplicado"];
 
@@ -212,6 +221,7 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
     if (setorCensitarioID != null) {
       map["setorCensitarioID"] = setorCensitarioID.toMap();
     }
+    if (referencias != null) map["referencias"] = referencias;
     return map;
   }
 }

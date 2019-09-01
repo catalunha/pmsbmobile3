@@ -7,9 +7,13 @@ import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
 // Aplicação 05
 
 class DefinirRequisistosPage extends StatefulWidget {
-  const DefinirRequisistosPage(this.momentoBloc, this.referencia, {Key key})
+  const DefinirRequisistosPage(this.momentoBloc, this.referencia,
+      this.requisitoId, this.perguntaSelecionadaId,
+      {Key key})
       : super(key: key);
   final String referencia;
+  final String requisitoId;
+  final String perguntaSelecionadaId;
   final MomentoAplicacaoPageBloc momentoBloc;
 
   @override
@@ -43,8 +47,13 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
             snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
         return Column(
           children: perfungas
-              .map((pergunta) =>
-                  RequisitoRadioTile(widget.momentoBloc, bloc, pergunta))
+              .map((pergunta) => RequisitoRadioTile(
+                    widget.momentoBloc,
+                    bloc,
+                    pergunta,
+                    widget.requisitoId,
+                    widget.perguntaSelecionadaId,
+                  ))
               .toList(),
         );
       },
@@ -112,12 +121,15 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
 
 class RequisitoRadioTile extends StatelessWidget {
   const RequisitoRadioTile(this.momentoBloc, this.bloc, this.perguntaAplicada,
+      this.requisitoId, this.perguntaSelecionadaId,
       {Key key})
       : super(key: key);
 
   final DefinirRequisitosPageBloc bloc;
   final MomentoAplicacaoPageBloc momentoBloc;
   final PerguntaAplicadaModel perguntaAplicada;
+  final String requisitoId;
+  final String perguntaSelecionadaId;
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +137,14 @@ class RequisitoRadioTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         momentoBloc.dispatch(SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
-            perguntaAplicada.referencia, perguntaAplicada.id));
+            requisitoId, perguntaAplicada.id));
         Navigator.of(context).pop();
       },
       child: ListTile(
-        title: Text(perguntaAplicada.questionario.nome),
-        subtitle: Text(perguntaAplicada.questionario.referencia),
+        title: Text(
+            "Questionario: ${perguntaAplicada.questionario.nome} Referencia: ${perguntaAplicada.questionario.referencia}"),
+        subtitle: Text(
+            "Pergunta: ${perguntaAplicada.titulo} ${perguntaSelecionadaId == perguntaAplicada.id ? "*selecionada*" : ""}"),
       ),
     );
   }

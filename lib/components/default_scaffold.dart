@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:pmsbmibile3/services/cache_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class Rota {
@@ -290,6 +291,16 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                 // Navigator.pushNamed(context, "/");
               },
               leading: Icon(Icons.exit_to_app),
+            ),
+            ListTile(
+              title: Text("Cache"),
+              onTap: () async {
+                final cacheService = CacheService(Bootstrap.instance.firestore);
+                await cacheService.load();
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text("Cache completo")));
+                Navigator.pop(context);
+              },
             ),
           ],
         ),

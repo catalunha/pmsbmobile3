@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
@@ -38,7 +39,6 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     bloc.dispatch(
         UpdateIDMomentoAplicacaoPageBlocEvent(widget.questionarioAplicadoID));
   }
-
 
   @override
   void dispose() {
@@ -118,6 +118,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
               final nomeQuestionario =
                   questionario?.nome != null ? questionario.nome : "";
               final isBound = snapshot.data.isBound;
+
               return ListTile(
                 trailing: isBound
                     ? null
@@ -131,7 +132,9 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                               arguments: bloc);
                           //selecionar o questionario
                         }),
-                title: isBound ? null : Text("Escolha um questionario: "),
+                title: isBound
+                    ? Text("${questionario.id}")
+                    : Text("Escolha um questionario: "),
                 subtitle:
                     Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
               );
@@ -195,7 +198,6 @@ class ListaRequisitos extends StatelessWidget {
           );
         final requisitos = snapshot?.data?.requisitos;
         final requisitosMap = requisitos != null ? requisitos : {};
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -224,11 +226,10 @@ class ListaRequisitos extends StatelessWidget {
                               Navigator.pushNamed(
                                   context, '/aplicacao/definir_requisitos',
                                   arguments: DefinirRequisitosPageArguments(
-                                      bloc, r.referencia));
+                                      bloc, r.referencia, k, snapshot.data.requisitosSelecionados[k]));
                             },
                           ),
-                          snapshot.data.requisitosSelecionados
-                                  .containsKey(r.referencia)
+                          snapshot.data.requisitosSelecionados.containsKey(k)
                               ? Icon(
                                   Icons.check,
                                   color: Colors.green,

@@ -47,10 +47,11 @@ class UpdateUsuarioMomentoAplicacaoPageBlocEvent
 
 class SelecionarRequisitoMomentoAplicacaoPageBlocEvent
     extends MomentoAplicacaoPageBlocEvent {
-  final String referencia;
-  final String id;
+  final String requisitoId;
+  final String perguntaId;
 
-  SelecionarRequisitoMomentoAplicacaoPageBlocEvent(this.referencia, this.id);
+  SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
+      this.requisitoId, this.perguntaId);
 }
 
 class MomentoAplicacaoPageBlocState {
@@ -70,6 +71,7 @@ class MomentoAplicacaoPageBlocState {
   ///RequisitoID, PerguntaAplicadaID
   Map<String, String> requisitosSelecionados = Map<String, String>();
   Map<String, Requisito> requisitos = Map<String, Requisito>();
+  Map<String, String> requisitoPergunta = Map<String, String>();
   QuestionarioModel questionario;
 
   MomentoAplicacaoPageBlocState({
@@ -126,6 +128,7 @@ class MomentoAplicacaoPageBloc
           currentState.questionario =
               QuestionarioAplicadoModel(id: questionarioAplicadoSnap.documentID)
                   .fromMap(questionarioAplicadoSnap.data);
+
           dispatch(CarregarListaPerguntasMomentoAplicacaoPageBlocEvent());
 
           final QuestionarioAplicadoModel q = currentState.questionario;
@@ -175,17 +178,29 @@ class MomentoAplicacaoPageBloc
       if (currentState.isBound) {
         currentState.requisitos.clear();
         currentState.requisitosSelecionados.clear();
+        currentState.requisitoPergunta.clear();
+        final q = currentState.questionario as QuestionarioAplicadoModel;
 
-        currentState.perguntas.forEach((pergunta) {
-          pergunta.requisitos.forEach((id, requisito) {
-            currentState.requisitos[id] = requisito;
-          });
-        });
+        for (var pergunta in currentState.perguntas) {
+          for (var item in pergunta.requisitos.entries) {
+            final requisito = item.value;
+            final id = item.key;
+
+            currentState.requisitoPergunta[id] = pergunta.id;
+            if (!q.referencias.containsKey(requisito.referencia)) {
+              currentState.requisitos[requisito.referencia] = requisito;
+            }
+            if (requisito.perguntaID != null) {
+              currentState.requisitosSelecionados[requisito.referencia] =
+                  requisito.perguntaID;
+            }
+          }
+        }
       }
     }
 
     if (event is SelecionarRequisitoMomentoAplicacaoPageBlocEvent) {
-      currentState.requisitosSelecionados[event.referencia] = event.id;
+      currentState.requisitosSelecionados[event.requisitoId] = event.perguntaId;
     }
 
     if (event is DeleteMomentoAplicacaoPageBlocEvent) {
@@ -204,7 +219,6 @@ class MomentoAplicacaoPageBloc
       });
     }
     if (event is SaveMomentoAplicacaoPageBlocEvent) {
-      //TODO: quando salvar atualizar os requisitos
       if (!currentState.isBound) {
         final ref = _firestore
             .collection(QuestionarioAplicadoModel.collection)
@@ -214,7 +228,7 @@ class MomentoAplicacaoPageBloc
         final ref = _firestore
             .collection(QuestionarioAplicadoModel.collection)
             .document(currentState.questionario.id);
-        editar_questionario_aplicado(ref);
+        await editar_questionario_aplicado(ref);
       }
     }
     validateState();
@@ -236,7 +250,7 @@ class MomentoAplicacaoPageBloc
     );
 
     ref.setData(qmodel.toMap(), merge: true);
-
+    final referencias = Map<String, String>();
     //cria pergutnas aplicadas
     final perguntasAplicadasRef =
         _firestore.collection(PerguntaAplicadaModel.collection);
@@ -247,12 +261,44 @@ class MomentoAplicacaoPageBloc
       pmodel.questionario.referencia = currentState.referencia;
       final perguntaAplicadaRef = perguntasAplicadasRef.document();
       perguntaAplicadaRef.setData(pmodel.toMap());
+      referencias[pmodel.referencia] = perguntaAplicadaRef.documentID;
     });
+    qmodel.referencias = referencias;
+    ref.setData(qmodel.toMap(), merge: true);
   }
 
-  void editar_questionario_aplicado(fsw.DocumentReference ref) {
+  Future<void> editar_questionario_aplicado(fsw.DocumentReference ref) async {
     final model =
         QuestionarioAplicadoModel(referencia: currentState.referencia);
     ref.setData(model.toMap(), merge: true);
+
+    final q = currentState.questionario as QuestionarioAplicadoModel;
+    print(q.referencias);
+    //atualiza requisitos
+    for (var pergunta in currentState.perguntas) {
+      for (var requisitoItem in pergunta.requisitos.entries) {
+        print(requisitoItem);
+        final requisito = requisitoItem.value;
+        final requisitoId = requisitoItem.key;
+        String perguntaRequisitadaId;
+        if (currentState.requisitosSelecionados
+            .containsKey(requisito.referencia)) {
+          //requisito externo
+          print("requisito externo");
+          perguntaRequisitadaId =
+              currentState.requisitosSelecionados[requisito.referencia];
+        } else if (q.referencias.containsKey(requisito.referencia)) {
+          //requisito interno
+          print("requisito interno");
+          perguntaRequisitadaId = q.referencias[requisito.referencia];
+        }
+        //salva requisito
+        pergunta.requisitos[requisitoId].perguntaID = perguntaRequisitadaId;
+        final ref = _firestore
+            .collection(PerguntaAplicadaModel.collection)
+            .document(pergunta.id);
+        ref.setData(pergunta.toMap(), merge: true);
+      }
+    }
   }
 }

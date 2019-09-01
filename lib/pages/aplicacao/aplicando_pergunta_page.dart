@@ -7,8 +7,8 @@ import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
-  const AplicacaoPerguntaPage(this.authBloc,
-      this.questionarioAplicadoID, this.perguntaID,
+  const AplicacaoPerguntaPage(
+      this.authBloc, this.questionarioAplicadoID, this.perguntaID,
       {Key key})
       : assert(questionarioAplicadoID != null),
         super(key: key);
@@ -29,7 +29,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     super.initState();
     bloc.dispatch(IniciarQuestionarioAplicadoAplicandoPerguntaPageBlocEvent(
         widget.questionarioAplicadoID, widget.perguntaID));
-    widget.authBloc.userId.listen((id){
+    widget.authBloc.userId.listen((id) {
       bloc.dispatch(UpdateUserIDAplicandoPerguntaPageBlocEvent(id));
     });
   }
@@ -104,6 +104,11 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
       stream: bloc.state,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Text("SEM DADOS");
+        if (snapshot.data.carregando) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         if (!snapshot.data.perguntasOk) {
           return Center(child: CircularProgressIndicator());
         }
@@ -156,7 +161,8 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 )),
             Divider(color: Colors.black54),
             // Widget de tipo pergunta
-            PerguntaAplicada(snapshot.data.perguntaAtual, snapshot.data.usuarioID),
+            PerguntaAplicada(
+                snapshot.data.perguntaAtual, snapshot.data.usuarioID),
             Padding(padding: EdgeInsets.all(5)),
             _botoes()
           ],
