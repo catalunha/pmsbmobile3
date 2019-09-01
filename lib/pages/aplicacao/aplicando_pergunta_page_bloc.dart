@@ -108,6 +108,17 @@ class ProximaPerguntaAplicandoPerguntaPageBlocEvent
   });
 }
 
+class IniciarProximaPerguntaAplicandoPerguntaPageBlocEvent
+    extends AplicandoPerguntaPageBlocEvent {
+  final bool reset;
+  final int index;
+
+  IniciarProximaPerguntaAplicandoPerguntaPageBlocEvent({
+    this.reset = false,
+    this.index,
+  });
+}
+
 class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     AplicandoPerguntaPageBlocState> {
   AplicandoPerguntaPageBloc(this._firestore);
@@ -123,6 +134,13 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
   Future<void> mapEventToState(AplicandoPerguntaPageBlocEvent event) async {
     if (event is UpdateUserIDAplicandoPerguntaPageBlocEvent) {
       currentState.usuarioID = event.usuarioID;
+    }
+
+    if (event is IniciarProximaPerguntaAplicandoPerguntaPageBlocEvent) {
+      currentState.carregando = true;
+      await verificarRequisitosPerguntas();
+      dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(
+          reset: event.reset, index: event.index));
     }
 
     if (event is ProximaPerguntaAplicandoPerguntaPageBlocEvent) {
@@ -178,7 +196,7 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
         currentState.primeiraPerguntaID = null;
       }
 
-      dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent(
+      dispatch(IniciarProximaPerguntaAplicandoPerguntaPageBlocEvent(
           reset: true, index: primeiraPerguntaIndex));
     }
     if (event is SalvarAplicandoPerguntaPageBlocEvent) {
@@ -192,7 +210,7 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
         ref.setData(map, merge: false);
       }
 
-      dispatch(ProximaPerguntaAplicandoPerguntaPageBlocEvent());
+      dispatch(IniciarProximaPerguntaAplicandoPerguntaPageBlocEvent());
     }
 
     //respostas
@@ -205,18 +223,15 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
     for (var pergunta in currentState.perguntas) {
       pergunta.temPendencias = false;
       if (pergunta.requisitos.length > 0) {
-        print("verificando requisitos ${pergunta.titulo}");
         for (var item in pergunta.requisitos.entries) {
           final requisitoId = item.key;
           final requisito = item.value;
           if (requisito.perguntaID == null) {
             //requisito não foi definido
-            print("requisito não foi definido");
+
             pergunta.temPendencias = true;
             break;
-          }else{
-            print("requisito definido");
-          }
+          } else {}
           final perguntaRef = _firestore
               .collection(PerguntaAplicadaModel.collection)
               .document(requisito.perguntaID);
@@ -224,13 +239,11 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
 
           if (!perguntaSnap.exists) {
             //requisito foi definido mas deletado
-            print("requisito foi definido mas deletado");
+
             pergunta.temPendencias = true;
             pergunta.requisitos[requisitoId].perguntaID = null;
             break;
-          }else{
-            print("requisito existe");
-          }
+          } else {}
 
           final perguntaInstance =
               PerguntaAplicadaModel(id: perguntaSnap.documentID)
@@ -238,25 +251,20 @@ class AplicandoPerguntaPageBloc extends Bloc<AplicandoPerguntaPageBlocEvent,
 
           if (requisito.escolha != null) {
             //requisito para escolha
-            print("requisito para escolha");
+
             final escolha = requisito.escolha;
             if (perguntaInstance.escolhas[escolha.id].marcada !=
                 escolha.marcada) {
               //não tem a marca correta
-              print("não tem a marca correta");
+
               pergunta.temPendencias = true;
               break;
-            }else{
-              print("tem a marca correta");
-            }
+            } else {}
           } else if (!perguntaInstance.foiRespondida) {
-            print("requisito não é do tipo escolha e foi respondido");
             pergunta.temPendencias = true;
             break;
           }
         }
-      }else{
-        print("sem requisitos");
       }
       _firestore
           .collection(PerguntaAplicadaModel.collection)
