@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pendencias_page_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
+import 'package:pmsbmibile3/pages/aplicacao/requisito_list_item_bloc.dart';
 
 //Aplicação 03
 
@@ -188,11 +189,19 @@ class PerguntaAplicadaListItem extends StatelessWidget {
                     context: context,
                     builder: (context) => Dialog(
                       elevation: 5,
-                      child: Column(
+                      child: ListView(
                         children: <Widget>[
-                          Text("Requisitos"),
+                          ListTile(
+                            title: Text("Requisitos"),
+                          ),
                           for (var item in _perguntaAplicada.requisitos.entries)
-                            RequisitoListItem(item.value)
+                            RequisitoListItem(item.value),
+                          FlatButton(
+                            child: Text("OK"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -207,30 +216,74 @@ class PerguntaAplicadaListItem extends StatelessWidget {
   }
 }
 
-class RequisitoListItem extends StatelessWidget {
-  final Requisito _requisito;
+class RequisitoListItem extends StatefulWidget {
+  final Requisito requisito;
 
-  const RequisitoListItem(this._requisito, {Key key}) : super(key: key);
+  const RequisitoListItem(this.requisito, {Key key}) : super(key: key);
+
+  @override
+  _RequisitoListItemState createState() {
+    return _RequisitoListItemState();
+  }
+}
+
+class _RequisitoListItemState extends State<RequisitoListItem> {
+  RequisitoListItemBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc =
+        RequisitoListItemBloc(Bootstrap.instance.firestore, widget.requisito);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(4),
-      child: Column(
-        children: <Widget>[
-          Text(_requisito.referencia),
-          Text("${_requisito.perguntaID}"),
-          Text("${_requisito.perguntaTipo}"),
-          if (_requisito.escolha != null)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("${_requisito.escolha.id}"),
-                Text("${_requisito.escolha.marcada}"),
-              ],
-            ),
-        ],
-      ),
+    return StreamBuilder<PerguntaAplicadaModel>(
+      stream: bloc.state,
+      builder: (context, snap) {
+        if (snap.hasError) {
+          return Center(
+            child: Text("ERROR"),
+          );
+        }
+        if (!snap.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return Container(
+          padding: EdgeInsets.all(4),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text("Referencia"),
+                subtitle: Text(widget.requisito.referencia),
+              ),
+              ListTile(
+                title: Text(snap.data.questionario.nome),
+                subtitle: Text(snap.data.titulo),
+              ),
+              ListTile(
+                title: Text("Pergunta ID"),
+                subtitle: Text(widget.requisito.perguntaID),
+              ),
+              ListTile(
+                title: Text("Pergunta TIPO"),
+                subtitle: Text(widget.requisito.perguntaTipo),
+              ),
+              if (widget.requisito.escolha != null)
+                ListTile(
+                  title: Text("Escolha"),
+                  subtitle: Text(
+                      "${snap.data.escolhas[widget.requisito.escolha.id].texto}: ${widget.requisito.escolha.marcada}"),
+                ),
+              Divider(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
