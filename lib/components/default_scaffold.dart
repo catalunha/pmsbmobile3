@@ -121,6 +121,16 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
                                       padding: const EdgeInsets.only(top: 8),
                                       child: Text("${snap.data.celular}"),
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text(
+                                          "Eixo: ${snap.data.eixoIDAtual.nome}"),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text(
+                                          "Setor: ${snap.data.setorCensitarioID.nome}"),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -297,8 +307,8 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               onTap: () async {
                 final cacheService = CacheService(Bootstrap.instance.firestore);
                 await cacheService.load();
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text("Modo offline completo.")));
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(content: Text("Modo offline completo.")));
                 Navigator.pop(context);
               },
               leading: Icon(Icons.save),
