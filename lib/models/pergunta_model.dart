@@ -133,7 +133,7 @@ class PerguntaAplicadaModel extends PerguntaModel {
   }
 
   bool get referenciasRequitosDefinidas {
-    if (!temRequisitos) return false;
+    if (!temRequisitos) return true;
     for (var requisito in requisitos.values) {
       if (requisito.perguntaID == null) return false;
     }

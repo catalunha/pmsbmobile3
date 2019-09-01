@@ -147,17 +147,64 @@ class PerguntaAplicadaListItem extends StatelessWidget {
               else
                 Icon(Icons.cancel),
               if (_perguntaAplicada.temPendencias)
-                Icon(Icons.check)
+                Icon(Icons.cancel)
               else
-                Icon(Icons.cancel),
-              if (_perguntaAplicada.referenciasRequitosDefinidas)
-                Icon(Icons.check)
-              else
-                Icon(Icons.cancel),
+                Icon(Icons.check),
+              IconButton(
+                icon: Icon(
+                  Icons.rotate_90_degrees_ccw,
+                  color: _perguntaAplicada.referenciasRequitosDefinidas
+                      ? Colors.green
+                      : Colors.red,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      elevation: 5,
+                      child: Column(
+                        children: <Widget>[
+                          Text("Requisitos"),
+                          for (var item in _perguntaAplicada.requisitos.entries)
+                            RequisitoListItem(item.value)
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class RequisitoListItem extends StatelessWidget {
+  final Requisito _requisito;
+
+  const RequisitoListItem(this._requisito, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(4),
+      child: Column(
+        children: <Widget>[
+          Text(_requisito.referencia),
+          Text("${_requisito.perguntaID}"),
+          Text("${_requisito.perguntaTipo}"),
+          if (_requisito.escolha != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("${_requisito.escolha.id}"),
+                Text("${_requisito.escolha.marcada}"),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }
