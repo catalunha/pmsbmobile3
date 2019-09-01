@@ -252,26 +252,32 @@ class _RequisitoListItemState extends State<RequisitoListItem> {
             child: CircularProgressIndicator(),
           );
         }
-
+        bool vencido = false;
+        if (widget.requisito.escolha == null) {
+          vencido = snap.data.foiRespondida;
+        } else {
+          vencido = snap.data.escolhas[widget.requisito.escolha.id].marcada == widget.requisito.escolha.marcada;
+        }
         return Container(
           padding: EdgeInsets.all(4),
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Text("Referencia"),
-                subtitle: Text(widget.requisito.referencia),
+                title: Text(widget.requisito.referencia),
+                subtitle: Text("Referencia"),
               ),
               ListTile(
-                title: Text(snap.data.questionario.nome),
+                title: Text(
+                    "${snap.data.questionario.nome} : ${snap.data.questionario.referencia}"),
                 subtitle: Text(snap.data.titulo),
               ),
               ListTile(
-                title: Text("Pergunta ID"),
-                subtitle: Text(widget.requisito.perguntaID),
+                title: Text(widget.requisito.perguntaID),
+                subtitle: Text("Pergunta ID"),
               ),
               ListTile(
-                title: Text("Pergunta TIPO"),
-                subtitle: Text(widget.requisito.perguntaTipo),
+                title: Text(widget.requisito.perguntaTipo),
+                subtitle: Text("Pergunta TIPO"),
               ),
               if (widget.requisito.escolha != null)
                 ListTile(
@@ -279,6 +285,10 @@ class _RequisitoListItemState extends State<RequisitoListItem> {
                   subtitle: Text(
                       "${snap.data.escolhas[widget.requisito.escolha.id].texto}: ${widget.requisito.escolha.marcada}"),
                 ),
+              Icon(
+                vencido ? Icons.check : Icons.close,
+                color: vencido ? Colors.green : Colors.red,
+              ),
               Divider(),
             ],
           ),
