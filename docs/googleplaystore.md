@@ -110,3 +110,4 @@ Depois clique em publicar e pronto.
 
 Vai levar algumas horas para o app ser disponibilizado na loja.
 
+Conferir.
