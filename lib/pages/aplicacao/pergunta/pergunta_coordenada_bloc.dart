@@ -43,7 +43,7 @@ class PerguntaCoordenadaBloc
     if (event is AdicionarCoordenadaPerguntaCoordenadaBlocEvent) {
       final coordenada = Coordenada(
         latitude: event.latitude,
-        longitude: event.latitude,
+        longitude: event.longitude,
         altitude: event.altitude,
         accuracy: event.accuracy,
       );
