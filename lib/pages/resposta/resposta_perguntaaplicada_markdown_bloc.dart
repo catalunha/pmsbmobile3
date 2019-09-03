@@ -5,20 +5,20 @@ import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RespostaPerguntaAplicadaEvent {}
+class RespostaPerguntaAplicadaMarkdownEvent {}
 
-class UpdateQuestionarioIDEvent extends RespostaPerguntaAplicadaEvent {
+class UpdateQuestionarioIDEvent extends RespostaPerguntaAplicadaMarkdownEvent {
   final String questionarioId;
   UpdateQuestionarioIDEvent({this.questionarioId});
 }
 
 // class UpdatePerguntaListPerguntaHomePageBlocEvent
-//     extends RespostaPerguntaAplicadaEvent {
+//     extends RespostaPerguntaAplicadaMarkdownEvent {
 //   final List<PerguntaModel> perguntas;
 
 //   UpdatePerguntaListPerguntaHomePageBlocEvent(this.perguntas);
 // }
-class RespostaPerguntaAplicadaState {
+class RespostaPerguntaAplicadaMarkdownState {
   QuestionarioModel questionarioInstance;
   String questionarioPerguntaList2Mkd;
 
@@ -43,26 +43,26 @@ class RespostaPerguntaAplicadaState {
   // }
 }
 
-class RespostaPerguntaAplicadaBloc {
+class RespostaPerguntaAplicadaMarkdownBloc {
   //Firestore
   final fsw.Firestore _firestore;
 
   //Eventos
-  final _eventController = BehaviorSubject<RespostaPerguntaAplicadaEvent>();
-  Stream<RespostaPerguntaAplicadaEvent> get eventStream => _eventController.stream;
+  final _eventController = BehaviorSubject<RespostaPerguntaAplicadaMarkdownEvent>();
+  Stream<RespostaPerguntaAplicadaMarkdownEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   //Estados
-  final RespostaPerguntaAplicadaState _state = RespostaPerguntaAplicadaState();
-  final _stateController = BehaviorSubject<RespostaPerguntaAplicadaState>();
-  Stream<RespostaPerguntaAplicadaState> get stateStream => _stateController.stream;
+  final RespostaPerguntaAplicadaMarkdownState _state = RespostaPerguntaAplicadaMarkdownState();
+  final _stateController = BehaviorSubject<RespostaPerguntaAplicadaMarkdownState>();
+  Stream<RespostaPerguntaAplicadaMarkdownState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
 
   // StreamSubscription<List<PerguntaModel>> _perguntaSubscription;
 
   //Bloc
-  RespostaPerguntaAplicadaBloc(this._firestore) {
+  RespostaPerguntaAplicadaMarkdownBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
   void dispose() async {
@@ -72,17 +72,18 @@ class RespostaPerguntaAplicadaBloc {
     _eventController.close();
   }
 
-  _mapEventToState(RespostaPerguntaAplicadaEvent event) async {
+  _mapEventToState(RespostaPerguntaAplicadaMarkdownEvent event) async {
     if (event is UpdateQuestionarioIDEvent) {
       final ref = _firestore
-          .collection(QuestionarioModel.collection)
+          .collection(QuestionarioAplicadoModel.collection)
           .document(event.questionarioId);
       await ref.get().then((data) {
         _state.questionarioInstance =
-            QuestionarioModel(id: data.documentID).fromMap(data.data);
+            QuestionarioAplicadoModel(id: data.documentID).fromMap(data.data);
       });
 
-      _state.questionarioPerguntaList2Mkd = await GeradorMdService.generateMdFromQuestionarioModel(_state.questionarioInstance);
+      _state.questionarioPerguntaList2Mkd = await GeradorMdService.generateMdFromQuestionarioAplicadoModel(_state.questionarioInstance);
+      // print('>>> _state.questionarioPerguntaList2Mkd <<< ${_state.questionarioPerguntaList2Mkd}');
 
       // final perguntasRef = _firestore
       //     .collection(PerguntaModel.collection)

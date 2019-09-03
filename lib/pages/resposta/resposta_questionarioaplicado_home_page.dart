@@ -3,6 +3,8 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/resposta/resposta_questionarioaplicado_home_bloc.dart';
+import 'package:pmsbmibile3/services/gerador_md_service.dart';
+import 'package:pmsbmibile3/services/gerador_pdf_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class RespostaQuestionarioAplicadoHomePage extends StatefulWidget {
@@ -50,6 +52,9 @@ class _RespostaQuestionarioAplicadoHomePageState
         if (!snapshot.hasData) {
           return Text("SEM DADOS");
         }
+        // print('>>> snapshot.data <<< ${snapshot.data.usuarioModel.nome}');
+        // print('>>> snapshot.data <<< ${snapshot.data.usuarioModel.eixoIDAtual.id}');
+        // print('>>> snapshot.data <<< ${snapshot.data.usuarioModel.setorCensitarioID.id}');
         final questionarios = snapshot.data.questionariosAplicados != null
             ? snapshot.data.questionariosAplicados
             : [];
@@ -138,9 +143,9 @@ class QuestionarioAplicadoItem extends StatelessWidget {
                     tooltip: 'Lista das respostas em PDF',
                     icon: Icon(Icons.picture_as_pdf),
                     onPressed: () async {
-                      // var mdtext = await GeradorMdService
-                      //     .generateMdFromQuestionarioModel(questionario);
-                      // GeradorPdfService.generatePdfFromMd(mdtext);
+                      var mdtext = await GeradorMdService
+                          .generateMdFromQuestionarioAplicadoModel(_questionario);
+                      GeradorPdfService.generatePdfFromMd(mdtext);
                     },
                   ),
                   IconButton(

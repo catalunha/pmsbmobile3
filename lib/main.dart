@@ -131,7 +131,7 @@ class MyApp extends StatelessWidget {
             RespostaQuestionarioAplicadoHomePage(authBloc),
         "/resposta/pergunta": (context) {
           final settings = ModalRoute.of(context).settings;
-          return RespostaPerguntaAplicadaPage(questionarioID: settings.arguments);
+          return RespostaPerguntaAplicadaMarkdownPage(questionarioID: settings.arguments);
         },
         //sintese
         "/sintese/home": (context) => SinteseHomePage(),
