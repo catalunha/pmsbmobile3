@@ -31,7 +31,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
     super.initState();
     authBloc.perfil.listen((usuario) {
       bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(
-          usuario.id, usuario.eixoIDAtual.id));
+          usuario));
     });
   }
 
