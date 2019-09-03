@@ -53,9 +53,6 @@ export 'package:pmsbmibile3/pages/aplicacao/definir_requisitos_page.dart';
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_selecionar_questionario_page.dart';
 
 //resposta
-export 'package:pmsbmibile3/pages/resposta/resposta_home_page.dart';
-export 'package:pmsbmibile3/pages/resposta/questionario_resposta_page.dart';
-export 'package:pmsbmibile3/pages/resposta/resposta_questionario_page.dart';
 
 //sintese
 export 'package:pmsbmibile3/pages/sintese/sintese_home_page.dart';

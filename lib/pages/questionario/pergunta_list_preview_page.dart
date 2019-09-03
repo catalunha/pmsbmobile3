@@ -35,7 +35,10 @@ class PerguntaListPreviewPage extends StatelessWidget {
             return Text("ERROR");
           }
           if (!snapshot.hasData) {
-            return Text("SEM DADOS");
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+            
           }
 
             return Markdown(data: snapshot.data.questionarioPerguntaList2Mkd);

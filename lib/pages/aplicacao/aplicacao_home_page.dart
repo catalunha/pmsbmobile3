@@ -135,7 +135,7 @@ class CardText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 5),
+      padding: EdgeInsets.only(left: 5),
       child: Text(
         text,
         style: TextStyle(fontSize: 15),
@@ -157,6 +157,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            CardText("QuestionarioId: ${_questionario.id}"),
             CardText("Questionario: ${_questionario.nome}"),
             CardText("Referencia: ${_questionario.referencia}"),
             ButtonTheme.bar(

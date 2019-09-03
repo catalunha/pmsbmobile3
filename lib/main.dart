@@ -7,6 +7,8 @@ import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_escolha_marcar_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
 import 'package:pmsbmibile3/pages/questionario/pergunta_list_preview_page.dart';
+import 'package:pmsbmibile3/pages/resposta/resposta_perguntaaplicada_markdown_page.dart';
+import 'package:pmsbmibile3/pages/resposta/resposta_questionarioaplicado_home_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -125,12 +127,12 @@ class MyApp extends StatelessWidget {
         },
 
         //resposta
-        "/resposta/home": (context) => RespostaHomePage(),
-        "/resposta/resposta_questionario": (context) =>
-            RespostaQuestionarioPage(),
-        "/resposta/questionario_resposta": (context) =>
-            QuestionarioRespostaPage(),
-
+        "/resposta/home": (context) =>
+            RespostaQuestionarioAplicadoHomePage(authBloc),
+        "/resposta/pergunta": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return RespostaPerguntaAplicadaMarkdownPage(questionarioID: settings.arguments);
+        },
         //sintese
         "/sintese/home": (context) => SinteseHomePage(),
 
