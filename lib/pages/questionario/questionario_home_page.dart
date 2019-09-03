@@ -8,11 +8,32 @@ import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/services/services.dart';
 
-class QuestionarioHomePage extends StatelessWidget {
-  final QuestionarioHomePageBloc bloc;
+class QuestionarioHomePage extends StatefulWidget {
   final AuthBloc authBloc;
-  QuestionarioHomePage(this.authBloc)
-      : bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore, authBloc);
+
+  const QuestionarioHomePage(this.authBloc, {Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _QuestionarioHomePageState();
+  }
+}
+
+class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
+  QuestionarioHomePageBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc =
+        QuestionarioHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
+  }
 
   _bodyPastas(context) {
     return Container(
@@ -178,7 +199,7 @@ class QuestionarioHomePage extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.only(top: 15, bottom: 15),
                   child: Center(
-                    child: EixoAtualUsuario(authBloc),
+                    child: EixoAtualUsuario(widget.authBloc),
                   ),
                 ),
               ),
@@ -229,9 +250,5 @@ class QuestionarioHomePage extends StatelessWidget {
       ),
       // ),
     );
-  }
-
-  void dispose() {
-    bloc.dispose();
   }
 }
