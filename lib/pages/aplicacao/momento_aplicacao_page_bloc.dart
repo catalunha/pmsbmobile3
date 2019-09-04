@@ -1,4 +1,5 @@
 import 'package:pmsbmibile3/models/pergunta_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -259,6 +260,10 @@ class MomentoAplicacaoPageBloc
           PerguntaAplicadaModel(id: pergunta.id).fromMap(pergunta.toMap());
       pmodel.questionario.id = ref.documentID;
       pmodel.questionario.referencia = currentState.referencia;
+      pmodel.questionario.eixoID =
+          EixoID(id: qmodel.eixo.id, nome: qmodel.eixo.nome);
+      pmodel.questionario.setorCensitarioID = SetorCensitarioID(
+          id: qmodel.setorCensitarioID.id, nome: qmodel.setorCensitarioID.nome);
       final perguntaAplicadaRef = perguntasAplicadasRef.document();
       perguntaAplicadaRef.setData(pmodel.toMap());
       referencias[pmodel.referencia] = perguntaAplicadaRef.documentID;

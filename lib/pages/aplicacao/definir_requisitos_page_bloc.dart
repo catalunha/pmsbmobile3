@@ -56,7 +56,7 @@ class DefinirRequisitosPageBloc extends Bloc<DefinirRequisitosPageBlocEvent,
       if (currentState.usuario != null && currentState.referencia != null) {
         final query = await _firestore
             .collection(PerguntaAplicadaModel.collection)
-            .where("setorCensitarioID",
+            .where("questionario.setorCensitarioID.id",
                 isEqualTo: currentState.usuario.setorCensitarioID.id)
             .where("eixo.id", isEqualTo: currentState.usuario.eixoIDAtual.id)
             .where("referencia", isEqualTo: currentState.referencia)
