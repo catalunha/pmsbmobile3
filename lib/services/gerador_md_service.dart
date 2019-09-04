@@ -138,102 +138,6 @@ Uso do sistema: Pergunta Tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id
     return texto.toString();
   }
 
-  static generateMdFromQuestionarioModelWithIds(
-      QuestionarioModel questionarioModel) async {
-    final fsw.Firestore _firestore = Bootstrap.instance.firestore;
-    StringBuffer texto = new StringBuffer();
-    StringBuffer escolhaList = new StringBuffer();
-    StringBuffer requisitoList = new StringBuffer();
-    int contador = 1;
-// Em: ${questionarioModel.modificado.toDate()}
-
-    texto.writeln("""
-# Questionário: ${questionarioModel.nome}
-
-Questionário id: ${questionarioModel.id}
-
-Último editor: ${questionarioModel.editou.nome}
-
-
-Lista de perguntas: 
-
----
----
-
-""");
-    final perguntasRef = _firestore
-        .collection(PerguntaModel.collection)
-        .where("questionario.id", isEqualTo: questionarioModel.id)
-        .orderBy("ordem", descending: false);
-
-    final fsw.QuerySnapshot perguntasSnapshot =
-        await perguntasRef.getDocuments();
-    final perguntasList =
-        perguntasSnapshot.documents.map((fsw.DocumentSnapshot doc) {
-      return PerguntaModel(id: doc.documentID).fromMap(doc.data);
-    }).toList();
-
-    // perguntasList.forEach((pergunta) {
-    for (var pergunta in perguntasList) {
-      escolhaList.clear();
-      requisitoList.clear();
-      // Imprimindo as escolhas
-      if (pergunta.escolhas != null) {
-        escolhaList.writeln("#### Escolhas");
-        pergunta.escolhas?.forEach((k, v) {
-          escolhaList.writeln("""
-1. **${v.texto}** (id: ${k})
-""");
-        });
-      } //fim escolhas
-
-      //+++ Imprimindo os requisitos
-      if (pergunta.requisitos != null) {
-        requisitoList.writeln("#### Requisitos");
-
-        for (var perReq in pergunta.requisitos.values) {
-//           requisitoList.writeln("""
-// 1. reqUid${perReq.referencia}
-// """);
-
-          final perguntasReqRef = _firestore
-              .collection(PerguntaModel.collection)
-              .where("questionario.id", isEqualTo: questionarioModel.id)
-              .where("referencia", isEqualTo: perReq.referencia);
-          final fsw.QuerySnapshot perguntasDoReqSnapshot =
-              await perguntasReqRef.getDocuments();
-          final perguntasReqList =
-              perguntasDoReqSnapshot.documents.map((fsw.DocumentSnapshot doc) {
-            return PerguntaModel(id: doc.documentID).fromMap(doc.data);
-          }).toList();
-
-          perguntasReqList.forEach((pergReq) {
-            requisitoList.writeln("""
-- ${pergReq.titulo}
-""");
-          });
-        }
-      } //--- Imprimindo os requisitos
-
-      texto.writeln("""
-## ${contador} - ${pergunta.titulo}
-
-### ${pergunta.textoMarkdown}
-
-${escolhaList}
-
-${requisitoList}
-
-
-Pergunta tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id} ordem: ${pergunta.ordem}
-
------
-
-""");
-      contador++;
-    } //Fim pergunta
-    return texto.toString();
-  }
 
   static generateMdFromQuestionarioAplicadoModel(
       QuestionarioAplicadoModel questionarioAplicadoModel) async {
@@ -318,8 +222,19 @@ Lista de perguntas:
       if (pergunta.tipo.id == 'escolhaunica' ||
           pergunta.tipo.id == 'escolhamultipla') {
         if (pergunta.escolhas != null && pergunta.escolhas.isNotEmpty) {
+
+ var dicEscolhas = Dictionary.fromMap(pergunta.escolhas);
+          var escolhasAscOrder = dicEscolhas
+              // Sort Ascending order by value ordem
+              .orderBy((kv) => kv.value.ordem)
+              // Sort Descending order by value ordem
+              // .orderByDescending((kv) => kv.value.ordem)
+              .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+          print(escolhasAscOrder.toMap());
+          Map<String, Escolha> escolhaMap = escolhasAscOrder.toMap();
+
           escolhaList.writeln("#### ${pergunta.tipo.nome}");
-          pergunta.escolhas?.forEach((k, v) {
+          escolhaMap.forEach((k, v) {
             if (v.marcada) {
               escolhaList.write("""
 [x] ${v.texto} 

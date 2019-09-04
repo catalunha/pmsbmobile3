@@ -14,14 +14,16 @@ class AdministracaoHomePageBloc {
     _firestore
         .collection(UsuarioModel.collection)
         .where("ativo", isEqualTo: true)
+        .orderBy("nome")
         .snapshots()
         .map((querySnapshot) => querySnapshot.documents
-            .map((docSnap) => UsuarioModel(id: docSnap.documentID).fromMap(docSnap.data))
+            .map((docSnap) =>
+                UsuarioModel(id: docSnap.documentID).fromMap(docSnap.data))
             .toList())
         .pipe(usuarioModelListController);
   }
 
-  void dispose() async{
+  void dispose() async {
     await usuarioModelListController.drain();
     usuarioModelListController.close();
   }
