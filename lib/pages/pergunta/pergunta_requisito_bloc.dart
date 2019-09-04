@@ -2,6 +2,7 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
+import 'package:queries/collections.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PerguntaRequisitoPageEvent {}
@@ -62,7 +63,11 @@ class PerguntaRequisitoPageState {
   get requisitos {
     if (requisitosPerguntaList == null) return {};
     final c = Map.from(requisitosPerguntaList);
-    c.removeWhere((i, e) => !perguntas.contains(i));
+    // c.removeWhere((i, e) => !perguntas.contains(i));
+    c.removeWhere((i, e) {
+      String a = i.split('#')[0];
+      return !perguntas.contains(a);
+    });
     return c;
   }
 
@@ -180,8 +185,17 @@ class PerguntaRequisitoBloc {
 
           if (tipoEnum == PerguntaTipoEnum.EscolhaUnica ||
               tipoEnum == PerguntaTipoEnum.EscolhaMultipla) {
-            pergunta.escolhas.forEach((k, v) {
-              final requisitoKey = "${pergunta.id}$k";
+            var dicEscolhas = Dictionary.fromMap(pergunta.escolhas);
+            var escolhasAscOrder = dicEscolhas
+                // Sort Ascending order by value ordem
+                .orderBy((kv) => kv.value.ordem)
+                // Sort Descending order by value ordem
+                // .orderByDescending((kv) => kv.value.ordem)
+                .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+            Map<String, Escolha> escolhasOrdem = escolhasAscOrder.toMap();
+
+            escolhasOrdem.forEach((k, v) {
+              final requisitoKey = "${pergunta.id}#$k";
               final contains =
                   _state.requisitosPergunta.containsKey(requisitoKey);
               final requisito = contains
