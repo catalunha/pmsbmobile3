@@ -157,7 +157,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CardText("QuestionarioId: ${_questionario.id}"),
+            // CardText("QuestionarioId: ${_questionario.id}"),
             CardText("Questionario: ${_questionario.nome}"),
             CardText("Referencia: ${_questionario.referencia}"),
             ButtonTheme.bar(
