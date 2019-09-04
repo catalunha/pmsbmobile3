@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_bloc.dart';
 import 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page_bloc.dart';
 
@@ -10,7 +11,12 @@ class PerguntaRequisitoPage extends StatelessWidget {
   PerguntaRequisitoPage({this.perguntaID})
       : bloc = PerguntaRequisitoBloc(Bootstrap.instance.firestore) {
     bloc.eventSink(UpdatePerguntaIDEvent(perguntaID: perguntaID));
+
+    Bootstrap.instance.authBloc.perfil.listen((usuario) {
+      bloc.eventSink(UpdateUsuarioPerguntaRequisitoPageEvent(usuario));
+    });
   }
+
   void dispose() {
     bloc.dispose();
   }
@@ -26,11 +32,22 @@ class PerguntaRequisitoPage extends StatelessWidget {
           return Text("SEM DADOS");
         }
 
-        final requisitos = snapshot.data.requisitosPerguntaList != null
-            ? snapshot.data.requisitosPerguntaList
-            : {};
+        if (snapshot.data.questionario == null) {
+          return ListView(
+            children: snapshot.data.questionarios
+                .map((q) => QuestionarioListItem(
+                      questionario: q,
+                      onSelecionar: () {
+                        bloc.eventSink(
+                            SelecionarQuestionarioPerguntaRequisitoPageEvent(
+                                q));
+                      },
+                    ))
+                .toList(),
+          );
+        }
 
-        final widgetRequisitos = requisitos.map(
+        final widgetRequisitos = snapshot.data.requisitos.map(
           (i, e) {
             return MapEntry(
               i,
@@ -51,6 +68,12 @@ class PerguntaRequisitoPage extends StatelessWidget {
         );
         return ListView(
           children: [
+            QuestionarioListItem(
+              questionario: snapshot.data.questionario,
+              onRemover: () {
+                bloc.eventSink(RemoverQuestionarioPerguntaRequisitoPageEvent());
+              },
+            ),
             ...widgetRequisitos.values.toList(),
             Container(
               padding: EdgeInsets.only(top: 75),
@@ -93,5 +116,28 @@ class PerguntaRequisitoPage extends StatelessWidget {
               );
             }),
         body: _body());
+  }
+}
+
+class QuestionarioListItem extends StatelessWidget {
+  final QuestionarioModel questionario;
+  final Function onSelecionar;
+  final Function onRemover;
+
+  const QuestionarioListItem(
+      {Key key, this.questionario, this.onSelecionar, this.onRemover})
+      : assert(onSelecionar == null && onRemover != null ||
+            onSelecionar != null && onRemover == null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text("${questionario.nome}"),
+      trailing: InkWell(
+        child: onSelecionar == null ? Text("remover") : Text("Selecionar"),
+        onTap: onSelecionar == null ? onRemover : onSelecionar,
+      ),
+    );
   }
 }
