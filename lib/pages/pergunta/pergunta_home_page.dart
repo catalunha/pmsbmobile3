@@ -131,14 +131,15 @@ class PerguntaItem extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text(_pergunta.titulo),
-            trailing: Text("${index}"),
-            subtitle: Column(
-              children: <Widget>[
-                Text("Tipo: ${_pergunta.tipo.nome}"),
-                Text("${_pergunta.id}"),
-                Text("${_pergunta.referencia}"),
-              ],
-            ),
+            // trailing: Text("${index}"),
+            subtitle: Text("Tipo: ${_pergunta.tipo.nome}"),
+            // Column(
+            //   children: <Widget>[
+            //     Text("Tipo: ${_pergunta.tipo.nome}"),
+            //     Text("${_pergunta.id}"),
+            //     Text("${_pergunta.referencia}"),
+            //   ],
+            // ),
           ),
           ButtonTheme.bar(
             child: ButtonBar(
