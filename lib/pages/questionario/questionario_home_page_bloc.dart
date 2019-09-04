@@ -1,19 +1,24 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-import 'package:pmsbmibile3/models/eixo_model.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:queries/collections.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
-import 'package:pmsbmibile3/bootstrap.dart' as fsw;
 import 'dart:async';
 
 class QuestionarioHomePageEvent {}
 
 class UpdateUserInfoQuestionarioHomePageBlocEvent
     extends QuestionarioHomePageEvent {
-  final String usuarioID;
-  final String eixoAtualID;
+  final UsuarioModel user;
 
-  UpdateUserInfoQuestionarioHomePageBlocEvent(this.usuarioID, this.eixoAtualID);
+  UpdateUserInfoQuestionarioHomePageBlocEvent(this.user);
+}
+
+class UpdateQuestionarioListQuestionarioHomePageEvent
+    extends QuestionarioHomePageEvent {
+  final List<QuestionarioModel> questionarios;
+
+  UpdateQuestionarioListQuestionarioHomePageEvent(this.questionarios);
 }
 
 class OrdenarQuestionarioEvent extends QuestionarioHomePageEvent {
@@ -27,7 +32,6 @@ class QuestionarioHomePageBlocState {
   String questionarioID;
   String usuarioID;
   String eixoAtualID;
-
   bool isDataValid;
 
   Map<String, QuestionarioModel> questionarioMap =
@@ -40,14 +44,18 @@ class QuestionarioHomePageBloc {
 
   //Eventos
   final _eventController = BehaviorSubject<QuestionarioHomePageEvent>();
+
   Stream<QuestionarioHomePageEvent> get eventStream => _eventController.stream;
+
   Function get eventSink => _eventController.sink.add;
 
   //Estados
   final QuestionarioHomePageBlocState _state = QuestionarioHomePageBlocState();
   final _stateController = BehaviorSubject<QuestionarioHomePageBlocState>();
+
   Stream<QuestionarioHomePageBlocState> get stateStream =>
       _stateController.stream;
+
   Function get stateSink => _stateController.sink.add;
 
   // final _questionariosController = BehaviorSubject<List<QuestionarioModel>>();
@@ -59,17 +67,16 @@ class QuestionarioHomePageBloc {
   //QuestionarioModel List
   final _questionarioMapController =
       BehaviorSubject<Map<String, QuestionarioModel>>();
+
   Stream<Map<String, QuestionarioModel>> get questionarioMapStream =>
       _questionarioMapController.stream;
+
   Function get questionarioMapSink => _questionarioMapController.sink.add;
 
   QuestionarioHomePageBloc(this._firestore, this._authBloc) {
     _eventController.listen(_mapEventToState);
     _authBloc.perfil.listen((user) {
-      eventSink(UpdateUserInfoQuestionarioHomePageBlocEvent(
-        user.id,
-        user.eixoIDAtual.id,
-      ));
+      eventSink(UpdateUserInfoQuestionarioHomePageBlocEvent(user));
     });
   }
 
@@ -93,8 +100,8 @@ class QuestionarioHomePageBloc {
 
   void _mapEventToState(QuestionarioHomePageEvent event) async {
     if (event is UpdateUserInfoQuestionarioHomePageBlocEvent) {
-      _state.usuarioID = event.usuarioID;
-      _state.eixoAtualID = event.eixoAtualID;
+      _state.usuarioID = event.user.id;
+      _state.eixoAtualID = event.user.eixoIDAtual.id;
 
       final ref = _firestore
           .collection(QuestionarioModel.collection)
@@ -107,21 +114,26 @@ class QuestionarioHomePageBloc {
         await _questionarioSubscription.cancel();
       }
       _questionarioSubscription = snapList.listen((questionarioModelList) {
-        for (var questionario in questionarioModelList) {
-          _state.questionarioMap[questionario.id] = questionario;
-        }
-
-        var dicDesordenado = Dictionary.fromMap(_state.questionarioMap);
-        var dicOrdenadado = dicDesordenado
-            // Sort Ascending order by value ordem
-            .orderBy((kv) => kv.value.ordem)
-            // Sort Descending order by value ordem
-            // .orderByDescending((kv) => kv.value.ordem)
-            .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-        // print(dicOrdenadado.toMap());
-        _state.questionarioMap = dicOrdenadado.toMap();
-        if (!_stateController.isClosed) stateSink(_state);
+        eventSink(UpdateQuestionarioListQuestionarioHomePageEvent(
+            questionarioModelList));
       });
+    }
+
+    if (event is UpdateQuestionarioListQuestionarioHomePageEvent) {
+      _state.questionarioMap.clear();
+      for (var questionario in event.questionarios) {
+        _state.questionarioMap[questionario.id] = questionario;
+      }
+
+      var dicDesordenado = Dictionary.fromMap(_state.questionarioMap);
+      var dicOrdenadado = dicDesordenado
+          // Sort Ascending order by value ordem
+          .orderBy((kv) => kv.value.ordem)
+          // Sort Descending order by value ordem
+          // .orderByDescending((kv) => kv.value.ordem)
+          .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+      // print(dicOrdenadado.toMap());
+      _state.questionarioMap = dicOrdenadado.toMap();
     }
 
     if (event is OrdenarQuestionarioEvent) {

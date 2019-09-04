@@ -8,6 +8,7 @@ class PerguntaRequisitoPageEvent {}
 
 class UpdatePerguntaIDEvent extends PerguntaRequisitoPageEvent {
   final String perguntaID;
+
   UpdatePerguntaIDEvent({this.perguntaID});
 }
 
@@ -22,18 +23,48 @@ class UpdateRequisitosPerguntaEvent extends PerguntaRequisitoPageEvent {}
 
 class SaveEvent extends PerguntaRequisitoPageEvent {}
 
+class LoadPerguntasEvent extends PerguntaRequisitoPageEvent {}
+
 class CheckRequisitoEscolhaEvent extends PerguntaRequisitoPageEvent {}
 
+class UpdateUsuarioPerguntaRequisitoPageEvent
+    extends PerguntaRequisitoPageEvent {
+  final UsuarioModel usuario;
+
+  UpdateUsuarioPerguntaRequisitoPageEvent(this.usuario);
+}
+
+class SelecionarQuestionarioPerguntaRequisitoPageEvent
+    extends PerguntaRequisitoPageEvent {
+  final QuestionarioModel questionario;
+
+  SelecionarQuestionarioPerguntaRequisitoPageEvent(this.questionario);
+}
+
+class RemoverQuestionarioPerguntaRequisitoPageEvent
+    extends PerguntaRequisitoPageEvent {}
+
 class PerguntaRequisitoPageState {
+  UsuarioModel usuario;
   String perguntaID;
   String eixoID;
   PerguntaModel perguntaModel;
 
+  List<QuestionarioModel> questionarios = [];
+  QuestionarioModel questionario;
+  List<String> perguntas = [];
   Map requisitosPerguntaList = Map<String, Map<String, dynamic>>();
   Map<String, Requisito> requisitosPergunta;
   Map<String, dynamic> requisitosPerguntaRemovidos = Map<String, dynamic>();
 
   bool temReqEscolha;
+
+  get requisitos {
+    if (requisitosPerguntaList == null) return {};
+    final c = Map.from(requisitosPerguntaList);
+    c.removeWhere((i, e) => !perguntas.contains(i));
+    return c;
+  }
 
   // // Map requisitoEscolha = Map<String, Map<String, dynamic>>();
   // Map<String, Requisito> requisitoEscolha = Map<String, Requisito>();
@@ -53,19 +84,24 @@ class PerguntaRequisitoBloc {
 
   //Eventos
   final _eventController = BehaviorSubject<PerguntaRequisitoPageEvent>();
+
   Stream<PerguntaRequisitoPageEvent> get eventStream => _eventController.stream;
+
   Function get eventSink => _eventController.sink.add;
 
   //Estados
   final PerguntaRequisitoPageState _state = PerguntaRequisitoPageState();
   final _stateController = BehaviorSubject<PerguntaRequisitoPageState>();
+
   Stream<PerguntaRequisitoPageState> get stateStream => _stateController.stream;
+
   Function get stateSink => _stateController.sink.add;
 
   //Bloc
   PerguntaRequisitoBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
+
   void dispose() async {
     await _stateController.drain();
     _stateController.close();
@@ -74,8 +110,29 @@ class PerguntaRequisitoBloc {
   }
 
   _mapEventToState(PerguntaRequisitoPageEvent event) async {
+    if (event is UpdateUsuarioPerguntaRequisitoPageEvent) {
+      _state.usuario = event.usuario;
+      final docsSnap = await _firestore
+          .collection(QuestionarioModel.collection)
+          .where("eixo.id", isEqualTo: _state.usuario.eixoIDAtual.id)
+          .getDocuments();
+      _state.questionarios = docsSnap.documents
+          .map((q) => QuestionarioModel(id: q.documentID).fromMap(q.data))
+          .toList();
+    }
+    if (event is SelecionarQuestionarioPerguntaRequisitoPageEvent) {
+      _state.questionario = event.questionario;
+      eventSink(LoadPerguntasEvent());
+    }
+    if (event is RemoverQuestionarioPerguntaRequisitoPageEvent) {
+      _state.questionario = null;
+    }
+
     if (event is UpdatePerguntaIDEvent) {
       _state.perguntaID = event.perguntaID;
+    }
+
+    if (event is LoadPerguntasEvent) {
       final docRef = _firestore
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
@@ -92,6 +149,7 @@ class PerguntaRequisitoBloc {
 
       final perguntasRef = _firestore
           .collection(PerguntaModel.collection)
+          .where("questionario.id", isEqualTo: _state.questionario.id)
           .where("eixo.id", isEqualTo: _state.eixoID);
 
       final fw.QuerySnapshot perguntasSnapshot =
@@ -100,7 +158,7 @@ class PerguntaRequisitoBloc {
           perguntasSnapshot.documents.map((fw.DocumentSnapshot doc) {
         return PerguntaModel(id: doc.documentID).fromMap(doc.data);
       }).toList();
-
+      _state.perguntas = perguntaModelList.map((p) => p.id).toList();
       perguntaModelList.forEach((PerguntaModel pergunta) {
         if (pergunta.id != _state.perguntaID) {
           final tipoEnum = PerguntaTipoModel.ENUM[pergunta.tipo.id];

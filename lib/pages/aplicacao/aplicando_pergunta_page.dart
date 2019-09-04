@@ -135,6 +135,10 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 )),
             Text(snapshot.data.perguntaAtual.tipo.nome),
             Divider(color: Colors.black54),
+            // Widget de tipo pergunta
+            PerguntaAplicada(
+                snapshot.data.perguntaAtual, snapshot.data.usuarioID),
+            Divider(color: Colors.black54),
             Padding(
                 padding: EdgeInsets.all(5),
                 child:
@@ -159,10 +163,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                     border: OutlineInputBorder(),
                   ),
                 )),
-            Divider(color: Colors.black54),
-            // Widget de tipo pergunta
-            PerguntaAplicada(
-                snapshot.data.perguntaAtual, snapshot.data.usuarioID),
             Padding(padding: EdgeInsets.all(5)),
             _botoes()
           ],
