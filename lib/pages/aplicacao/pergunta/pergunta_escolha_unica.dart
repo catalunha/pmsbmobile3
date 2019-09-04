@@ -35,8 +35,9 @@ class _PerguntaEscolhaUnicaState extends State<PerguntaEscolhaUnica> {
             child: Text("CARREGANDO"),
           );
         }
+
         return Column(
-          children: widget.perguntaAplicada.escolhas
+          children: widget.perguntaAplicada.escolhasOrdenadas
               .map((key, escolha) {
                 return MapEntry(
                   key,

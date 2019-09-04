@@ -1,6 +1,7 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
+import 'package:queries/collections.dart';
 
 class PerguntaAplicadaArquivo {
   final bool key = true;
@@ -208,6 +209,14 @@ class PerguntaModel extends FirestoreModel {
 
   /// Mapa contendo escolhas
   Map<String, Escolha> escolhas;
+
+  Map<String, Escolha> get escolhasOrdenadas {
+    var dicEscolhas = Dictionary.fromMap(escolhas);
+    var escolhasAscOrder = dicEscolhas
+        .orderBy((kv) => kv.value.ordem)
+        .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+    return escolhasAscOrder.toMap();
+  }
 
   int ordem;
 
