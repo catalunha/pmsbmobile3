@@ -336,13 +336,26 @@ class Questionario {
 
   String referencia;
 
+  EixoID eixoID;
+
+  SetorCensitarioID setorCensitarioID;
+
   /// Referencia do questionarioAplicado
-  Questionario(this.id, this.nome, {this.referencia});
+  Questionario(
+    this.id,
+    this.nome, {
+    this.referencia,
+    this.eixoID,
+    this.setorCensitarioID,
+  });
 
   Questionario.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     nome = map["nome"];
     referencia = map["referencia"];
+    if (map["eixoID"] != null) eixoID = EixoID.fromMap(map["eixoID"]);
+    if (map["setorCensitarioID"] != null)
+      setorCensitarioID = SetorCensitarioID.fromMap(map["setorCensitarioID"]);
   }
 
   Map<dynamic, dynamic> toMap() {
@@ -350,6 +363,9 @@ class Questionario {
     if (id != null) map["id"] = id;
     if (nome != null) map["nome"] = nome;
     if (referencia != null) map["referencia"] = referencia;
+    if (eixoID != null) map["eixoID"] = eixoID.toMap();
+    if (setorCensitarioID != null)
+      map["setorCensitarioID"] = setorCensitarioID.toMap();
     return map;
   }
 }
