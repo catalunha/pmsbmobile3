@@ -26,6 +26,9 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
   @override
   void initState() {
     super.initState();
+    Bootstrap.instance.authBloc.perfil.listen((usuario) {
+      bloc.dispatch(UpdateUsuarioDefinirRequisitosPageBlocEvent(usuario));
+    });
     bloc.dispatch(
         UpdateReferenciaDefinirRequisitosPageBlocEvent(widget.referencia));
   }
@@ -43,19 +46,29 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
           return Center(
             child: Text("SEM DADOS"),
           );
+        if (snapshot.data.isFetching) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         final perfungas =
             snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
-        return Column(
-          children: perfungas
-              .map((pergunta) => RequisitoRadioTile(
-                    widget.momentoBloc,
-                    bloc,
-                    pergunta,
-                    widget.requisitoId,
-                    widget.perguntaSelecionadaId,
-                  ))
-              .toList(),
-        );
+
+        return perfungas.length <= 0
+            ? Center(
+                child: Text("Nenhuma pergunta elegivel"),
+              )
+            : Column(
+                children: perfungas
+                    .map((pergunta) => RequisitoRadioTile(
+                          widget.momentoBloc,
+                          bloc,
+                          pergunta,
+                          widget.requisitoId,
+                          widget.perguntaSelecionadaId,
+                        ))
+                    .toList(),
+              );
       },
     );
   }
