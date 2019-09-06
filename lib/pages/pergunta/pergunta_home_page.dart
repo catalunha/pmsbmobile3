@@ -74,11 +74,16 @@ class PerguntaHomePage extends StatelessWidget {
                       .asMap()
                       .map((index, pergunta) => MapEntry(
                           index,
-                          PerguntaItem(pergunta, ups[pergunta.id],
-                              downs[pergunta.id], bloc, index: index,)))
+                          PerguntaItem(
+                            pergunta,
+                            ups[pergunta.id],
+                            downs[pergunta.id],
+                            bloc,
+                            index: index,
+                          )))
                       .values
                       .toList(),
-                  Padding(padding: EdgeInsets.all(30)),
+                  Padding(padding: EdgeInsets.all(40)),
                 ],
               ),
             ),
@@ -94,7 +99,7 @@ class PerguntaHomePage extends StatelessWidget {
       appBar: AppBar(
         // backgroundColor: Colors.red,
         centerTitle: true,
-        title: Text("Lista de Perguntas"),
+        title: Text("Lista de perguntas"),
       ),
       body: _body(context),
       floatingActionButton: FloatingActionButton(
@@ -143,6 +148,7 @@ class PerguntaItem extends StatelessWidget {
           ),
           ButtonTheme.bar(
             child: ButtonBar(
+              alignment: MainAxisAlignment.start,
               children: <Widget>[
                 IconButton(
                   tooltip: 'Descer ordem da pergunta',

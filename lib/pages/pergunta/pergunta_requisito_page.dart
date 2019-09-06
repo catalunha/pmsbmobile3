@@ -7,7 +7,7 @@ import 'package:pmsbmibile3/pages/pergunta/selecionar_requisito_pergunta_page_bl
 class PerguntaRequisitoPage extends StatelessWidget {
   final String perguntaID;
   final PerguntaRequisitoBloc bloc;
-
+  bool isGoingDown = true;
   PerguntaRequisitoPage({this.perguntaID})
       : bloc = PerguntaRequisitoBloc(Bootstrap.instance.firestore) {
     bloc.eventSink(UpdatePerguntaIDEvent(perguntaID: perguntaID));
@@ -33,18 +33,21 @@ class PerguntaRequisitoPage extends StatelessWidget {
         }
 
         if (snapshot.data.questionario == null) {
+          final widgetQuest =
+              snapshot.data.questionarios.map((q) => QuestionarioListItem(
+                    questionario: q,
+                    onSelecionar: () {
+                      bloc.eventSink(
+                          SelecionarQuestionarioPerguntaRequisitoPageEvent(q));
+                    },
+                  ));
           return ListView(
-            children: snapshot.data.questionarios
-                .map((q) => QuestionarioListItem(
-                      questionario: q,
-                      onSelecionar: () {
-                        bloc.eventSink(
-                            SelecionarQuestionarioPerguntaRequisitoPageEvent(
-                                q));
-                      },
-                    ))
-                .toList(),
-          );
+            children: [
+            ...widgetQuest.toList(),
+            Container(
+              padding: EdgeInsets.only(top: 80),
+            )
+          ]);
         }
 
         final widgetRequisitos = snapshot.data.requisitos.map(
@@ -76,7 +79,7 @@ class PerguntaRequisitoPage extends StatelessWidget {
             ),
             ...widgetRequisitos.values.toList(),
             Container(
-              padding: EdgeInsets.only(top: 75),
+              padding: EdgeInsets.only(top: 80),
             ),
           ],
         );
@@ -90,7 +93,7 @@ class PerguntaRequisitoPage extends StatelessWidget {
         appBar: AppBar(
           // backgroundColor: Colors.red,
           automaticallyImplyLeading: true,
-          title: Text('Selecionar Requisitos'),
+          title: Text('Selecionar requisitos'),
         ),
         floatingActionButton: StreamBuilder<PerguntaRequisitoPageState>(
             stream: bloc.stateStream,
