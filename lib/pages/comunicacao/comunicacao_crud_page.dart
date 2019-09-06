@@ -241,10 +241,10 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             stream: bloc.stateStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Text('Sem destinatarios');
+                return Text('Sem destinatários');
               }
               if (snapshot.data.destinatarioListMap == null) {
-                return Text('destinatarios vazia');
+                return Text('destinatários vazia');
               } else {
                 return Column(
                     children: snapshot.data.destinatarioListMap
@@ -464,7 +464,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                 Tab(text: "Preview"),
               ],
             ),
-            title: Text('Criação e edicao de notícias'),
+            title: Text('Criação e edição de notícias'),
           ),
           body: TabBarView(
             children: [
@@ -512,7 +512,7 @@ _DeleteDocumentOrFieldState(this.bloc);
         return Row(
           children: <Widget>[
             Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
+            Text('Para apagar, digite CONCORDO e clique:  '),
             Container(
               child: Flexible(
                 child: TextField(

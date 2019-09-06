@@ -134,7 +134,7 @@ _DeleteDocumentOrFieldState(this.bloc);
         return Row(
           children: <Widget>[
             Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
+            Text('Para apagar, digite CONCORDO e clique:  '),
             Container(
               child: Flexible(
                 child: TextField(

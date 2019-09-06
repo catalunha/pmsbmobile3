@@ -48,7 +48,7 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
       ),
       Card(
         child: ListTile(
-          title: Text("Pergunta tipo numero"),
+          title: Text("Pergunta tipo número"),
           trailing: IconButton(icon:Icon(Icons.plus_one, color: Colors.black), onPressed:(){
             // pergunta do tipo numero
             Navigator.pushNamed(context, "/pergunta/criar_editar");
@@ -78,7 +78,7 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
       ),
       Card(
         child: ListTile(
-          title: Text("Pergunta tipo escolha multipla"),
+          title: Text("Pergunta tipo escolha múltipla"),
            trailing: IconButton(icon:Icon(Icons.queue, color: Colors.black), onPressed:(){
             // pergunta do tipo escolha multipla
             Navigator.pushNamed(context, "/pergunta/criar_editar");

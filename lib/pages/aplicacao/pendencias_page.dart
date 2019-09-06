@@ -269,7 +269,7 @@ class _RequisitoListItemState extends State<RequisitoListItem> {
               ),
               ListTile(
                 title: Text("${snap.data.questionario.referencia}"),
-                subtitle: Text("Referencia"),
+                subtitle: Text("Referência"),
               ),
               ListTile(
                 title: Text("${snap.data.titulo}"),
@@ -288,7 +288,7 @@ class _RequisitoListItemState extends State<RequisitoListItem> {
                 ),
               ListTile(
                 title: Text(widget.requisito.referencia),
-                subtitle: Text("Referencia id"),
+                subtitle: Text("Referência id"),
               ),
               Icon(
                 vencido ? Icons.check : Icons.close,

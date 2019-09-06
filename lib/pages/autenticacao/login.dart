@@ -90,7 +90,7 @@ class LoginPageState extends State<LoginPage> {
                             authBloc.dispatch(UpdateEmailAuthBlocEvent(email));
                           },
                           decoration: InputDecoration(
-                            hintText: "Informe seu email",
+                            hintText: "Informe seu e-mail",
                           ),
                         ),
                       ),
@@ -119,7 +119,7 @@ class LoginPageState extends State<LoginPage> {
                           vertical: 4,
                         ),
                         child: RaisedButton(
-                          child: Text("Acessar com email e senha"),
+                          child: Text("Acessar com e-mail e senha"),
                           onPressed: () {
                             _formKey.currentState.save();
                             authBloc.dispatch(LoginAuthBlocEvent());

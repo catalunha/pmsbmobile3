@@ -47,7 +47,7 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
           title: Text((widget.produtoID != null ? "Editar" : "Adicionar") +
               " Produto")),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.thumb_up),
+        child: Icon(Icons.cloud_upload),
         onPressed: () {
           // salvar e voltar
           bloc.eventSink(SaveProdutoIDEvent());
@@ -59,7 +59,7 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
           Padding(
               padding: EdgeInsets.all(5.0),
               child: Text(
-                "Titulo:",
+                "Título:",
                 style: TextStyle(fontSize: 15, color: Colors.blue),
               )),
           Padding(
@@ -141,7 +141,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
         return Row(
           children: <Widget>[
             Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
+            Text('Para apagar, digite CONCORDO e clique:  '),
             Container(
               child: Flexible(
                 child: TextField(
@@ -213,8 +213,8 @@ class ArquivoPDF extends StatelessWidget {
             ? Container()
             : Text('Arquivo local: ${pdfLocalPath}'),
             pdfUrl==null
-            ? Text('Sem arquivo na núvem.')
-            : Text('Arquivo já esta na núvem !'),
+            ? Text('Sem arquivo na nuvem.')
+            : Text('Arquivo já está na nuvem!'),
           ],
         );
       },

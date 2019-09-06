@@ -68,7 +68,7 @@ class _PerguntaEscolhaUnicaState extends State<PerguntaEscolhaUnica> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(5),
-            child: Text("Selecione uma opcao:"),
+            child: Text("Selecione uma opção:"),
           ),
           _listaDeEscolhas(),
         ],

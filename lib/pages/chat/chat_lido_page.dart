@@ -42,7 +42,7 @@ class _ChatLidoPageState extends State<ChatLidoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Usuarios que leram este Chat"),
+        title: Text("Usuários que leram este Chat"),
       ),
       body: StreamBuilder<ChatLidoPageState>(
         stream: bloc.stateStream,
@@ -59,7 +59,7 @@ class _ChatLidoPageState extends State<ChatLidoPage> {
           }
           if (snapshot.data.usuario == null) {
             return Center(
-              child: Text("Nenhum usuario neste chat."),
+              child: Text("Nenhum usuário neste chat."),
             );
           }
           if (snapshot.data.usuario.isEmpty) {
@@ -92,15 +92,15 @@ class _ChatLidoPageState extends State<ChatLidoPage> {
       leading: usuario.lido
           ? IconButton(
               icon: Icon(Icons.playlist_add_check),
-              tooltip: 'Este usuario viu as msgs deste chat',
+              tooltip: 'Este usuário viu as mensagens deste chat',
               onPressed: null)
           : IconButton(
               icon: Icon(Icons.not_interested),
-              tooltip: 'Este usuario ainda NÂO viu as msgs deste chat',
+              tooltip: 'Este usuário ainda NÂO viu as mensagens deste chat',
               onPressed: null),
       trailing: IconButton(
           icon: Icon(Icons.delete),
-          tooltip: 'Retirar este usuario deste chat',
+          tooltip: 'Retirar este usuário deste chat',
           onPressed: () {
             bloc.eventSink(DeleteUsuarioEvent(key));
             Navigator.pop(context);

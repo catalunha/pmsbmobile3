@@ -104,7 +104,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                                         "ID: ${snapshot.data.id.substring(0, 10)}"),
                                     Text("Nome: ${snapshot.data.nome}"),
                                     Text("Celular: ${snapshot.data.celular}"),
-                                    Text("Email: ${snapshot.data.email}"),
+                                    Text("E-mail: ${snapshot.data.email}"),
                                     Text(
                                         "Eixo: ${snapshot.data.eixoIDAtual.nome}"),
                                   ],
@@ -231,7 +231,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                                     "CLIQUE AQUI PARA VER O ARQUIVO",
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.blue),
-                                  ): Text('Arquivo não disponivel. Usuario não fez upload.'),
+                                  ): Text('Arquivo não disponivel. Usuário não fez upload.'),
                                 )));
                       }
                     }

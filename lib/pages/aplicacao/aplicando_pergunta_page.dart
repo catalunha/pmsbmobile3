@@ -119,7 +119,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 Navigator.pushNamed(context, "/aplicacao/pendencias",
                     arguments: snapshot.data.questionarioAplicadoID);
               },
-              child: Text("Ultima"),
+              child: Text("Última"),
             ),
           );
         }

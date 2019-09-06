@@ -238,7 +238,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
             Tab(text: "Pastas"),
           ],
         ),
-        title: Text('Questionarios'),
+        title: Text('Questionários'),
         body: _body(context),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),

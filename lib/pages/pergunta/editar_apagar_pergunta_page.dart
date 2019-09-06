@@ -56,7 +56,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
         if (!snapshot.hasData) {
           return Text("SEM DADOS");
         }
-        return _textoTopo("Questionario: ${snapshot.data.questionario?.nome}");
+        return _textoTopo("Questionário: ${snapshot.data.questionario?.nome}");
       },
     );
   }
@@ -254,7 +254,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                   ));
                 },
               ),
-              _texto("Titulo da pergunta:"),
+              _texto("Título da pergunta:"),
               TituloInputField(bloc),
               _texto("Texto da pergunta:"),
               _textoMarkdownField(),
@@ -288,7 +288,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
             icon: new Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text("Editar apagar pergunta"),
+          title: Text("Editar/Apagar pergunta"),
         ),
         body: _bodyTexto(context),
         floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
@@ -304,7 +304,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                       bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
                       Navigator.of(context).pop();
                     },
-              child: Icon(Icons.thumb_up),
+              child: Icon(Icons.cloud_upload),
               backgroundColor:
                   !snapshot.data.isValid ? Colors.grey : Colors.blue,
             );
@@ -481,7 +481,7 @@ _DeleteDocumentOrFieldState(this.bloc);
         return Row(
           children: <Widget>[
             Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
+            Text('Para apagar, digite CONCORDO e clique:  '),
             Container(
               child: Flexible(
                 child: TextField(

@@ -107,7 +107,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
             Tab(text: "Arvore"),
           ],
         ),
-        title: Text('Aplicando questionario'),
+        title: Text('Aplicando questionário'),
         body: TabBarView(
           children: [
             _bodyTodos(),
@@ -158,8 +158,8 @@ class QuestionarioAplicadoItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // CardText("QuestionarioId: ${_questionario.id}"),
-            CardText("Questionario: ${_questionario.nome}"),
-            CardText("Referencia: ${_questionario.referencia}"),
+            CardText("Questionário: ${_questionario.nome}"),
+            CardText("Referência: ${_questionario.referencia}"),
             ButtonTheme.bar(
               child: ButtonBar(
                 children: <Widget>[
@@ -174,7 +174,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
                     },
                   ),
                   IconButton(
-                    tooltip: 'Verificando pendencias',
+                    tooltip: 'Verificando pendências',
                     icon: Icon(Icons.assignment_turned_in),
                     onPressed: () {
                       Navigator.pushNamed(context, "/aplicacao/pendencias",

@@ -359,7 +359,7 @@ class FotoUsuario extends StatelessWidget {
           children: <Widget>[
             ButtonTheme.bar(
                 child: ButtonBar(children: <Widget>[
-              Text('Atualizar foto de usuario'),
+              Text('Atualizar foto de usuário'),
               IconButton(
                 icon: Icon(Icons.file_download),
                 onPressed: () async {

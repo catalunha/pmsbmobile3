@@ -48,7 +48,7 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    "Titulo do questionario:",
+                    "Título do questionário:",
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -74,9 +74,9 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
-              " Questionario")),
+              " Questionário")),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.thumb_up),
+        child: Icon(Icons.cloud_upload),
         onPressed: () {
           // salvar e voltar
           bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
@@ -153,7 +153,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
         return Row(
           children: <Widget>[
             Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
+            Text('Para apagar, digite CONCORDO e clique:  '),
             Container(
               child: Flexible(
                 child: TextField(

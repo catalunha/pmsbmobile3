@@ -134,7 +134,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                         }),
                 title: isBound
                     ? Text("Escolhido: ${questionario.id}")
-                    : Text("Escolha um questionario: "),
+                    : Text("Escolha um questionário: "),
                 subtitle:
                     Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
               );
@@ -142,7 +142,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         Divider(color: Colors.black87),
         Padding(
             padding: EdgeInsets.all(5),
-            child: Text("Referencia: Local/Pessoa/Momento na aplicação:",
+            child: Text("Referência: Local/Pessoa/Momento na aplicação:",
                 style: TextStyle(color: Colors.blue, fontSize: 15))),
         ReferenciaInput(bloc),
         Divider(color: Colors.black87),
@@ -174,7 +174,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                       Navigator.pop(context);
                     }
                   : null,
-              child: Icon(Icons.thumb_up),
+              child: Icon(Icons.cloud_upload),
               backgroundColor:
                   snapshot.data.isValid ? Colors.blue : Colors.grey,
             );
@@ -209,7 +209,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
         return Row(
           children: <Widget>[
             Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
+            Text('Para apagar, digite CONCORDO e clique:  '),
             Container(
               child: Flexible(
                 child: TextField(
@@ -246,7 +246,7 @@ class ListaRequisitos extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData || !snapshot.data.isBound)
           return Center(
-            child: Text("Escolher requisitos depois de salvar"),
+            child: Text("Escolher requisitos após salvar"),
           );
         final requisitos = snapshot?.data?.requisitos;
         final requisitosMap = requisitos != null ? requisitos : {};
@@ -254,7 +254,7 @@ class ListaRequisitos extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text("Lista de referencias:"),
+              title: Text("Lista de referências:"),
             ),
             ...requisitosMap
                 .map(

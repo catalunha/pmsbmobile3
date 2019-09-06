@@ -66,7 +66,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
                   ListTile(
-                    title: Text('Criar Usuario em UsuarioCollection.'),
+                    title: Text('Criar Usuário em UsuarioCollection.'),
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {

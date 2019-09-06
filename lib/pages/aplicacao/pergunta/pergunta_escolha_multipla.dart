@@ -71,7 +71,7 @@ class _PerguntaEscolhaMultiplaState extends State<PerguntaEscolhaMultipla> {
   Widget build(BuildContext context) {
     return Container(
         child: Column(children: <Widget>[
-      Padding(padding: EdgeInsets.all(5), child: Text("Selecione as opçoes:")),
+      Padding(padding: EdgeInsets.all(5), child: Text("Selecione as opções:")),
       makeRadioTiles()
     ]));
   }

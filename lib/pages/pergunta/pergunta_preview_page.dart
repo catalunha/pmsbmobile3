@@ -63,7 +63,7 @@ class PerguntaPreviewPage extends StatelessWidget {
           if (snapshot.data?.requisitos != null &&
               snapshot.data.requisitos.isNotEmpty) {
             texto.writeln("##### Requisitos:");
-            texto.writeln("Esta pergunta somente será respondida se os requisitos a seguir forem simultanea e completamente atendidos.");
+            texto.writeln("Esta pergunta somente será respondida se os requisitos a seguir forem simultânea e completamente atendidos.");
             snapshot.data.requisitos?.forEach((k, v) {
               if (v.label != null) {
                 texto.writeln("- ${v.label}");

@@ -101,7 +101,7 @@ class ItemListView extends StatelessWidget {
                       Text("ID: ${usuario.id.substring(0, 5)}"),
                       Text("Nome: ${usuario.nome}"),
                       Text("Celular: ${usuario.celular}"),
-                      Text("Email: ${usuario.email}"),
+                      Text("E-mail: ${usuario.email}"),
                       Text("Eixo: ${usuario.eixoIDAtual.nome}"),
                     ],
                   ),

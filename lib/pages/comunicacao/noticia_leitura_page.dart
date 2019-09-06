@@ -50,7 +50,7 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
             return Text("ERROR");
           }
           if (!snap.hasData) {
-            return Text("Buscando usuario...");
+            return Text("Buscando usuário...");
           }
           return Text("Oi ${snap.data?.usuarioIDNome}");
         },
@@ -63,7 +63,7 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
-                  child: Text("Erro. Na leitura de noticias do usuario."),
+                  child: Text("Erro. Na leitura de notícias do usuário."),
                 );
               }
               if (!snapshot.hasData) {
@@ -73,7 +73,7 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
               }
               if (snapshot.data.isEmpty) {
                 return Center(
-                  child: Text("Parabens ! \nVc já leu todas as suas notícias. \nAgora é acompanhar os Chat's."),
+                  child: Text("Parabéns ! \nVocê já leu todas as suas notícias. \nAgora é acompanhar os Chat's."),
                 );
               }
               return ListView(
@@ -82,7 +82,7 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          title: Text('Titulo ${noticia?.titulo}'),
+                          title: Text('Título ${noticia?.titulo}'),
                           subtitle: Text(
                               "Editor: ${noticia.usuarioIDEditor.nome}\nem: ${noticia.publicar}\n"),
                           trailing: IconButton(

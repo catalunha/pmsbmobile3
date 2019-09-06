@@ -84,7 +84,7 @@ class _PerfilPageState extends State<PerfilPage> {
           subtitle: usuarioPerfil.textPlain != null
               ? Text('${usuarioPerfil?.textPlain}')
               : usuarioPerfil.arquivo != null
-                  ? Text('Arquivo anexado com sucesso.')
+                  ? Text('Arquivo anexado com sucesso!')
                   : Text('Informe o que se pede.'),
           trailing: usuarioPerfil.perfilID?.contentType == 'text' ? Icon(Icons.edit):Icon(Icons.art_track),
         ),

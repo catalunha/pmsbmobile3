@@ -91,7 +91,7 @@ class _UploadPageState extends State<UploadPage> {
     String dispositivo;
     if (!io.File(uploading.upload.localPath).existsSync()) {
       dispositivo =
-          'ESTE ARQUIVO ESTA EM OUTRO DISPOSITIVO.';
+          'ESTE ARQUIVO ESTÁ EM OUTRO DISPOSITIVO.';
     }
 
     return Row(

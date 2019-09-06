@@ -67,14 +67,14 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
             ListTile(
               title: produto.titulo != null
                   ? Text(produto.titulo)
-                  : Text('Sem titulo'),
+                  : Text('Sem título'),
               subtitle: produto.usuarioID?.nome != null
                   ? Text(
                       'Último editor: ${produto.usuarioID?.nome}\n${produto.modificado}')
                   : Text('Sem editor'),
               trailing: IconButton(
                 icon: Icon(Icons.edit),
-                tooltip: 'Editar titulo ou apagar este produto',
+                tooltip: 'Editar título ou apagar este produto',
                 onPressed: () {
                   //Ir a pagina de Adicionar ou editar Produtos
                   Navigator.pushNamed(context, '/produto/crud',

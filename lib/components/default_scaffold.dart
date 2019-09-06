@@ -34,7 +34,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
     // Map<String, Rota>
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
-    rotas["/"] = Rota("Home", Icons.home);
+    rotas["/"] = Rota("Home", Icons.home); 
     rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
     rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
     rotas["/aplicacao/home"] =
@@ -268,7 +268,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               leading: Icon(Icons.settings),
             ),
             Divider(
-              color: Colors.black45,
+              color: Colors.white54,
             ),
             ListTile(
               title: Text('Perfil'),
@@ -280,7 +280,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               leading: Icon(Icons.person),
             ),
             Divider(
-              color: Colors.black45,
+              color: Colors.white54,
             ),
             ListTile(
               title: Text('Noticias lidas'),
@@ -292,7 +292,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               leading: Icon(Icons.event_available),
             ),
             Divider(
-              color: Colors.black45,
+              color: Colors.white54,
             ),
             ListTile(
               title: Text('Trocar de usuário'),
@@ -301,6 +301,9 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                 // Navigator.pushNamed(context, "/");
               },
               leading: Icon(Icons.exit_to_app),
+            ),
+            Divider(
+              color: Colors.white54,
             ),
             ListTile(
               title: Text("Habilitar modo offline"),

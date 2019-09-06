@@ -252,7 +252,7 @@ class _TelaChatState extends State<TelaChat> {
         }
         if (snapshot.data.usuario == null) {
           return Center(
-            child: Text("Nenhum usuario neste chat."),
+            child: Text("Nenhum usuário neste chat."),
           );
         }
         if (snapshot.data.usuario.isEmpty) {
@@ -420,7 +420,7 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
         }
         if (snapshot.data.usuario == null) {
           return Center(
-            child: Text("Nenhum usuario neste chat."),
+            child: Text("Nenhum usuário neste chat."),
           );
         }
         if (snapshot.data.usuario.isEmpty) {

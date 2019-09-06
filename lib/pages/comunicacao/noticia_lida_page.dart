@@ -48,7 +48,7 @@ class _NoticiaLidaPageState extends State<NoticiaLidaPage> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
-                  child: Text("Erro. Na leitura de noticias do usuario."),
+                  child: Text("Erro. Na leitura de notícias do usuario."),
                 );
               }
               if (!snapshot.hasData) {
@@ -62,7 +62,7 @@ class _NoticiaLidaPageState extends State<NoticiaLidaPage> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          title: Text('Titulo ${noticia?.titulo}'),
+                          title: Text('Título ${noticia?.titulo}'),
                           subtitle: Text(
                               "Editor: ${noticia.usuarioIDEditor.nome}\nem: ${noticia.publicar}\n"),
                           trailing: IconButton(

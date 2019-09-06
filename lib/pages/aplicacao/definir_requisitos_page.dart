@@ -56,7 +56,7 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
 
         return perfungas.length <= 0
             ? Center(
-                child: Text("Nenhuma pergunta elegivel"),
+                child: Text("Nenhuma pergunta elegível"),
               )
             : Column(
                 children: perfungas
@@ -121,7 +121,7 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
       appBar: AppBar(
         actions: <Widget>[],
         centerTitle: true,
-        title: Text("Definindo referencias"),
+        title: Text("Definindo referências"),
       ),
       body: ListView(children: <Widget>[
         //_preambulo(),
@@ -154,7 +154,7 @@ class RequisitoRadioTile extends StatelessWidget {
       },
       child: ListTile(
         title: Text(
-          "${perguntaSelecionadaId == perguntaAplicada.id ? "(selecionado)" : ""} Questionario: ${perguntaAplicada.questionario.nome} Referencia: ${perguntaAplicada.questionario.referencia}",
+          "${perguntaSelecionadaId == perguntaAplicada.id ? "(selecionado)" : ""} Questionário: ${perguntaAplicada.questionario.nome} Referência: ${perguntaAplicada.questionario.referencia}",
           style: TextStyle(
               color: perguntaSelecionadaId == perguntaAplicada.id
                   ? Colors.green

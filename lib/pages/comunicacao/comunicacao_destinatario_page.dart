@@ -43,7 +43,7 @@ class _ComunicacaoDestinatariosPageState
                   text: 'Eixo',
                 ),
                 Tab(
-                  text: 'Usuario',
+                  text: 'Usuário',
                 ),
               ],
             ),

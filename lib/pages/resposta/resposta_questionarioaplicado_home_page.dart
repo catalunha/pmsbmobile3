@@ -94,7 +94,7 @@ class _RespostaQuestionarioAplicadoHomePageState
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
-        title: Text('Resposta do questionario'),
+        title: Text('Resposta do questionário'),
         body: _body(),
       ),
     );
