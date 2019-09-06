@@ -74,8 +74,13 @@ class PerguntaHomePage extends StatelessWidget {
                       .asMap()
                       .map((index, pergunta) => MapEntry(
                           index,
-                          PerguntaItem(pergunta, ups[pergunta.id],
-                              downs[pergunta.id], bloc, index: index,)))
+                          PerguntaItem(
+                            pergunta,
+                            ups[pergunta.id],
+                            downs[pergunta.id],
+                            bloc,
+                            index: index,
+                          )))
                       .values
                       .toList(),
                   Padding(padding: EdgeInsets.all(40)),
@@ -143,6 +148,7 @@ class PerguntaItem extends StatelessWidget {
           ),
           ButtonTheme.bar(
             child: ButtonBar(
+              alignment: MainAxisAlignment.start,
               children: <Widget>[
                 IconButton(
                   tooltip: 'Descer ordem da pergunta',

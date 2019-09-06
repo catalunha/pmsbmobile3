@@ -101,7 +101,6 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-      
       title: Text('Aplicando questionario'),
       body: _bodyTodos(),
 
@@ -152,6 +151,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
             CardText("Referencia: ${_questionario.referencia}"),
             ButtonTheme.bar(
               child: ButtonBar(
+                alignment: MainAxisAlignment.start,
                 children: <Widget>[
                   IconButton(
                     tooltip: 'Aplicando perguntas',
