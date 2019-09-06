@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pdf/widgets.dart' as prefix0;
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
@@ -105,87 +106,85 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                     title: Text('${questionario.nome}'),
                     // subtitle: Text('${questionario.id}'),
                   ),
-                  ButtonTheme.bar(
-                    child: ButtonBar(
-                      alignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        IconButton(
-                          tooltip: 'Criar perguntas neste questionário',
-                          icon: Icon(Icons.list),
+                  Wrap(
+                  alignment: WrapAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        tooltip: 'Criar perguntas neste questionário',
+                        icon: Icon(Icons.list),
+                        onPressed: () {
+                          // Listar paginas de perguntas
+                          Navigator.pushNamed(
+                            context,
+                            '/pergunta/home',
+                            arguments: questionario.id,
+                          );
+                        },
+                      ),
+                      IconButton(
+                        tooltip: 'Conferir todas as perguntas criadas',
+                        icon: Icon(Icons.picture_as_pdf),
+                        onPressed: () async {
+                          var mdtext = await GeradorMdService
+                              .generateMdFromQuestionarioModel(questionario);
+                          GeradorPdfService.generatePdfFromMd(mdtext);
+                        },
+                      ),
+                      IconButton(
+                          tooltip: 'Listar perguntas criadas',
+                          icon: Icon(Icons.text_fields),
+                          onPressed: () async {
+                            Navigator.pushNamed(
+                                context, "/pergunta/pergunta_list_preview",
+                                arguments: questionario.id);
+                          }),
+                      IconButton(
+                          icon: Icon(Icons.arrow_downward),
+                          onPressed: (ordemLocal) < lengthEscolha
+                              ? () {
+                                  // print(
+                                  //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
+                                  // Mover pra baixo na ordem
+                                  //TODO: refatorar este codigo com o i fica mais fácil
+                                  bloc.eventSink(
+                                      OrdenarQuestionarioEvent(questID, false));
+                                }
+                              : null),
+                      IconButton(
+                          icon: Icon(Icons.arrow_upward),
+                          onPressed: ordemLocal > 1
+                              ? () {
+                                  // print(
+                                  //     'em up => ${i} ${ordemLocal} (${v.ordem})');
+
+                                  // Mover pra cima na ordem
+                                  //TODO: refatorar este codigo com o i fica mais fácil
+                                  bloc.eventSink(
+                                      OrdenarQuestionarioEvent(questID, true));
+                                }
+                              : null),
+                      IconButton(
+                        icon: Icon(Icons.message),
+                        tooltip: 'Chat para o produto',
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/chat/home',
+                              arguments: ChatPageArguments(
+                                  chatID: questionario.id,
+                                  modulo: 'Q: ${questionario.eixo.nome}.',
+                                  titulo: 'T: ${questionario.nome}. '));
+                        },
+                      ),
+                      IconButton(
+                          icon: Icon(Icons.edit),
                           onPressed: () {
-                            // Listar paginas de perguntas
+                            // Editar uma nova escolha
                             Navigator.pushNamed(
                               context,
-                              '/pergunta/home',
+                              "/questionario/form",
                               arguments: questionario.id,
                             );
-                          },
-                        ),
-                        IconButton(
-                          tooltip: 'Conferir todas as perguntas criadas',
-                          icon: Icon(Icons.picture_as_pdf),
-                          onPressed: () async {
-                            var mdtext = await GeradorMdService
-                                .generateMdFromQuestionarioModel(questionario);
-                            GeradorPdfService.generatePdfFromMd(mdtext);
-                          },
-                        ),
-                        IconButton(
-                            tooltip: 'Listar perguntas criadas',
-                            icon: Icon(Icons.text_fields),
-                            onPressed: () async {
-                              Navigator.pushNamed(
-                                  context, "/pergunta/pergunta_list_preview",
-                                  arguments: questionario.id);
-                            }),
-                        IconButton(
-                            icon: Icon(Icons.arrow_downward),
-                            onPressed: (ordemLocal) < lengthEscolha
-                                ? () {
-                                    // print(
-                                    //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
-                                    // Mover pra baixo na ordem
-                                    //TODO: refatorar este codigo com o i fica mais fácil
-                                    bloc.eventSink(OrdenarQuestionarioEvent(
-                                        questID, false));
-                                  }
-                                : null),
-                        IconButton(
-                            icon: Icon(Icons.arrow_upward),
-                            onPressed: ordemLocal > 1
-                                ? () {
-                                    // print(
-                                    //     'em up => ${i} ${ordemLocal} (${v.ordem})');
-
-                                    // Mover pra cima na ordem
-                                    //TODO: refatorar este codigo com o i fica mais fácil
-                                    bloc.eventSink(OrdenarQuestionarioEvent(
-                                        questID, true));
-                                  }
-                                : null),
-                        IconButton(
-                          icon: Icon(Icons.message),
-                          tooltip: 'Chat para o produto',
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/chat/home',
-                                arguments: ChatPageArguments(
-                                    chatID: questionario.id,
-                                    modulo: 'Q: ${questionario.eixo.nome}.',
-                                    titulo: 'T: ${questionario.nome}. '));
-                          },
-                        ),
-                        IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              // Editar uma nova escolha
-                              Navigator.pushNamed(
-                                context,
-                                "/questionario/form",
-                                arguments: questionario.id,
-                              );
-                            }),
-                      ],
-                    ),
+                          }),
+                    ],
                   ),
                 ],
               ),
