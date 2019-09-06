@@ -83,9 +83,10 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   Widget _preambulo() {
     return Column(
       children: <Widget>[
-        Center(child: 
-        // EixoAtualUsuario()
-        Container(),
+        Center(
+          child:
+              // EixoAtualUsuario()
+              Container(),
         ),
         _questionario(),
         _pergunta(),
@@ -211,7 +212,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
           child: ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
-              _preambulo(),
+              // _preambulo(),
               Padding(padding: EdgeInsets.all(10)),
               _texto("Tipo da pergunta:"),
               PerguntaTipoInput(bloc),
@@ -261,6 +262,9 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               Padding(padding: EdgeInsets.all(10)),
               // _botaoDeletarPergunta(),
               _DeleteDocumentOrField(bloc),
+              Container(
+              padding: EdgeInsets.only(top: 80),
+            ),
             ],
           ),
         ),
@@ -280,36 +284,33 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   Widget build(BuildContext context) {
     myController.setTextAndPosition(myController.text);
 
-    return
-
-      Scaffold(
-        appBar: AppBar(
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text("Editar apagar pergunta"),
+    return Scaffold(
+      appBar: AppBar(
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        body: _bodyTexto(context),
-        floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
-          stream: bloc.state,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Text("SEM DADOS");
-            }
-            return FloatingActionButton(
-              onPressed: !snapshot.data.isValid
-                  ? null
-                  : () {
-                      bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
-                      Navigator.of(context).pop();
-                    },
-              child: Icon(Icons.thumb_up),
-              backgroundColor:
-                  !snapshot.data.isValid ? Colors.grey : Colors.blue,
-            );
-          },
-        ),
+        title: Text("Editar apagar pergunta"),
+      ),
+      body: _bodyTexto(context),
+      floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
+        stream: bloc.state,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Text("SEM DADOS");
+          }
+          return FloatingActionButton(
+            onPressed: !snapshot.data.isValid
+                ? null
+                : () {
+                    bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
+                    Navigator.of(context).pop();
+                  },
+            child: Icon(Icons.thumb_up),
+            backgroundColor: !snapshot.data.isValid ? Colors.grey : Colors.blue,
+          );
+        },
+      ),
     );
   }
 }
@@ -317,11 +318,9 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
 class PerguntaTipoInput extends StatelessWidget {
   final EditarApagarPerguntaBloc bloc;
   PerguntaTipoInput(this.bloc);
-  
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder<EditarApagarPerguntaBlocState>(
         stream: bloc.state,
         builder: (context, snapshot) {
@@ -459,7 +458,7 @@ class TituloInputFieldState extends State<TituloInputField> {
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
-final EditarApagarPerguntaBloc bloc;
+  final EditarApagarPerguntaBloc bloc;
 
   _DeleteDocumentOrField(this.bloc);
   @override
@@ -470,8 +469,8 @@ final EditarApagarPerguntaBloc bloc;
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-final EditarApagarPerguntaBloc bloc;
-_DeleteDocumentOrFieldState(this.bloc);
+  final EditarApagarPerguntaBloc bloc;
+  _DeleteDocumentOrFieldState(this.bloc);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<EditarApagarPerguntaBlocState>(

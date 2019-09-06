@@ -192,6 +192,11 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
             ));
             ordemLocal++;
           });
+          list.add(
+            Container(
+              padding: EdgeInsets.only(top: 80),
+            ),
+          );
           return Column(
             children: <Widget>[
               Expanded(
@@ -232,14 +237,14 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
-        bottom: TabBar(
-          tabs: [
-            Tab(text: "Todos"),
-            Tab(text: "Pastas"),
-          ],
-        ),
+        // bottom: TabBar(
+        //   tabs: [
+        //     Tab(text: "Todos"),
+        //     Tab(text: "Pastas"),
+        //   ],
+        // ),
         title: Text('Questionarios'),
-        body: _body(context),
+        body: _bodyTodos(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
