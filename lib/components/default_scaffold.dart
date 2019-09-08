@@ -302,6 +302,9 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               },
               leading: Icon(Icons.exit_to_app),
             ),
+            Divider(
+              color: Colors.black45,
+            ),
             ListTile(
               title: Text("Habilitar modo offline"),
               onTap: () async {
@@ -312,6 +315,13 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                 Navigator.pop(context);
               },
               leading: Icon(Icons.save),
+            ),
+                        Divider(
+              color: Colors.black45,
+            ),
+                        ListTile(
+              title: Text("Versão 3.0.5"),
+              leading: Icon(Icons.info),
             ),
           ],
         ),

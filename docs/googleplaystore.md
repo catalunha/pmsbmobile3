@@ -98,15 +98,31 @@ Apos isso vá em criar nova versão
 
 ![img03](./imagens/img03.PNG)
 
-Vai abrir um formulario da nova versão do app
 
-Envie a nova versao do app no botão PROCURAR ARQUIVOS, e selecione o arquivo de appBundler gerado na parte anterior
+### Passo 6
+Vai abrir um formulario para nova versão do app.
+
+Envie a nova versao do app no botão PROCURAR ARQUIVOS, e selecione o arquivo de appBundler gerado na parte anterior conforme caminho informado no terminal.
+
+![img03](./imagens/img05.png)
+
 
 Vão ter opções de atualizar novidades e nome da versão, isso é opcional.
 
-Apos isso clique em continuar ( Revisar e publicar ), ele vai pedir que revise para ver se tudo está ok.
+No campo: **O que há de novo na versão?** atualize com a melhorias recentes deste lançamennto.
 
-Depois clique em publicar e pronto.
+Depois clique em Salvar. Se precisar alterar alguma coisa mude. Senão clique em Revisar.
 
-Vai levar algumas horas para o app ser disponibilizado na loja.
+### Passo 7
+
+Vc será lançado a tela seguinte com resumo das informação e basta clicar em **INICIAR LANÇAMENTO PARA PRODUÇÃO**
+
+![img03](./imagens/img06.png)
+![img03](./imagens/img07.png)
+
+
+### Passo 8
+
+Vai levar algumas horas para o app ser disponibilizado na loja com a nova versão. As atualizações automáticas ocorrerão gradativamente nos celulares por versao de android e por perfil de uso. As vezes a atualização chega mas nao inicial automaticamente e vc pode ir na loja e forçar atualização.
+
 
