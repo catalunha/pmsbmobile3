@@ -104,7 +104,7 @@ class _PendenciasPageState extends State<PendenciasPage> {
       appBar: AppBar(
         actions: <Widget>[],
         centerTitle: true,
-        title: Text("Pendências"),
+        title: Text("Resumo"),
       ),
       body: _bodyTodos(context),
     );
