@@ -119,7 +119,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 Navigator.pushNamed(context, "/aplicacao/pendencias",
                     arguments: snapshot.data.questionarioAplicadoID);
               },
-              child: Text("Ultima"),
+              child: Text("Você alcançou o fim do questionário.\nClique aqui para ir ao resumo.",style: TextStyle(fontSize: 26, color: Colors.blue),),
             ),
           );
         }

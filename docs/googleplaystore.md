@@ -61,7 +61,8 @@ android {
 Gerar app bundler com o seguinte comando, isso vai gerar um arquivo que vamos enviar ao google play ( Observação : O flutter tem que está na versao 1.7.8 ou superior). Usando o terminal faça
 
 ~~~
-catalunha@nbuft:~/AndroidStudioProjects/pmsbmobile3$ flutter build appbundle --release 
+catalunha@nbuft:~/AndroidStudioProjects/pmsbmobile3$
+flutter build appbundle --release 
 ~~~
 
 

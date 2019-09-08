@@ -138,11 +138,12 @@ Uso do sistema: Pergunta Tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id
     return texto.toString();
   }
 
-
   static generateMdFromQuestionarioAplicadoModel(
       QuestionarioAplicadoModel questionarioAplicadoModel) async {
     final fsw.Firestore _firestore = Bootstrap.instance.firestore;
+    StringBuffer tudo = StringBuffer();
     StringBuffer texto = StringBuffer();
+    StringBuffer numero = StringBuffer();
     StringBuffer escolhaList = StringBuffer();
     StringBuffer imagem = StringBuffer();
     StringBuffer arquivo = StringBuffer();
@@ -150,7 +151,7 @@ Uso do sistema: Pergunta Tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id
     int contador = 1;
 // - Modificado: ${questionarioAplicadoModel.modificado.toDate()}
 
-    texto.writeln("""
+    tudo.writeln("""
 # Questionário Aplicado : ${questionarioAplicadoModel.nome}
 
 - Questionário referencia: ${questionarioAplicadoModel.referencia}
@@ -176,11 +177,49 @@ Lista de perguntas:
     }).toList();
 
     for (var pergunta in perguntasList) {
+      String temPendencias =
+          pergunta.temPendencias ? "Tem pendências" : "Não tem pendências";
+      String foiRespondida =
+          pergunta.foiRespondida ? "Foi respondida" : "Não foi respondida";
+      String informada = (!pergunta.foiRespondida && pergunta.temRespostaValida)
+          ? "Tem informação válida"
+          : "";
+
+      //+++ texto
+      texto.clear();
+      if (pergunta.tipo.id == 'texto') {
+        if (pergunta.texto != null) {
+          texto.writeln("#### Resposta em Texto");
+          texto.write("""
+${pergunta.texto}
+""");
+        } else {
+          imagem.writeln("""
+Nada informado.
+""");
+        }
+      }
+      //--- texto
+      //+++ numero
+      numero.clear();
+      if (pergunta.tipo.id == 'numero') {
+        if (pergunta.numero != null) {
+          numero.writeln("#### Resposta em Número");
+          numero.write("""
+${pergunta.numero}
+""");
+        } else {
+          imagem.writeln("""
+Nada informado.
+""");
+        }
+      }
+      //--- numero
       //+++ imagem
       imagem.clear();
       if (pergunta.tipo.id == 'imagem') {
         if (pergunta.arquivo != null && pergunta.arquivo.isNotEmpty) {
-          imagem.writeln("#### Imagens");
+          imagem.writeln("#### Resposta em Imagens");
           pergunta.arquivo?.forEach((k, v) {
             imagem.write("""
 [${v.nome}](${v.url})
@@ -188,6 +227,10 @@ Lista de perguntas:
 ![${v.nome}](${v.url})
 """);
           });
+        } else {
+          imagem.writeln("""
+Nada informado.
+""");
         }
       }
       //--- imagem
@@ -195,12 +238,16 @@ Lista de perguntas:
       arquivo.clear();
       if (pergunta.tipo.id == 'arquivo') {
         if (pergunta.arquivo != null && pergunta.arquivo.isNotEmpty) {
-          arquivo.writeln("#### Arquivos");
+          arquivo.writeln("#### Resposta em Arquivos");
           pergunta.arquivo?.forEach((k, v) {
             arquivo.write("""
 [${v.nome}](${v.url})
 """);
           });
+        } else {
+          imagem.writeln("""
+Nada informado.
+""");
         }
       }
       //--- arquivo
@@ -208,12 +255,16 @@ Lista de perguntas:
       coordenada.clear();
       if (pergunta.tipo.id == 'coordenada') {
         if (pergunta.coordenada != null && pergunta.coordenada.isNotEmpty) {
-          coordenada.writeln("#### Arquivos");
+          coordenada.writeln("#### Resposta em Coordenadas");
           pergunta.coordenada?.forEach((coord) {
             coordenada.write("""
 - (${coord.latitude},${coord.longitude})
 """);
           });
+        } else {
+          imagem.writeln("""
+Nada informado.
+""");
         }
       }
       //--- coordenada
@@ -222,8 +273,7 @@ Lista de perguntas:
       if (pergunta.tipo.id == 'escolhaunica' ||
           pergunta.tipo.id == 'escolhamultipla') {
         if (pergunta.escolhas != null && pergunta.escolhas.isNotEmpty) {
-
- var dicEscolhas = Dictionary.fromMap(pergunta.escolhas);
+          var dicEscolhas = Dictionary.fromMap(pergunta.escolhas);
           var escolhasAscOrder = dicEscolhas
               // Sort Ascending order by value ordem
               .orderBy((kv) => kv.value.ordem)
@@ -233,7 +283,7 @@ Lista de perguntas:
           print(escolhasAscOrder.toMap());
           Map<String, Escolha> escolhaMap = escolhasAscOrder.toMap();
 
-          escolhaList.writeln("#### ${pergunta.tipo.nome}");
+          escolhaList.writeln("#### Resposta em ${pergunta.tipo.nome}");
           escolhaMap.forEach((k, v) {
             if (v.marcada) {
               escolhaList.write("""
@@ -245,14 +295,20 @@ Lista de perguntas:
 """);
             }
           });
+        } else {
+          imagem.writeln("""
+Nada informado.
+""");
         }
       }
       //--- escolhas
 
 // - Pergunta id: ${pergunta.id}
-      texto.writeln("""
+      tudo.writeln("""
 ## ${contador} - ${pergunta.titulo}
 ${pergunta.textoMarkdown}
+${texto}
+${numero}
 ${escolhaList}
 ${imagem}
 ${arquivo}
@@ -260,87 +316,13 @@ ${coordenada}
 
 Obs: ${pergunta.observacao}.  
 
-Informações: Tipo: ${pergunta.tipo.nome}. Id: ${pergunta.id} . 
+Informações: ${temPendencias}. ${foiRespondida}. ${informada}. Tipo: ${pergunta.tipo.nome}. Id: ${pergunta.id}. 
 
 ---
-        """);
+""");
       contador++;
     }
     //Fim pergunta
-    return texto.toString();
+    return tudo.toString();
   }
 }
-
-// final perguntasRef = _firestore
-//         .collection(PerguntaModel.collection)
-//         .where("questionario.id", isEqualTo: questionarioAplicadoModel.id)
-//         .orderBy("ordem", descending: false);
-
-//     final fsw.QuerySnapshot perguntasSnapshot =
-//         await perguntasRef.getDocuments();
-//     final perguntasList =
-//         perguntasSnapshot.documents.map((fsw.DocumentSnapshot doc) {
-//       return PerguntaModel(id: doc.documentID).fromMap(doc.data);
-//     }).toList();
-
-//     // perguntasList.forEach((pergunta) {
-//     for (var pergunta in perguntasList) {
-//       escolhaList.clear();
-//       requisitoList.clear();
-//       // Imprimindo as escolhas
-//       if (pergunta.escolhas != null) {
-//         escolhaList.writeln("#### Escolhas");
-//         pergunta.escolhas?.forEach((k, v) {
-//           escolhaList.writeln("""
-// 1. **${v.texto}**
-// """);
-//         });
-//       } //fim escolhas
-
-//       //+++ Imprimindo os requisitos
-//       if (pergunta.requisitos != null) {
-//         requisitoList.writeln("#### Requisitos");
-
-//         for (var perReq in pergunta.requisitos.values) {
-//           String label;
-//           label=perReq?.escolha?.label ?? "Pergunta.";
-// //           requisitoList.writeln("""
-// // - ${perReq.label}
-// // """);
-
-//           final perguntasReqRef = _firestore
-//               .collection(PerguntaModel.collection)
-//               .where("questionario.id", isEqualTo: questionarioAplicadoModel.id)
-//               .where("referencia", isEqualTo: perReq.referencia);
-//           final fsw.QuerySnapshot perguntasDoReqSnapshot =
-//               await perguntasReqRef.getDocuments();
-//           final perguntasReqList =
-//               perguntasDoReqSnapshot.documents.map((fsw.DocumentSnapshot doc) {
-//             return PerguntaModel(id: doc.documentID).fromMap(doc.data);
-//           }).toList();
-
-//           perguntasReqList.forEach((pergReq) {
-//             requisitoList.writeln("""
-// - ${pergReq.titulo}.
-//   - ${label}
-// """);
-//           });
-//         }
-//       } //--- Imprimindo os requisitos
-
-//       texto.writeln("""
-// ## ${contador} - ${pergunta.titulo}
-
-// ### ${pergunta.textoMarkdown}
-
-// ${escolhaList}
-
-// ${requisitoList}
-
-// Pergunta tipo: ${pergunta.tipo.nome}. Ordem: ${pergunta.ordem}
-
-// -----
-
-// """);
-//       contador++;
-//     }
