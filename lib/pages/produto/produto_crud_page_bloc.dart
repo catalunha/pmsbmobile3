@@ -1,3 +1,4 @@
+import 'package:pmsbmibile3/models/google_drive_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
@@ -147,7 +148,7 @@ class ProdutoCRUDPageBloc {
         }
       }
 
-      final docRefColl = _firestore
+      final produtoDocRef = _firestore
           .collection(ProdutoModel.collection)
           .document(_state.produtoModelID);
 
@@ -159,7 +160,7 @@ class ProdutoCRUDPageBloc {
           upload: false,
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
-              document: docRefColl.documentID,
+              document: produtoDocRef.documentID,
               field: "pdf"),
         );
         final docRef = _firestore
@@ -168,11 +169,52 @@ class ProdutoCRUDPageBloc {
         await docRef.setData(upLoadModel.toMap(), merge: true);
         _state.pdfUploadID = docRef.documentID;
       }
+      // Se for produto novo cria o gdocs dele
+      print('>>> produtoModelID <<< ${_state.produtoModelID}');
+      print(
+          '>>> _state.produtoModel?.googleDriveID <<< ${_state.produtoModel?.googleDrive}');
+      GoogleDriveID googleDriveID;
+      if (_state.produtoModelID == null &&
+          _state.produtoModel?.googleDrive == null) {
+        // Listando usuarios do eixo do criador do produto
+        final query = _firestore
+            .collection(UsuarioModel.collection)
+            .where("eixoID.id", isEqualTo: _state.usuarioModel.eixoID.id);
+        final snap = await query.getDocuments();
+
+        var usuariosEixoLista = snap.documents
+            .map((doc) => UsuarioModel(id: doc.documentID).fromMap(doc.data))
+            .toList();
+        // Todos os usuarios do eixo do criador terao acesso a este gdoc
+        Map<String, UsuarioGoogleDrive> usuarioGoogleDrive =
+            Map<String, UsuarioGoogleDrive>();
+        for (var item in usuariosEixoLista) {
+          usuarioGoogleDrive[item.email] = UsuarioGoogleDrive(
+            atualizar: false,
+            tipo: 'escrever',
+          );
+        }
+        // Criando googledriveCollection
+        var googleDriveModel = GoogleDriveModel(
+          tipo: 'document',
+          usuario: usuarioGoogleDrive,
+          updateCollection: UpdateCollection(
+              collection: ProdutoModel.collection,
+              document: produtoDocRef.documentID,
+              field: "googleDrive.arquivoID"),
+        );
+        final docRefGoogleDrive =
+            _firestore.collection(GoogleDriveModel.collection).document();
+        await docRefGoogleDrive.setData(googleDriveModel.toMap(), merge: true);
+        googleDriveID =
+            GoogleDriveID(id: docRefGoogleDrive.documentID, tipo: 'document');
+      }
 
       final produtoModelSave = ProdutoModel(
         titulo: _state.produtoModelIDTitulo,
         eixoID: _state.usuarioModel.eixoIDAtual,
         setorCensitarioID: _state.usuarioModel.setorCensitarioID,
+        googleDrive: googleDriveID,
         usuarioID: UsuarioID(
             id: _state.usuarioModel.id, nome: _state.usuarioModel.nome),
         modificado: DateTime.now().toUtc(),
@@ -183,7 +225,7 @@ class ProdutoCRUDPageBloc {
       );
 
       //--- Cria doc em UpLoadCollection
-      await docRefColl.setData(produtoModelSave.toMap(), merge: true);
+      await produtoDocRef.setData(produtoModelSave.toMap(), merge: true);
     }
     if (event is UpdatePDFEvent) {
       _state.pdfLocalPath = event.pdfLocalPath;
@@ -209,6 +251,16 @@ class ProdutoCRUDPageBloc {
           });
         }
       }
+      if (_state.produtoModel?.googleDrive?.id != null) {
+        _firestore
+            .collection(GoogleDriveModel.collection)
+            .document(_state.produtoModel?.googleDrive?.id)
+            .delete();
+      }
+      _firestore
+          .collection(ProdutoModel.collection)
+          .document(_state.produtoModel.id)
+          .delete();
     }
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
