@@ -191,12 +191,13 @@ class ProdutoCRUDPageBloc {
         for (var item in usuariosEixoLista) {
           usuarioGoogleDrive[item.email] = UsuarioGoogleDrive(
             atualizar: false,
-            tipo: 'escrever',
+            permissao: 'escrever',
+            usuarioID: item.id,
           );
         }
         // Criando googledriveCollection
         var googleDriveModel = GoogleDriveModel(
-          tipo: 'document',
+          tipo: 'documento',
           usuario: usuarioGoogleDrive,
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
