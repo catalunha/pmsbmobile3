@@ -160,6 +160,12 @@ class AuthBloc {
 
   void _handleLoginAuthBlocEvent() {
     _statusController.sink.add(AuthStatus.Authenticating);
-    _authApi.loginWithEmailAndPassword(_state.email, _state.password);
+    _authApi.loginWithEmailAndPassword(_state.email, _state.password).then((r){
+      if(r){
+        _statusController.sink.add(AuthStatus.Authenticated);
+      }else{
+        _statusController.sink.add(AuthStatus.Unauthenticated);
+      }
+    });
   }
 }

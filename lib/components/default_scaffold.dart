@@ -252,6 +252,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
 
   _DefaultEndDrawerState() : authBloc = Bootstrap.instance.authBloc;
 
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -298,7 +299,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               title: Text('Trocar de usuário'),
               onTap: () {
                 authBloc.dispatch(LogoutAuthBlocEvent());
-                // Navigator.pushNamed(context, "/");
+                Navigator.pushReplacementNamed(context, "/");
               },
               leading: Icon(Icons.exit_to_app),
             ),
