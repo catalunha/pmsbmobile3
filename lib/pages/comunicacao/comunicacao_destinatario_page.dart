@@ -12,7 +12,6 @@ class _ComunicacaoDestinatariosPageState
     extends State<ComunicacaoDestinatariosPage> {
   ComunicacaoDestinatarioPageBloc bloc;
 
-
   @override
   void initState() {
     super.initState();
@@ -21,8 +20,8 @@ class _ComunicacaoDestinatariosPageState
 
   @override
   void dispose() {
-    bloc.dispose();
     super.dispose();
+    bloc.dispose();
   }
 
   @override
@@ -43,14 +42,14 @@ class _ComunicacaoDestinatariosPageState
                   text: 'Eixo',
                 ),
                 Tab(
-                  text: 'Usuario',
+                  text: 'Usuário',
                 ),
               ],
             ),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Navigator.pop(context,bloc.destinatarioList());
+              Navigator.pop(context, bloc.destinatarioList());
             },
             child: Icon(Icons.check),
           ),
@@ -62,8 +61,8 @@ class _ComunicacaoDestinatariosPageState
 
   _cargoBody() {
     return StreamBuilder<ComunicacaoDestinatarioPageState>(
-        stream: bloc.comunicacaoDestinatarioPageStateStream,
-        builder: (context, snapshot) {
+        stream: bloc.stateStream,
+        builder: (BuildContext context, AsyncSnapshot<ComunicacaoDestinatarioPageState> snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
           }
@@ -77,35 +76,29 @@ class _ComunicacaoDestinatariosPageState
               children: <Widget>[
                 ...cargoList.map((variavel) {
                   return Card(
-                      color: variavel.checked ? Colors.yellowAccent : null,
+                      color: variavel.checked ? Colors.deepOrange : null,
                       child: InkWell(
                           onTap: () {
-                            bloc.comunicacaoDestinatarioPageEventSink(
-                                UpDateCargoIDEvent(variavel.id));
+                            bloc.eventSink(SelectCargoIDEvent(variavel.id));
                           },
                           child: ListTile(
                             title: Text(
-                              // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
                               "${variavel.nome}",
                               style: TextStyle(fontSize: 18),
                             ),
-                            // subtitle: Text(
-                            //   "## ${variavel?.nome}",
-                            //   "CLIQUE AQUI PARA VER O ARQUIVO",
-                            //   style:
-                            //       TextStyle(fontSize: 16, color: Colors.blue),
-                            // ),
+                     
                           )));
                 }).toList()
               ],
             );
           }
+          return Text('Algum problema...');
         });
   }
 
   _eixoBody() {
     return StreamBuilder<ComunicacaoDestinatarioPageState>(
-        stream: bloc.comunicacaoDestinatarioPageStateStream,
+        stream: bloc.stateStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
@@ -120,11 +113,10 @@ class _ComunicacaoDestinatariosPageState
               children: <Widget>[
                 ...eixoList.map((variavel) {
                   return Card(
-                      color: variavel.checked ? Colors.yellowAccent : null,
+                      color: variavel.checked ? Colors.deepOrange : null,
                       child: InkWell(
                           onTap: () {
-                            bloc.comunicacaoDestinatarioPageEventSink(
-                                UpDateEixoIDEvent(variavel.id));
+                            bloc.eventSink(SelectEixoIDEvent(variavel.id));
                           },
                           child: ListTile(
                             title: Text(
@@ -149,7 +141,7 @@ class _ComunicacaoDestinatariosPageState
 
   _usuarioBody() {
     return StreamBuilder<ComunicacaoDestinatarioPageState>(
-        stream: bloc.comunicacaoDestinatarioPageStateStream,
+        stream: bloc.stateStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
@@ -164,21 +156,18 @@ class _ComunicacaoDestinatariosPageState
               children: <Widget>[
                 ...usuarioList.map((variavel) {
                   return Card(
-                      color: variavel.checked ? Colors.greenAccent : null,
+                      color: variavel.checked ? Colors.deepOrange : null,
                       child: InkWell(
                           onTap: () {
-                            bloc.comunicacaoDestinatarioPageEventSink(
-                                UpDateUsuarioIDEvent(variavel.id));
+                            bloc.eventSink(SelectUsuarioIDEvent(variavel.id));
                           },
                           child: ListTile(
                             title: Text(
-                              // "# ${variavel.id}-${variavel.nome}-${variavel.eixo}-${variavel.cargo}-${variavel.checked}-${variavel.valor}",
                               "${variavel.nome}",
-                              
                               style: TextStyle(fontSize: 18),
                             ),
                             subtitle: Text(
-                              "Eixo: ${variavel.eixoNome}. Cargo: ${variavel.cargoNome}",
+                              "Eixo: ${variavel.eixo.nome}. Cargo: ${variavel.cargo.nome}",
                             ),
                             // subtitle: Text(
                             //   "## ${variavel?.nome}",
