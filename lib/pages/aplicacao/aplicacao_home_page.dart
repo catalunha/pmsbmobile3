@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -67,21 +68,10 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   _bodyTodos() {
     return Column(
       children: <Widget>[
-        //TODO: preambulo
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Eixo : $_eixo",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Setor censitário: $_setor",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
+        Preambulo(
+          eixo: true,
+          setor: true,
+        ),
         Expanded(child: _listaQuestionarioAplicado())
       ],
     );

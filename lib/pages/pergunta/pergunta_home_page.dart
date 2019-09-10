@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/eixo.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_home_page_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart'
     show EditarApagarPerguntaPageArguments;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class PerguntaHomePage extends StatelessWidget {
   final String _questionarioId;
@@ -20,27 +19,6 @@ class PerguntaHomePage extends StatelessWidget {
     bloc.dispose();
   }
 
-  Widget _questionarioAtual(context) {
-    return StreamBuilder<PerguntaHomePageBlocState>(
-        stream: bloc.state,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("ERROR"),
-            );
-          }
-          if (!snapshot.hasData) {
-            return Center(
-              child: Text("SEM DADOS"),
-            );
-          }
-          final questionario = snapshot.data.questionarioInstance;
-          return Text(
-            "Questionario: ${questionario.nome}",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          );
-        });
-  }
 
   Widget _body(context) {
     return StreamBuilder<PerguntaHomePageBlocState>(
@@ -62,9 +40,10 @@ class PerguntaHomePage extends StatelessWidget {
             snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
         return Column(
           children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: _questionarioAtual(context),
+            Preambulo(
+              eixo: true,
+              setor: true,
+              questionarioID: _questionarioId,
             ),
             Expanded(
               flex: 12,
