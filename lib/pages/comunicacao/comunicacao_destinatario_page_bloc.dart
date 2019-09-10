@@ -1,33 +1,35 @@
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/noticia_model.dart';
-import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-
-import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class ComunicacaoDestinatarioPageEvent {}
 
-class UpDateCargoIDEvent extends ComunicacaoDestinatarioPageEvent {
+class UpdateCargoListEvent extends ComunicacaoDestinatarioPageEvent {}
+
+class UpdateEixoListEvent extends ComunicacaoDestinatarioPageEvent {}
+
+class UpdateUsuarioListEvent extends ComunicacaoDestinatarioPageEvent {}
+
+class SelectCargoIDEvent extends ComunicacaoDestinatarioPageEvent {
   final String cargoID;
 
-  UpDateCargoIDEvent(this.cargoID);
+  SelectCargoIDEvent(this.cargoID);
 }
 
-class UpDateEixoIDEvent extends ComunicacaoDestinatarioPageEvent {
+class SelectEixoIDEvent extends ComunicacaoDestinatarioPageEvent {
   final String eixoID;
 
-  UpDateEixoIDEvent(this.eixoID);
+  SelectEixoIDEvent(this.eixoID);
 }
 
-class UpDateUsuarioIDEvent extends ComunicacaoDestinatarioPageEvent {
+class SelectUsuarioIDEvent extends ComunicacaoDestinatarioPageEvent {
   final String usuarioID;
 
-  UpDateUsuarioIDEvent(this.usuarioID);
+  SelectUsuarioIDEvent(this.usuarioID);
 }
 
 class ComunicacaoDestinatarioPageState {
   List<Cargo> cargoList = List<Cargo>();
-  Map<String, Cargo> cargoMap;
   List<Eixo> eixoList = List<Eixo>();
   List<Usuario> usuarioList = List<Usuario>();
 }
@@ -49,40 +51,29 @@ class Eixo {
 class Usuario {
   String id;
   String nome;
-  String cargo;
-  String eixo;
-  String cargoNome;
-  String eixoNome;
-  bool checked = false;
+  String email;
+  Cargo cargo;
+  Eixo eixo;
+  bool checked = false;    
   int valor = 0;
-  Usuario(
-      {this.id,
-      this.nome,
-      this.cargo,
-      this.eixo,
-      this.cargoNome,
-      this.eixoNome});
+  Usuario({this.id, this.nome, this.email, this.cargo, this.eixo});
 }
 
 class ComunicacaoDestinatarioPageBloc {
-  final fw.Firestore _firestore;
+  final fsw.Firestore _firestore;
 
-  // Eventos da página
-  final _comunicacaoDestinatarioPageEventController =
-      BehaviorSubject<ComunicacaoDestinatarioPageEvent>();
-  Stream<ComunicacaoDestinatarioPageEvent>
-      get comunicacaoDestinatarioPageEventStream =>
-          _comunicacaoDestinatarioPageEventController.stream;
-  Function get comunicacaoDestinatarioPageEventSink =>
-      _comunicacaoDestinatarioPageEventController.sink.add;
+  // Eventos da página todas as perguntas para
+  final _eventController = BehaviorSubject<ComunicacaoDestinatarioPageEvent>();
+  Stream<ComunicacaoDestinatarioPageEvent> get eventStream =>
+      _eventController.stream;
+  Function get eventSink => _eventController.sink.add;
 
   // Estados da página
-  final comunicacaoDestinatarioPageState = ComunicacaoDestinatarioPageState();
-  final _comunicacaoDestinatarioPageStateController =
-      BehaviorSubject<ComunicacaoDestinatarioPageState>();
-  Stream<ComunicacaoDestinatarioPageState>
-      get comunicacaoDestinatarioPageStateStream =>
-          _comunicacaoDestinatarioPageStateController.stream;
+  ComunicacaoDestinatarioPageState _state = ComunicacaoDestinatarioPageState();
+  final _stateController = BehaviorSubject<ComunicacaoDestinatarioPageState>();
+  Stream<ComunicacaoDestinatarioPageState> get stateStream =>
+      _stateController.stream;
+  Function get stateSink => _stateController.sink.add;
 
   //Cargo
   final _cargoModelListController = BehaviorSubject<List<CargoModel>>();
@@ -90,86 +81,105 @@ class ComunicacaoDestinatarioPageBloc {
       _cargoModelListController.stream;
 
   ComunicacaoDestinatarioPageBloc(this._firestore) {
-    // print('ComunicacaoDestinatarioPageBloc instanciada ....');
-    comunicacaoDestinatarioPageEventStream.listen(_mapEventToState);
-
-    _firestore.collection(CargoModel.collection).snapshots().listen(
-        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
-              comunicacaoDestinatarioPageState.cargoList.add(Cargo(
-                  id: documentSnapshot.documentID,
-                  nome: documentSnapshot.data['nome']));
-              // return comunicacaoDestinatarioPageEventSink(
-              //     UpDateCargoIDEvent(documentSnapshot.documentID));
-            }));
-    _firestore.collection(EixoModel.collection).snapshots().listen(
-        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
-              comunicacaoDestinatarioPageState.eixoList.add(Eixo(
-                  id: documentSnapshot.documentID,
-                  nome: documentSnapshot.data['nome']));
-              // return comunicacaoDestinatarioPageEventSink(
-              //     UpDateCargoIDEvent(documentSnapshot.documentID));
-            }));
-    _firestore.collection(UsuarioModel.collection).snapshots().listen(
-        (querySnapshot) => querySnapshot.documents.forEach((documentSnapshot) {
-              Map<dynamic, dynamic> cargoMap = Map();
-              Map<dynamic, dynamic> eixoMap = Map();
-
-              cargoMap = documentSnapshot.data['cargoID'] == null
-                  ? {"id": "null", "nome": "null"}
-                  : documentSnapshot.data['cargoID'];
-              eixoMap = documentSnapshot.data['eixoID'] == null
-                  ? {"id": "null", "nome": "null"}
-                  : documentSnapshot.data['eixoID'];
-
-              comunicacaoDestinatarioPageState.usuarioList.add(Usuario(
-                  id: documentSnapshot.documentID,
-                  nome: documentSnapshot.data['nome'],
-                  cargo: cargoMap['id'],
-                  eixo: eixoMap['id'],
-                  cargoNome: cargoMap['nome'],
-                  eixoNome: eixoMap['nome']));
-            }));
-    _comunicacaoDestinatarioPageStateController.sink
-        .add(comunicacaoDestinatarioPageState);
+    eventStream.listen(_mapEventToState);
+    eventSink(UpdateCargoListEvent());
+    eventSink(UpdateEixoListEvent());
+    eventSink(UpdateUsuarioListEvent());
   }
   void dispose() async {
-    await _comunicacaoDestinatarioPageEventController.drain();
-    _comunicacaoDestinatarioPageEventController.close();
-    await _comunicacaoDestinatarioPageStateController.drain();
-    _comunicacaoDestinatarioPageStateController.close();
+    await _eventController.drain();
+    _eventController.close();
+    await _stateController.drain();
+    _stateController.close();
     await _cargoModelListController.drain();
     _cargoModelListController.close();
   }
 
-  _mapEventToState(ComunicacaoDestinatarioPageEvent event) {
-    if (event is UpDateCargoIDEvent) {
+  _mapEventToState(ComunicacaoDestinatarioPageEvent event) async {
+    if (event is UpdateCargoListEvent) {
+      print('ComunicacaoDestinatarioPageBloc> 028474');
+
+      final streamDocs =
+          _firestore.collection(CargoModel.collection).snapshots();
+
+      final snapList = streamDocs.map((snapDocs) => snapDocs.documents
+          .map((doc) => Cargo(id: doc.documentID, nome: doc.data['nome']))
+          .toList());
+
+      snapList.listen((List<Cargo> cargoList) {
+        cargoList.sort((a, b) => a.nome.compareTo(b.nome));
+        _state.cargoList = cargoList;
+      });
+    }
+    if (event is UpdateEixoListEvent) {
+      _firestore
+          .collection(EixoModel.collection)
+          .snapshots()
+          .listen((querySnapshot) {
+        for (var documentSnapshot in querySnapshot.documents) {
+          _state.eixoList.add(Eixo(
+              id: documentSnapshot.documentID,
+              nome: documentSnapshot.data['nome']));
+        }
+        _state.eixoList.sort((a, b) => a.nome.compareTo(b.nome));
+      });
+    }
+
+    if (event is UpdateUsuarioListEvent) {
+      _firestore
+          .collection(UsuarioModel.collection)
+          .snapshots()
+          .listen((querySnapshot) {
+        for (var documentSnapshot in querySnapshot.documents) {
+          _state.usuarioList.add(Usuario(
+            id: documentSnapshot.documentID,
+            nome: documentSnapshot.data['nome'],
+            email: documentSnapshot.data['email'],
+            cargo: documentSnapshot.data['cargoID'] == null
+                ? Cargo(id: null, nome: null)
+                : Cargo(
+                    id: documentSnapshot.data['cargoID']['id'],
+                    nome: documentSnapshot.data['cargoID']['nome']),
+            eixo: documentSnapshot.data['eixoID'] == null
+                ? Eixo(id: null, nome: null)
+                : Eixo(
+                    id: documentSnapshot.data['eixoID']['id'],
+                    nome: documentSnapshot.data['eixoID']['nome']),
+          ));
+        }
+        _state.usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
+      });
+    }
+
+    if (event is SelectCargoIDEvent) {
       // print('evento de cargo: ${event.cargoID}');
       _updateCargoModeltoState(event.cargoID);
     }
-    if (event is UpDateEixoIDEvent) {
+    if (event is SelectEixoIDEvent) {
       // print('evento de eixo: ${event.eixoID}');
       _updateEixoModeltoState(event.eixoID);
     }
-    if (event is UpDateUsuarioIDEvent) {
+    if (event is SelectUsuarioIDEvent) {
       // print('evento de usuario: ${event.usuarioID}');
       _updateUsuarioModeltoState(event.usuarioID);
     }
-    _comunicacaoDestinatarioPageStateController.sink
-        .add(comunicacaoDestinatarioPageState);
+    if (!_stateController.isClosed) stateSink(_state);
+    print(
+        'event.runtimeType em QuestionarioHomePageBloc  = ${event.runtimeType}');
   }
 
   _updateCargoModeltoState(String id) {
     // print('processando cargo: ${id}');
 
     bool marcou = false;
-    for (var item in comunicacaoDestinatarioPageState.cargoList) {
+    for (var item in _state.cargoList) {
       if (item.id == id) {
         item.checked = !item.checked;
         marcou = item.checked;
       }
     }
-    for (var item in comunicacaoDestinatarioPageState.usuarioList) {
-      if (item.cargo == id) {
+    for (var item in _state.usuarioList) {
+      if (item.cargo.id == id) {
         item.valor = marcou ? ++item.valor : --item.valor;
         item.checked = item.valor > 0 ? true : false;
         item.valor = item.valor < 0 ? 0 : item.valor;
@@ -180,14 +190,14 @@ class ComunicacaoDestinatarioPageBloc {
   _updateEixoModeltoState(String id) {
     // print('processando eixo: ${id}');
     bool marcou = false;
-    for (var item in comunicacaoDestinatarioPageState.eixoList) {
+    for (var item in _state.eixoList) {
       if (item.id == id) {
         item.checked = !item.checked;
         marcou = item.checked;
       }
     }
-    for (var item in comunicacaoDestinatarioPageState.usuarioList) {
-      if (item.eixo == id) {
+    for (var item in _state.usuarioList) {
+      if (item.eixo.id == id) {
         item.valor = marcou ? ++item.valor : --item.valor;
         item.checked = item.valor > 0 ? true : false;
         item.valor = item.valor < 0 ? 0 : item.valor;
@@ -197,25 +207,25 @@ class ComunicacaoDestinatarioPageBloc {
 
   _updateUsuarioModeltoState(String id) {
     // print('processando eixo: ${id}');
-    for (var item in comunicacaoDestinatarioPageState.usuarioList) {
+    for (var item in _state.usuarioList) {
       if (item.id == id) {
         item.checked = !item.checked;
         item.valor = 0;
       }
     }
-    for (var cargo in comunicacaoDestinatarioPageState.cargoList) {
+    for (var cargo in _state.cargoList) {
       bool marcouCargo = false;
-      for (var usuario in comunicacaoDestinatarioPageState.usuarioList) {
-        if (cargo.id == usuario.cargo) {
+      for (var usuario in _state.usuarioList) {
+        if (cargo.id == usuario.cargo.id) {
           marcouCargo = usuario.checked ? true : marcouCargo;
         }
       }
       cargo.checked = marcouCargo ? cargo.checked : false;
     }
-    for (var eixo in comunicacaoDestinatarioPageState.eixoList) {
+    for (var eixo in _state.eixoList) {
       bool marcouEixo = false;
-      for (var usuario in comunicacaoDestinatarioPageState.usuarioList) {
-        if (eixo.id == usuario.eixo) {
+      for (var usuario in _state.usuarioList) {
+        if (eixo.id == usuario.eixo.id) {
           marcouEixo = usuario.checked ? true : marcouEixo;
         }
       }
@@ -225,7 +235,7 @@ class ComunicacaoDestinatarioPageBloc {
 
   List<Map<String, dynamic>> destinatarioList() {
     List<Map<String, dynamic>> destinatarioList = [];
-    for (var usuario in comunicacaoDestinatarioPageState.usuarioList) {
+    for (var usuario in _state.usuarioList) {
       if (usuario.checked) {
         destinatarioList.add(
           {'usuarioID': '${usuario.id}', 'nome': '${usuario.nome}'},

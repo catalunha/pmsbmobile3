@@ -87,12 +87,12 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
             Wrap(
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.wrap_text),
+                  icon: Icon(Icons.format_textdirection_l_to_r),
                   tooltip: 'Editar texto',
-                  onPressed: produto?.googleDocsUrl != null
+                  onPressed: produto?.googleDrive?.arquivoID != null
                       ? () {
                           //Ir para a edição do produto,
-                          launch(produto.googleDocsUrl);
+                          launch(produto?.googleDrive?.url());
                         }
                       : null,
                 ),
@@ -158,13 +158,13 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
     return DefaultScaffold(
       title: Text("Produto"),
       body: _body(context),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: () {
-      //     Navigator.pushNamed(context, '/produto/crud', arguments: null);
-      //   },
-      //   // backgroundColor: Colors.blue,
-      // ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(context, '/produto/crud', arguments: null);
+        },
+        // backgroundColor: Colors.blue,
+      ),
     );
   }
 }

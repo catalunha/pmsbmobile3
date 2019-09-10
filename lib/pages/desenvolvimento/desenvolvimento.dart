@@ -80,7 +80,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                         // await usuarioGirlene('qnbwLQuiuXYJxKUFx5sHPZ3CgG92');
                         //Coordenadores
                         // await usuarioSergio('jkKgYjZ3zSf6cZ6T7ZrLxp5R9Am2');
-                        await usuarioPortela('0s0pMoclpwPs2CwUWDAmeCdPz5s1');
+                        // await usuarioPortela('0s0pMoclpwPs2CwUWDAmeCdPz5s1');
                         // await usuarioBob('SftB5Ix0d4MaHLEs8LASoT7KKl13');
                         // await usuarioCleiton('9MZTcuTI3ofGW67tO5J1mTLHPl03');
                         // await usuarioRui('I2hXlyGuTHdXufAiu6jDp05m3ft1');
@@ -110,9 +110,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                         //     'D2NnomLYGINlwNmieeTSh6F1z0c2'); //claudio.azevedo@mail.uft.edu.br
                         // await usuarioRosinete(
                         //     'G8IgMv0qhwgVuVSpzRmEWW1Fx2s1'); //ns.rosinete@gmail.com
-
-                        
-
+                        // await usuarioCarneirovan(
+                        //     'uMSpkgCqj3Ol6tSEhTTYdwiFoB62'); //carneirovan@uft.edu.br
                         //---Equipe do Portela
                         //+++Equipe do Rui
                         // await usuarioAlesi(
@@ -774,6 +773,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     // print('>>> ok <<< ');
   }
 
+
+
   Future usuarioJuliana(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -832,6 +833,32 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   //---Equipe do sergio
   //+++Equipe do Portela
 
+  Future usuarioCarneirovan(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'carneirovan',
+      celular: '123',
+      email: 'carneirovan@uft.edu.br',
+      routes: [
+        '/',
+        '/upload',
+        '/questionario/home',
+        '/aplicacao/home',
+      ],
+      cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
+      eixoID: EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+      eixoIDAtual: EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+      eixoIDAcesso: [
+        EixoID(id: 'residuosolido', nome: 'Resíduo Sólido'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+    // print('>>> ok <<< ');
+  }
   Future usuarioIsabela(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
