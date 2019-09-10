@@ -2,14 +2,39 @@ import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/components/square_image.dart';
-
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'administracao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 
-class AdministracaoHomePage extends StatelessWidget {
+class AdministracaoHomePage extends StatefulWidget {
+  // AdministracaoHomePage({Key key}) : super(key: key);
+
+  _AdministracaoHomePageState createState() => _AdministracaoHomePageState();
+}
+
+class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
   final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class AdministracaoHomePage extends StatelessWidget {
+//   final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,71 +115,6 @@ class ItemListView extends StatelessWidget {
   }
 }
 
-// class _ImagemUnica extends StatelessWidget {
-//   final String fotoUrl;
-//   final String fotoLocalPath;
-
-//   _ImagemUnica({this.fotoUrl, this.fotoLocalPath});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     Widget foto;
-//     return FutureBuilder<bool>(
-//       initialData: false,
-//       future: fileExist(fotoLocalPath),
-//       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-//         if (!snapshot.hasData) {
-//           return Text('sem dados');
-//         }
-//         if (snapshot.data) {
-//           foto = Container(
-//               color: Colors.yellow,
-//               child: Padding(
-//                   padding: const EdgeInsets.all(2.0),
-//                   child: Image.asset(fotoLocalPath)
-//                   // child: Icon(Icons.people, size: 75),
-//                   ));
-//         } else {
-//           // if (fotoUrl == null && fotoLocalPath == null) {
-//           foto = Center(child: Text('Sem imagem.'));
-//           if (fotoUrl != null) {
-//             foto = Container(
-//                 child: Padding(
-//               padding: const EdgeInsets.all(2.0),
-//               child: Image.network(fotoUrl),
-//             ));
-//           }
-//         }
-//         return Row(
-//           children: <Widget>[
-//             Spacer(
-//               flex: 1,
-//             ),
-//             Expanded(
-//               flex: 8,
-//               child: foto,
-//             ),
-//             Spacer(
-//               flex: 1,
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-
-//   Future<bool> fileExist(String path) async {
-//     var arq = io.File(path);
-
-//     if ((path != null) && await arq.exists()) {
-//       return true;
-//     }
-
-//     return false;
-//   }
-// }
-
-
 class _ImagemUnica extends StatelessWidget {
   final String fotoUrl;
   final String fotoLocalPath;
@@ -178,10 +138,12 @@ class _ImagemUnica extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             // child: Icon(Icons.people, size: 75),
-            child: io.File(fotoLocalPath).existsSync()? Image.asset(fotoLocalPath):Text('Sem upload'),
+            child: io.File(fotoLocalPath).existsSync()
+                ? Image.asset(fotoLocalPath)
+                : Text('Sem upload'),
           ));
     }
-    
+
     return Row(
       children: <Widget>[
         Spacer(

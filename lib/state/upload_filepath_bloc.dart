@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:mime/mime.dart';
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:rxdart/rxdart.dart';
@@ -28,7 +27,7 @@ class UploadFilePathBloc {
 
   //authBloc
   final AuthBloc _authBloc =
-      AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+      Bootstrap.instance.authBloc;
 
   //Arquivo
   final _fileController = BehaviorSubject<String>();
@@ -58,10 +57,18 @@ class UploadFilePathBloc {
       fileStream.where((String filePath) => filePath != null),
       _uploadFromPathHandler,
     );
-    uploadTasks.listen((_) => print("uploadTask iniciada"));
+    // uploadTasks.listen((_) => print("uploadTask iniciada"));
     storageTaskEventStream.listen(_handleStorageTaskEvent);
   }
-
+  void dispose() async {
+    await _fileController.drain();
+    _fileController.close();
+    await _storageTaskEventController.drain();
+    _storageTaskEventController.close();
+    _uploadModelSubscriptionController.cancel();
+    await _uploadModelController.drain();
+    _uploadModelController.close();
+  }
   bool _uploadFromPathHandler(String userId, String filePath) {
     if (_blocState.storageUploadTask != null) {
       _blocState.storageUploadTask.cancel();
@@ -87,12 +94,7 @@ class UploadFilePathBloc {
     return true;
   }
 
-  void dispose() {
-    _fileController.close();
-    _storageTaskEventController.close();
-    _uploadModelController.close();
-    _uploadModelSubscriptionController.cancel();
-  }
+
 
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
     if (storageTaskEvent.type == StorageTaskEventType.resume) {}

@@ -40,7 +40,7 @@ class _MarkdownTextEditorState extends State<MarkdownTextEditor> {
         child: TextField(
           onChanged: (text) {
             _textoMarkdown = text;
-            print(myController.selection);
+            // print(myController.selection);
           },
           controller: myController,
           keyboardType: TextInputType.multiline,
@@ -54,10 +54,10 @@ class _MarkdownTextEditorState extends State<MarkdownTextEditor> {
   _atualizarMarkdown(texto, posicao) {
     String inicio =
         _textoMarkdown.substring(0, myController.selection.baseOffset);
-    print("INICIO:" + inicio);
+    // print("INICIO:" + inicio);
     String fim = _textoMarkdown.substring(
         myController.selection.baseOffset, _textoMarkdown.length);
-    print("FIM:" + fim);
+    // print("FIM:" + fim);
 
     _textoMarkdown = "$inicio$texto$fim";
     myController.setTextAndPosition(_textoMarkdown,

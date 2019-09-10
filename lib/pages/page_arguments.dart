@@ -28,8 +28,10 @@ class PerguntaIDEscolhaIDPageArguments {
 class DefinirRequisitosPageArguments {
   final bloc;
   final referencia;
+  final String requisitoId;
+  final String perguntaSelecionadaId;
 
-  DefinirRequisitosPageArguments(this.bloc, this.referencia);
+  DefinirRequisitosPageArguments(this.bloc, this.referencia, this.requisitoId, this.perguntaSelecionadaId);
 }
 
 class AplicandoPerguntaPageArguments {
@@ -37,4 +39,12 @@ class AplicandoPerguntaPageArguments {
   final String perguntaID;
 
   AplicandoPerguntaPageArguments(this.questionarioID, {this.perguntaID});
+}
+
+class ChatPageArguments {
+  final String chatID;
+  final String modulo;
+  final String titulo;
+
+  ChatPageArguments({this.modulo, this.titulo, this.chatID});
 }

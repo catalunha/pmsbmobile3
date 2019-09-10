@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -30,7 +31,7 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   void initState() {
     super.initState();
     authBloc.perfil.listen((usuario) {
-      bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(usuario.id, usuario.eixoIDAtual.id));
+      bloc.dispatch(UpdateUserIDAplicacaoHomePageBlocEvent(usuario));
     });
   }
 
@@ -53,10 +54,13 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
         final questionarios = snapshot.data.questionariosAplicados != null
             ? snapshot.data.questionariosAplicados
             : [];
-        return ListView(
-          children:
-              questionarios.map((q) => QuestionarioAplicadoItem(q)).toList(),
-        );
+        var list = questionarios.map((q) => QuestionarioAplicadoItem(q));
+        return ListView(children: [
+          ...list.toList(),
+          Container(
+            padding: EdgeInsets.only(top: 80),
+          )
+        ]);
       },
     );
   }
@@ -64,21 +68,10 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   _bodyTodos() {
     return Column(
       children: <Widget>[
-        //TODO: preambulo
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Eixo : $_eixo",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Setor censitário: $_setor",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
+        Preambulo(
+          eixo: true,
+          setor: true,
+        ),
         Expanded(child: _listaQuestionarioAplicado())
       ],
     );
@@ -97,31 +90,18 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: DefaultScaffold(
-        bottom: TabBar(
-          tabs: [
-            Tab(text: "Todos"),
-            Tab(text: "Arvore"),
-          ],
-        ),
-        title: Text('Aplicando questionario'),
-        body: TabBarView(
-          children: [
-            _bodyTodos(),
-            _bodyArvore(),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            // Adicionar novo questionario aplicado
-            Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    return DefaultScaffold(
+      title: Text('Aplicando questionario'),
+      body: _bodyTodos(),
+
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          // Adicionar novo questionario aplicado
+          Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");
+        },
       ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
@@ -134,7 +114,7 @@ class CardText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 5),
+      padding: EdgeInsets.only(left: 5),
       child: Text(
         text,
         style: TextStyle(fontSize: 15),
@@ -156,26 +136,33 @@ class QuestionarioAplicadoItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            // CardText("QuestionarioId: ${_questionario.id}"),
             CardText("Questionario: ${_questionario.nome}"),
             CardText("Referencia: ${_questionario.referencia}"),
             ButtonTheme.bar(
               child: ButtonBar(
+                alignment: MainAxisAlignment.start,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.record_voice_over),
+                    tooltip: 'Aplicando perguntas',
+                    icon: Icon(Icons.assignment),
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, "/aplicacao/aplicando_pergunta", arguments: AplicandoPerguntaPageArguments(_questionario.id));
+                          context, "/aplicacao/aplicando_pergunta",
+                          arguments:
+                              AplicandoPerguntaPageArguments(_questionario.id));
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.person_add),
+                    tooltip: 'Verificando pendencias',
+                    icon: Icon(Icons.assignment_turned_in),
                     onPressed: () {
                       Navigator.pushNamed(context, "/aplicacao/pendencias",
                           arguments: _questionario.id);
                     },
                   ),
                   IconButton(
+                    tooltip: 'Editar aplicação',
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       // Abrir questionário

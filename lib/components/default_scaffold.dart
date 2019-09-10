@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:pmsbmibile3/services/cache_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:pmsbmibile3/state/services.dart';
-
-var db = DatabaseService();
 
 class Rota {
   final String nome;
@@ -14,12 +11,26 @@ class Rota {
   Rota(this.nome, this.Icons);
 }
 
-class DefaultDrawer extends StatelessWidget {
+class DefaultDrawer extends StatefulWidget {
+  // DefaultDrawer({Key key}) : super(key: key);
+
+  _DefaultDrawerState createState() => _DefaultDrawerState();
+}
+
+class _DefaultDrawerState extends State<DefaultDrawer> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class DefaultDrawer extends StatelessWidget {
   final AuthBloc authBloc;
   Map<String, Rota> rotas;
 
-  DefaultDrawer()
-      : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore) {
+  _DefaultDrawerState() : authBloc = Bootstrap.instance.authBloc {
     // Map<String, Rota>
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
@@ -109,6 +120,16 @@ class DefaultDrawer extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8),
                                       child: Text("${snap.data.celular}"),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text(
+                                          "Eixo: ${snap.data.eixoIDAtual.nome}"),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text(
+                                          "Setor: ${snap.data.setorCensitarioID.nome}"),
                                     ),
                                   ],
                                 ),
@@ -211,11 +232,25 @@ class _ImagemUnica extends StatelessWidget {
   }
 }
 
-class DefaultEndDrawer extends StatelessWidget {
+class DefaultEndDrawer extends StatefulWidget {
+  DefaultEndDrawer({Key key}) : super(key: key);
+
+  _DefaultEndDrawerState createState() => _DefaultEndDrawerState();
+}
+
+class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//        child: child,
+//     );
+//   }
+// }
+
+// class DefaultEndDrawer extends StatelessWidget {
   final AuthBloc authBloc;
 
-  DefaultEndDrawer()
-      : authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  _DefaultEndDrawerState() : authBloc = Bootstrap.instance.authBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -262,10 +297,31 @@ class DefaultEndDrawer extends StatelessWidget {
             ListTile(
               title: Text('Trocar de usuário'),
               onTap: () {
-                Navigator.pop(context);
                 authBloc.dispatch(LogoutAuthBlocEvent());
+                // Navigator.pushNamed(context, "/");
               },
               leading: Icon(Icons.exit_to_app),
+            ),
+            Divider(
+              color: Colors.black45,
+            ),
+            ListTile(
+              title: Text("Habilitar modo offline"),
+              onTap: () async {
+                final cacheService = CacheService(Bootstrap.instance.firestore);
+                await cacheService.load();
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(content: Text("Modo offline completo.")));
+                Navigator.pop(context);
+              },
+              leading: Icon(Icons.save),
+            ),
+                        Divider(
+              color: Colors.black45,
+            ),
+                        ListTile(
+              title: Text("Versão 3.0.6"),
+              leading: Icon(Icons.info),
             ),
           ],
         ),
@@ -291,6 +347,7 @@ class DefaultScaffold extends StatelessWidget {
   final Widget floatingActionButton;
   final Widget title;
   final Widget actions;
+  final List<Widget> actionsMore;
   final Widget bottom;
   final Color backgroundColor;
   final FloatingActionButtonLocation floatingActionButtonLocation;
@@ -301,6 +358,7 @@ class DefaultScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.title,
     this.actions,
+    this.actionsMore,
     this.backgroundColor,
     this.bottom,
     this.floatingActionButtonLocation,
@@ -310,9 +368,9 @@ class DefaultScaffold extends StatelessWidget {
     return AppBar(
       backgroundColor: backgroundColor,
       actions: <Widget>[
+        if (actionsMore != null) ...actionsMore,
         MoreAppAction(),
       ],
-      //leading: Text("leading"),
       centerTitle: true,
       title: title,
       bottom: bottom,

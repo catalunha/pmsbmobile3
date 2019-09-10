@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/eixo.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_home_page_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart'
     show EditarApagarPerguntaPageArguments;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class PerguntaHomePage extends StatelessWidget {
   final String _questionarioId;
@@ -20,27 +19,6 @@ class PerguntaHomePage extends StatelessWidget {
     bloc.dispose();
   }
 
-  Widget _questionarioAtual(context) {
-    return StreamBuilder<PerguntaHomePageBlocState>(
-        stream: bloc.state,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("ERROR"),
-            );
-          }
-          if (!snapshot.hasData) {
-            return Center(
-              child: Text("SEM DADOS"),
-            );
-          }
-          final questionario = snapshot.data.questionarioInstance;
-          return Text(
-            "Questionario: ${questionario.nome}",
-            style: TextStyle(fontSize: 16, color: Colors.blue),
-          );
-        });
-  }
 
   Widget _body(context) {
     return StreamBuilder<PerguntaHomePageBlocState>(
@@ -62,19 +40,29 @@ class PerguntaHomePage extends StatelessWidget {
             snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
         return Column(
           children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: _questionarioAtual(context),
+            Preambulo(
+              eixo: true,
+              setor: true,
+              questionarioID: _questionarioId,
             ),
             Expanded(
               flex: 12,
               child: ListView(
                 children: [
                   ...perguntas
-                      .map((pergunta) => PerguntaItem(
-                          pergunta, ups[pergunta.id], downs[pergunta.id], bloc))
+                      .asMap()
+                      .map((index, pergunta) => MapEntry(
+                          index,
+                          PerguntaItem(
+                            pergunta,
+                            ups[pergunta.id],
+                            downs[pergunta.id],
+                            bloc,
+                            index: index,
+                          )))
+                      .values
                       .toList(),
-                  Padding(padding: EdgeInsets.all(30)),
+                  Padding(padding: EdgeInsets.all(40)),
                 ],
               ),
             ),
@@ -90,7 +78,7 @@ class PerguntaHomePage extends StatelessWidget {
       appBar: AppBar(
         // backgroundColor: Colors.red,
         centerTitle: true,
-        title: Text("Lista de Perguntas"),
+        title: Text("Lista de perguntas"),
       ),
       body: _body(context),
       floatingActionButton: FloatingActionButton(
@@ -109,11 +97,12 @@ class PerguntaHomePage extends StatelessWidget {
 
 class PerguntaItem extends StatelessWidget {
   final PerguntaModel _pergunta;
+  final int index;
   final bool up;
   final bool down;
   final PerguntaHomePageBloc bloc;
 
-  PerguntaItem(this._pergunta, this.up, this.down, this.bloc)
+  PerguntaItem(this._pergunta, this.up, this.down, this.bloc, {this.index})
       : assert(up != null),
         assert(down != null);
 
@@ -126,17 +115,19 @@ class PerguntaItem extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text(_pergunta.titulo),
-            trailing: Text("${_pergunta.ordem}"),
-            subtitle: Column(
-              children: <Widget>[
-                Text("Tipo: ${_pergunta.tipo.nome}"),
-                Text("${_pergunta.id}"),
-                Text("${_pergunta.referencia}"),
-              ],
-            ),
+            // trailing: Text("${index}"),
+            subtitle: Text("Tipo: ${_pergunta.tipo.nome}"),
+            // Column(
+            //   children: <Widget>[
+            //     Text("Tipo: ${_pergunta.tipo.nome}"),
+            //     Text("${_pergunta.id}"),
+            //     Text("${_pergunta.referencia}"),
+            //   ],
+            // ),
           ),
           ButtonTheme.bar(
             child: ButtonBar(
+              alignment: MainAxisAlignment.start,
               children: <Widget>[
                 IconButton(
                   tooltip: 'Descer ordem da pergunta',

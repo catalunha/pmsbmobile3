@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 
-import 'package:pmsbmibile3/api/api.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -51,8 +50,11 @@ class PerfilCRUDPageBloc {
     perfilCRUDPageEventStream.listen(_mapEventToState);
   }
 
-  void dispose() {
+  void dispose() async {
+    await _usuarioPerfilModelController.drain();
     _usuarioPerfilModelController.close();
+    await _perfilCRUDPageEventController.drain();
+    _perfilCRUDPageEventController.close();
   }
 
   void _mapEventToState(PerfilCRUDPageEvent event) {
@@ -66,7 +68,7 @@ class PerfilCRUDPageBloc {
               .fromMap(snapDocs.data))
           .pipe(_usuarioPerfilModelController);
       usuarioPerfilModelStream.listen((usuarioPerfilModel) {
-        print('>> usuarioPerfilModel >> ${usuarioPerfilModel}');
+        // print('>> usuarioPerfilModel >> ${usuarioPerfilModel}');
         perfilCRUDPageState.textPlain = usuarioPerfilModel.textPlain;
       });
     }

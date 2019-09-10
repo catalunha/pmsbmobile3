@@ -26,8 +26,8 @@ class _PerguntaEscolhaMultiplaState extends State<PerguntaEscolhaMultipla> {
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   Widget makeRadioTiles() {
@@ -45,7 +45,7 @@ class _PerguntaEscolhaMultiplaState extends State<PerguntaEscolhaMultipla> {
           );
         }
 
-        final map = widget.perguntaAplicada.escolhas.map(
+        final map = widget.perguntaAplicada.escolhasOrdenadas.map(
           (id, escolha) {
             return MapEntry(
               id,

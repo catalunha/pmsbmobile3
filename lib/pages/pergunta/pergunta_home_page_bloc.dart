@@ -57,8 +57,10 @@ class PerguntaHomePageBloc {
 
   StreamSubscription<List<PerguntaModel>> _perguntaSubscription;
 
-  void dispose() {
+  void dispose() async {
+    await _inputController.drain();
     _inputController.close();
+    await _outputController.drain();
     _outputController.close();
   }
 

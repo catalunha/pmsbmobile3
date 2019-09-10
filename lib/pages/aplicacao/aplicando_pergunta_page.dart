@@ -7,8 +7,8 @@ import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class AplicacaoPerguntaPage extends StatefulWidget {
-  const AplicacaoPerguntaPage(this.authBloc,
-      this.questionarioAplicadoID, this.perguntaID,
+  const AplicacaoPerguntaPage(
+      this.authBloc, this.questionarioAplicadoID, this.perguntaID,
       {Key key})
       : assert(questionarioAplicadoID != null),
         super(key: key);
@@ -29,15 +29,15 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     super.initState();
     bloc.dispatch(IniciarQuestionarioAplicadoAplicandoPerguntaPageBlocEvent(
         widget.questionarioAplicadoID, widget.perguntaID));
-    widget.authBloc.userId.listen((id){
+    widget.authBloc.userId.listen((id) {
       bloc.dispatch(UpdateUserIDAplicandoPerguntaPageBlocEvent(id));
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   String _eixo = "eixo exemplo";
@@ -92,10 +92,11 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
 
   _listaDadosSuperior() {
     return Preambulo(
-      eixo: _eixo,
-      setor: _setor,
-      questionario: _questionario,
-      local: _local,
+      eixo: true,
+      setor: true,
+      questionarioID: widget.questionarioAplicadoID,
+      questionarioAplicado: true,
+      referencia: true,
     );
   }
 
@@ -104,6 +105,11 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
       stream: bloc.state,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Text("SEM DADOS");
+        if (snapshot.data.carregando) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         if (!snapshot.data.perguntasOk) {
           return Center(child: CircularProgressIndicator());
         }
@@ -114,13 +120,16 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 Navigator.pushNamed(context, "/aplicacao/pendencias",
                     arguments: snapshot.data.questionarioAplicadoID);
               },
-              child: Text("Ultima"),
+              child: Text(
+                "Você alcançou o fim do questionário.\nClique aqui para ir ao resumo.",
+                style: TextStyle(fontSize: 26, color: Colors.blue),
+              ),
             ),
           );
         }
         return ListView(
           children: <Widget>[
-//            _listaDadosSuperior(),
+            _listaDadosSuperior(),
             Divider(height: 50, indent: 5, color: Colors.black54),
             Padding(
                 padding: EdgeInsets.all(5),
@@ -129,6 +138,10 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                   subtitle: Text(snapshot.data.perguntaAtual.textoMarkdown),
                 )),
             Text(snapshot.data.perguntaAtual.tipo.nome),
+            Divider(color: Colors.black54),
+            // Widget de tipo pergunta
+            PerguntaAplicada(
+                snapshot.data.perguntaAtual, snapshot.data.usuarioID),
             Divider(color: Colors.black54),
             Padding(
                 padding: EdgeInsets.all(5),
@@ -154,9 +167,6 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                     border: OutlineInputBorder(),
                   ),
                 )),
-            Divider(color: Colors.black54),
-            // Widget de tipo pergunta
-            PerguntaAplicada(snapshot.data.perguntaAtual, snapshot.data.usuarioID),
             Padding(padding: EdgeInsets.all(5)),
             _botoes()
           ],

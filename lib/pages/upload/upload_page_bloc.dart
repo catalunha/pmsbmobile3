@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
@@ -30,14 +29,12 @@ class PageState {
   List<Uploading> uploadingList;
 
   Map<String, UploadBloc> uploading = Map<String, UploadBloc>();
-
 }
 
 class UploadPageBloc {
   //Firestore
   final fw.Firestore _firestore;
   // Authenticacação
-  // final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
   final _authBloc;
   //Eventos
   final _eventController = BehaviorSubject<PageEvent>();
@@ -51,18 +48,17 @@ class UploadPageBloc {
   Stream<PageState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  // //ProdutoModel List
-  // final _uploadModelListController = BehaviorSubject<List<UploadModel>>();
-  // Stream<List<UploadModel>> get uploadModelListStream =>
-  //     _uploadModelListController.stream;
-  // Function get uploadModelListSink => _uploadModelListController.sink.add;
-
+ 
   UploadPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
-    // _authBloc.userId
-    //     .listen((userId) => eventSink(UpdateUsuarioIDEvent(userId)));
   }
 
+  void dispose() async {
+    await _stateController.drain();
+    _stateController.close();
+    await _eventController.drain();
+    _eventController.close();
+  }
   _mapEventToState(PageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
       _authBloc.userId.listen((userId) {
@@ -78,7 +74,7 @@ class UploadPageBloc {
                 .toList())
             .listen((List<Uploading> uploadingList) {
           _state.uploadingList = uploadingList;
-           _stateController.add(_state);
+          _stateController.add(_state);
         });
       });
     }
@@ -110,16 +106,10 @@ class UploadPageBloc {
           }
         });
       }
-
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print(event.runtimeType);
+    print('event.runtimeType em UploadPageBloc  = ${event.runtimeType}');
   }
 
-  void dispose() {
-    _stateController.close();
-    _eventController.close();
-    // _authBloc.dispose();
-  }
 }

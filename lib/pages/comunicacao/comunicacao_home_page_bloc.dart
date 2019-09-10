@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
@@ -25,7 +24,8 @@ class ComunicacaoHomePageState {
 class ComunicacaoHomePageBloc {
   final fsw.Firestore _firestore;
   // Auth
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final _authBloc =
+      Bootstrap.instance.authBloc;
 
   // Eventos da Página
   final _comunicacaoHomePageEventController =
@@ -50,68 +50,68 @@ class ComunicacaoHomePageBloc {
       _comunicacaoHomePageStateController.sink.add;
 
   // NoticiaModel Em Edicao
-  final _noticiaModelListController = BehaviorSubject<List<NoticiaModel>>();
-  Stream<List<NoticiaModel>> get noticiaModelListStream =>
-      _noticiaModelListController.stream;
+  final _noticiaModelListEdicaoController =
+      BehaviorSubject<List<NoticiaModel>>();
+  Stream<List<NoticiaModel>> get noticiaModelListEdicaoStream =>
+      _noticiaModelListEdicaoController.stream;
 
   // NoticiaModel Publicadas
-  final _noticiaModelListPublicadasController = BehaviorSubject<List<NoticiaModel>>();
-  Stream<List<NoticiaModel>> get noticiaModelListPublicadasStream =>
-      _noticiaModelListPublicadasController.stream;
-
+  final _noticiaModelListPublicadaController =
+      BehaviorSubject<List<NoticiaModel>>();
+  Stream<List<NoticiaModel>> get noticiaModelListPublicadaStream =>
+      _noticiaModelListPublicadaController.stream;
 
   ComunicacaoHomePageBloc(this._firestore) {
-        comunicacaoHomePageEventStream.listen(_mapEventToState);
+    comunicacaoHomePageEventStream.listen(_mapEventToState);
 
-    _authBloc.userId.listen((userId)=>comunicacaoHomePageEventSink(UpdateUsuarioIDEvent(userId)));
+    _authBloc.userId.listen(
+        (userId) => comunicacaoHomePageEventSink(UpdateUsuarioIDEvent(userId)));
   }
   void _mapEventToState(ComunicacaoHomePageEvent event) {
-
     if (event is UpdateUsuarioIDEvent) {
-            // Atualizar State with Event
+      // Atualizar State with Event
       _comunicacaoHomePageState.usuarioId = event.usuarioID;
-          comunicacaoHomePageStateSink(_comunicacaoHomePageState);
+      comunicacaoHomePageStateSink(_comunicacaoHomePageState);
 
       //Noticia nao publicadas ou em edicao
-    final noticiasRef = _firestore
-        .collection(NoticiaModel.collection)
-        .where('publicada', isEqualTo: false)
-        .where('usuarioIDEditor.id', isEqualTo: event.usuarioID);
+      final noticiasRef = _firestore
+          .collection(NoticiaModel.collection)
+          // .where('publicada', isEqualTo: false)
+          .where('usuarioIDEditor.id', isEqualTo: event.usuarioID)
+          .where("publicar", isGreaterThan: DateTime.now().toUtc());
 
-    noticiasRef
-        .snapshots()
-        .map((querySnap) => querySnap.documents
-            .map((docSnap) =>
-                NoticiaModel(id: docSnap.documentID).fromMap(docSnap.data))
-            .toList())
-        .pipe(_noticiaModelListController);
+      noticiasRef
+          .snapshots()
+          .map((querySnap) => querySnap.documents
+              .map((docSnap) =>
+                  NoticiaModel(id: docSnap.documentID).fromMap(docSnap.data))
+              .toList())
+          .pipe(_noticiaModelListEdicaoController);
 
       //Noticia publicadas nao pode editar.
-      //Reduzir lista
-    _firestore
-        .collection(NoticiaModel.collection)
-        .where('publicada', isEqualTo: true)
-        .where('usuarioIDEditor.id', isEqualTo: event.usuarioID)
-        .snapshots()
-        .map((querySnap) => querySnap.documents
-            .map((docSnap) =>
-                NoticiaModel(id: docSnap.documentID).fromMap(docSnap.data))
-            .toList())
-        .pipe(_noticiaModelListPublicadasController);
-
-
-      
-
-
+      _firestore
+          .collection(NoticiaModel.collection)
+          // .where('publicada', isEqualTo: true)
+          .where('usuarioIDEditor.id', isEqualTo: event.usuarioID)
+          .where("publicar", isLessThan: DateTime.now().toUtc())
+          .snapshots()
+          .map((querySnap) => querySnap.documents
+              .map((docSnap) =>
+                  NoticiaModel(id: docSnap.documentID).fromMap(docSnap.data))
+              .toList())
+          .pipe(_noticiaModelListPublicadaController);
     }
-
   }
 
-  void dispose() {
+  void dispose() async {
     _authBloc.dispose();
+    await _comunicacaoHomePageEventController.drain();
     _comunicacaoHomePageEventController.close();
+    await _comunicacaoHomePageStateController.drain();
     _comunicacaoHomePageStateController.close();
-    _noticiaModelListController.close();
-    _noticiaModelListPublicadasController.close();
+    await _noticiaModelListEdicaoController.drain();
+    _noticiaModelListEdicaoController.close();
+    await _noticiaModelListPublicadaController.drain();
+    _noticiaModelListPublicadaController.close();
   }
 }

@@ -51,12 +51,15 @@ class PerguntaEscolhaListPageBloc {
   PerguntaEscolhaListPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
-  void dispose() {
+  void dispose() async {
+    await _stateController.drain();
     _stateController.close();
+    await _eventController.drain();
     _eventController.close();
+    await _escolhaMapController.drain();
     _escolhaMapController.close();
   }
-  
+
   _validateData() {
     bool isValid = true;
     if (_state.escolhaMap != null) {
@@ -122,9 +125,8 @@ class PerguntaEscolhaListPageBloc {
 
     _validateData();
     if (!_stateController.isClosed) stateSink(_state);
-    print('ccc PerguntaEscolhaListPageBloc ${event.runtimeType}');
     print('>>> _state.escolhaMap <<< ${_state.escolhaMap}');
+    print(
+        'event.runtimeType em PerguntaEscolhaListPageBloc  = ${event.runtimeType}');
   }
-
-
 }

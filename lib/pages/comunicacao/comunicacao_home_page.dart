@@ -3,27 +3,61 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
+import 'package:pmsbmibile3/pages/chat/chat_page.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:pmsbmibile3/services/gerador_pdf_service.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 import 'comunicacao_home_page_bloc.dart';
 
 class ComunicacaoHomePage extends StatefulWidget {
+  final AuthBloc authBloc;
+
+  ComunicacaoHomePage(this.authBloc);
+
   @override
   _ComunicacaoHomePageState createState() => _ComunicacaoHomePageState();
 }
 
-class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
+class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
+    with SingleTickerProviderStateMixin {
   final bloc = ComunicacaoHomePageBloc(Bootstrap.instance.firestore);
   var noticiaModelListData;
+  // TabController _tabController;
+// final List<Tab> myTabs = <Tab>[
+//     Tab(text: 'LEFT'),
+//     Tab(text: 'RIGHT'),
+//     Tab(text: 'RIGHT'),
+//   ];
+  @override
+  void initState() {
+    super.initState();
+    // _tabController = TabController(vsync: this, length: 3, initialIndex: 0);
+    // _tabController.addListener(_handleTabIndex);
+  }
+
+  @override
+  void dispose() {
+    // _tabController.removeListener(_handleTabIndex);
+    // _tabController.dispose();
+    bloc.dispose();
+    super.dispose();
+  }
+
+  // void _handleTabIndex() {
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
+      initialIndex: 0,
       length: 2,
       child: DefaultScaffold(
         bottom: TabBar(
+          // controller: _tabController,
+          // tabs: myTabs
           tabs: <Widget>[
             Tab(
               text: 'Em edição',
@@ -31,37 +65,67 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
             Tab(
               text: 'Publicadas',
             ),
+            // Tab(
+            //   text: 'Chat',
+            // ),
           ],
         ),
-        title: Text("Notícias"),
-
-
-        body: _body(context),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            Navigator.pushNamed(context, '/comunicacao/crud_page');
+        actionsMore: <Widget>[IconButton(
+          icon: Icon(Icons.message),
+          tooltip: "Chat para comunicação",
+          onPressed: () {
+            Navigator.pushNamed(context, '/chat/home',
+                arguments: ChatPageArguments(
+                    chatID: 'comunicacao', modulo: 'Comunicação', titulo: ''));
           },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.blue,
+        )],
+        title: Text("Notícias"),
+        body: _body(context),
+        // floatingActionButton: _tabController.index == 0
+        //     ? FloatingActionButton(
+        //         onPressed: () async {
+        //           Navigator.pushNamed(context, '/comunicacao/crud_page');
+        //         },
+        //         child: Icon(Icons.add),
+        //         backgroundColor: Colors.blue,
+        //       )
+        //     : null,
+
+        floatingActionButton:FloatingActionButton(
+                onPressed: () async {
+                  Navigator.pushNamed(context, '/comunicacao/crud_page');
+                },
+                child: Icon(Icons.add),
+                backgroundColor: Colors.blue,
+              )
         ),
-      ),
       // ),
     );
   }
 
   Widget _body(context) {
     return TabBarView(
+      // controller: _tabController,
       children: <Widget>[
         _bodyEmEdicao(context),
         _bodyPublicadas(context),
+        // _bodyChat(widget.authBloc),
       ],
     );
   }
 
+  // Widget _bodyChat(AuthBloc authBloc) {
+  //   return ChatPage(
+  //       authBloc: authBloc,
+  //       modulo: 'Comunicação',
+  //       titulo: '',
+  //       chatID: 'comunicacao');
+  // }
+
   Widget _bodyEmEdicao(context) {
     return Container(
       child: StreamBuilder<List<NoticiaModel>>(
-          stream: bloc.noticiaModelListStream,
+          stream: bloc.noticiaModelListEdicaoStream,
           initialData: [],
           builder: (context, snapshot) {
             if (snapshot.hasError)
@@ -122,7 +186,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
         Expanded(
           flex: 9,
           child: StreamBuilder<List<NoticiaModel>>(
-              stream: bloc.noticiaModelListPublicadasStream,
+              stream: bloc.noticiaModelListPublicadaStream,
               initialData: [],
               builder: (context, snapshot) {
                 if (snapshot.hasError)
@@ -136,7 +200,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage> {
                 }
                 if (snapshot.data.isEmpty) {
                   return Center(
-                    child: Text("Nenhuma notícia criada."),
+                    child: Text("Nenhuma notícia publicada."),
                   );
                 } else {
                   noticiaModelListData = snapshot.data;

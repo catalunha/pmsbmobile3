@@ -31,7 +31,7 @@
     "hash": "gerado pelo dart na leitura local do arquivo"
   },
   "Usuario": {
-    "ID": "mesmo ID do userID do authentication(email/senha)",
+    "comment": "O ID é o mesmo do userId do authentication(email/senha)",
     "nome": "nome-valor",
     "celular": "celular-valor",
     "email": "email-valor",
@@ -41,11 +41,8 @@
       "url": "null || obtida do storage após upload",
       "localPath": "path local do arquivo no celular do usuario."
     },
-    "rotaID": [
-      {
-        "id": "Rota/rotaID",
-        "url": "Rota/rotaID$url"
-      }
+    "routes": [
+      "Rota/rotaID$url"
     ],
     "setorCensitario": {
       "setorCensitarioID": "SetorCensitario/setorCensitarioID",
@@ -88,6 +85,7 @@
   },
   "UsuarioPerfil": {
     "usuario": {
+      "_comment":"UsuarioPerfil.usuario diverge do firebase",
       "usuarioID": "/Usuario/usuarioID",
       "nome": "/Usuario/usuarioID$nome"
     },
@@ -106,6 +104,7 @@
     }
   },
   "QuestionarioProposto": {
+    "_comment":"QuestionarioProposto diverge do firebase,",
     "nome": "nome-valor",
     "eixo": {
       "eixoID": "Eixo/eixoID",
@@ -120,6 +119,7 @@
     "ultimaOrdem": "inteiro com o valor do maior campor ordem das perguntas deste questionario"
   },
   "QuestionarioAplicado": {
+    "_comment":"QuestionarioProposto.setorCensitario não aparece no firebase,",
     "nome": "nome-valor",
     "local": "Local ou Pessoa ou Momento da aplicação.",
     "eixo": {
@@ -135,6 +135,7 @@
       "nome": "/Usuario/usuarioID$nome"
     },
     "aplicou": {
+      "_comment":"difere do firebase",
       "usuarioID": "/Usuario/usuarioID",
       "nome": "/Usuario/usuarioID$nome"
     },
@@ -200,21 +201,30 @@
     "_comment": "idem a Pergunta. Com as devidas alterações."
   },
   "Produto": {
+    "_comment":"difere do firebase",
     "nome": "nome-valor",
     "eixo": {
+      "_comment":"difere do firebase",
       "eixoID": "Eixo/eixoID",
       "nome": "Eixo/eixoID$nome"
     },
     "setorCensitario": {
+      "_comment":"difere do firebase",
       "setorCensitarioID": "SetorCensitario/setorCensitarioID",
       "nome": "SetorCensitario/setorCensitarioID$nome"
     },
     "editou": {
+      "_comment":"difere do firebase",
       "usuarioID": "/Usuario/usuarioID",
       "nome": "/Usuario/usuarioID$nome"
     },
     "modificado": "data-valor",
     "produtoTextoID": "Produto/produtoID/ProdutoTexto/produtoTextoID",
+    "pdf": {
+      "uploadID": "Upload/uploadID",
+      "url": "null || obtida do storage após upload",
+      "localPath": "path local do arquivo no celular do usuario. || null após upload"
+    },
     "arquivo": {
       "uid": {
         "tipo": "imagem || tabela || grafico || mapa",
@@ -246,5 +256,36 @@
       "nome": "/Usuario/usuarioID$nome"
     },
     "textoMarkdown": "textoMarkdown-valor"
+  },
+  "Chat": {
+    "chatID": "ProdutoID || QuestionarioID || ID para outro seguimento",
+    "usuario": {
+      "usuarioID": {
+        "id": true,
+        "nome": "/Usuario/usuarioID$nome",
+        "lido": false
+      }
+    }
+  },
+  "Chat/chatID/ChatMensagem": {
+    "autor": {
+      "id": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "texto": "texto",
+    "enviada": "Firebase timestamp"
+  },
+  "Chat/chatID/ChatNoticacao": {
+    "datahora": "Firebase timestamp",
+    "autor": {
+      "usuarioID": "/Usuario/usuarioID",
+      "nome": "/Usuario/usuarioID$nome"
+    },
+    "titulo": "",
+    "texto": "",
+    "usuario": [
+      "UsuarioID$tokenFCM"
+    ]
   }
 }
+

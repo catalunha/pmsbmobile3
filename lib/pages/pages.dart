@@ -26,12 +26,8 @@ export 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page.dart';
 export 'package:pmsbmibile3/pages/comunicacao/noticia_lida_page.dart';
 
 //produto
-export 'package:pmsbmibile3/pages/produto/produto_arguments.dart';
 export 'package:pmsbmibile3/pages/produto/produto_home_page.dart';
 export 'package:pmsbmibile3/pages/produto/produto_crud_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_texto_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_arquivo_crud_page.dart';
-export 'package:pmsbmibile3/pages/produto/produto_arquivo_list_page.dart';
 
 //pergunta
 export 'package:pmsbmibile3/pages/pergunta/pergunta_home_page.dart';
@@ -57,9 +53,6 @@ export 'package:pmsbmibile3/pages/aplicacao/definir_requisitos_page.dart';
 export 'package:pmsbmibile3/pages/aplicacao/aplicacao_selecionar_questionario_page.dart';
 
 //resposta
-export 'package:pmsbmibile3/pages/resposta/resposta_home_page.dart';
-export 'package:pmsbmibile3/pages/resposta/questionario_resposta_page.dart';
-export 'package:pmsbmibile3/pages/resposta/resposta_questionario_page.dart';
 
 //sintese
 export 'package:pmsbmibile3/pages/sintese/sintese_home_page.dart';
@@ -71,5 +64,6 @@ export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page.dart';
 //controle
 export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
 
-
-
+//chat
+export 'package:pmsbmibile3/pages/chat/chat_page.dart';
+export 'package:pmsbmibile3/pages/chat/chat_lido_page.dart';

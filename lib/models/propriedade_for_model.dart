@@ -1,5 +1,78 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 
+///Trata da gestão de acesso dos usuarios ao google drive
+class UsuarioGoogleDrive {
+  /// se False a function nao criou acesso ou foi alterado o tipo
+  bool atualizar;
+
+  /// Codigo da permissao de acesso daquele usuario aquele arquivo no google drive
+  String permissaoID;
+
+  /// Pode ser escrever/comentar/ler se null o acesso do usuario será retirado.
+  String tipo;
+
+  UsuarioGoogleDrive({this.atualizar, this.permissaoID, this.tipo});
+
+  UsuarioGoogleDrive.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('atualizar')) atualizar = map['atualizar'];
+    if (map.containsKey('permissaoID')) permissaoID = map['permissaoID'];
+    if (map.containsKey('tipo')) tipo = map['tipo'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (atualizar != null) data['atualizar'] = this.atualizar;
+    if (permissaoID != null) data['permissaoID'] = this.permissaoID;
+    if (tipo != null) data['tipo'] = this.tipo;
+    return data;
+  }
+
+  Map<dynamic, dynamic> toMapFirestore() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    data['atualizar'] =
+        this.atualizar ?? Bootstrap.instance.FieldValue.delete();
+    data['permissaoID'] =
+        this.permissaoID ?? Bootstrap.instance.FieldValue.delete();
+    data['tipo'] = this.tipo ?? Bootstrap.instance.FieldValue.delete();
+    return data;
+  }
+}
+
+class GoogleDriveID {
+  String id;
+  String arquivoID;
+  String tipo;
+  
+  String url(){
+    return 'https://docs.google.com/${tipo}/d/${arquivoID}';
+  }
+
+  GoogleDriveID({this.id, this.arquivoID, this.tipo});
+
+  GoogleDriveID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('arquivoID')) arquivoID = map['arquivoID'];
+    if (map.containsKey('tipo')) tipo = map['tipo'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (arquivoID != null) data['arquivoID'] = this.arquivoID;
+    if (tipo != null) data['tipo'] = this.tipo;
+    return data;
+  }
+
+  Map<dynamic, dynamic> toMapFirestore() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    data['id'] = this.id ?? Bootstrap.instance.FieldValue.delete();
+    data['arquivoID'] = this.arquivoID ?? Bootstrap.instance.FieldValue.delete();
+    data['tipo'] =
+        this.tipo ?? Bootstrap.instance.FieldValue.delete();
+    return data;
+  }
+}
+
 class UploadID {
   String uploadID;
   String url;
@@ -113,7 +186,7 @@ class UpdateCollection {
   String document;
   String field;
 
-  UpdateCollection({this.collection, this.document ,this.field});
+  UpdateCollection({this.collection, this.document, this.field});
 
   UpdateCollection.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('collection')) collection = map['collection'];

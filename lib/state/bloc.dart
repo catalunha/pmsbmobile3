@@ -12,11 +12,13 @@ abstract class Bloc<E, S> {
 
   S currentState;
 
-  void dispose() {
+  void dispose() async {
+    await _inputController.drain();
     _inputController?.close();
+    await _outputController.drain();
     _outputController?.close();
   }
-  
+
   S getInitialState();
   Future<void> mapEventToState(E event);
 
@@ -30,5 +32,7 @@ abstract class Bloc<E, S> {
     await mapEventToState(event);
     _outputController.add(currentState);
     print(event.runtimeType);
+    //TODO: Avaliar a inclusão desta forma de ver o event.runtimeType
+    // print('event.runtimeType em ${E.toString()}  = ${event.runtimeType}');
   }
 }

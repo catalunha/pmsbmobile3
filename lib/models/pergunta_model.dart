@@ -1,6 +1,7 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
+import 'package:queries/collections.dart';
 
 class PerguntaAplicadaArquivo {
   final bool key = true;
@@ -133,7 +134,7 @@ class PerguntaAplicadaModel extends PerguntaModel {
   }
 
   bool get referenciasRequitosDefinidas {
-    if (!temRequisitos) return false;
+    if (!temRequisitos) return true;
     for (var requisito in requisitos.values) {
       if (requisito.perguntaID == null) return false;
     }
@@ -172,9 +173,9 @@ class PerguntaAplicadaModel extends PerguntaModel {
     map["observacao"] = observacao;
     if (texto != null) map["texto"] = texto;
     if (numero != null) map["numero"] = numero;
-    if (arquivo != null && arquivo is Map){
+    if (arquivo != null && arquivo is Map) {
       map["arquivo"] = Map<String, dynamic>();
-      for (var item in arquivo.entries){
+      for (var item in arquivo.entries) {
         map["arquivo"][item.value.uploadID] = item.value.toMap();
       }
     }
@@ -208,6 +209,14 @@ class PerguntaModel extends FirestoreModel {
 
   /// Mapa contendo escolhas
   Map<String, Escolha> escolhas;
+
+  Map<String, Escolha> get escolhasOrdenadas {
+    var dicEscolhas = Dictionary.fromMap(escolhas);
+    var escolhasAscOrder = dicEscolhas
+        .orderBy((kv) => kv.value.ordem)
+        .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+    return escolhasAscOrder.toMap();
+  }
 
   int ordem;
 
@@ -336,13 +345,26 @@ class Questionario {
 
   String referencia;
 
+  EixoID eixoID;
+
+  SetorCensitarioID setorCensitarioID;
+
   /// Referencia do questionarioAplicado
-  Questionario(this.id, this.nome, {this.referencia});
+  Questionario(
+    this.id,
+    this.nome, {
+    this.referencia,
+    this.eixoID,
+    this.setorCensitarioID,
+  });
 
   Questionario.fromMap(Map<dynamic, dynamic> map) {
     id = map["id"];
     nome = map["nome"];
     referencia = map["referencia"];
+    if (map["eixoID"] != null) eixoID = EixoID.fromMap(map["eixoID"]);
+    if (map["setorCensitarioID"] != null)
+      setorCensitarioID = SetorCensitarioID.fromMap(map["setorCensitarioID"]);
   }
 
   Map<dynamic, dynamic> toMap() {
@@ -350,6 +372,9 @@ class Questionario {
     if (id != null) map["id"] = id;
     if (nome != null) map["nome"] = nome;
     if (referencia != null) map["referencia"] = referencia;
+    if (eixoID != null) map["eixoID"] = eixoID.toMap();
+    if (setorCensitarioID != null)
+      map["setorCensitarioID"] = setorCensitarioID.toMap();
     return map;
   }
 }
@@ -421,6 +446,11 @@ class Requisito {
       this.perguntaTipo,
       this.escolha,
       this.label});
+
+  @override
+  String toString() {
+    return "Requisito(${referencia}, ${perguntaTipo})";
+  }
 
   Requisito.fromMap(Map<dynamic, dynamic> map) {
     referencia = map["referencia"];

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pendencias_page_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
+import 'package:pmsbmibile3/pages/aplicacao/requisito_list_item_bloc.dart';
 
 //Aplicação 03
 
@@ -25,12 +27,6 @@ class _PendenciasPageState extends State<PendenciasPage> {
     bloc.dispatch(UpdateQuestionarioIDPendenciasPageBlocEvent(
         widget.questionarioAplicadoID));
   }
-
-  //TODO: substituir o preambulo desta pagina
-  String _eixo = "eixo exemplo";
-  String _setor = "setor exemplo";
-  String _questionario = "questionario exemplo";
-  String _local = "local exemplo";
 
   _listaPerguntas() {
     return StreamBuilder<PendenciasPageBlocState>(
@@ -61,35 +57,13 @@ class _PendenciasPageState extends State<PendenciasPage> {
   _bodyTodos(context) {
     return Column(
       children: <Widget>[
-        //TODO: Preambulo()
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Eixo : $_eixo",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Setor censitário: $_setor",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Questionário: $_questionario",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Local: $_local",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
+        Preambulo(
+          eixo: true,
+          setor: true,
+          questionarioID: widget.questionarioAplicadoID,
+          questionarioAplicado: true,
+          referencia: true,
+        ),
         Expanded(
           child: _listaPerguntas(),
         )
@@ -103,7 +77,7 @@ class _PendenciasPageState extends State<PendenciasPage> {
       appBar: AppBar(
         actions: <Widget>[],
         centerTitle: true,
-        title: Text("Pendências"),
+        title: Text("Resumo"),
       ),
       body: _bodyTodos(context),
     );
@@ -125,39 +99,179 @@ class PerguntaAplicadaListItem extends StatelessWidget {
       children: <Widget>[
         ListTile(
           title: Text(_perguntaAplicada.titulo),
-          trailing: IconButton(
-            icon: _perguntaAplicada.temPendencias
-                ? Icon(Icons.clear, color: Colors.red)
-                : Icon(Icons.check, color: Colors.green),
-            onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
-          ),
+          // trailing: IconButton(
+          //   tooltip: 'Pergunta pode ser respondida ?',
+          //   //Sim.
+          //   //Nao. Pois tem pendencia e podem ser:
+          //   //- tem req e nao foi especificada a pergunta req
+          //   //- se tem o req ele pode nao ter sido atendido.
+          //   icon: _perguntaAplicada.temPendencias
+          //       ? Icon(Icons.clear, color: Colors.red)
+          //       : Icon(Icons.check, color: Colors.green),
+          //   onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+          // ),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              IconButton(
+                tooltip: 'Pergunta pode ser respondida ?',
+                icon: _perguntaAplicada.temPendencias
+                    ? Icon(Icons.clear, color: Colors.red)
+                    : Icon(Icons.check, color: Colors.green),
+                onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+              ),
               if (_perguntaAplicada.foiRespondida)
-                Icon(Icons.check)
+                IconButton(
+                  tooltip: 'Pergunta foi respondida ?',
+                  icon: Icon(Icons.thumb_up, color: Colors.green),
+                  onPressed: () {},
+                )
               else
-                Icon(Icons.cancel),
+                IconButton(
+                  tooltip: 'Pergunta foi respondida ?',
+                  icon: Icon(Icons.thumb_down),
+                  onPressed: () {},
+                ),
               if (!_perguntaAplicada.foiRespondida &&
                   _perguntaAplicada.temRespostaValida)
-                Icon(Icons.check)
+                IconButton(
+                  tooltip:
+                      'Pergunta não foi respondida e tem informação válida ?',
+                  icon: Icon(Icons.thumbs_up_down),
+                  onPressed: () {},
+                )
               else
-                Icon(Icons.cancel),
-              if (_perguntaAplicada.temPendencias)
-                Icon(Icons.check)
-              else
-                Icon(Icons.cancel),
-              if (_perguntaAplicada.referenciasRequitosDefinidas)
-                Icon(Icons.check)
-              else
-                Icon(Icons.cancel),
+                IconButton(
+                    tooltip:
+                        'Pergunta não foi respondida e tem informação válida ?',
+                    icon: Icon(Icons.thumb_down),
+                    onPressed: () {}),
+              IconButton(
+                tooltip: 'Requisitos definidos ?',
+                icon: Icon(
+                  Icons.rotate_90_degrees_ccw,
+                  color: _perguntaAplicada.referenciasRequitosDefinidas
+                      ? Colors.green
+                      : Colors.red,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      elevation: 5,
+                      child: ListView(
+                        children: <Widget>[
+                          ListTile(
+                            title: Text("Requisitos"),
+                          ),
+                          for (var item in _perguntaAplicada.requisitos.entries)
+                            RequisitoListItem(item.value),
+                          FlatButton(
+                            child: Text("OK"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class RequisitoListItem extends StatefulWidget {
+  final Requisito requisito;
+
+  const RequisitoListItem(this.requisito, {Key key}) : super(key: key);
+
+  @override
+  _RequisitoListItemState createState() {
+    return _RequisitoListItemState();
+  }
+}
+
+class _RequisitoListItemState extends State<RequisitoListItem> {
+  RequisitoListItemBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc =
+        RequisitoListItemBloc(Bootstrap.instance.firestore, widget.requisito);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<PerguntaAplicadaModel>(
+      stream: bloc.state,
+      builder: (context, snap) {
+        if (snap.hasError) {
+          return Center(
+            child: Text("ERROR"),
+          );
+        }
+        if (!snap.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        bool vencido = false;
+        if (widget.requisito.escolha == null) {
+          vencido = snap.data.foiRespondida;
+        } else {
+          vencido = snap.data.escolhas[widget.requisito.escolha.id].marcada ==
+              widget.requisito.escolha.marcada;
+        }
+        return Container(
+          padding: EdgeInsets.all(4),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text("${snap.data.questionario.nome}"),
+                subtitle: Text("QuestID: ${snap.data.questionario.id}"),
+              ),
+              ListTile(
+                title: Text("${snap.data.questionario.referencia}"),
+                subtitle: Text("Referencia"),
+              ),
+              ListTile(
+                title: Text("${snap.data.titulo}"),
+                subtitle: Text("PergID: ${widget.requisito.perguntaID}"),
+              ),
+              ListTile(
+                title: Text(widget.requisito.perguntaTipo),
+                subtitle: Text("Tipo de pergunta"),
+              ),
+              if (widget.requisito.escolha != null)
+                ListTile(
+                  subtitle: Text(
+                      "Esta escolha marcada como: ${widget.requisito.escolha.marcada}"),
+                  title: Text(
+                      "${snap.data.escolhas[widget.requisito.escolha.id].texto}"),
+                ),
+              ListTile(
+                title: Text(widget.requisito.referencia),
+                subtitle: Text("Referencia id"),
+              ),
+              Icon(
+                vencido ? Icons.check : Icons.close,
+                color: vencido ? Colors.green : Colors.red,
+              ),
+              Divider(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

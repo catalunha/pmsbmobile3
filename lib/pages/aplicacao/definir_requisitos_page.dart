@@ -7,9 +7,13 @@ import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
 // Aplicação 05
 
 class DefinirRequisistosPage extends StatefulWidget {
-  const DefinirRequisistosPage(this.momentoBloc, this.referencia, {Key key})
+  const DefinirRequisistosPage(this.momentoBloc, this.referencia,
+      this.requisitoId, this.perguntaSelecionadaId,
+      {Key key})
       : super(key: key);
   final String referencia;
+  final String requisitoId;
+  final String perguntaSelecionadaId;
   final MomentoAplicacaoPageBloc momentoBloc;
 
   @override
@@ -22,6 +26,9 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
   @override
   void initState() {
     super.initState();
+    Bootstrap.instance.authBloc.perfil.listen((usuario) {
+      bloc.dispatch(UpdateUsuarioDefinirRequisitosPageBlocEvent(usuario));
+    });
     bloc.dispatch(
         UpdateReferenciaDefinirRequisitosPageBlocEvent(widget.referencia));
   }
@@ -39,14 +46,29 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
           return Center(
             child: Text("SEM DADOS"),
           );
+        if (snapshot.data.isFetching) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         final perfungas =
             snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
-        return Column(
-          children: perfungas
-              .map((pergunta) =>
-                  RequisitoRadioTile(widget.momentoBloc, bloc, pergunta))
-              .toList(),
-        );
+
+        return perfungas.length <= 0
+            ? Center(
+                child: Text("Nenhuma pergunta elegivel"),
+              )
+            : Column(
+                children: perfungas
+                    .map((pergunta) => RequisitoRadioTile(
+                          widget.momentoBloc,
+                          bloc,
+                          pergunta,
+                          widget.requisitoId,
+                          widget.perguntaSelecionadaId,
+                        ))
+                    .toList(),
+              );
       },
     );
   }
@@ -97,13 +119,12 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
         actions: <Widget>[],
         centerTitle: true,
-        title: Text("Definindo requisitos"),
+        title: Text("Definindo referencias"),
       ),
       body: ListView(children: <Widget>[
-        _preambulo(),
+        //_preambulo(),
         _RadioTules(),
       ]),
     );
@@ -112,12 +133,15 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
 
 class RequisitoRadioTile extends StatelessWidget {
   const RequisitoRadioTile(this.momentoBloc, this.bloc, this.perguntaAplicada,
+      this.requisitoId, this.perguntaSelecionadaId,
       {Key key})
       : super(key: key);
 
   final DefinirRequisitosPageBloc bloc;
   final MomentoAplicacaoPageBloc momentoBloc;
   final PerguntaAplicadaModel perguntaAplicada;
+  final String requisitoId;
+  final String perguntaSelecionadaId;
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +149,18 @@ class RequisitoRadioTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         momentoBloc.dispatch(SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
-            perguntaAplicada.referencia, perguntaAplicada.id));
+            requisitoId, perguntaAplicada.id));
         Navigator.of(context).pop();
       },
       child: ListTile(
-        title: Text(perguntaAplicada.questionario.nome),
-        subtitle: Text(perguntaAplicada.questionario.referencia),
+        title: Text(
+          "${perguntaSelecionadaId == perguntaAplicada.id ? "(selecionado)" : ""} Questionario: ${perguntaAplicada.questionario.nome} Referencia: ${perguntaAplicada.questionario.referencia}",
+          style: TextStyle(
+              color: perguntaSelecionadaId == perguntaAplicada.id
+                  ? Colors.green
+                  : null),
+        ),
+        subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
       ),
     );
   }

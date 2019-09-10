@@ -46,11 +46,11 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.firebaseapp.pmsb22to.pmsbmibile3"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 28
         multiDexEnabled true
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 13
+        versionName '3.0.6'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     //key
@@ -65,7 +65,7 @@ android {
     buildTypes {
         release {
             // signingConfig signingConfigs.release
-                       signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debug
 
         }
     }

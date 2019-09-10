@@ -1,11 +1,12 @@
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class AplicacaoHomePageBlocState {
-  String usuarioID;
   List<QuestionarioAplicadoModel> questionariosAplicados;
-  String usuarioEixoID;
+
+  UsuarioModel usuario;
 }
 
 class AplicacaoHomePageBlocEvent {}
@@ -15,11 +16,9 @@ class QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent
 
 class UpdateUserIDAplicacaoHomePageBlocEvent
     extends AplicacaoHomePageBlocEvent {
-  final String usuarioID;
+  final UsuarioModel usuario;
 
-  final String usuarioEixoID;
-
-  UpdateUserIDAplicacaoHomePageBlocEvent(this.usuarioID, this.usuarioEixoID);
+  UpdateUserIDAplicacaoHomePageBlocEvent(this.usuario);
 }
 
 class UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent
@@ -48,23 +47,23 @@ class AplicacaoHomePageBloc {
     _inputController.listen(_HandleInput);
   }
 
-  void dispose() {
+  void dispose() async {
+    await _inputController.drain();
     _inputController?.close();
+    await _outputController.drain();
     _outputController?.close();
   }
 
   void _HandleInput(AplicacaoHomePageBlocEvent event) async {
     if (event is UpdateUserIDAplicacaoHomePageBlocEvent) {
-      if (_state.usuarioID != event.usuarioID) {
-        _state.usuarioID = event.usuarioID;
-        _state.usuarioEixoID = event.usuarioEixoID;
-        dispatch(QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent());
-      }
+      _state.usuario = event.usuario;
+      dispatch(QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent());
     }
     if (event is QueryQuestionariosAplicadoListAplicacaoHomePageBlocEvent) {
       _reference
-          .where("aplicador.id", isEqualTo: _state.usuarioID)
-          .where("eixo.id", isEqualTo: _state.usuarioEixoID)
+          .where("aplicador.id", isEqualTo: _state.usuario.id)
+          .where("eixo.id", isEqualTo: _state.usuario.eixoIDAtual.id)
+          .where('setorCensitarioID.id', isEqualTo: _state.usuario.setorCensitarioID.id)
           .snapshots()
           .listen(
         (snapshot) {
@@ -85,7 +84,7 @@ class AplicacaoHomePageBloc {
           .toList();
     }
 
-    _outputController.add(_state);
-    print(event.runtimeType);
+    if (!_outputController.isClosed) _outputController.add(_state);
+    print('event.runtimeType em AplicacaoHomePageBloc  = ${event.runtimeType}');
   }
 }

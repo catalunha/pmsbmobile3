@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +17,13 @@ class LoginRequired extends StatelessWidget {
     @required this.loginPage,
     @required this.splashPage,
     @required this.child,
+    @required this.bloc,
   })  : assert(loadingPage != null),
         assert(loginPage != null),
         assert(splashPage != null),
-        assert(child != null),
-        bloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+        assert(child != null)
+  // bloc = Bootstrap.instance.authBloc
+  ;
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +69,9 @@ class DefaultLoginRequired extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoginRequired(
       splashPage: SplashPage(),
-      loginPage: LoginPage(),
+      loginPage: LoginPage(this.authBloc),
       loadingPage: LoadingPage(),
+      bloc: this.authBloc,
       child: child,
     );
   }

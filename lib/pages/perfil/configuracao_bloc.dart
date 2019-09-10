@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
@@ -125,10 +124,14 @@ class ConfiguracaoPageBloc {
   ConfiguracaoPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
   }
-  void dispose() {
+  void dispose() async {
+    await _eventController.drain();
     _eventController.close();
+    await _stateController.drain();
     _stateController.close();
+    await _usuarioModelController.drain();
     _usuarioModelController.close();
+    await _setorCensitarioModelListController.drain();
     _setorCensitarioModelListController.close();
   }
 
@@ -194,13 +197,14 @@ class ConfiguracaoPageBloc {
       final Map<String, dynamic> usuarioModel = new Map<String, dynamic>();
 
       // UsuarioModel usuarioModel = UsuarioModel(
-        usuarioModel['nome']= _state.nome;
-        usuarioModel['celular']= _state.celular;
-        usuarioModel['foto']= foto.toMapFirestore();
-        usuarioModel['setorCensitarioID']= setorCensitarioID.toMap();
-        usuarioModel['eixoIDAtual']= eixoIDAtual.toMap();
+      usuarioModel['nome'] = _state.nome;
+      usuarioModel['celular'] = _state.celular;
+      usuarioModel['setorCensitarioID'] = setorCensitarioID.toMap();
+      usuarioModel['eixoIDAtual'] = eixoIDAtual.toMap();
       // );
-
+      if (_state.fotoUrl == null) {
+        usuarioModel['foto'] = foto.toMapFirestore();
+      }
       await docRef2.setData(usuarioModel, merge: true);
     }
     if (event is UpdateNomeEvent) {
@@ -223,7 +227,7 @@ class ConfiguracaoPageBloc {
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print('ccc: ProdutoCRUDPageBloc ${event.runtimeType}');
+    // print('>>> _state.toMap() <<< ${_state.toMap()}');
+    print('event.runtimeType em ConfiguracaoPageBloc  = ${event.runtimeType}');
   }
 }

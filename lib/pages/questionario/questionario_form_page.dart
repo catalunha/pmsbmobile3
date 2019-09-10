@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -40,9 +41,10 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
           return ListView(
             children: <Widget>[
               Padding(padding: EdgeInsets.all(5.0)),
-              Center(
-                child: Container(),
-                // child: EixoAtualUsuario(this.authBloc),
+              Preambulo(
+                eixo: true,
+                setor: true,
+                questionarioID: widget.questionarioID,
               ),
               Padding(padding: EdgeInsets.all(5.0)),
               Padding(

@@ -42,8 +42,10 @@ class PerguntaPreviewBloc {
   PerguntaPreviewBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
-  void dispose() {
+  void dispose() async {
+    await _stateController.drain();
     _stateController.close();
+    await _eventController.drain();
     _eventController.close();
   }
 
@@ -67,7 +69,7 @@ class PerguntaPreviewBloc {
     // if (event is UpdatePerguntaIDEvent) {}
     if (!_stateController.isClosed) _stateController.add(_state);
     // print('>>> _state.toMap() <<< ${_state.toMap()}');
-    print(
-        '>>> PerguntaPreviewBloc event.runtimeType <<< ${event.runtimeType}');
+
+    print('event.runtimeType em PerguntaPreviewBloc  = ${event.runtimeType}');
   }
 }

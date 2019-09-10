@@ -1,48 +1,54 @@
 import 'package:flutter/material.dart' show TimeOfDay;
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class ComunicacaoCRUDPageEvent {}
+
 class UpDateUsuarioIDEditorEvent extends ComunicacaoCRUDPageEvent {
   final String usuarioIDEditorId;
 
   UpDateUsuarioIDEditorEvent(this.usuarioIDEditorId);
 }
+
 class UpdateNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   final String noticiaID;
 
   UpdateNoticiaIDEvent(this.noticiaID);
 }
+
 class DeleteNoticiaIDEvent extends ComunicacaoCRUDPageEvent {
   DeleteNoticiaIDEvent();
 }
+
 class UpdateTituloEvent extends ComunicacaoCRUDPageEvent {
   final String titulo;
 
   UpdateTituloEvent(this.titulo);
 }
+
 class UpdateDestinatarioListEvent extends ComunicacaoCRUDPageEvent {
   List<Map<dynamic, dynamic>> destinatarioList = List<Map<dynamic, dynamic>>();
 
   UpdateDestinatarioListEvent(this.destinatarioList);
 }
+
 class UpdatePublicarEvent extends ComunicacaoCRUDPageEvent {
   final DateTime data;
   final TimeOfDay hora;
 
   UpdatePublicarEvent({this.data, this.hora});
 }
+
 class UpdateTextoMarkdownEvent extends ComunicacaoCRUDPageEvent {
   final String textoMarkdown;
 
   UpdateTextoMarkdownEvent(this.textoMarkdown);
 }
+
 class SaveStateToFirebaseEvent extends ComunicacaoCRUDPageEvent {}
 
 class ComunicacaoCRUDPageState {
@@ -56,8 +62,7 @@ class ComunicacaoCRUDPageState {
   DateTime publicar = DateTime.now();
   DateTime data;
   TimeOfDay hora;
-  List<Map<String, dynamic>> destinatarioListMap =
-      List<Map<String, dynamic>>();
+  List<Map<String, dynamic>> destinatarioListMap = List<Map<String, dynamic>>();
 
 /*
 [
@@ -109,7 +114,7 @@ class ComunicacaoCRUDPageState {
     return NoticiaModel(
       usuarioIDEditor: usuarioIDEditor,
       titulo: titulo,
-      publicada: false,
+      // publicada: false,
       textoMarkdown: textoMarkdown,
       usuarioIDDestino: usuarioIDDestino,
       publicar: publicar ?? null,
@@ -118,33 +123,32 @@ class ComunicacaoCRUDPageState {
 }
 
 class ComunicacaoCRUDPageBloc {
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final _firestore = Bootstrap.instance.firestore;
+  final _authBloc =
+      Bootstrap.instance.authBloc;
 
   //Eventos da página
-  final _eventController =
-      BehaviorSubject<ComunicacaoCRUDPageEvent>();
-  Stream<ComunicacaoCRUDPageEvent> get eventStream =>
-      _eventController.stream;
-  Function get eventSink =>
-      _eventController.sink.add;
+  final _eventController = BehaviorSubject<ComunicacaoCRUDPageEvent>();
+  Stream<ComunicacaoCRUDPageEvent> get eventStream => _eventController.stream;
+  Function get eventSink => _eventController.sink.add;
 
   //Estados da página
   final _state = ComunicacaoCRUDPageState();
-  final _stateController =
-      BehaviorSubject<ComunicacaoCRUDPageState>();
-  Stream<ComunicacaoCRUDPageState> get stateStream =>
-      _stateController.stream;
+  final _stateController = BehaviorSubject<ComunicacaoCRUDPageState>();
+  Stream<ComunicacaoCRUDPageState> get stateStream => _stateController.stream;
 
   ComunicacaoCRUDPageBloc() {
     // _authBloc.userId.listen(_dispatchUpdateUserId);
-    _authBloc.userId.listen((userId) =>
-        eventSink(UpDateUsuarioIDEditorEvent(userId)));
+    _authBloc.userId
+        .listen((userId) => eventSink(UpDateUsuarioIDEditorEvent(userId)));
     eventStream.listen(_mapEventToState);
   }
 
-  void dispose() {
+  void dispose() async {
     _authBloc.dispose();
+    await _eventController.drain();
     _eventController.close();
+    await _stateController.drain();
     _stateController.close();
   }
 
@@ -154,7 +158,7 @@ class ComunicacaoCRUDPageBloc {
 
   _mapEventToState(ComunicacaoCRUDPageEvent event) {
     if (event is UpDateUsuarioIDEditorEvent) {
-      Firestore.instance
+      _firestore
           .collection(UsuarioModel.collection)
           .document(event.usuarioIDEditorId)
           .snapshots()
@@ -189,30 +193,12 @@ class ComunicacaoCRUDPageBloc {
         _state.hora = event.hora;
       }
 
-      // print('No event.data: ${event.data.toString()}');
-      // print('No event.hora: ${event.hora.toString()}');
-      // print(
-      // 'No comunicacaoCRUDPageState data: ${comunicacaoCRUDPageState.data.toString()}');
-      // print(
-      // 'No comunicacaoCRUDPageState.hora: ${comunicacaoCRUDPageState.hora.toString()}');
-      // print(
-      // 'No comunicacaoCRUDPageState.publicar: ${comunicacaoCRUDPageState.publicar.toString()}');
       final newDate = DateTime(
-          _state.data != null
-              ? _state.data.year
-              : _state.publicar.year,
-          _state.data != null
-              ? _state.data.month
-              : _state.publicar.month,
-          _state.data != null
-              ? _state.data.day
-              : _state.publicar.day,
-          _state.hora != null
-              ? _state.hora.hour
-              : _state.publicar.hour,
-          _state.hora != null
-              ? _state.hora.minute
-              : _state.publicar.minute);
+          _state.data != null ? _state.data.year : _state.publicar.year,
+          _state.data != null ? _state.data.month : _state.publicar.month,
+          _state.data != null ? _state.data.day : _state.publicar.day,
+          _state.hora != null ? _state.hora.hour : _state.publicar.hour,
+          _state.hora != null ? _state.hora.minute : _state.publicar.minute);
       _state.publicar = newDate;
       // print(
       // 'Após comunicacaoCRUDPageState.publicar: ${comunicacaoCRUDPageState.publicar.toString()}'); // }
@@ -221,13 +207,16 @@ class ComunicacaoCRUDPageBloc {
     if (event is SaveStateToFirebaseEvent) {
       _saveStateToFirebase();
     }
-    return _state;
+
+    if (!_stateController.isClosed) _stateController.add(_state);
+    print(
+        'event.runtimeType em ComunicacaoCRUDPageBloc  = ${event.runtimeType}');
   }
 
   _saveStateToFirebase() {
     final map = _state.toNoticiaModel().toMap();
     // // print(map);
-    final docRef = Firestore.instance
+    final docRef = _firestore
         .collection(NoticiaModel.collection)
         .document(_state.noticiaID);
     // docRef.setData(map, merge: true); // se deixar merge ele amplia a lista e nao exclui.
@@ -235,7 +224,7 @@ class ComunicacaoCRUDPageBloc {
   }
 
   _deleteNoticiaIdEvent() {
-    Firestore.instance
+    _firestore
         .collection(NoticiaModel.collection)
         .document(_state.noticiaID)
         .delete();
@@ -243,10 +232,10 @@ class ComunicacaoCRUDPageBloc {
 
   void _mapUpdateNoticiaIdEvent(UpdateNoticiaIDEvent event) {
     if (event.noticiaID == _state.noticiaID) return;
-    var ref = Firestore.instance
+    var ref = _firestore
         .collection(NoticiaModel.collection)
         .document(event.noticiaID);
-    ref.snapshots().listen((DocumentSnapshot snap) {
+    ref.snapshots().listen((fsw.DocumentSnapshot snap) {
       var noticia = NoticiaModel(id: snap.documentID).fromMap(snap.data);
       _state.fromNoticiaModel(noticia);
       _stateController.sink.add(_state);

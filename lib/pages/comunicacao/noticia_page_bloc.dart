@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/api/auth_api_mobile.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
@@ -35,7 +34,8 @@ class NoticiaPageBloc {
   final fsw.Firestore firestore;
 
   // Authenticacação
-  final _authBloc = AuthBloc(AuthApiMobile(), Bootstrap.instance.firestore);
+  final _authBloc =
+      Bootstrap.instance.authBloc;
 
   //Evento
   final _noticiaPageEventController = BehaviorSubject<NoticiaPageEvent>();
@@ -78,10 +78,12 @@ class NoticiaPageBloc {
         .listen((userId) => noticiaPageEventSink(UpdateUsuarioIDEvent(userId)));
   }
 
-  void dispose() {
+  void dispose() async {
+    await _noticiaPageEventController.drain();
     _noticiaPageEventController.close();
+    await _noticiaPageStateController.drain();
     _noticiaPageStateController.close();
-    // _usuarioNoticiaModelListController.close();
+    await _noticiaModelListController.drain();
     _noticiaModelListController.close();
     firestoreSubscription?.cancel();
   }
@@ -109,8 +111,7 @@ class NoticiaPageBloc {
               isEqualTo: true)
           .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.visualizada",
               isEqualTo: visualizada)
-          // .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.publicar",
-          //     isGreaterThanOrEqualTo: DateTime.now())
+          .where("publicar", isLessThan: DateTime.now().toUtc())
           .snapshots()
           .map((snap) => snap.documents
               .map((doc) => NoticiaModel(id: doc.documentID).fromMap(doc.data))
