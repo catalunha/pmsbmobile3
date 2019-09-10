@@ -3,27 +3,32 @@ import 'package:pmsbmibile3/bootstrap.dart';
 ///Trata da gestão de acesso dos usuarios ao google drive
 class UsuarioGoogleDrive {
   /// se False a function nao criou acesso ou foi alterado o tipo
-  bool atualizar;
+  bool atualizar=false;
 
   /// Codigo da permissao de acesso daquele usuario aquele arquivo no google drive
   String permissaoID;
 
   /// Pode ser escrever/comentar/ler se null o acesso do usuario será retirado.
-  String tipo;
+  String permissao;
 
-  UsuarioGoogleDrive({this.atualizar, this.permissaoID, this.tipo});
+  /// o ID do usuario na Collection Usuario
+  String usuarioID;
+
+  UsuarioGoogleDrive({this.atualizar, this.permissaoID, this.permissao,this.usuarioID});
 
   UsuarioGoogleDrive.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('atualizar')) atualizar = map['atualizar'];
     if (map.containsKey('permissaoID')) permissaoID = map['permissaoID'];
-    if (map.containsKey('tipo')) tipo = map['tipo'];
+    if (map.containsKey('permissao')) permissao = map['permissao'];
+    if (map.containsKey('usuarioID')) usuarioID = map['usuarioID'];
   }
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (atualizar != null) data['atualizar'] = this.atualizar;
     if (permissaoID != null) data['permissaoID'] = this.permissaoID;
-    if (tipo != null) data['tipo'] = this.tipo;
+    if (permissao != null) data['permissao'] = this.permissao;
+    if (usuarioID != null) data['usuarioID'] = this.usuarioID;
     return data;
   }
 
@@ -33,7 +38,8 @@ class UsuarioGoogleDrive {
         this.atualizar ?? Bootstrap.instance.FieldValue.delete();
     data['permissaoID'] =
         this.permissaoID ?? Bootstrap.instance.FieldValue.delete();
-    data['tipo'] = this.tipo ?? Bootstrap.instance.FieldValue.delete();
+    data['permissao'] = this.permissao ?? Bootstrap.instance.FieldValue.delete();
+    data['usuarioID'] = this.usuarioID ?? Bootstrap.instance.FieldValue.delete();
     return data;
   }
 }
