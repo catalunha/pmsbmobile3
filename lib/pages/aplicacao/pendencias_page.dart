@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pendencias_page_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
@@ -26,12 +27,6 @@ class _PendenciasPageState extends State<PendenciasPage> {
     bloc.dispatch(UpdateQuestionarioIDPendenciasPageBlocEvent(
         widget.questionarioAplicadoID));
   }
-
-  //TODO: substituir o preambulo desta pagina
-  String _eixo = "eixo exemplo";
-  String _setor = "setor exemplo";
-  String _questionario = "questionario exemplo";
-  String _local = "local exemplo";
 
   _listaPerguntas() {
     return StreamBuilder<PendenciasPageBlocState>(
@@ -62,35 +57,13 @@ class _PendenciasPageState extends State<PendenciasPage> {
   _bodyTodos(context) {
     return Column(
       children: <Widget>[
-        //TODO: Preambulo()
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Eixo : $_eixo",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Setor censitário: $_setor",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Questionário: $_questionario",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
-//        Padding(
-//          padding: EdgeInsets.only(top: 10),
-//          child: Text(
-//            "Local: $_local",
-//            style: TextStyle(fontSize: 16, color: Colors.blue),
-//          ),
-//        ),
+        Preambulo(
+          eixo: true,
+          setor: true,
+          questionarioID: widget.questionarioAplicadoID,
+          questionarioAplicado: true,
+          referencia: true,
+        ),
         Expanded(
           child: _listaPerguntas(),
         )
