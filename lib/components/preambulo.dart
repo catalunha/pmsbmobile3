@@ -61,15 +61,12 @@ class _PreambuloState extends State<Preambulo> {
         builder: (context, snapshot) {
           return Column(
             children: <Widget>[
-                PreambuloTexto(
-                    "${widget.eixo? snapshot.data?.usuario?.eixoIDAtual?.nome: ""} - ${widget.setor? snapshot.data?.usuario?.setorCensitarioID?.nome: ""}"),
-
+              PreambuloTexto(
+                  "${widget.eixo ? snapshot.data?.usuario?.eixoIDAtual?.nome : ""} - ${widget.setor ? snapshot.data?.usuario?.setorCensitarioID?.nome : ""}"),
               if (widget.questionarioID != null)
-                PreambuloTexto(
-                    "Q: ${snapshot.data?.questionario?.nome}"),
+                PreambuloTexto("Q: ${snapshot.data?.questionario?.nome}"),
               if (widget.referencia && widget.questionarioID != null)
-                PreambuloTexto(
-                    "R: ${snapshot.data?.questionario?.referencia}"),
+                PreambuloTexto("R: ${snapshot.data?.questionario?.referencia}"),
             ],
           );
         });
@@ -98,25 +95,26 @@ class PreambuloBloc {
       _state.usuario = usuario;
       _outputController.add(_state);
     });
-
-    final collection = _questionarioAplicado
-        ? QuestionarioAplicadoModel.collection
-        : QuestionarioModel.collection;
-    _firestore
-        .collection(collection)
-        .document(_questionarioID)
-        .get()
-        .then((doc) {
-      if (_questionarioAplicado) {
-        final q =
-            QuestionarioAplicadoModel(id: doc.documentID).fromMap(doc.data);
-        _state.questionario = q;
-      } else {
-        final q = QuestionarioModel(id: doc.documentID).fromMap(doc.data);
-        _state.questionario = q;
-      }
-      _outputController.add(_state);
-    });
+    if (_questionarioID != null) {
+      final collection = _questionarioAplicado
+          ? QuestionarioAplicadoModel.collection
+          : QuestionarioModel.collection;
+      _firestore
+          .collection(collection)
+          .document(_questionarioID)
+          .get()
+          .then((doc) {
+        if (_questionarioAplicado) {
+          final q =
+              QuestionarioAplicadoModel(id: doc.documentID).fromMap(doc.data);
+          _state.questionario = q;
+        } else {
+          final q = QuestionarioModel(id: doc.documentID).fromMap(doc.data);
+          _state.questionario = q;
+        }
+        _outputController.add(_state);
+      });
+    }
   }
 
   void dispose() {
