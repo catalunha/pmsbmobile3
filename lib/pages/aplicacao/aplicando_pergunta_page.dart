@@ -92,10 +92,11 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
 
   _listaDadosSuperior() {
     return Preambulo(
-      eixo: _eixo,
-      setor: _setor,
-      questionario: _questionario,
-      local: _local,
+      eixo: true,
+      setor: true,
+      questionarioID: widget.questionarioAplicadoID,
+      questionarioAplicado: true,
+      referencia: true,
     );
   }
 
@@ -119,13 +120,16 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 Navigator.pushNamed(context, "/aplicacao/pendencias",
                     arguments: snapshot.data.questionarioAplicadoID);
               },
-              child: Text("Você alcançou o fim do questionário.\nClique aqui para ir ao resumo.",style: TextStyle(fontSize: 26, color: Colors.blue),),
+              child: Text(
+                "Você alcançou o fim do questionário.\nClique aqui para ir ao resumo.",
+                style: TextStyle(fontSize: 26, color: Colors.blue),
+              ),
             ),
           );
         }
         return ListView(
           children: <Widget>[
-//            _listaDadosSuperior(),
+            _listaDadosSuperior(),
             Divider(height: 50, indent: 5, color: Colors.black54),
             Padding(
                 padding: EdgeInsets.all(5),

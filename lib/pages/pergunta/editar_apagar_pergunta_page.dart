@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -46,20 +47,6 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     super.dispose();
   }
 
-  Widget _questionario() {
-    return StreamBuilder<EditarApagarPerguntaBlocState>(
-      stream: bloc.state,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text("ERROR");
-        }
-        if (!snapshot.hasData) {
-          return Text("SEM DADOS");
-        }
-        return _textoTopo("Questionario: ${snapshot.data.questionario?.nome}");
-      },
-    );
-  }
 
   Widget _pergunta() {
     return StreamBuilder<EditarApagarPerguntaBlocState>(
@@ -80,19 +67,6 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     );
   }
 
-  Widget _preambulo() {
-    return Column(
-      children: <Widget>[
-        Center(
-          child:
-              // EixoAtualUsuario()
-              Container(),
-        ),
-        _questionario(),
-        _pergunta(),
-      ],
-    );
-  }
 
   _iconesLista() {
     return Row(
@@ -212,7 +186,12 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
           child: ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
-              // _preambulo(),
+              Preambulo(
+                eixo: true,
+                setor: true,
+                questionarioID: widget.questionarioID,
+              ),
+              _pergunta(),
               Padding(padding: EdgeInsets.all(10)),
               _texto("Tipo da pergunta:"),
               PerguntaTipoInput(bloc),

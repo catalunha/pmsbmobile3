@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -108,6 +109,12 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
   Widget _body(context) {
     return ListView(
       children: <Widget>[
+        Preambulo(
+          eixo: true,
+          setor: true,
+          questionarioID: widget.questionarioAplicadoID,
+          questionarioAplicado: true,
+        ),
         // _listaDadosSuperior(),
         Divider(color: Colors.black87),
         StreamBuilder<MomentoAplicacaoPageBlocState>(
