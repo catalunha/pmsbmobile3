@@ -13,6 +13,9 @@ class GoogleDriveModel extends FirestoreModel {
   /// Representa o tipo que pode ser document/spreadsheets/etc
   String tipo;
 
+  /// Representa a permissão do link compartilhado null/writer/reader. writer seria produto. reader seria relatorio
+  String link;
+
   /// Map de usuarios com informações para gestão de acesso
   Map<String, UsuarioGoogleDrive> usuario;
 
@@ -24,6 +27,7 @@ class GoogleDriveModel extends FirestoreModel {
       this.arquivoID,
       this.criado,
       this.tipo,
+      this.link,
       this.usuario,
       this.updateCollection})
       : super(id);
@@ -33,6 +37,7 @@ class GoogleDriveModel extends FirestoreModel {
     if (map.containsKey('arquivoID')) arquivoID = map['arquivoID'];
     if (map.containsKey('criado')) criado = map['criado'];
     if (map.containsKey('tipo')) tipo = map['tipo'];
+    if (map.containsKey('link')) link = map['link'];
     if (map.containsKey('usuario') && map["usuario"] is Map) {
       usuario = Map<String, UsuarioGoogleDrive>();
       for (var item in map["usuario"].entries) {
@@ -53,6 +58,7 @@ class GoogleDriveModel extends FirestoreModel {
     if (arquivoID != null) data['arquivoID'] = this.arquivoID;
     if (criado != null) data['criado'] = this.criado;
     if (tipo != null) data['tipo'] = this.tipo;
+    if (link != null) data['link'] = this.link;
     if (usuario != null && usuario is Map) {
       data["usuario"] = Map<String, dynamic>();
       for (var item in usuario.entries) {

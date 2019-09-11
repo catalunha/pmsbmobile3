@@ -3,12 +3,12 @@ import 'package:pmsbmibile3/bootstrap.dart';
 ///Trata da gestão de acesso dos usuarios ao google drive
 class UsuarioGoogleDrive {
   /// se False a function nao criou acesso ou foi alterado o tipo
-  bool atualizar=false;
+  bool atualizar;
 
   /// Codigo da permissao de acesso daquele usuario aquele arquivo no google drive
   String permissaoID;
 
-  /// Pode ser escrever/comentar/ler se null o acesso do usuario será retirado.
+  /// Pode ser writer/reader se null o acesso do usuario será retirado.
   String permissao;
 
   /// o ID do usuario na Collection Usuario

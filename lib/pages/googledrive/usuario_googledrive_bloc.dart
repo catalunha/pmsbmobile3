@@ -231,21 +231,21 @@ class UsuarioGoogleDriveBloc {
     }
 
     if (event is SaveProdutoIDEvent) {
-      Map<String, UsuarioGoogleDrive> usuarioGoogleDrive =
-          Map<String, UsuarioGoogleDrive>();
+      Map<String, dynamic> usuarioGoogleDrive =
+          Map<String, dynamic>();
 
       for (var usuario in _state.usuarioList) {
         if (usuario.checked) {
-          usuarioGoogleDrive[usuario.email] = usuario.usuarioGoogleDrive;
+          usuarioGoogleDrive[usuario.email] = usuario.usuarioGoogleDrive.toMap();
         }
       }
-      var googleDriveModel = GoogleDriveModel(
-        usuario: usuarioGoogleDrive,
-      );
+      // var googleDriveModel = GoogleDriveModel(
+      //   usuario: usuarioGoogleDrive,
+      // );
       final docRefGoogleDrive = _firestore
           .collection(GoogleDriveModel.collection)
           .document(_state.googleDriveModel.id);
-      await docRefGoogleDrive.setData(googleDriveModel.toMap());
+      await docRefGoogleDrive.setData({'usuario':usuarioGoogleDrive},merge: true);
     }
 
     if (!_stateController.isClosed) stateSink(_state);
