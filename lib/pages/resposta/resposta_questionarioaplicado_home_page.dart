@@ -60,7 +60,7 @@ class _RespostaQuestionarioAplicadoHomePageState
             : [];
         return ListView(
           children:
-              questionarios.map((q) => QuestionarioAplicadoItem(q)).toList(),
+              questionarios.map((q) => QuestionarioAplicadoItem(bloc,q)).toList(),
         );
       },
     );
@@ -120,8 +120,8 @@ class _CardText extends StatelessWidget {
 
 class QuestionarioAplicadoItem extends StatelessWidget {
   final QuestionarioAplicadoModel _questionario;
-
-  const QuestionarioAplicadoItem(this._questionario, {Key key})
+final RespostaQuestionarioAplicadoHomeBloc bloc;
+  const QuestionarioAplicadoItem(this.bloc,this._questionario, {Key key})
       : super(key: key);
 
   @override
@@ -154,6 +154,12 @@ class QuestionarioAplicadoItem extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushNamed(context, "/resposta/pergunta",
                           arguments: _questionario.id);
+                    },
+                  ),                  IconButton(
+                    tooltip: 'Google Docs das respostas',
+                    icon: Icon(Icons.book),
+                    onPressed: () {
+                      bloc.eventSink(CreateRelatorioEvent(_questionario));
                     },
                   ),
                 ],
