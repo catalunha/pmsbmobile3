@@ -120,25 +120,25 @@ class RespostaQuestionarioAplicadoHomeBloc {
       relatorio['collection'] = 'QuestionarioAplicado';
       relatorio['document'] = event.questionarioID.id;
 
-      QuestionarioAplicadoModel questionarioAplicadoModel =
+      QuestionarioAplicadoModel questionarioAplicado =
           event.questionarioID;
       Map<String, String> cabecalho = Map<String, String>();
-      cabecalho['questionarioAplicadoModel.nome'] =
-          questionarioAplicadoModel.nome;
-      cabecalho['questionarioAplicadoModel.referencia'] =
-          questionarioAplicadoModel.referencia;
-      cabecalho['questionarioAplicadoModel.eixo.nome'] =
-          questionarioAplicadoModel.eixo.nome;
-      cabecalho['questionarioAplicadoModel.setorCensitarioID.nome'] =
-          questionarioAplicadoModel.setorCensitarioID.nome;
-      cabecalho['questionarioAplicadoModel.aplicador.nome'] =
-          questionarioAplicadoModel.aplicador.nome;
-      // cabecalho['questionarioAplicadoModel.aplicado']=questionarioAplicadoModel.aplicado;
-      relatorio['questionarioAplicadoModel'] = cabecalho;
+      cabecalho['questionarioAplicado.nome'] =
+          questionarioAplicado.nome;
+      cabecalho['questionarioAplicado.referencia'] =
+          questionarioAplicado.referencia;
+      cabecalho['questionarioAplicado.eixo.nome'] =
+          questionarioAplicado.eixo.nome;
+      cabecalho['questionarioAplicado.setorCensitarioID.nome'] =
+          questionarioAplicado.setorCensitarioID.nome;
+      cabecalho['questionarioAplicado.aplicador.nome'] =
+          questionarioAplicado.aplicador.nome;
+      // cabecalho['questionarioAplicado.aplicado']=questionarioAplicado.aplicado;
+      relatorio['questionarioAplicado'] = cabecalho;
 
       final perguntasRef = _firestore
           .collection(PerguntaAplicadaModel.collection)
-          .where("questionario.id", isEqualTo: questionarioAplicadoModel.id)
+          .where("questionario.id", isEqualTo: questionarioAplicado.id)
           .orderBy("ordem", descending: false);
 
       final fsw.QuerySnapshot perguntasSnapshot =
@@ -151,15 +151,15 @@ class RespostaQuestionarioAplicadoHomeBloc {
       List<Map<String, dynamic>> perguntaAplicadaList =
           List<Map<String, dynamic>>();
 
-      int contador = 1;
       for (var pergunta in perguntasList) {
         Map<String, dynamic> perguntaAplicada = Map<String, dynamic>();
 
-        perguntaAplicada['pergunta.numero'] = contador++;
+        perguntaAplicada['pergunta.ordem'] = pergunta.ordem;
         perguntaAplicada['pergunta.titulo'] = pergunta.titulo;
         perguntaAplicada['pergunta.textoMarkdown'] = pergunta.textoMarkdown;
         perguntaAplicada['pergunta.observacao'] = pergunta.observacao;
         perguntaAplicada['pergunta.tipo.nome'] = pergunta.tipo.nome;
+        perguntaAplicada['pergunta.tipo'] = pergunta.tipo.id;
 
         perguntaAplicada['pergunta.id'] = pergunta.id;
         perguntaAplicada['pergunta.temPendencias'] =
@@ -190,13 +190,12 @@ class RespostaQuestionarioAplicadoHomeBloc {
         //+++ imagem
         if (pergunta.tipo.id == 'imagem') {
           if (pergunta.arquivo != null && pergunta.arquivo.isNotEmpty) {
-            // Map<String, String> anexo = Map<String, String>();
+            Map<String, String> anexo = Map<String, String>();
             for (var item in pergunta.arquivo.entries) {
-              // anexo[item.key]=item.value.url;
-              perguntaAplicada['pergunta.imagem'][item.key] = item.value.url;
+              anexo[item.key] = item.value.url;
+              // perguntaAplicada['pergunta.imagem'][item.key] = item.value.url;
             }
-            // perguntaAplicada['pergunta.imagem']=anexo;
-
+            perguntaAplicada['pergunta.imagem'] = anexo;
           } else {
             perguntaAplicada['pergunta.imagem'] = 'Nada informado.';
           }
@@ -205,13 +204,12 @@ class RespostaQuestionarioAplicadoHomeBloc {
         //+++ arquivo
         if (pergunta.tipo.id == 'arquivo') {
           if (pergunta.arquivo != null && pergunta.arquivo.isNotEmpty) {
-            // Map<String, String> anexo = Map<String, String>();
+            Map<String, String> anexo = Map<String, String>();
             for (var item in pergunta.arquivo.entries) {
-              // anexo[item.key]=item.value.url;
-              perguntaAplicada['pergunta.arquivo'][item.key] = item.value.url;
+              anexo[item.key] = item.value.url;
+              // perguntaAplicada['pergunta.arquivo'][item.key] = item.value.url;
             }
-            // perguntaAplicada['pergunta.arquivo']=anexo;
-
+            perguntaAplicada['pergunta.arquivo'] = anexo;
           } else {
             perguntaAplicada['pergunta.arquivo'] = 'Nada informado.';
           }
@@ -243,14 +241,18 @@ class RespostaQuestionarioAplicadoHomeBloc {
                 .toDictionary$1((kv) => kv.key, (kv) => kv.value);
             print(escolhasAscOrder.toMap());
             Map<String, Escolha> escolhaMap = escolhasAscOrder.toMap();
-
+            Map<String, String> anexo = Map<String, String>();
+            int contador = 1;
             for (var item in escolhaMap.entries) {
-              if(item?.key != null){
-              String marcada = item.value.marcada ? 'X' : '';
-              perguntaAplicada['pergunta.escolha'][item.key] =
-                  '[${marcada}] ${item.value.texto}';
+              if (item?.key != null) {
+                String marcada = item.value.marcada ? 'X' : '';
+                anexo[contador.toString()] = '[${marcada}] ${item.value.texto}';
+                contador++;
+                // perguntaAplicada['pergunta.escolha'][item.key] =
+                //     '[${marcada}] ${item.value.texto}';
               }
             }
+            perguntaAplicada['pergunta.escolha'] = anexo;
           } else {
             perguntaAplicada['pergunta.escolha'] = 'Nada informado.';
           }
