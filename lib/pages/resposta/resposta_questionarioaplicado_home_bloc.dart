@@ -1,6 +1,5 @@
-import 'package:pmsbmibile3/models/google_drive_model.dart';
+
 import 'package:pmsbmibile3/models/pergunta_model.dart';
-import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:queries/collections.dart';
@@ -22,6 +21,12 @@ class CreateRelatorioEvent extends RespostaQuestionarioAplicadoHomeEvent {
   final QuestionarioAplicadoModel questionarioID;
 
   CreateRelatorioEvent(this.questionarioID);
+}
+
+class CreatePDFEvent extends RespostaQuestionarioAplicadoHomeEvent {
+  final QuestionarioAplicadoModel questionarioID;
+
+  CreatePDFEvent(this.questionarioID);
 }
 
 class RespostaQuestionarioAplicadoHomeState {
@@ -105,7 +110,7 @@ class RespostaQuestionarioAplicadoHomeBloc {
         // print('>>> questionarioAplicadoList <<< ${questionarioAplicadoList.toString()}');
         // questionarioAplicadoListSink(questionarioAplicadoList);
         _state.questionariosAplicados = questionarioAplicadoList;
-        // if (!_stateController.isClosed) _stateController.add(_state);
+        if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
     if (event is CreateRelatorioEvent) {
@@ -120,11 +125,9 @@ class RespostaQuestionarioAplicadoHomeBloc {
       relatorio['collection'] = 'QuestionarioAplicado';
       relatorio['document'] = event.questionarioID.id;
 
-      QuestionarioAplicadoModel questionarioAplicado =
-          event.questionarioID;
+      QuestionarioAplicadoModel questionarioAplicado = event.questionarioID;
       Map<String, String> cabecalho = Map<String, String>();
-      cabecalho['questionarioAplicado.nome'] =
-          questionarioAplicado.nome;
+      cabecalho['questionarioAplicado.nome'] = questionarioAplicado.nome;
       cabecalho['questionarioAplicado.referencia'] =
           questionarioAplicado.referencia;
       cabecalho['questionarioAplicado.eixo.nome'] =
@@ -220,7 +223,7 @@ class RespostaQuestionarioAplicadoHomeBloc {
           if (pergunta.coordenada != null && pergunta.coordenada.isNotEmpty) {
             int coord = 1;
             for (var item in pergunta.coordenada) {
-              perguntaAplicada['pergunta.arquivo'][coord++] =
+              perguntaAplicada['pergunta.coordenada'][coord++] =
                   '(${item.latitude},${item.longitude})';
             }
           } else {
@@ -263,6 +266,10 @@ class RespostaQuestionarioAplicadoHomeBloc {
       relatorio['perguntaAplicadaList'] = perguntaAplicadaList;
 
       await docRef.setData(relatorio, merge: true);
+    }
+
+    if (event is CreatePDFEvent) {
+
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);

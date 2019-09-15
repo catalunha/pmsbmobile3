@@ -5,6 +5,8 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/resposta/resposta_questionarioaplicado_home_bloc.dart';
 import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:pmsbmibile3/services/gerador_pdf_service.dart';
+import 'package:pmsbmibile3/services/pdf_create_service.dart';
+import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class RespostaQuestionarioAplicadoHomePage extends StatefulWidget {
@@ -59,8 +61,9 @@ class _RespostaQuestionarioAplicadoHomePageState
             ? snapshot.data.questionariosAplicados
             : [];
         return ListView(
-          children:
-              questionarios.map((q) => QuestionarioAplicadoItem(bloc,q)).toList(),
+          children: questionarios
+              .map((q) => QuestionarioAplicadoItem(bloc, q))
+              .toList(),
         );
       },
     );
@@ -120,8 +123,8 @@ class _CardText extends StatelessWidget {
 
 class QuestionarioAplicadoItem extends StatelessWidget {
   final QuestionarioAplicadoModel _questionario;
-final RespostaQuestionarioAplicadoHomeBloc bloc;
-  const QuestionarioAplicadoItem(this.bloc,this._questionario, {Key key})
+  final RespostaQuestionarioAplicadoHomeBloc bloc;
+  const QuestionarioAplicadoItem(this.bloc, this._questionario, {Key key})
       : super(key: key);
 
   @override
@@ -144,7 +147,8 @@ final RespostaQuestionarioAplicadoHomeBloc bloc;
                     icon: Icon(Icons.picture_as_pdf),
                     onPressed: () async {
                       var mdtext = await GeradorMdService
-                          .generateMdFromQuestionarioAplicadoModel(_questionario);
+                          .generateMdFromQuestionarioAplicadoModel(
+                              _questionario);
                       GeradorPdfService.generatePdfFromMd(mdtext);
                     },
                   ),
@@ -155,11 +159,21 @@ final RespostaQuestionarioAplicadoHomeBloc bloc;
                       Navigator.pushNamed(context, "/resposta/pergunta",
                           arguments: _questionario.id);
                     },
-                  ),                  IconButton(
+                  ),
+                  IconButton(
                     tooltip: 'Google Docs das respostas',
                     icon: Icon(Icons.book),
                     onPressed: () {
                       bloc.eventSink(CreateRelatorioEvent(_questionario));
+                    },
+                  ),
+                  IconButton(
+                    tooltip: 'PDF direto.',
+                    icon: Icon(Icons.perm_device_information),
+                    onPressed: () async {
+                      var pdf = await PdfCreateService
+                          .createPdfForQuestionarioAplicadoModel(_questionario);
+                      PdfSaveService.generatePdfAndOpen(pdf);
                     },
                   ),
                 ],

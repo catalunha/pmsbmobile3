@@ -325,4 +325,7 @@ Informações: ${temPendencias}. ${foiRespondida}. ${informada}. Tipo: ${pergunt
     //Fim pergunta
     return tudo.toString();
   }
+
+
+  
 }
