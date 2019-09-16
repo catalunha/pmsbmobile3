@@ -1,5 +1,27 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 
+
+
+class ControleTarefaID {
+  String id;
+  String nome;
+
+  ControleTarefaID({this.id, this.nome});
+
+  ControleTarefaID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('nome')) nome = map['nome'];
+  }
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (nome != null) data['nome'] = this.nome;
+    return data;
+  }
+}
+
+
 ///Trata da gestão de acesso dos usuarios ao google drive
 class UsuarioGoogleDrive {
   /// se False a function nao criou acesso ou foi alterado o tipo
