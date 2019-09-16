@@ -142,34 +142,34 @@ class QuestionarioAplicadoItem extends StatelessWidget {
             ButtonTheme.bar(
               child: ButtonBar(
                 children: <Widget>[
+                  // IconButton(
+                  //   tooltip: 'Lista das respostas em PDF',
+                  //   icon: Icon(Icons.picture_as_pdf),
+                  //   onPressed: () async {
+                  //     var mdtext = await GeradorMdService
+                  //         .generateMdFromQuestionarioAplicadoModel(
+                  //             _questionario);
+                  //     GeradorPdfService.generatePdfFromMd(mdtext);
+                  //   },
+                  // ),
                   IconButton(
-                    tooltip: 'Lista das respostas em PDF',
-                    icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () async {
-                      var mdtext = await GeradorMdService
-                          .generateMdFromQuestionarioAplicadoModel(
-                              _questionario);
-                      GeradorPdfService.generatePdfFromMd(mdtext);
-                    },
-                  ),
-                  IconButton(
-                    tooltip: 'Lista das respostas em tela',
+                    tooltip: 'Relatorio em tela',
                     icon: Icon(Icons.text_fields),
                     onPressed: () {
                       Navigator.pushNamed(context, "/resposta/pergunta",
                           arguments: _questionario.id);
                     },
                   ),
+                  // IconButton(
+                  //   tooltip: 'Google Docs das respostas',
+                  //   icon: Icon(Icons.book),
+                  //   onPressed: () {
+                  //     bloc.eventSink(CreateRelatorioEvent(_questionario));
+                  //   },
+                  // ),
                   IconButton(
-                    tooltip: 'Google Docs das respostas',
-                    icon: Icon(Icons.book),
-                    onPressed: () {
-                      bloc.eventSink(CreateRelatorioEvent(_questionario));
-                    },
-                  ),
-                  IconButton(
-                    tooltip: 'PDF direto.',
-                    icon: Icon(Icons.perm_device_information),
+                    tooltip: 'Relatorio em PDF.',
+                    icon: Icon(Icons.picture_as_pdf),
                     onPressed: () async {
                       var pdf = await PdfCreateService
                           .createPdfForQuestionarioAplicadoModel(_questionario);

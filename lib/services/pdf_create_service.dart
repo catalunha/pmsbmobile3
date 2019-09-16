@@ -8,6 +8,7 @@ import 'package:pdf/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:image/image.dart' as image;
+import 'package:url_launcher/url_launcher.dart';
 
 class PdfCreateService {
   static fsw.Firestore _firestore = Bootstrap.instance.firestore;
@@ -150,7 +151,8 @@ class PdfCreateService {
       //--- escolhas
       perguntaAplicadaList.add(perguntaAplicada);
     }
-
+    List<List<String>> tabela = List<List<String>>();
+    tabela.add(['Pergunta', 'Respondida']);
     pdf.addPage(MultiPage(
         pageFormat:
             PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
@@ -228,11 +230,17 @@ class PdfCreateService {
               itens.add(Paragraph(text: '${pergunta['pergunta.numero']}'));
             }
             if (pergunta['pergunta.tipo'] == 'arquivo') {
-              if (pergunta['pergunta.arquivo'].runtimeType == Map()) {
+              if (pergunta['pergunta.imagem'].runtimeType != String) {
                 Map<String, dynamic> anexo = pergunta['pergunta.arquivo'];
+                int contador = 1;
                 for (var item in anexo.entries) {
-                  itens.add(Bullet(text: '${item.value}'));
-                  // itens.add(AnnotationLink('${item.value}'));
+                  itens.add(UrlLink(
+                      child: Bullet(
+                          text:
+                              'Arquivo ${contador.toString()}. Click para visualizar.',
+                          bulletColor: PdfColors.blue),
+                      destination: '${item.value}'));
+                  contador++;
                 }
               } else {
                 itens.add(Paragraph(text: '${pergunta['pergunta.arquivo']}'));
@@ -241,21 +249,15 @@ class PdfCreateService {
             if (pergunta['pergunta.tipo'] == 'imagem') {
               if (pergunta['pergunta.imagem'].runtimeType != String) {
                 Map<String, dynamic> anexo = pergunta['pergunta.imagem'];
+                int contador = 1;
                 for (var item in anexo.entries) {
-                  itens.add(Bullet(text: '${item.value}'));
-
-                  // final img =
-                  //     image.decodeImage(File(item.value).readAsBytesSync());
-                  // final pdfImage = PdfImage(
-                  //   pdf.document,
-                  //   image: img.data.buffer.asUint8List(),
-                  //   width: img.width,
-                  //   height: img.height,
-                  // );
-                  // itens.add(Center(
-                  //   child: Image(pdfImage),
-                  // ));
-                  // itens.add(AnnotationLink('${item.value}'));
+                  itens.add(UrlLink(
+                      child: Bullet(
+                          text:
+                              'Imagem ${contador.toString()}. Click para visualizar.',
+                          bulletColor: PdfColors.blue),
+                      destination: '${item.value}'));
+                  contador++;
                 }
               } else {
                 itens.add(Paragraph(text: '${pergunta['pergunta.imagem']}'));
@@ -274,55 +276,35 @@ class PdfCreateService {
               }
             }
 
-           if (pergunta['pergunta.tipo'] == 'escolhaunica' ||
-            pergunta['pergunta.tipo'] == 'escolhamultipla') {
+            if (pergunta['pergunta.tipo'] == 'escolhaunica' ||
+                pergunta['pergunta.tipo'] == 'escolhamultipla') {
               if (pergunta['pergunta.escolha'].runtimeType != String) {
                 Map<String, dynamic> anexo = pergunta['pergunta.escolha'];
                 for (var item in anexo.entries) {
                   itens.add(Bullet(text: '${item.value}'));
                 }
               } else {
-                itens
-                    .add(Paragraph(text: '${pergunta['pergunta.escolha']}'));
+                itens.add(Paragraph(text: '${pergunta['pergunta.escolha']}'));
               }
             }
 
-                itens
-                    .add(Paragraph(text: 'Observação: ${pergunta['pergunta.observacao']}'));
-                itens
-                    .add(Paragraph(text: 'Outras informações importantes: '));
-                  itens.add(Bullet(text: '${pergunta['pergunta.foiRespondida']}'));
-                  itens.add(Bullet(text: '${pergunta['pergunta.temRespostaValida']}'));
-                  itens.add(Bullet(text: '${pergunta['pergunta.temPendencias']}'));
-                  itens.add(Bullet(text: 'Id: ${pergunta['pergunta.id']}'));
-
+            itens.add(Paragraph(text: 'Outras informações importantes: '));
+            itens.add(
+                Bullet(text: 'Observação: ${pergunta['pergunta.observacao']}'));
+            itens.add(Bullet(text: '${pergunta['pergunta.foiRespondida']}'));
+            itens
+                .add(Bullet(text: '${pergunta['pergunta.temRespostaValida']}'));
+            itens.add(Bullet(text: '${pergunta['pergunta.temPendencias']}'));
+            itens.add(Bullet(text: 'Id: ${pergunta['pergunta.id']}'));
+            tabela.add(<String>[
+              '${pergunta['pergunta.ordem']} - ${pergunta['pergunta.titulo']}',
+              '${pergunta['pergunta.foiRespondida']}'
+            ]);
           } // Fim perguntaAplicadaList
-
-          // List<Widget> itens = <Widget>[
-          //     Header(
-          //         level: 0,
-          //         child: Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //             children: <Widget>[
-          //               Text('Relatório de Questionário Aplicado2',
-          //                   textScaleFactor: 2),
-          //               // FlutterLogo()
-          //             ])),
-          //     Header(level: 1, text: 'Questionario nome...'),
-          //     Header(level: 2, text: 'Questionario referencia...'),
-          //     Paragraph(
-          //         text:
-          //             'dados'),
-          //     Bullet(
-          //         text:
-          //             'A subset of the PostScript page description programming language, for generating the layout and graphics.'),
-          //     Table.fromTextArray(context: context, data: const <List<String>>[
-          //       <String>['Date', 'PDF Version', 'Acrobat Version'],
-          //       <String>['1993', 'PDF 1.0', 'Acrobat 1'],
-
-          //     ]),
-          //   ];
-
+          itens.add(Padding(padding: const EdgeInsets.all(20)));
+          itens.add(Paragraph(text: 'Resumo: '));
+          itens.add(
+              Table.fromTextArray(context: context, data: tabela.toList()));
           return itens;
         }));
 
