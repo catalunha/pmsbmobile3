@@ -9,6 +9,7 @@ class ControleTarefaModel extends FirestoreModel {
   DateTime fim;
   UsuarioID remetente;
   UsuarioID destinatario;
+  SetorCensitarioID setor;
   int acaoTotal;
   int acaoCumprida;
   bool concluida;

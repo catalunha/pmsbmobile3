@@ -5,9 +5,13 @@ class ControleAcaoModel extends FirestoreModel {
   static final String collection = "ControleAcao";
 
   ControleTarefaID tarefa;
-  String nome;
   UsuarioID remetente;
   UsuarioID destinatario;
+  SetorCensitarioID setor;
+  String referencia;
+  String nome;
+  String url;
+  String observacao;
   bool concluida;
   DateTime modificada;
   int ordem;
