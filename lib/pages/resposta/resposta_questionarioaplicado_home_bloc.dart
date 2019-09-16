@@ -1,5 +1,8 @@
+
+import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:queries/collections.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
@@ -12,6 +15,18 @@ class UpdateUsuarioIDEvent extends RespostaQuestionarioAplicadoHomeEvent {
   final String usuarioID;
 
   UpdateUsuarioIDEvent(this.usuarioID);
+}
+
+class CreateRelatorioEvent extends RespostaQuestionarioAplicadoHomeEvent {
+  final QuestionarioAplicadoModel questionarioID;
+
+  CreateRelatorioEvent(this.questionarioID);
+}
+
+class CreatePDFEvent extends RespostaQuestionarioAplicadoHomeEvent {
+  final QuestionarioAplicadoModel questionarioID;
+
+  CreatePDFEvent(this.questionarioID);
 }
 
 class RespostaQuestionarioAplicadoHomeState {
@@ -77,7 +92,7 @@ class RespostaQuestionarioAplicadoHomeBloc {
         if (!_stateController.isClosed) _stateController.add(_state);
       }
 
-      // le todos os produtos associados e ele, setor e eixo.
+      // le todos os QuestionarioAplicado associados e ele, setor e eixo.
       final streamDocs = _firestore
           .collection(QuestionarioAplicadoModel.collection)
           .where("eixo.id", isEqualTo: _state.usuarioModel.eixoIDAtual.id)
@@ -92,11 +107,169 @@ class RespostaQuestionarioAplicadoHomeBloc {
 
       snapList
           .listen((List<QuestionarioAplicadoModel> questionarioAplicadoList) {
-            // print('>>> questionarioAplicadoList <<< ${questionarioAplicadoList.toString()}');
+        // print('>>> questionarioAplicadoList <<< ${questionarioAplicadoList.toString()}');
         // questionarioAplicadoListSink(questionarioAplicadoList);
         _state.questionariosAplicados = questionarioAplicadoList;
-        // if (!_stateController.isClosed) _stateController.add(_state);
+        if (!_stateController.isClosed) _stateController.add(_state);
       });
+    }
+    if (event is CreateRelatorioEvent) {
+      print(event.questionarioID.id);
+      final docRef = _firestore
+          .collection('HtmlDocxRelatorio')
+          .document(event.questionarioID.id);
+      final Map<String, dynamic> relatorio = new Map<String, dynamic>();
+      relatorio['atualizada'] = false;
+      relatorio['tipo'] = 'RespostaQuestionarioAplicado';
+      relatorio['template'] = 'J8CfGBXBnbQSl7KZMv30';
+      relatorio['collection'] = 'QuestionarioAplicado';
+      relatorio['document'] = event.questionarioID.id;
+
+      QuestionarioAplicadoModel questionarioAplicado = event.questionarioID;
+      Map<String, String> cabecalho = Map<String, String>();
+      cabecalho['questionarioAplicado.nome'] = questionarioAplicado.nome;
+      cabecalho['questionarioAplicado.referencia'] =
+          questionarioAplicado.referencia;
+      cabecalho['questionarioAplicado.eixo.nome'] =
+          questionarioAplicado.eixo.nome;
+      cabecalho['questionarioAplicado.setorCensitarioID.nome'] =
+          questionarioAplicado.setorCensitarioID.nome;
+      cabecalho['questionarioAplicado.aplicador.nome'] =
+          questionarioAplicado.aplicador.nome;
+      // cabecalho['questionarioAplicado.aplicado']=questionarioAplicado.aplicado;
+      relatorio['questionarioAplicado'] = cabecalho;
+
+      final perguntasRef = _firestore
+          .collection(PerguntaAplicadaModel.collection)
+          .where("questionario.id", isEqualTo: questionarioAplicado.id)
+          .orderBy("ordem", descending: false);
+
+      final fsw.QuerySnapshot perguntasSnapshot =
+          await perguntasRef.getDocuments();
+      final perguntasList =
+          perguntasSnapshot.documents.map((fsw.DocumentSnapshot doc) {
+        return PerguntaAplicadaModel(id: doc.documentID).fromMap(doc.data);
+      }).toList();
+
+      List<Map<String, dynamic>> perguntaAplicadaList =
+          List<Map<String, dynamic>>();
+
+      for (var pergunta in perguntasList) {
+        Map<String, dynamic> perguntaAplicada = Map<String, dynamic>();
+
+        perguntaAplicada['pergunta.ordem'] = pergunta.ordem;
+        perguntaAplicada['pergunta.titulo'] = pergunta.titulo;
+        perguntaAplicada['pergunta.textoMarkdown'] = pergunta.textoMarkdown;
+        perguntaAplicada['pergunta.observacao'] = pergunta.observacao;
+        perguntaAplicada['pergunta.tipo.nome'] = pergunta.tipo.nome;
+        perguntaAplicada['pergunta.tipo'] = pergunta.tipo.id;
+
+        perguntaAplicada['pergunta.id'] = pergunta.id;
+        perguntaAplicada['pergunta.temPendencias'] =
+            pergunta.temPendencias ? "Tem pendências" : "Não tem pendências";
+        perguntaAplicada['pergunta.foiRespondida'] =
+            pergunta.foiRespondida ? "Foi respondida" : "Não foi respondida";
+        perguntaAplicada['pergunta.temRespostaValida'] =
+            pergunta.temRespostaValida ? "Tem informação válida" : "";
+
+        //+++ texto
+        if (pergunta.tipo.id == 'texto') {
+          if (pergunta.texto != null) {
+            perguntaAplicada['pergunta.texto'] = pergunta.texto;
+          } else {
+            perguntaAplicada['pergunta.texto'] = 'Nada informado.';
+          }
+        }
+        //--- texto
+        //+++ numero
+        if (pergunta.tipo.id == 'numero') {
+          if (pergunta.numero != null) {
+            perguntaAplicada['pergunta.numero'] = pergunta.numero.toString();
+          } else {
+            perguntaAplicada['pergunta.numero'] = 'Nada informado.';
+          }
+        }
+        //--- numero
+        //+++ imagem
+        if (pergunta.tipo.id == 'imagem') {
+          if (pergunta.arquivo != null && pergunta.arquivo.isNotEmpty) {
+            Map<String, String> anexo = Map<String, String>();
+            for (var item in pergunta.arquivo.entries) {
+              anexo[item.key] = item.value.url;
+              // perguntaAplicada['pergunta.imagem'][item.key] = item.value.url;
+            }
+            perguntaAplicada['pergunta.imagem'] = anexo;
+          } else {
+            perguntaAplicada['pergunta.imagem'] = 'Nada informado.';
+          }
+        }
+        //--- imagem
+        //+++ arquivo
+        if (pergunta.tipo.id == 'arquivo') {
+          if (pergunta.arquivo != null && pergunta.arquivo.isNotEmpty) {
+            Map<String, String> anexo = Map<String, String>();
+            for (var item in pergunta.arquivo.entries) {
+              anexo[item.key] = item.value.url;
+              // perguntaAplicada['pergunta.arquivo'][item.key] = item.value.url;
+            }
+            perguntaAplicada['pergunta.arquivo'] = anexo;
+          } else {
+            perguntaAplicada['pergunta.arquivo'] = 'Nada informado.';
+          }
+        }
+        //--- arquivo
+        //+++ coordenada
+        if (pergunta.tipo.id == 'coordenada') {
+          if (pergunta.coordenada != null && pergunta.coordenada.isNotEmpty) {
+            int coord = 1;
+            for (var item in pergunta.coordenada) {
+              perguntaAplicada['pergunta.coordenada'][coord++] =
+                  '(${item.latitude},${item.longitude})';
+            }
+          } else {
+            perguntaAplicada['pergunta.coordenada'] = 'Nada informado.';
+          }
+        }
+        //--- coordenada
+        //+++ escolhas
+        if (pergunta.tipo.id == 'escolhaunica' ||
+            pergunta.tipo.id == 'escolhamultipla') {
+          if (pergunta.escolhas != null && pergunta.escolhas.isNotEmpty) {
+            var dicEscolhas = Dictionary.fromMap(pergunta.escolhas);
+            var escolhasAscOrder = dicEscolhas
+                // Sort Ascending order by value ordem
+                .orderBy((kv) => kv.value.ordem)
+                // Sort Descending order by value ordem
+                // .orderByDescending((kv) => kv.value.ordem)
+                .toDictionary$1((kv) => kv.key, (kv) => kv.value);
+            print(escolhasAscOrder.toMap());
+            Map<String, Escolha> escolhaMap = escolhasAscOrder.toMap();
+            Map<String, String> anexo = Map<String, String>();
+            int contador = 1;
+            for (var item in escolhaMap.entries) {
+              if (item?.key != null) {
+                String marcada = item.value.marcada ? 'X' : '';
+                anexo[contador.toString()] = '[${marcada}] ${item.value.texto}';
+                contador++;
+                // perguntaAplicada['pergunta.escolha'][item.key] =
+                //     '[${marcada}] ${item.value.texto}';
+              }
+            }
+            perguntaAplicada['pergunta.escolha'] = anexo;
+          } else {
+            perguntaAplicada['pergunta.escolha'] = 'Nada informado.';
+          }
+        }
+        //--- escolhas
+        perguntaAplicadaList.add(perguntaAplicada);
+      }
+      relatorio['perguntaAplicadaList'] = perguntaAplicadaList;
+
+      await docRef.setData(relatorio, merge: true);
+    }
+
+    if (event is CreatePDFEvent) {
+
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);

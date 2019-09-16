@@ -4,13 +4,13 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class GoogleDriveModel extends FirestoreModel {
   static final String collection = "GoogleDrive";
 
-  /// Representa o ID do arquivo q pode ser um document/spreadsheets/etc dentro do google drive
+  /// Criado pela function. Representa o ID do arquivo q pode ser um document/spreadsheets/etc dentro do google drive
   String arquivoID;
 
   /// Criado pela function. Se false a function ainda nao criou o arquvio no gdrive
   bool criado;
 
-  /// Representa o tipo que pode ser document/spreadsheets/etc
+  /// Representa o tipo do documento no google drive que pode ser document/spreadsheets/etc
   String tipo;
 
   /// Map de usuarios com informações para gestão de acesso
@@ -19,11 +19,15 @@ class GoogleDriveModel extends FirestoreModel {
   /// Contem informações do usuario deste arquivo do google drive. Após criado o arquivo no google drive retorar o arquivoID para este update.
   UpdateCollection updateCollection;
 
+  /// O atributo link pode ser do tipo writer/reader conforme necessidade de criacao do link
+  String link;
+
   GoogleDriveModel(
       {String id,
       this.arquivoID,
       this.criado,
       this.tipo,
+      this.link,
       this.usuario,
       this.updateCollection})
       : super(id);
@@ -33,6 +37,7 @@ class GoogleDriveModel extends FirestoreModel {
     if (map.containsKey('arquivoID')) arquivoID = map['arquivoID'];
     if (map.containsKey('criado')) criado = map['criado'];
     if (map.containsKey('tipo')) tipo = map['tipo'];
+    if (map.containsKey('link')) link = map['link'];
     if (map.containsKey('usuario') && map["usuario"] is Map) {
       usuario = Map<String, UsuarioGoogleDrive>();
       for (var item in map["usuario"].entries) {
@@ -53,6 +58,7 @@ class GoogleDriveModel extends FirestoreModel {
     if (arquivoID != null) data['arquivoID'] = this.arquivoID;
     if (criado != null) data['criado'] = this.criado;
     if (tipo != null) data['tipo'] = this.tipo;
+    if (link != null) data['link'] = this.link;
     if (usuario != null && usuario is Map) {
       data["usuario"] = Map<String, dynamic>();
       for (var item in usuario.entries) {
