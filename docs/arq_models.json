@@ -9,7 +9,7 @@
     "nome": "nome-valor"
   },
   "Rota": {
-    "url": "nome-valor"
+    "url": "nome-valor",
   },
   "Perfil": {
     "_comment": "serão uma parte do padrao mime: text | image | application | audio | video ",

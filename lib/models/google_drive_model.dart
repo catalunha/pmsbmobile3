@@ -4,13 +4,13 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class GoogleDriveModel extends FirestoreModel {
   static final String collection = "GoogleDrive";
 
-  /// Representa o ID do arquivo q pode ser um document/spreadsheets/etc dentro do google drive
+  /// Criado pela function. Representa o ID do arquivo q pode ser um document/spreadsheets/etc dentro do google drive
   String arquivoID;
 
   /// Criado pela function. Se false a function ainda nao criou o arquvio no gdrive
   bool criado;
 
-  /// Representa o tipo que pode ser document/spreadsheets/etc
+  /// Representa o tipo do documento no google drive que pode ser document/spreadsheets/etc
   String tipo;
 
   /// Representa a permissão do link compartilhado null/writer/reader. writer seria produto. reader seria relatorio
@@ -21,6 +21,9 @@ class GoogleDriveModel extends FirestoreModel {
 
   /// Contem informações do usuario deste arquivo do google drive. Após criado o arquivo no google drive retorar o arquivoID para este update.
   UpdateCollection updateCollection;
+
+  /// O atributo link pode ser do tipo writer/reader conforme necessidade de criacao do link
+  String link;
 
   GoogleDriveModel(
       {String id,
