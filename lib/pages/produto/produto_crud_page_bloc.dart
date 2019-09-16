@@ -2,7 +2,6 @@ import 'package:pmsbmibile3/models/google_drive_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
-import 'package:pmsbmibile3/models/produto_texto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
@@ -198,7 +197,7 @@ class ProdutoCRUDPageBloc {
         // Criando googledriveCollection
         var googleDriveModel = GoogleDriveModel(
           tipo: 'document',
-          link: 'reader',
+          link: 'writer',
           usuario: usuarioGoogleDrive,
           updateCollection: UpdateCollection(
               collection: ProdutoModel.collection,
