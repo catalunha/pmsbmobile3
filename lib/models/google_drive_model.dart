@@ -22,9 +22,6 @@ class GoogleDriveModel extends FirestoreModel {
   /// Contem informações do usuario deste arquivo do google drive. Após criado o arquivo no google drive retorar o arquivoID para este update.
   UpdateCollection updateCollection;
 
-  /// O atributo link pode ser do tipo writer/reader conforme necessidade de criacao do link
-  String link;
-
   GoogleDriveModel(
       {String id,
       this.arquivoID,
