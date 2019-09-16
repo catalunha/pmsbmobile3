@@ -13,6 +13,9 @@ class GoogleDriveModel extends FirestoreModel {
   /// Representa o tipo do documento no google drive que pode ser document/spreadsheets/etc
   String tipo;
 
+  /// Representa a permissão do link compartilhado null/writer/reader. writer seria produto. reader seria relatorio
+  String link;
+
   /// Map de usuarios com informações para gestão de acesso
   Map<String, UsuarioGoogleDrive> usuario;
 

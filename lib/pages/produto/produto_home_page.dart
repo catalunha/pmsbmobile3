@@ -96,17 +96,17 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
                         }
                       : null,
                 ),
-                                IconButton(
-                  icon: Icon(Icons.people),
-                  tooltip: 'Editar acesso',
-                  onPressed: produto?.googleDrive?.arquivoID != null
-                      ? () {
-                          //Ir para a edição do produto,
-                          Navigator.pushNamed(context, '/googledrive/usuario',
-                      arguments: produto.googleDrive.id);
-                        }
-                      : null,
-                ),
+                //                 IconButton(
+                //   icon: Icon(Icons.people),
+                //   tooltip: 'Editar acesso',
+                //   onPressed: produto?.googleDrive?.arquivoID != null
+                //       ? () {
+                //           //Ir para a edição do produto,
+                //           Navigator.pushNamed(context, '/googledrive/usuario',
+                //       arguments: produto.googleDrive.id);
+                //         }
+                //       : null,
+                // ),
                 IconButton(
                   icon: Icon(Icons.picture_as_pdf),
                   tooltip: 'PDF finalizado do produto.',

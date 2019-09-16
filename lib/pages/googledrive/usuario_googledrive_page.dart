@@ -187,7 +187,7 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                   new Radio(
-                                    value: 'escrever',
+                                    value: 'writer',
                                     groupValue:
                                         usuario.usuarioGoogleDrive?.permissao,
                                     onChanged: (radioValue) {
@@ -199,21 +199,21 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
                                   new Text(
                                     'Escrever',
                                   ),
+                                  // new Radio(
+                                  //   value: 'comentar',
+                                  //   groupValue:
+                                  //       usuario.usuarioGoogleDrive?.permissao,
+                                  //   onChanged: (radioValue) {
+                                  //     bloc.eventSink(ChangePermissaoEvent(
+                                  //         radioValue, usuario.id));
+                                  //   },
+                                  //   activeColor: Colors.green,
+                                  // ),
+                                  // new Text(
+                                  //   'Comentar',
+                                  // ),
                                   new Radio(
-                                    value: 'comentar',
-                                    groupValue:
-                                        usuario.usuarioGoogleDrive?.permissao,
-                                    onChanged: (radioValue) {
-                                      bloc.eventSink(ChangePermissaoEvent(
-                                          radioValue, usuario.id));
-                                    },
-                                    activeColor: Colors.green,
-                                  ),
-                                  new Text(
-                                    'Comentar',
-                                  ),
-                                  new Radio(
-                                    value: 'ler',
+                                    value: 'reader',
                                     groupValue:
                                         usuario.usuarioGoogleDrive?.permissao,
                                     onChanged: (radioValue) {
