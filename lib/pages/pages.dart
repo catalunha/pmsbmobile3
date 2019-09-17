@@ -62,7 +62,7 @@ export 'package:pmsbmibile3/pages/administracao/administracao_home_page.dart';
 export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page.dart';
 
 //controle
-export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
+export 'package:pmsbmibile3/pages/controle/controle_tarefa_list_page.dart';
 
 //chat
 export 'package:pmsbmibile3/pages/chat/chat_page.dart';

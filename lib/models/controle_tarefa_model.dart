@@ -1,0 +1,75 @@
+import 'package:pmsbmibile3/models/base_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+
+class ControleTarefaModel extends FirestoreModel {
+  static final String collection = "ControleTarefa";
+
+  String referencia;
+  String nome;
+  DateTime inicio;
+  DateTime fim;
+  SetorCensitarioID setor;
+  UsuarioID remetente;
+  UsuarioID destinatario;
+  int acaoTotal;
+  int acaoCumprida;
+  bool concluida;
+  int ultimaAcaoCriada;
+  DateTime modificada;
+
+  ControleTarefaModel({String id, this.nome, this.acaoTotal}) : super(id);
+
+  @override
+  ControleTarefaModel fromMap(Map<String, dynamic> map) {
+    if (map.containsKey("referencia")) referencia = map["referencia"];
+    if (map.containsKey("nome")) nome = map["nome"];
+    if (map.containsKey("acaoTotal")) acaoTotal = map["acaoTotal"];
+    if (map.containsKey("acaoCumprida")) acaoCumprida = map["acaoCumprida"];
+    if (map.containsKey("concluida")) concluida = map["concluida"];
+    if (map.containsKey("ultimaAcaoCriada"))
+      ultimaAcaoCriada = map["ultimaAcaoCriada"];
+    if (map.containsKey("modificada")) modificada = map["modificada"].toDate();
+    if (map.containsKey("inicio")) inicio = map["inicio"].toDate();
+    if (map.containsKey("fim")) fim = map["fim"].toDate();
+    if (map.containsKey('setor')) {
+      setor = map['setor'] != null
+          ? new SetorCensitarioID.fromMap(map['setor'])
+          : null;
+    }
+    if (map.containsKey('remetente')) {
+      remetente = map['remetente'] != null
+          ? new UsuarioID.fromMap(map['remetente'])
+          : null;
+    }
+    if (map.containsKey('destinatario')) {
+      destinatario = map['destinatario'] != null
+          ? new UsuarioID.fromMap(map['destinatario'])
+          : null;
+    }
+    return this;
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (referencia != null) data['referencia'] = this.referencia;
+    if (nome != null) data['nome'] = this.nome;
+    if (acaoTotal != null) data['acaoTotal'] = this.acaoTotal;
+    if (acaoCumprida != null) data['acaoCumprida'] = this.acaoCumprida;
+    if (concluida != null) data['concluida'] = this.concluida;
+    if (ultimaAcaoCriada != null)
+      data['ultimaAcaoCriada'] = this.ultimaAcaoCriada;
+    if (inicio != null) data['inicio'] = this.inicio.toUtc();
+    if (fim != null) data['fim'] = this.fim.toUtc();
+    if (this.setor != null) {
+      data['setor'] = this.setor.toMap();
+    }
+    if (this.remetente != null) {
+      data['remetente'] = this.remetente.toMap();
+    }
+    if (this.destinatario != null) {
+      data['destinatario'] = this.destinatario.toMap();
+    }
+    return data;
+  }
+}

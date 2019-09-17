@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_page.dart';
 import 'package:pmsbmibile3/pages/googledrive/usuario_googledrive_page.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
@@ -190,7 +191,11 @@ class MyApp extends StatelessWidget {
         "/administracao/perfil": (context) => AdministracaoPerfilPage(),
 
         //controle
-        "/controle/home": (context) => ControleHomePage(),
+        "/controle/home": (context) => ControleTarefaListPage(authBloc),
+        "/controle/destinatario_acao_marcar": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ControleAcaoMarcarPage(settings.arguments);
+        },
 
         //googleDrive
         "/googledrive/usuario": (context) { 
