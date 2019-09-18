@@ -60,7 +60,10 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                   IconButton(
                     tooltip: 'Editar Url e Observações',
                     icon: Icon(Icons.note_add),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/controle/acao_informar_urlobs',
+                      arguments: controleAcaoID.id);
+                    },
                   ),
                   IconButton(
                     tooltip: 'Marcar como feita.',

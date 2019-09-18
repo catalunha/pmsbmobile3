@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/controle/controle_acao_informar_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_page.dart';
 import 'package:pmsbmibile3/pages/googledrive/usuario_googledrive_page.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
@@ -196,6 +197,11 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           return ControleAcaoMarcarPage(settings.arguments);
         },
+        "/controle/acao_informar_urlobs": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ControleAcaoInformarPage(settings.arguments);
+        },
+
 
         //googleDrive
         "/googledrive/usuario": (context) { 
