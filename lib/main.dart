@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_page.dart';
+import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_page.dart';
 import 'package:pmsbmibile3/pages/googledrive/usuario_googledrive_page.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
@@ -193,13 +194,17 @@ class MyApp extends StatelessWidget {
 
         //controle
         "/controle/home": (context) => ControleTarefaListPage(authBloc),
-        "/controle/destinatario_acao_marcar": (context) {
+        "/controle/acao_marcar": (context) {
           final settings = ModalRoute.of(context).settings;
           return ControleAcaoMarcarPage(settings.arguments);
         },
         "/controle/acao_informar_urlobs": (context) {
           final settings = ModalRoute.of(context).settings;
           return ControleAcaoInformarPage(settings.arguments);
+        },
+        "/controle/tarefa_crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ControleTarefaCrudPage(authBloc,settings.arguments);
         },
 
 

@@ -17,7 +17,8 @@ class ControleTarefaListBlocState {
       List<ControleTarefaModel>();
   List<ControleTarefaModel> controleTarefaListRemetente =
       List<ControleTarefaModel>();
-  bool isDataValid;
+  bool isDataValidDestinatario;
+  bool isDataValidRemetente;
 }
 
 class ControleTarefaListBloc {
@@ -53,19 +54,22 @@ class ControleTarefaListBloc {
     _eventController.close();
   }
 
-  _validateData() {
+  _validateDataDestinatario() {
     if (_state.controleTarefaListDestinatario != null) {
-      _state.isDataValid = true;
+      _state.isDataValidDestinatario = true;
     } else {
-      _state.isDataValid = false;
+      _state.isDataValidDestinatario = false;
     }
-    //     if (_state.controleTarefaListRemetente != null) {
-    //   _state.isDataValid = true;
-    // } else {
-    //   _state.isDataValid = false;
-    // }
-  }
 
+  }
+  _validateDataRemetente() {
+    if (_state.controleTarefaListRemetente != null) {
+      _state.isDataValidRemetente = true;
+    } else {
+      _state.isDataValidRemetente = false;
+    }
+
+  }
   _mapEventToState(ControleTarefaListBlocEvent event) async {
     if (event is UpdateTarefaUsuarioIDEvent) {
       //Atualiza estado com usuario logado
@@ -96,6 +100,7 @@ class ControleTarefaListBloc {
           .collection(ControleTarefaModel.collection)
           .where("destinatario.id", isEqualTo: _state.usuarioID.id)
           .where("setor.id", isEqualTo: _state.usuarioID.setorCensitarioID.id)
+          .where("concluida", isEqualTo: false)
           .snapshots();
 
       final snapListDestinatario = streamDocsDestinatario.map((snapDocs) =>
@@ -110,7 +115,8 @@ class ControleTarefaListBloc {
         _state.controleTarefaListDestinatario = controleTarefaList;
       });
     }
-    _validateData();
+    _validateDataDestinatario();
+    _validateDataRemetente();
     if (!_stateController.isClosed) _stateController.add(_state);
     print(
         'event.runtimeType em ControleTarefaListBloc  = ${event.runtimeType}');
