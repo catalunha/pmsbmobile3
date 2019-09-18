@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
@@ -20,18 +21,17 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
   var result = List<Map<String, dynamic>>();
 
   //Dados do formulario
-  bool showFab;
+  // bool showFab;
   DateTime _date = new DateTime.now();
   TimeOfDay _hora = new TimeOfDay.now();
-  var myController = new SelectingTextEditingController();
-  final _tituloController = TextEditingController();
+  // var myController = new SelectingTextEditingController();
 
   @override
   void initState() {
     super.initState();
     bloc =
         ControleTarefaCrudBloc(Bootstrap.instance.firestore, widget.authBloc);
-    // bloc.eventSink(UpdateTarefaIDEvent(widget.controleTarefaID));
+    bloc.eventSink(UpdateTarefaIDEvent(widget.controleTarefaID));
   }
 
   @override
@@ -50,27 +50,6 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
         ));
   }
 
-  _tituloTarefa() {
-    return StreamBuilder<ControleTarefaCrudBlocState>(
-        stream: bloc.stateStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            _tituloController.text = snapshot.data.nome;
-          }
-          return Padding(
-              padding: EdgeInsets.all(5.0),
-              child: TextField(
-                controller: _tituloController,
-                onChanged: (String t) => bloc.eventSink(UpdateNomeEvent(t)),
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-              ));
-        });
-  }
-
   Future<Null> _selectDateInicio(BuildContext context) async {
     final DateTime selectedDate = await showDatePicker(
       context: context,
@@ -80,9 +59,9 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
     );
     if (selectedDate != null) {
       bloc.eventSink(UpdateInicioEvent(data: selectedDate));
-      setState(() {
-        _date = selectedDate;
-      });
+      // setState(() {
+      //   _date = selectedDate;
+      // });
     }
   }
 
@@ -213,45 +192,54 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
     );
   }
 
-  // _destinatarios(context) {
-  //   // List<Map<String, dynamic>> litems = [
-  //   //   {'id': '1', 'nome': 'um'},
-  //   //   {'id': '2', 'nome': 'dois'},
-  //   // ];
-  //   return Column(
-  //     children: <Widget>[
-  //       IconButton(
-  //         icon: Icon(Icons.check_box),
-  //         onPressed: () async {
-  //           var destinatarioList = await Navigator.push(context,
-  //               MaterialPageRoute(builder: (context) {
-  //             return ComunicacaoDestinatariosPage();
-  //           }));
-  //           if (destinatarioList != null) {
-  //             bloc.eventSink(
-  //                 UpdateDestinatarioListEvent(destinatarioList));
-  //           }
-  //           // print('>>>> Retorno ${result}');
-  //         },
-  //       ),
-  //       StreamBuilder<ControleTarefaCrudBlocState>(
-  //           stream: bloc.stateStream,
-  //           builder: (context, snapshot) {
-  //             if (!snapshot.hasData) {
-  //               return Text('Sem destinatarios');
-  //             }
-  //             if (snapshot.data.destinatarioListMap == null) {
-  //               return Text('destinatarios vazia');
-  //             } else {
-  //               return Column(
-  //                   children: snapshot.data.destinatarioListMap
-  //                       .map((item) => Text('${item['nome']}'))
-  //                       .toList());
-  //             }
-  //           })
-  //     ],
-  //   );
-  // }
+  _destinatarios(context) {
+    // List<Map<String, dynamic>> litems = [
+    //   {'id': '1', 'nome': 'um'},
+    //   {'id': '2', 'nome': 'dois'},
+    // ];
+    return Row(
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.person),
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext bc) {
+                  return UsuarioListaModalSelect(bloc);
+                });
+          }, //getSticker,
+          // color: Colors.black54,
+        ),
+        // IconButton(
+        //   icon: Icon(Icons.check_box),
+        //   onPressed: () async {
+        //     var destinatarioList = await Navigator.push(context,
+        //         MaterialPageRoute(builder: (context) {
+        //       return ComunicacaoDestinatariosPage();
+        //     }));
+        //     if (destinatarioList != null) {
+        //       bloc.eventSink(
+        //           UpdateDestinatarioListEvent(destinatarioList));
+        //     }
+        //     // print('>>>> Retorno ${result}');
+        //   },
+        // ),
+        StreamBuilder<ControleTarefaCrudBlocState>(
+            stream: bloc.stateStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text('Sem destinatarios');
+              }
+              if (snapshot.data.destinatario == null) {
+                return Text('Destinatario nao selecionado');
+              } else {
+                return Text('${snapshot.data.destinatario.nome}');
+
+              }
+            })
+      ],
+    );
+  }
 
   _bodyDados(context) {
     return SafeArea(
@@ -261,13 +249,13 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
           padding: EdgeInsets.all(5),
           children: <Widget>[
             _texto("Titulo da tarefa:"),
-            _tituloTarefa(),
+            TarefaNome(bloc),
             _texto("Data / Hora Inicio:"),
             _dataHorarioInicio(context),
             _texto("Data / Hora Fim:"),
             _dataHorarioFim(context),
             _texto("Escolha o destinatário:"),
-            // _destinatarios(context),
+            _destinatarios(context),
             Divider(),
             _DeleteDocumentOrField(bloc),
           ],
@@ -287,9 +275,48 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
           onPressed: () {
             //TODO: remover o pop?
             bloc.eventSink(SaveEvent());
+            Navigator.pop(context);
           },
           child: Icon(Icons.cloud_upload),
         ));
+  }
+}
+
+class TarefaNome extends StatefulWidget {
+  final ControleTarefaCrudBloc bloc;
+  TarefaNome(this.bloc);
+  @override
+  TarefaNomeState createState() {
+    return TarefaNomeState(bloc);
+  }
+}
+
+class TarefaNomeState extends State<TarefaNome> {
+  final _textFieldController = TextEditingController();
+  final ControleTarefaCrudBloc bloc;
+  TarefaNomeState(this.bloc);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<ControleTarefaCrudBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+        if (_textFieldController.text.isEmpty) {
+          _textFieldController.text = snapshot.data?.nome;
+        }
+        return TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+          controller: _textFieldController,
+          onChanged: (text) {
+            bloc.eventSink(UpdateNomeEvent(text));
+          },
+        );
+      },
+    );
   }
 }
 
@@ -335,6 +362,154 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
           ],
         );
       },
+    );
+  }
+}
+
+/// Selecao de usuario que vao receber alerta
+class UsuarioListaModalSelect extends StatefulWidget {
+  final ControleTarefaCrudBloc bloc;
+
+  const UsuarioListaModalSelect(this.bloc);
+
+  @override
+  _UsuarioListaModalSelectState createState() =>
+      _UsuarioListaModalSelectState(this.bloc);
+}
+
+class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
+  final ControleTarefaCrudBloc bloc;
+
+  _UsuarioListaModalSelectState(this.bloc);
+
+  Widget _listaUsuarios() {
+    return StreamBuilder<ControleTarefaCrudBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: Text("Erro. Informe ao administrador do aplicativo"),
+          );
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.data.usuarioList == null) {
+          return Center(
+            child: Text("Nenhum usuario neste chat."),
+          );
+        }
+        if (snapshot.data.usuarioList.isEmpty) {
+          return Center(
+            child: Text("Vazio."),
+          );
+        }
+
+        // var usuario = Map<String, UsuarioModel>();
+
+        // usuario = snapshot.data?.usuarioList;
+        var lista = List<Widget>();
+        for (var usuario in snapshot.data.usuarioList) {
+          // print('usuario: ${item.key}');
+          lista.add(_cardBuild(context, usuario));
+        }
+
+        return ListView(
+          children: lista,
+        );
+      },
+    );
+
+    // return ListView(
+    //   children: valores.keys.map((String key) {
+    //     return CheckboxListTile(
+    //       title: Text(key),
+    //       value: valores[key],
+    //       onChanged: (bool value) {
+    //         if (key == 'Todos') {
+    //           _marcarTodosDaListaComoTrue(value);
+    //         } else {
+    //           setState(() {
+    //             valores[key] = value;
+    //           });
+    //         }
+    //       },
+    //     );
+    //   }).toList(),
+    // );
+  }
+
+  Widget _cardBuild(BuildContext context, UsuarioModel usuario) {
+    // print(usuario.nome);
+    // return ListTile(
+    //   title: Text(usuario.nome),
+    //   leading: usuario.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
+    // );
+    // return CheckboxListTile(
+    //   title: Text(usuario.nome),
+    //   value: usuario.alertar == null ? false : usuario.alertar,
+    //   onChanged: (bool alertar) {
+    //     bloc.eventSink(UpDateAlertaEvent(usuarioChatID: key, alertar: alertar));
+    //   },
+    // );
+    return ListTile(
+      title: Text('${usuario.nome}'),
+      subtitle: Text('Eixo: ${usuario.eixoID?.nome}'),
+      trailing: IconButton(
+        icon: Icon(Icons.check),
+        onPressed: () {
+          bloc.eventSink(SelectDestinatarioIDEvent(usuario));
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Escolha um destinatário"),
+        // automaticallyImplyLeading: false,
+        // backgroundColor: Colors.blueGrey,
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.check_box),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(true));
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.check_box_outline_blank),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(false));
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.repeat),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(null));
+        //     },
+        //   ),
+        //   // RaisedButton(
+        //   //     child: Text("Marcar todos"),
+        //   //     textColor: Colors.blue,
+        //   //     color: Colors.white,
+        //   //     onPressed: () {
+        //   //       bloc.eventSink(UpDateAlertarTodosEvent());
+        //   //     }),
+        //   // RaisedButton(
+        //   //     child: Text("Salvar"),
+        //   //     textColor: Colors.blue,
+        //   //     color: Colors.white,
+        //   //     onPressed: () {
+        //   //       Navigator.pop(context);
+        //   //     })
+        // ],
+      ),
+      body: _listaUsuarios(),
     );
   }
 }

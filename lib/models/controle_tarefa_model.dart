@@ -13,11 +13,11 @@ class ControleTarefaModel extends FirestoreModel {
   UsuarioID destinatario;
   int acaoTotal;
   int acaoCumprida;
-  bool concluida;
   int ultimaAcaoCriada;
+  bool concluida;
   DateTime modificada;
 
-  ControleTarefaModel({String id, this.nome, this.acaoTotal}) : super(id);
+  ControleTarefaModel({String id}) : super(id);
 
   @override
   ControleTarefaModel fromMap(Map<String, dynamic> map) {
@@ -28,7 +28,7 @@ class ControleTarefaModel extends FirestoreModel {
     if (map.containsKey("concluida")) concluida = map["concluida"];
     if (map.containsKey("ultimaAcaoCriada"))
       ultimaAcaoCriada = map["ultimaAcaoCriada"];
-    if (map.containsKey("modificada")) modificada = map["modificada"].toDate();
+    // if (map.containsKey("modificada")) modificada = map["modificada"].toDate();
     if (map.containsKey("inicio")) inicio = map["inicio"].toDate();
     if (map.containsKey("fim")) fim = map["fim"].toDate();
     if (map.containsKey('setor')) {

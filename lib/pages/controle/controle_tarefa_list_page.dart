@@ -143,7 +143,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
                     title: Text(
-                        '${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
+                        '${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
                     subtitle: Text(
                         'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
@@ -222,8 +222,11 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                       tooltip: 'Adicionar mais uma tarefa',
                       icon: Icon(Icons.plus_one),
                       onPressed: () {
-                        // Listar paginas de perguntas
-                      },
+                      Navigator.pushNamed(
+                              context,
+                              "/controle/tarefa_crud",
+                              arguments: null,
+                            );                      },
                     ),
                   ]),
                 ],

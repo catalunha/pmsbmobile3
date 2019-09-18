@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart' show TimeOfDay;
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:uuid/uuid.dart' as uuid;
+
+import '../../bootstrap.dart';
 
 class ControleTarefaCrudBlocEvent {}
 
@@ -13,11 +17,21 @@ class UpdateTarefaCrudUsuarioIDEvent extends ControleTarefaCrudBlocEvent {
   UpdateTarefaCrudUsuarioIDEvent(this.usuarioID);
 }
 
+class UpdateUsuarioListEvent extends ControleTarefaCrudBlocEvent {}
+
 class UpdateTarefaIDEvent extends ControleTarefaCrudBlocEvent {
   final String tarefaID;
 
   UpdateTarefaIDEvent(this.tarefaID);
 }
+
+class SelectDestinatarioIDEvent extends ControleTarefaCrudBlocEvent {
+  final UsuarioModel destinatarioID;
+
+  SelectDestinatarioIDEvent(this.destinatarioID);
+}
+
+
 
 class UpdateNomeEvent extends ControleTarefaCrudBlocEvent {
   final String nome;
@@ -57,23 +71,29 @@ class SaveEvent extends ControleTarefaCrudBlocEvent {}
 
 class ControleTarefaCrudBlocState {
   UsuarioModel usuarioID;
+  UsuarioID destinatario;
+  List<UsuarioModel> usuarioList = List<UsuarioModel>();
   ControleTarefaModel controleTarefaID;
   String nome;
-
-  void updateStateFromControleTarefaModel() {
-    nome = controleTarefaID.nome;
-  }
-
-//   String noticiaID;
-
-//   UsuarioIDEditor usuarioIDEditor;
-//   String textoMarkdown;
+  String controleTarefaId;
   DateTime inicio = DateTime.now();
   DateTime dataInicio;
   TimeOfDay horaInicio;
   DateTime fim = DateTime.now();
   DateTime dataFim;
   TimeOfDay horaFim;
+
+  void updateStateFromControleTarefaModel() {
+    nome = controleTarefaID.nome;
+    inicio = controleTarefaID.inicio;
+    fim = controleTarefaID.fim;
+    destinatario = controleTarefaID.destinatario;
+  }
+
+//   String noticiaID;
+
+//   UsuarioIDEditor usuarioIDEditor;
+//   String textoMarkdown;
 //   List<Map<String, dynamic>> destinatarioListMap = List<Map<String, dynamic>>();
 
 // /*
@@ -157,6 +177,7 @@ class ControleTarefaCrudBloc {
     _authBloc.perfil.listen((usuarioID) {
       eventSink(UpdateTarefaCrudUsuarioIDEvent(usuarioID));
     });
+    eventSink(UpdateUsuarioListEvent());
   }
 
   void dispose() async {
@@ -174,11 +195,34 @@ class ControleTarefaCrudBloc {
   _mapEventToState(ControleTarefaCrudBlocEvent event) async {
     if (event is UpdateTarefaCrudUsuarioIDEvent) {
       _state.usuarioID = event.usuarioID;
+      print('_state.usuarioID: ' + _state.usuarioID.toString());
+    }
+    if (event is UpdateUsuarioListEvent) {
+      var collRef = await _firestore
+          .collection(UsuarioModel.collection).getDocuments();
+        // final snap = await collRef.getDocuments();
+
+for (var documentSnapshot in collRef.documents) {
+  _state.usuarioList.add(UsuarioModel(id: documentSnapshot.documentID)
+              .fromMap(documentSnapshot.data));
+}
+
+      //     collRef.snapshots()
+      //     .listen((querySnapshot) {
+      //   for (var documentSnapshot in querySnapshot.documents) {
+      //     _state.usuarioList.add(UsuarioModel(id: documentSnapshot.documentID)
+      //         .fromMap(documentSnapshot.data));
+      //   }
+        _state.usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
+
+      // });
+      print('_state.usuarioList: '+_state.usuarioList.toString());
     }
     if (event is UpdateTarefaIDEvent) {
+      _state.controleTarefaId = event.tarefaID;
       if (event.tarefaID != null) {
         var docRef = _firestore
-            .collection(NoticiaModel.collection)
+            .collection(ControleTarefaModel.collection)
             .document(event.tarefaID);
         final snap = await docRef.get();
         if (snap.exists) {
@@ -200,25 +244,23 @@ class ControleTarefaCrudBloc {
         _state.horaInicio = event.hora;
       }
 
-      if (_state.dataInicio != null && _state.horaInicio != null) {
-        final newDate = DateTime(
-            _state.dataInicio != null
-                ? _state.dataInicio.year
-                : _state.inicio.year,
-            _state.dataInicio != null
-                ? _state.dataInicio.month
-                : _state.inicio.month,
-            _state.dataInicio != null
-                ? _state.dataInicio.day
-                : _state.inicio.day,
-            _state.horaInicio != null
-                ? _state.horaInicio.hour
-                : _state.inicio.hour,
-            _state.horaInicio != null
-                ? _state.horaInicio.minute
-                : _state.inicio.minute);
-        _state.inicio = newDate;
-      }
+      // if (_state.dataInicio != null && _state.horaInicio != null) {
+      final newDate = DateTime(
+          _state.dataInicio != null
+              ? _state.dataInicio.year
+              : _state.inicio.year,
+          _state.dataInicio != null
+              ? _state.dataInicio.month
+              : _state.inicio.month,
+          _state.dataInicio != null ? _state.dataInicio.day : _state.inicio.day,
+          _state.horaInicio != null
+              ? _state.horaInicio.hour
+              : _state.inicio.hour,
+          _state.horaInicio != null
+              ? _state.horaInicio.minute
+              : _state.inicio.minute);
+      _state.inicio = newDate;
+      // }
     }
     if (event is UpdateFimEvent) {
       if (event.data != null) {
@@ -228,15 +270,15 @@ class ControleTarefaCrudBloc {
         _state.horaFim = event.hora;
       }
 
-      if (_state.dataFim != null && _state.horaFim != null) {
-        final newDate = DateTime(
-            _state.dataFim != null ? _state.dataFim.year : _state.fim.year,
-            _state.dataFim != null ? _state.dataFim.month : _state.fim.month,
-            _state.dataFim != null ? _state.dataFim.day : _state.fim.day,
-            _state.horaFim != null ? _state.horaFim.hour : _state.fim.hour,
-            _state.horaFim != null ? _state.horaFim.minute : _state.fim.minute);
-        _state.fim = newDate;
-      }
+      // if (_state.dataFim != null && _state.horaFim != null) {
+      final newDate = DateTime(
+          _state.dataFim != null ? _state.dataFim.year : _state.fim.year,
+          _state.dataFim != null ? _state.dataFim.month : _state.fim.month,
+          _state.dataFim != null ? _state.dataFim.day : _state.fim.day,
+          _state.horaFim != null ? _state.horaFim.hour : _state.fim.hour,
+          _state.horaFim != null ? _state.horaFim.minute : _state.fim.minute);
+      _state.fim = newDate;
+      // }
     }
     if (event is DeleteEvent) {
       _firestore
@@ -245,20 +287,35 @@ class ControleTarefaCrudBloc {
           .delete();
     }
 
-    // if (event is UpdateDestinatarioListEvent) {
-    //   _state.destinatarioListMap = event.destinatarioList;
-    // }
-    // if (event is UpdateTextoMarkdownEvent) {
-    //   _state.textoMarkdown = event.textoMarkdown;
-    // }
+    if (event is SelectDestinatarioIDEvent) {
+      _state.destinatario = UsuarioID(id: event.destinatarioID.id, nome: event.destinatarioID.nome);
+    }
 
     if (event is SaveEvent) {
       // // print(map);
       final docRef = _firestore
           .collection(ControleTarefaModel.collection)
-          .document(_state.controleTarefaID.id);
-
-      // docRef.setData(map);
+          .document(_state.controleTarefaId);
+      Map<String, dynamic> tarefa = Map<String, dynamic>();
+      if (_state.controleTarefaId == null) {
+        final uuidG = uuid.Uuid();
+        tarefa['referencia'] = uuidG.v4();
+        tarefa['setor'] = _state.usuarioID.setorCensitarioID.toMap();
+        tarefa['remetente'] =
+            UsuarioID(id: _state.usuarioID.id, nome: _state.usuarioID.nome)
+                .toMap();
+        tarefa['acaoTotal'] = 0;
+        tarefa['acaoCumprida'] = 0;
+        tarefa['ultimaAcaoCriada'] = 0;
+        tarefa['concluida'] = false;
+      }
+      tarefa['nome'] = _state.nome;
+      tarefa['inicio'] = _state.inicio;
+      tarefa['fim'] = _state.fim;
+      tarefa['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+        tarefa['destinatario'] =_state.destinatario.toMap();
+            
+      docRef.setData(tarefa, merge: true);
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
