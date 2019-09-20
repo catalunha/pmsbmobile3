@@ -52,6 +52,15 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         '${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
                     subtitle: Text(
                         'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
+                        Flexible(
+                flex: 1,
+                        child: Slider(
+                  activeColor: Colors.indigoAccent,
+                  min: 0.0,
+                  max: 15.0,
+                  onChanged:null,
+                  value: 10,
+                )),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
                   IconButton(
                     tooltip: 'Gerar PDF desta tarefa',
@@ -145,7 +154,13 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     title: Text(
                         '${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
                     subtitle: Text(
-                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
+                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}\nid:${controleTarefaID.id}')),
+                //          Slider(
+                //   min: 0.0,
+                //   max: 15.0,
+                //   onChanged:null,
+                //   value: 7,
+                // ),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
                   IconButton(
                     tooltip: 'Duplicar tarefa',
@@ -167,12 +182,11 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     tooltip: 'Editar ação',
                     icon: Icon(Icons.check_box),
                     onPressed: () {
-                      // Listar paginas de perguntas
-                      // Navigator.pushNamed(
-                      //         context,
-                      //         "/controle/acao_marcar",
-                      //         arguments: controleTarefaID.id,
-                      //       );
+                      Navigator.pushNamed(
+                              context,
+                              "/controle/acao_list",
+                              arguments: controleTarefaID.id,
+                            );
                     },
                   ),                  IconButton(
                     tooltip: 'Editar Tarefa',

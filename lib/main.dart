@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_page.dart';
+import 'package:pmsbmibile3/pages/controle/controle_acao_list_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_page.dart';
 import 'package:pmsbmibile3/pages/googledrive/usuario_googledrive_page.dart';
@@ -206,6 +207,11 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           return ControleTarefaCrudPage(authBloc,settings.arguments);
         },
+        "/controle/acao_list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ControleAcaoListPage(settings.arguments);
+        },
+        
 
 
         //googleDrive
