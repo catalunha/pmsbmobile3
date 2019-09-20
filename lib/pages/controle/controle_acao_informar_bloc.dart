@@ -1,14 +1,7 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
-import 'package:pmsbmibile3/models/google_drive_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:pmsbmibile3/models/produto_model.dart';
-import 'package:pmsbmibile3/models/propriedade_for_model.dart';
-import 'package:pmsbmibile3/models/upload_model.dart';
-import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ControleAcaoInformarBlocEvent {}
 

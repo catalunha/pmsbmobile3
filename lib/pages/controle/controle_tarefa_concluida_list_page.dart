@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/pages/controle/controle_tarefa_concluida_list_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
-import 'controle_tarefa_list_bloc.dart';
 
-class ControleTarefaListPage extends StatefulWidget {
+class ControleTarefaConcluidaListPage extends StatefulWidget {
   final AuthBloc authBloc;
 
-  const ControleTarefaListPage(this.authBloc);
+  const ControleTarefaConcluidaListPage(this.authBloc);
 
   @override
-  _ControleTarefaListPageState createState() => _ControleTarefaListPageState();
+  _ControleTarefaConcluidaListPageState createState() => _ControleTarefaConcluidaListPageState();
 }
 
-class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
-  ControleTarefaListBloc bloc;
+class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluidaListPage> {
+  ControleTarefaConcluidaListBloc bloc;
 
   @override
   void initState() {
     super.initState();
     bloc =
-        ControleTarefaListBloc(Bootstrap.instance.firestore, widget.authBloc);
+        ControleTarefaConcluidaListBloc(Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -31,10 +31,10 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
   }
 
   _bodyDestinatario(context) {
-    return StreamBuilder<ControleTarefaListBlocState>(
+    return StreamBuilder<ControleTarefaConcluidaListBlocState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
+          AsyncSnapshot<ControleTarefaConcluidaListBlocState> snapshot) {
         if (snapshot.hasError) {
           return Text("ERROR");
         }
@@ -48,8 +48,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                 in snapshot.data.controleTarefaListDestinatario) {
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
-                    trailing: Text(
-                        '${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
+                  trailing: Text('${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
                     title: Text(
                         '${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
                     subtitle: Text(
@@ -70,15 +69,11 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     onPressed: () {},
                   ),
                   IconButton(
-                    tooltip: 'Marcar/Atualizar ação',
-                    icon: Icon(Icons.check),
+                    tooltip: 'Reativar tarefa',
+                    icon: Icon(Icons.reply),
                     onPressed: () {
-                      // Listar paginas de perguntas
-                      Navigator.pushNamed(
-                        context,
-                        "/controle/acao_marcar",
-                        arguments: controleTarefaID.id,
-                      );
+                                         bloc.eventSink(AtivarTarefaIDEvent(controleTarefaID.id));
+
                     },
                   ),
                 ])
@@ -108,13 +103,13 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         // Listar paginas de perguntas
                       },
                     ),
-                    IconButton(
-                      tooltip: 'Ver tarefas recebidas concluidas',
-                      icon: Icon(Icons.folder),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Ver tarefas recebidas concluidas',
+                    //   icon: Icon(Icons.folder),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                   ]),
                 ],
               ),
@@ -138,10 +133,10 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
   }
 
   _bodyRemetente(context) {
-    return StreamBuilder<ControleTarefaListBlocState>(
+    return StreamBuilder<ControleTarefaConcluidaListBlocState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
+          AsyncSnapshot<ControleTarefaConcluidaListBlocState> snapshot) {
         if (snapshot.hasError) {
           return Text("ERROR");
         }
@@ -149,14 +144,14 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
           return Text("SEM DADOS");
         }
         if (snapshot.hasData) {
-          List<Widget> listaWdg = List<Widget>();
+            List<Widget> listaWdg = List<Widget>();
           if (snapshot.data.isDataValidRemetente) {
             for (var controleTarefaID
                 in snapshot.data.controleTarefaListRemetente) {
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
-                    trailing: Text(
-                        '${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
+                                    trailing: Text('${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
+
                     title: Text(
                         '${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
                     subtitle: Text(
@@ -168,43 +163,39 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                 //   value: 7,
                 // ),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                  IconButton(
-                    tooltip: 'Duplicar tarefa',
-                    icon: Icon(Icons.content_copy),
-                    onPressed: () {
-                      // Listar paginas de perguntas
-                      // Navigator.pushNamed(
-                      //         context,
-                      //         "/controle/acao_marcar",
-                      //         arguments: controleTarefaID.id,
-                      //       );
-                    },
-                  ),
+                  // IconButton(
+                  //   tooltip: 'Duplicar tarefa',
+                  //   icon: Icon(Icons.content_copy),
+                  //   onPressed: () {
+                  //     // Listar paginas de perguntas
+                  //     // Navigator.pushNamed(
+                  //     //         context,
+                  //     //         "/controle/acao_marcar",
+                  //     //         arguments: controleTarefaID.id,
+                  //     //       );
+                  //   },
+                  // ),
                   IconButton(
                     tooltip: 'Gerar PDF desta tarefa',
                     icon: Icon(Icons.picture_as_pdf),
                     onPressed: () {},
                   ),
+                  // IconButton(
+                  //   tooltip: 'Editar ação',
+                  //   icon: Icon(Icons.check_box),
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(
+                  //       context,
+                  //       "/controle/acao_list",
+                  //       arguments: controleTarefaID.id,
+                  //     );
+                  //   },
+                  // ),
                   IconButton(
-                    tooltip: 'Editar ação',
-                    icon: Icon(Icons.check_box),
+                    tooltip: 'Reativar tarefa',
+                    icon: Icon(Icons.reply),
                     onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        "/controle/acao_list",
-                        arguments: controleTarefaID.id,
-                      );
-                    },
-                  ),
-                  IconButton(
-                    tooltip: 'Editar Tarefa',
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        "/controle/tarefa_crud",
-                        arguments: controleTarefaID.id,
-                      );
+                      bloc.eventSink(AtivarTarefaIDEvent(controleTarefaID.id));
                     },
                   ),
                 ])
@@ -234,28 +225,24 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         // Listar paginas de perguntas
                       },
                     ),
-                    IconButton(
-                      tooltip: 'Ver tarefas designadas concluidas',
-                      icon: Icon(Icons.folder),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          "/controle/concluida",
-                          arguments: null,
-                        );
-                      },
-                    ),
-                    IconButton(
-                      tooltip: 'Adicionar mais uma tarefa',
-                      icon: Icon(Icons.plus_one),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          "/controle/tarefa_crud",
-                          arguments: null,
-                        );
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Ver tarefas designadas concluidas',
+                    //   icon: Icon(Icons.folder),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
+                    // IconButton(
+                    //   tooltip: 'Adicionar mais uma tarefa',
+                    //   icon: Icon(Icons.plus_one),
+                    //   onPressed: () {
+                    //     Navigator.pushNamed(
+                    //       context,
+                    //       "/controle/tarefa_crud",
+                    //       arguments: null,
+                    //     );
+                    //   },
+                    // ),
                   ]),
                 ],
               ),
@@ -289,17 +276,20 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: DefaultScaffold(
-        bottom: TabBar(
+    
+      child: Scaffold(
+        appBar: AppBar(
+            bottom: TabBar(
           tabs: [
             Tab(text: "Destinatario/Recebida"),
             Tab(text: "Remetente/Designada"),
           ],
         ),
-        title: Text('Controle de tarefas'),
+        title: Text('Tarefas concluídas'),
+        ),
         body: _body(context),
+      
       ),
-      // ),
     );
   }
 }

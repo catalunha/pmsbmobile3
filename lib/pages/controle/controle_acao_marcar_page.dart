@@ -45,10 +45,13 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
             for (var controleAcaoID in snapshot.data.controleAcaoList) {
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
+                  
+                    selected: controleAcaoID.concluida,
                     title: Text('${controleAcaoID.nome}'),
-                    subtitle: Text('Obs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}')),
+                    subtitle: Text(
+                        'id: ${controleAcaoID.id}\nObs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}')),
                 Wrap(alignment: WrapAlignment.center, children: <Widget>[
-                  controleAcaoID.url.isNotEmpty
+                  controleAcaoID.url != null
                       ? IconButton(
                           tooltip: 'Ver arquivo',
                           icon: Icon(Icons.cloud),
@@ -61,8 +64,9 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                     tooltip: 'Editar Url e Observações',
                     icon: Icon(Icons.note_add),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/controle/acao_informar_urlobs',
-                      arguments: controleAcaoID.id);
+                      Navigator.pushNamed(
+                          context, '/controle/acao_informar_urlobs',
+                          arguments: controleAcaoID.id);
                     },
                   ),
                   IconButton(
@@ -111,7 +115,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editando a tarefa'),
+        title: Text('Editando a ação'),
       ),
       body: _bodyDestinatario(context),
 

@@ -73,14 +73,24 @@ class ControleAcaoMarcarBloc {
       //Atualiza estado com usuario logado
       print('event.controleTarefaID:' + event.controleTarefaID);
       // le todas as tarefas deste usuario como remetente/designadas neste setor.
-      final docRef = _firestore
+      final streamDocsTarefa = _firestore
           .collection(ControleTarefaModel.collection)
-          .document(event.controleTarefaID);
-      final snap = await docRef.get();
-      if (snap.exists) {
-        _state.controleTarefaDestinatario =
-            ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
-      }
+          .document(event.controleTarefaID)
+          .snapshots();
+
+      final snapTarefa = streamDocsTarefa.map((snapDocs) =>
+          ControleTarefaModel(id: snapDocs.documentID).fromMap(snapDocs.data));
+      //       .toList());
+
+      snapTarefa.listen((ControleTarefaModel controleTarefa) {
+        _state.controleTarefaDestinatario = controleTarefa;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+      // final snap = await docRef.get();
+      // if (snap.exists) {
+      //   _state.controleTarefaDestinatario =
+      //       ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
+      // }
 
       _state.controleAcaoList.clear();
       // le todas as tarefas deste usuario como remetente/designadas neste setor.
@@ -100,24 +110,39 @@ class ControleAcaoMarcarBloc {
       });
     }
     if (event is UpdateAcaoEvent) {
-if (!event.concluida) {
-      final ref2 = _firestore
-          .collection(ControleTarefaModel.collection)
-          .document(_state.controleTarefaDestinatario.id);
-      ref2.setData({'acaoCumprida': Bootstrap.instance.FieldValue.increment(1),'modificada':Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
-  
-} else {
-      final ref2 = _firestore
-          .collection(ControleTarefaModel.collection)
-          .document(_state.controleTarefaDestinatario.id);
-      ref2.setData({'acaoCumprida': Bootstrap.instance.FieldValue.increment(-1),'modificada':Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
-
-}
-// Bootstrap.instance.FieldValue.
       final ref = _firestore
           .collection(ControleAcaoModel.collection)
           .document(event.controleAcaoID);
-      ref.setData({'concluida': !event.concluida,'modificada':Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
+      await ref.setData({
+        'concluida': !event.concluida,
+        'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+      }, merge: true);
+      final ref2 = _firestore
+          .collection(ControleTarefaModel.collection)
+          .document(_state.controleTarefaDestinatario.id);
+      if (!event.concluida) {
+        await ref2.setData({
+          'acaoCumprida': Bootstrap.instance.FieldValue.increment(1),
+          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+        }, merge: true);
+      } else {
+        await ref2.setData({
+          'acaoCumprida': Bootstrap.instance.FieldValue.increment(-1),
+          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+        }, merge: true);
+      }
+      final ref3 = _firestore
+          .collection(ControleTarefaModel.collection)
+          .document(_state.controleTarefaDestinatario.id);
+      final snap = await ref3.get();
+      ControleTarefaModel controleTarefaModel =
+          ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
+      if (controleTarefaModel.acaoCumprida == controleTarefaModel.acaoTotal) {
+        await ref3.setData({
+          'concluida': true,
+          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+        }, merge: true);
+      }
     }
 
     _validateData();

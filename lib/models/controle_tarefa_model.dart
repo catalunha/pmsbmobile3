@@ -28,9 +28,11 @@ class ControleTarefaModel extends FirestoreModel {
     if (map.containsKey("concluida")) concluida = map["concluida"];
     if (map.containsKey("ultimaAcaoCriada"))
       ultimaAcaoCriada = map["ultimaAcaoCriada"];
-    // if (map.containsKey("modificada")) modificada = map["modificada"].toDate();
-    if (map.containsKey("inicio")) inicio = map["inicio"].toDate();
-    if (map.containsKey("fim")) fim = map["fim"].toDate();
+    if (map.containsKey("modificada") && map["modificada"] != null)
+      modificada = map["modificada"].toDate();
+    if (map.containsKey("inicio") && map["inicio"] != null)
+      inicio = map["inicio"].toDate();
+    if (map.containsKey("fim") && map["fim"] != null) fim = map["fim"].toDate();
     if (map.containsKey('setor')) {
       setor = map['setor'] != null
           ? new SetorCensitarioID.fromMap(map['setor'])

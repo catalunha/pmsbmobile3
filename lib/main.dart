@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/controle/controle_acao_crud_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_list_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_page.dart';
+import 'package:pmsbmibile3/pages/controle/controle_tarefa_concluida_list_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_page.dart';
 import 'package:pmsbmibile3/pages/googledrive/usuario_googledrive_page.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
@@ -136,7 +138,8 @@ class MyApp extends StatelessWidget {
             RespostaQuestionarioAplicadoHomePage(authBloc),
         "/resposta/pergunta": (context) {
           final settings = ModalRoute.of(context).settings;
-          return RespostaPerguntaAplicadaMarkdownPage(questionarioID: settings.arguments);
+          return RespostaPerguntaAplicadaMarkdownPage(
+              questionarioID: settings.arguments);
         },
         //sintese
         "/sintese/home": (context) => SinteseHomePage(),
@@ -205,22 +208,27 @@ class MyApp extends StatelessWidget {
         },
         "/controle/tarefa_crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return ControleTarefaCrudPage(authBloc,settings.arguments);
+          return ControleTarefaCrudPage(authBloc, settings.arguments);
         },
         "/controle/acao_list": (context) {
           final settings = ModalRoute.of(context).settings;
           return ControleAcaoListPage(settings.arguments);
         },
-        
+        "/controle/acao_crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          ControlePageArguments args = settings.arguments;
+          return ControleAcaoCrudPage(tarefaID:args.tarefa ,acaoID: args.acao);
+        },
+        "/controle/concluida": (context) => ControleTarefaConcluidaListPage(authBloc),
+
+
 
 
         //googleDrive
-        "/googledrive/usuario": (context) { 
+        "/googledrive/usuario": (context) {
           final settings = ModalRoute.of(context).settings;
           return UsuarioGoogleDrivePage(settings.arguments);
         },
-
-
       },
       //   ),
       // ),

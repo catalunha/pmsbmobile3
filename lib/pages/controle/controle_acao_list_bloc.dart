@@ -12,12 +12,11 @@ class UpdateTarefaIDEvent extends ControleAcaoListBlocEvent {
 }
 
 class OrdenarAcaoEvent extends ControleAcaoListBlocEvent {
-  final int ordem;
+  final ControleAcaoModel acao;
   final bool up;
 
-  OrdenarAcaoEvent(this.ordem, this.up);
+  OrdenarAcaoEvent(this.acao, this.up);
 }
-
 
 class ControleAcaoListBlocState {
   ControleTarefaModel controleTarefaID = ControleTarefaModel();
@@ -32,15 +31,13 @@ class ControleAcaoListBloc {
 
   //Eventos
   final _eventController = BehaviorSubject<ControleAcaoListBlocEvent>();
-  Stream<ControleAcaoListBlocEvent> get eventStream =>
-      _eventController.stream;
+  Stream<ControleAcaoListBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   //Estados
   final ControleAcaoListBlocState _state = ControleAcaoListBlocState();
   final _stateController = BehaviorSubject<ControleAcaoListBlocState>();
-  Stream<ControleAcaoListBlocState> get stateStream =>
-      _stateController.stream;
+  Stream<ControleAcaoListBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   //Bloc
@@ -71,7 +68,6 @@ class ControleAcaoListBloc {
   _mapEventToState(ControleAcaoListBlocEvent event) async {
     if (event is UpdateTarefaIDEvent) {
       //Atualiza estado com usuario logado
-      print('event.controleTarefaID:' + event.controleTarefaID);
       // le todas as tarefas deste usuario como remetente/designadas neste setor.
       final docRef = _firestore
           .collection(ControleTarefaModel.collection)
@@ -95,18 +91,38 @@ class ControleAcaoListBloc {
           .toList());
 
       snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
-                controleAcaoList.sort((a, b) => a.numeroCriacao.compareTo(b.numeroCriacao));
+        if (controleAcaoList.length > 1) {
+          controleAcaoList
+              .sort((a, b) => a.numeroCriacao.compareTo(b.numeroCriacao));
+        }
         _state.controleAcaoList = controleAcaoList;
 
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
     if (event is OrdenarAcaoEvent) {
+      final ordemOrigem = _state.controleAcaoList.indexOf(event.acao);
+      final ordemOutro = event.up ? ordemOrigem - 1 : ordemOrigem + 1;
+      final numeroCriacaoOrigem =
+          _state.controleAcaoList[ordemOrigem].numeroCriacao;
+      final numeroCriacaoOutro =
+          _state.controleAcaoList[ordemOutro].numeroCriacao;
+
+      final docRefOrigem = _firestore
+          .collection(ControleAcaoModel.collection)
+          .document(_state.controleAcaoList[ordemOrigem].id);
+
+      docRefOrigem.setData({"numeroCriacao": numeroCriacaoOutro}, merge: true);
+
+      final docRefOutro = _firestore
+          .collection(ControleAcaoModel.collection)
+          .document(_state.controleAcaoList[ordemOutro].id);
+
+      docRefOutro.setData({"numeroCriacao": numeroCriacaoOrigem}, merge: true);
     }
 
-
     _validateData();
-    print(_state.controleAcaoList.toString());
+    // print(_state.controleAcaoList.toString());
     if (!_stateController.isClosed) _stateController.add(_state);
     print(
         'event.runtimeType em ControleTarefaDestinatarioAcaoMarcarBloc  = ${event.runtimeType}');

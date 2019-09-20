@@ -48,3 +48,10 @@ class ChatPageArguments {
 
   ChatPageArguments({this.modulo, this.titulo, this.chatID});
 }
+
+class ControlePageArguments {
+  final String tarefa;
+  final String acao;
+
+  ControlePageArguments({this.tarefa, this.acao});
+}

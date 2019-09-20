@@ -4,14 +4,14 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class ControleAcaoModel extends FirestoreModel {
   static final String collection = "ControleAcao";
 
-  ControleTarefaID tarefa;
   String referencia;
   String nome;
+  String url;
+  String observacao;
+  ControleTarefaID tarefa;
   SetorCensitarioID setor;
   UsuarioID remetente;
   UsuarioID destinatario;
-  String url;
-  String observacao;
   bool concluida;
   DateTime modificada;
   int numeroCriacao;
@@ -24,7 +24,9 @@ class ControleAcaoModel extends FirestoreModel {
     if (map.containsKey("nome")) nome = map["nome"];
     if (map.containsKey("url")) url = map["url"];
     if (map.containsKey("observacao")) observacao = map["observacao"];
-    if (map.containsKey("modificada")) modificada = map["modificada"].toDate();
+    if (map.containsKey("modificada") &&  map["modificada"] != null ){
+       modificada = map["modificada"].toDate();
+    }
 
     if (map.containsKey('tarefa')) {
       tarefa = map['tarefa'] != null
