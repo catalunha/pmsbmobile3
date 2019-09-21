@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_bloc.dart';
+import 'package:pmsbmibile3/pages/controle/controle_acao_concluida_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ControleAcaoMarcarPage extends StatefulWidget {
+class ControleAcaoConcluidaPage extends StatefulWidget {
   final String controleTarefaID;
 
-  const ControleAcaoMarcarPage(this.controleTarefaID);
+  const ControleAcaoConcluidaPage(this.controleTarefaID);
 
   @override
-  _ControleAcaoMarcarPageState createState() => _ControleAcaoMarcarPageState();
+  _ControleAcaoConcluidaPageState createState() =>
+      _ControleAcaoConcluidaPageState();
 }
 
-class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
-  ControleAcaoMarcarBloc bloc;
+class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
+  ControleAcaoConcluidaBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = ControleAcaoMarcarBloc(Bootstrap.instance.firestore);
+    bloc = ControleAcaoConcluidaBloc(Bootstrap.instance.firestore);
     bloc.eventSink(UpdateTarefaIDEvent(widget.controleTarefaID));
   }
 
@@ -29,10 +30,10 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
   }
 
   _bodyDestinatario(context) {
-    return StreamBuilder<ControleAcaoMarcarBlocState>(
+    return StreamBuilder<ControleAcaoConcluidaBlocState>(
       stream: bloc.stateStream,
       builder: (BuildContext context,
-          AsyncSnapshot<ControleAcaoMarcarBlocState> snapshot) {
+          AsyncSnapshot<ControleAcaoConcluidaBlocState> snapshot) {
         if (snapshot.hasError) {
           return Text("ERROR");
         }
@@ -47,10 +48,10 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
             for (var controleAcaoID in snapshot.data.controleAcaoList) {
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
-                    selected: controleAcaoID.concluida,
                     trailing: controleAcaoID.concluida
                         ? Text('*  ${ordemLocal}')
                         : Text('${ordemLocal}'),
+                    selected: controleAcaoID.concluida,
                     title: Text('${controleAcaoID.nome}'),
                     subtitle: Text(
                         'id: ${controleAcaoID.id}\nObs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}')),
@@ -64,25 +65,25 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                           },
                         )
                       : Container(),
-                  IconButton(
-                    tooltip: 'Editar Url e Observações',
-                    icon: Icon(Icons.note_add),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, '/controle/acao_informar_urlobs',
-                          arguments: controleAcaoID.id);
-                    },
-                  ),
-                  IconButton(
-                    tooltip: 'Marcar como feita.',
-                    icon: controleAcaoID.concluida
-                        ? Icon(Icons.check_box)
-                        : Icon(Icons.check_box_outline_blank),
-                    onPressed: () {
-                      bloc.eventSink(UpdateAcaoEvent(
-                          controleAcaoID.id, controleAcaoID.concluida));
-                    },
-                  ),
+                  // IconButton(
+                  //   tooltip: 'Editar Url e Observações',
+                  //   icon: Icon(Icons.note_add),
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(
+                  //         context, '/controle/acao_informar_urlobs',
+                  //         arguments: controleAcaoID.id);
+                  //   },
+                  // ),
+                  // IconButton(
+                  //   tooltip: 'Marcar como feita.',
+                  //   icon: controleAcaoID.concluida
+                  //       ? Icon(Icons.check_box)
+                  //       : Icon(Icons.check_box_outline_blank),
+                  //   onPressed: () {
+                  //     bloc.eventSink(UpdateAcaoEvent(
+                  //         controleAcaoID.id, controleAcaoID.concluida));
+                  //   },
+                  // ),
                 ])
               ]));
               ordemLocal++;
@@ -120,7 +121,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editando a ação'),
+        title: Text('Ver ações'),
       ),
       body: _bodyDestinatario(context),
 

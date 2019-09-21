@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
+import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 import 'controle_tarefa_list_bloc.dart';
@@ -71,7 +73,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                   ),
                   IconButton(
                     tooltip: 'Marcar/Atualizar ação',
-                    icon: Icon(Icons.check),
+                    icon: Icon(Icons.check_box),
                     onPressed: () {
                       // Listar paginas de perguntas
                       Navigator.pushNamed(
@@ -91,7 +93,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                   Expanded(
                     flex: 10,
                     child: Text(
-                        'Município: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
                     IconButton(
@@ -101,18 +103,22 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         // Listar paginas de perguntas
                       },
                     ),
-                    IconButton(
-                      tooltip: 'Filtrar por',
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Filtrar por',
+                    //   icon: Icon(Icons.search),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                     IconButton(
                       tooltip: 'Ver tarefas recebidas concluidas',
                       icon: Icon(Icons.folder),
                       onPressed: () {
-                        // Listar paginas de perguntas
+                        Navigator.pushNamed(
+                          context,
+                          "/controle/concluida",
+                          arguments: null,
+                        );
                       },
                     ),
                   ]),
@@ -172,12 +178,11 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     tooltip: 'Duplicar tarefa',
                     icon: Icon(Icons.content_copy),
                     onPressed: () {
-                      // Listar paginas de perguntas
-                      // Navigator.pushNamed(
-                      //         context,
-                      //         "/controle/acao_marcar",
-                      //         arguments: controleTarefaID.id,
-                      //       );
+                      showModalBottomSheet(
+                context: context,
+                builder: (BuildContext bc) {
+                  return SetorListaModalSelect(bloc,controleTarefaID);
+                });
                     },
                   ),
                   IconButton(
@@ -217,7 +222,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                   Expanded(
                     flex: 10,
                     child: Text(
-                        'Município: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
                     IconButton(
@@ -227,13 +232,13 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         // Listar paginas de perguntas
                       },
                     ),
-                    IconButton(
-                      tooltip: 'Filtrar por',
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Filtrar por',
+                    //   icon: Icon(Icons.search),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                     IconButton(
                       tooltip: 'Ver tarefas designadas concluidas',
                       icon: Icon(Icons.folder),
@@ -300,6 +305,157 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
         body: _body(context),
       ),
       // ),
+    );
+  }
+}
+
+
+
+/// Selecao de usuario que vao receber alerta
+class SetorListaModalSelect extends StatefulWidget {
+  final ControleTarefaListBloc bloc;
+  final ControleTarefaModel tarefaID;
+
+  const SetorListaModalSelect(this.bloc, this.tarefaID);
+
+  @override
+  _SetorListaModalSelectState createState() =>
+      _SetorListaModalSelectState(this.bloc);
+}
+
+class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
+  final ControleTarefaListBloc bloc;
+
+  _SetorListaModalSelectState(this.bloc);
+
+  Widget _listaSetor() {
+    return StreamBuilder<ControleTarefaListBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: Text("Erro. Informe ao administrador do aplicativo"),
+          );
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.data.setorList == null) {
+          return Center(
+            child: Text("Nenhum setor encontrado."),
+          );
+        }
+        if (snapshot.data.setorList.isEmpty) {
+          return Center(
+            child: Text("Vazio."),
+          );
+        }
+
+        // var usuario = Map<String, UsuarioModel>();
+
+        // usuario = snapshot.data?.setorList;
+        var lista = List<Widget>();
+        for (var setor in snapshot.data.setorList) {
+          // print('setor: ${item.key}');
+          lista.add(_cardBuild(context, setor));
+        }
+
+        return ListView(
+          children: lista,
+        );
+      },
+    );
+
+    // return ListView(
+    //   children: valores.keys.map((String key) {
+    //     return CheckboxListTile(
+    //       title: Text(key),
+    //       value: valores[key],
+    //       onChanged: (bool value) {
+    //         if (key == 'Todos') {
+    //           _marcarTodosDaListaComoTrue(value);
+    //         } else {
+    //           setState(() {
+    //             valores[key] = value;
+    //           });
+    //         }
+    //       },
+    //     );
+    //   }).toList(),
+    // );
+  }
+
+  Widget _cardBuild(BuildContext context, SetorCensitarioModel setor) {
+    // print(setor.nome);
+    // return ListTile(
+    //   title: Text(setor.nome),
+    //   leading: setor.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
+    // );
+    // return CheckboxListTile(
+    //   title: Text(setor.nome),
+    //   value: setor.alertar == null ? false : setor.alertar,
+    //   onChanged: (bool alertar) {
+    //     bloc.eventSink(UpDateAlertaEvent(setorChatID: key, alertar: alertar));
+    //   },
+    // );
+    return ListTile(
+      title: Text('${setor.nome}'),
+      // subtitle: Text('Setor: ${setor.eixoID?.nome}'),
+      trailing: IconButton(
+        icon: Icon(Icons.check),
+        onPressed: () {
+          bloc.eventSink(SelectSetorIDEvent(setorID:setor,tarefaID:widget.tarefaID));
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Escolha um setor"),
+        // automaticallyImplyLeading: false,
+        // backgroundColor: Colors.blueGrey,
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.check_box),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(true));
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.check_box_outline_blank),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(false));
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.repeat),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(null));
+        //     },
+        //   ),
+        //   // RaisedButton(
+        //   //     child: Text("Marcar todos"),
+        //   //     textColor: Colors.blue,
+        //   //     color: Colors.white,
+        //   //     onPressed: () {
+        //   //       bloc.eventSink(UpDateAlertarTodosEvent());
+        //   //     }),
+        //   // RaisedButton(
+        //   //     child: Text("Salvar"),
+        //   //     textColor: Colors.blue,
+        //   //     color: Colors.white,
+        //   //     onPressed: () {
+        //   //       Navigator.pop(context);
+        //   //     })
+        // ],
+      ),
+      body: _listaSetor(),
     );
   }
 }

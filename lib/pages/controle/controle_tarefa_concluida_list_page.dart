@@ -69,11 +69,21 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                     onPressed: () {},
                   ),
                   IconButton(
+                    tooltip: 'Ver ações',
+                    icon: Icon(Icons.check_box),
+                    onPressed: () {
+                                          Navigator.pushNamed(
+                        context,
+                        "/controle/acao_concluida",
+                        arguments: controleTarefaID.id,
+                      );
+                    },
+                  ),
+                   IconButton(
                     tooltip: 'Reativar tarefa',
                     icon: Icon(Icons.reply),
                     onPressed: () {
-                                         bloc.eventSink(AtivarTarefaIDEvent(controleTarefaID.id));
-
+                      bloc.eventSink(AtivarTarefaIDEvent(controleTarefaID.id));
                     },
                   ),
                 ])
@@ -86,7 +96,7 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   Expanded(
                     flex: 10,
                     child: Text(
-                        'Município: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
                     IconButton(
@@ -96,13 +106,13 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                         // Listar paginas de perguntas
                       },
                     ),
-                    IconButton(
-                      tooltip: 'Filtrar por',
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Filtrar por',
+                    //   icon: Icon(Icons.search),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                     // IconButton(
                     //   tooltip: 'Ver tarefas recebidas concluidas',
                     //   icon: Icon(Icons.folder),
@@ -180,17 +190,17 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                     icon: Icon(Icons.picture_as_pdf),
                     onPressed: () {},
                   ),
-                  // IconButton(
-                  //   tooltip: 'Editar ação',
-                  //   icon: Icon(Icons.check_box),
-                  //   onPressed: () {
-                  //     Navigator.pushNamed(
-                  //       context,
-                  //       "/controle/acao_list",
-                  //       arguments: controleTarefaID.id,
-                  //     );
-                  //   },
-                  // ),
+                  IconButton(
+                    tooltip: 'Ver ações',
+                    icon: Icon(Icons.check_box),
+                    onPressed: () {
+                                          Navigator.pushNamed(
+                        context,
+                        "/controle/acao_concluida",
+                        arguments: controleTarefaID.id,
+                      );
+                    },
+                  ),
                   IconButton(
                     tooltip: 'Reativar tarefa',
                     icon: Icon(Icons.reply),
@@ -208,7 +218,7 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   Expanded(
                     flex: 10,
                     child: Text(
-                        'Município: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
                     IconButton(
@@ -218,13 +228,13 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                         // Listar paginas de perguntas
                       },
                     ),
-                    IconButton(
-                      tooltip: 'Filtrar por',
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Filtrar por',
+                    //   icon: Icon(Icons.search),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                     // IconButton(
                     //   tooltip: 'Ver tarefas designadas concluidas',
                     //   icon: Icon(Icons.folder),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/controle/controle_acao_concluida_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_crud_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_list_page.dart';
@@ -220,7 +221,10 @@ class MyApp extends StatelessWidget {
           return ControleAcaoCrudPage(tarefaID:args.tarefa ,acaoID: args.acao);
         },
         "/controle/concluida": (context) => ControleTarefaConcluidaListPage(authBloc),
-
+        "/controle/acao_concluida": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ControleAcaoConcluidaPage(settings.arguments);
+        },
 
 
 

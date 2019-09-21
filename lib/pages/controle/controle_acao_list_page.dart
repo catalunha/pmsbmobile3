@@ -47,14 +47,15 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
             for (var acao in snapshot.data.controleAcaoList) {
               // }
               // snapshot.data.escolhaMap.forEach((k, v) {
-              final i = ordemLocal;
               list.add(
                 Column(
                   children: <Widget>[
                     ListTile(
                       // leading: Text('${ordemLocal} (${v.ordem})'),
                       selected: acao.concluida,
-                      trailing: acao.concluida ? Text('*  ${ordemLocal}'): Text('${ordemLocal}'),
+                      trailing: acao.concluida
+                          ? Text('*  ${ordemLocal}')
+                          : Text('${ordemLocal}'),
                       title: Text(acao.nome),
                       subtitle: Text(
                           'id: ${acao.id}\nObs: ${acao.observacao}\nAtualizada: ${acao.modificada}'),
@@ -72,8 +73,7 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                               )
                             : Text(''),
                         IconButton(
-                                                          tooltip: 'Descer ação',
-
+                            tooltip: 'Descer ação',
                             icon: Icon(Icons.arrow_downward),
                             onPressed: (ordemLocal) < lengthAcao
                                 ? () {
