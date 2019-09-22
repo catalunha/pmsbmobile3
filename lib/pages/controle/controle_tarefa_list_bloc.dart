@@ -145,7 +145,7 @@ class ControleTarefaListBloc {
       final SetorCensitarioModel setorID = event.setorID;
       final ControleTarefaModel tarefaID = event.tarefaID;
 
-      print('Setor selecionado: ${setorID}');
+      // print('Setor selecionado: ${setorID}');
       final streamDocsRemetente = _firestore
           .collection(ControleTarefaModel.collection)
           .where("setor.id", isEqualTo: setorID.id)

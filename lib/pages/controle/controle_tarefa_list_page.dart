@@ -311,7 +311,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
 
 
 
-/// Selecao de usuario que vao receber alerta
+/// Selecao de setor para duplicar a tarefa
 class SetorListaModalSelect extends StatefulWidget {
   final ControleTarefaListBloc bloc;
   final ControleTarefaModel tarefaID;

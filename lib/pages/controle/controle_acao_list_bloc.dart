@@ -1,6 +1,9 @@
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ControleAcaoListBlocEvent {}
@@ -17,11 +20,25 @@ class OrdenarAcaoEvent extends ControleAcaoListBlocEvent {
 
   OrdenarAcaoEvent(this.acao, this.up);
 }
+class UpdateTarefaListEvent extends ControleAcaoListBlocEvent {
+  final ControleAcaoModel acaoID;
+
+  UpdateTarefaListEvent(this.acaoID);
+}
+
+class SelectTarefaIDEvent extends ControleAcaoListBlocEvent {
+  final ControleTarefaModel tarefaID;
+  final ControleAcaoModel acaoID;
+
+  SelectTarefaIDEvent({this.acaoID, this.tarefaID});
+}
 
 class ControleAcaoListBlocState {
   ControleTarefaModel controleTarefaID = ControleTarefaModel();
   List<ControleAcaoModel> controleAcaoList = List<ControleAcaoModel>();
   bool isDataValid;
+
+  List<ControleTarefaModel> controleTarefaListRemetente = List<ControleTarefaModel>();
 }
 
 class ControleAcaoListBloc {
@@ -119,6 +136,79 @@ class ControleAcaoListBloc {
           .document(_state.controleAcaoList[ordemOutro].id);
 
       docRefOutro.setData({"numeroCriacao": numeroCriacaoOrigem}, merge: true);
+    }
+    if (event is UpdateTarefaListEvent) {
+      final ControleAcaoModel acaoID = event.acaoID;
+
+      _state.controleTarefaListRemetente.clear();
+      // le todas as tarefas deste usuario como remetente/designadas neste setor.
+      final streamDocsRemetente = _firestore
+          .collection(ControleTarefaModel.collection)
+          .where("remetente.id", isEqualTo: acaoID.remetente.id)
+          .where("concluida", isEqualTo: false)
+          .snapshots();
+
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) =>
+              ControleTarefaModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
+
+      snapListRemetente.listen((List<ControleTarefaModel> controleTarefaList) {
+        _state.controleTarefaListRemetente = controleTarefaList;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+  }
+
+    if (event is SelectTarefaIDEvent) {
+      final ControleTarefaModel tarefa = event.tarefaID;
+      final ControleAcaoModel acao = event.acaoID;
+
+
+      final streamDocsRemetente = _firestore
+          .collection(ControleAcaoModel.collection)
+          .where("tarefa.id", isEqualTo: tarefa.id)
+          .where("referencia", isEqualTo: acao.referencia);
+      final snap = await streamDocsRemetente.getDocuments();
+
+      if (snap.documents.isEmpty) {
+        // localizar a tarefa e atualizar o recebimento desta nova
+      final docRefTarefa = _firestore
+          .collection(ControleTarefaModel.collection)
+          .document(tarefa.id);
+      await docRefTarefa.setData({
+        'acaoTotal': Bootstrap.instance.FieldValue.increment(1),
+        'ultimaAcaoCriada': Bootstrap.instance.FieldValue.increment(1),
+        'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+      }, merge: true);
+
+      final docRefTarefaAtualizada = _firestore
+          .collection(ControleTarefaModel.collection)
+          .document(tarefa.id);
+      final snap = await docRefTarefaAtualizada.get();
+      ControleTarefaModel tarefaID = ControleTarefaModel();
+      tarefaID = ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
+
+      final docRefAcao =
+          _firestore.collection(ControleAcaoModel.collection).document(null);
+      Map<String, dynamic> acaoNOVA = Map<String, dynamic>();
+      acaoNOVA['referencia'] = acao.referencia;
+      acaoNOVA['tarefa'] =
+      ControleTarefaID(id: tarefaID.id, nome: tarefaID.nome)
+          .toMap();
+      acaoNOVA['nome'] = acao.nome + ' COPIA ';
+      acaoNOVA['setor'] = acao.setor.toMap();
+          // SetorCensitarioID(id: setor.id, nome: setor.nome).toMap();
+      acaoNOVA['remetente'] = acao.remetente.toMap();
+      acaoNOVA['destinatario'] = acao.destinatario.toMap();
+      acaoNOVA['concluida'] = false;
+      acaoNOVA['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+      acaoNOVA['numeroCriacao'] = tarefaID.ultimaAcaoCriada;
+      // print(acaoNOVA);
+      await docRefAcao.setData(acaoNOVA, merge: true);
+
+     }
+
     }
 
     _validateData();

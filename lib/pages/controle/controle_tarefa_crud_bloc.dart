@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' show TimeOfDay;
+import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
@@ -30,8 +31,6 @@ class SelectDestinatarioIDEvent extends ControleTarefaCrudBlocEvent {
 
   SelectDestinatarioIDEvent(this.destinatarioID);
 }
-
-
 
 class UpdateNomeEvent extends ControleTarefaCrudBlocEvent {
   final String nome;
@@ -198,14 +197,14 @@ class ControleTarefaCrudBloc {
       print('_state.usuarioID: ' + _state.usuarioID.toString());
     }
     if (event is UpdateUsuarioListEvent) {
-      var collRef = await _firestore
-          .collection(UsuarioModel.collection).getDocuments();
-        // final snap = await collRef.getDocuments();
+      var collRef =
+          await _firestore.collection(UsuarioModel.collection).getDocuments();
+      // final snap = await collRef.getDocuments();
 
-for (var documentSnapshot in collRef.documents) {
-  _state.usuarioList.add(UsuarioModel(id: documentSnapshot.documentID)
-              .fromMap(documentSnapshot.data));
-}
+      for (var documentSnapshot in collRef.documents) {
+        _state.usuarioList.add(UsuarioModel(id: documentSnapshot.documentID)
+            .fromMap(documentSnapshot.data));
+      }
 
       //     collRef.snapshots()
       //     .listen((querySnapshot) {
@@ -213,10 +212,10 @@ for (var documentSnapshot in collRef.documents) {
       //     _state.usuarioList.add(UsuarioModel(id: documentSnapshot.documentID)
       //         .fromMap(documentSnapshot.data));
       //   }
-        _state.usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
+      _state.usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
 
       // });
-      print('_state.usuarioList: '+_state.usuarioList.toString());
+      print('_state.usuarioList: ' + _state.usuarioList.toString());
     }
     if (event is UpdateTarefaIDEvent) {
       _state.controleTarefaId = event.tarefaID;
@@ -281,6 +280,26 @@ for (var documentSnapshot in collRef.documents) {
       // }
     }
     if (event is DeleteEvent) {
+      // le todas as tarefas deste usuario como remetente/designadas neste setor.
+      final streamDocsRemetente = _firestore
+          .collection(ControleAcaoModel.collection)
+          .where("tarefa.id", isEqualTo: _state.controleTarefaID.id)
+          .snapshots();
+
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) => ControleAcaoModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
+
+      snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
+        for (var acao in controleAcaoList) {
+          _firestore
+              .collection(ControleAcaoModel.collection)
+              .document(acao.id)
+              .delete();
+        }
+      });
+
       _firestore
           .collection(ControleTarefaModel.collection)
           .document(_state.controleTarefaID.id)
@@ -288,7 +307,8 @@ for (var documentSnapshot in collRef.documents) {
     }
 
     if (event is SelectDestinatarioIDEvent) {
-      _state.destinatario = UsuarioID(id: event.destinatarioID.id, nome: event.destinatarioID.nome);
+      _state.destinatario = UsuarioID(
+          id: event.destinatarioID.id, nome: event.destinatarioID.nome);
     }
 
     if (event is SaveEvent) {
@@ -313,8 +333,8 @@ for (var documentSnapshot in collRef.documents) {
       tarefa['inicio'] = _state.inicio;
       tarefa['fim'] = _state.fim;
       tarefa['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
-        tarefa['destinatario'] =_state.destinatario.toMap();
-            
+      tarefa['destinatario'] = _state.destinatario.toMap();
+
       docRef.setData(tarefa, merge: true);
     }
 

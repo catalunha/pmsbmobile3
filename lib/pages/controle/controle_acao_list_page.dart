@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/controle_acao_model.dart';
+import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
+import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_crud_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_list_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
@@ -73,7 +76,7 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                               )
                             : Text(''),
                         IconButton(
-                            tooltip: 'Descer ação',
+                            tooltip: 'Descer ordem da ação',
                             icon: Icon(Icons.arrow_downward),
                             onPressed: (ordemLocal) < lengthAcao
                                 ? () {
@@ -86,6 +89,7 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                                   }
                                 : null),
                         IconButton(
+                            tooltip: 'Subir ordem da ação',
                             icon: Icon(Icons.arrow_upward),
                             onPressed: ordemLocal > 1
                                 ? () {
@@ -99,6 +103,20 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                                   }
                                 : null),
                         IconButton(
+                          tooltip: 'Duplicar ação',
+                          icon: Icon(Icons.content_copy),
+                          onPressed: () {
+                            bloc.eventSink(
+                                        UpdateTarefaListEvent(acao));
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext bc) {
+                                  return TarefaListModalSelect(bloc,acao);
+                                });
+                          },
+                        ),
+                        IconButton(
+                            tooltip: 'Editar ação',
                             icon: Icon(Icons.edit),
                             onPressed: () {
                               // Editar uma nova escolha
@@ -141,5 +159,155 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
           child: Icon(Icons.add),
         ),
         body: _body());
+  }
+}
+
+/// Selecao de setor para duplicar a tarefa
+class TarefaListModalSelect extends StatefulWidget {
+  final ControleAcaoListBloc bloc;
+  final ControleAcaoModel acaoID;
+
+  const TarefaListModalSelect(this.bloc, this.acaoID);
+
+  @override
+  _TarefaListModalSelectState createState() =>
+      _TarefaListModalSelectState(this.bloc);
+}
+
+class _TarefaListModalSelectState extends State<TarefaListModalSelect> {
+  final ControleAcaoListBloc bloc;
+
+  _TarefaListModalSelectState(this.bloc);
+
+  Widget _listaSetor() {
+    return StreamBuilder<ControleAcaoListBlocState>(
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleAcaoListBlocState> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: Text("Erro. Informe ao administrador do aplicativo"),
+          );
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.data.controleTarefaListRemetente == null) {
+          return Center(
+            child: Text("Nenhum setor encontrado."),
+          );
+        }
+        if (snapshot.data.controleTarefaListRemetente.isEmpty) {
+          return Center(
+            child: Text("Vazio."),
+          );
+        }
+
+        // var usuario = Map<String, UsuarioModel>();
+
+        // usuario = snapshot.data?.controleTarefaListRemetente;
+        var lista = List<Widget>();
+        for (var tarefa in snapshot.data.controleTarefaListRemetente) {
+          // print('setor: ${item.key}');
+          lista.add(_cardBuild(context, tarefa));
+        }
+
+        return ListView(
+          children: lista,
+        );
+      },
+    );
+
+    // return ListView(
+    //   children: valores.keys.map((String key) {
+    //     return CheckboxListTile(
+    //       title: Text(key),
+    //       value: valores[key],
+    //       onChanged: (bool value) {
+    //         if (key == 'Todos') {
+    //           _marcarTodosDaListaComoTrue(value);
+    //         } else {
+    //           setState(() {
+    //             valores[key] = value;
+    //           });
+    //         }
+    //       },
+    //     );
+    //   }).toList(),
+    // );
+  }
+
+  Widget _cardBuild(BuildContext context, ControleTarefaModel tarefa) {
+    // print(setor.nome);
+    // return ListTile(
+    //   title: Text(setor.nome),
+    //   leading: setor.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
+    // );
+    // return CheckboxListTile(
+    //   title: Text(setor.nome),
+    //   value: setor.alertar == null ? false : setor.alertar,
+    //   onChanged: (bool alertar) {
+    //     bloc.eventSink(UpDateAlertaEvent(setorChatID: key, alertar: alertar));
+    //   },
+    // );
+    return ListTile(
+      title: Text('${tarefa.nome}'),
+      subtitle: Text('Setor: ${tarefa.setor.nome}'),
+      trailing: IconButton(
+        icon: Icon(Icons.check),
+        onPressed: () {
+          bloc.eventSink(
+              SelectTarefaIDEvent(tarefaID: tarefa, acaoID: widget.acaoID));
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Escolha a tarefa"),
+        // automaticallyImplyLeading: false,
+        // backgroundColor: Colors.blueGrey,
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.check_box),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(true));
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.check_box_outline_blank),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(false));
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.repeat),
+        //     onPressed: () {
+        //       bloc.eventSink(UpDateAlertarTodosEvent(null));
+        //     },
+        //   ),
+        //   // RaisedButton(
+        //   //     child: Text("Marcar todos"),
+        //   //     textColor: Colors.blue,
+        //   //     color: Colors.white,
+        //   //     onPressed: () {
+        //   //       bloc.eventSink(UpDateAlertarTodosEvent());
+        //   //     }),
+        //   // RaisedButton(
+        //   //     child: Text("Salvar"),
+        //   //     textColor: Colors.blue,
+        //   //     color: Colors.white,
+        //   //     onPressed: () {
+        //   //       Navigator.pop(context);
+        //   //     })
+        // ],
+      ),
+      body: _listaSetor(),
+    );
   }
 }
