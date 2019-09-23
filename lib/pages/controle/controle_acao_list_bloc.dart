@@ -86,14 +86,31 @@ class ControleAcaoListBloc {
     if (event is UpdateTarefaIDEvent) {
       //Atualiza estado com usuario logado
       // le todas as tarefas deste usuario como remetente/designadas neste setor.
-      final docRef = _firestore
+      // final docRef = _firestore
+      //     .collection(ControleTarefaModel.collection)
+      //     .document(event.controleTarefaID);
+      // final snap = await docRef.get();
+      // if (snap.exists) {
+      //   _state.controleTarefaID =
+      //       ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
+      // }
+
+    final streamDocsTarefa = _firestore
           .collection(ControleTarefaModel.collection)
-          .document(event.controleTarefaID);
-      final snap = await docRef.get();
-      if (snap.exists) {
-        _state.controleTarefaID =
-            ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
-      }
+          .document(event.controleTarefaID)
+          .snapshots();
+
+      final snapTarefa = streamDocsTarefa.map((snapDocs) =>
+          ControleTarefaModel(id: snapDocs.documentID).fromMap(snapDocs.data));
+      //       .toList());
+
+      snapTarefa.listen((ControleTarefaModel controleTarefa) {
+        _state.controleTarefaID = controleTarefa;
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+
+
+
 
       _state.controleAcaoList.clear();
       // le todas as tarefas deste usuario como remetente/designadas neste setor.

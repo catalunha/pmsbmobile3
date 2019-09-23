@@ -175,41 +175,66 @@ class ControleTarefaListBloc {
         if (docRefTarefa.documentID != null) {
           // tarefa criada pode duplicar acaoes
 
-          final streamDocsRemetente = _firestore
+          final streamDocsRemetente = await _firestore
               .collection(ControleAcaoModel.collection)
               .where("tarefa.id", isEqualTo: tarefaID.id)
-              .snapshots();
+              .getDocuments();
+          // .snapshots();
 
-          final snapListRemetente = streamDocsRemetente.map((snapDocs) =>
-              snapDocs.documents
-                  .map((doc) =>
-                      ControleAcaoModel(id: doc.documentID).fromMap(doc.data))
-                  .toList());
+          for (var docSnap in streamDocsRemetente.documents) {
+            ControleAcaoModel controleAcaoModel =
+                ControleAcaoModel(id: docSnap.documentID).fromMap(docSnap.data);
+            final docRefAcao = _firestore
+                .collection(ControleAcaoModel.collection)
+                .document(null);
+            Map<String, dynamic> acaoNOVA = Map<String, dynamic>();
+            acaoNOVA['referencia'] = controleAcaoModel.referencia;
+            acaoNOVA['tarefa'] = ControleTarefaID(
+                    id: docRefTarefa.documentID, nome: tarefaID.nome)
+                .toMap();
+            acaoNOVA['nome'] = controleAcaoModel.nome + ' COPIA ';
+            acaoNOVA['setor'] =
+                SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
+            acaoNOVA['remetente'] = controleAcaoModel.remetente.toMap();
+            acaoNOVA['destinatario'] = controleAcaoModel.destinatario.toMap();
+            acaoNOVA['concluida'] = false;
+            acaoNOVA['modificada'] =
+                Bootstrap.instance.FieldValue.serverTimestamp();
+            acaoNOVA['numeroCriacao'] = controleAcaoModel.numeroCriacao;
+            // print(acaoNOVA);
+            docRefAcao.setData(acaoNOVA, merge: true);
+          }
 
-          snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
-            // _state.controleAcaoList = controleAcaoList;
-            for (var acao in controleAcaoList) {
-              final docRefAcao = _firestore
-                  .collection(ControleAcaoModel.collection)
-                  .document(null);
-              Map<String, dynamic> acaoNOVA = Map<String, dynamic>();
-              acaoNOVA['referencia'] = acao.referencia;
-              acaoNOVA['tarefa'] = ControleTarefaID(
-                      id: docRefTarefa.documentID, nome: tarefaID.nome)
-                  .toMap();
-              acaoNOVA['nome'] = acao.nome + ' COPIA ';
-              acaoNOVA['setor'] =
-                  SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
-              acaoNOVA['remetente'] = acao.remetente.toMap();
-              acaoNOVA['destinatario'] = acao.destinatario.toMap();
-              acaoNOVA['concluida'] = false;
-              acaoNOVA['modificada'] =
-                  Bootstrap.instance.FieldValue.serverTimestamp();
-              acaoNOVA['numeroCriacao'] = acao.numeroCriacao;
-              // print(acaoNOVA);
-              docRefAcao.setData(acaoNOVA, merge: true);
-            }
-          });
+          // final snapListRemetente = streamDocsRemetente.map((snapDocs) =>
+          //     snapDocs.documents
+          //         .map((doc) =>
+          //             ControleAcaoModel(id: doc.documentID).fromMap(doc.data))
+          //         .toList());
+
+          // snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
+          //   // _state.controleAcaoList = controleAcaoList;
+          //   for (var acao in controleAcaoList) {
+          //     final docRefAcao = _firestore
+          //         .collection(ControleAcaoModel.collection)
+          //         .document(null);
+          //     Map<String, dynamic> acaoNOVA = Map<String, dynamic>();
+          //     acaoNOVA['referencia'] = acao.referencia;
+          //     acaoNOVA['tarefa'] = ControleTarefaID(
+          //             id: docRefTarefa.documentID, nome: tarefaID.nome)
+          //         .toMap();
+          //     acaoNOVA['nome'] = acao.nome + ' COPIA ';
+          //     acaoNOVA['setor'] =
+          //         SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
+          //     acaoNOVA['remetente'] = acao.remetente.toMap();
+          //     acaoNOVA['destinatario'] = acao.destinatario.toMap();
+          //     acaoNOVA['concluida'] = false;
+          //     acaoNOVA['modificada'] =
+          //         Bootstrap.instance.FieldValue.serverTimestamp();
+          //     acaoNOVA['numeroCriacao'] = acao.numeroCriacao;
+          //     // print(acaoNOVA);
+          //     docRefAcao.setData(acaoNOVA, merge: true);
+          //   }
+          // });
         } else {
           print(
               'ControleTarefaListBloc. Algo deu errado. Tarefa nao duplicada.');

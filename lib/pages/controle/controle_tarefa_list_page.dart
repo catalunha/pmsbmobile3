@@ -55,7 +55,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     title: Text(
                         '${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
                     subtitle: Text(
-                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\n${controleTarefaID.id}')),
+                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nid:${controleTarefaID.id}')),
                 // Flexible(
                 //     flex: 1,
                 //     child: Slider(
@@ -179,10 +179,11 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     icon: Icon(Icons.content_copy),
                     onPressed: () {
                       showModalBottomSheet(
-                context: context,
-                builder: (BuildContext bc) {
-                  return SetorListaModalSelect(bloc,controleTarefaID);
-                });
+                          context: context,
+                          builder: (BuildContext bc) {
+                            return SetorListaModalSelect(
+                                bloc, controleTarefaID);
+                          });
                     },
                   ),
                   IconButton(
@@ -309,8 +310,6 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
   }
 }
 
-
-
 /// Selecao de setor para duplicar a tarefa
 class SetorListaModalSelect extends StatefulWidget {
   final ControleTarefaListBloc bloc;
@@ -406,7 +405,8 @@ class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
       trailing: IconButton(
         icon: Icon(Icons.check),
         onPressed: () {
-          bloc.eventSink(SelectSetorIDEvent(setorID:setor,tarefaID:widget.tarefaID));
+          bloc.eventSink(
+              SelectSetorIDEvent(setorID: setor, tarefaID: widget.tarefaID));
           Navigator.pop(context);
         },
       ),

@@ -43,14 +43,16 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
           if (!snapshot.hasData) {
             return Text("SEM DADOS");
           }
-          List<Widget> list = List<Widget>();
+          List<Widget> listaWdg = List<Widget>();
           if (snapshot.data.isDataValid) {
+                        var controleTarefaID = snapshot.data.controleTarefaID;
+
             int lengthAcao = snapshot.data.controleAcaoList.length;
             int ordemLocal = 1;
             for (var acao in snapshot.data.controleAcaoList) {
               // }
               // snapshot.data.escolhaMap.forEach((k, v) {
-              list.add(
+              listaWdg.add(
                 Column(
                   children: <Widget>[
                     ListTile(
@@ -132,9 +134,31 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
               );
               ordemLocal++;
             }
-            return ListView(
-              children: list,
-            );
+
+ return Column(children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                      flex: 10,
+                      child: Text(
+                          'Setor: ${controleTarefaID?.setor?.nome}\nNome: ${controleTarefaID?.nome}\nPara: ${controleTarefaID?.destinatario?.nome}\nInicio: ${controleTarefaID?.inicio}\nFim: ${controleTarefaID?.fim}\nid: ${controleTarefaID?.id}\nConcluida: ${controleTarefaID?.acaoCumprida} de ${controleTarefaID?.acaoTotal}')),
+                ],
+              ),
+              Divider(),
+              Expanded(
+                flex: 10,
+                child: ListView(
+                  children: listaWdg,
+                ),
+              )
+            ]);
+
+            // return ListView(
+            //   children: list,
+            // );
+
+
+
           } else {
             return Text('Dados inválidos...');
           }

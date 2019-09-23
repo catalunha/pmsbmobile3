@@ -95,7 +95,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                   Expanded(
                       flex: 10,
                       child: Text(
-                          'Setor:${controleTarefaID.setor.nome}\nNome:${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}\nInicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
+                          'Setor: ${controleTarefaID.setor.nome}\nNome: ${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}\nInicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
                 ],
               ),
               Divider(),
