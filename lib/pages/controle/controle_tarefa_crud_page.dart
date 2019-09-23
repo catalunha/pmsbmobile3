@@ -228,13 +228,12 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
             stream: bloc.stateStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Text('Sem destinatarios');
+                return Text('Sem destinatários');
               }
               if (snapshot.data.destinatario == null) {
-                return Text('Destinatario nao selecionado');
+                return Text('Destinatário não selecionado');
               } else {
                 return Text('${snapshot.data.destinatario.nome}');
-
               }
             })
       ],
@@ -248,9 +247,9 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
         child: ListView(
           padding: EdgeInsets.all(5),
           children: <Widget>[
-            _texto("Titulo da tarefa:"),
+            _texto("Título da tarefa:"),
             TarefaNome(bloc),
-            _texto("Data / Hora Inicio:"),
+            _texto("Data / Hora Início:"),
             _dataHorarioInicio(context),
             _texto("Data / Hora Fim:"),
             _dataHorarioFim(context),
@@ -268,17 +267,27 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Criação e edicao de tarefa'),
+          title: Text('Criação e edição de tarefa'),
         ),
         body: _bodyDados(context),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            //TODO: remover o pop?
-            bloc.eventSink(SaveEvent());
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.cloud_upload),
-        ));
+        floatingActionButton: StreamBuilder<ControleTarefaCrudBlocState>(
+            stream: bloc.stateStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return Container();
+
+              return FloatingActionButton(
+                onPressed: snapshot.data.isDataValid
+                    ? () {
+                        //salvar e voltar
+                        bloc.eventSink(SaveEvent());
+                        Navigator.pop(context);
+                      }
+                    : null,
+                child: Icon(Icons.cloud_upload),
+                backgroundColor:
+                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              );
+            }));
   }
 }
 

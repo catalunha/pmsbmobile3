@@ -23,7 +23,7 @@ class UpdateNomeEvent extends ControleAcaoCrudBlocEvent {
 
 class DeleteEvent extends ControleAcaoCrudBlocEvent {}
 
-class SaveAcaoEvent extends ControleAcaoCrudBlocEvent {}
+class SaveEvent extends ControleAcaoCrudBlocEvent {}
 
 class ControleAcaoCrudBlocState {
   String acaoID;
@@ -31,6 +31,7 @@ class ControleAcaoCrudBlocState {
   ControleAcaoModel controleAcaoID;
   ControleTarefaModel controleTarefaoID;
   String nome;
+  bool isDataValid = false;
 
   void updateStateFromControleAcaoModel() {
     nome = controleAcaoID.nome;
@@ -62,6 +63,13 @@ class ControleAcaoCrudBloc {
     _stateController.close();
     await _eventController.drain();
     _eventController.close();
+  }
+
+  _validateData() {
+    _state.isDataValid = true;
+    if (_state.nome == null || _state.nome.isEmpty) {
+      _state.isDataValid = false;
+    }
   }
 
   _mapEventToState(ControleAcaoCrudBlocEvent event) async {
@@ -100,7 +108,7 @@ class ControleAcaoCrudBloc {
       _state.nome = event.nome;
     }
 
-    if (event is SaveAcaoEvent) {
+    if (event is SaveEvent) {
       final docRef = _firestore
           .collection(ControleAcaoModel.collection)
           .document(_state.acaoID);
@@ -151,6 +159,8 @@ class ControleAcaoCrudBloc {
         'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
       }, merge: true);
     }
+    _validateData();
+
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em ControleAcaoCrudBloc  = ${event.runtimeType}');
   }

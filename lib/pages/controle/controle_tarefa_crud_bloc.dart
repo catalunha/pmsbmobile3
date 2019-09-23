@@ -82,75 +82,14 @@ class ControleTarefaCrudBlocState {
   DateTime dataFim;
   TimeOfDay horaFim;
 
+  bool isDataValid = false;
+
   void updateStateFromControleTarefaModel() {
     nome = controleTarefaID.nome;
     inicio = controleTarefaID.inicio;
     fim = controleTarefaID.fim;
     destinatario = controleTarefaID.destinatario;
   }
-
-//   String noticiaID;
-
-//   UsuarioIDEditor usuarioIDEditor;
-//   String textoMarkdown;
-//   List<Map<String, dynamic>> destinatarioListMap = List<Map<String, dynamic>>();
-
-// /*
-// [
-//   {
-//     usuarioID:usuarioID
-//     nome:usuarioID->nome
-//   },
-// ]
-// */
-
-//   void fromNoticiaModel(NoticiaModel noticiaModel) {
-//     currentNoticiaModel = noticiaModel;
-//     noticiaID = noticiaModel.id;
-//     usuarioIDEditor = noticiaModel.usuarioIDEditor;
-//     titulo = noticiaModel.titulo;
-//     textoMarkdown = noticiaModel.textoMarkdown;
-//     publicar = noticiaModel.publicar;
-//     // print('>>> noticiaModel.id >>> ${noticiaModel.id}');
-//     // print(
-//     //     '>>> noticiaModel.usuarioIDDestino >>> ${noticiaModel.usuarioIDDestino}');
-//     // destinatarioListMap =
-//     //     noticiaModel.usuarioIDDestino.map((v) => v.toMap()).toList();
-//     noticiaModel.usuarioIDDestino.forEach((k, v) {
-// // print('>> k >> ${k}');
-// // print('>> v >> ${v}');
-//       destinatarioListMap.add(
-//         {'usuarioID': '${k}', 'nome': '${v.nome}'},
-//       );
-//     });
-  // }
-
-  // NoticiaModel toNoticiaModel() {
-  //   // List<Destinatario> usuarioIDDestino = [];
-  //   Map<String, Destinatario> usuarioIDDestino = Map<String, Destinatario>();
-  //   // print('>>>>>> ${destinatarioListMap}');
-  //   // destinatarioListMap.map((item) => destinatarioList.add(item['usuarioID']));
-
-  //   destinatarioListMap.forEach((item) {
-  //     // print(item['usuarioID']);
-  //     // print(item['nome']);
-  //     usuarioIDDestino[item['usuarioID']] = Destinatario(
-  //         uid: item['usuarioID'],
-  //         id: true,
-  //         nome: item['nome'],
-  //         visualizada: false);
-  //     // print('>> usuarioIDDestino >> ${usuarioIDDestino.toString()}');
-  //   });
-  //   // print('>>>>>> ${destinatarioList}');
-  //   return NoticiaModel(
-  //     usuarioIDEditor: usuarioIDEditor,
-  //     titulo: titulo,
-  //     // publicada: false,
-  //     textoMarkdown: textoMarkdown,
-  //     usuarioIDDestino: usuarioIDDestino,
-  //     publicar: publicar ?? null,
-  //   );
-  // }
 }
 
 class ControleTarefaCrudBloc {
@@ -187,9 +126,15 @@ class ControleTarefaCrudBloc {
     _stateController.close();
   }
 
-  // void _dispatchUpdateUserId(String userId) {
-  //   ControleTarefaCrudBlocEventSink(UpDateUsuarioIDEditorEvent(userId));
-  // }
+  _validateData() {
+    _state.isDataValid = true;
+    if (_state.nome == null || _state.nome.isEmpty) {
+      _state.isDataValid = false;
+    }
+    if (_state.destinatario == null) {
+      _state.isDataValid = false;
+    }
+  }
 
   _mapEventToState(ControleTarefaCrudBlocEvent event) async {
     if (event is UpdateTarefaCrudUsuarioIDEvent) {
@@ -337,7 +282,7 @@ class ControleTarefaCrudBloc {
 
       docRef.setData(tarefa, merge: true);
     }
-
+    _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print(
         'event.runtimeType em ControleTarefaCrudBloc  = ${event.runtimeType}');

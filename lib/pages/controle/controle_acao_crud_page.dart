@@ -40,14 +40,32 @@ class _ControleAcaoCrudPageState extends State<ControleAcaoCrudPage> {
       appBar: AppBar(
         title: Text('Editar ação'),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.cloud_upload),
-        onPressed: () {
-          // salvar e voltar
-          bloc.eventSink(SaveAcaoEvent());
-          Navigator.pop(context);
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.cloud_upload),
+      //   onPressed: () {
+      //     // salvar e voltar
+      //     bloc.eventSink(SaveAcaoEvent());
+      //     Navigator.pop(context);
+      //   },
+      // ),
+      floatingActionButton: StreamBuilder<ControleAcaoCrudBlocState>(
+            stream: bloc.stateStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return Container();
+
+              return FloatingActionButton(
+                onPressed: snapshot.data.isDataValid
+                    ? () {
+                        //salvar e voltar
+                        bloc.eventSink(SaveEvent());
+                        Navigator.pop(context);
+                      }
+                    : null,
+                child: Icon(Icons.cloud_upload),
+                backgroundColor:
+                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+              );
+            }),
       body: ListView(
         children: <Widget>[
           Padding(
@@ -62,16 +80,6 @@ class _ControleAcaoCrudPageState extends State<ControleAcaoCrudPage> {
           ),
           Divider(),
             _DeleteDocumentOrField(bloc),
-          // Padding(
-          //     padding: EdgeInsets.all(5.0),
-          //     child: Text(
-          //       "Observação no cumprimento da ação:",
-          //       style: TextStyle(fontSize: 15, color: Colors.blue),
-          //     )),
-          // Padding(
-          //   padding: EdgeInsets.all(5.0),
-          //   child: AcaoObs(bloc),
-          // ),
         ],
       ),
     );

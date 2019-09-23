@@ -130,6 +130,7 @@ class ControleTarefaListBloc {
       snapListDestinatario
           .listen((List<ControleTarefaModel> controleTarefaList) {
         _state.controleTarefaListDestinatario = controleTarefaList;
+        if (!_stateController.isClosed) _stateController.add(_state);
       });
 
       var collRef = await _firestore
@@ -193,9 +194,9 @@ class ControleTarefaListBloc {
                   .document(null);
               Map<String, dynamic> acaoNOVA = Map<String, dynamic>();
               acaoNOVA['referencia'] = acao.referencia;
-              acaoNOVA['tarefa'] =
-                  ControleTarefaID(id: docRefTarefa.documentID, nome: tarefaID.nome)
-                      .toMap();
+              acaoNOVA['tarefa'] = ControleTarefaID(
+                      id: docRefTarefa.documentID, nome: tarefaID.nome)
+                  .toMap();
               acaoNOVA['nome'] = acao.nome + ' COPIA ';
               acaoNOVA['setor'] =
                   SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();

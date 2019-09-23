@@ -58,7 +58,6 @@ class _ControleAcaoInformarPageState extends State<ControleAcaoInformarPage> {
               padding: EdgeInsets.all(5.0),
               child: Text(
                 "Informar URL do Documento no Google Drive:",
-                style: TextStyle(fontSize: 15, color: Colors.blue),
               )),
           Padding(
             padding: EdgeInsets.all(5.0),
@@ -68,7 +67,6 @@ class _ControleAcaoInformarPageState extends State<ControleAcaoInformarPage> {
               padding: EdgeInsets.all(5.0),
               child: Text(
                 "Observação no cumprimento da ação:",
-                style: TextStyle(fontSize: 15, color: Colors.blue),
               )),
           Padding(
             padding: EdgeInsets.all(5.0),
