@@ -3,6 +3,8 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
+import 'package:pmsbmibile3/services/pdf_create_service.dart';
+import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 import 'controle_tarefa_list_bloc.dart';
@@ -55,7 +57,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     title: Text(
                         '${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
                     subtitle: Text(
-                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nid:${controleTarefaID.id}')),
+                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nEdição: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
                 // Flexible(
                 //     flex: 1,
                 //     child: Slider(
@@ -67,9 +69,13 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                 //     )),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
                   IconButton(
-                    tooltip: 'Gerar PDF desta tarefa',
+                    tooltip: 'Relatorio em PDF.',
                     icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () {},
+                    onPressed: () async {
+                      var pdf = await PdfCreateService
+                          .pdfwidgetForControleTarefa(controleTarefaID);
+                      PdfSaveService.generatePdfAndOpen(pdf);
+                    },
                   ),
                   IconButton(
                     tooltip: 'Marcar/Atualizar ação',
@@ -96,13 +102,13 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    IconButton(
-                      tooltip: 'Gerar PDF desta tarefa',
-                      icon: Icon(Icons.picture_as_pdf),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Gerar PDF desta tarefa',
+                    //   icon: Icon(Icons.picture_as_pdf),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                     // IconButton(
                     //   tooltip: 'Filtrar por',
                     //   icon: Icon(Icons.search),
@@ -166,14 +172,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     title: Text(
                         '${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
                     subtitle: Text(
-                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nid:${controleTarefaID.id}')),
-                //          Slider(
-                //   min: 0.0,
-                //   max: 15.0,
-                //   onChanged:null,
-                //   value: 7,
-                // ),
+                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nEdição: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
+              
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
+                   IconButton(
+                    tooltip: 'Relatorio em PDF.',
+                    icon: Icon(Icons.picture_as_pdf),
+                    onPressed: () async {
+                      var pdf = await PdfCreateService
+                          .pdfwidgetForControleTarefa(controleTarefaID);
+                      PdfSaveService.generatePdfAndOpen(pdf);
+                    },
+                  ),
                   IconButton(
                     tooltip: 'Duplicar tarefa',
                     icon: Icon(Icons.content_copy),
@@ -186,11 +196,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                           });
                     },
                   ),
-                  IconButton(
-                    tooltip: 'Gerar PDF desta tarefa',
-                    icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () {},
-                  ),
+                  
                   IconButton(
                     tooltip: 'Editar ação',
                     icon: Icon(Icons.check_box),
@@ -226,20 +232,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    IconButton(
-                      tooltip: 'Gerar PDF desta tarefa',
-                      icon: Icon(Icons.picture_as_pdf),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
-                    // IconButton(
-                    //   tooltip: 'Filtrar por',
-                    //   icon: Icon(Icons.search),
-                    //   onPressed: () {
-                    //     // Listar paginas de perguntas
-                    //   },
-                    // ),
+                   
                     IconButton(
                       tooltip: 'Ver tarefas designadas concluidas',
                       icon: Icon(Icons.folder),

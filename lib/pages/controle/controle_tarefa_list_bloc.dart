@@ -164,7 +164,7 @@ class ControleTarefaListBloc {
         tarefa['destinatario'] = tarefaID.destinatario.toMap();
         tarefa['acaoTotal'] = tarefaID.acaoTotal;
         tarefa['acaoCumprida'] = 0;
-        tarefa['ultimaAcaoCriada'] = tarefaID.ultimaAcaoCriada;
+        tarefa['ultimaOrdemAcao'] = tarefaID.ultimaOrdemAcao;
         tarefa['concluida'] = false;
         tarefa['nome'] = tarefaID.nome + ' COPIA ';
         tarefa['inicio'] = tarefaID.inicio;
@@ -200,7 +200,7 @@ class ControleTarefaListBloc {
             acaoNOVA['concluida'] = false;
             acaoNOVA['modificada'] =
                 Bootstrap.instance.FieldValue.serverTimestamp();
-            acaoNOVA['numeroCriacao'] = controleAcaoModel.numeroCriacao;
+            acaoNOVA['ordem'] = controleAcaoModel.ordem;
             // print(acaoNOVA);
             docRefAcao.setData(acaoNOVA, merge: true);
           }
@@ -230,7 +230,7 @@ class ControleTarefaListBloc {
           //     acaoNOVA['concluida'] = false;
           //     acaoNOVA['modificada'] =
           //         Bootstrap.instance.FieldValue.serverTimestamp();
-          //     acaoNOVA['numeroCriacao'] = acao.numeroCriacao;
+          //     acaoNOVA['ordem'] = acao.ordem;
           //     // print(acaoNOVA);
           //     docRefAcao.setData(acaoNOVA, merge: true);
           //   }

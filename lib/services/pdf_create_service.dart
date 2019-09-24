@@ -1,29 +1,129 @@
-import 'dart:io';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/models/controle_acao_model.dart';
+import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:queries/collections.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-import 'package:image/image.dart' as image;
-import 'package:url_launcher/url_launcher.dart';
 
 class PdfCreateService {
   static fsw.Firestore _firestore = Bootstrap.instance.firestore;
+
+  static pdfwidgetForControleTarefa(ControleTarefaModel controleTarefa) async {
+    final acaoQuery = _firestore
+        .collection(ControleAcaoModel.collection)
+        .where("tarefa.id", isEqualTo: controleTarefa.id)
+        .orderBy("ordem", descending: false);
+
+// var controleAcaoSnapList = acaoQuery.documents;
+
+    final fsw.QuerySnapshot acaoSnapshot = await acaoQuery.getDocuments();
+    final acaoList = acaoSnapshot.documents.map((fsw.DocumentSnapshot doc) {
+      return ControleAcaoModel(id: doc.documentID).fromMap(doc.data);
+    }).toList();
+
+    final Document pdf = Document();
+    pdf.addPage(MultiPage(
+        pageFormat:
+            PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        header: (Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              decoration: const BoxDecoration(
+                  border: BoxBorder(
+                      bottom: true, width: 0.5, color: PdfColors.grey)),
+              child: Text('Relatorio da Tarefa',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text(
+                  'Pagina ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        build: (Context context) {
+          List<Widget> itens = List<Widget>();
+
+          itens.add(Header(
+              level: 0,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Relatório da Tarefa', textScaleFactor: 2),
+                    // FlutterLogo()
+                  ])));
+
+          itens.add(Header(level: 1, text: 'Tarefa: ${controleTarefa.nome}'));
+          itens.add(
+              Paragraph(text: 'Alguns dados importantes sobre esta tarefa.'));
+          itens.add(Bullet(text: 'Setor: ${controleTarefa.setor.nome}'));
+          itens
+              .add(Bullet(text: 'Remetente: ${controleTarefa.remetente.nome}'));
+          itens.add(Bullet(
+              text: 'Destinatário: ${controleTarefa.destinatario.nome}'));
+          itens
+              .add(Bullet(text: 'Início: ${controleTarefa.inicio.toString()}'));
+          itens.add(Bullet(text: 'Fim: ${controleTarefa.fim.toString()}'));
+          itens.add(Bullet(text: 'Atualizada: ${controleTarefa.modificada.toString()}'));
+          if (controleTarefa.concluida) {
+            itens.add(Bullet(text: 'CONCLUÍDA: SIM'));
+          } else {
+            itens.add(Bullet(text: 'concluída: não'));
+          }
+          itens.add(Bullet(text: 'id: ${controleTarefa.id}'));
+          itens.add(Bullet(text: 'Referencia: ${controleTarefa.referencia}'));
+
+          itens.add(Paragraph(text: 'Lista de ações desta tarefa:'));
+          int ordem = 1;
+          for (var acao in acaoList) {
+            if (acao.concluida) {
+              itens.add(Header(
+                level: 1,
+                text: '[CONCLUÍDA] Ação ${ordem} : ${acao.nome}',
+              ));
+            } else {
+              itens.add(Header(
+                level: 1,
+                text: 'Ação ${ordem} : ${acao.nome}',
+              ));
+            }
+            itens.add(Bullet(text: 'Observação:  ${acao.observacao}'));
+            if (acao.url != null && acao.url != '') {
+              itens.add(UrlLink(
+                  child: Bullet(
+                      text: 'Arquivo anexado. Click para visualizar.',
+                      bulletColor: PdfColors.blue),
+                  destination: '${acao.url}'));
+            }
+            itens.add(
+                Bullet(text: 'Atualizada:  ${acao.modificada.toString()}'));
+            itens.add(Bullet(text: 'id:  ${acao.id}'));
+            itens.add(Bullet(text: 'Referência:  ${acao.referencia}'));
+            ordem++;
+          }
+
+          return itens;
+        }));
+    return pdf;
+  }
 
   static createPdfForQuestionarioAplicadoModel(
       QuestionarioAplicadoModel questionarioAplicado) async {
     print('criando');
     final Document pdf = Document();
-    // pdf.addPage(Page(
-    //     pageFormat: PdfPageFormat.a4,
-    //     build: (Context context) {
-    //       return Center(
-    //         child: Text("Hello World"),
-    //       ); // Center
-    //     }));
 
     final perguntasRef = _firestore
         .collection(PerguntaAplicadaModel.collection)

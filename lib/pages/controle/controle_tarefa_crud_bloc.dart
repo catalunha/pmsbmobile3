@@ -271,7 +271,7 @@ class ControleTarefaCrudBloc {
                 .toMap();
         tarefa['acaoTotal'] = 0;
         tarefa['acaoCumprida'] = 0;
-        tarefa['ultimaAcaoCriada'] = 0;
+        tarefa['ultimaOrdemAcao'] = 0;
         tarefa['concluida'] = false;
       }
       tarefa['nome'] = _state.nome;

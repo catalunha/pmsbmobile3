@@ -127,7 +127,7 @@ class ControleAcaoListBloc {
       snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
         if (controleAcaoList.length > 1) {
           controleAcaoList
-              .sort((a, b) => a.numeroCriacao.compareTo(b.numeroCriacao));
+              .sort((a, b) => a.ordem.compareTo(b.ordem));
         }
         _state.controleAcaoList = controleAcaoList;
 
@@ -135,24 +135,24 @@ class ControleAcaoListBloc {
       });
     }
     if (event is OrdenarAcaoEvent) {
-      final ordemOrigem = _state.controleAcaoList.indexOf(event.acao);
-      final ordemOutro = event.up ? ordemOrigem - 1 : ordemOrigem + 1;
-      final numeroCriacaoOrigem =
-          _state.controleAcaoList[ordemOrigem].numeroCriacao;
-      final numeroCriacaoOutro =
-          _state.controleAcaoList[ordemOutro].numeroCriacao;
+      final indexOrigem = _state.controleAcaoList.indexOf(event.acao);
+      final indexOutro = event.up ? indexOrigem - 1 : indexOrigem + 1;
+      final ordemOrigem =
+          _state.controleAcaoList[indexOrigem].ordem;
+      final ordemOutro =
+          _state.controleAcaoList[indexOutro].ordem;
 
       final docRefOrigem = _firestore
           .collection(ControleAcaoModel.collection)
-          .document(_state.controleAcaoList[ordemOrigem].id);
+          .document(_state.controleAcaoList[indexOrigem].id);
 
-      docRefOrigem.setData({"numeroCriacao": numeroCriacaoOutro}, merge: true);
+      docRefOrigem.setData({"ordem": ordemOutro}, merge: true);
 
       final docRefOutro = _firestore
           .collection(ControleAcaoModel.collection)
-          .document(_state.controleAcaoList[ordemOutro].id);
+          .document(_state.controleAcaoList[indexOutro].id);
 
-      docRefOutro.setData({"numeroCriacao": numeroCriacaoOrigem}, merge: true);
+      docRefOutro.setData({"ordem": ordemOrigem}, merge: true);
     }
     if (event is UpdateTarefaListEvent) {
       final ControleAcaoModel acaoID = event.acaoID;
@@ -195,7 +195,7 @@ class ControleAcaoListBloc {
           .document(tarefa.id);
       await docRefTarefa.setData({
         'acaoTotal': Bootstrap.instance.FieldValue.increment(1),
-        'ultimaAcaoCriada': Bootstrap.instance.FieldValue.increment(1),
+        'ultimaOrdemAcao': Bootstrap.instance.FieldValue.increment(1),
         'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
       }, merge: true);
 
@@ -220,7 +220,7 @@ class ControleAcaoListBloc {
       acaoNOVA['destinatario'] = acao.destinatario.toMap();
       acaoNOVA['concluida'] = false;
       acaoNOVA['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
-      acaoNOVA['numeroCriacao'] = tarefaID.ultimaAcaoCriada;
+      acaoNOVA['ordem'] = tarefaID.ultimaOrdemAcao;
       // print(acaoNOVA);
       await docRefAcao.setData(acaoNOVA, merge: true);
 

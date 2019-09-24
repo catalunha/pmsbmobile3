@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_concluida_list_bloc.dart';
+import 'package:pmsbmibile3/services/pdf_create_service.dart';
+import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 
@@ -64,9 +66,13 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                 //     )),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
                   IconButton(
-                    tooltip: 'Gerar PDF desta tarefa',
+                    tooltip: 'Relatorio em PDF.',
                     icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () {},
+                    onPressed: () async {
+                      var pdf = await PdfCreateService
+                          .pdfwidgetForControleTarefa(controleTarefaID);
+                      PdfSaveService.generatePdfAndOpen(pdf);
+                    },
                   ),
                   IconButton(
                     tooltip: 'Ver ações',
@@ -96,16 +102,16 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   Expanded(
                     flex: 10,
                     child: Text(
-                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                        '\nSetor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    IconButton(
-                      tooltip: 'Gerar PDF desta tarefa',
-                      icon: Icon(Icons.picture_as_pdf),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Gerar PDF desta tarefa',
+                    //   icon: Icon(Icons.picture_as_pdf),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                     // IconButton(
                     //   tooltip: 'Filtrar por',
                     //   icon: Icon(Icons.search),
@@ -186,9 +192,13 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   //   },
                   // ),
                   IconButton(
-                    tooltip: 'Gerar PDF desta tarefa',
+                    tooltip: 'Relatorio em PDF.',
                     icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () {},
+                    onPressed: () async {
+                      var pdf = await PdfCreateService
+                          .pdfwidgetForControleTarefa(controleTarefaID);
+                      PdfSaveService.generatePdfAndOpen(pdf);
+                    },
                   ),
                   IconButton(
                     tooltip: 'Ver ações',
@@ -218,16 +228,16 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   Expanded(
                     flex: 10,
                     child: Text(
-                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                        '\nSetor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    IconButton(
-                      tooltip: 'Gerar PDF desta tarefa',
-                      icon: Icon(Icons.picture_as_pdf),
-                      onPressed: () {
-                        // Listar paginas de perguntas
-                      },
-                    ),
+                    // IconButton(
+                    //   tooltip: 'Gerar PDF desta tarefa',
+                    //   icon: Icon(Icons.picture_as_pdf),
+                    //   onPressed: () {
+                    //     // Listar paginas de perguntas
+                    //   },
+                    // ),
                     // IconButton(
                     //   tooltip: 'Filtrar por',
                     //   icon: Icon(Icons.search),

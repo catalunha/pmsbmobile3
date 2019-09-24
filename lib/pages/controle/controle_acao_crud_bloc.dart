@@ -131,7 +131,7 @@ class ControleAcaoCrudBloc {
         acao['destinatario'] = _state.controleTarefaoID.destinatario.toMap();
         acao['concluida'] = false;
         acao['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
-        acao['numeroCriacao'] = _state.controleTarefaoID.ultimaAcaoCriada + 1;
+        acao['ordem'] = _state.controleTarefaoID.ultimaOrdemAcao + 1;
         docRef.setData(acao, merge: true);
 
         final docRefTarefa = _firestore
@@ -139,7 +139,7 @@ class ControleAcaoCrudBloc {
             .document(_state.tarefaID);
         await docRefTarefa.setData({
           'acaoTotal': Bootstrap.instance.FieldValue.increment(1),
-          'ultimaAcaoCriada': Bootstrap.instance.FieldValue.increment(1),
+          'ultimaOrdemAcao': Bootstrap.instance.FieldValue.increment(1),
           'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
         }, merge: true);
       }

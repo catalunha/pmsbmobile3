@@ -14,9 +14,9 @@ class ControleAcaoModel extends FirestoreModel {
   UsuarioID destinatario;
   bool concluida;
   DateTime modificada;
-  int numeroCriacao;
+  int ordem;
 
-  ControleAcaoModel({String id, this.nome, this.numeroCriacao}) : super(id);
+  ControleAcaoModel({String id}) : super(id);
 
   @override
   ControleAcaoModel fromMap(Map<String, dynamic> map) {
@@ -48,7 +48,7 @@ class ControleAcaoModel extends FirestoreModel {
           : null;
     }
     if (map.containsKey("concluida")) concluida = map["concluida"];
-    if (map.containsKey("numeroCriacao")) numeroCriacao = map["numeroCriacao"];
+    if (map.containsKey("ordem")) ordem = map["ordem"];
 
     return this;
   }
@@ -60,7 +60,7 @@ class ControleAcaoModel extends FirestoreModel {
     if (nome != null) data['nome'] = this.nome;
     if (url != null) data['url'] = this.url;
     if (observacao != null) data['observacao'] = this.observacao;
-    if (numeroCriacao != null) data['numeroCriacao'] = this.numeroCriacao;
+    if (ordem != null) data['ordem'] = this.ordem;
     if (concluida != null) data['concluida'] = this.concluida;
     if (modificada != null) data['modificada'] = this.modificada.toUtc();
     if (this.tarefa != null) {

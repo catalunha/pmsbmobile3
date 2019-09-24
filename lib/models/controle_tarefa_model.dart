@@ -13,7 +13,7 @@ class ControleTarefaModel extends FirestoreModel {
   UsuarioID destinatario;
   int acaoTotal;
   int acaoCumprida;
-  int ultimaAcaoCriada;
+  int ultimaOrdemAcao;
   bool concluida;
   DateTime modificada;
 
@@ -26,8 +26,8 @@ class ControleTarefaModel extends FirestoreModel {
     if (map.containsKey("acaoTotal")) acaoTotal = map["acaoTotal"];
     if (map.containsKey("acaoCumprida")) acaoCumprida = map["acaoCumprida"];
     if (map.containsKey("concluida")) concluida = map["concluida"];
-    if (map.containsKey("ultimaAcaoCriada"))
-      ultimaAcaoCriada = map["ultimaAcaoCriada"];
+    if (map.containsKey("ultimaOrdemAcao"))
+      ultimaOrdemAcao = map["ultimaOrdemAcao"];
     if (map.containsKey("modificada") && map["modificada"] != null)
       modificada = map["modificada"].toDate();
     if (map.containsKey("inicio") && map["inicio"] != null)
@@ -59,8 +59,8 @@ class ControleTarefaModel extends FirestoreModel {
     if (acaoTotal != null) data['acaoTotal'] = this.acaoTotal;
     if (acaoCumprida != null) data['acaoCumprida'] = this.acaoCumprida;
     if (concluida != null) data['concluida'] = this.concluida;
-    if (ultimaAcaoCriada != null)
-      data['ultimaAcaoCriada'] = this.ultimaAcaoCriada;
+    if (ultimaOrdemAcao != null)
+      data['ultimaOrdemAcao'] = this.ultimaOrdemAcao;
     if (inicio != null) data['inicio'] = this.inicio.toUtc();
     if (fim != null) data['fim'] = this.fim.toUtc();
     if (this.setor != null) {

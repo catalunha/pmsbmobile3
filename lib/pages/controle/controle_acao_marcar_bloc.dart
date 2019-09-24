@@ -107,7 +107,7 @@ class ControleAcaoMarcarBloc {
       snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
         if (controleAcaoList.length > 1) {
           controleAcaoList
-              .sort((a, b) => a.numeroCriacao.compareTo(b.numeroCriacao));
+              .sort((a, b) => a.ordem.compareTo(b.ordem));
         }
         _state.controleAcaoList = controleAcaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
