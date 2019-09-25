@@ -58,7 +58,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     title: Text(
                         '${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
                     subtitle: Text(
-                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nEdição: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
+                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nAtualizada: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
                 // Flexible(
                 //     flex: 1,
                 //     child: Slider(
@@ -81,7 +81,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                   ),
                   IconButton(
                     tooltip: 'Marcar/Atualizar ação',
-                    icon: Icon(Icons.check_box),
+                    icon: Icon(Icons.check),
                     onPressed: () {
                       // Listar paginas de perguntas
                       Navigator.pushNamed(
@@ -172,7 +172,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     title: Text(
                         '${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
                     subtitle: Text(
-                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nEdição: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
+                        'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nAtualizada: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
                   controleTarefaID.acaoLink != null
                       ? IconButton(
@@ -213,7 +213,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                   ),
                   IconButton(
                     tooltip: 'Editar ação',
-                    icon: Icon(Icons.check_box),
+                    icon: Icon(Icons.check),
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
@@ -272,7 +272,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     ),
                     IconButton(
                       tooltip: 'Adicionar mais uma tarefa',
-                      icon: Icon(Icons.table_chart),
+                      icon: Icon(Icons.assignment_turned_in),
                       onPressed: () {
                         Navigator.pushNamed(
                           context,

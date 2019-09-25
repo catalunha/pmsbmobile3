@@ -86,7 +86,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                         : Text('${ordemLocal}'),
                     title: Text('${controleAcaoID.nome}'),
                     subtitle: Text(
-                        'id: ${controleAcaoID.id}\nObs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}')),
+                        'Obs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}\nid: ${controleAcaoID.id}')),
                 Wrap(alignment: WrapAlignment.center, children: <Widget>[
                   IconButton(
                     tooltip: 'Criar uma tarefa desta ação',
@@ -143,7 +143,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                   Expanded(
                       flex: 10,
                       child: Text(
-                          'Setor: ${controleTarefaID.setor.nome}\nNome: ${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}\nInicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
+                          'Setor: ${controleTarefaID.setor.nome}\nNome: ${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}\nInicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nAtualizada: ${controleTarefaID.modificada}\nid: ${controleTarefaID.id}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
                 ],
               ),
               Divider(),

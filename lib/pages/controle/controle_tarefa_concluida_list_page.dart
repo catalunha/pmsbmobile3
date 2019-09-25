@@ -76,7 +76,7 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   ),
                   IconButton(
                     tooltip: 'Ver ações',
-                    icon: Icon(Icons.check_box),
+                    icon: Icon(Icons.check),
                     onPressed: () {
                                           Navigator.pushNamed(
                         context,
@@ -202,7 +202,7 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   ),
                   IconButton(
                     tooltip: 'Ver ações',
-                    icon: Icon(Icons.check_box),
+                    icon: Icon(Icons.check),
                     onPressed: () {
                                           Navigator.pushNamed(
                         context,
