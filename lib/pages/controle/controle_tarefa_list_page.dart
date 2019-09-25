@@ -104,7 +104,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                     IconButton(
+                    IconButton(
                       tooltip: 'Relatorio em PDF.',
                       icon: Icon(Icons.picture_as_pdf),
                       onPressed: () async {
@@ -174,6 +174,21 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     subtitle: Text(
                         'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nEdição: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
+                  controleTarefaID.acaoLink != null
+                      ? IconButton(
+                          tooltip: 'Ver ação que gerou esta tarefa',
+                          icon: Icon(Icons.link),
+                          onPressed: () async {
+                            bloc.eventSink(VerAcaoGerouTarefaEvent(
+                                acaoLink: controleTarefaID.acaoLink));
+                            Navigator.pushNamed(
+                              context,
+                              "/controle/acao_concluida",
+                              arguments: snapshot.data.tarefaBase,
+                            );
+                          },
+                        )
+                      : Text(''),
                   IconButton(
                     tooltip: 'Relatorio em PDF.',
                     icon: Icon(Icons.picture_as_pdf),
@@ -214,7 +229,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                       Navigator.pushNamed(
                         context,
                         "/controle/tarefa_crud",
-                        arguments: ControlePageArguments(tarefa:controleTarefaID.id,acao:null),
+                        arguments: ControlePageArguments(
+                            tarefa: controleTarefaID.id, acao: null),
                       );
                     },
                   ),
@@ -261,7 +277,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         Navigator.pushNamed(
                           context,
                           "/controle/tarefa_crud",
-                          arguments: ControlePageArguments(tarefa:null,acao:null),
+                          arguments:
+                              ControlePageArguments(tarefa: null, acao: null),
                         );
                       },
                     ),
@@ -301,7 +318,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
       child: DefaultScaffold(
         bottom: TabBar(
           tabs: [
-            Tab(text: "Destinatario/Recebida"),
+            Tab(text: "Destinatário/Recebida"),
             Tab(text: "Remetente/Designada"),
           ],
         ),
@@ -409,7 +426,7 @@ class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
         icon: Icon(Icons.check),
         onPressed: () {
           bloc.eventSink(
-              SelectSetorIDEvent(setorID: setor, tarefaID: widget.tarefaID));
+              DuplicarTarefaEvent(setorID: setor, tarefaID: widget.tarefaID));
           Navigator.pop(context);
         },
       ),

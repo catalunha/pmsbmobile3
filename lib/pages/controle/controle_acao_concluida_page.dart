@@ -93,10 +93,15 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
             return Column(children: <Widget>[
               Row(
                 children: <Widget>[
-                  Expanded(
-                      flex: 10,
-                      child: Text(
-                          'Setor: ${controleTarefaID.setor.nome}\nNome: ${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}\nInicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
+                  Expanded(flex: 10, child: Text('''
+  Setor: ${controleTarefaID.setor.nome}
+  Nome: ${controleTarefaID.nome}
+  De: ${controleTarefaID.remetente.nome}
+  Para: ${controleTarefaID.destinatario.nome}
+  Inicio: ${controleTarefaID.inicio}
+  Fim: ${controleTarefaID.fim}
+  Concluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}
+                          ''')),
                 ],
               ),
               Divider(),

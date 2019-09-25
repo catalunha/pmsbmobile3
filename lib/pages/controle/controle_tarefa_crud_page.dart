@@ -3,15 +3,14 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
-//TODO: Mudar esta abordagem para authBloc de main e revisar bloc
 class ControleTarefaCrudPage extends StatefulWidget {
+  final AuthBloc authBloc;
   final String tarefa;
   final String acao;
-  final AuthBloc authBloc;
+  final String acaoNome;
 
-  const ControleTarefaCrudPage({this.authBloc, this.tarefa, this.acao});
+  const ControleTarefaCrudPage({this.authBloc, this.tarefa, this.acao, this.acaoNome});
 
   @override
   _ControleTarefaCrudBlocState createState() => _ControleTarefaCrudBlocState();
@@ -32,7 +31,7 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
     super.initState();
     bloc =
         ControleTarefaCrudBloc(Bootstrap.instance.firestore, widget.authBloc);
-    bloc.eventSink(UpdateTarefaIDEvent(widget.controleTarefaID));
+    bloc.eventSink(UpdateTarefaIDEvent(tarefaId:widget.tarefa,acaoId:widget.acao,acaoNome:widget.acaoNome));
   }
 
   @override

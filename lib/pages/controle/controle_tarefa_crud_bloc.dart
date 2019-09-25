@@ -21,9 +21,11 @@ class UpdateTarefaCrudUsuarioIDEvent extends ControleTarefaCrudBlocEvent {
 class UpdateUsuarioListEvent extends ControleTarefaCrudBlocEvent {}
 
 class UpdateTarefaIDEvent extends ControleTarefaCrudBlocEvent {
-  final String tarefaID;
+  final String tarefaId;
+  final String acaoId;
+  final String acaoNome;
 
-  UpdateTarefaIDEvent(this.tarefaID);
+  UpdateTarefaIDEvent({this.tarefaId, this.acaoId, this.acaoNome});
 }
 
 class SelectDestinatarioIDEvent extends ControleTarefaCrudBlocEvent {
@@ -56,25 +58,15 @@ class DeleteEvent extends ControleTarefaCrudBlocEvent {}
 
 class SaveEvent extends ControleTarefaCrudBlocEvent {}
 
-// class UpdateDestinatarioListEvent extends ControleTarefaCrudBlocEvent {
-//   List<Map<dynamic, dynamic>> destinatarioList = List<Map<dynamic, dynamic>>();
-
-//   UpdateDestinatarioListEvent(this.destinatarioList);
-// }
-
-// class UpdateTextoMarkdownEvent extends ControleTarefaCrudBlocEvent {
-//   final String textoMarkdown;
-
-//   UpdateTextoMarkdownEvent(this.textoMarkdown);
-// }
-
 class ControleTarefaCrudBlocState {
   UsuarioModel usuarioID;
   UsuarioID destinatario;
   List<UsuarioModel> usuarioList = List<UsuarioModel>();
   ControleTarefaModel controleTarefaID;
-  String nome;
   String controleTarefaId;
+  String acaoId;
+  // String acaoNome;
+  String nome;
   DateTime inicio = DateTime.now();
   DateTime dataInicio;
   TimeOfDay horaInicio;
@@ -163,11 +155,13 @@ class ControleTarefaCrudBloc {
       print('_state.usuarioList: ' + _state.usuarioList.toString());
     }
     if (event is UpdateTarefaIDEvent) {
-      _state.controleTarefaId = event.tarefaID;
-      if (event.tarefaID != null) {
+      _state.controleTarefaId = event.tarefaId;
+      _state.acaoId = event.acaoId;
+      _state.nome = event.acaoNome;
+      if (event.tarefaId != null) {
         var docRef = _firestore
             .collection(ControleTarefaModel.collection)
-            .document(event.tarefaID);
+            .document(event.tarefaId);
         final snap = await docRef.get();
         if (snap.exists) {
           _state.controleTarefaID =
@@ -274,6 +268,9 @@ class ControleTarefaCrudBloc {
         tarefa['ultimaOrdemAcao'] = 0;
         tarefa['concluida'] = false;
       }
+      if (_state.acaoId != null) {
+        tarefa['acaoLink'] = _state.acaoId;
+      }
       tarefa['nome'] = _state.nome;
       tarefa['inicio'] = _state.inicio;
       tarefa['fim'] = _state.fim;
@@ -281,6 +278,13 @@ class ControleTarefaCrudBloc {
       tarefa['destinatario'] = _state.destinatario.toMap();
 
       docRef.setData(tarefa, merge: true);
+
+      if (_state.acaoId != null) {
+        final docRefAcao = _firestore
+            .collection(ControleAcaoModel.collection)
+            .document(_state.acaoId);
+        docRefAcao.setData({'tarefaLink': {docRef.documentID:true}}, merge: true);
+      }
     }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);

@@ -301,7 +301,7 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
         appBar: AppBar(
             bottom: TabBar(
           tabs: [
-            Tab(text: "Destinatario/Recebida"),
+            Tab(text: "Destinatário/Recebida"),
             Tab(text: "Remetente/Designada"),
           ],
         ),

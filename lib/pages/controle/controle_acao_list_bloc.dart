@@ -213,7 +213,7 @@ class ControleAcaoListBloc {
       acaoNOVA['tarefa'] =
       ControleTarefaID(id: tarefaID.id, nome: tarefaID.nome)
           .toMap();
-      acaoNOVA['nome'] = acao.nome + ' COPIA ';
+      acaoNOVA['nome'] = acao.nome ;
       acaoNOVA['setor'] = acao.setor.toMap();
           // SetorCensitarioID(id: setor.id, nome: setor.nome).toMap();
       acaoNOVA['remetente'] = acao.remetente.toMap();

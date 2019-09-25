@@ -43,9 +43,41 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
         if (snapshot.hasData) {
           if (snapshot.data.isDataValid) {
             List<Widget> listaWdg = List<Widget>();
+            List<Widget> listaWdgLink = List<Widget>();
             int ordemLocal = 1;
 
             for (var controleAcaoID in snapshot.data.controleAcaoList) {
+              listaWdgLink.clear();
+              if (controleAcaoID.tarefaLink != null) {
+                for (var item in controleAcaoID.tarefaLink.entries) {
+                  print(item.key);
+                    listaWdgLink.add(IconButton(
+                    tooltip: 'Ver tarefa linkada id: ${item.key}',
+                    icon: Icon(Icons.link),
+                    onPressed: () async {
+                      Navigator.pushNamed(
+                        context,
+                        "/controle/acao_concluida",
+                        arguments:item.key,
+                      );
+                    },
+                  ));
+                }
+                // controleAcaoID.tarefaLink.map((k, v) {
+                //   // listaWdgLink.add(IconButton(
+                //   //   tooltip: 'Ver tarefa linkada a esta ação',
+                //   //   icon: Icon(Icons.link),
+                //   //   onPressed: () async {
+                //   //     Navigator.pushNamed(
+                //   //       context,
+                //   //       "/controle/acao_concluida",
+                //   //       arguments: k,
+                //   //     );
+                //   //   },
+                //   // ));
+                //   print(k);
+                // });
+              }
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
                     selected: controleAcaoID.concluida,
@@ -56,17 +88,21 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                     subtitle: Text(
                         'id: ${controleAcaoID.id}\nObs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}')),
                 Wrap(alignment: WrapAlignment.center, children: <Widget>[
-                    IconButton(
-                    tooltip: 'Criar tarefa desta ação',
+                  IconButton(
+                    tooltip: 'Criar uma tarefa desta ação',
                     icon: Icon(Icons.table_chart),
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
                         "/controle/tarefa_crud",
-                        arguments: ControlePageArguments(tarefa:null,acao:controleAcaoID.id),
+                        arguments: ControlePageArguments(
+                            tarefa: null,
+                            acao: controleAcaoID.id,
+                            acaoNome: controleAcaoID.nome),
                       );
                     },
                   ),
+                  ...listaWdgLink,
                   controleAcaoID.url != null && controleAcaoID.url != ''
                       ? IconButton(
                           tooltip: 'Ver arquivo',
@@ -99,7 +135,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
               ]));
               ordemLocal++;
             }
-            print(listaWdg.toString());
+            // print(listaWdg.toString());
             var controleTarefaID = snapshot.data.controleTarefaDestinatario;
             return Column(children: <Widget>[
               Row(

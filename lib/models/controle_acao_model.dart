@@ -8,7 +8,7 @@ class ControleAcaoModel extends FirestoreModel {
   String nome;
   String url;
   String observacao;
-  String tarefaLink;
+  Map<String, bool> tarefaLink=Map<String, bool>();
   ControleTarefaID tarefa;
   SetorCensitarioID setor;
   UsuarioID remetente;
@@ -25,8 +25,12 @@ class ControleAcaoModel extends FirestoreModel {
     if (map.containsKey("nome")) nome = map["nome"];
     if (map.containsKey("url")) url = map["url"];
     if (map.containsKey("observacao")) observacao = map["observacao"];
-    if (map.containsKey("tarefaLink")) tarefaLink = map["tarefaLink"];
-    if (map.containsKey("modificada") &&  map["modificada"] != null ){
+    if (map.containsKey("tarefaLink") && map["tarefaLink"] != null) {
+      final refs = map["tarefaLink"] as Map<dynamic, dynamic>;
+      for (var ref in refs.entries) {
+        tarefaLink[ref.key] = ref.value;
+      }
+    }    if (map.containsKey("modificada") &&  map["modificada"] != null ){
        modificada = map["modificada"].toDate();
     }
 

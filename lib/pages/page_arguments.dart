@@ -52,6 +52,7 @@ class ChatPageArguments {
 class ControlePageArguments {
   final String tarefa;
   final String acao;
+  final String acaoNome;
 
-  ControlePageArguments({this.tarefa, this.acao});
+  ControlePageArguments({this.tarefa, this.acao,this.acaoNome});
 }

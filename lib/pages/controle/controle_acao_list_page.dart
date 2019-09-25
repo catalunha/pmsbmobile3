@@ -125,7 +125,7 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                               Navigator.pushNamed(
                                   context, "/controle/acao_crud",
                                   arguments: ControlePageArguments(
-                                      tarefa: null, acao: acao.id));
+                                      tarefa: acao.tarefa.id, acao: acao.id));
                             }),
                       ],
                     ),

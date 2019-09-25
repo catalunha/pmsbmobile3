@@ -209,9 +209,14 @@ class MyApp extends StatelessWidget {
         },
         "/controle/tarefa_crud": (context) {
           final settings = ModalRoute.of(context).settings;
-                    ControlePageArguments args = settings.arguments;
+          ControlePageArguments args = settings.arguments;
 
-          return ControleTarefaCrudPage(authBloc:authBloc,tarefa:args.tarefa ,acao: args.acao);
+          return ControleTarefaCrudPage(
+            authBloc: authBloc,
+            tarefa: args.tarefa,
+            acao: args.acao,
+            acaoNome: args.acaoNome,
+          );
         },
         // "/controle/tarefa_crud": (context) {
         //   final settings = ModalRoute.of(context).settings;
@@ -224,15 +229,14 @@ class MyApp extends StatelessWidget {
         "/controle/acao_crud": (context) {
           final settings = ModalRoute.of(context).settings;
           ControlePageArguments args = settings.arguments;
-          return ControleAcaoCrudPage(tarefaID:args.tarefa ,acaoID: args.acao);
+          return ControleAcaoCrudPage(tarefaID: args.tarefa, acaoID: args.acao);
         },
-        "/controle/concluida": (context) => ControleTarefaConcluidaListPage(authBloc),
+        "/controle/concluida": (context) =>
+            ControleTarefaConcluidaListPage(authBloc),
         "/controle/acao_concluida": (context) {
           final settings = ModalRoute.of(context).settings;
           return ControleAcaoConcluidaPage(settings.arguments);
         },
-
-
 
         //googleDrive
         "/googledrive/usuario": (context) {

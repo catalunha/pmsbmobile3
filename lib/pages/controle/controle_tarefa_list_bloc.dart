@@ -16,12 +16,19 @@ class UpdateTarefaUsuarioIDEvent extends ControleTarefaListBlocEvent {
   UpdateTarefaUsuarioIDEvent(this.usuarioID);
 }
 
-class SelectSetorIDEvent extends ControleTarefaListBlocEvent {
+class DuplicarTarefaEvent extends ControleTarefaListBlocEvent {
   final SetorCensitarioModel setorID;
   final ControleTarefaModel tarefaID;
 
-  SelectSetorIDEvent({this.tarefaID, this.setorID});
+  DuplicarTarefaEvent({this.tarefaID, this.setorID});
 }
+
+class VerAcaoGerouTarefaEvent extends ControleTarefaListBlocEvent {
+  final String acaoLink;
+
+  VerAcaoGerouTarefaEvent({this.acaoLink});
+}
+
 
 class ControleTarefaListBlocState {
   UsuarioModel usuarioID;
@@ -35,6 +42,8 @@ class ControleTarefaListBlocState {
   //Necessarios para duplicar tarefa
   List<SetorCensitarioModel> setorList = List<SetorCensitarioModel>();
   // List<ControleAcaoModel> controleAcaoList = List<ControleAcaoModel>();
+
+  String tarefaBase;
 }
 
 class ControleTarefaListBloc {
@@ -142,7 +151,17 @@ class ControleTarefaListBloc {
                 .fromMap(documentSnapshot.data));
       }
     }
-    if (event is SelectSetorIDEvent) {
+
+
+    if (event is VerAcaoGerouTarefaEvent) {
+      print('event.acaoLink: ${event.acaoLink}');
+      print('_state.tarefaBase: ${_state.tarefaBase}');
+      _state.tarefaBase = 'DYXsE7VsQhnESWhAVek7';
+      print('event.acaoLink: ${event.acaoLink}');
+      print('_state.tarefaBase: ${_state.tarefaBase}');
+    }
+
+    if (event is DuplicarTarefaEvent) {
       final SetorCensitarioModel setorID = event.setorID;
       final ControleTarefaModel tarefaID = event.tarefaID;
 
@@ -166,7 +185,7 @@ class ControleTarefaListBloc {
         tarefa['acaoCumprida'] = 0;
         tarefa['ultimaOrdemAcao'] = tarefaID.ultimaOrdemAcao;
         tarefa['concluida'] = false;
-        tarefa['nome'] = tarefaID.nome + ' COPIA ';
+        tarefa['nome'] = tarefaID.nome ;
         tarefa['inicio'] = tarefaID.inicio;
         tarefa['fim'] = tarefaID.fim;
         tarefa['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
@@ -192,7 +211,7 @@ class ControleTarefaListBloc {
             acaoNOVA['tarefa'] = ControleTarefaID(
                     id: docRefTarefa.documentID, nome: tarefaID.nome)
                 .toMap();
-            acaoNOVA['nome'] = controleAcaoModel.nome + ' COPIA ';
+            acaoNOVA['nome'] = controleAcaoModel.nome ;
             acaoNOVA['setor'] =
                 SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
             acaoNOVA['remetente'] = controleAcaoModel.remetente.toMap();
@@ -222,7 +241,7 @@ class ControleTarefaListBloc {
           //     acaoNOVA['tarefa'] = ControleTarefaID(
           //             id: docRefTarefa.documentID, nome: tarefaID.nome)
           //         .toMap();
-          //     acaoNOVA['nome'] = acao.nome + ' COPIA ';
+          //     acaoNOVA['nome'] = acao.nome ;
           //     acaoNOVA['setor'] =
           //         SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
           //     acaoNOVA['remetente'] = acao.remetente.toMap();

@@ -37,7 +37,8 @@ class ControleAcaoConcluidaBloc {
   Function get eventSink => _eventController.sink.add;
 
   //Estados
-  final ControleAcaoConcluidaBlocState _state = ControleAcaoConcluidaBlocState();
+  final ControleAcaoConcluidaBlocState _state =
+      ControleAcaoConcluidaBlocState();
   final _stateController = BehaviorSubject<ControleAcaoConcluidaBlocState>();
   Stream<ControleAcaoConcluidaBlocState> get stateStream =>
       _stateController.stream;
@@ -105,6 +106,9 @@ class ControleAcaoConcluidaBloc {
           .toList());
 
       snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
+        if (controleAcaoList.length > 1) {
+          controleAcaoList.sort((a, b) => a.ordem.compareTo(b.ordem));
+        }
         _state.controleAcaoList = controleAcaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
