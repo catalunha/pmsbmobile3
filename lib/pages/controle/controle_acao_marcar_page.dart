@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_bloc.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ControleAcaoMarcarPage extends StatefulWidget {
@@ -55,6 +56,17 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                     subtitle: Text(
                         'id: ${controleAcaoID.id}\nObs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}')),
                 Wrap(alignment: WrapAlignment.center, children: <Widget>[
+                    IconButton(
+                    tooltip: 'Criar tarefa desta ação',
+                    icon: Icon(Icons.table_chart),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "/controle/tarefa_crud",
+                        arguments: ControlePageArguments(tarefa:null,acao:controleAcaoID.id),
+                      );
+                    },
+                  ),
                   controleAcaoID.url != null && controleAcaoID.url != ''
                       ? IconButton(
                           tooltip: 'Ver arquivo',
@@ -63,7 +75,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                             launch(controleAcaoID.url);
                           },
                         )
-                      : Container(),
+                      : Text(''),
                   IconButton(
                     tooltip: 'Editar Url e Observações',
                     icon: Icon(Icons.note_add),
@@ -120,7 +132,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editando a ação'),
+        title: Text('Marcar ação'),
       ),
       body: _bodyDestinatario(context),
 

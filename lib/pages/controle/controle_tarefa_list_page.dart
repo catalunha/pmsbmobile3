@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/services/pdf_create_service.dart';
 import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -72,8 +73,9 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     tooltip: 'Relatorio em PDF.',
                     icon: Icon(Icons.picture_as_pdf),
                     onPressed: () async {
-                      var pdf = await PdfCreateService
-                          .pdfwidgetForControleTarefa(controleTarefaID);
+                      var pdf =
+                          await PdfCreateService.pdfwidgetForControleTarefa(
+                              controleTarefaID);
                       PdfSaveService.generatePdfAndOpen(pdf);
                     },
                   ),
@@ -102,20 +104,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    // IconButton(
-                    //   tooltip: 'Gerar PDF desta tarefa',
-                    //   icon: Icon(Icons.picture_as_pdf),
-                    //   onPressed: () {
-                    //     // Listar paginas de perguntas
-                    //   },
-                    // ),
-                    // IconButton(
-                    //   tooltip: 'Filtrar por',
-                    //   icon: Icon(Icons.search),
-                    //   onPressed: () {
-                    //     // Listar paginas de perguntas
-                    //   },
-                    // ),
+                     IconButton(
+                      tooltip: 'Relatorio em PDF.',
+                      icon: Icon(Icons.picture_as_pdf),
+                      onPressed: () async {
+                        var pdf = await PdfCreateService
+                            .pdfwidgetForControleTarefaDoUsuario(
+                                usuarioModel: snapshot.data.usuarioID,
+                                remetente: false,
+                                concluida: false);
+                        PdfSaveService.generatePdfAndOpen(pdf);
+                      },
+                    ),
                     IconButton(
                       tooltip: 'Ver tarefas recebidas concluidas',
                       icon: Icon(Icons.folder),
@@ -173,14 +173,14 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         '${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
                     subtitle: Text(
                         'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nEdição: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
-              
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                   IconButton(
+                  IconButton(
                     tooltip: 'Relatorio em PDF.',
                     icon: Icon(Icons.picture_as_pdf),
                     onPressed: () async {
-                      var pdf = await PdfCreateService
-                          .pdfwidgetForControleTarefa(controleTarefaID);
+                      var pdf =
+                          await PdfCreateService.pdfwidgetForControleTarefa(
+                              controleTarefaID);
                       PdfSaveService.generatePdfAndOpen(pdf);
                     },
                   ),
@@ -196,7 +196,6 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                           });
                     },
                   ),
-                  
                   IconButton(
                     tooltip: 'Editar ação',
                     icon: Icon(Icons.check_box),
@@ -215,7 +214,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                       Navigator.pushNamed(
                         context,
                         "/controle/tarefa_crud",
-                        arguments: controleTarefaID.id,
+                        arguments: ControlePageArguments(tarefa:controleTarefaID.id,acao:null),
                       );
                     },
                   ),
@@ -232,7 +231,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                   
+                    IconButton(
+                      tooltip: 'Relatorio em PDF.',
+                      icon: Icon(Icons.picture_as_pdf),
+                      onPressed: () async {
+                        var pdf = await PdfCreateService
+                            .pdfwidgetForControleTarefaDoUsuario(
+                                usuarioModel: snapshot.data.usuarioID,
+                                remetente: true,
+                                concluida: false);
+                        PdfSaveService.generatePdfAndOpen(pdf);
+                      },
+                    ),
                     IconButton(
                       tooltip: 'Ver tarefas designadas concluidas',
                       icon: Icon(Icons.folder),
@@ -246,12 +256,12 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     ),
                     IconButton(
                       tooltip: 'Adicionar mais uma tarefa',
-                      icon: Icon(Icons.plus_one),
+                      icon: Icon(Icons.table_chart),
                       onPressed: () {
                         Navigator.pushNamed(
                           context,
                           "/controle/tarefa_crud",
-                          arguments: null,
+                          arguments: ControlePageArguments(tarefa:null,acao:null),
                         );
                       },
                     ),

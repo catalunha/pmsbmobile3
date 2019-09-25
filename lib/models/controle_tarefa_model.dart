@@ -6,6 +6,7 @@ class ControleTarefaModel extends FirestoreModel {
 
   String referencia;
   String nome;
+  String acaoLink;
   DateTime inicio;
   DateTime fim;
   SetorCensitarioID setor;
@@ -23,6 +24,7 @@ class ControleTarefaModel extends FirestoreModel {
   ControleTarefaModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey("referencia")) referencia = map["referencia"];
     if (map.containsKey("nome")) nome = map["nome"];
+    if (map.containsKey("acaoLink")) acaoLink = map["acaoLink"];
     if (map.containsKey("acaoTotal")) acaoTotal = map["acaoTotal"];
     if (map.containsKey("acaoCumprida")) acaoCumprida = map["acaoCumprida"];
     if (map.containsKey("concluida")) concluida = map["concluida"];
@@ -56,6 +58,7 @@ class ControleTarefaModel extends FirestoreModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (referencia != null) data['referencia'] = this.referencia;
     if (nome != null) data['nome'] = this.nome;
+    if (acaoLink != null) data['acaoLink'] = this.acaoLink;
     if (acaoTotal != null) data['acaoTotal'] = this.acaoTotal;
     if (acaoCumprida != null) data['acaoCumprida'] = this.acaoCumprida;
     if (concluida != null) data['concluida'] = this.concluida;

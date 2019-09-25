@@ -7,10 +7,11 @@ import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 
 //TODO: Mudar esta abordagem para authBloc de main e revisar bloc
 class ControleTarefaCrudPage extends StatefulWidget {
-  final String controleTarefaID;
+  final String tarefa;
+  final String acao;
   final AuthBloc authBloc;
 
-  const ControleTarefaCrudPage(this.authBloc, this.controleTarefaID);
+  const ControleTarefaCrudPage({this.authBloc, this.tarefa, this.acao});
 
   @override
   _ControleTarefaCrudBlocState createState() => _ControleTarefaCrudBlocState();

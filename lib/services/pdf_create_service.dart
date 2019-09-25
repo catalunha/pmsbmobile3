@@ -1,3 +1,4 @@
+import 'package:firestore_wrapper_flutter/firestore_wrapper_flutter.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
@@ -9,6 +10,138 @@ import 'package:pdf/widgets.dart';
 
 class PdfCreateService {
   static fsw.Firestore _firestore = Bootstrap.instance.firestore;
+
+  static pdfwidgetForControleTarefaDoUsuario(
+      {UsuarioModel usuarioModel, bool remetente, bool concluida}) async {
+    fsw.Query queryTarefasDoUsuario;
+    if (remetente) {
+      queryTarefasDoUsuario = _firestore
+          .collection(ControleTarefaModel.collection)
+          .where("remetente.id", isEqualTo: usuarioModel.id)
+          .where("setor.id", isEqualTo: usuarioModel.setorCensitarioID.id)
+          .where("concluida", isEqualTo: concluida);
+    } else {
+      queryTarefasDoUsuario = _firestore
+          .collection(ControleTarefaModel.collection)
+          .where("destinatario.id", isEqualTo: usuarioModel.id)
+          .where("setor.id", isEqualTo: usuarioModel.setorCensitarioID.id)
+          .where("concluida", isEqualTo: concluida);
+    }
+
+    // List<Map<String, dynamic>> tarefasDoUsuarioListMap =
+    //     List<Map<String, dynamic>>();
+
+    final fsw.QuerySnapshot tarefasDoUsuarioSnapshot =
+        await queryTarefasDoUsuario.getDocuments();
+    final tarefaList =
+        tarefasDoUsuarioSnapshot.documents.map((fsw.DocumentSnapshot doc) {
+      return ControleTarefaModel(id: doc.documentID).fromMap(doc.data);
+    }).toList();
+    List<Widget> itemPDFList = List<Widget>();
+
+    for (var tarefa in tarefaList) {
+      // Map<String, dynamic> tarefasDoUsuarioMap = Map<String, dynamic>();
+      // Detalhes da tarefa
+      // tarefasDoUsuarioMap["tarefanome"] = tarefa.nome;
+      itemPDFList.add(Header(level: 1, text: 'Tarefa: ${tarefa.nome}'));
+      itemPDFList
+          .add(Paragraph(text: 'Alguns dados importantes sobre esta tarefa.'));
+      itemPDFList.add(Bullet(text: 'Setor: ${tarefa.setor.nome}'));
+      itemPDFList.add(Bullet(text: 'Remetente: ${tarefa.remetente.nome}'));
+      itemPDFList
+          .add(Bullet(text: 'Destinatário: ${tarefa.destinatario.nome}'));
+      itemPDFList.add(Bullet(text: 'Início: ${tarefa.inicio.toString()}'));
+      itemPDFList.add(Bullet(text: 'Fim: ${tarefa.fim.toString()}'));
+      itemPDFList
+          .add(Bullet(text: 'Atualizada: ${tarefa.modificada.toString()}'));
+      if (tarefa.concluida) {
+        itemPDFList.add(Bullet(text: 'CONCLUÍDA: SIM'));
+      } else {
+        itemPDFList.add(Bullet(text: 'concluída: não'));
+      }
+      itemPDFList.add(Bullet(text: 'id: ${tarefa.id}'));
+      itemPDFList.add(Bullet(text: 'Referencia: ${tarefa.referencia}'));
+
+      itemPDFList.add(Paragraph(text: 'Lista de ações desta tarefa:'));
+      // Descricao das ações
+      final acaoQuery = _firestore
+          .collection(ControleAcaoModel.collection)
+          .where("tarefa.id", isEqualTo: tarefa.id)
+          .orderBy("ordem", descending: false);
+
+      final fsw.QuerySnapshot acaoSnapshot = await acaoQuery.getDocuments();
+      final acaoList = acaoSnapshot.documents.map((fsw.DocumentSnapshot doc) {
+        return ControleAcaoModel(id: doc.documentID).fromMap(doc.data);
+      }).toList();
+
+      int ordem = 1;
+      for (var acao in acaoList) {
+        if (acao.concluida) {
+          itemPDFList.add(Header(
+            level: 1,
+            text: '[CONCLUÍDA] Ação ${ordem} : ${acao.nome}',
+          ));
+        } else {
+          itemPDFList.add(Header(
+            level: 1,
+            text: 'Ação ${ordem} : ${acao.nome}',
+          ));
+        }
+        itemPDFList.add(Bullet(text: 'Observação:  ${acao.observacao}'));
+        if (acao.url != null && acao.url != '') {
+          itemPDFList.add(UrlLink(
+              child: Bullet(
+                  text: 'Arquivo anexado. Click para visualizar.',
+                  bulletColor: PdfColors.blue),
+              destination: '${acao.url}'));
+        }
+        itemPDFList
+            .add(Bullet(text: 'Atualizada:  ${acao.modificada.toString()}'));
+        itemPDFList.add(Bullet(text: 'id:  ${acao.id}'));
+        itemPDFList.add(Bullet(text: 'Referência:  ${acao.referencia}'));
+        ordem++;
+      }
+    }
+    final Document pdf = Document();
+    pdf.addPage(MultiPage(
+        pageFormat:
+            PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        header: (Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              decoration: const BoxDecoration(
+                  border: BoxBorder(
+                      bottom: true, width: 0.5, color: PdfColors.grey)),
+              child: Text('Relatorio das Tarefas do Usuario',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text(
+                  'Pagina ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        build: (Context context) {
+          if (itemPDFList.isEmpty) {
+            itemPDFList.add(Paragraph(text: 'Sem tarefas deste usuário.'));
+          }
+          return itemPDFList;
+        }));
+
+    return pdf;
+  }
 
   static pdfwidgetForControleTarefa(ControleTarefaModel controleTarefa) async {
     final acaoQuery = _firestore
@@ -77,7 +210,8 @@ class PdfCreateService {
           itens
               .add(Bullet(text: 'Início: ${controleTarefa.inicio.toString()}'));
           itens.add(Bullet(text: 'Fim: ${controleTarefa.fim.toString()}'));
-          itens.add(Bullet(text: 'Atualizada: ${controleTarefa.modificada.toString()}'));
+          itens.add(Bullet(
+              text: 'Atualizada: ${controleTarefa.modificada.toString()}'));
           if (controleTarefa.concluida) {
             itens.add(Bullet(text: 'CONCLUÍDA: SIM'));
           } else {

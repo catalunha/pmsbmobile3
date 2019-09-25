@@ -209,8 +209,14 @@ class MyApp extends StatelessWidget {
         },
         "/controle/tarefa_crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return ControleTarefaCrudPage(authBloc, settings.arguments);
+                    ControlePageArguments args = settings.arguments;
+
+          return ControleTarefaCrudPage(authBloc:authBloc,tarefa:args.tarefa ,acao: args.acao);
         },
+        // "/controle/tarefa_crud": (context) {
+        //   final settings = ModalRoute.of(context).settings;
+        //   return ControleTarefaCrudPage(authBloc, settings.arguments);
+        // },
         "/controle/acao_list": (context) {
           final settings = ModalRoute.of(context).settings;
           return ControleAcaoListPage(settings.arguments);
