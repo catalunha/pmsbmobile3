@@ -181,11 +181,13 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                           onPressed: () async {
                             bloc.eventSink(VerAcaoGerouTarefaEvent(
                                 acaoLink: controleTarefaID.acaoLink));
-                            Navigator.pushNamed(
-                              context,
-                              "/controle/acao_concluida",
-                              arguments: snapshot.data.tarefaBase,
-                            );
+                            if (snapshot.data.tarefaBase != null) {
+                              Navigator.pushNamed(
+                                context,
+                                "/controle/acao_concluida",
+                                arguments: snapshot.data.tarefaBase,
+                              );
+                            }
                           },
                         )
                       : Text(''),
