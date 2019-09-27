@@ -52,9 +52,9 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
                         ? Text('*  ${ordemLocal}')
                         : Text('${ordemLocal}'),
                     selected: controleAcaoID.concluida,
-                    title: Text('${controleAcaoID.nome}'),
+                    title: Text('${controleAcaoID?.nome}'),
                     subtitle: Text(
-                        'id: ${controleAcaoID.id}\nObs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}')),
+                        'Obs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}\nid: ${controleAcaoID.id}')),
                 Wrap(alignment: WrapAlignment.center, children: <Widget>[
                   controleAcaoID.url != null && controleAcaoID.url != ''
                       ? IconButton(
@@ -100,7 +100,9 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
   Para: ${controleTarefaID.destinatario.nome}
   Inicio: ${controleTarefaID.inicio}
   Fim: ${controleTarefaID.fim}
-  Concluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}
+  Atualizada: ${controleTarefaID.modificada}
+  id: ${controleTarefaID.id}
+  Concluída: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}
                           ''')),
                 ],
               ),

@@ -142,8 +142,15 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                 children: <Widget>[
                   Expanded(
                       flex: 10,
-                      child: Text(
-                          'Setor: ${controleTarefaID.setor.nome}\nNome: ${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}\nInicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nAtualizada: ${controleTarefaID.modificada}\nid: ${controleTarefaID.id}\nConcluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}')),
+                      child: Text('''
+  Setor: ${controleTarefaID.setor.nome}
+  Nome: ${controleTarefaID.nome}
+  De: ${controleTarefaID.remetente.nome}
+  Inicio: ${controleTarefaID.inicio}
+  Fim: ${controleTarefaID.fim}
+  Atualizada: ${controleTarefaID.modificada}
+  id: ${controleTarefaID.id}
+  Concluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}''')),
                 ],
               ),
               Divider(),

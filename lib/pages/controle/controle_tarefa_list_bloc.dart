@@ -154,11 +154,17 @@ class ControleTarefaListBloc {
 
 
     if (event is VerAcaoGerouTarefaEvent) {
-      print('event.acaoLink: ${event.acaoLink}');
-      print('_state.tarefaBase: ${_state.tarefaBase}');
-      _state.tarefaBase = 'DYXsE7VsQhnESWhAVek7';
-      print('event.acaoLink: ${event.acaoLink}');
-      print('_state.tarefaBase: ${_state.tarefaBase}');
+      // print('event.acaoLink: ${event.acaoLink}');
+      // print('_state.tarefaBase: ${_state.tarefaBase}');
+
+        var docRef = _firestore
+            .collection(ControleAcaoModel.collection)
+            .document(event.acaoLink);
+        final snap = await docRef.get();
+        _state.tarefaBase=snap.data['tarefa']['id'];
+
+      // print('event.acaoLink: ${event.acaoLink}');
+      // print('_state.tarefaBase: ${_state.tarefaBase}');
     }
 
     if (event is DuplicarTarefaEvent) {
