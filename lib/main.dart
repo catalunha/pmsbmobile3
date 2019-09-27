@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_concluida_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_crud_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_page.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = Bootstrap.instance.authBloc;
+    Recursos.initialize(Theme.of(context).platform);
 
     return MaterialApp(
       title: 'PMSB-TO-22',
