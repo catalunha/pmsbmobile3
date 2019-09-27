@@ -81,6 +81,10 @@ class PainelListBloc {
           .toList());
 
       snapListRemetente.listen((List<SetorCensitarioPainelModel> setorCensitarioPainelList) {
+        if (setorCensitarioPainelList.length > 1) {
+          setorCensitarioPainelList
+              .sort((a, b) => a.painelID.nome.compareTo(b.painelID.nome));
+        }
         _state.setorCensitarioPainelList = setorCensitarioPainelList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

@@ -1,7 +1,9 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
-import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+// import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
+
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -58,7 +60,9 @@ class PainelCrudBlocState {
 class PainelCrudBloc {
   //Firestore
   //Firestore
-  final fsw.Firestore _firestore;
+  // final fsw.Firestore _firestore;
+    final fw.Firestore _firestore;
+
   final _authBloc;
 
   //Eventos

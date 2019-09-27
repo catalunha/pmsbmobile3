@@ -9,16 +9,15 @@ class PainelCrudPage extends StatefulWidget {
 
   const PainelCrudPage(this.authBloc, this.setorCensitarioId);
 
-  _PainelCrudPageState createState() => _PainelCrudPageState();
+  _PainelCrudPageState createState() => _PainelCrudPageState(this.authBloc);
 }
 
 class _PainelCrudPageState extends State<PainelCrudPage> {
   PainelCrudBloc bloc;
-
+  _PainelCrudPageState(AuthBloc authBloc) : bloc = PainelCrudBloc(authBloc, Bootstrap.instance.firestore);
   @override
   void initState() {
     super.initState();
-    bloc = PainelCrudBloc(widget.authBloc, Bootstrap.instance.firestore);
     bloc.eventSink(GetSetorCensitarioIDEvent(setorCensitarioId: widget.setorCensitarioId));
   }
 
@@ -53,46 +52,48 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
         body: StreamBuilder<PainelCrudBlocState>(
             stream: bloc.stateStream,
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return Text('Não contem dados...');
-              if (snapshot.data.isDataValid) {
-                Widget valor;
-                if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'booleano') {
-                  valor = Center(
-                    child: SwitchListTile(
-                      title: Text('${snapshot.data?.setorCensitarioPainelID?.painelID?.tipo}'),
-                      value: snapshot.data?.valor,
-                      onChanged: (bool value) {
-                        bloc.eventSink(UpdateBooleanoEvent(value));
-                      },
-                      secondary: const Icon(Icons.lightbulb_outline),
-                    ),
+              if (!snapshot.hasData) return Center( child: CircularProgressIndicator());
+              if (snapshot.hasData) {
+                if (snapshot.data.isDataValid) {
+                  Widget valor;
+                  if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'booleano') {
+                    valor = Center(
+                      child: SwitchListTile(
+                        title: Text('${snapshot.data?.setorCensitarioPainelID?.painelID?.tipo}'),
+                        value: snapshot.data?.valor,
+                        onChanged: (bool value) {
+                          bloc.eventSink(UpdateBooleanoEvent(value));
+                        },
+                        secondary: const Icon(Icons.lightbulb_outline),
+                      ),
+                    );
+                  } else {
+                    valor = PainelValor(bloc);
+                  }
+                  return ListView(
+                    children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text(
+                            snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
+                            style: TextStyle(fontSize: 15, color: Colors.blue),
+                          )),
+                      Padding(padding: EdgeInsets.all(5.0), child: valor),
+                      Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text(
+                            "Observações ao informar este valor:",
+                            style: TextStyle(fontSize: 15, color: Colors.blue),
+                          )),
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: PainelObservacao(bloc),
+                      ),
+                    ],
                   );
                 } else {
-                  valor = PainelValor(bloc);
+                  return Text('Dados inválidos...');
                 }
-                return ListView(
-                  children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        )),
-                    Padding(padding: EdgeInsets.all(5.0), child: valor),
-                    Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Observações ao informar este valor:",
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        )),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: PainelObservacao(bloc),
-                    ),
-                  ],
-                );
-              } else {
-                return Text('Dados inválidos...');
               }
             }));
   }
