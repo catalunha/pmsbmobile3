@@ -6,6 +6,7 @@ class ControleTarefaModel extends FirestoreModel {
 
   String referencia;
   String nome;
+  String acaoLink;
   DateTime inicio;
   DateTime fim;
   SetorCensitarioID setor;
@@ -13,24 +14,27 @@ class ControleTarefaModel extends FirestoreModel {
   UsuarioID destinatario;
   int acaoTotal;
   int acaoCumprida;
+  int ultimaOrdemAcao;
   bool concluida;
-  int ultimaAcaoCriada;
   DateTime modificada;
 
-  ControleTarefaModel({String id, this.nome, this.acaoTotal}) : super(id);
+  ControleTarefaModel({String id}) : super(id);
 
   @override
   ControleTarefaModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey("referencia")) referencia = map["referencia"];
     if (map.containsKey("nome")) nome = map["nome"];
+    if (map.containsKey("acaoLink")) acaoLink = map["acaoLink"];
     if (map.containsKey("acaoTotal")) acaoTotal = map["acaoTotal"];
     if (map.containsKey("acaoCumprida")) acaoCumprida = map["acaoCumprida"];
     if (map.containsKey("concluida")) concluida = map["concluida"];
-    if (map.containsKey("ultimaAcaoCriada"))
-      ultimaAcaoCriada = map["ultimaAcaoCriada"];
-    if (map.containsKey("modificada")) modificada = map["modificada"].toDate();
-    if (map.containsKey("inicio")) inicio = map["inicio"].toDate();
-    if (map.containsKey("fim")) fim = map["fim"].toDate();
+    if (map.containsKey("ultimaOrdemAcao"))
+      ultimaOrdemAcao = map["ultimaOrdemAcao"];
+    if (map.containsKey("modificada") && map["modificada"] != null)
+      modificada = map["modificada"].toDate();
+    if (map.containsKey("inicio") && map["inicio"] != null)
+      inicio = map["inicio"].toDate();
+    if (map.containsKey("fim") && map["fim"] != null) fim = map["fim"].toDate();
     if (map.containsKey('setor')) {
       setor = map['setor'] != null
           ? new SetorCensitarioID.fromMap(map['setor'])
@@ -54,11 +58,12 @@ class ControleTarefaModel extends FirestoreModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (referencia != null) data['referencia'] = this.referencia;
     if (nome != null) data['nome'] = this.nome;
+    if (acaoLink != null) data['acaoLink'] = this.acaoLink;
     if (acaoTotal != null) data['acaoTotal'] = this.acaoTotal;
     if (acaoCumprida != null) data['acaoCumprida'] = this.acaoCumprida;
     if (concluida != null) data['concluida'] = this.concluida;
-    if (ultimaAcaoCriada != null)
-      data['ultimaAcaoCriada'] = this.ultimaAcaoCriada;
+    if (ultimaOrdemAcao != null)
+      data['ultimaOrdemAcao'] = this.ultimaOrdemAcao;
     if (inicio != null) data['inicio'] = this.inicio.toUtc();
     if (fim != null) data['fim'] = this.fim.toUtc();
     if (this.setor != null) {

@@ -4,19 +4,20 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class ControleAcaoModel extends FirestoreModel {
   static final String collection = "ControleAcao";
 
-  ControleTarefaID tarefa;
   String referencia;
   String nome;
+  String url;
+  String observacao;
+  Map<String, bool> tarefaLink=Map<String, bool>();
+  ControleTarefaID tarefa;
   SetorCensitarioID setor;
   UsuarioID remetente;
   UsuarioID destinatario;
-  String url;
-  String observacao;
   bool concluida;
   DateTime modificada;
-  int numeroCriacao;
+  int ordem;
 
-  ControleAcaoModel({String id, this.nome, this.numeroCriacao}) : super(id);
+  ControleAcaoModel({String id}) : super(id);
 
   @override
   ControleAcaoModel fromMap(Map<String, dynamic> map) {
@@ -24,7 +25,14 @@ class ControleAcaoModel extends FirestoreModel {
     if (map.containsKey("nome")) nome = map["nome"];
     if (map.containsKey("url")) url = map["url"];
     if (map.containsKey("observacao")) observacao = map["observacao"];
-    if (map.containsKey("modificada")) modificada = map["modificada"].toDate();
+    if (map.containsKey("tarefaLink") && map["tarefaLink"] != null) {
+      final refs = map["tarefaLink"] as Map<dynamic, dynamic>;
+      for (var ref in refs.entries) {
+        tarefaLink[ref.key] = ref.value;
+      }
+    }    if (map.containsKey("modificada") &&  map["modificada"] != null ){
+       modificada = map["modificada"].toDate();
+    }
 
     if (map.containsKey('tarefa')) {
       tarefa = map['tarefa'] != null
@@ -46,7 +54,7 @@ class ControleAcaoModel extends FirestoreModel {
           : null;
     }
     if (map.containsKey("concluida")) concluida = map["concluida"];
-    if (map.containsKey("numeroCriacao")) numeroCriacao = map["numeroCriacao"];
+    if (map.containsKey("ordem")) ordem = map["ordem"];
 
     return this;
   }
@@ -57,8 +65,9 @@ class ControleAcaoModel extends FirestoreModel {
     if (referencia != null) data['referencia'] = this.referencia;
     if (nome != null) data['nome'] = this.nome;
     if (url != null) data['url'] = this.url;
+    if (tarefaLink != null) data['tarefaLink'] = this.tarefaLink;
     if (observacao != null) data['observacao'] = this.observacao;
-    if (numeroCriacao != null) data['numeroCriacao'] = this.numeroCriacao;
+    if (ordem != null) data['ordem'] = this.ordem;
     if (concluida != null) data['concluida'] = this.concluida;
     if (modificada != null) data['modificada'] = this.modificada.toUtc();
     if (this.tarefa != null) {

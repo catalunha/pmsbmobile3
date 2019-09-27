@@ -4,47 +4,48 @@ import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ControleAcaoMarcarBlocEvent {}
+class ControleAcaoConcluidaBlocEvent {}
 
-class UpdateTarefaIDEvent extends ControleAcaoMarcarBlocEvent {
+class UpdateTarefaIDEvent extends ControleAcaoConcluidaBlocEvent {
   final String controleTarefaID;
 
   UpdateTarefaIDEvent(this.controleTarefaID);
 }
 
-class UpdateAcaoEvent extends ControleAcaoMarcarBlocEvent {
+class UpdateAcaoEvent extends ControleAcaoConcluidaBlocEvent {
   final String controleAcaoID;
   final bool concluida;
 
   UpdateAcaoEvent(this.controleAcaoID, this.concluida);
 }
 
-class ControleAcaoMarcarBlocState {
+class ControleAcaoConcluidaBlocState {
   ControleTarefaModel controleTarefaDestinatario = ControleTarefaModel();
   List<ControleAcaoModel> controleAcaoList = List<ControleAcaoModel>();
   bool isDataValid;
 }
 
-class ControleAcaoMarcarBloc {
+class ControleAcaoConcluidaBloc {
   //Firestore
   final fsw.Firestore _firestore;
   // final _authBloc;
 
   //Eventos
-  final _eventController = BehaviorSubject<ControleAcaoMarcarBlocEvent>();
-  Stream<ControleAcaoMarcarBlocEvent> get eventStream =>
+  final _eventController = BehaviorSubject<ControleAcaoConcluidaBlocEvent>();
+  Stream<ControleAcaoConcluidaBlocEvent> get eventStream =>
       _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   //Estados
-  final ControleAcaoMarcarBlocState _state = ControleAcaoMarcarBlocState();
-  final _stateController = BehaviorSubject<ControleAcaoMarcarBlocState>();
-  Stream<ControleAcaoMarcarBlocState> get stateStream =>
+  final ControleAcaoConcluidaBlocState _state =
+      ControleAcaoConcluidaBlocState();
+  final _stateController = BehaviorSubject<ControleAcaoConcluidaBlocState>();
+  Stream<ControleAcaoConcluidaBlocState> get stateStream =>
       _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   //Bloc
-  ControleAcaoMarcarBloc(this._firestore) {
+  ControleAcaoConcluidaBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
 
@@ -68,7 +69,7 @@ class ControleAcaoMarcarBloc {
     }
   }
 
-  _mapEventToState(ControleAcaoMarcarBlocEvent event) async {
+  _mapEventToState(ControleAcaoConcluidaBlocEvent event) async {
     if (event is UpdateTarefaIDEvent) {
       //Atualiza estado com usuario logado
       print('event.controleTarefaID:' + event.controleTarefaID);
@@ -106,8 +107,7 @@ class ControleAcaoMarcarBloc {
 
       snapListRemetente.listen((List<ControleAcaoModel> controleAcaoList) {
         if (controleAcaoList.length > 1) {
-          controleAcaoList
-              .sort((a, b) => a.ordem.compareTo(b.ordem));
+          controleAcaoList.sort((a, b) => a.ordem.compareTo(b.ordem));
         }
         _state.controleAcaoList = controleAcaoList;
         if (!_stateController.isClosed) _stateController.add(_state);
