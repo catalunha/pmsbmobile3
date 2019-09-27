@@ -244,7 +244,7 @@ class MyApp extends StatelessWidget {
         "/painel/home": (context) => PainelListPage(authBloc),
         "/painel/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return PainelCrudPage(settings.arguments);
+          return PainelCrudPage(authBloc,settings.arguments);
         },
 
 

@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PainelListPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -33,8 +34,7 @@ class _PainelListPageState extends State<PainelListPage> {
         title: Text('Painel'),
         body: StreamBuilder<PainelListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<PainelListBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<PainelListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("ERROR");
               }
@@ -44,52 +44,75 @@ class _PainelListPageState extends State<PainelListPage> {
               if (snapshot.hasData) {
                 if (snapshot.data.isDataValid) {
                   List<Widget> listaWidget = List<Widget>();
-                  for (var setorCensitarioPainel
-                      in snapshot.data.setorCensitarioPainelList) {
+                  for (var setorCensitarioPainel in snapshot.data.setorCensitarioPainelList) {
                     Widget item;
                     if (setorCensitarioPainel.painelID.tipo == 'texto') {
                       item = ListTile(
-                        trailing: setorCensitarioPainel.valor == null
-                            ? Icon(Icons.edit)
-                            : Icon(Icons.text_fields),
+                        trailing: setorCensitarioPainel.valor == null ? Icon(Icons.edit) : Icon(Icons.text_fields),
                         title: Text('${setorCensitarioPainel.painelID.nome}'),
                         subtitle: Text(
-                            'Texto:${setorCensitarioPainel.valor}\nObs: ${setorCensitarioPainel.observacao}\nid: ${setorCensitarioPainel.id}'),
+                            '${setorCensitarioPainel?.valor}\nObs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
                         onTap: () {
-                          print('texto');
-                        },
-                        onLongPress: () {
-                          print('link');
+                          Navigator.pushNamed(
+                            context,
+                            "/painel/crud",
+                            arguments: setorCensitarioPainel.id,
+                          );
                         },
                       );
-                    } else if (setorCensitarioPainel.painelID.tipo ==
-                        'numero') {
+                    } else if (setorCensitarioPainel.painelID.tipo == 'numero') {
                       item = ListTile(
-                          trailing: setorCensitarioPainel.valor == null
-                              ? Icon(Icons.edit)
-                              : setorCensitarioPainel.valor,
-                          title: Text('${setorCensitarioPainel.painelID.nome}'),
-                          subtitle: Text(
-                              'Obs: ${setorCensitarioPainel.observacao}\nid: ${setorCensitarioPainel.id}'));
-                    } else if (setorCensitarioPainel.painelID.tipo ==
-                        'booleano') {
+                        trailing: setorCensitarioPainel.valor == null
+                            ? Icon(Icons.edit)
+                            : Text('${setorCensitarioPainel.valor}'),
+                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        subtitle: Text(
+                            'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            "/painel/crud",
+                            arguments: setorCensitarioPainel.id,
+                          );
+                        },
+                      );
+                    } else if (setorCensitarioPainel.painelID.tipo == 'booleano') {
                       item = ListTile(
-                          trailing: setorCensitarioPainel.valor == null ||
-                                  setorCensitarioPainel.valor
-                              ? Icon(Icons.thumb_down)
-                              : Icon(Icons.thumb_up),
-                          title: Text('${setorCensitarioPainel.painelID.nome}'),
-                          subtitle: Text(
-                              'Obs: ${setorCensitarioPainel.observacao}\nid: ${setorCensitarioPainel.id}'));
+                        trailing: setorCensitarioPainel?.valor == null || setorCensitarioPainel.valor == false
+                            ? Icon(Icons.thumb_down)
+                            : Icon(Icons.thumb_up),
+                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        subtitle: Text(
+                            'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            "/painel/crud",
+                            arguments: setorCensitarioPainel.id,
+                          );
+                        },
+                      );
                     } else if (setorCensitarioPainel.painelID.tipo == 'url') {
                       item = ListTile(
-                          trailing: setorCensitarioPainel.valor == null ||
-                                  setorCensitarioPainel.valor == ''
-                              ? Icon(Icons.cloud_off)
-                              : Icon(Icons.cloud_done),
-                          title: Text('${setorCensitarioPainel.painelID.nome}'),
-                          subtitle: Text(
-                              'Obs: ${setorCensitarioPainel.observacao}\nid: ${setorCensitarioPainel.id}'));
+                        trailing: setorCensitarioPainel.valor == null || setorCensitarioPainel.valor == ''
+                            ? Icon(Icons.cloud_off)
+                            : Icon(Icons.cloud_done),
+                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        subtitle: Text(
+                            'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            "/painel/crud",
+                            arguments: setorCensitarioPainel.id,
+                          );
+                        },
+                        onLongPress: setorCensitarioPainel.valor != null
+                            ? () {
+                                launch(setorCensitarioPainel.valor);
+                              }
+                            : null,
+                      );
                     }
 
                     listaWidget.add(Column(children: <Widget>[item]));
@@ -99,13 +122,12 @@ class _PainelListPageState extends State<PainelListPage> {
                       children: <Widget>[
                         Expanded(
                           flex: 10,
-                          child: Text(
-                              'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                          child: Text('Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                         ),
                         Wrap(alignment: WrapAlignment.start, children: <Widget>[
                           IconButton(
                             tooltip: 'Relatorio Geral em PDF.',
-                            icon: Icon(Icons.picture_as_pdf),
+                            icon: Icon(Icons.view_list),
                             onPressed: () async {
                               // var pdf = await PdfCreateService
                               //     .pdfwidgetForControleTarefaDoUsuario(
