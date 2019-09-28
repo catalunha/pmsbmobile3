@@ -322,7 +322,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               color: Colors.black45,
             ),
                         ListTile(
-              title: Text("Versão 3.0.6"),
+              title: Text("Versão 3.0.7"),
               leading: Icon(Icons.info),
             ),
           ],
