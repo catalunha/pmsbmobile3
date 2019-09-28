@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
+import 'package:pmsbmibile3/services/pdf_create_service.dart';
+import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -126,27 +128,25 @@ class _PainelListPageState extends State<PainelListPage> {
                         ),
                         Wrap(alignment: WrapAlignment.start, children: <Widget>[
                           IconButton(
-                            tooltip: 'Relatorio Geral em PDF.',
+                            tooltip: 'Comparativo em PDF.',
                             icon: Icon(Icons.view_list),
                             onPressed: () async {
-                              // var pdf = await PdfCreateService
-                              //     .pdfwidgetForControleTarefaDoUsuario(
-                              //         usuarioModel: snapshot.data.usuarioID,
-                              //         remetente: false,
-                              //         concluida: false);
-                              // PdfSaveService.generatePdfAndOpen(pdf);
+                              var pdf = await PdfCreateService
+                                  .pdfwidgetForPainelComparativo(
+                                      setorCensitario: snapshot.data.usuarioID.setorCensitarioID.id,
+                                      );
+                              PdfSaveService.generatePdfAndOpen(pdf);
                             },
                           ),
                           IconButton(
                             tooltip: 'Relatorio deste setor em PDF.',
                             icon: Icon(Icons.picture_as_pdf),
                             onPressed: () async {
-                              // var pdf = await PdfCreateService
-                              //     .pdfwidgetForControleTarefaDoUsuario(
-                              //         usuarioModel: snapshot.data.usuarioID,
-                              //         remetente: false,
-                              //         concluida: false);
-                              // PdfSaveService.generatePdfAndOpen(pdf);
+                              var pdf = await PdfCreateService
+                                  .pdfwidgetForPainelSetor(
+                                      setorCensitario: snapshot.data.usuarioID.setorCensitarioID.id,
+                                      );
+                              PdfSaveService.generatePdfAndOpen(pdf);
                             },
                           ),
                         ]),
