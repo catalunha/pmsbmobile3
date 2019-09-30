@@ -196,8 +196,8 @@ class MyApp extends StatelessWidget {
         "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
         //administração
-        "/administracao/home": (context) => AdministracaoHomePage(),
-        "/administracao/perfil": (context) => AdministracaoPerfilPage(),
+        "/administracao/home": (context) => AdministracaoHomePage(authBloc),
+        "/administracao/perfil": (context) => AdministracaoPerfilPage(authBloc),
 
         //controle
         "/controle/home": (context) => ControleTarefaListPage(authBloc),

@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/services/services.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
 class AdministracaoPerfilPage extends StatefulWidget {
-  // AdministracaoPerfilPage({Key key}) : super(key: key);
+  final AuthBloc authBloc;
+
+  const AdministracaoPerfilPage(this.authBloc);
 
   _AdministracaoPerfilPageState createState() => _AdministracaoPerfilPageState();
 }
 
 class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
-    final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
+    AdministracaoPerfilPageBloc bloc;
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore,widget.authBloc);
   }
 
   @override
@@ -80,6 +84,8 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                 usuarioModelData = snapshot.data;
                 return Container(
                   child: Column(children: <Widget>[
+                   
+              Divider(),
                     Padding(padding: EdgeInsets.all(3)),
                     Expanded(
                       flex: 2,
@@ -121,13 +127,13 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
         child: StreamBuilder<AdministracaoPerfilPageState>(
           stream: bloc.administracaoPerfilPageStateStream,
           builder: (BuildContext context,
-              AsyncSnapshot<AdministracaoPerfilPageState> snapshotState) {
-            if (snapshotState.hasError) {
+              AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
+            if (snapshot.hasError) {
               return Center(
                 child: Text("Error"),
               );
             }
-            // if (!snapshotState.hasData) {
+            // if (!snapshot.hasData) {
             //   return Center(
             //     child: Text("Sem dados de perfil"),
             //   );
@@ -141,25 +147,54 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                     onPressed: () {
                       GeradorCsvService.generateCsvFromUsuarioModel(
                           usuarioModelData);
-                      //launch(snapshotState.data.urlCSV);
+                      //launch(snapshot.data.urlCSV);
                     },
                   ),
                   // Text('web'),
                   // IconButton(
                   //   icon: Icon(Icons.web),
                   //   onPressed: () {
-                  //     launch(snapshotState.data.urlMD);
+                  //     launch(snapshot.data.urlMD);
                   //   },
                   // ),
                   Text('pdf'),
-                  IconButton(
-                    icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () {
-                      var mdtext = GeradorMdService.generateMdFromUsuarioModel(
-                          usuarioModelData);
-                      GeradorPdfService.generatePdfFromMd(mdtext);
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: Icon(Icons.picture_as_pdf),
+                  //   onPressed: () {
+                  //     var mdtext = GeradorMdService.generateMdFromUsuarioModel(
+                  //         usuarioModelData);
+                  //     GeradorPdfService.generatePdfFromMd(mdtext);
+                  //   },
+                  // ),
+                 snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo == 'administracao02'
+                        ? IconButton(
+                            tooltip: 'Ver relatório deste usuario.',
+                            icon: Icon(Icons.link),
+                            onPressed: () async {
+                              bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: false,
+                                  pdfGerado: false,
+                                  tipo: 'administracao02',
+                                  collection: 'Usuario',
+                                  document: snapshot.data.usuarioId));
+                              launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                            },
+                          )
+                        : IconButton(
+                            tooltip: 'Atualizar PDF deste usuario.',
+                            icon: Icon(Icons.picture_as_pdf),
+                            onPressed: () async {
+                              bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: true,
+                                  pdfGerado: false,
+                                  tipo: 'administracao02',
+                                  collection: 'Usuario',
+                                  document: snapshot.data.usuarioId));
+                            },
+                          ),
                 ],
               ),
             );
