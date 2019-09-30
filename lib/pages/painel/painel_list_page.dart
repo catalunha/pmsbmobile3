@@ -150,13 +150,13 @@ class _PainelListPageState extends State<PainelListPage> {
                           snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
                                   snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
                                   snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                                  snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle01'
+                                  snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel01'
                               ? IconButton(
                                   tooltip: 'Ver relatorio individual.',
                                   icon: Icon(Icons.link),
                                   onPressed: () async {
                                     bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: false, pdfGerado: false, tipo: 'controle01'));
+                                        pdfGerar: false, pdfGerado: false, tipo: 'painel01'));
                                     launch(snapshot.data?.relatorioPdfMakeModel?.url);
                                   },
                                 )
@@ -165,20 +165,20 @@ class _PainelListPageState extends State<PainelListPage> {
                                   icon: Icon(Icons.picture_as_pdf),
                                   onPressed: () async {
                                     bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: true, pdfGerado: false, tipo: 'controle01'));
+                                        pdfGerar: true, pdfGerado: false, tipo: 'painel01'));
                                   },
                                 ),
  
                           snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
                                   snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
                                   snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                                  snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle02'
+                                  snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel02'
                               ? IconButton(
                                   tooltip: 'Ver relatorio comparativo.',
                                   icon: Icon(Icons.link),
                                   onPressed: () async {
                                     bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: false, pdfGerado: false, tipo: 'controle02'));
+                                        pdfGerar: false, pdfGerado: false, tipo: 'painel02'));
                                     launch(snapshot.data?.relatorioPdfMakeModel?.url);
                                   },
                                 )
@@ -187,7 +187,7 @@ class _PainelListPageState extends State<PainelListPage> {
                                   icon: Icon(Icons.table_chart),
                                   onPressed: () async {
                                     bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: true, pdfGerado: false, tipo: 'controle02'));
+                                        pdfGerar: true, pdfGerado: false, tipo: 'painel02'));
                                   },
                                 )
                         ]),

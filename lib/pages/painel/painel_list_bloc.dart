@@ -119,6 +119,8 @@ class PainelListBloc {
         'pdfGerar': event.pdfGerar,
         'pdfGerado': event.pdfGerado,
         'tipo': event.tipo,
+        'collection': 'Usuario',
+        'document': _state.usuarioID.id,
       }, merge: true);
     }
 
