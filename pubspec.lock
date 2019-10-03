@@ -37,7 +37,7 @@ packages:
     source: hosted
     version: "1.1.2"
   cloud_firestore:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
@@ -94,15 +94,8 @@ packages:
       url: "https://github.com/FirebaseExtended/firebase-dart.git"
     source: git
     version: "6.0.0-dev"
-  firebase_auth:
-    dependency: "direct main"
-    description:
-      name: firebase_auth
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.1+12"
   firebase_core:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
@@ -127,7 +120,7 @@ packages:
     description:
       path: firebaseauth_wrapper
       ref: HEAD
-      resolved-ref: "4cb1e1df79502026c4d34e073dc695d5852153de"
+      resolved-ref: d308df458eab8ab9592876c04e9f4b445cd38321
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -136,7 +129,7 @@ packages:
     description:
       path: firebaseauth_wrapper_flutter
       ref: HEAD
-      resolved-ref: "4cb1e1df79502026c4d34e073dc695d5852153de"
+      resolved-ref: d308df458eab8ab9592876c04e9f4b445cd38321
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -145,7 +138,7 @@ packages:
     description:
       path: firebaseauth_wrapper_web
       ref: HEAD
-      resolved-ref: "4cb1e1df79502026c4d34e073dc695d5852153de"
+      resolved-ref: d308df458eab8ab9592876c04e9f4b445cd38321
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.0"
