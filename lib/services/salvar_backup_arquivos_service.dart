@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'package:pmsbmibile3/naosuportato/path_provider.dart'
     if (dart.library.io) 'package:path_provider/path_provider.dart';
 

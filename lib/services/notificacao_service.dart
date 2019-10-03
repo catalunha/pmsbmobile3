@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'package:pmsbmibile3/naosuportato/firebase_messaging.dart'
     show FirebaseMessaging;
 import 'package:pmsbmibile3/naosuportato/flutter_local_notifications.dart'

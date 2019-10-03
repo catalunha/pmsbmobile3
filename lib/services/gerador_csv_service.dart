@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'package:pmsbmibile3/naosuportato/open_file.dart'
     if (dart.library.io) 'package:open_file/open_file.dart';
 

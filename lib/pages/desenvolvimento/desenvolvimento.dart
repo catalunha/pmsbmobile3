@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
     show FilePicker, FileType;
 import 'package:pmsbmibile3/components/square_image.dart';
