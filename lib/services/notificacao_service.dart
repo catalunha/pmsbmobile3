@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:pmsbmibile3/naosuportato/firebase_messaging.dart' show FirebaseMessaging;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_messaging.dart'
+    show FirebaseMessaging;
+import 'package:pmsbmibile3/naosuportato/flutter_local_notifications.dart'
+    if (dart.library.io) 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificacaoService {
   static dynamic _firebaseMessaging = new FirebaseMessaging();
