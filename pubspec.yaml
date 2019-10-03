@@ -40,10 +40,18 @@ dependencies:
     git:
       url: https://github.com/paulorobertocruz/firestore_wrapper.git
       path: packages/firestore_wrapper_flutter
+  firestore_wrapper_web:
+    git:
+      url: https://github.com/paulorobertocruz/firestore_wrapper.git
+      path: packages/firestore_wrapper_web
   firebaseauth_wrapper_flutter:
     git:
       url: https://github.com/paulorobertocruz/firebaseauth_wrapper.git
       path: firebaseauth_wrapper_flutter
+  firebaseauth_wrapper_web:
+    git:
+      url: https://github.com/paulorobertocruz/firebaseauth_wrapper.git
+      path: firebaseauth_wrapper_web
   location: ^2.3.5
   image_picker: ^0.6.0+17
   image: ^2.1.4
@@ -57,6 +65,8 @@ dependencies:
   firebase_messaging: ^5.1.0
   flutter_local_notifications: 0.7.1
   fixnum: ^0.10.9
+
+  universal_io: ^0.8.4
 
 dev_dependencies:
   flutter_test:
