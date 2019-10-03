@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
+    if (dart.library.io) 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_bloc.dart';
@@ -10,9 +11,9 @@ class PerguntaPreviewPage extends StatelessWidget {
   final PerguntaPreviewBloc bloc;
 
   PerguntaPreviewPage({this.perguntaID})
-      : bloc = PerguntaPreviewBloc(Bootstrap.instance.firestore){
-        bloc.eventSink(UpdatePerguntaIDEvent(perguntaID: perguntaID));
-      }
+      : bloc = PerguntaPreviewBloc(Bootstrap.instance.firestore) {
+    bloc.eventSink(UpdatePerguntaIDEvent(perguntaID: perguntaID));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +57,16 @@ class PerguntaPreviewPage extends StatelessWidget {
               texto.writeln("- ${v.texto}");
             });
           }
-            texto.writeln("---");
-            texto.writeln("#### Observações:");
-            texto.writeln("Pergunta tipo: ${snapshot.data.perguntaModel.tipo.nome}");
+          texto.writeln("---");
+          texto.writeln("#### Observações:");
+          texto.writeln(
+              "Pergunta tipo: ${snapshot.data.perguntaModel.tipo.nome}");
           List<Widget> requisitos = List<Widget>();
           if (snapshot.data?.requisitos != null &&
               snapshot.data.requisitos.isNotEmpty) {
             texto.writeln("##### Requisitos:");
-            texto.writeln("Esta pergunta somente será respondida se os requisitos a seguir forem simultanea e completamente atendidos.");
+            texto.writeln(
+                "Esta pergunta somente será respondida se os requisitos a seguir forem simultanea e completamente atendidos.");
             snapshot.data.requisitos?.forEach((k, v) {
               if (v.label != null) {
                 texto.writeln("- ${v.label}");

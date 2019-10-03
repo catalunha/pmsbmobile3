@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
+    if (dart.library.io) 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
@@ -24,6 +25,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
     with SingleTickerProviderStateMixin {
   final bloc = ComunicacaoHomePageBloc(Bootstrap.instance.firestore);
   var noticiaModelListData;
+
   // TabController _tabController;
 // final List<Tab> myTabs = <Tab>[
 //     Tab(text: 'LEFT'),
@@ -55,50 +57,53 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
       initialIndex: 0,
       length: 2,
       child: DefaultScaffold(
-        bottom: TabBar(
-          // controller: _tabController,
-          // tabs: myTabs
-          tabs: <Widget>[
-            Tab(
-              text: 'Em edição',
-            ),
-            Tab(
-              text: 'Publicadas',
-            ),
-            // Tab(
-            //   text: 'Chat',
-            // ),
+          bottom: TabBar(
+            // controller: _tabController,
+            // tabs: myTabs
+            tabs: <Widget>[
+              Tab(
+                text: 'Em edição',
+              ),
+              Tab(
+                text: 'Publicadas',
+              ),
+              // Tab(
+              //   text: 'Chat',
+              // ),
+            ],
+          ),
+          actionsMore: <Widget>[
+            IconButton(
+              icon: Icon(Icons.message),
+              tooltip: "Chat para comunicação",
+              onPressed: () {
+                Navigator.pushNamed(context, '/chat/home',
+                    arguments: ChatPageArguments(
+                        chatID: 'comunicacao',
+                        modulo: 'Comunicação',
+                        titulo: ''));
+              },
+            )
           ],
-        ),
-        actionsMore: <Widget>[IconButton(
-          icon: Icon(Icons.message),
-          tooltip: "Chat para comunicação",
-          onPressed: () {
-            Navigator.pushNamed(context, '/chat/home',
-                arguments: ChatPageArguments(
-                    chatID: 'comunicacao', modulo: 'Comunicação', titulo: ''));
-          },
-        )],
-        title: Text("Notícias"),
-        body: _body(context),
-        // floatingActionButton: _tabController.index == 0
-        //     ? FloatingActionButton(
-        //         onPressed: () async {
-        //           Navigator.pushNamed(context, '/comunicacao/crud_page');
-        //         },
-        //         child: Icon(Icons.add),
-        //         backgroundColor: Colors.blue,
-        //       )
-        //     : null,
+          title: Text("Notícias"),
+          body: _body(context),
+          // floatingActionButton: _tabController.index == 0
+          //     ? FloatingActionButton(
+          //         onPressed: () async {
+          //           Navigator.pushNamed(context, '/comunicacao/crud_page');
+          //         },
+          //         child: Icon(Icons.add),
+          //         backgroundColor: Colors.blue,
+          //       )
+          //     : null,
 
-        floatingActionButton:FloatingActionButton(
-                onPressed: () async {
-                  Navigator.pushNamed(context, '/comunicacao/crud_page');
-                },
-                child: Icon(Icons.add),
-                backgroundColor: Colors.blue,
-              )
-        ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              Navigator.pushNamed(context, '/comunicacao/crud_page');
+            },
+            child: Icon(Icons.add),
+            backgroundColor: Colors.blue,
+          )),
       // ),
     );
   }
