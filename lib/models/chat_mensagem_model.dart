@@ -27,7 +27,7 @@ class ChatMensagemModel extends FirestoreModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (texto != null) data['texto'] = this.texto;
     // if (enviada != null) data['enviada'] = this.enviada.toUtc();
-        data['enviada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+        data['enviada'] = Bootstrap.instance.fieldValue.serverTimestamp();
     if (this.autor != null) {
       data['autor'] = this.autor.toMap();
     }
@@ -38,7 +38,7 @@ class ChatMensagemModel extends FirestoreModel {
   //   final Map<String, dynamic> data = new Map<String, dynamic>();
   //   if (texto != null) data['texto'] = this.texto;
   //   // if (enviada != null) data['enviada'] = this.enviada.toUtc();
-  //       data['enviada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+  //       data['enviada'] = Bootstrap.instance.fieldValue.serverTimestamp();
   //   if (this.autor != null) {
   //     data['autor'] = this.autor.toMap();
   //   }

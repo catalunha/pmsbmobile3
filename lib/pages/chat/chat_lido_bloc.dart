@@ -82,7 +82,7 @@ class ChatLidoPageBloc {
       final docRef =
           _firestore.collection(ChatModel.collection).document(_state.chatID);
       docRef.setData({
-        "usuario": {event.usuarioID: Bootstrap.instance.FieldValue.delete()},
+        "usuario": {event.usuarioID: Bootstrap.instance.fieldValue.delete()},
       }, merge: true);
     }
     if (!_stateController.isClosed) _stateController.add(_state);
