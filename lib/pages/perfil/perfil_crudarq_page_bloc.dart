@@ -5,7 +5,8 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
+    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -59,17 +60,22 @@ class PerfilCRUDArqPageBloc {
 
   // Eventos
   final _eventController = BehaviorSubject<PerfilCRUDArqPageEvent>();
+
   Function get eventSink => _eventController.sink.add;
+
   Stream<PerfilCRUDArqPageEvent> get eventStream => _eventController.stream;
 
   // Estados
   PerfilCRUDArqPageState _state = PerfilCRUDArqPageState();
   final _stateController = BehaviorSubject<PerfilCRUDArqPageState>();
+
   Stream<PerfilCRUDArqPageState> get stateStream => _stateController.stream;
+
   Function get stateSink => _stateController.sink.add;
 
   //UsuarioPerfilModel
   final _usuarioPerfilModelController = BehaviorSubject<UsuarioPerfilModel>();
+
   Stream<UsuarioPerfilModel> get usuarioPerfilModelStream =>
       _usuarioPerfilModelController.stream;
 

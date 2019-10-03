@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
+    show FilePicker, FileType;
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
@@ -15,7 +16,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
+    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -774,8 +776,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     // print('>>> ok <<< ');
   }
 
-
-
   Future usuarioJuliana(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -831,6 +831,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
+
   //---Equipe do sergio
   //+++Equipe do Portela
 
@@ -860,6 +861,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
+
   Future usuarioIsabela(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -886,6 +888,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
+
   Future usuarioClaudio(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
@@ -913,8 +916,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     // print('>>> ok <<< ');
   }
 
-
-Future usuarioRosinete(String userId) async {
+  Future usuarioRosinete(String userId) async {
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
       ativo: true,
@@ -940,7 +942,6 @@ Future usuarioRosinete(String userId) async {
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
-
 
   //---Equipe do Portela
   //+++Equipe do Rui
@@ -1047,7 +1048,7 @@ Future usuarioRosinete(String userId) async {
         _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
-  //---Equipe do Rui
+//---Equipe do Rui
 
 }
 
