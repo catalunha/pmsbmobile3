@@ -19,3 +19,7 @@ export 'package:pmsbmibile3/naosuportato/image_picker.dart'
     if (dart.library.io) 'package:image_picker/image_picker.dart';
 export 'package:pmsbmibile3/naosuportato/open_file.dart'
     if (dart.library.io) 'package:open_file/open_file.dart';
+export 'package:pmsbmibile3/naosuportato/path_provider.dart'
+    if (dart.library.io) 'package:path_provider/path_provider.dart';
+export 'package:pmsbmibile3/naosuportato/permission_handler.dart'
+    if (dart.library.io) 'package:permission_handler/permission_handler.dart';
