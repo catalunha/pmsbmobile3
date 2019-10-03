@@ -1,4 +1,3 @@
-import 'package:firestore_wrapper_flutter/firestore_wrapper_flutter.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
