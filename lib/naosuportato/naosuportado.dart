@@ -6,3 +6,6 @@ export 'package:pmsbmibile3/naosuportato/url_launcher.dart'
 
 export 'package:pmsbmibile3/naosuportato/file_picker.dart'
     if (dart.library.io) 'package:file_picker/file_picker.dart';
+
+export 'package:pmsbmibile3/naosuportato/firebase_messaging.dart'
+    if (dart.library.io) 'package:firebase_messaging/firebase_messaging.dart';
