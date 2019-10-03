@@ -4,7 +4,7 @@ import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class ConfiguracaoPage extends StatefulWidget {

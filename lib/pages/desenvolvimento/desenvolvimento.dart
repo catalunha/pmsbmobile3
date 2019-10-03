@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
