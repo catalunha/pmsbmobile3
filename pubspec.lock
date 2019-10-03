@@ -94,6 +94,13 @@ packages:
       url: "https://github.com/FirebaseExtended/firebase-dart.git"
     source: git
     version: "6.0.0-dev"
+  firebase_auth:
+    dependency: transitive
+    description:
+      name: firebase_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.14.0+5"
   firebase_core:
     dependency: transitive
     description:
@@ -120,7 +127,7 @@ packages:
     description:
       path: firebaseauth_wrapper
       ref: HEAD
-      resolved-ref: d308df458eab8ab9592876c04e9f4b445cd38321
+      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -129,7 +136,7 @@ packages:
     description:
       path: firebaseauth_wrapper_flutter
       ref: HEAD
-      resolved-ref: d308df458eab8ab9592876c04e9f4b445cd38321
+      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -138,7 +145,7 @@ packages:
     description:
       path: firebaseauth_wrapper_web
       ref: HEAD
-      resolved-ref: d308df458eab8ab9592876c04e9f4b445cd38321
+      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.0"
