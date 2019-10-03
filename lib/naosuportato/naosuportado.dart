@@ -9,3 +9,5 @@ export 'package:pmsbmibile3/naosuportato/firebase_messaging.dart'
     if (dart.library.io) 'package:firebase_messaging/firebase_messaging.dart';
 export 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
     if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
+export 'package:pmsbmibile3/naosuportato/flutter_html_to_pdf.dart'
+    if (dart.library.io) 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
