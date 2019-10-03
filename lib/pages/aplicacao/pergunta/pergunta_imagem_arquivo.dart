@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
+    show FilePicker, FileType;
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:pmsbmibile3/naosuportato/image_picker.dart'
+    if (dart.library.io) 'package:image_picker/image_picker.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
