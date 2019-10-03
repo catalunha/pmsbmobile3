@@ -1,6 +1,7 @@
 import 'dart:io';
+import 'package:pmsbmibile3/naosuportato/open_file.dart'
+    if (dart.library.io) 'package:open_file/open_file.dart';
 
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
 import 'package:pmsbmibile3/models/models.dart';
@@ -65,6 +66,8 @@ class GeradorCsvService {
   }
 
   static _openFileFromDirectory(String filename, String fileDirectory) async {
-    await OpenFile.open(fileDirectory + filename, type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    await OpenFile.open(fileDirectory + filename,
+        type:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
   }
 }

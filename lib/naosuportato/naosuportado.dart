@@ -13,3 +13,9 @@ export 'package:pmsbmibile3/naosuportato/flutter_html_to_pdf.dart'
     if (dart.library.io) 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
 export 'package:pmsbmibile3/naosuportato/flutter_local_notifications.dart'
     if (dart.library.io) 'package:flutter_local_notifications/flutter_local_notifications.dart';
+export 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
+    if (dart.library.io) 'package:flutter_markdown/flutter_markdown.dart';
+export 'package:pmsbmibile3/naosuportato/image_picker.dart'
+    if (dart.library.io) 'package:image_picker/image_picker.dart';
+export 'package:pmsbmibile3/naosuportato/open_file.dart'
+    if (dart.library.io) 'package:open_file/open_file.dart';
