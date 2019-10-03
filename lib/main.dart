@@ -18,8 +18,12 @@ import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
 import 'package:pmsbmibile3/pages/questionario/pergunta_list_preview_page.dart';
 import 'package:pmsbmibile3/pages/resposta/resposta_perguntaaplicada_markdown_page.dart';
 import 'package:pmsbmibile3/pages/resposta/resposta_questionarioaplicado_home_page.dart';
+import 'package:pmsbmibile3/web.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  webSetUp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
