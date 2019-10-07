@@ -61,7 +61,7 @@ class _RespostaQuestionarioAplicadoHomePageState
                   title: Text(
                       'Questionário: ${questionarioAplicado.nome}\nReferência: ${questionarioAplicado.referencia}'),
                   subtitle: Text(
-                      'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado.toDate()}\nid: ${questionarioAplicado.id}'),
+                      'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado}\nid: ${questionarioAplicado.id}'),
                   trailing: snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
                               null &&
                           snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==

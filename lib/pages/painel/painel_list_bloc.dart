@@ -99,6 +99,8 @@ class PainelListBloc {
         }
         _state.setorCensitarioPainelList = setorCensitarioPainelList;
         if (!_stateController.isClosed) _stateController.add(_state);
+    print(_state.setorCensitarioPainelList.length);
+
       });
     }
 

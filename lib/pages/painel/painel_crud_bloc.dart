@@ -133,7 +133,7 @@ class PainelCrudBloc {
       await docRef.setData({
         'valor': _state.valor,
         'observacao': _state.observacao,
-        'modificada': Bootstrap.instance.FieldValue.serverTimestamp(),
+        'modificada': Bootstrap.instance.fieldValue.serverTimestamp(),
         'usuarioID': UsuarioID(id: _state.usuarioID.id, nome: _state.usuarioID.nome).toMap()
       }, merge: true);
     }

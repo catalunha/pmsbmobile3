@@ -8,9 +8,9 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdministracaoPerfilPage extends StatefulWidget {
-  final AuthBloc authBloc;
+  AuthBloc authBloc;
 
-  const AdministracaoPerfilPage(this.authBloc);
+  AdministracaoPerfilPage(this.authBloc);
 
   _AdministracaoPerfilPageState createState() =>
       _AdministracaoPerfilPageState();
@@ -18,7 +18,7 @@ class AdministracaoPerfilPage extends StatefulWidget {
 
 class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
 
-  final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
+  AdministracaoPerfilPageBloc bloc;
 
 //   @override
 //   Widget build(BuildContext context) {
