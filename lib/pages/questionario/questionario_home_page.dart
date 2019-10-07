@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pdf/widgets.dart' as prefix0;
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
@@ -8,6 +7,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/services/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuestionarioHomePage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -26,8 +26,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
   @override
   void initState() {
     super.initState();
-    bloc =
-        QuestionarioHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -37,53 +36,13 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
   }
 
   _bodyPastas(context) {
-    return Container(
-        child: Center(
-            child: Text("Em construção", style: TextStyle(fontSize: 18))));
+    return Container(child: Center(child: Text("Em construção", style: TextStyle(fontSize: 18))));
   }
-
-  // _bodyTodos(context) {
-  //   return ListView(
-  //     children: <Widget>[
-  //       Container(
-  //         padding: EdgeInsets.only(top: 15, bottom: 15),
-  //         child: Center(
-  //           child: EixoAtualUsuario(authBloc),
-  //         ),
-  //       ),
-  //       StreamBuilder<List<QuestionarioModel>>(
-  //           stream: bloc.questionarios,
-  //           builder: (context, snapshot) {
-  //             if (snapshot.hasError) {
-  //               return Center(
-  //                 child: Text("ERROR"),
-  //               );
-  //             }
-  //             if (!snapshot.hasData) {
-  //               return Center(
-  //                 child: Text("SEM DADOS"),
-  //               );
-  //             }
-  //             if (snapshot.data.isEmpty) {
-  //               return Center(child: Text("Nenhum Questionario"));
-  //             }
-  //             return Column(
-  //               children: [
-  //                 ...snapshot.data
-  //                     .map((questionario) => QuestionarioItem(questionario))
-  //                     .toList(),
-  //               ],
-  //             );
-  //           }),
-  //     ],
-  //   );
-  // }
 
   _bodyTodos() {
     return StreamBuilder<QuestionarioHomePageBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<QuestionarioHomePageBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<QuestionarioHomePageBlocState> snapshot) {
         if (snapshot.hasError) {
           return Text("ERROR");
         }
@@ -107,7 +66,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                     // subtitle: Text('${questionario.id}'),
                   ),
                   Wrap(
-                  alignment: WrapAlignment.start,
+                    alignment: WrapAlignment.start,
                     children: <Widget>[
                       IconButton(
                         tooltip: 'Criar perguntas neste questionário',
@@ -121,22 +80,51 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                           );
                         },
                       ),
-                      IconButton(
-                        tooltip: 'Conferir todas as perguntas criadas',
-                        icon: Icon(Icons.picture_as_pdf),
-                        onPressed: () async {
-                          var mdtext = await GeradorMdService
-                              .generateMdFromQuestionarioModel(questionario);
-                          GeradorPdfService.generatePdfFromMd(mdtext);
-                        },
-                      ),
+                      // IconButton(
+                      //   tooltip: 'Conferir todas as perguntas criadas',
+                      //   icon: Icon(Icons.picture_as_pdf),
+                      //   onPressed: () async {
+                      //     var mdtext = await GeradorMdService
+                      //         .generateMdFromQuestionarioModel(questionario);
+                      //     GeradorPdfService.generatePdfFromMd(mdtext);
+                      //   },
+                      // ),
+                      snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo == 'questionario02' &&
+                              snapshot.data?.relatorioPdfMakeModel?.document == questionario.id
+                          ? IconButton(
+                              tooltip: 'Ver relatório desta questionario.',
+                              icon: Icon(Icons.link),
+                              onPressed: () async {
+                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                    pdfGerar: false,
+                                    pdfGerado: false,
+                                    tipo: 'questionario02',
+                                    collection: 'Questionario',
+                                    document: questionario.id));
+                                launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                              },
+                            )
+                          : IconButton(
+                              tooltip: 'Atualizar PDF deste questionario.',
+                              icon: Icon(Icons.picture_as_pdf),
+                              onPressed: () async {
+                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                    pdfGerar: true,
+                                    pdfGerado: false,
+                                    tipo: 'questionario02',
+                                    collection: 'Questionario',
+                                    document: questionario.id));
+                              },
+                            ),
+
                       IconButton(
                           tooltip: 'Listar perguntas criadas',
                           icon: Icon(Icons.text_fields),
                           onPressed: () async {
-                            Navigator.pushNamed(
-                                context, "/pergunta/pergunta_list_preview",
-                                arguments: questionario.id);
+                            Navigator.pushNamed(context, "/pergunta/pergunta_list_preview", arguments: questionario.id);
                           }),
                       IconButton(
                           icon: Icon(Icons.arrow_downward),
@@ -146,8 +134,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                   //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
                                   // Mover pra baixo na ordem
                                   //TODO: refatorar este codigo com o i fica mais fácil
-                                  bloc.eventSink(
-                                      OrdenarQuestionarioEvent(questID, false));
+                                  bloc.eventSink(OrdenarQuestionarioEvent(questID, false));
                                 }
                               : null),
                       IconButton(
@@ -159,8 +146,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
 
                                   // Mover pra cima na ordem
                                   //TODO: refatorar este codigo com o i fica mais fácil
-                                  bloc.eventSink(
-                                      OrdenarQuestionarioEvent(questID, true));
+                                  bloc.eventSink(OrdenarQuestionarioEvent(questID, true));
                                 }
                               : null),
                       IconButton(
@@ -198,15 +184,66 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
           );
           return Column(
             children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  padding: EdgeInsets.only(top: 15, bottom: 15),
-                  child: Center(
-                    child: EixoAtualUsuario(widget.authBloc),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 10,
+                    child: Text('Eixo: ${snapshot.data.usuarioModel.eixoID.nome}'),
                   ),
-                ),
+                  Wrap(alignment: WrapAlignment.start, children: <Widget>[
+                    // IconButton(
+                    //   tooltip: 'Relatorio em PDF.',
+                    //   icon: Icon(Icons.picture_as_pdf),
+                    //   onPressed: () async {
+                    //     var pdf = await PdfCreateService
+                    //         .pdfwidgetForControleTarefaDoUsuario(
+                    //             usuarioModel: snapshot.data.usuarioID,
+                    //             remetente: false,
+                    //             concluida: false);
+                    //     PdfSaveService.generatePdfAndOpen(pdf);
+                    //   },
+                    // ),
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo == 'questionario01'
+                        ? IconButton(
+                            tooltip: 'Ver relatório geral das tarefas recebidas.',
+                            icon: Icon(Icons.link),
+                            onPressed: () async {
+                              bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: false,
+                                  pdfGerado: false,
+                                  tipo: 'questionario01',
+                                  collection: 'Eixo',
+                                  document: snapshot.data.usuarioModel.eixoID.id));
+                              launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                            },
+                          )
+                        : IconButton(
+                            tooltip: 'Atualizar PDF geral das tarefas recebidas.',
+                            icon: Icon(Icons.picture_as_pdf),
+                            onPressed: () async {
+                              bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: true,
+                                  pdfGerado: false,
+                                  tipo: 'questionario01',
+                                  collection: 'Eixo',
+                                  document: snapshot.data.usuarioModel.eixoID.id));
+                            },
+                          ),
+                  ]),
+                ],
               ),
+              // Expanded(
+              //   flex: 1,
+              //   child: Container(
+              //     padding: EdgeInsets.only(top: 15, bottom: 15),
+              //     child: Center(
+              //       child: EixoAtualUsuario(widget.authBloc),
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 flex: 10,
                 child: ListView(
@@ -222,27 +259,12 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
     );
   }
 
-  _body(context) {
-    return TabBarView(
-      children: [
-        _bodyTodos(),
-        _bodyPastas(context),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
-        // bottom: TabBar(
-        //   tabs: [
-        //     Tab(text: "Todos"),
-        //     Tab(text: "Pastas"),
-        //   ],
-        // ),
-        title: Text('Questionarios'),
+        title: Text('Questionarios2'),
         body: _bodyTodos(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),

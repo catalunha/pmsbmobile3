@@ -3,12 +3,147 @@ import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
+import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
 import 'package:queries/collections.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfCreateService {
   static fsw.Firestore _firestore = Bootstrap.instance.firestore;
+
+  static pdfwidgetForPainelComparativo({String setorCensitario}) async {
+    fsw.Query queryTarefasDoUsuario;
+    final Document pdf = Document();
+    List<Widget> itemPDFList = List<Widget>();
+
+    pdf.addPage(MultiPage(
+        pageFormat:
+            PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        header: (Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              decoration: const BoxDecoration(
+                  border: BoxBorder(
+                      bottom: true, width: 0.5, color: PdfColors.grey)),
+              child: Text('Relatorio comparativo do painel',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text(
+                  'Pagina ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        build: (Context context) {
+          itemPDFList.add(Header(level: 1, text: 'Painel comparativo entre setores'));
+          itemPDFList.add(Header(level: 1, text: 'Em construção'));
+
+          return itemPDFList;
+        }));
+
+    return pdf;
+  }
+
+  static pdfwidgetForPainelSetor({String setorCensitario}) async {
+    fsw.Query queryTarefasDoUsuario;
+
+    final querySetorCensitarioPainel = _firestore
+        .collection(SetorCensitarioPainelModel.collection)
+        .where("setorCensitarioID.id", isEqualTo: setorCensitario);
+    final fsw.QuerySnapshot querySnapSetorCensitarioPainel =
+        await querySetorCensitarioPainel.getDocuments();
+    final setorCensitarioPainelList = querySnapSetorCensitarioPainel.documents
+        .map((fsw.DocumentSnapshot doc) {
+      return SetorCensitarioPainelModel(id: doc.documentID).fromMap(doc.data);
+    }).toList();
+    List<Widget> itemPDFList = List<Widget>();
+    final Document pdf = Document();
+
+    pdf.addPage(MultiPage(
+        pageFormat:
+            PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        header: (Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              decoration: const BoxDecoration(
+                  border: BoxBorder(
+                      bottom: true, width: 0.5, color: PdfColors.grey)),
+              child: Text('Relatorio individual do painel',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text(
+                  'Pagina ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        build: (Context context) {
+          itemPDFList.add(Header(
+              level: 1,
+              text:
+                  'Setor: ${setorCensitarioPainelList[0].setorCensitarioID.nome}'));
+          itemPDFList.add(Paragraph(
+            text: 'Alguns dados do painel individual sobre este setor.',
+          ));
+
+          for (var setorCensitarioPainel in setorCensitarioPainelList) {
+            itemPDFList.add(Paragraph(
+              text: '${setorCensitarioPainel.painelID.nome}',
+            ));
+
+            if (setorCensitarioPainel.painelID.tipo == 'url') {
+              itemPDFList.add(UrlLink(
+                  child: Bullet(
+                      text: 'Click para visualizar.',
+                      bulletColor: PdfColors.blue),
+                  destination: '${setorCensitarioPainel.valor}'));
+            } else if (setorCensitarioPainel.painelID.tipo == 'booleano') {
+              if (setorCensitarioPainel.valor) {
+                itemPDFList.add(Bullet(text: 'Informado: SIM'));
+              } else {
+                itemPDFList.add(Bullet(text: 'Informado: NEGATIVO'));
+              }
+            } else {
+              itemPDFList.add(
+                  Bullet(text: 'Informado: ${setorCensitarioPainel.valor}'));
+            }
+            itemPDFList.add(Bullet(
+                text: 'Editor: ${setorCensitarioPainel.usuarioID.nome}'));
+            itemPDFList.add(Bullet(
+                text: 'Atualizado em : ${setorCensitarioPainel.modificada}'));
+            itemPDFList.add(Bullet(
+                text: 'Observação: ${setorCensitarioPainel.observacao}'));
+          }
+
+          return itemPDFList;
+        }));
+
+    return pdf;
+  }
 
   static pdfwidgetForControleTarefaDoUsuario(
       {UsuarioModel usuarioModel, bool remetente, bool concluida}) async {

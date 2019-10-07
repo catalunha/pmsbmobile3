@@ -14,7 +14,7 @@ Valor antigo
 android {
         defaultConfig {
             versionCode 1
-            versionName '1.0.0'
+            versionName '1.0.1'
         }
 }
 ~~~
@@ -23,7 +23,7 @@ Novo valor após atualizações para subir nova release
 android {
         defaultConfig {
             versionCode 2
-            versionName '1.0.1'
+            versionName '1.0.2'
         }
 }
 ~~~
@@ -108,9 +108,12 @@ Envie a nova versao do app no botão PROCURAR ARQUIVOS, e selecione o arquivo de
 ![img03](./imagens/img05.png)
 
 
-Vão ter opções de atualizar novidades e nome da versão, isso é opcional.
+Atualize o nome da versão. Importante para o usuario se localizar.
+![img03](./imagens/img08.png)
 
 No campo: **O que há de novo na versão?** atualize com a melhorias recentes deste lançamennto.
+![img03](./imagens/img09.png)
+
 
 Depois clique em Salvar. Se precisar alterar alguma coisa mude. Senão clique em Revisar.
 

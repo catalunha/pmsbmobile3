@@ -42,10 +42,10 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
     rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
     rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
     rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
+    rotas["/controle/home"] = Rota("Controle", Icons.control_point);
+    rotas["/painel/home"] = Rota("Painel", Icons.compare);
     rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
     rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
-    rotas["/controle/home"] = Rota("Controle", Icons.control_point);
-    rotas["/painel/home"] = Rota("Painel", Icons.control_point);
   }
 
   @override
@@ -322,7 +322,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               color: Colors.black45,
             ),
                         ListTile(
-              title: Text("Versão 3.0.6"),
+              title: Text("Versão 3.0.7"),
               leading: Icon(Icons.info),
             ),
           ],

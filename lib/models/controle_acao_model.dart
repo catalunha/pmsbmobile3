@@ -49,14 +49,10 @@ class ControleAcaoModel extends FirestoreModel {
           : null;
     }
     if (map.containsKey('remetente')) {
-      remetente = map['remetente'] != null
-          ? new UsuarioID.fromMap(map['remetente'])
-          : null;
+      remetente = map['remetente'] != null ? new UsuarioID.fromMap(map['remetente']) : null;
     }
     if (map.containsKey('destinatario')) {
-      destinatario = map['destinatario'] != null
-          ? new UsuarioID.fromMap(map['destinatario'])
-          : null;
+      destinatario = map['destinatario'] != null ? new UsuarioID.fromMap(map['destinatario']) : null;
     }
     if (map.containsKey("concluida")) concluida = map["concluida"];
     if (map.containsKey("ordem")) ordem = map["ordem"];

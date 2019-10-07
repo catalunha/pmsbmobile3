@@ -10,6 +10,8 @@ import 'package:pmsbmibile3/pages/controle/controle_tarefa_concluida_list_page.d
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_page.dart';
 import 'package:pmsbmibile3/pages/googledrive/usuario_googledrive_page.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
+import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
+import 'package:pmsbmibile3/pages/painel/painel_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
@@ -200,8 +202,8 @@ class MyApp extends StatelessWidget {
         "/comunicacao/crud_page": (context) => ComunicacaoCRUDPage(),
 
         //administração
-        "/administracao/home": (context) => AdministracaoHomePage(),
-        "/administracao/perfil": (context) => AdministracaoPerfilPage(),
+        "/administracao/home": (context) => AdministracaoHomePage(authBloc),
+        "/administracao/perfil": (context) => AdministracaoPerfilPage(authBloc),
 
         //controle
         "/controle/home": (context) => ControleTarefaListPage(authBloc),
@@ -243,6 +245,14 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           return ControleAcaoConcluidaPage(settings.arguments);
         },
+
+        //Painel
+        "/painel/home": (context) => PainelListPage(authBloc),
+        "/painel/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return PainelCrudPage(authBloc,settings.arguments);
+        },
+
 
         //googleDrive
         "/googledrive/usuario": (context) {
