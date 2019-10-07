@@ -97,7 +97,7 @@ _state.updateStateFromControleAcaoModel();
             .collection(ControleAcaoModel.collection)
             .document(_state.controleAcaoID.id);
         
-        await docRef.setData({'url': _state.url,'observacao': _state.obs,'modificada':Bootstrap.instance.FieldValue.serverTimestamp()}, merge: true);
+        await docRef.setData({'url': _state.url,'observacao': _state.obs,'modificada':Bootstrap.instance.fieldValue.serverTimestamp()}, merge: true);
 
     }
     if (!_stateController.isClosed) _stateController.add(_state);

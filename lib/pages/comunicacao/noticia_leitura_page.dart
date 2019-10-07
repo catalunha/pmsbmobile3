@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
+    if (dart.library.io) 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/pages/comunicacao/noticia_page_bloc.dart';
-
 
 class NoticiaLeituraPage extends StatefulWidget {
   NoticiaLeituraPage({Key key}) : super(key: key);
@@ -21,15 +21,11 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
 //   }
 // }
 
-
-
-
-
 // class NoticiaLeituraPage extends StatelessWidget {
   final bloc = NoticiaPageBloc(
       firestore: Bootstrap.instance.firestore, visualizada: false);
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -40,6 +36,7 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
     bloc.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
@@ -73,7 +70,8 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
               }
               if (snapshot.data.isEmpty) {
                 return Center(
-                  child: Text("Parabens ! \nVc já leu todas as suas notícias. \nAgora é acompanhar os Chat's."),
+                  child: Text(
+                      "Parabens ! \nVc já leu todas as suas notícias. \nAgora é acompanhar os Chat's."),
                 );
               }
               return ListView(

@@ -1,9 +1,10 @@
 // import 'dart:async';
-// import 'dart:io';
+// import 'package:universal_io/io.dart';
 // import 'dart:math';
 // import 'package:meta/meta.dart';
 // import 'package:mime/mime.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
+//    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 // import 'package:pmsbmibile3/bootstrap.dart';
 // import 'package:pmsbmibile3/models/models.dart';
 // import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;

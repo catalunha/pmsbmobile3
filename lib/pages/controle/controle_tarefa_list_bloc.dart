@@ -195,7 +195,7 @@ class ControleTarefaListBloc {
         tarefa['nome'] = tarefaID.nome;
         tarefa['inicio'] = tarefaID.inicio;
         tarefa['fim'] = tarefaID.fim;
-        tarefa['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+        tarefa['modificada'] = Bootstrap.instance.fieldValue.serverTimestamp();
         await docRefTarefa.setData(tarefa, merge: true);
 
         if (docRefTarefa.documentID != null) {
@@ -218,7 +218,8 @@ class ControleTarefaListBloc {
             acaoNOVA['remetente'] = controleAcaoModel.remetente.toMap();
             acaoNOVA['destinatario'] = controleAcaoModel.destinatario.toMap();
             acaoNOVA['concluida'] = false;
-            acaoNOVA['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+            acaoNOVA['modificada'] =
+                Bootstrap.instance.fieldValue.serverTimestamp();
             acaoNOVA['ordem'] = controleAcaoModel.ordem;
             // print(acaoNOVA);
             docRefAcao.setData(acaoNOVA, merge: true);
@@ -248,7 +249,7 @@ class ControleTarefaListBloc {
           //     acaoNOVA['destinatario'] = acao.destinatario.toMap();
           //     acaoNOVA['concluida'] = false;
           //     acaoNOVA['modificada'] =
-          //         Bootstrap.instance.FieldValue.serverTimestamp();
+          //         Bootstrap.instance.fieldValue.serverTimestamp();
           //     acaoNOVA['ordem'] = acao.ordem;
           //     // print(acaoNOVA);
           //     docRefAcao.setData(acaoNOVA, merge: true);

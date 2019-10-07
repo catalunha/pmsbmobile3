@@ -57,11 +57,11 @@ class UsuarioGoogleDrive {
   Map<dynamic, dynamic> toMapFirestore() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     data['atualizar'] =
-        this.atualizar ?? Bootstrap.instance.FieldValue.delete();
+        this.atualizar ?? Bootstrap.instance.fieldValue.delete();
     data['permissaoID'] =
-        this.permissaoID ?? Bootstrap.instance.FieldValue.delete();
-    data['permissao'] = this.permissao ?? Bootstrap.instance.FieldValue.delete();
-    data['usuarioID'] = this.usuarioID ?? Bootstrap.instance.FieldValue.delete();
+        this.permissaoID ?? Bootstrap.instance.fieldValue.delete();
+    data['permissao'] = this.permissao ?? Bootstrap.instance.fieldValue.delete();
+    data['usuarioID'] = this.usuarioID ?? Bootstrap.instance.fieldValue.delete();
     return data;
   }
 }
@@ -93,10 +93,10 @@ class GoogleDriveID {
 
   Map<dynamic, dynamic> toMapFirestore() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    data['id'] = this.id ?? Bootstrap.instance.FieldValue.delete();
-    data['arquivoID'] = this.arquivoID ?? Bootstrap.instance.FieldValue.delete();
+    data['id'] = this.id ?? Bootstrap.instance.fieldValue.delete();
+    data['arquivoID'] = this.arquivoID ?? Bootstrap.instance.fieldValue.delete();
     data['tipo'] =
-        this.tipo ?? Bootstrap.instance.FieldValue.delete();
+        this.tipo ?? Bootstrap.instance.fieldValue.delete();
     return data;
   }
 }
@@ -124,10 +124,10 @@ class UploadID {
 
   Map<dynamic, dynamic> toMapFirestore() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    data['uploadID'] = this.uploadID ?? Bootstrap.instance.FieldValue.delete();
-    data['url'] = this.url ?? Bootstrap.instance.FieldValue.delete();
+    data['uploadID'] = this.uploadID ?? Bootstrap.instance.fieldValue.delete();
+    data['url'] = this.url ?? Bootstrap.instance.fieldValue.delete();
     data['localPath'] =
-        this.localPath ?? Bootstrap.instance.FieldValue.delete();
+        this.localPath ?? Bootstrap.instance.fieldValue.delete();
     return data;
   }
 }

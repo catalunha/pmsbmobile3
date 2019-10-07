@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
 
 class UserFilesFirebaseList extends StatefulWidget {
   @override

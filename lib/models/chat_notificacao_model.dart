@@ -36,7 +36,7 @@ class ChatNotificacaoModel extends FirestoreModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (titulo != null) data['titulo'] = this.titulo;
     if (texto != null) data['texto'] = this.texto;
-    data['enviada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+    data['enviada'] = Bootstrap.instance.fieldValue.serverTimestamp();
     if (usuario != null) data['usuario'] = this.usuario;
     return data;
   }

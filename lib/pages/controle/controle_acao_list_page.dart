@@ -277,7 +277,7 @@ class _TarefaListModalSelectState extends State<TarefaListModalSelect> {
     // );
     return ListTile(
       title: Text('${tarefa.nome}'),
-      subtitle: Text('Setor: ${tarefa.setor.nome}'),
+      subtitle: Text('Setor: ${tarefa?.setor?.nome}'),
       trailing: IconButton(
         icon: Icon(Icons.check),
         onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:pmsbmibile3/models/google_drive_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
+    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 import 'package:pmsbmibile3/models/produto_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
@@ -74,18 +75,24 @@ class ProdutoCRUDPageBloc {
 
   //Eventos
   final _eventController = BehaviorSubject<ProdutoCRUDPageEvent>();
+
   Stream<ProdutoCRUDPageEvent> get eventStream => _eventController.stream;
+
   Function get eventSink => _eventController.sink.add;
 
   //Estados
   final ProdutoCRUDPageState _state = ProdutoCRUDPageState();
   final _stateController = BehaviorSubject<ProdutoCRUDPageState>();
+
   Stream<ProdutoCRUDPageState> get stateStream => _stateController.stream;
+
   Function get stateSink => _stateController.sink.add;
 
   //ProdutoModel
   final _produtoModelController = BehaviorSubject<ProdutoModel>();
+
   Stream<ProdutoModel> get produtoModelStream => _produtoModelController.stream;
+
   Function get produtoModelSink => _produtoModelController.sink.add;
 
   //Bloc

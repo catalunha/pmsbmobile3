@@ -1,9 +1,10 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'dart:async';
 import 'package:mime/mime.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
+    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
@@ -27,7 +28,9 @@ class UploadBloc {
   //Estados
   final BlocState _state = BlocState();
   final _stateController = BehaviorSubject<BlocState>();
+
   Stream<BlocState> get stateStream => _stateController.stream;
+
   Function get stateSink => _stateController.sink.add;
 
   // //authBloc
@@ -41,8 +44,10 @@ class UploadBloc {
 
   //StorageTaskEvent
   final _storageTaskEventController = BehaviorSubject<StorageTaskEvent>();
+
   BehaviorSubject<StorageTaskEvent> get storageTaskEventStream =>
       _storageTaskEventController.stream;
+
   Function get storageTaskEventSink => _storageTaskEventController.sink.add;
   StreamSubscription<StorageTaskEvent> _eventsSubscription;
 
@@ -51,7 +56,9 @@ class UploadBloc {
 
   //UploadModel
   final _uploadModelController = BehaviorSubject<UploadModel>();
+
   Stream<UploadModel> get uploadModelStream => _uploadModelController.stream;
+
   Function get uploadModelSink => _uploadModelController.sink.add;
 
   // StreamSubscription<UploadModel> _uploadModelSubscriptionController;
@@ -112,7 +119,6 @@ class UploadBloc {
     return true;
   }
 
-
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
     if (storageTaskEvent.type == StorageTaskEventType.resume) {}
     if (storageTaskEvent.type == StorageTaskEventType.progress) {}
@@ -150,7 +156,6 @@ class UploadBloc {
 // print('>>> storageTaskEvent.snapshot.storageMetadata.contentType <<< ${storageTaskEvent.snapshot.storageMetadata.contentType}');
 // print('>>> storageTaskEvent.snapshot.storageMetadata.md5Hash <<< ${storageTaskEvent.snapshot.storageMetadata.md5Hash}');
 // print('>>> storageTaskEvent.snapshot.storageMetadata.md5Hash <<< ${storageTaskEvent.snapshot.}');
-
 
     _blocState.uploadModel.nome =
         storageTaskEvent.snapshot.storageMetadata.name;

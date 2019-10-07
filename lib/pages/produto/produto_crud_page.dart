@@ -1,4 +1,4 @@
-import 'package:file_picker/file_picker.dart';
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';

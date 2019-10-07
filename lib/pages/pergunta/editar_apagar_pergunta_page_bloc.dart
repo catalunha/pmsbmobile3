@@ -231,7 +231,7 @@ class EditarApagarPerguntaBloc {
     //         _state.requisitosSelecionado[key]=value;
     //       } else {
     //         _state.requisitosRemovidos[key] =
-    //             Bootstrap.instance.FieldValue.delete();
+    //             Bootstrap.instance.fieldValue.delete();
     //       }
     //     }
     //   });
@@ -266,7 +266,7 @@ class EditarApagarPerguntaBloc {
     // if (event is DeletarItemEscolhaEditarApagarPerguntaBlocEvent) {
     //   _state.escolhas.remove(_state.itemEscolhaID);
     //   _state.escolhasRemovidas[_state.itemEscolhaID] =
-    //       Bootstrap.instance.FieldValue.delete();
+    //       Bootstrap.instance.fieldValue.delete();
     // }
 
     //salvar e deletar geral

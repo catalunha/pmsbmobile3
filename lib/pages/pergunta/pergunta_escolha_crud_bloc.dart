@@ -147,7 +147,7 @@ class PerguntaEscolhaCRUDPageBloc {
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
       docRef.setData({
-        "escolhas": {_state.escolhaUID: Bootstrap.instance.FieldValue.delete()},
+        "escolhas": {_state.escolhaUID: Bootstrap.instance.fieldValue.delete()},
       }, merge: true);
     }
     if (!_stateController.isClosed) stateSink(_state);

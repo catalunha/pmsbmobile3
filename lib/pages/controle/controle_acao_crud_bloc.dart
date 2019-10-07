@@ -115,7 +115,7 @@ class ControleAcaoCrudBloc {
       if (_state.acaoID != null) {
         await docRef.setData({
           'nome': _state.nome,
-          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+          'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
         }, merge: true);
       } else {
         Map<String, dynamic> acao = Map<String, dynamic>();
@@ -130,7 +130,7 @@ class ControleAcaoCrudBloc {
         acao['remetente'] = _state.controleTarefaoID.remetente.toMap();
         acao['destinatario'] = _state.controleTarefaoID.destinatario.toMap();
         acao['concluida'] = false;
-        acao['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+        acao['modificada'] = Bootstrap.instance.fieldValue.serverTimestamp();
         acao['ordem'] = _state.controleTarefaoID.ultimaOrdemAcao + 1;
         docRef.setData(acao, merge: true);
 
@@ -138,9 +138,9 @@ class ControleAcaoCrudBloc {
             .collection(ControleTarefaModel.collection)
             .document(_state.tarefaID);
         await docRefTarefa.setData({
-          'acaoTotal': Bootstrap.instance.FieldValue.increment(1),
-          'ultimaOrdemAcao': Bootstrap.instance.FieldValue.increment(1),
-          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+          'acaoTotal': Bootstrap.instance.fieldValue.increment(1),
+          'ultimaOrdemAcao': Bootstrap.instance.fieldValue.increment(1),
+          'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
         }, merge: true);
       }
     }
@@ -155,8 +155,8 @@ class ControleAcaoCrudBloc {
           .collection(ControleTarefaModel.collection)
           .document(_state.tarefaID);
       await docRefTarefa.setData({
-        'acaoTotal': Bootstrap.instance.FieldValue.increment(-1),
-        'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+        'acaoTotal': Bootstrap.instance.fieldValue.increment(-1),
+        'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
       }, merge: true);
     }
     _validateData();

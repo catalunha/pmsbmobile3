@@ -126,9 +126,9 @@ class QuestionarioFormPageBloc {
         editou: UsuarioQuestionario(id: _state.userId, nome: _state.userName),
         eixo: Eixo(id: _state.eixoAtualID, nome: _state.eixoAtualNome),
         criado: _state.id == null
-            ? Bootstrap.instance.FieldValue.serverTimestamp()
+            ? Bootstrap.instance.fieldValue.serverTimestamp()
             : null,
-        modificado: Bootstrap.instance.FieldValue.serverTimestamp(),
+        modificado: Bootstrap.instance.fieldValue.serverTimestamp(),
         editando: false,
       );
 

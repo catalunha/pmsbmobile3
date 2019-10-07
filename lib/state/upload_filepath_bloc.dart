@@ -1,15 +1,16 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'dart:async';
 import 'package:mime/mime.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
+    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
-//Tudo ok. 
+//Tudo ok.
 class BlocState {
   String userId;
   StorageUploadTask storageUploadTask;
@@ -26,18 +27,21 @@ class UploadFilePathBloc {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   //authBloc
-  final AuthBloc _authBloc =
-      Bootstrap.instance.authBloc;
+  final AuthBloc _authBloc = Bootstrap.instance.authBloc;
 
   //Arquivo
   final _fileController = BehaviorSubject<String>();
+
   Stream<String> get fileStream => _fileController.stream;
+
   Function get fileSink => _fileController.sink.add;
 
   //StorageTaskEvent
   final _storageTaskEventController = BehaviorSubject<StorageTaskEvent>();
+
   BehaviorSubject<StorageTaskEvent> get storageTaskEventStream =>
       _storageTaskEventController.stream;
+
   Function get storageTaskEventSink => _storageTaskEventController.sink.add;
   StreamSubscription<StorageTaskEvent> _eventsSubscription;
 
@@ -46,6 +50,7 @@ class UploadFilePathBloc {
 
   //UploadModel
   final _uploadModelController = BehaviorSubject<UploadModel>();
+
   Stream<UploadModel> get uploadModelStream => _uploadModelController.stream;
   StreamSubscription<UploadModel> _uploadModelSubscriptionController;
 
@@ -60,6 +65,7 @@ class UploadFilePathBloc {
     // uploadTasks.listen((_) => print("uploadTask iniciada"));
     storageTaskEventStream.listen(_handleStorageTaskEvent);
   }
+
   void dispose() async {
     await _fileController.drain();
     _fileController.close();
@@ -69,6 +75,7 @@ class UploadFilePathBloc {
     await _uploadModelController.drain();
     _uploadModelController.close();
   }
+
   bool _uploadFromPathHandler(String userId, String filePath) {
     if (_blocState.storageUploadTask != null) {
       _blocState.storageUploadTask.cancel();
@@ -93,8 +100,6 @@ class UploadFilePathBloc {
     });
     return true;
   }
-
-
 
   void _handleStorageTaskEvent(StorageTaskEvent storageTaskEvent) {
     if (storageTaskEvent.type == StorageTaskEventType.resume) {}
@@ -125,7 +130,6 @@ class UploadFilePathBloc {
   }
 
   _uploadSucess(StorageTaskEvent storageTaskEvent) async {
-
     var arquivo = UploadModel(
       usuario: _blocState.userId,
       // nome: storageTaskEvent.snapshot.storageMetadata.name,
@@ -138,7 +142,7 @@ class UploadFilePathBloc {
     );
 
     var docRef = _firestore.collection(UploadModel.collection).document();
-    await docRef.setData(arquivo.toMap(),merge: true);
+    await docRef.setData(arquivo.toMap(), merge: true);
     docRef
         .snapshots()
         .map((snap) => UploadModel(id: docRef.documentID).fromMap(snap.data))

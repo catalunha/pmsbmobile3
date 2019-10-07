@@ -1,4 +1,4 @@
-import 'dart:io' as io;
+import 'package:universal_io/io.dart' as io;
 
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
@@ -208,15 +208,17 @@ class _ImagemUnica extends StatelessWidget {
         child: Image.network(fotoUrl),
       ));
     } else {
-      foto = Container(
-          color: Colors.yellow,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            // child: Icon(Icons.people, size: 75),
-            child: io.File(fotoLocalPath).existsSync()
-                ? Image.asset(fotoLocalPath)
-                : Text('Sem upload'),
-          ));
+      foto = Center(child: Text('Não enviada.'));
+
+      // foto = Container(
+      //     color: Colors.yellow,
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(2.0),
+      //       // child: Icon(Icons.people, size: 75),
+      //       child: io.File(fotoLocalPath).existsSync()
+      //           ? Image.asset(fotoLocalPath)
+      //           : Text('Sem upload'),
+      //     ));
     }
 
     return Row(

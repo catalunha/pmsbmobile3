@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/comunicacao/comunicacao_destinatario_page.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
+    if (dart.library.io) 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -50,8 +51,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
               padding: EdgeInsets.all(5.0),
               child: TextField(
                 controller: _tituloController,
-                onChanged: (String t) =>
-                    bloc.eventSink(UpdateTituloEvent(t)),
+                onChanged: (String t) => bloc.eventSink(UpdateTituloEvent(t)),
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -80,8 +80,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       // }
     );
     if (selectedDate != null) {
-      bloc.eventSink(
-          UpdatePublicarEvent(data: selectedDate));
+      bloc.eventSink(UpdatePublicarEvent(data: selectedDate));
       setState(() {
         _date = selectedDate;
       });
@@ -102,8 +101,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     );
     if (selectedTime != null) {
       setState(() {
-        bloc.eventSink(
-            UpdatePublicarEvent(hora: selectedTime));
+        bloc.eventSink(UpdatePublicarEvent(hora: selectedTime));
         _hora = selectedTime;
       });
       // print('selectedTime: ${_hora.toString()}');
@@ -231,8 +229,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
               return ComunicacaoDestinatariosPage();
             }));
             if (destinatarioList != null) {
-              bloc.eventSink(
-                  UpdateDestinatarioListEvent(destinatarioList));
+              bloc.eventSink(UpdateDestinatarioListEvent(destinatarioList));
             }
             // print('>>>> Retorno ${result}');
           },
@@ -323,8 +320,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
               padding: EdgeInsets.all(5.0),
               child: TextField(
                 onChanged: (text) {
-                  bloc.eventSink(
-                      UpdateTextoMarkdownEvent(text));
+                  bloc.eventSink(UpdateTextoMarkdownEvent(text));
                   _textoMarkdown = text;
                   // print(myController.selection);
                 },
@@ -478,8 +474,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                   onPressed: () {
                     //TODO: remover o pop?
                     Navigator.of(context).pop();
-                    bloc.eventSink(
-                        SaveStateToFirebaseEvent());
+                    bloc.eventSink(SaveStateToFirebaseEvent());
                   },
                   child: Icon(Icons.save),
                   backgroundColor: Colors.blue,
@@ -489,10 +484,11 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
   }
 }
 
-
 class _DeleteDocumentOrField extends StatefulWidget {
   final ComunicacaoCRUDPageBloc bloc;
+
   _DeleteDocumentOrField(this.bloc);
+
   @override
   _DeleteDocumentOrFieldState createState() {
     return _DeleteDocumentOrFieldState(bloc);
@@ -501,14 +497,16 @@ class _DeleteDocumentOrField extends StatefulWidget {
 
 class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   final _textFieldController = TextEditingController();
-final ComunicacaoCRUDPageBloc bloc;
-_DeleteDocumentOrFieldState(this.bloc);
+  final ComunicacaoCRUDPageBloc bloc;
+
+  _DeleteDocumentOrFieldState(this.bloc);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ComunicacaoCRUDPageState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<ComunicacaoCRUDPageState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ComunicacaoCRUDPageState> snapshot) {
         return Row(
           children: <Widget>[
             Divider(),
@@ -524,7 +522,7 @@ _DeleteDocumentOrFieldState(this.bloc);
               icon: Icon(Icons.delete),
               onPressed: () {
                 if (_textFieldController.text == 'CONCORDO') {
-                bloc.eventSink(DeleteNoticiaIDEvent());
+                  bloc.eventSink(DeleteNoticiaIDEvent());
                   Navigator.of(context).pop();
                 }
               },

@@ -185,7 +185,7 @@ class ConfiguracaoPageBloc {
       // final Map<dynamic, dynamic> foto = new Map<dynamic, dynamic>();
       // foto['uploadID'] = _state.fotoUploadID;
       // foto['localPath'] = _state.fotoLocalPath;
-      // foto['url'] = Bootstrap.instance.FieldValue.delete();
+      // foto['url'] = Bootstrap.instance.fieldValue.delete();
 
       SetorCensitarioID setorCensitarioID = SetorCensitarioID(
           id: _state.setorCensitarioIDId, nome: _state.setorCensitarioIDnome);

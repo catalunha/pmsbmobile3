@@ -194,9 +194,9 @@ class ControleAcaoListBloc {
           .collection(ControleTarefaModel.collection)
           .document(tarefa.id);
       await docRefTarefa.setData({
-        'acaoTotal': Bootstrap.instance.FieldValue.increment(1),
-        'ultimaOrdemAcao': Bootstrap.instance.FieldValue.increment(1),
-        'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+        'acaoTotal': Bootstrap.instance.fieldValue.increment(1),
+        'ultimaOrdemAcao': Bootstrap.instance.fieldValue.increment(1),
+        'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
       }, merge: true);
 
       final docRefTarefaAtualizada = _firestore
@@ -219,7 +219,7 @@ class ControleAcaoListBloc {
       acaoNOVA['remetente'] = acao.remetente.toMap();
       acaoNOVA['destinatario'] = acao.destinatario.toMap();
       acaoNOVA['concluida'] = false;
-      acaoNOVA['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+      acaoNOVA['modificada'] = Bootstrap.instance.fieldValue.serverTimestamp();
       acaoNOVA['ordem'] = tarefaID.ultimaOrdemAcao;
       // print(acaoNOVA);
       await docRefAcao.setData(acaoNOVA, merge: true);
