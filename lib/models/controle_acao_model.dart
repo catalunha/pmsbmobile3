@@ -8,7 +8,7 @@ class ControleAcaoModel extends FirestoreModel {
   String nome;
   String url;
   String observacao;
-  Map<String, bool> tarefaLink=Map<String, bool>();
+  Map<String, bool> tarefaLink = Map<String, bool>();
   ControleTarefaID tarefa;
   SetorCensitarioID setor;
   UsuarioID remetente;
@@ -30,15 +30,20 @@ class ControleAcaoModel extends FirestoreModel {
       for (var ref in refs.entries) {
         tarefaLink[ref.key] = ref.value;
       }
-    }    if (map.containsKey("modificada") &&  map["modificada"] != null ){
-       modificada = map["modificada"].toDate();
+    }
+    // if (map.containsKey("modificada") && map["modificada"] != null) {
+    //   modificada = map["modificada"].toDate();
+    // }
+    if (map.containsKey("modificada") && map["modificada"] != null) {
+      modificada = map["modificada"];
     }
 
     if (map.containsKey('tarefa')) {
       tarefa = map['tarefa'] != null
           ? new ControleTarefaID.fromMap(map['tarefa'])
           : null;
-    }    if (map.containsKey('setor')) {
+    }
+    if (map.containsKey('setor')) {
       setor = map['setor'] != null
           ? new SetorCensitarioID.fromMap(map['setor'])
           : null;
@@ -72,7 +77,8 @@ class ControleAcaoModel extends FirestoreModel {
     if (modificada != null) data['modificada'] = this.modificada.toUtc();
     if (this.tarefa != null) {
       data['tarefa'] = this.tarefa.toMap();
-    }    if (this.setor != null) {
+    }
+    if (this.setor != null) {
       data['setor'] = this.setor.toMap();
     }
     if (this.remetente != null) {

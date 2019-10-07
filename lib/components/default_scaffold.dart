@@ -45,6 +45,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
     rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
     rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
     rotas["/controle/home"] = Rota("Controle", Icons.control_point);
+    rotas["/painel/home"] = Rota("Painel", Icons.control_point);
   }
 
   @override

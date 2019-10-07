@@ -138,7 +138,7 @@ class QuestionarioAplicadoItem extends StatelessWidget {
             _CardText("Questionário: ${_questionario.nome}"),
             _CardText("Referência: ${_questionario.referencia}"),
             _CardText("Aplicador: ${_questionario.aplicador.nome}"),
-            _CardText("Aplicado: ${_questionario.aplicado.toDate()}"),
+            _CardText("Aplicado: ${_questionario.aplicado}"),
             _CardText("id: ${_questionario.id}"),
             ButtonTheme.bar(
               child: ButtonBar(
