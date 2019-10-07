@@ -1,4 +1,5 @@
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
+    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
@@ -50,19 +51,24 @@ class DesenvolvimentoPageBloc {
   //Eventos
   final BehaviorSubject<PageEvent> _eventController =
       BehaviorSubject<PageEvent>();
+
   Stream<PageEvent> get eventStream => _eventController.stream;
+
   Function get eventSink => _eventController.sink.add;
 
   //Estados
   final PageState _state = PageState();
   final _stateController = BehaviorSubject<PageState>();
+
   Stream<PageState> get stateStream => _stateController.stream;
+
   Function get stateSink => _stateController.sink.add;
 
   DesenvolvimentoPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
     // uploadBloc.uploadModelStream.listen((arq) => UpdateUploadModelEvent(arq));
   }
+
   _mapEventToState(PageEvent event) async {
     if (event is UpdateArquivoEvent) {
       // _state.arquivo = event.arquivo;

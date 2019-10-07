@@ -235,7 +235,7 @@ class PerguntaRequisitoBloc {
             _state.requisitosPergunta[key] = value["requisito"];
           } else {
             _state.requisitosPerguntaRemovidos[key] =
-                Bootstrap.instance.FieldValue.delete();
+                Bootstrap.instance.fieldValue.delete();
           }
         }
       });

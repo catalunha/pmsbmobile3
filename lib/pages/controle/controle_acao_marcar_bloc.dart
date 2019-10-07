@@ -119,20 +119,20 @@ class ControleAcaoMarcarBloc {
           .document(event.controleAcaoID);
       await ref.setData({
         'concluida': !event.concluida,
-        'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+        'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
       }, merge: true);
       final ref2 = _firestore
           .collection(ControleTarefaModel.collection)
           .document(_state.controleTarefaDestinatario.id);
       if (!event.concluida) {
         await ref2.setData({
-          'acaoCumprida': Bootstrap.instance.FieldValue.increment(1),
-          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+          'acaoCumprida': Bootstrap.instance.fieldValue.increment(1),
+          'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
         }, merge: true);
       } else {
         await ref2.setData({
-          'acaoCumprida': Bootstrap.instance.FieldValue.increment(-1),
-          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+          'acaoCumprida': Bootstrap.instance.fieldValue.increment(-1),
+          'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
         }, merge: true);
       }
       final ref3 = _firestore
@@ -144,7 +144,7 @@ class ControleAcaoMarcarBloc {
       if (controleTarefaModel.acaoCumprida == controleTarefaModel.acaoTotal) {
         await ref3.setData({
           'concluida': true,
-          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+          'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
         }, merge: true);
       }
     }

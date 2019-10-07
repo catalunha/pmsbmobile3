@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:pmsbmibile3/naosuportato/permission_handler.dart'
+    if (dart.library.io) 'package:permission_handler/permission_handler.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -10,8 +11,8 @@ class LoginPage extends StatefulWidget {
   //     Bootstrap.instance.authBloc
   // LoginPage();
 
-
   final AuthBloc authBloc;
+
   LoginPage(this.authBloc);
 
   @override
@@ -58,7 +59,6 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Container(

@@ -1,4 +1,4 @@
-import 'dart:io' as io;
+import 'package:universal_io/io.dart' as io;
 
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';

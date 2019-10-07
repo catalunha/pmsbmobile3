@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_concluida_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_crud_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_page.dart';
@@ -19,13 +20,18 @@ import 'package:pmsbmibile3/pages/pergunta/pergunta_requisito_page.dart';
 import 'package:pmsbmibile3/pages/questionario/pergunta_list_preview_page.dart';
 import 'package:pmsbmibile3/pages/resposta/resposta_perguntaaplicada_markdown_page.dart';
 import 'package:pmsbmibile3/pages/resposta/resposta_questionarioaplicado_home_page.dart';
+import 'package:pmsbmibile3/web.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  webSetUp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = Bootstrap.instance.authBloc;
+    Recursos.initialize(Theme.of(context).platform);
 
     return MaterialApp(
       title: 'PMSB-TO-22',

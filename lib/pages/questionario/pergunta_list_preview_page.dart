@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
+    if (dart.library.io) 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
@@ -38,11 +39,9 @@ class PerguntaListPreviewPage extends StatelessWidget {
             return Center(
               child: CircularProgressIndicator(),
             );
-            
           }
 
-            return Markdown(data: snapshot.data.questionarioPerguntaList2Mkd);
-
+          return Markdown(data: snapshot.data.questionarioPerguntaList2Mkd);
         });
   }
 }

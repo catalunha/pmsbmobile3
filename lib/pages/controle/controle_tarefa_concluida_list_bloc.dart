@@ -128,7 +128,7 @@ class ControleTarefaConcluidaListBloc {
           .document(event.tarefaID);
         await ref3.setData({
           'concluida': false,
-          'modificada': Bootstrap.instance.FieldValue.serverTimestamp()
+          'modificada': Bootstrap.instance.fieldValue.serverTimestamp()
         }, merge: true);
       
     }

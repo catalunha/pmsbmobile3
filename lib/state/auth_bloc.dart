@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:pmsbmibile3/naosuportato/firebase_messaging.dart' show FirebaseMessaging;
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/services/notificacao_service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -71,7 +71,7 @@ class AuthBloc {
   Function get dispatch => _inputController.sink.add;
 
   // NOTIFICACAO
-  final FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+  final dynamic firebaseMessaging = new FirebaseMessaging();
 
   //Construtor AuthBloc
   AuthBloc(this._authApi, this._firestore) : assert(_authApi != null) {

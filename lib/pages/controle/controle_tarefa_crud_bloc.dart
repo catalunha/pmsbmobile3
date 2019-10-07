@@ -274,7 +274,7 @@ class ControleTarefaCrudBloc {
       tarefa['nome'] = _state.nome;
       tarefa['inicio'] = _state.inicio;
       tarefa['fim'] = _state.fim;
-      tarefa['modificada'] = Bootstrap.instance.FieldValue.serverTimestamp();
+      tarefa['modificada'] = Bootstrap.instance.fieldValue.serverTimestamp();
       tarefa['destinatario'] = _state.destinatario.toMap();
 
       docRef.setData(tarefa, merge: true);

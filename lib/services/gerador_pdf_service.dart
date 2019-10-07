@@ -1,8 +1,11 @@
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart';
+import 'package:universal_io/io.dart';
+import 'package:pmsbmibile3/naosuportato/path_provider.dart'
+    if (dart.library.io) 'package:path_provider/path_provider.dart';
+import 'package:pmsbmibile3/naosuportato/open_file.dart'
+    if (dart.library.io) 'package:open_file/open_file.dart';
 import 'package:markdown/markdown.dart' as mkd;
-import 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
+import 'package:pmsbmibile3/naosuportato/flutter_html_to_pdf.dart'
+    if (dart.library.io) 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
 
 class GeradorPdfService {
   // PUBLIC
