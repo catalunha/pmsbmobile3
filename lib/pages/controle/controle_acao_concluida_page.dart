@@ -94,15 +94,15 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
               Row(
                 children: <Widget>[
                   Expanded(flex: 10, child: Text('''
-  Setor: ${controleTarefaID.setor.nome}
-  Nome: ${controleTarefaID.nome}
-  De: ${controleTarefaID.remetente.nome}
-  Para: ${controleTarefaID.destinatario.nome}
-  Inicio: ${controleTarefaID.inicio}
-  Fim: ${controleTarefaID.fim}
-  Atualizada: ${controleTarefaID.modificada}
-  id: ${controleTarefaID.id}
-  Concluída: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}
+  Setor: ${controleTarefaID?.setor?.nome}
+  Nome: ${controleTarefaID?.nome}
+  De: ${controleTarefaID?.remetente?.nome}
+  Para: ${controleTarefaID?.destinatario?.nome}
+  Inicio: ${controleTarefaID?.inicio}
+  Fim: ${controleTarefaID?.fim}
+  Atualizada: ${controleTarefaID?.modificada}
+  id: ${controleTarefaID?.id}
+  Concluída: ${controleTarefaID?.acaoCumprida} de ${controleTarefaID?.acaoTotal}
                           ''')),
                 ],
               ),

@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/services/services.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class AdministracaoPerfilPage extends StatefulWidget {
-  // AdministracaoPerfilPage({Key key}) : super(key: key);
+  AuthBloc authBloc;
 
-  _AdministracaoPerfilPageState createState() => _AdministracaoPerfilPageState();
+  AdministracaoPerfilPage(this.authBloc);
+
+  _AdministracaoPerfilPageState createState() =>
+      _AdministracaoPerfilPageState();
 }
 
 class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
-    final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
+
+  AdministracaoPerfilPageBloc bloc;
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -26,10 +30,11 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
 
 // class AdministracaoPerfilPage extends StatelessWidget {
 //   final bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore);
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore,widget.authBloc);
   }
 
   @override
@@ -80,6 +85,8 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                 usuarioModelData = snapshot.data;
                 return Container(
                   child: Column(children: <Widget>[
+                   
+              Divider(),
                     Padding(padding: EdgeInsets.all(3)),
                     Expanded(
                       flex: 2,
@@ -121,13 +128,13 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
         child: StreamBuilder<AdministracaoPerfilPageState>(
           stream: bloc.administracaoPerfilPageStateStream,
           builder: (BuildContext context,
-              AsyncSnapshot<AdministracaoPerfilPageState> snapshotState) {
-            if (snapshotState.hasError) {
+              AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
+            if (snapshot.hasError) {
               return Center(
                 child: Text("Error"),
               );
             }
-            // if (!snapshotState.hasData) {
+            // if (!snapshot.hasData) {
             //   return Center(
             //     child: Text("Sem dados de perfil"),
             //   );
@@ -141,25 +148,54 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                     onPressed: () {
                       GeradorCsvService.generateCsvFromUsuarioModel(
                           usuarioModelData);
-                      //launch(snapshotState.data.urlCSV);
+                      //launch(snapshot.data.urlCSV);
                     },
                   ),
                   // Text('web'),
                   // IconButton(
                   //   icon: Icon(Icons.web),
                   //   onPressed: () {
-                  //     launch(snapshotState.data.urlMD);
+                  //     launch(snapshot.data.urlMD);
                   //   },
                   // ),
                   Text('pdf'),
-                  IconButton(
-                    icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () {
-                      var mdtext = GeradorMdService.generateMdFromUsuarioModel(
-                          usuarioModelData);
-                      GeradorPdfService.generatePdfFromMd(mdtext);
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: Icon(Icons.picture_as_pdf),
+                  //   onPressed: () {
+                  //     var mdtext = GeradorMdService.generateMdFromUsuarioModel(
+                  //         usuarioModelData);
+                  //     GeradorPdfService.generatePdfFromMd(mdtext);
+                  //   },
+                  // ),
+                 snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo == 'administracao02'
+                        ? IconButton(
+                            tooltip: 'Ver relatório deste usuario.',
+                            icon: Icon(Icons.link),
+                            onPressed: () async {
+                              bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: false,
+                                  pdfGerado: false,
+                                  tipo: 'administracao02',
+                                  collection: 'Usuario',
+                                  document: snapshot.data.usuarioId));
+                              launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                            },
+                          )
+                        : IconButton(
+                            tooltip: 'Atualizar PDF deste usuario.',
+                            icon: Icon(Icons.picture_as_pdf),
+                            onPressed: () async {
+                              bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: true,
+                                  pdfGerado: false,
+                                  tipo: 'administracao02',
+                                  collection: 'Usuario',
+                                  document: snapshot.data.usuarioId));
+                            },
+                          ),
                 ],
               ),
             );
@@ -191,19 +227,19 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                           //     ? Colors.yellowAccent
                           //     : Colors.white,
                           child: ListTile(
-                            title: Text(
-                              "${variavel.perfilID.nome}:",
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            subtitle: Text(
-                              "${variavel.textPlain}",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ));
+                        title: Text(
+                          "${variavel.perfilID.nome}:",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        subtitle: Text(
+                          "${variavel.textPlain}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ));
                     } else {
                       if (variavel.arquivo == null) {
                         return Card(
-                            color: Colors.yellowAccent,
+                            // color: Colors.yellowAccent,
                             child: ListTile(
                               title: Text(
                                 "${variavel.perfilID.nome}:",
@@ -213,6 +249,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                                 "null",
                                 style: TextStyle(fontSize: 16),
                               ),
+                              selected: variavel.arquivo == null ? true : false,
                             ));
                       } else {
                         return Card(
@@ -227,11 +264,14 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                                     "${variavel.perfilID.nome}:",
                                     style: TextStyle(fontSize: 14),
                                   ),
-                                  subtitle: variavel?.arquivo?.url != null ? Text(
-                                    "CLIQUE AQUI PARA VER O ARQUIVO",
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.blue),
-                                  ): Text('Arquivo não disponivel. Usuario não fez upload.'),
+                                  subtitle: variavel?.arquivo?.url != null
+                                      ? Text(
+                                          "CLIQUE AQUI PARA VER O ARQUIVO",
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.blue),
+                                        )
+                                      : Text(
+                                          'Arquivo não disponivel. Usuario não fez upload.'),
                                 )));
                       }
                     }
@@ -262,13 +302,15 @@ class _ImagemUnica extends StatelessWidget {
         child: Image.network(fotoUrl),
       ));
     } else {
-      foto = Container(
-          color: Colors.yellow,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            // child: Icon(Icons.people, size: 75), 
-            child: Image.asset(fotoLocalPath),
-          ));
+      foto = Center(child: Text('Não enviada.'));
+
+      // foto = Container(
+      //     color: Colors.yellow,
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(2.0),
+      //       // child: Icon(Icons.people, size: 75),
+      //       child: Image.asset(fotoLocalPath),
+      //     ));
     }
 
     return Row(

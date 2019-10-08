@@ -3,17 +3,21 @@ import 'package:universal_io/io.dart' as io;
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
+import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'administracao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 
 class AdministracaoHomePage extends StatefulWidget {
-  // AdministracaoHomePage({Key key}) : super(key: key);
+  final AuthBloc authBloc;
+
+  const AdministracaoHomePage(this.authBloc);
 
   _AdministracaoHomePageState createState() => _AdministracaoHomePageState();
 }
 
 class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
-  final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
+  AdministracaoHomePageBloc bloc;
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -28,6 +32,8 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
   @override
   void initState() {
     super.initState();
+    bloc = AdministracaoHomePageBloc(
+        Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -41,10 +47,10 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
     return DefaultScaffold(
       title: Text("Administração"),
       body: Container(
-        child: StreamBuilder<List<UsuarioModel>>(
-            stream: bloc.usuarioModelListStream,
-            initialData: [],
-            builder: (context, snapshot) {
+        child: StreamBuilder<AdministracaoHomePageBlocState>(
+            stream: bloc.stateStream,
+            builder: (BuildContext context,
+                AsyncSnapshot<AdministracaoHomePageBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Center(
                   child: Text("Erro. Na leitura de usuarios."),
@@ -55,11 +61,80 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                   child: CircularProgressIndicator(),
                 );
               }
-              return ListView(
-                children: snapshot.data
-                    .map((usuario) => ItemListView(usuario))
-                    .toList(),
-              );
+              //  if (snapshot.hasData) {
+              //   return Center(
+              //     child: CircularProgressIndicator(),
+              //   );
+              // }
+              if (snapshot.hasData) {
+                List<Widget> listaWdg = List<Widget>();
+                if (snapshot.data.isDataValid) {
+                  List<Widget> listaWdg = List<Widget>();
+                  for (var usuario in snapshot.data?.usuarioList) {
+                    listaWdg.add(ItemListView(usuario));
+                  }
+                  return Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 10,
+                            child: Text('Lista dos usuarios ativos'),
+                          ),
+                          Wrap(alignment: WrapAlignment.start, children: <
+                              Widget>[
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                        null &&
+                                    snapshot.data?.relatorioPdfMakeModel
+                                            ?.pdfGerar ==
+                                        false &&
+                                    snapshot.data?.relatorioPdfMakeModel
+                                            ?.pdfGerado ==
+                                        true &&
+                                    snapshot.data?.relatorioPdfMakeModel
+                                            ?.tipo ==
+                                        'administracao01'
+                                ? IconButton(
+                                    tooltip: 'Ver relatório dos usuários.',
+                                    icon: Icon(Icons.link),
+                                    onPressed: () async {
+                                      bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                        pdfGerar: false,
+                                        pdfGerado: false,
+                                        tipo: 'administracao01',
+                                        collection: 'Usuario',
+                                      ));
+                                      launch(snapshot
+                                          .data?.relatorioPdfMakeModel?.url);
+                                    },
+                                  )
+                                : IconButton(
+                                    tooltip: 'Atualizar PDF dos usuários.',
+                                    icon: Icon(Icons.picture_as_pdf),
+                                    onPressed: () async {
+                                      bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                        pdfGerar: true,
+                                        pdfGerado: false,
+                                        tipo: 'administracao01',
+                                        collection: 'Usuario',
+                                      ));
+                                    },
+                                  ),
+                          ]),
+                        ],
+                      ),
+                      Expanded(
+                        flex: 10,
+                        child: ListView(
+                          children: listaWdg,
+                        ),
+                      )
+                    ],
+                  );
+                } else {
+                  return Text('Existem dados inválidos...');
+                }
+              }
             }),
       ),
     );
@@ -133,15 +208,17 @@ class _ImagemUnica extends StatelessWidget {
         child: Image.network(fotoUrl),
       ));
     } else {
-      foto = Container(
-          color: Colors.yellow,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            // child: Icon(Icons.people, size: 75),
-            child: io.File(fotoLocalPath).existsSync()
-                ? Image.asset(fotoLocalPath)
-                : Text('Sem upload'),
-          ));
+      foto = Center(child: Text('Não enviada.'));
+
+      // foto = Container(
+      //     color: Colors.yellow,
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(2.0),
+      //       // child: Icon(Icons.people, size: 75),
+      //       child: io.File(fotoLocalPath).existsSync()
+      //           ? Image.asset(fotoLocalPath)
+      //           : Text('Sem upload'),
+      //     ));
     }
 
     return Row(

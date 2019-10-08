@@ -143,14 +143,14 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                   Expanded(
                       flex: 10,
                       child: Text('''
-  Setor: ${controleTarefaID.setor.nome}
-  Nome: ${controleTarefaID.nome}
-  De: ${controleTarefaID.remetente.nome}
-  Inicio: ${controleTarefaID.inicio}
-  Fim: ${controleTarefaID.fim}
-  Atualizada: ${controleTarefaID.modificada}
-  id: ${controleTarefaID.id}
-  Concluida: ${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}''')),
+  Setor: ${controleTarefaID?.setor?.nome}
+  Nome: ${controleTarefaID?.nome}
+  De: ${controleTarefaID?.remetente?.nome}
+  Inicio: ${controleTarefaID?.inicio}
+  Fim: ${controleTarefaID?.fim}
+  Atualizada: ${controleTarefaID?.modificada}
+  id: ${controleTarefaID?.id}
+  Concluida: ${controleTarefaID?.acaoCumprida} de ${controleTarefaID?.acaoTotal}''')),
                 ],
               ),
               Divider(),

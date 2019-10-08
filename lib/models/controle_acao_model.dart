@@ -31,15 +31,23 @@ class ControleAcaoModel extends FirestoreModel {
         tarefaLink[ref.key] = ref.value;
       }
     }
+    // if (map.containsKey("modificada") && map["modificada"] != null) {
+    //   modificada = map["modificada"].toDate();
+    // }
     if (map.containsKey("modificada") && map["modificada"] != null) {
-      modificada = map["modificada"].toDate();
+      modificada = map["modificada"];
     }
 
     if (map.containsKey('tarefa')) {
-      tarefa = map['tarefa'] != null ? new ControleTarefaID.fromMap(map['tarefa']) : null;
+      tarefa = map['tarefa'] != null
+          ? new ControleTarefaID.fromMap(map['tarefa'])
+          : null;
     }
     if (map.containsKey('setor')) {
-      setor = map['setor'] != null ? new SetorCensitarioID.fromMap(map['setor']) : null;
+      setor = map['setor'] != null
+          ? new SetorCensitarioID.fromMap(map['setor'])
+          : null;
+
     }
     if (map.containsKey('remetente')) {
       remetente = map['remetente'] != null ? new UsuarioID.fromMap(map['remetente']) : null;
