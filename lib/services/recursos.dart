@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart' show TargetPlatform;
+import 'package:pmsbmibile3/services/recursos/io.dart'
+    if (dart.library.html) "package:pmsbmibile3/services/recursos/html.dart";
 
 const Map<String, List<String>> BIBLIOTECAS = {
   "path_provider": ["android", "ios"],
@@ -43,6 +45,9 @@ const RECURSOS = {
     "firestore_wrapper_flutter",
   ],
   "armazenamento": [],
+  "file_picking": [
+    "image_picker",
+  ],
 };
 
 class Recursos {
@@ -51,16 +56,16 @@ class Recursos {
   static void initialize(TargetPlatform plataforma) {
     switch (plataforma) {
       case TargetPlatform.android:
-        Recursos.instance = Recursos._("android");
+        Recursos.instance = Recursos._(PLATFORM == "io" ? "android" : "we");
         break;
       case TargetPlatform.fuchsia:
-        Recursos.instance = Recursos._("fuchsia");
+        Recursos.instance = Recursos._(PLATFORM == "io" ? "fuchsia" : "we");
         break;
       case TargetPlatform.iOS:
-        Recursos.instance = Recursos._("ios");
+        Recursos.instance = Recursos._(PLATFORM == "io" ? "ios" : "we");
         break;
       default:
-        Recursos.instance = Recursos._("web");
+        Recursos.instance = Recursos._("fuchsia");
         break;
     }
   }

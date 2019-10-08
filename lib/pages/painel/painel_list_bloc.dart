@@ -1,4 +1,5 @@
 import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
+
 import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -30,6 +31,7 @@ class PainelListBlocState {
   RelatorioPdfMakeModel relatorioPdfMakeModel;
 }
 
+
 class PainelListBloc {
   //Firestore
   final fsw.Firestore _firestore;
@@ -37,13 +39,16 @@ class PainelListBloc {
 
   //Eventos
   final _eventController = BehaviorSubject<PainelListBlocEvent>();
-  Stream<PainelListBlocEvent> get eventStream => _eventController.stream;
+  Stream<PainelListBlocEvent> get eventStream =>
+      _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   //Estados
   final PainelListBlocState _state = PainelListBlocState();
   final _stateController = BehaviorSubject<PainelListBlocState>();
-  Stream<PainelListBlocState> get stateStream => _stateController.stream;
+
+  Stream<PainelListBlocState> get stateStream =>
+      _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   //Bloc
@@ -62,8 +67,9 @@ class PainelListBloc {
   }
 
   _validateData() {
-    _state.isDataValid = false;
-    if (_state.setorCensitarioPainelList != null) {
+    _state.isDataValid=false;
+        if (_state.setorCensitarioPainelList != null) {
+
       _state.isDataValid = true;
     } else {
       _state.isDataValid = false;
@@ -72,7 +78,6 @@ class PainelListBloc {
     //   _state.isDataValid = true;
     // } else {
     //   _state.isDataValid = false;
-    // }    
   }
 
   _mapEventToState(PainelListBlocEvent event) async {
@@ -85,6 +90,7 @@ class PainelListBloc {
 
     if (event is UpdateSetorCensitarioPainelIDEvent) {
       _state.setorCensitarioPainelList.clear();
+
       final streamDocsRemetente = _firestore
           .collection(SetorCensitarioPainelModel.collection)
           .where("setorCensitarioID.id", isEqualTo: _state.usuarioID.setorCensitarioID.id)
@@ -130,5 +136,6 @@ class PainelListBloc {
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em PainelListBloc  = ${event.runtimeType}');
+
   }
 }

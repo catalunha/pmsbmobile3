@@ -47,6 +47,7 @@ class ControleAcaoModel extends FirestoreModel {
       setor = map['setor'] != null
           ? new SetorCensitarioID.fromMap(map['setor'])
           : null;
+
     }
     if (map.containsKey('remetente')) {
       remetente = map['remetente'] != null ? new UsuarioID.fromMap(map['remetente']) : null;

@@ -190,6 +190,7 @@ class _PainelListPageState extends State<PainelListPage> {
                                         pdfGerar: true, pdfGerado: false, tipo: 'painel02'));
                                   },
                                 )
+
                         ]),
                       ],
                     ),

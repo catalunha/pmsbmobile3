@@ -3,8 +3,10 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/perfil/configuracao_bloc.dart';
+import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
+    show FilePicker, FileType;
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class ConfiguracaoPage extends StatefulWidget {
@@ -39,37 +41,35 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-
-      Scaffold(
-        appBar: AppBar(
-          title: Text("Configurações"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Configurações"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 12, right: 12),
+        child: ListView(
+          children: <Widget>[
+            SelecionarEixo(bloc),
+            SelecionarSetorCensitario(bloc),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: AtualizarNumeroCelular(bloc),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: AtualizarNomeNoProjeto(bloc),
+            ),
+            FotoUsuario(bloc),
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: ListView(
-            children: <Widget>[
-              SelecionarEixo(bloc),
-              SelecionarSetorCensitario(bloc),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: AtualizarNumeroCelular(bloc),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: AtualizarNomeNoProjeto(bloc),
-              ),
-              FotoUsuario(bloc),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            bloc.eventSink(SaveEvent());
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.check),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          bloc.eventSink(SaveEvent());
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.check),
+      ),
     );
   }
 }
@@ -78,6 +78,7 @@ class SelecionarEixo extends StatelessWidget {
   final ConfiguracaoPageBloc bloc;
 
   const SelecionarEixo(this.bloc);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -110,7 +111,9 @@ class SelecionarEixo extends StatelessWidget {
 
 class OpcoesEixo extends StatelessWidget {
   final ConfiguracaoPageBloc bloc;
+
   OpcoesEixo(this.bloc);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<UsuarioModel>(
@@ -143,7 +146,7 @@ class OpcoesEixo extends StatelessWidget {
 }
 
 class SelecionarSetorCensitario extends StatelessWidget {
-    final ConfiguracaoPageBloc bloc;
+  final ConfiguracaoPageBloc bloc;
 
   const SelecionarSetorCensitario(this.bloc);
 
@@ -253,7 +256,7 @@ class OpcoesTema extends StatelessWidget {
 }
 
 class AtualizarNumeroCelular extends StatefulWidget {
-    final ConfiguracaoPageBloc bloc;
+  final ConfiguracaoPageBloc bloc;
 
   const AtualizarNumeroCelular(this.bloc);
 
@@ -264,7 +267,7 @@ class AtualizarNumeroCelular extends StatefulWidget {
 }
 
 class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
-   final ConfiguracaoPageBloc bloc;
+  final ConfiguracaoPageBloc bloc;
 
   final _controller = TextEditingController();
 
@@ -295,7 +298,7 @@ class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
 }
 
 class AtualizarNomeNoProjeto extends StatefulWidget {
-    final ConfiguracaoPageBloc bloc;
+  final ConfiguracaoPageBloc bloc;
 
   AtualizarNomeNoProjeto(this.bloc);
 
@@ -306,7 +309,7 @@ class AtualizarNomeNoProjeto extends StatefulWidget {
 }
 
 class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
-    final ConfiguracaoPageBloc bloc;
+  final ConfiguracaoPageBloc bloc;
 
   final _controller = TextEditingController();
 
@@ -339,10 +342,9 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
 class FotoUsuario extends StatelessWidget {
   String fotoUrl;
   String fotoLocalPath;
-    final ConfiguracaoPageBloc bloc;
+  final ConfiguracaoPageBloc bloc;
 
   FotoUsuario(this.bloc);
-
 
   @override
   Widget build(BuildContext context) {
@@ -357,19 +359,19 @@ class FotoUsuario extends StatelessWidget {
         }
         return Column(
           children: <Widget>[
-            ButtonTheme.bar(
-                child: ButtonBar(children: <Widget>[
-              Text('Atualizar foto de usuario'),
-              IconButton(
-                icon: Icon(Icons.file_download),
-                onPressed: () async {
-                  await _selecionarNovoArquivo().then((arq) {
-                    fotoLocalPath = arq;
-                  });
-                  bloc.eventSink(UpdateFotoEvent(fotoLocalPath));
-                },
-              ),
-            ])),
+            if (Recursos.instance.disponivel("file_picking"))
+              ButtonBar(children: <Widget>[
+                Text('Atualizar foto de usuario'),
+                IconButton(
+                  icon: Icon(Icons.file_download),
+                  onPressed: () async {
+                    await _selecionarNovoArquivo().then((arq) {
+                      fotoLocalPath = arq;
+                    });
+                    bloc.eventSink(UpdateFotoEvent(fotoLocalPath));
+                  },
+                ),
+              ]),
             _ImagemUnica(
                 fotoUrl: snapshot.data?.fotoUrl,
                 fotoLocalPath: snapshot.data?.fotoLocalPath),
@@ -417,7 +419,7 @@ class _ImagemUnica extends StatelessWidget {
             child: Image.asset(fotoLocalPath),
           ));
     }
-    
+
     return Row(
       children: <Widget>[
         Spacer(
