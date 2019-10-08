@@ -357,7 +357,7 @@ class _TelaChatState extends State<TelaChat> {
         for (var item in snapshot.data) {
           if (item.enviada != null) {
             lista.add(buildMessageCard(item.autor.id == usuarioAtual,
-                item.autor.nome, item.texto, item.enviada.toDate().toString()));
+                item.autor.nome, item.texto, item.enviada.toString()));
           }
         }
         //TODO: Precisamos retirar o time e colocar algo mais inteligente.

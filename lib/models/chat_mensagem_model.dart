@@ -6,7 +6,7 @@ class ChatMensagemModel extends FirestoreModel {
   static final String collection = "ChatMensagem";
   UsuarioID autor;
   String texto;
-  dynamic enviada;
+  DateTime enviada;
 
   ChatMensagemModel({String id, this.autor, this.texto, this.enviada})
       : super(id);
@@ -14,7 +14,8 @@ class ChatMensagemModel extends FirestoreModel {
   @override
   ChatMensagemModel fromMap(Map<String, dynamic> map) {
     // if (map.containsKey('enviada')) enviada = map['enviada'].toDate();
-    if (map.containsKey('enviada')) enviada = map['enviada'];
+    if (map.containsKey('enviada')) enviada = DateTime.fromMillisecondsSinceEpoch(
+        map['enviada'].millisecondsSinceEpoch);
     if (map.containsKey('texto')) texto = map['texto'];
     if (map.containsKey('autor')) {
       autor = map['autor'] != null ? new UsuarioID.fromMap(map['autor']) : null;

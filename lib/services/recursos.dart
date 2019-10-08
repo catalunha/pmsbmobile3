@@ -56,13 +56,13 @@ class Recursos {
   static void initialize(TargetPlatform plataforma) {
     switch (plataforma) {
       case TargetPlatform.android:
-        Recursos.instance = Recursos._(PLATFORM == "io" ? "android" : "we");
+        Recursos.instance = Recursos._(PLATFORM == "io" ? "android" : "web");
         break;
       case TargetPlatform.fuchsia:
-        Recursos.instance = Recursos._(PLATFORM == "io" ? "fuchsia" : "we");
+        Recursos.instance = Recursos._(PLATFORM == "io" ? "fuchsia" : "web");
         break;
       case TargetPlatform.iOS:
-        Recursos.instance = Recursos._(PLATFORM == "io" ? "ios" : "we");
+        Recursos.instance = Recursos._(PLATFORM == "io" ? "ios" : "web");
         break;
       default:
         Recursos.instance = Recursos._("fuchsia");

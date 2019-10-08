@@ -35,7 +35,8 @@ class ControleAcaoModel extends FirestoreModel {
     //   modificada = map["modificada"].toDate();
     // }
     if (map.containsKey("modificada") && map["modificada"] != null) {
-      modificada = map["modificada"];
+      modificada = DateTime.fromMillisecondsSinceEpoch(
+        map['modificada'].millisecondsSinceEpoch);
     }
 
     if (map.containsKey('tarefa')) {

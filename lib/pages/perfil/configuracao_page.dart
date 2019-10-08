@@ -352,6 +352,7 @@ class FotoUsuario extends StatelessWidget {
       stream: bloc.stateStream,
       builder: (BuildContext context,
           AsyncSnapshot<ConfiguracaoPageState> snapshot) {
+            print('Plataform: ${Recursos.instance.plataforma}');
         if (snapshot.hasError) {
           return Container(
             child: Center(child: Text('Erro.')),

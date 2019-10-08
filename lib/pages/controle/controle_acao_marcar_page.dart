@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class ControleAcaoMarcarPage extends StatefulWidget {
   final String controleTarefaID;
@@ -105,7 +107,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                   ...listaWdgLink,
                   controleAcaoID.url != null && controleAcaoID.url != ''
                       ? IconButton(
-                          tooltip: 'Ver arquivo',
+                          tooltip: 'Ver arquivo no navegador',
                           icon: Icon(Icons.cloud),
                           onPressed: () {
                             launch(controleAcaoID.url);

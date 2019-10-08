@@ -6,7 +6,7 @@ class ChatNotificacaoModel extends FirestoreModel {
   String titulo;
   String texto;
   List<dynamic> usuario;
-  dynamic enviada;
+  DateTime enviada;
 
   ChatNotificacaoModel({String id, this.titulo, this.texto, this.usuario, this.enviada})
       : super(id);
@@ -14,7 +14,8 @@ class ChatNotificacaoModel extends FirestoreModel {
   @override
   ChatNotificacaoModel fromMap(Map<String, dynamic> map) {
     // if (map.containsKey('enviada')) enviada = map['enviada'].toDate();
-    if (map.containsKey('enviada')) enviada = map['enviada'];
+    if (map.containsKey('enviada')) enviada = DateTime.fromMillisecondsSinceEpoch(
+        map['enviada'].millisecondsSinceEpoch);
     if (map.containsKey('titulo')) titulo = map['titulo'];
     if (map.containsKey('texto')) texto = map['texto'];
     if (map.containsKey('usuario')) usuario = map['usuario'];

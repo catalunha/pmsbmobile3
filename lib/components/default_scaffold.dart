@@ -32,6 +32,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
 
   _DefaultDrawerState() : authBloc = Bootstrap.instance.authBloc {
     // Map<String, Rota>
+    
     rotas = Map<String, Rota>();
     rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
     rotas["/"] = Rota("Home", Icons.home);
@@ -46,6 +47,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
     rotas["/painel/home"] = Rota("Painel", Icons.compare);
     rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
     rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
+
   }
 
   @override
