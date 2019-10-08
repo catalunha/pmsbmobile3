@@ -5,7 +5,8 @@ import 'package:pmsbmibile3/services/services.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class AdministracaoPerfilPage extends StatefulWidget {
   AuthBloc authBloc;
@@ -142,15 +143,15 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
             return ButtonTheme.bar(
               child: ButtonBar(
                 children: <Widget>[
-                  Text('csv'),
-                  IconButton(
-                    icon: Icon(Icons.border_bottom),
-                    onPressed: () {
-                      GeradorCsvService.generateCsvFromUsuarioModel(
-                          usuarioModelData);
-                      //launch(snapshot.data.urlCSV);
-                    },
-                  ),
+                  // Text('csv'),
+                  // IconButton(
+                  //   icon: Icon(Icons.border_bottom),
+                  //   onPressed: () {
+                  //     GeradorCsvService.generateCsvFromUsuarioModel(
+                  //         usuarioModelData);
+                  //     //launch(snapshot.data.urlCSV);
+                  //   },
+                  // ),
                   // Text('web'),
                   // IconButton(
                   //   icon: Icon(Icons.web),
@@ -158,7 +159,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                   //     launch(snapshot.data.urlMD);
                   //   },
                   // ),
-                  Text('pdf'),
+                  // Text('pdf'),
                   // IconButton(
                   //   icon: Icon(Icons.picture_as_pdf),
                   //   onPressed: () {

@@ -6,16 +6,19 @@ import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 /// Class base Eventos da Pagina ConfiguracaoPage
 class AdministracaoPerfilPageEvent {}
+
 class UpdateUsuarioModelEvent extends AdministracaoPerfilPageEvent {
   final UsuarioModel usuarioModel;
 
   UpdateUsuarioModelEvent(this.usuarioModel);
 }
+
 class UpdateUsuarioIdEvent extends AdministracaoPerfilPageEvent {
   final String usuarioId;
 
   UpdateUsuarioIdEvent(this.usuarioId);
 }
+
 class UpdateRelatorioPdfMakeEvent extends AdministracaoPerfilPageEvent {}
 
 class GerarRelatorioPdfMakeEvent extends AdministracaoPerfilPageEvent {
@@ -33,21 +36,21 @@ class GerarRelatorioPdfMakeEvent extends AdministracaoPerfilPageEvent {
     this.document,
   });
 }
+
 /// Class base Estado da Pagina ConfiguracaoPage
 class AdministracaoPerfilPageState {
   String usuarioId;
   // String urlCSV;
   // String urlMD;
   // String urlPDF;
-    List<UsuarioModel> usuarioList;
+  List<UsuarioModel> usuarioList;
   UsuarioModel usuarioModel;
-    RelatorioPdfMakeModel relatorioPdfMakeModel;
-
+  RelatorioPdfMakeModel relatorioPdfMakeModel;
 }
 
 /// class Bloc para AdministracaoPerfilPage
 class AdministracaoPerfilPageBloc {
-   //Firestore
+  //Firestore
   final fsw.Firestore _firestore;
   final _authBloc;
 
@@ -62,16 +65,13 @@ class AdministracaoPerfilPageBloc {
       _administracaoPerfilPageEventController.sink.add;
 
   // Estados da Página
-  final AdministracaoPerfilPageState _state =
-      AdministracaoPerfilPageState();
-  final _stateController =
-      BehaviorSubject<AdministracaoPerfilPageState>();
+  final AdministracaoPerfilPageState _state = AdministracaoPerfilPageState();
+  final _stateController = BehaviorSubject<AdministracaoPerfilPageState>();
 
   Stream<AdministracaoPerfilPageState> get administracaoPerfilPageStateStream =>
       _stateController.stream;
 
-  Function get administracaoPerfilPageStateSink =>
-      _stateController.sink.add;
+  Function get administracaoPerfilPageStateSink => _stateController.sink.add;
 
   // UsuarioModel
   final _usuarioModelController = BehaviorSubject<UsuarioModel>();
@@ -92,13 +92,12 @@ class AdministracaoPerfilPageBloc {
   //Construtor da classe
   AdministracaoPerfilPageBloc(this._firestore, this._authBloc) {
     administracaoPerfilPageEventStream.listen(_mapEventToState);
-        _authBloc.perfil.listen((usuarioID) {
+    _authBloc.perfil.listen((usuarioID) {
       administracaoPerfilPageEventSink(UpdateUsuarioModelEvent(usuarioID));
     });
-
   }
 
-  void dispose() async{
+  void dispose() async {
     await _usuarioModelController.drain();
     _usuarioModelController.close();
     await _administracaoPerfilPageEventController.drain();
@@ -110,10 +109,10 @@ class AdministracaoPerfilPageBloc {
   }
 
   void _mapEventToState(AdministracaoPerfilPageEvent event) async {
-        if (event is UpdateUsuarioModelEvent) {
+    if (event is UpdateUsuarioModelEvent) {
       //Atualiza estado com usuario logado
       _state.usuarioModel = event.usuarioModel;
-        }
+    }
     if (event is UpdateUsuarioIdEvent) {
       // Atualizar State with Event
       _state.usuarioId = event.usuarioId;
@@ -130,8 +129,7 @@ class AdministracaoPerfilPageBloc {
       //Usar State UsuarioPerfil
       final noticiasRef = _firestore
           .collection(UsuarioPerfilModel.collection)
-          .where("usuarioID.id",
-              isEqualTo: _state.usuarioId);
+          .where("usuarioID.id", isEqualTo: _state.usuarioId);
       noticiasRef
           .snapshots()
           .map((snapDocs) => snapDocs.documents
@@ -140,25 +138,26 @@ class AdministracaoPerfilPageBloc {
               .toList())
           .listen((List<UsuarioPerfilModel> usuarioPerfilModelList) {
         usuarioPerfilModelSink(usuarioPerfilModelList);
-
       });
-            administracaoPerfilPageEventSink(UpdateRelatorioPdfMakeEvent());
-
+      administracaoPerfilPageEventSink(UpdateRelatorioPdfMakeEvent());
     }
 
-
     if (event is UpdateRelatorioPdfMakeEvent) {
-      final streamDocRelatorio =
-          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioModel.id).snapshots();
+      final streamDocRelatorio = _firestore
+          .collection(RelatorioPdfMakeModel.collectionFirestore)
+          .document(_state.usuarioModel.id)
+          .snapshots();
       streamDocRelatorio.listen((snapDoc) {
-        _state.relatorioPdfMakeModel = RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
+        _state.relatorioPdfMakeModel =
+            RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
 
     if (event is GerarRelatorioPdfMakeEvent) {
-      final docRelatorio =
-          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioModel.id);
+      final docRelatorio = _firestore
+          .collection(RelatorioPdfMakeModel.collectionFirestore)
+          .document(_state.usuarioModel.id);
       await docRelatorio.setData({
         'pdfGerar': event.pdfGerar,
         'pdfGerado': event.pdfGerado,
@@ -169,10 +168,7 @@ class AdministracaoPerfilPageBloc {
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em ControleTarefaListBloc  = ${event.runtimeType}');
-
-
+    print(
+        'event.runtimeType em ControleTarefaListBloc  = ${event.runtimeType}');
   }
-
-
 }

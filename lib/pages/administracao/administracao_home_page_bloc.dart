@@ -33,7 +33,7 @@ class GerarRelatorioPdfMakeEvent extends AdministracaoHomePageBlocEvent {
 
 class AdministracaoHomePageBlocState {
   UsuarioModel usuarioLogado;
-  List<UsuarioModel> usuarioList=List<UsuarioModel>();
+  List<UsuarioModel> usuarioList = List<UsuarioModel>();
   bool isDataValid = false;
 
   RelatorioPdfMakeModel relatorioPdfMakeModel;
@@ -105,6 +105,7 @@ class AdministracaoHomePageBloc {
         _state.usuarioList = usuarioList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
+      eventSink(UpdateRelatorioPdfMakeEvent());
     }
 
     if (event is UpdateRelatorioPdfMakeEvent) {

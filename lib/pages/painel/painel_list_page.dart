@@ -5,7 +5,8 @@ import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
 import 'package:pmsbmibile3/services/pdf_create_service.dart';
 import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class PainelListPage extends StatefulWidget {
   final AuthBloc authBloc;
