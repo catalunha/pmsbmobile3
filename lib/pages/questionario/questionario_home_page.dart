@@ -7,7 +7,8 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/services/services.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class QuestionarioHomePage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -61,7 +62,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                 children: <Widget>[
                   ListTile(
                     // leading: Text('${ordemLocal} (${v.ordem})'),
-                    leading: Text('${ordemLocal}'),
+                    trailing: Text('${ordemLocal}'),
                     title: Text('${questionario.nome}'),
                     // subtitle: Text('${questionario.id}'),
                   ),
@@ -120,12 +121,12 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                               },
                             ),
 
-                      IconButton(
-                          tooltip: 'Listar perguntas criadas',
-                          icon: Icon(Icons.text_fields),
-                          onPressed: () async {
-                            Navigator.pushNamed(context, "/pergunta/pergunta_list_preview", arguments: questionario.id);
-                          }),
+                      // IconButton(
+                      //     tooltip: 'Listar perguntas criadas',
+                      //     icon: Icon(Icons.text_fields),
+                      //     onPressed: () async {
+                      //       Navigator.pushNamed(context, "/pergunta/pergunta_list_preview", arguments: questionario.id);
+                      //     }),
                       IconButton(
                           icon: Icon(Icons.arrow_downward),
                           onPressed: (ordemLocal) < lengthEscolha
@@ -149,17 +150,17 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                   bloc.eventSink(OrdenarQuestionarioEvent(questID, true));
                                 }
                               : null),
-                      IconButton(
-                        icon: Icon(Icons.message),
-                        tooltip: 'Chat para o produto',
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/chat/home',
-                              arguments: ChatPageArguments(
-                                  chatID: questionario.id,
-                                  modulo: 'Q: ${questionario.eixo.nome}.',
-                                  titulo: 'T: ${questionario.nome}. '));
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: Icon(Icons.message),
+                      //   tooltip: 'Chat para o produto',
+                      //   onPressed: () {
+                      //     Navigator.pushNamed(context, '/chat/home',
+                      //         arguments: ChatPageArguments(
+                      //             chatID: questionario.id,
+                      //             modulo: 'Q: ${questionario.eixo.nome}.',
+                      //             titulo: 'T: ${questionario.nome}. '));
+                      //   },
+                      // ),
                       IconButton(
                           icon: Icon(Icons.edit),
                           onPressed: () {

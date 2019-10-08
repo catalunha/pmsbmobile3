@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
-import 'package:pmsbmibile3/models/setor_censitario_model.dart';
-import 'package:pmsbmibile3/pages/controle/controle_acao_crud_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_list_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class ControleAcaoListPage extends StatefulWidget {
   final String controleTarefaID;

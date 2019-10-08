@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_bloc.dart';
@@ -106,7 +107,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                   ...listaWdgLink,
                   controleAcaoID.url != null && controleAcaoID.url != ''
                       ? IconButton(
-                          tooltip: 'Ver arquivo',
+                          tooltip: 'Ver arquivo no navegador',
                           icon: Icon(Icons.cloud),
                           onPressed: () {
                             launch(controleAcaoID.url);

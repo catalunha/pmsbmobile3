@@ -31,7 +31,8 @@ class NoticiaModel extends FirestoreModel {
           : null;
     }
     if (map.containsKey('publicada')) publicada = map['publicada'];
-    if (map.containsKey('publicar')) publicar = map['publicar'].toDate();
+    if (map.containsKey('publicar')) publicar = DateTime.fromMillisecondsSinceEpoch(
+        map['publicar'].millisecondsSinceEpoch);
     if (map.containsKey('usuarioIDDestino')) {
       Map<dynamic, dynamic> dataFromMap = Map<dynamic, dynamic>();
       Map<String, Destinatario> dataToField = Map<String, Destinatario>();

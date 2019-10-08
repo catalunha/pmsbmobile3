@@ -3,7 +3,8 @@ import 'package:pmsbmibile3/pages/comunicacao/comunicacao_destinatario_page.dart
 import 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
     if (dart.library.io) 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 import '../user_files.dart';
 import 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page_bloc.dart';

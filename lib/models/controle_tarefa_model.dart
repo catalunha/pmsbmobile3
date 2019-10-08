@@ -32,14 +32,20 @@ class ControleTarefaModel extends FirestoreModel {
       ultimaOrdemAcao = map["ultimaOrdemAcao"];
     // if (map.containsKey("modificada") && map["modificada"] != null)
     //   modificada = map["modificada"].toDate();
-    if (map.containsKey("modificada") && map["modificada"] != null)
-      modificada = map["modificada"];
+    if (map.containsKey("modificada") && map["modificada"] != null){
+      // modificada = Timestamp(map["modificada"].seconds, map["modificada"].nanoseconds).toDate();
+      // modificada = DateFormat('dd MMM kk:mm').format(map["modificada"]);
+      modificada = DateTime.fromMillisecondsSinceEpoch(
+        map['modificada'].millisecondsSinceEpoch);
+    }
     // if (map.containsKey("inicio") && map["inicio"] != null)
     //   inicio = map["inicio"].toDate();
     if (map.containsKey("inicio") && map["inicio"] != null)
-      inicio = map["inicio"];
+      inicio = DateTime.fromMillisecondsSinceEpoch(
+        map['inicio'].millisecondsSinceEpoch);
     // if (map.containsKey("fim") && map["fim"] != null) fim = map["fim"].toDate();
-    if (map.containsKey("fim") && map["fim"] != null) fim = map["fim"];
+    if (map.containsKey("fim") && map["fim"] != null) fim = DateTime.fromMillisecondsSinceEpoch(
+        map['fim'].millisecondsSinceEpoch);
     if (map.containsKey('setor')) {
       setor = map['setor'] != null
           ? new SetorCensitarioID.fromMap(map['setor'])

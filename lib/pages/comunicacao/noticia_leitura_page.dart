@@ -71,7 +71,7 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
               if (snapshot.data.isEmpty) {
                 return Center(
                   child: Text(
-                      "Parabens ! \nVc já leu todas as suas notícias. \nAgora é acompanhar os Chat's."),
+                      "Seja bem vindo(a)\nAo Aplicativo de gestão de dados para o\nPlano Municipal de Saneamento Básico\ndo estado do Tocantins.\nEscolha um menu a esquerda ou direita."),
                 );
               }
               return ListView(

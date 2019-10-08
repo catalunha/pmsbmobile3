@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'administracao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 
@@ -83,7 +84,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                           ),
                           Wrap(alignment: WrapAlignment.start, children: <
                               Widget>[
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                            (snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
                                         null &&
                                     snapshot.data?.relatorioPdfMakeModel
                                             ?.pdfGerar ==
@@ -93,7 +94,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                                         true &&
                                     snapshot.data?.relatorioPdfMakeModel
                                             ?.tipo ==
-                                        'administracao01'
+                                        'administracao01')
                                 ? IconButton(
                                     tooltip: 'Ver relatório dos usuários.',
                                     icon: Icon(Icons.link),

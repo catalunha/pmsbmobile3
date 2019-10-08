@@ -1,7 +1,9 @@
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
+    show FilePicker, FileType;
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
+import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ProdutoCRUDPage extends StatefulWidget {
@@ -47,7 +49,7 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
           title: Text((widget.produtoID != null ? "Editar" : "Adicionar") +
               " Produto")),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.thumb_up),
+        child: Icon(Icons.cloud_upload),
         onPressed: () {
           // salvar e voltar
           bloc.eventSink(SaveProdutoIDEvent());
@@ -66,10 +68,11 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
             padding: EdgeInsets.all(5.0),
             child: ProdutoTitulo(bloc),
           ),
-          Padding(
-            padding: EdgeInsets.all(5.0),
-            child: ArquivoPDF(bloc),
-          ),
+          if (Recursos.instance.disponivel("file_picking"))
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: ArquivoPDF(bloc),
+            ),
           Divider(),
           Padding(
             padding: EdgeInsets.all(5.0),
@@ -183,9 +186,9 @@ class ArquivoPDF extends StatelessWidget {
             child: Center(child: Text('Erro.')),
           );
         }
-        pdfLocalPath = snapshot.data?.pdfLocalPath ;
+        pdfLocalPath = snapshot.data?.pdfLocalPath;
         pdfUrl = snapshot.data?.pdfUrl;
-        
+
         return Column(
           children: <Widget>[
             ButtonTheme.bar(
@@ -193,12 +196,11 @@ class ArquivoPDF extends StatelessWidget {
               Text('Atualizar pdf do produto:'),
               IconButton(
                 icon: Icon(Icons.delete_forever),
-                onPressed: ()  {
+                onPressed: () {
                   bloc.eventSink(UpdateDeletePDFEvent());
-
                 },
               ),
-                            IconButton(
+              IconButton(
                 icon: Icon(Icons.file_download),
                 onPressed: () async {
                   await _selecionarNovoArquivo().then((arq) {
@@ -209,12 +211,12 @@ class ArquivoPDF extends StatelessWidget {
                 },
               ),
             ])),
-            pdfLocalPath==null
-            ? Container()
-            : Text('Arquivo local: ${pdfLocalPath}'),
-            pdfUrl==null
-            ? Text('Sem arquivo na núvem.')
-            : Text('Arquivo já esta na núvem !'),
+            pdfLocalPath == null
+                ? Container()
+                : Text('Arquivo local: ${pdfLocalPath}'),
+            pdfUrl == null
+                ? Text('Sem arquivo na núvem.')
+                : Text('Arquivo já esta na núvem !'),
           ],
         );
       },

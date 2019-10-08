@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_concluida_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class ControleAcaoConcluidaPage extends StatefulWidget {
   final String controleTarefaID;

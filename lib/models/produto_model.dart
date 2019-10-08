@@ -47,7 +47,8 @@ class ProdutoModel extends FirestoreModel {
           ? new UsuarioID.fromMap(map['usuarioID'])
           : null;
     }
-    if (map.containsKey('modificado')) modificado = map['modificado'].toDate();
+    if (map.containsKey('modificado')) modificado = DateTime.fromMillisecondsSinceEpoch(
+        map['modificado'].millisecondsSinceEpoch);
 
     return this;
   }

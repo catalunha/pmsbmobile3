@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/services/cache_service.dart';
+import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class Rota {
@@ -32,20 +33,34 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
 
   _DefaultDrawerState() : authBloc = Bootstrap.instance.authBloc {
     // Map<String, Rota>
+
     rotas = Map<String, Rota>();
-    rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
-    rotas["/"] = Rota("Home", Icons.home);
-    rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
-    rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
-    rotas["/aplicacao/home"] =
-        Rota("Aplicar Questionário", Icons.directions_walk);
-    rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
-    rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
-    rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
-    rotas["/controle/home"] = Rota("Controle", Icons.control_point);
-    rotas["/painel/home"] = Rota("Painel", Icons.compare);
-    rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
-    rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
+    if (Recursos.instance.plataforma == 'android') {
+      rotas["/"] = Rota("Home", Icons.home);
+      rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
+      rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
+      rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
+      rotas["/aplicacao/home"] =
+          Rota("Aplicar Questionário", Icons.directions_walk);
+      rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
+      rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
+      rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
+      rotas["/controle/home"] = Rota("Controle", Icons.control_point);
+      rotas["/painel/home"] = Rota("Painel", Icons.compare);
+      // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
+      rotas["/administracao/home"] =
+          Rota("Administração", Icons.business_center);
+    } else if (Recursos.instance.plataforma == 'web') {
+      rotas["/"] = Rota("Home", Icons.home);
+      rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
+      rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
+      rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
+      rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
+      rotas["/controle/home"] = Rota("Controle", Icons.control_point);
+      rotas["/painel/home"] = Rota("Painel", Icons.compare);
+      rotas["/administracao/home"] =
+          Rota("Administração", Icons.business_center);
+    } else {}
   }
 
   @override
@@ -253,7 +268,6 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
 
   _DefaultEndDrawerState() : authBloc = Bootstrap.instance.authBloc;
 
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -269,30 +283,32 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               },
               leading: Icon(Icons.settings),
             ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Perfil'),
-              onTap: () {
-                //noticias perfil
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/perfil");
-              },
-              leading: Icon(Icons.person),
-            ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Noticias lidas'),
-              onTap: () {
-                //noticias arquivadas
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
-              },
-              leading: Icon(Icons.event_available),
-            ),
+            if (Recursos.instance.plataforma == 'android')
+              Divider(
+                color: Colors.black45,
+              ),
+            if (Recursos.instance.plataforma == 'android')
+              ListTile(
+                title: Text('Perfil'),
+                onTap: () {
+                  //noticias perfil
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, "/perfil");
+                },
+                leading: Icon(Icons.person),
+              ),
+            // Divider(
+            //   color: Colors.black45,
+            // ),
+            // ListTile(
+            //   title: Text('Noticias lidas'),
+            //   onTap: () {
+            //     //noticias arquivadas
+            //     Navigator.pop(context);
+            //     Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
+            //   },
+            //   leading: Icon(Icons.event_available),
+            // ),
             Divider(
               color: Colors.black45,
             ),
@@ -304,24 +320,27 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               },
               leading: Icon(Icons.exit_to_app),
             ),
+            if (Recursos.instance.plataforma == 'android')
+              Divider(
+                color: Colors.black45,
+              ),
+            if (Recursos.instance.plataforma == 'android')
+              ListTile(
+                title: Text("Habilitar modo offline"),
+                onTap: () async {
+                  final cacheService =
+                      CacheService(Bootstrap.instance.firestore);
+                  await cacheService.load();
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(content: Text("Modo offline completo.")));
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.save),
+              ),
             Divider(
               color: Colors.black45,
             ),
             ListTile(
-              title: Text("Habilitar modo offline"),
-              onTap: () async {
-                final cacheService = CacheService(Bootstrap.instance.firestore);
-                await cacheService.load();
-                Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text("Modo offline completo.")));
-                Navigator.pop(context);
-              },
-              leading: Icon(Icons.save),
-            ),
-                        Divider(
-              color: Colors.black45,
-            ),
-                        ListTile(
               title: Text("Versão 3.0.7"),
               leading: Icon(Icons.info),
             ),

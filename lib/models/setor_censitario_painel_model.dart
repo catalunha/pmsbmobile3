@@ -28,7 +28,8 @@ class SetorCensitarioPainelModel extends FirestoreModel {
     if (map.containsKey('observacao')) observacao = map['observacao'];
     if (map.containsKey('valor')) valor = map['valor'];
     if (map.containsKey("modificada") && map["modificada"] != null) {
-      modificada = map["modificada"].toDate();
+      modificada = DateTime.fromMillisecondsSinceEpoch(
+        map['modificada'].millisecondsSinceEpoch);
     }
     return this;
   }
