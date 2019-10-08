@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class ControleAcaoMarcarPage extends StatefulWidget {
   final String controleTarefaID;
@@ -51,14 +52,14 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
               if (controleAcaoID.tarefaLink != null) {
                 for (var item in controleAcaoID.tarefaLink.entries) {
                   print(item.key);
-                    listaWdgLink.add(IconButton(
+                  listaWdgLink.add(IconButton(
                     tooltip: 'Ver tarefa linkada id: ${item.key}',
                     icon: Icon(Icons.link),
                     onPressed: () async {
                       Navigator.pushNamed(
                         context,
                         "/controle/acao_concluida",
-                        arguments:item.key,
+                        arguments: item.key,
                       );
                     },
                   ));
@@ -140,9 +141,7 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
             return Column(children: <Widget>[
               Row(
                 children: <Widget>[
-                  Expanded(
-                      flex: 10,
-                      child: Text('''
+                  Expanded(flex: 10, child: Text('''
   Setor: ${controleTarefaID?.setor?.nome}
   Nome: ${controleTarefaID?.nome}
   De: ${controleTarefaID?.remetente?.nome}
