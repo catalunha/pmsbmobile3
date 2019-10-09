@@ -83,8 +83,15 @@ class QuestionarioModel extends FirestoreModel {
   @override
   QuestionarioModel fromMap(Map<String, dynamic> map) {
     nome = map["nome"];
-    criado = map["criado"];
-    modificado = map["modificado"];
+    // criado = map["criado"];
+    // modificado = map["modificado"];
+    if (map.containsKey('criado'))
+      criado = DateTime.fromMillisecondsSinceEpoch(
+          map['criado'].millisecondsSinceEpoch);
+    if (map.containsKey('modificado'))
+      modificado = DateTime.fromMillisecondsSinceEpoch(
+          map['modificado'].millisecondsSinceEpoch);
+
     editando = map["editando"];
     ordem = map["ordem"];
     ultimaOrdem = map["ultimaOrdem"];
@@ -194,7 +201,10 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
       }
     }
 
-    aplicado = map["aplicado"];
+    // aplicado = map["aplicado"];
+    if (map.containsKey('aplicado'))
+      aplicado = DateTime.fromMillisecondsSinceEpoch(
+          map['aplicado'].millisecondsSinceEpoch);
 
     if (map["aplicador"] != null) {
       aplicador = UsuarioQuestionario.fromMap(map["aplicador"]);
