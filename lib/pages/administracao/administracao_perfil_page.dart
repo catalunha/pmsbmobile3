@@ -18,7 +18,6 @@ class AdministracaoPerfilPage extends StatefulWidget {
 }
 
 class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
-
   AdministracaoPerfilPageBloc bloc;
 
 //   @override
@@ -35,7 +34,8 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore,widget.authBloc);
+    bloc = AdministracaoPerfilPageBloc(
+        Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -86,8 +86,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                 usuarioModelData = snapshot.data;
                 return Container(
                   child: Column(children: <Widget>[
-                   
-              Divider(),
+                    Divider(),
                     Padding(padding: EdgeInsets.all(3)),
                     Expanded(
                       flex: 2,
@@ -168,35 +167,49 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                   //     GeradorPdfService.generatePdfFromMd(mdtext);
                   //   },
                   // ),
-                 snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                            snapshot.data?.relatorioPdfMakeModel?.tipo == 'administracao02'
-                        ? IconButton(
-                            tooltip: 'Ver relatório deste usuario.',
-                            icon: Icon(Icons.link),
-                            onPressed: () async {
-                              bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
-                                  pdfGerar: false,
-                                  pdfGerado: false,
-                                  tipo: 'administracao02',
-                                  collection: 'Usuario',
-                                  document: snapshot.data.usuarioId));
-                              launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                            },
-                          )
-                        : IconButton(
-                            tooltip: 'Atualizar PDF deste usuario.',
-                            icon: Icon(Icons.picture_as_pdf),
-                            onPressed: () async {
-                              bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
-                                  pdfGerar: true,
-                                  pdfGerado: false,
-                                  tipo: 'administracao02',
-                                  collection: 'Usuario',
-                                  document: snapshot.data.usuarioId));
-                            },
-                          ),
+                  snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                              false &&
+                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                              true &&
+                          snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                              'administracao02'
+                      ? IconButton(
+                          tooltip: 'Ver relatório deste usuario.',
+                          icon: Icon(Icons.link),
+                          onPressed: () async {
+                            bloc.administracaoPerfilPageEventSink(
+                                GerarRelatorioPdfMakeEvent(
+                                    pdfGerar: false,
+                                    pdfGerado: false,
+                                    tipo: 'administracao02',
+                                    collection: 'Usuario',
+                                    document: snapshot.data.usuarioId));
+                            launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                          },
+                        )
+                      : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                  null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'administracao02'
+                          ? CircularProgressIndicator()
+                          : IconButton(
+                              tooltip: 'Atualizar PDF deste usuario.',
+                              icon: Icon(Icons.picture_as_pdf),
+                              onPressed: () async {
+                                bloc.administracaoPerfilPageEventSink(
+                                    GerarRelatorioPdfMakeEvent(
+                                        pdfGerar: true,
+                                        pdfGerado: false,
+                                        tipo: 'administracao02',
+                                        collection: 'Usuario',
+                                        document: snapshot.data.usuarioId));
+                              },
+                            ),
                 ],
               ),
             );
@@ -242,16 +255,16 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                         return Card(
                             // color: Colors.yellowAccent,
                             child: ListTile(
-                              title: Text(
-                                "${variavel.perfilID.nome}:",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              subtitle: Text(
-                                "null",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              selected: variavel.arquivo == null ? true : false,
-                            ));
+                          title: Text(
+                            "${variavel.perfilID.nome}:",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          subtitle: Text(
+                            "null",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          selected: variavel.arquivo == null ? true : false,
+                        ));
                       } else {
                         return Card(
                             child: InkWell(

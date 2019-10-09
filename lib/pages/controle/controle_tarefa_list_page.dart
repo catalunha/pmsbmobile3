@@ -94,7 +94,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                             launch(snapshot.data?.relatorioPdfMakeModel?.url);
                           },
                         )
-                      : IconButton(
+                      : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                  null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'controle02' &&
+                              snapshot.data?.relatorioPdfMakeModel?.document ==
+                                  controleTarefaID.id
+                          ? CircularProgressIndicator()
+                          : IconButton(
                           tooltip: 'Atualizar PDF individual desta tarefa recebida.',
                           icon: Icon(Icons.picture_as_pdf),
                           onPressed: () async {
@@ -160,7 +171,16 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                               launch(snapshot.data?.relatorioPdfMakeModel?.url);
                             },
                           )
-                        : IconButton(
+                        : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                  null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'controle01' 
+                          ? CircularProgressIndicator()
+                          : IconButton(
                             tooltip: 'Atualizar PDF geral das tarefas recebidas.',
                             icon: Icon(Icons.picture_as_pdf),
                             onPressed: () async {
@@ -271,7 +291,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                             launch(snapshot.data?.relatorioPdfMakeModel?.url);
                           },
                         )
-                      : IconButton(
+                      : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                  null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'controle04' &&
+                              snapshot.data?.relatorioPdfMakeModel?.document ==
+                                  controleTarefaID.id
+                          ? CircularProgressIndicator()
+                          : IconButton(
                           tooltip: 'Atualizar PDF individual desta tarefa designada.',
                           icon: Icon(Icons.picture_as_pdf),
                           onPressed: () async {
@@ -355,7 +386,16 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                               launch(snapshot.data?.relatorioPdfMakeModel?.url);
                             },
                           )
-                        : IconButton(
+                        : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                  null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'controle03'
+                          ? CircularProgressIndicator()
+                          : IconButton(
                             tooltip: 'Atualizar PDF geral das tarefas designadas.',
                             icon: Icon(Icons.picture_as_pdf),
                             onPressed: () async {

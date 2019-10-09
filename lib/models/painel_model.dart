@@ -4,7 +4,7 @@ import 'package:pmsbmibile3/models/base_model.dart';
 class Painel extends FirestoreModel {
   static final String collection = "Painel";
   String nome;
-  /// Os tipos pode ser: texto | numero | booleano | url
+  /// Os tipos pode ser: texto | numero | booleano | urlimagem | urlarquivo
   String tipo;
 
   Painel({String id, this.nome, this.tipo}) : super(id);

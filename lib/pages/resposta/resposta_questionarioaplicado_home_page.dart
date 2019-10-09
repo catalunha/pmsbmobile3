@@ -61,8 +61,70 @@ class _RespostaQuestionarioAplicadoHomePageState
                 listaWdg.add(ListTile(
                   title: Text(
                       'Questionário: ${questionarioAplicado.nome}\nReferência: ${questionarioAplicado.referencia}'),
+                  // subtitle: Text(
+                  //     'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado}\nid: ${questionarioAplicado.id}'),
                   subtitle: Text(
-                      'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado}\nid: ${questionarioAplicado.id}'),
+                      'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado} \nid: ${questionarioAplicado.id}'),
+                  // leading:
+                  //     snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                  //                 true &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                  //                 false &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                  //                 'resposta01' &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.document ==
+                  //                 questionarioAplicado.id
+                  //         ? CircularProgressIndicator()
+                  //         : null,
+                  // trailing: snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                  //             null &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                  //             false &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                  //             true &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                  //             'resposta01' &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.document ==
+                  //             questionarioAplicado.id
+                  //     ? IconButton(
+                  //         tooltip: 'Ver relatório geral das tarefas recebidas.',
+                  //         icon: Icon(Icons.link),
+                  //         onPressed: () async {
+                  //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                  //               pdfGerar: false,
+                  //               pdfGerado: false,
+                  //               tipo: 'resposta01',
+                  //               collection: 'QuestionarioAplicado',
+                  //               document: questionarioAplicado.id));
+                  //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                  //         },
+                  //       )
+                  //     : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                  //                 null &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                  //                 true &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                  //                 false &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                  //                 'resposta01' &&
+                  //             snapshot.data?.relatorioPdfMakeModel?.document ==
+                  //                 questionarioAplicado.id
+                  //         ? CircularProgressIndicator()
+                  //         : IconButton(
+                  //             tooltip:
+                  //                 'Atualizar PDF geral das tarefas recebidas.',
+                  //             icon: Icon(Icons.picture_as_pdf),
+                  //             onPressed: () async {
+                  //               bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                  //                   pdfGerar: true,
+                  //                   pdfGerado: false,
+                  //                   tipo: 'resposta01',
+                  //                   collection: 'QuestionarioAplicado',
+                  //                   document: questionarioAplicado.id));
+                  //             },
+                  //           ),
+
                   trailing: snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
                               null &&
                           snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
@@ -86,18 +148,30 @@ class _RespostaQuestionarioAplicadoHomePageState
                             launch(snapshot.data?.relatorioPdfMakeModel?.url);
                           },
                         )
-                      : IconButton(
-                          tooltip: 'Atualizar PDF geral das tarefas recebidas.',
-                          icon: Icon(Icons.picture_as_pdf),
-                          onPressed: () async {
-                            bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                pdfGerar: true,
-                                pdfGerado: false,
-                                tipo: 'resposta01',
-                                collection: 'QuestionarioAplicado',
-                                document: questionarioAplicado.id));
-                          },
-                        ),
+                      : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                  null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'resposta01' &&
+                              snapshot.data?.relatorioPdfMakeModel?.document ==
+                                  questionarioAplicado.id
+                          ? CircularProgressIndicator()
+                          : IconButton(
+                              tooltip:
+                                  'Atualizar PDF geral das tarefas recebidas.',
+                              icon: Icon(Icons.picture_as_pdf),
+                              onPressed: () async {
+                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                    pdfGerar: true,
+                                    pdfGerado: false,
+                                    tipo: 'resposta01',
+                                    collection: 'QuestionarioAplicado',
+                                    document: questionarioAplicado.id));
+                              },
+                            ),
                 ));
               }
               return ListView(
@@ -241,4 +315,3 @@ class _CardText extends StatelessWidget {
 //         ));
 //   }
 // }
-
