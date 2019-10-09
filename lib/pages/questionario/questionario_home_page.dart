@@ -27,7 +27,8 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
   @override
   void initState() {
     super.initState();
-    bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc =
+        QuestionarioHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -37,13 +38,16 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
   }
 
   _bodyPastas(context) {
-    return Container(child: Center(child: Text("Em construção", style: TextStyle(fontSize: 18))));
+    return Container(
+        child: Center(
+            child: Text("Em construção", style: TextStyle(fontSize: 18))));
   }
 
   _bodyTodos() {
     return StreamBuilder<QuestionarioHomePageBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<QuestionarioHomePageBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<QuestionarioHomePageBlocState> snapshot) {
         if (snapshot.hasError) {
           return Text("ERROR");
         }
@@ -91,10 +95,14 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                       //   },
                       // ),
                       snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                              snapshot.data?.relatorioPdfMakeModel?.tipo == 'questionario02' &&
-                              snapshot.data?.relatorioPdfMakeModel?.document == questionario.id
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'questionario02' &&
+                              snapshot.data?.relatorioPdfMakeModel?.document ==
+                                  questionario.id
                           ? IconButton(
                               tooltip: 'Ver relatório desta questionario.',
                               icon: Icon(Icons.link),
@@ -105,21 +113,36 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                     tipo: 'questionario02',
                                     collection: 'Questionario',
                                     document: questionario.id));
-                                launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                                launch(
+                                    snapshot.data?.relatorioPdfMakeModel?.url);
                               },
                             )
-                          : IconButton(
-                              tooltip: 'Atualizar PDF deste questionario.',
-                              icon: Icon(Icons.picture_as_pdf),
-                              onPressed: () async {
-                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                    pdfGerar: true,
-                                    pdfGerado: false,
-                                    tipo: 'questionario02',
-                                    collection: 'Questionario',
-                                    document: questionario.id));
-                              },
-                            ),
+                          : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                      null &&
+                                  snapshot.data?.relatorioPdfMakeModel
+                                          ?.pdfGerar ==
+                                      true &&
+                                  snapshot.data?.relatorioPdfMakeModel
+                                          ?.pdfGerado ==
+                                      false &&
+                                  snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                      'questionario02' &&
+                                  snapshot.data?.relatorioPdfMakeModel
+                                          ?.document ==
+                                      questionario.id
+                              ? CircularProgressIndicator()
+                              : IconButton(
+                                  tooltip: 'Atualizar PDF deste questionario.',
+                                  icon: Icon(Icons.picture_as_pdf),
+                                  onPressed: () async {
+                                    bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                        pdfGerar: true,
+                                        pdfGerado: false,
+                                        tipo: 'questionario02',
+                                        collection: 'Questionario',
+                                        document: questionario.id));
+                                  },
+                                ),
 
                       // IconButton(
                       //     tooltip: 'Listar perguntas criadas',
@@ -135,7 +158,8 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                   //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
                                   // Mover pra baixo na ordem
                                   //TODO: refatorar este codigo com o i fica mais fácil
-                                  bloc.eventSink(OrdenarQuestionarioEvent(questID, false));
+                                  bloc.eventSink(
+                                      OrdenarQuestionarioEvent(questID, false));
                                 }
                               : null),
                       IconButton(
@@ -147,7 +171,8 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
 
                                   // Mover pra cima na ordem
                                   //TODO: refatorar este codigo com o i fica mais fácil
-                                  bloc.eventSink(OrdenarQuestionarioEvent(questID, true));
+                                  bloc.eventSink(
+                                      OrdenarQuestionarioEvent(questID, true));
                                 }
                               : null),
                       // IconButton(
@@ -189,7 +214,8 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                 children: <Widget>[
                   Expanded(
                     flex: 10,
-                    child: Text('Eixo: ${snapshot.data.usuarioModel.eixoID.nome}'),
+                    child:
+                        Text('Eixo: ${snapshot.data.usuarioModel.eixoID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
                     // IconButton(
@@ -205,11 +231,15 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                     //   },
                     // ),
                     snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                            snapshot.data?.relatorioPdfMakeModel?.tipo == 'questionario01'
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                false &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                true &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                'questionario01'
                         ? IconButton(
-                            tooltip: 'Ver relatório geral das tarefas recebidas.',
+                            tooltip:
+                                'Ver relatório geral das tarefas recebidas.',
                             icon: Icon(Icons.link),
                             onPressed: () async {
                               bloc.eventSink(GerarRelatorioPdfMakeEvent(
@@ -217,22 +247,36 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                   pdfGerado: false,
                                   tipo: 'questionario01',
                                   collection: 'Eixo',
-                                  document: snapshot.data.usuarioModel.eixoID.id));
+                                  document:
+                                      snapshot.data.usuarioModel.eixoID.id));
                               launch(snapshot.data?.relatorioPdfMakeModel?.url);
                             },
                           )
-                        : IconButton(
-                            tooltip: 'Atualizar PDF geral das tarefas recebidas.',
-                            icon: Icon(Icons.picture_as_pdf),
-                            onPressed: () async {
-                              bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                  pdfGerar: true,
-                                  pdfGerado: false,
-                                  tipo: 'questionario01',
-                                  collection: 'Eixo',
-                                  document: snapshot.data.usuarioModel.eixoID.id));
-                            },
-                          ),
+                        : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                    null &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerar ==
+                                    true &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerado ==
+                                    false &&
+                                snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                    'questionario01'
+                            ? CircularProgressIndicator()
+                            : IconButton(
+                                tooltip:
+                                    'Atualizar PDF geral das tarefas recebidas.',
+                                icon: Icon(Icons.picture_as_pdf),
+                                onPressed: () async {
+                                  bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                      pdfGerar: true,
+                                      pdfGerado: false,
+                                      tipo: 'questionario01',
+                                      collection: 'Eixo',
+                                      document: snapshot
+                                          .data.usuarioModel.eixoID.id));
+                                },
+                              ),
                   ]),
                 ],
               ),

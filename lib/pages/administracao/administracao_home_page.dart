@@ -109,18 +109,31 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                                           .data?.relatorioPdfMakeModel?.url);
                                     },
                                   )
-                                : IconButton(
-                                    tooltip: 'Atualizar PDF dos usuários.',
-                                    icon: Icon(Icons.picture_as_pdf),
-                                    onPressed: () async {
-                                      bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: true,
-                                        pdfGerado: false,
-                                        tipo: 'administracao01',
-                                        collection: 'Usuario',
-                                      ));
-                                    },
-                                  ),
+                                : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                            null &&
+                                        snapshot.data?.relatorioPdfMakeModel
+                                                ?.pdfGerar ==
+                                            true &&
+                                        snapshot.data?.relatorioPdfMakeModel
+                                                ?.pdfGerado ==
+                                            false &&
+                                        snapshot.data?.relatorioPdfMakeModel
+                                                ?.tipo ==
+                                            'administracao01'
+                                    ? CircularProgressIndicator()
+                                    : IconButton(
+                                        tooltip: 'Atualizar PDF dos usuários.',
+                                        icon: Icon(Icons.picture_as_pdf),
+                                        onPressed: () async {
+                                          bloc.eventSink(
+                                              GerarRelatorioPdfMakeEvent(
+                                            pdfGerar: true,
+                                            pdfGerado: false,
+                                            tipo: 'administracao01',
+                                            collection: 'Usuario',
+                                          ));
+                                        },
+                                      ),
                           ]),
                         ],
                       ),
