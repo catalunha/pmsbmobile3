@@ -37,7 +37,8 @@ class _PainelListPageState extends State<PainelListPage> {
         title: Text('Painel'),
         body: StreamBuilder<PainelListBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context, AsyncSnapshot<PainelListBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<PainelListBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Text("ERROR");
               }
@@ -47,11 +48,14 @@ class _PainelListPageState extends State<PainelListPage> {
               if (snapshot.hasData) {
                 if (snapshot.data.isDataValid) {
                   List<Widget> listaWidget = List<Widget>();
-                  for (var setorCensitarioPainel in snapshot.data.setorCensitarioPainelList) {
+                  for (var setorCensitarioPainel
+                      in snapshot.data.setorCensitarioPainelList) {
                     Widget item;
                     if (setorCensitarioPainel.painelID.tipo == 'texto') {
-                      item = ListTile(
-                        trailing: setorCensitarioPainel.valor == null ? Icon(Icons.edit) : Icon(Icons.text_fields),
+                      item = Card(child:ListTile(
+                        trailing: setorCensitarioPainel.valor == null
+                            ? Icon(Icons.edit)
+                            : Icon(Icons.text_fields),
                         title: Text('${setorCensitarioPainel.painelID.nome}'),
                         subtitle: Text(
                             '${setorCensitarioPainel?.valor}\nObs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
@@ -62,9 +66,10 @@ class _PainelListPageState extends State<PainelListPage> {
                             arguments: setorCensitarioPainel.id,
                           );
                         },
-                      );
-                    } else if (setorCensitarioPainel.painelID.tipo == 'numero') {
-                      item = ListTile(
+                      ));
+                    } else if (setorCensitarioPainel.painelID.tipo ==
+                        'numero') {
+                      item = Card(child:ListTile(
                         trailing: setorCensitarioPainel.valor == null
                             ? Icon(Icons.edit)
                             : Text('${setorCensitarioPainel.valor}'),
@@ -78,10 +83,12 @@ class _PainelListPageState extends State<PainelListPage> {
                             arguments: setorCensitarioPainel.id,
                           );
                         },
-                      );
-                    } else if (setorCensitarioPainel.painelID.tipo == 'booleano') {
-                      item = ListTile(
-                        trailing: setorCensitarioPainel?.valor == null || setorCensitarioPainel.valor == false
+                      ));
+                    } else if (setorCensitarioPainel.painelID.tipo ==
+                        'booleano') {
+                      item = Card(child:ListTile(
+                        trailing: setorCensitarioPainel?.valor == null ||
+                                setorCensitarioPainel.valor == false
                             ? Icon(Icons.thumb_down)
                             : Icon(Icons.thumb_up),
                         title: Text('${setorCensitarioPainel.painelID.nome}'),
@@ -94,10 +101,12 @@ class _PainelListPageState extends State<PainelListPage> {
                             arguments: setorCensitarioPainel.id,
                           );
                         },
-                      );
-                    } else if (setorCensitarioPainel.painelID.tipo == 'urlimagem') {
-                      item = ListTile(
-                        trailing: setorCensitarioPainel.valor == null || setorCensitarioPainel.valor == ''
+                      ));
+                    } else if (setorCensitarioPainel.painelID.tipo ==
+                        'urlimagem') {
+                      item = Card(child:ListTile(
+                        trailing: setorCensitarioPainel.valor == null ||
+                                setorCensitarioPainel.valor == ''
                             ? Icon(Icons.cloud_off)
                             : Icon(Icons.cloud_done),
                         title: Text('${setorCensitarioPainel.painelID.nome}'),
@@ -115,10 +124,12 @@ class _PainelListPageState extends State<PainelListPage> {
                                 launch(setorCensitarioPainel.valor);
                               }
                             : null,
-                      );
-                    } else if (setorCensitarioPainel.painelID.tipo == 'urlarquivo') {
-                      item = ListTile(
-                        trailing: setorCensitarioPainel.valor == null || setorCensitarioPainel.valor == ''
+                      ));
+                    } else if (setorCensitarioPainel.painelID.tipo ==
+                        'urlarquivo') {
+                      item = Card(child:ListTile(
+                        trailing: setorCensitarioPainel.valor == null ||
+                                setorCensitarioPainel.valor == ''
                             ? Icon(Icons.cloud_off)
                             : Icon(Icons.cloud_done),
                         title: Text('${setorCensitarioPainel.painelID.nome}'),
@@ -136,7 +147,7 @@ class _PainelListPageState extends State<PainelListPage> {
                                 launch(setorCensitarioPainel.valor);
                               }
                             : null,
-                      );
+                      ));
                     }
 
                     listaWidget.add(Column(children: <Widget>[item]));
@@ -146,81 +157,18 @@ class _PainelListPageState extends State<PainelListPage> {
                       children: <Widget>[
                         Expanded(
                           flex: 10,
-                          child: Text('Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                          child: Text(
+                              'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                         ),
                         Wrap(alignment: WrapAlignment.start, children: <Widget>[
                           IconButton(
-                                  tooltip: 'Ver comparativo em planilha.',
-                                  icon: Icon(Icons.table_chart),
-                                  onPressed: () async {
-                                    launch('https://docs.google.com/spreadsheets/d/1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA/edit#gid=0');
-                                  },
-                                )
-                          // IconButton(
-                          //   tooltip: 'Comparativo em PDF.',
-                          //   icon: Icon(Icons.view_list),
-                          //   onPressed: () async {
-                          //     var pdf = await PdfCreateService.pdfwidgetForPainelComparativo(
-                          //       setorCensitario: snapshot.data.usuarioID.setorCensitarioID.id,
-                          //     );
-                          //     PdfSaveService.generatePdfAndOpen(pdf);
-                          //   },
-                          // ),
-                          // IconButton(
-                          //   tooltip: 'Relatorio deste setor em PDF.',
-                          //   icon: Icon(Icons.picture_as_pdf),
-                          //   onPressed: () async {
-                          //     var pdf = await PdfCreateService.pdfwidgetForPainelSetor(
-                          //       setorCensitario: snapshot.data.usuarioID.setorCensitarioID.id,
-                          //     );
-                          //     PdfSaveService.generatePdfAndOpen(pdf);
-                          //   },
-                          // ),
-
-                          // snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                          //         snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel01'
-                          //     ? IconButton(
-                          //         tooltip: 'Ver relatorio individual.',
-                          //         icon: Icon(Icons.link),
-                          //         onPressed: () async {
-                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                          //               pdfGerar: false, pdfGerado: false, tipo: 'painel01'));
-                          //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                          //         },
-                          //       )
-                          //     : IconButton(
-                          //         tooltip: 'Atualizar pdf individual.',
-                          //         icon: Icon(Icons.picture_as_pdf),
-                          //         onPressed: () async {
-                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                          //               pdfGerar: true, pdfGerado: false, tipo: 'painel01'));
-                          //         },
-                          //       ),
- 
-                          // snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                          //         snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel02'
-                          //     ? IconButton(
-                          //         tooltip: 'Ver relatorio comparativo.',
-                          //         icon: Icon(Icons.link),
-                          //         onPressed: () async {
-                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                          //               pdfGerar: false, pdfGerado: false, tipo: 'painel02'));
-                          //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                          //         },
-                          //       )
-                          //     : IconButton(
-                          //         tooltip: 'Atualizar pdf comparativo.',
-                          //         icon: Icon(Icons.table_chart),
-                          //         onPressed: () async {
-                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                          //               pdfGerar: true, pdfGerado: false, tipo: 'painel02'));
-                          //         },
-                          //       )
-
+                            tooltip: 'Ver comparativo em planilha.',
+                            icon: Icon(Icons.table_chart),
+                            onPressed: () async {
+                              launch(
+                                  'https://docs.google.com/spreadsheets/d/1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA/edit#gid=0');
+                            },
+                          )
                         ]),
                       ],
                     ),

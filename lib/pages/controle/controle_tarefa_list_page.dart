@@ -27,7 +27,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
   @override
   void initState() {
     super.initState();
-    bloc = ControleTarefaListBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc =
+        ControleTarefaListBloc(Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -39,7 +40,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
   _bodyDestinatario(context) {
     return StreamBuilder<ControleTarefaListBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
         if (snapshot.hasError) {
           return Text("ERROR");
         }
@@ -49,40 +51,30 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
         if (snapshot.hasData) {
           List<Widget> listaWdg = List<Widget>();
           if (snapshot.data.isDataValidDestinatario) {
-            for (var controleTarefaID in snapshot.data.controleTarefaListDestinatario) {
-              listaWdg.add(Column(children: <Widget>[
+            for (var controleTarefaID
+                in snapshot.data.controleTarefaListDestinatario) {
+              listaWdg.add(Card(
+                  child: Column(children: <Widget>[
                 ListTile(
-                    trailing: Text('${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
-                    title: Text('${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
+                    trailing: Text(
+                        '${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
+                    title: Text(
+                        '${controleTarefaID.nome}\nDe: ${controleTarefaID.remetente.nome}'),
                     subtitle: Text(
                         'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nAtualizada: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
-                // Flexible(
-                //     flex: 1,
-                //     child: Slider(
-                //       activeColor: Colors.indigoAccent,
-                //       min: 0.0,
-                //       max: 15.0,
-                //       onChanged: null,
-                //       value: 10,
-                //     )),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                  // IconButton(
-                  //   tooltip: 'Relatorio em PDF.',
-                  //   icon: Icon(Icons.picture_as_pdf),
-                  //   onPressed: () async {
-                  //     var pdf =
-                  //         await PdfCreateService.pdfwidgetForControleTarefa(
-                  //             controleTarefaID);
-                  //     PdfSaveService.generatePdfAndOpen(pdf);
-                  //   },
-                  // ),
                   snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                          snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle02' &&
-                          snapshot.data?.relatorioPdfMakeModel?.document == controleTarefaID.id
+                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                              false &&
+                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                              true &&
+                          snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                              'controle02' &&
+                          snapshot.data?.relatorioPdfMakeModel?.document ==
+                              controleTarefaID.id
                       ? IconButton(
-                          tooltip: 'Ver relatório individual desta tarefa recebida.',
+                          tooltip:
+                              'Ver relatório individual desta tarefa recebida.',
                           icon: Icon(Icons.link),
                           onPressed: () async {
                             bloc.eventSink(GerarRelatorioPdfMakeEvent(
@@ -106,18 +98,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                                   controleTarefaID.id
                           ? CircularProgressIndicator()
                           : IconButton(
-                          tooltip: 'Atualizar PDF individual desta tarefa recebida.',
-                          icon: Icon(Icons.picture_as_pdf),
-                          onPressed: () async {
-                            bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                pdfGerar: true,
-                                pdfGerado: false,
-                                tipo: 'controle02',
-                                collection: 'ControleTarefa',
-                                document: controleTarefaID.id));
-                          },
-                        ),
-
+                              tooltip:
+                                  'Atualizar PDF individual desta tarefa recebida.',
+                              icon: Icon(Icons.picture_as_pdf),
+                              onPressed: () async {
+                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                    pdfGerar: true,
+                                    pdfGerado: false,
+                                    tipo: 'controle02',
+                                    collection: 'ControleTarefa',
+                                    document: controleTarefaID.id));
+                              },
+                            ),
                   IconButton(
                     tooltip: 'Marcar/Atualizar ação',
                     icon: Icon(Icons.check),
@@ -131,7 +123,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     },
                   ),
                 ])
-              ]));
+              ])));
             }
 
             return Column(children: <Widget>[
@@ -139,27 +131,20 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                 children: <Widget>[
                   Expanded(
                     flex: 10,
-                    child: Text('Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                    child: Text(
+                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    // IconButton(
-                    //   tooltip: 'Relatorio em PDF.',
-                    //   icon: Icon(Icons.picture_as_pdf),
-                    //   onPressed: () async {
-                    //     var pdf = await PdfCreateService
-                    //         .pdfwidgetForControleTarefaDoUsuario(
-                    //             usuarioModel: snapshot.data.usuarioID,
-                    //             remetente: false,
-                    //             concluida: false);
-                    //     PdfSaveService.generatePdfAndOpen(pdf);
-                    //   },
-                    // ),
                     snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                            snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle01'
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                false &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                true &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                'controle01'
                         ? IconButton(
-                            tooltip: 'Ver relatório geral das tarefas recebidas.',
+                            tooltip:
+                                'Ver relatório geral das tarefas recebidas.',
                             icon: Icon(Icons.link),
                             onPressed: () async {
                               bloc.eventSink(GerarRelatorioPdfMakeEvent(
@@ -172,27 +157,29 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                             },
                           )
                         : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                                  null &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                                  true &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                                  false &&
-                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                                  'controle01' 
-                          ? CircularProgressIndicator()
-                          : IconButton(
-                            tooltip: 'Atualizar PDF geral das tarefas recebidas.',
-                            icon: Icon(Icons.picture_as_pdf),
-                            onPressed: () async {
-                              bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                  pdfGerar: true,
-                                  pdfGerado: false,
-                                  tipo: 'controle01',
-                                  collection: 'Usuario',
-                                  document: snapshot.data.usuarioID.id));
-                            },
-                          ),
-
+                                    null &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerar ==
+                                    true &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerado ==
+                                    false &&
+                                snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                    'controle01'
+                            ? CircularProgressIndicator()
+                            : IconButton(
+                                tooltip:
+                                    'Atualizar PDF geral das tarefas recebidas.',
+                                icon: Icon(Icons.picture_as_pdf),
+                                onPressed: () async {
+                                  bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                      pdfGerar: true,
+                                      pdfGerado: false,
+                                      tipo: 'controle01',
+                                      collection: 'Usuario',
+                                      document: snapshot.data.usuarioID.id));
+                                },
+                              ),
                     IconButton(
                       tooltip: 'Ver tarefas recebidas concluidas',
                       icon: Icon(Icons.folder),
@@ -229,7 +216,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
   _bodyRemetente(context) {
     return StreamBuilder<ControleTarefaListBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
         if (snapshot.hasError) {
           return Text("ERROR");
         }
@@ -239,11 +227,15 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
         if (snapshot.hasData) {
           List<Widget> listaWdg = List<Widget>();
           if (snapshot.data.isDataValidRemetente) {
-            for (var controleTarefaID in snapshot.data.controleTarefaListRemetente) {
-              listaWdg.add(Column(children: <Widget>[
+            for (var controleTarefaID
+                in snapshot.data.controleTarefaListRemetente) {
+              listaWdg.add(Card(
+                  child: Column(children: <Widget>[
                 ListTile(
-                    trailing: Text('${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
-                    title: Text('${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
+                    trailing: Text(
+                        '${controleTarefaID.acaoCumprida} de ${controleTarefaID.acaoTotal}'),
+                    title: Text(
+                        '${controleTarefaID.nome}\nPara: ${controleTarefaID.destinatario.nome}'),
                     subtitle: Text(
                         'Inicio: ${controleTarefaID.inicio}\nFim: ${controleTarefaID.fim}\nAtualizada: ${controleTarefaID.modificada}\nid:${controleTarefaID.id}')),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
@@ -252,7 +244,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                           tooltip: 'Ver ação que gerou esta tarefa',
                           icon: Icon(Icons.settings_backup_restore),
                           onPressed: () async {
-                            bloc.eventSink(VerAcaoGerouTarefaEvent(acaoLink: controleTarefaID.acaoLink));
+                            bloc.eventSink(VerAcaoGerouTarefaEvent(
+                                acaoLink: controleTarefaID.acaoLink));
                             if (snapshot.data.tarefaBase != null) {
                               Navigator.pushNamed(
                                 context,
@@ -263,23 +256,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                           },
                         )
                       : Text(''),
-                  // IconButton(
-                  //   tooltip: 'Relatorio em PDF.',
-                  //   icon: Icon(Icons.picture_as_pdf),
-                  //   onPressed: () async {
-                  //     var pdf =
-                  //         await PdfCreateService.pdfwidgetForControleTarefa(
-                  //             controleTarefaID);
-                  //     PdfSaveService.generatePdfAndOpen(pdf);
-                  //   },
-                  // ),
                   snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                          snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle04' &&
-                          snapshot.data?.relatorioPdfMakeModel?.document == controleTarefaID.id
+                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                              false &&
+                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                              true &&
+                          snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                              'controle04' &&
+                          snapshot.data?.relatorioPdfMakeModel?.document ==
+                              controleTarefaID.id
                       ? IconButton(
-                          tooltip: 'Ver relatório individual desta tarefa designada.',
+                          tooltip:
+                              'Ver relatório individual desta tarefa designada.',
                           icon: Icon(Icons.link),
                           onPressed: () async {
                             bloc.eventSink(GerarRelatorioPdfMakeEvent(
@@ -303,18 +291,18 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                                   controleTarefaID.id
                           ? CircularProgressIndicator()
                           : IconButton(
-                          tooltip: 'Atualizar PDF individual desta tarefa designada.',
-                          icon: Icon(Icons.picture_as_pdf),
-                          onPressed: () async {
-                            bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                pdfGerar: true,
-                                pdfGerado: false,
-                                tipo: 'controle04',
-                                collection: 'ControleTarefa',
-                                document: controleTarefaID.id));
-                          },
-                        ),
-
+                              tooltip:
+                                  'Atualizar PDF individual desta tarefa designada.',
+                              icon: Icon(Icons.picture_as_pdf),
+                              onPressed: () async {
+                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                    pdfGerar: true,
+                                    pdfGerado: false,
+                                    tipo: 'controle04',
+                                    collection: 'ControleTarefa',
+                                    document: controleTarefaID.id));
+                              },
+                            ),
                   IconButton(
                     tooltip: 'Duplicar tarefa',
                     icon: Icon(Icons.content_copy),
@@ -322,7 +310,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                       showModalBottomSheet(
                           context: context,
                           builder: (BuildContext bc) {
-                            return SetorListaModalSelect(bloc, controleTarefaID);
+                            return SetorListaModalSelect(
+                                bloc, controleTarefaID);
                           });
                     },
                   ),
@@ -344,12 +333,13 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                       Navigator.pushNamed(
                         context,
                         "/controle/tarefa_crud",
-                        arguments: ControlePageArguments(tarefa: controleTarefaID.id, acao: null),
+                        arguments: ControlePageArguments(
+                            tarefa: controleTarefaID.id, acao: null),
                       );
                     },
                   ),
                 ])
-              ]));
+              ])));
             }
 
             return Column(children: <Widget>[
@@ -357,24 +347,20 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                 children: <Widget>[
                   Expanded(
                     flex: 10,
-                    child: Text('Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                    child: Text(
+                        'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    // IconButton(
-                    //   tooltip: 'Relatorio em PDF.',
-                    //   icon: Icon(Icons.picture_as_pdf),
-                    //   onPressed: () async {
-                    //     var pdf = await PdfCreateService.pdfwidgetForControleTarefaDoUsuario(
-                    //         usuarioModel: snapshot.data.usuarioID, remetente: true, concluida: false);
-                    //     PdfSaveService.generatePdfAndOpen(pdf);
-                    //   },
-                    // ),
                     snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                            snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle03'
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                false &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                true &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                'controle03'
                         ? IconButton(
-                            tooltip: 'Ver relatório geral das tarefas designadas.',
+                            tooltip:
+                                'Ver relatório geral das tarefas designadas.',
                             icon: Icon(Icons.link),
                             onPressed: () async {
                               bloc.eventSink(GerarRelatorioPdfMakeEvent(
@@ -387,27 +373,29 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                             },
                           )
                         : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                                  null &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                                  true &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                                  false &&
-                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                                  'controle03'
-                          ? CircularProgressIndicator()
-                          : IconButton(
-                            tooltip: 'Atualizar PDF geral das tarefas designadas.',
-                            icon: Icon(Icons.picture_as_pdf),
-                            onPressed: () async {
-                              bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                  pdfGerar: true,
-                                  pdfGerado: false,
-                                  tipo: 'controle03',
-                                  collection: 'Usuario',
-                                  document: snapshot.data.usuarioID.id));
-                            },
-                          ),
-
+                                    null &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerar ==
+                                    true &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerado ==
+                                    false &&
+                                snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                    'controle03'
+                            ? CircularProgressIndicator()
+                            : IconButton(
+                                tooltip:
+                                    'Atualizar PDF geral das tarefas designadas.',
+                                icon: Icon(Icons.picture_as_pdf),
+                                onPressed: () async {
+                                  bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                      pdfGerar: true,
+                                      pdfGerado: false,
+                                      tipo: 'controle03',
+                                      collection: 'Usuario',
+                                      document: snapshot.data.usuarioID.id));
+                                },
+                              ),
                     IconButton(
                       tooltip: 'Ver tarefas designadas concluidas',
                       icon: Icon(Icons.folder),
@@ -426,7 +414,8 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                         Navigator.pushNamed(
                           context,
                           "/controle/tarefa_crud",
-                          arguments: ControlePageArguments(tarefa: null, acao: null),
+                          arguments:
+                              ControlePageArguments(tarefa: null, acao: null),
                         );
                       },
                     ),
@@ -486,7 +475,8 @@ class SetorListaModalSelect extends StatefulWidget {
   const SetorListaModalSelect(this.bloc, this.tarefaID);
 
   @override
-  _SetorListaModalSelectState createState() => _SetorListaModalSelectState(this.bloc);
+  _SetorListaModalSelectState createState() =>
+      _SetorListaModalSelectState(this.bloc);
 }
 
 class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
@@ -497,7 +487,8 @@ class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
   Widget _listaSetor() {
     return StreamBuilder<ControleTarefaListBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaListBlocState> snapshot) {
         if (snapshot.hasError)
           return Center(
             child: Text("Erro. Informe ao administrador do aplicativo"),
@@ -518,12 +509,8 @@ class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
           );
         }
 
-        // var usuario = Map<String, UsuarioModel>();
-
-        // usuario = snapshot.data?.setorList;
         var lista = List<Widget>();
         for (var setor in snapshot.data.setorList) {
-          // print('setor: ${item.key}');
           lista.add(_cardBuild(context, setor));
         }
 
@@ -532,46 +519,16 @@ class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
         );
       },
     );
-
-    // return ListView(
-    //   children: valores.keys.map((String key) {
-    //     return CheckboxListTile(
-    //       title: Text(key),
-    //       value: valores[key],
-    //       onChanged: (bool value) {
-    //         if (key == 'Todos') {
-    //           _marcarTodosDaListaComoTrue(value);
-    //         } else {
-    //           setState(() {
-    //             valores[key] = value;
-    //           });
-    //         }
-    //       },
-    //     );
-    //   }).toList(),
-    // );
   }
 
   Widget _cardBuild(BuildContext context, SetorCensitarioModel setor) {
-    // print(setor.nome);
-    // return ListTile(
-    //   title: Text(setor.nome),
-    //   leading: setor.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
-    // );
-    // return CheckboxListTile(
-    //   title: Text(setor.nome),
-    //   value: setor.alertar == null ? false : setor.alertar,
-    //   onChanged: (bool alertar) {
-    //     bloc.eventSink(UpDateAlertaEvent(setorChatID: key, alertar: alertar));
-    //   },
-    // );
     return ListTile(
       title: Text('${setor.nome}'),
-      // subtitle: Text('Setor: ${setor.eixoID?.nome}'),
       trailing: IconButton(
         icon: Icon(Icons.check),
         onPressed: () {
-          bloc.eventSink(DuplicarTarefaEvent(setorID: setor, tarefaID: widget.tarefaID));
+          bloc.eventSink(
+              DuplicarTarefaEvent(setorID: setor, tarefaID: widget.tarefaID));
           Navigator.pop(context);
         },
       ),
@@ -583,42 +540,6 @@ class _SetorListaModalSelectState extends State<SetorListaModalSelect> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Escolha um setor"),
-        // automaticallyImplyLeading: false,
-        // backgroundColor: Colors.blueGrey,
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.check_box),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(true));
-        //     },
-        //   ),
-        //   IconButton(
-        //     icon: Icon(Icons.check_box_outline_blank),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(false));
-        //     },
-        //   ),
-        //   IconButton(
-        //     icon: Icon(Icons.repeat),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(null));
-        //     },
-        //   ),
-        //   // RaisedButton(
-        //   //     child: Text("Marcar todos"),
-        //   //     textColor: Colors.blue,
-        //   //     color: Colors.white,
-        //   //     onPressed: () {
-        //   //       bloc.eventSink(UpDateAlertarTodosEvent());
-        //   //     }),
-        //   // RaisedButton(
-        //   //     child: Text("Salvar"),
-        //   //     textColor: Colors.blue,
-        //   //     color: Colors.white,
-        //   //     onPressed: () {
-        //   //       Navigator.pop(context);
-        //   //     })
-        // ],
       ),
       body: _listaSetor(),
     );
