@@ -14,8 +14,7 @@ import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
 class RespostaQuestionarioAplicadoHomePage extends StatefulWidget {
   final AuthBloc authBloc;
 
-  const RespostaQuestionarioAplicadoHomePage(this.authBloc, {Key key})
-      : super(key: key);
+  const RespostaQuestionarioAplicadoHomePage(this.authBloc, {Key key}) : super(key: key);
 
   @override
   _RespostaQuestionarioAplicadoHomePageState createState() {
@@ -23,13 +22,11 @@ class RespostaQuestionarioAplicadoHomePage extends StatefulWidget {
   }
 }
 
-class _RespostaQuestionarioAplicadoHomePageState
-    extends State<RespostaQuestionarioAplicadoHomePage> {
+class _RespostaQuestionarioAplicadoHomePageState extends State<RespostaQuestionarioAplicadoHomePage> {
   final RespostaQuestionarioAplicadoHomeBloc bloc;
 
   _RespostaQuestionarioAplicadoHomePageState(AuthBloc authBloc)
-      : bloc = RespostaQuestionarioAplicadoHomeBloc(
-            authBloc, Bootstrap.instance.firestore);
+      : bloc = RespostaQuestionarioAplicadoHomeBloc(authBloc, Bootstrap.instance.firestore);
 
   @override
   void initState() {
@@ -45,8 +42,7 @@ class _RespostaQuestionarioAplicadoHomePageState
   _listaQuestionarioAplicado() {
     return StreamBuilder<RespostaQuestionarioAplicadoHomeState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<RespostaQuestionarioAplicadoHomeState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<RespostaQuestionarioAplicadoHomeState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -55,49 +51,88 @@ class _RespostaQuestionarioAplicadoHomePageState
           }
           if (snapshot.hasData) {
             List<Widget> listaWdg = List<Widget>();
+            Widget icone;
             if (snapshot.data.isDataValid) {
-              for (var questionarioAplicado
-                  in snapshot.data.questionarioAplicadoList) {
+              for (var questionarioAplicado in snapshot.data.questionarioAplicadoList) {
+                // icone = CircularProgressIndicator();
+
+                if (snapshot.data?.relatorioPdfMakeModel?.tipo == 'resposta01' &&
+                    snapshot.data?.relatorioPdfMakeModel?.document == questionarioAplicado.id &&
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true) {
+                  icone = IconButton(
+                    tooltip: 'Ver relatório geral das tarefas recebidas.',
+                    icon: Icon(Icons.link),
+                    onPressed: () async {
+                      bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                          pdfGerar: false,
+                          pdfGerado: false,
+                          tipo: 'resposta01',
+                          collection: 'QuestionarioAplicado',
+                          document: questionarioAplicado.id));
+                      launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                    },
+                  );
+                }
+                if (snapshot.data?.relatorioPdfMakeModel?.tipo == 'resposta01' &&
+                    snapshot.data?.relatorioPdfMakeModel?.document == questionarioAplicado.id &&
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerado == false) {
+                  icone = IconButton(
+                    tooltip: 'Atualizar PDF geral das tarefas recebidas.',
+                    icon: Icon(Icons.picture_as_pdf),
+                    onPressed: () async {
+                      bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                          pdfGerar: true,
+                          pdfGerado: false,
+                          tipo: 'resposta01',
+                          collection: 'QuestionarioAplicado',
+                          document: questionarioAplicado.id));
+                    },
+                  );
+                }
+                if (snapshot.data?.relatorioPdfMakeModel?.tipo == 'resposta01' &&
+                    snapshot.data?.relatorioPdfMakeModel?.document == questionarioAplicado.id &&
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerar == true &&
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerado == false) {
+                  icone = CircularProgressIndicator();
+                }
                 listaWdg.add(ListTile(
                   title: Text(
                       'Questionário: ${questionarioAplicado.nome}\nReferência: ${questionarioAplicado.referencia}'),
-                  subtitle: Text(
-                      'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado}\nid: ${questionarioAplicado.id}'),
-                  trailing: snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                              null &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                              false &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                              true &&
-                          snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                              'resposta01' &&
-                          snapshot.data?.relatorioPdfMakeModel?.document ==
-                              questionarioAplicado.id
-                      ? IconButton(
-                          tooltip: 'Ver relatório geral das tarefas recebidas.',
-                          icon: Icon(Icons.link),
-                          onPressed: () async {
-                            bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                pdfGerar: false,
-                                pdfGerado: false,
-                                tipo: 'resposta01',
-                                collection: 'QuestionarioAplicado',
-                                document: questionarioAplicado.id));
-                            launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                          },
-                        )
-                      : IconButton(
-                          tooltip: 'Atualizar PDF geral das tarefas recebidas.',
-                          icon: Icon(Icons.picture_as_pdf),
-                          onPressed: () async {
-                            bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                pdfGerar: true,
-                                pdfGerado: false,
-                                tipo: 'resposta01',
-                                collection: 'QuestionarioAplicado',
-                                document: questionarioAplicado.id));
-                          },
-                        ),
+                  // subtitle: Text(
+                  //     'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado}\nid: ${questionarioAplicado.id}'),
+                  trailing: icone,
+                  // trailing: snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.tipo == 'resposta01' &&
+                  //         snapshot.data?.relatorioPdfMakeModel?.document == questionarioAplicado.id
+                  //     ? IconButton(
+                  //         tooltip: 'Ver relatório geral das tarefas recebidas.',
+                  //         icon: Icon(Icons.link),
+                  //         onPressed: () async {
+                  //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                  //               pdfGerar: false,
+                  //               pdfGerado: false,
+                  //               tipo: 'resposta01',
+                  //               collection: 'QuestionarioAplicado',
+                  //               document: questionarioAplicado.id));
+                  //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                  //         },
+                  //       )
+                  //     : IconButton(
+                  //         tooltip: 'Atualizar PDF geral das tarefas recebidas.',
+                  //         icon: Icon(Icons.picture_as_pdf),
+                  //         onPressed: () async {
+                  //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                  //               pdfGerar: true,
+                  //               pdfGerado: false,
+                  //               tipo: 'resposta01',
+                  //               collection: 'QuestionarioAplicado',
+                  //               document: questionarioAplicado.id));
+                  //         },
+                  //       ),
                 ));
               }
               return ListView(
@@ -241,4 +276,3 @@ class _CardText extends StatelessWidget {
 //         ));
 //   }
 // }
-

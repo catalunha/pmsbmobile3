@@ -65,15 +65,15 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                 //       value: 10,
                 //     )),
                 Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                  IconButton(
-                    tooltip: 'Relatorio em PDF.',
-                    icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () async {
-                      var pdf = await PdfCreateService
-                          .pdfwidgetForControleTarefa(controleTarefaID);
-                      PdfSaveService.generatePdfAndOpen(pdf);
-                    },
-                  ),
+                  // IconButton(
+                  //   tooltip: 'Relatorio em PDF.',
+                  //   icon: Icon(Icons.picture_as_pdf),
+                  //   onPressed: () async {
+                  //     var pdf = await PdfCreateService
+                  //         .pdfwidgetForControleTarefa(controleTarefaID);
+                  //     PdfSaveService.generatePdfAndOpen(pdf);
+                  //   },
+                  // ),
                   IconButton(
                     tooltip: 'Ver ações',
                     icon: Icon(Icons.check),
@@ -191,15 +191,15 @@ class _ControleTarefaConcluidaListPageState extends State<ControleTarefaConcluid
                   //     //       );
                   //   },
                   // ),
-                  IconButton(
-                    tooltip: 'Relatorio em PDF.',
-                    icon: Icon(Icons.picture_as_pdf),
-                    onPressed: () async {
-                      var pdf = await PdfCreateService
-                          .pdfwidgetForControleTarefa(controleTarefaID);
-                      PdfSaveService.generatePdfAndOpen(pdf);
-                    },
-                  ),
+                  // IconButton(
+                  //   tooltip: 'Relatorio em PDF.',
+                  //   icon: Icon(Icons.picture_as_pdf),
+                  //   onPressed: () async {
+                  //     var pdf = await PdfCreateService
+                  //         .pdfwidgetForControleTarefa(controleTarefaID);
+                  //     PdfSaveService.generatePdfAndOpen(pdf);
+                  //   },
+                  // ),
                   IconButton(
                     tooltip: 'Ver ações',
                     icon: Icon(Icons.check),

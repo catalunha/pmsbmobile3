@@ -95,7 +95,28 @@ class _PainelListPageState extends State<PainelListPage> {
                           );
                         },
                       );
-                    } else if (setorCensitarioPainel.painelID.tipo == 'url') {
+                    } else if (setorCensitarioPainel.painelID.tipo == 'urlimagem') {
+                      item = ListTile(
+                        trailing: setorCensitarioPainel.valor == null || setorCensitarioPainel.valor == ''
+                            ? Icon(Icons.cloud_off)
+                            : Icon(Icons.cloud_done),
+                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        subtitle: Text(
+                            'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            "/painel/crud",
+                            arguments: setorCensitarioPainel.id,
+                          );
+                        },
+                        onLongPress: setorCensitarioPainel.valor != null
+                            ? () {
+                                launch(setorCensitarioPainel.valor);
+                              }
+                            : null,
+                      );
+                    } else if (setorCensitarioPainel.painelID.tipo == 'urlarquivo') {
                       item = ListTile(
                         trailing: setorCensitarioPainel.valor == null || setorCensitarioPainel.valor == ''
                             ? Icon(Icons.cloud_off)
@@ -128,6 +149,13 @@ class _PainelListPageState extends State<PainelListPage> {
                           child: Text('Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                         ),
                         Wrap(alignment: WrapAlignment.start, children: <Widget>[
+                          IconButton(
+                                  tooltip: 'Ver comparativo em planilha.',
+                                  icon: Icon(Icons.table_chart),
+                                  onPressed: () async {
+                                    launch('https://docs.google.com/spreadsheets/d/1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA/edit#gid=0');
+                                  },
+                                )
                           // IconButton(
                           //   tooltip: 'Comparativo em PDF.',
                           //   icon: Icon(Icons.view_list),
@@ -148,49 +176,50 @@ class _PainelListPageState extends State<PainelListPage> {
                           //     PdfSaveService.generatePdfAndOpen(pdf);
                           //   },
                           // ),
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                                  snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                                  snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                                  snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel01'
-                              ? IconButton(
-                                  tooltip: 'Ver relatorio individual.',
-                                  icon: Icon(Icons.link),
-                                  onPressed: () async {
-                                    bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: false, pdfGerado: false, tipo: 'painel01'));
-                                    launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                                  },
-                                )
-                              : IconButton(
-                                  tooltip: 'Atualizar pdf individual.',
-                                  icon: Icon(Icons.picture_as_pdf),
-                                  onPressed: () async {
-                                    bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: true, pdfGerado: false, tipo: 'painel01'));
-                                  },
-                                ),
+
+                          // snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                          //         snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel01'
+                          //     ? IconButton(
+                          //         tooltip: 'Ver relatorio individual.',
+                          //         icon: Icon(Icons.link),
+                          //         onPressed: () async {
+                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                          //               pdfGerar: false, pdfGerado: false, tipo: 'painel01'));
+                          //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                          //         },
+                          //       )
+                          //     : IconButton(
+                          //         tooltip: 'Atualizar pdf individual.',
+                          //         icon: Icon(Icons.picture_as_pdf),
+                          //         onPressed: () async {
+                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                          //               pdfGerar: true, pdfGerado: false, tipo: 'painel01'));
+                          //         },
+                          //       ),
  
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                                  snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                                  snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                                  snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel02'
-                              ? IconButton(
-                                  tooltip: 'Ver relatorio comparativo.',
-                                  icon: Icon(Icons.link),
-                                  onPressed: () async {
-                                    bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: false, pdfGerado: false, tipo: 'painel02'));
-                                    launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                                  },
-                                )
-                              : IconButton(
-                                  tooltip: 'Atualizar pdf comparativo.',
-                                  icon: Icon(Icons.table_chart),
-                                  onPressed: () async {
-                                    bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: true, pdfGerado: false, tipo: 'painel02'));
-                                  },
-                                )
+                          // snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                          //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                          //         snapshot.data?.relatorioPdfMakeModel?.tipo == 'painel02'
+                          //     ? IconButton(
+                          //         tooltip: 'Ver relatorio comparativo.',
+                          //         icon: Icon(Icons.link),
+                          //         onPressed: () async {
+                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                          //               pdfGerar: false, pdfGerado: false, tipo: 'painel02'));
+                          //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                          //         },
+                          //       )
+                          //     : IconButton(
+                          //         tooltip: 'Atualizar pdf comparativo.',
+                          //         icon: Icon(Icons.table_chart),
+                          //         onPressed: () async {
+                          //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                          //               pdfGerar: true, pdfGerado: false, tipo: 'painel02'));
+                          //         },
+                          //       )
 
                         ]),
                       ],
