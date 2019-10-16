@@ -307,6 +307,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     tooltip: 'Duplicar tarefa',
                     icon: Icon(Icons.content_copy),
                     onPressed: () {
+                            bloc.eventSink(UpdateTarefaDuplicadoPorSetorEvent(controleTarefaID));
                       showModalBottomSheet(
                           context: context,
                           builder: (BuildContext bc) {
