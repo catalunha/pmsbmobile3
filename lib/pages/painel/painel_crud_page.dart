@@ -4,21 +4,21 @@ import 'package:pmsbmibile3/pages/painel/painel_crud_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class PainelCrudPage extends StatefulWidget {
+  final String painelId;
   final AuthBloc authBloc;
-  final String setorCensitarioId;
 
-  const PainelCrudPage(this.authBloc, this.setorCensitarioId);
+  const PainelCrudPage( this.authBloc,this.painelId,);
 
   _PainelCrudPageState createState() => _PainelCrudPageState(this.authBloc);
 }
 
 class _PainelCrudPageState extends State<PainelCrudPage> {
   PainelCrudBloc bloc;
-  _PainelCrudPageState(AuthBloc authBloc) : bloc = PainelCrudBloc(authBloc, Bootstrap.instance.firestore);
+  _PainelCrudPageState(AuthBloc authBloc) : bloc = PainelCrudBloc(Bootstrap.instance.firestore,authBloc);
   @override
   void initState() {
     super.initState();
-    bloc.eventSink(GetSetorCensitarioIDEvent(setorCensitarioId: widget.setorCensitarioId));
+    bloc.eventSink(GetPainelEvent(painelId: widget.painelId));
   }
 
   @override
@@ -46,48 +46,42 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                       }
                     : null,
                 child: Icon(Icons.cloud_upload),
-                backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                backgroundColor:
+                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
               );
             }),
         body: StreamBuilder<PainelCrudBlocState>(
             stream: bloc.stateStream,
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return Center( child: CircularProgressIndicator());
+              if (!snapshot.hasData)
+                return Center(child: CircularProgressIndicator());
               if (snapshot.hasData) {
                 if (snapshot.data.isDataValid) {
-                  Widget valor;
-                  if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'booleano') {
-                    valor = Center(
-                      child: SwitchListTile(
-                        title: Text('${snapshot.data?.setorCensitarioPainelID?.painelID?.tipo}'),
-                        value: snapshot.data?.valor,
-                        onChanged: (bool value) {
-                          bloc.eventSink(UpdateBooleanoEvent(value));
-                        },
-                        secondary: const Icon(Icons.lightbulb_outline),
-                      ),
-                    );
-                  } else {
-                    valor = PainelValor(bloc);
-                  }
                   return ListView(
                     children: <Widget>[
                       Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Text(
-                            snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
+                            'Nome do item',
                             style: TextStyle(fontSize: 15, color: Colors.blue),
                           )),
-                      Padding(padding: EdgeInsets.all(5.0), child: valor),
+                      Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: PainelNome(bloc)),
                       Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Text(
-                            "Observações ao informar este valor:",
+                            "Tipo do item:",
                             style: TextStyle(fontSize: 15, color: Colors.blue),
                           )),
                       Padding(
                         padding: EdgeInsets.all(5.0),
-                        child: PainelObservacao(bloc),
+                        child: PainelTipo(bloc),
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: _DeleteDocumentOrField(bloc),
                       ),
                     ],
                   );
@@ -99,26 +93,27 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
   }
 }
 
-class PainelValor extends StatefulWidget {
+class PainelNome extends StatefulWidget {
   final PainelCrudBloc bloc;
-  PainelValor(this.bloc);
+  PainelNome(this.bloc);
   @override
-  PainelValorState createState() {
-    return PainelValorState(bloc);
+  PainelNomeState createState() {
+    return PainelNomeState(bloc);
   }
 }
 
-class PainelValorState extends State<PainelValor> {
+class PainelNomeState extends State<PainelNome> {
   final _textFieldController = TextEditingController();
   final PainelCrudBloc bloc;
-  PainelValorState(this.bloc);
+  PainelNomeState(this.bloc);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PainelCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.valor;
+          _textFieldController.text = snapshot.data?.nome;
         }
         return TextField(
           keyboardType: TextInputType.multiline,
@@ -128,7 +123,7 @@ class PainelValorState extends State<PainelValor> {
           ),
           controller: _textFieldController,
           onChanged: (text) {
-            bloc.eventSink(UpdateValorEvent(text));
+            bloc.eventSink(UpdateNomeEvent(text));
           },
         );
       },
@@ -136,37 +131,123 @@ class PainelValorState extends State<PainelValor> {
   }
 }
 
-class PainelObservacao extends StatefulWidget {
+class PainelTipo extends StatefulWidget {
   final PainelCrudBloc bloc;
-  PainelObservacao(this.bloc);
+  PainelTipo(this.bloc);
   @override
-  PainelObservacaoState createState() {
-    return PainelObservacaoState(bloc);
+  PainelTipoState createState() {
+    return PainelTipoState(bloc);
   }
 }
 
-class PainelObservacaoState extends State<PainelObservacao> {
-  final _textFieldController = TextEditingController();
+class PainelTipoState extends State<PainelTipo> {
   final PainelCrudBloc bloc;
-  PainelObservacaoState(this.bloc);
+  PainelTipoState(this.bloc);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PainelCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
-        if (_textFieldController.text.isEmpty) {
-          _textFieldController.text = snapshot.data?.observacao;
-        }
-        return TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          controller: _textFieldController,
-          onChanged: (text) {
-            bloc.eventSink(UpdateObservacaoEvent(text));
-          },
+      builder:
+          (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
+        return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RadioListTile(
+                title: Text(
+                  'Um texto simples',
+                ),
+                value: 'texto',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+              RadioListTile(
+                title: Text(
+                  'Um número',
+                ),
+                value: 'numero',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+              RadioListTile(
+                title: Text(
+                  'Um link para uma imagem',
+                ),
+                value: 'urlimagem',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+              RadioListTile(
+                title: Text(
+                  'Um link para um arquivo',
+                ),
+                value: 'urlarquivo',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+              RadioListTile(
+                title: Text(
+                  'Marcar Sim ou Não',
+                ),
+                value: 'booleano',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+            ]);
+      },
+    );
+  }
+}
+
+class _DeleteDocumentOrField extends StatefulWidget {
+  final PainelCrudBloc bloc;
+  _DeleteDocumentOrField(this.bloc);
+  @override
+  _DeleteDocumentOrFieldState createState() {
+    return _DeleteDocumentOrFieldState(bloc);
+  }
+}
+
+class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
+  final _textFieldController = TextEditingController();
+  final PainelCrudBloc bloc;
+  _DeleteDocumentOrFieldState(this.bloc);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<PainelCrudBlocState>(
+      stream: bloc.stateStream,
+      builder:
+          (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
+        return Row(
+          children: <Widget>[
+            Divider(),
+            Text('Para apagar digite CONCORDO e click:  '),
+            Container(
+              child: Flexible(
+                child: TextField(
+                  controller: _textFieldController,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                if (_textFieldController.text == 'CONCORDO') {
+                  bloc.eventSink(DeleteDocumentEvent());
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
         );
       },
     );
