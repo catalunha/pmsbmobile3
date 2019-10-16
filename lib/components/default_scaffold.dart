@@ -46,7 +46,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
-      rotas["/painel/home"] = Rota("Painel", Icons.compare);
+      rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
       // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
       rotas["/administracao/home"] =
           Rota("Administração", Icons.business_center);
@@ -57,7 +57,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
-      rotas["/painel/home"] = Rota("Painel", Icons.compare);
+      rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
       rotas["/administracao/home"] =
           Rota("Administração", Icons.business_center);
     } else {}
