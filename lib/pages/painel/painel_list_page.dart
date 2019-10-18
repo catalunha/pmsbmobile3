@@ -61,7 +61,7 @@ class _PainelListPageState extends State<PainelListPage> {
                   listaWidget.add(Column(children: <Widget>[Card(
                         child: ListTile(
                       trailing: icone,
-                      title: Text('${painel.nome}'),
+                      title: Text('${painel?.nome}'),
                       subtitle: Text('Editado por: ${painel?.usuarioID?.nome}\nEm: ${painel?.modificado}\nid:${painel.id}'),
                       onTap: () {
                         Navigator.pushNamed(

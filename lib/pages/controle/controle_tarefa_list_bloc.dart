@@ -1,6 +1,7 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart' as uuid;
@@ -18,16 +19,16 @@ class UpdateTarefaUsuarioIDEvent extends ControleTarefaListBlocEvent {
 }
 
 class DuplicarTarefaEvent extends ControleTarefaListBlocEvent {
-  final SetorCensitarioModel setorID;
+  final SetorCensitarioID setorID;
   final ControleTarefaModel tarefaID;
 
   DuplicarTarefaEvent({this.tarefaID, this.setorID});
 }
 
-class UpdateTarefaDuplicadoPorSetorEvent extends ControleTarefaListBlocEvent {
+class UpdateTarefaDuplicadaPorSetorEvent extends ControleTarefaListBlocEvent {
   final ControleTarefaModel controleTarefa;
 
-  UpdateTarefaDuplicadoPorSetorEvent(this.controleTarefa);
+  UpdateTarefaDuplicadaPorSetorEvent(this.controleTarefa);
 }
 
 class VerAcaoGerouTarefaEvent extends ControleTarefaListBlocEvent {
@@ -54,23 +55,22 @@ class GerarRelatorioPdfMakeEvent extends ControleTarefaListBlocEvent {
   });
 }
 
-class TarefaDuplicadaEmSetor {
-  SetorCensitarioModel setorCensitarioModel;
+class TarefaDuplicadaNoSetor {
+  SetorCensitarioID setorCensitarioID;
   bool duplicado;
+  TarefaDuplicadaNoSetor({this.setorCensitarioID, this.duplicado});
 }
 
 class ControleTarefaListBlocState {
   UsuarioModel usuarioID;
-  List<ControleTarefaModel> controleTarefaListDestinatario =
-      List<ControleTarefaModel>();
-  List<ControleTarefaModel> controleTarefaListRemetente =
-      List<ControleTarefaModel>();
+  List<ControleTarefaModel> controleTarefaListDestinatario = List<ControleTarefaModel>();
+  List<ControleTarefaModel> controleTarefaListRemetente = List<ControleTarefaModel>();
   bool isDataValidDestinatario = false;
   bool isDataValidRemetente = false;
 
   //Necessarios para duplicar tarefa
-  List<SetorCensitarioModel> setorList = List<SetorCensitarioModel>();
-  Map<String, TarefaDuplicadaEmSetor> tarefaDuplicadaEmSetorMap = Map<String, TarefaDuplicadaEmSetor>();
+  // List<SetorCensitarioModel> setorList = List<SetorCensitarioModel>();
+  Map<String, TarefaDuplicadaNoSetor> tarefaDuplicadaNoSetorMap = Map<String, TarefaDuplicadaNoSetor>();
   // List<ControleAcaoModel> controleAcaoList = List<ControleAcaoModel>();
 
   String tarefaBase;
@@ -85,15 +85,13 @@ class ControleTarefaListBloc {
 
   //Eventos
   final _eventController = BehaviorSubject<ControleTarefaListBlocEvent>();
-  Stream<ControleTarefaListBlocEvent> get eventStream =>
-      _eventController.stream;
+  Stream<ControleTarefaListBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
   //Estados
   final ControleTarefaListBlocState _state = ControleTarefaListBlocState();
   final _stateController = BehaviorSubject<ControleTarefaListBlocState>();
-  Stream<ControleTarefaListBlocState> get stateStream =>
-      _stateController.stream;
+  Stream<ControleTarefaListBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
   //Bloc
@@ -141,11 +139,8 @@ class ControleTarefaListBloc {
           .where("concluida", isEqualTo: false)
           .snapshots();
 
-      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
-          .documents
-          .map((doc) =>
-              ControleTarefaModel(id: doc.documentID).fromMap(doc.data))
-          .toList());
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) =>
+          snapDocs.documents.map((doc) => ControleTarefaModel(id: doc.documentID).fromMap(doc.data)).toList());
 
       snapListRemetente.listen((List<ControleTarefaModel> controleTarefaList) {
         _state.controleTarefaListRemetente = controleTarefaList;
@@ -162,14 +157,9 @@ class ControleTarefaListBloc {
           .snapshots();
 
       final snapListDestinatario = streamDocsDestinatario.map((snapDocs) =>
-          snapDocs
-              .documents
-              .map((doc) =>
-                  ControleTarefaModel(id: doc.documentID).fromMap(doc.data))
-              .toList());
+          snapDocs.documents.map((doc) => ControleTarefaModel(id: doc.documentID).fromMap(doc.data)).toList());
 
-      snapListDestinatario
-          .listen((List<ControleTarefaModel> controleTarefaList) {
+      snapListDestinatario.listen((List<ControleTarefaModel> controleTarefaList) {
         _state.controleTarefaListDestinatario = controleTarefaList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
@@ -186,9 +176,7 @@ class ControleTarefaListBloc {
       // print('event.acaoLink: ${event.acaoLink}');
       // print('_state.tarefaBase: ${_state.tarefaBase}');
 
-      var docRef = _firestore
-          .collection(ControleAcaoModel.collection)
-          .document(event.acaoLink);
+      var docRef = _firestore.collection(ControleAcaoModel.collection).document(event.acaoLink);
       final snap = await docRef.get();
       _state.tarefaBase = snap.data['tarefa']['id'];
 
@@ -196,52 +184,44 @@ class ControleTarefaListBloc {
       // print('_state.tarefaBase: ${_state.tarefaBase}');
     }
 
-    if (event is UpdateTarefaDuplicadoPorSetorEvent) {
+    if (event is UpdateTarefaDuplicadaPorSetorEvent) {
       print('UpdateTarefaDuplicadoPorSetorEvent ${event.controleTarefa.id}');
 
-  List<SetorCensitarioModel> setorList = List<SetorCensitarioModel>();
-
-      setorList.clear();
-      var collRef = await _firestore
-          .collection(SetorCensitarioModel.collection)
-          .getDocuments();
+      Map<String, SetorCensitarioID> setorMap = Map<String, SetorCensitarioID>();
+      setorMap.clear();
+      var collRef = await _firestore.collection(SetorCensitarioModel.collection).getDocuments();
       for (var documentSnapshot in collRef.documents) {
-        _state.setorList.add(
-            SetorCensitarioModel(id: documentSnapshot.documentID)
-                .fromMap(documentSnapshot.data));
+        setorMap[documentSnapshot.documentID] =
+            SetorCensitarioID(id: documentSnapshot.documentID, nome: documentSnapshot.data['nome']);
       }
 
-  List<SetorCensitarioModel> tarefaList = List<SetorCensitarioModel>();
-
-  List<ControleTarefaModel> controleTarefaListRemetente =
-      List<ControleTarefaModel>();
-
-            controleTarefaListRemetente.clear();
+      Map<String, SetorCensitarioID> setorEmQATarefaFoiDuplicadaMap = Map<String, SetorCensitarioID>();
+      setorEmQATarefaFoiDuplicadaMap.clear();
       // le todas as tarefas deste usuario como remetente/designadas neste setor.
-      final streamDocsRemetente = await _firestore
+      final streamDocsRemetente2 = await _firestore
           .collection(ControleTarefaModel.collection)
           .where("remetente.id", isEqualTo: _state.usuarioID.id)
           .where("referencia", isEqualTo: event.controleTarefa.referencia)
           .where("concluida", isEqualTo: false)
           .getDocuments();
-
-      for (var documentSnapshot in streamDocsRemetente.documents) {
-
-        controleTarefaListRemetente.add(
-            ControleTarefaModel(id: documentSnapshot.documentID)
-                .fromMap(documentSnapshot.data));
+      for (var documentSnapshot in streamDocsRemetente2.documents) {
+        setorEmQATarefaFoiDuplicadaMap[documentSnapshot.data['setor']['id']] =
+            SetorCensitarioID.fromMap(documentSnapshot.data['setor']);
       }
 
-for (var setor in setorList) {
-  if (setor in controleTarefaListRemetente) {
-    
-  }
-}
+      _state.tarefaDuplicadaNoSetorMap.clear();
+      for (var setor in setorMap.entries) {
+        _state.tarefaDuplicadaNoSetorMap[setor.key] = TarefaDuplicadaNoSetor(
+            setorCensitarioID: setor.value, duplicado: setorEmQATarefaFoiDuplicadaMap.containsKey(setor.key));
+      }
 
+      // for (var item in _state.tarefaDuplicadaNoSetorMap.entries) {
+      //   print('${item.key} | ${item.value.setorCensitarioID.nome} | ${item.value.duplicado}');
+      // }
     }
 
     if (event is DuplicarTarefaEvent) {
-      final SetorCensitarioModel setorID = event.setorID;
+      final SetorCensitarioID setorID = event.setorID;
       final ControleTarefaModel tarefaID = event.tarefaID;
 
       // print('Setor selecionado: ${setorID}');
@@ -252,12 +232,10 @@ for (var setor in setorList) {
       final snap = await streamDocsRemetente.getDocuments();
       if (snap.documents.isEmpty) {
         //Criando uma tarefa nova COPIA DA ATUAL neste setor
-        final docRefTarefa =
-            _firestore.collection(ControleTarefaModel.collection).document();
+        final docRefTarefa = _firestore.collection(ControleTarefaModel.collection).document();
         Map<String, dynamic> tarefa = Map<String, dynamic>();
         tarefa['referencia'] = tarefaID.referencia;
-        tarefa['setor'] =
-            SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
+        tarefa['setor'] = setorID.toMap();
         tarefa['remetente'] = tarefaID.remetente.toMap();
         tarefa['destinatario'] = tarefaID.destinatario.toMap();
         tarefa['acaoTotal'] = tarefaID.acaoTotal;
@@ -280,24 +258,17 @@ for (var setor in setorList) {
           // .snapshots();
 
           for (var docSnap in streamDocsRemetente.documents) {
-            ControleAcaoModel controleAcaoModel =
-                ControleAcaoModel(id: docSnap.documentID).fromMap(docSnap.data);
-            final docRefAcao = _firestore
-                .collection(ControleAcaoModel.collection)
-                .document(null);
+            ControleAcaoModel controleAcaoModel = ControleAcaoModel(id: docSnap.documentID).fromMap(docSnap.data);
+            final docRefAcao = _firestore.collection(ControleAcaoModel.collection).document(null);
             Map<String, dynamic> acaoNOVA = Map<String, dynamic>();
             acaoNOVA['referencia'] = controleAcaoModel.referencia;
-            acaoNOVA['tarefa'] = ControleTarefaID(
-                    id: docRefTarefa.documentID, nome: tarefaID.nome)
-                .toMap();
+            acaoNOVA['tarefa'] = ControleTarefaID(id: docRefTarefa.documentID, nome: tarefaID.nome).toMap();
             acaoNOVA['nome'] = controleAcaoModel.nome;
-            acaoNOVA['setor'] =
-                SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
+            acaoNOVA['setor'] = SetorCensitarioID(id: setorID.id, nome: setorID.nome).toMap();
             acaoNOVA['remetente'] = controleAcaoModel.remetente.toMap();
             acaoNOVA['destinatario'] = controleAcaoModel.destinatario.toMap();
             acaoNOVA['concluida'] = false;
-            acaoNOVA['modificada'] =
-                Bootstrap.instance.fieldValue.serverTimestamp();
+            acaoNOVA['modificada'] = Bootstrap.instance.fieldValue.serverTimestamp();
             acaoNOVA['ordem'] = controleAcaoModel.ordem;
             // print(acaoNOVA);
             docRefAcao.setData(acaoNOVA, merge: true);
@@ -334,28 +305,23 @@ for (var setor in setorList) {
           //   }
           // });
         } else {
-          print(
-              'ControleTarefaListBloc. Algo deu errado. Tarefa nao duplicada.');
+          print('ControleTarefaListBloc. Algo deu errado. Tarefa nao duplicada.');
         }
       }
     }
 
     if (event is UpdateRelatorioPdfMakeEvent) {
-      final streamDocRelatorio = _firestore
-          .collection(RelatorioPdfMakeModel.collectionFirestore)
-          .document(_state.usuarioID.id)
-          .snapshots();
+      final streamDocRelatorio =
+          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id).snapshots();
       streamDocRelatorio.listen((snapDoc) {
-        _state.relatorioPdfMakeModel =
-            RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
+        _state.relatorioPdfMakeModel = RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
 
     if (event is GerarRelatorioPdfMakeEvent) {
-      final docRelatorio = _firestore
-          .collection(RelatorioPdfMakeModel.collectionFirestore)
-          .document(_state.usuarioID.id);
+      final docRelatorio =
+          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id);
       await docRelatorio.setData({
         'pdfGerar': event.pdfGerar,
         'pdfGerado': event.pdfGerado,
@@ -368,7 +334,6 @@ for (var setor in setorList) {
     _validateDataDestinatario();
     _validateDataRemetente();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print(
-        'event.runtimeType em ControleTarefaListBloc  = ${event.runtimeType}');
+    print('event.runtimeType em ControleTarefaListBloc  = ${event.runtimeType}');
   }
 }

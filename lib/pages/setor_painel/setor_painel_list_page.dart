@@ -54,7 +54,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
                         trailing: setorCensitarioPainel.valor == null
                             ? Icon(Icons.edit)
                             : Icon(Icons.text_fields),
-                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        title: Text('${setorCensitarioPainel?.painelID?.nome}'),
                         subtitle: Text(
                             '${setorCensitarioPainel?.valor}\nObs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
                         onTap: () {
@@ -70,8 +70,8 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
                       item = Card(child:ListTile(
                         trailing: setorCensitarioPainel.valor == null
                             ? Icon(Icons.edit)
-                            : Text('${setorCensitarioPainel.valor}'),
-                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                            : Text('${setorCensitarioPainel?.valor}'),
+                        title: Text('${setorCensitarioPainel?.painelID?.nome}'),
                         subtitle: Text(
                             'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
                         onTap: () {
@@ -89,7 +89,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
                                 setorCensitarioPainel.valor == false
                             ? Icon(Icons.thumb_down)
                             : Icon(Icons.thumb_up),
-                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        title: Text('${setorCensitarioPainel?.painelID?.nome}'),
                         subtitle: Text(
                             'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
                         onTap: () {
@@ -107,7 +107,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
                                 setorCensitarioPainel.valor == ''
                             ? Icon(Icons.cloud_off)
                             : Icon(Icons.cloud_done),
-                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        title: Text('${setorCensitarioPainel?.painelID?.nome}'),
                         subtitle: Text(
                             'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
                         onTap: () {
@@ -130,7 +130,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
                                 setorCensitarioPainel.valor == ''
                             ? Icon(Icons.cloud_off)
                             : Icon(Icons.cloud_done),
-                        title: Text('${setorCensitarioPainel.painelID.nome}'),
+                        title: Text('${setorCensitarioPainel?.painelID?.nome}'),
                         subtitle: Text(
                             'Obs: ${setorCensitarioPainel?.observacao}\nAtualizada: ${setorCensitarioPainel?.modificada}\nEditor: ${setorCensitarioPainel?.usuarioID?.nome}\nid: ${setorCensitarioPainel?.id}'),
                         onTap: () {
@@ -156,7 +156,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
                         Expanded(
                           flex: 10,
                           child: Text(
-                              'Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
+                              'Setor: ${snapshot.data?.usuarioID?.setorCensitarioID?.nome}'),
                         ),
                         Wrap(alignment: WrapAlignment.start, children: <Widget>[
                           IconButton(
