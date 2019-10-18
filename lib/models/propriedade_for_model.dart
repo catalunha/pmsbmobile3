@@ -1,7 +1,5 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 
-
-
 class ControleTarefaID {
   String id;
   String nome;
@@ -21,7 +19,6 @@ class ControleTarefaID {
   }
 }
 
-
 ///Trata da gestão de acesso dos usuarios ao google drive
 class UsuarioGoogleDrive {
   /// se False a function nao criou acesso ou foi alterado o tipo
@@ -36,7 +33,8 @@ class UsuarioGoogleDrive {
   /// o ID do usuario na Collection Usuario
   String usuarioID;
 
-  UsuarioGoogleDrive({this.atualizar, this.permissaoID, this.permissao,this.usuarioID});
+  UsuarioGoogleDrive(
+      {this.atualizar, this.permissaoID, this.permissao, this.usuarioID});
 
   UsuarioGoogleDrive.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('atualizar')) atualizar = map['atualizar'];
@@ -60,8 +58,10 @@ class UsuarioGoogleDrive {
         this.atualizar ?? Bootstrap.instance.fieldValue.delete();
     data['permissaoID'] =
         this.permissaoID ?? Bootstrap.instance.fieldValue.delete();
-    data['permissao'] = this.permissao ?? Bootstrap.instance.fieldValue.delete();
-    data['usuarioID'] = this.usuarioID ?? Bootstrap.instance.fieldValue.delete();
+    data['permissao'] =
+        this.permissao ?? Bootstrap.instance.fieldValue.delete();
+    data['usuarioID'] =
+        this.usuarioID ?? Bootstrap.instance.fieldValue.delete();
     return data;
   }
 }
@@ -70,8 +70,8 @@ class GoogleDriveID {
   String id;
   String arquivoID;
   String tipo;
-  
-  String url(){
+
+  String url() {
     return 'https://docs.google.com/${tipo}/d/${arquivoID}';
   }
 
@@ -94,9 +94,9 @@ class GoogleDriveID {
   Map<dynamic, dynamic> toMapFirestore() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     data['id'] = this.id ?? Bootstrap.instance.fieldValue.delete();
-    data['arquivoID'] = this.arquivoID ?? Bootstrap.instance.fieldValue.delete();
-    data['tipo'] =
-        this.tipo ?? Bootstrap.instance.fieldValue.delete();
+    data['arquivoID'] =
+        this.arquivoID ?? Bootstrap.instance.fieldValue.delete();
+    data['tipo'] = this.tipo ?? Bootstrap.instance.fieldValue.delete();
     return data;
   }
 }
@@ -290,6 +290,35 @@ class PerfilID {
   }
 }
 
+class ProdutoFunasaID {
+  String id;
+  String nome;
+  String letra;
+  String descricao;
+
+  ProdutoFunasaID({
+    String id,
+    this.nome,
+    this.letra,
+    this.descricao,
+  });
+
+  ProdutoFunasaID.fromMap(Map<dynamic, dynamic> map) {
+    if (map.containsKey('id')) id = map['id'];
+    if (map.containsKey('nome')) nome = map['nome'];
+    if (map.containsKey('letra')) letra = map['letra'];
+    if (map.containsKey('descricao')) descricao = map['descricao'];
+  }
+
+  Map<String, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    if (id != null) data['id'] = this.id;
+    if (nome != null) data['nome'] = this.nome;
+    if (letra != null) data['letra'] = this.letra;
+    if (descricao != null) data['descricao'] = this.descricao;
+    return data;
+  }
+}
 
 class PainelID {
   String id;

@@ -82,7 +82,7 @@ class PainelListBloc {
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em PainelListBloc  = ${event.runtimeType}');
+    print('event.runtimeType em PainelListBloc2  = ${event.runtimeType}');
 
   }
 }

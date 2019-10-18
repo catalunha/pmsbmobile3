@@ -152,7 +152,7 @@ class ControleTarefaCrudBloc {
       _state.usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
 
       // });
-      print('_state.usuarioList: ' + _state.usuarioList.toString());
+      // print('_state.usuarioList: ' + _state.usuarioList.toString());
     }
     if (event is UpdateTarefaIDEvent) {
       _state.controleTarefaId = event.tarefaId;

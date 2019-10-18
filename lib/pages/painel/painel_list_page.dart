@@ -63,7 +63,7 @@ class _PainelListPageState extends State<PainelListPage> {
                       trailing: icone,
                       title: Text('${painel?.nome}'),
                       subtitle:
-                          Text('Editado por: ${painel?.usuarioID?.nome}\nEm: ${painel?.modificado}\nid:${painel.id}'),
+                          Text('Destinatário: ${painel?.usuarioQVaiResponder?.nome}\nProduto: ${painel?.produto?.letra}. ${painel?.produto?.nome}\nEixo por: ${painel?.eixo?.nome}\nEditado por: ${painel?.usuarioQEditou?.nome}\nEm: ${painel?.modificado}\nid:${painel.id}'),
                       onTap: () {
                         Navigator.pushNamed(
                           context,
