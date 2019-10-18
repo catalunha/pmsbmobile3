@@ -293,29 +293,21 @@ class PerfilID {
 class ProdutoFunasaID {
   String id;
   String nome;
-  String letra;
-  String descricao;
 
   ProdutoFunasaID({
-    String id,
+    this.id,
     this.nome,
-    this.letra,
-    this.descricao,
   });
 
   ProdutoFunasaID.fromMap(Map<dynamic, dynamic> map) {
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('nome')) nome = map['nome'];
-    if (map.containsKey('letra')) letra = map['letra'];
-    if (map.containsKey('descricao')) descricao = map['descricao'];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (id != null) data['id'] = this.id;
     if (nome != null) data['nome'] = this.nome;
-    if (letra != null) data['letra'] = this.letra;
-    if (descricao != null) data['descricao'] = this.descricao;
     return data;
   }
 }

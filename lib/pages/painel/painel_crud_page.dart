@@ -161,7 +161,7 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
             texto = Text('Produto não selecionado');
           } else {
             texto = Text(
-                '${snapshot.data?.produtoFunasa?.letra}. ${snapshot.data?.produtoFunasa?.descricao}');
+                '${snapshot.data?.produtoFunasa?.nome}');
           }
           return ListTile(
             title: texto,

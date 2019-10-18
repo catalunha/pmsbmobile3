@@ -52,7 +52,7 @@ class SelectEixoIDEvent extends PainelCrudBlocEvent {
 class UpdateProdutoFunasaListEvent extends PainelCrudBlocEvent {}
 
 class SelectProdutoFunasaIDEvent extends PainelCrudBlocEvent {
-  final ProdutoFunasaID produtoFunasa;
+  final ProdutoFunasaModel produtoFunasa;
 
   SelectProdutoFunasaIDEvent(this.produtoFunasa);
 }
@@ -73,7 +73,7 @@ class PainelCrudBlocState {
   ProdutoFunasaID produtoFunasa;
   List<UsuarioModel> usuarioList = List<UsuarioModel>();
   List<EixoID> eixoList = List<EixoID>();
-  List<ProdutoFunasaID> produtoFunasaList = List<ProdutoFunasaID>();
+  List<ProdutoFunasaModel> produtoFunasaList = List<ProdutoFunasaModel>();
 
   void updateState() {
     nome = painel.nome;
@@ -200,16 +200,15 @@ class PainelCrudBloc {
           .getDocuments();
 
       for (var documentSnapshot in collRef.documents) {
-        _state.produtoFunasaList.add(ProdutoFunasaID(
-            id: documentSnapshot.documentID,
-            nome: documentSnapshot.data['nome'],
-            letra: documentSnapshot.data['letra'],
-            descricao: documentSnapshot.data['descricao']));
+        _state.produtoFunasaList.add(ProdutoFunasaModel(
+            id: documentSnapshot.documentID).fromMap(documentSnapshot.data));
       }
-      _state.produtoFunasaList.sort((a, b) => a.letra.compareTo(b.nome));
+      _state.produtoFunasaList.sort((a, b) => a.nome.compareTo(b.nome));
     }
     if (event is SelectProdutoFunasaIDEvent) {
-      _state.produtoFunasa = event.produtoFunasa;
+      _state.produtoFunasa =ProdutoFunasaID(id:event.produtoFunasa.id,nome:event.produtoFunasa.nome);
+            print(_state.produtoFunasa.toMap());
+
     }
 
     if (event is UpdateNomeEvent) {
