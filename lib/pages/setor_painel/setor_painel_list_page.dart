@@ -146,6 +146,9 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
                               }
                             : null,
                       ));
+                    }else{
+                      print('widget nulo: '+setorCensitarioPainel.id);
+                      item=Container();
                     }
 
                     listaWidget.add(Column(children: <Widget>[item]));

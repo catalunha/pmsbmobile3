@@ -9,11 +9,13 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PainelCrudBlocEvent {}
+
 class GetUsuarioIDEvent extends PainelCrudBlocEvent {
   final UsuarioModel usuarioID;
 
   GetUsuarioIDEvent(this.usuarioID);
 }
+
 class GetPainelEvent extends PainelCrudBlocEvent {
   final String painelId;
   GetPainelEvent({this.painelId});
@@ -30,6 +32,7 @@ class UpdateTipoEvent extends PainelCrudBlocEvent {
 }
 
 class SaveEvent extends PainelCrudBlocEvent {}
+
 class DeleteDocumentEvent extends PainelCrudBlocEvent {}
 
 class PainelCrudBlocState {
@@ -38,7 +41,7 @@ class PainelCrudBlocState {
   bool isDataValid = false;
   String nome;
   String tipo;
-    UsuarioModel usuarioID;
+  UsuarioModel usuarioID;
 
   void updateState() {
     nome = painel.nome;
@@ -67,13 +70,12 @@ class PainelCrudBloc {
   //Bloc
   PainelCrudBloc(
     this._firestore,
-        this._authBloc,
-
+    this._authBloc,
   ) {
     eventStream.listen(_mapEventToState);
-          _authBloc.perfil.listen((usuarioID) {
-        eventSink(GetUsuarioIDEvent(usuarioID));
-      });
+    _authBloc.perfil.listen((usuarioID) {
+      eventSink(GetUsuarioIDEvent(usuarioID));
+    });
   }
 
   void dispose() async {
@@ -85,24 +87,22 @@ class PainelCrudBloc {
 
   _validateData() {
     _state.isDataValid = true;
-    // if (_state.painel == null && _state.nome != null) {
-    //   _state.isDataValid = false;
-    // }
+    if (_state.nome == null || _state.nome.isEmpty || _state.tipo == null) {
+      _state.isDataValid = false;
+    }
   }
 
   _mapEventToState(PainelCrudBlocEvent event) async {
     if (event is GetPainelEvent) {
-      final docRef = _firestore
-          .collection(PainelModel.collection)
-          .document(event.painelId);
-_state.painelId=event.painelId;
+      final docRef = _firestore.collection(PainelModel.collection).document(event.painelId);
+      _state.painelId = event.painelId;
       final snap = await docRef.get();
       if (snap.exists) {
         _state.painel = PainelModel(id: snap.documentID).fromMap(snap.data);
         _state.updateState();
       }
     }
-        if (event is GetUsuarioIDEvent) {
+    if (event is GetUsuarioIDEvent) {
       //Atualiza estado com usuario logado
       _state.usuarioID = event.usuarioID;
     }
@@ -114,9 +114,7 @@ _state.painelId=event.painelId;
       print('radiovalue=${_state.tipo}');
     }
     if (event is SaveEvent) {
-      final docRef = _firestore
-          .collection(PainelModel.collection)
-          .document(_state.painelId);
+      final docRef = _firestore.collection(PainelModel.collection).document(_state.painelId);
       await docRef.setData({
         'nome': _state.nome,
         'tipo': _state.tipo,
@@ -126,11 +124,7 @@ _state.painelId=event.painelId;
     }
 
     if (event is DeleteDocumentEvent) {
-
-      _firestore
-          .collection(PainelModel.collection)
-          .document(_state.painel.id)
-          .delete();
+      _firestore.collection(PainelModel.collection).document(_state.painel.id).delete();
     }
 
     _validateData();

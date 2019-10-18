@@ -56,7 +56,7 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
               if (snapshot.hasData) {
-                if (snapshot.data.isDataValid) {
+                // if (snapshot.data.isDataValid) {
                   return ListView(
                     children: <Widget>[
                       Padding(
@@ -85,9 +85,9 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                       ),
                     ],
                   );
-                } else {
-                  return Text('Dados inválidos...');
-                }
+                // } else {
+                //   return Text('Dados inválidos...');
+                // }
               }
             }));
   }
