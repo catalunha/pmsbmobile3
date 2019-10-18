@@ -33,8 +33,7 @@ class _PainelListPageState extends State<PainelListPage> {
       ),
       body: StreamBuilder<PainelListBlocState>(
           stream: bloc.stateStream,
-          builder: (BuildContext context,
-              AsyncSnapshot<PainelListBlocState> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<PainelListBlocState> snapshot) {
             if (snapshot.hasError) {
               return Text("ERROR");
             }
@@ -58,11 +57,13 @@ class _PainelListPageState extends State<PainelListPage> {
                     icone = Icon(Icons.attach_file);
                   }
 
-                  listaWidget.add(Column(children: <Widget>[Card(
+                  listaWidget.add(Column(children: <Widget>[
+                    Card(
                         child: ListTile(
                       trailing: icone,
                       title: Text('${painel?.nome}'),
-                      subtitle: Text('Editado por: ${painel?.usuarioID?.nome}\nEm: ${painel?.modificado}\nid:${painel.id}'),
+                      subtitle:
+                          Text('Editado por: ${painel?.usuarioID?.nome}\nEm: ${painel?.modificado}\nid:${painel.id}'),
                       onTap: () {
                         Navigator.pushNamed(
                           context,
@@ -70,8 +71,12 @@ class _PainelListPageState extends State<PainelListPage> {
                           arguments: painel.id,
                         );
                       },
-                    ))]));
+                    ))
+                  ]));
                 }
+                listaWidget.add(Container(
+                  padding: EdgeInsets.only(top: 70),
+                ));
                 return ListView(
                   children: listaWidget,
                 );
