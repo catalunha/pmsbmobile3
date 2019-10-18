@@ -309,7 +309,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
-        title: Text('Questionarios2'),
+        title: Text('Questionários'),
         body: _bodyTodos(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
