@@ -1,41 +1,24 @@
 import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
 
-import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
+import 'package:pmsbmibile3/models/painel_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:rxdart/rxdart.dart';
 
 class PainelListBlocEvent {}
 
-class UpdateUsuarioIDEvent extends PainelListBlocEvent {
-  final UsuarioModel usuarioID;
-
-  UpdateUsuarioIDEvent(this.usuarioID);
-}
-
-class UpdateSetorCensitarioPainelIDEvent extends PainelListBlocEvent {}
-
-class UpdateRelatorioPdfMakeEvent extends PainelListBlocEvent {}
-class GerarRelatorioPdfMakeEvent extends PainelListBlocEvent {
-    final bool pdfGerar;
-    final bool pdfGerado;
-    final String tipo;
-
-  GerarRelatorioPdfMakeEvent({this.pdfGerar,this.pdfGerado,this.tipo});
-}
+class UpdatePainelListEvent extends PainelListBlocEvent {}
 
 class PainelListBlocState {
-  UsuarioModel usuarioID;
   bool isDataValid = false;
-  List<SetorCensitarioPainelModel> setorCensitarioPainelList = List<SetorCensitarioPainelModel>();
-  RelatorioPdfMakeModel relatorioPdfMakeModel;
+
+  List<PainelModel> painelList = List<PainelModel>();
 }
 
 
 class PainelListBloc {
   //Firestore
   final fsw.Firestore _firestore;
-  final _authBloc;
 
   //Eventos
   final _eventController = BehaviorSubject<PainelListBlocEvent>();
@@ -52,11 +35,9 @@ class PainelListBloc {
   Function get stateSink => _stateController.sink.add;
 
   //Bloc
-  PainelListBloc(this._firestore, this._authBloc) {
+  PainelListBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
-    _authBloc.perfil.listen((usuarioID) {
-      eventSink(UpdateUsuarioIDEvent(usuarioID));
-    });
+      eventSink(UpdatePainelListEvent());
   }
 
   void dispose() async {
@@ -68,70 +49,36 @@ class PainelListBloc {
 
   _validateData() {
     _state.isDataValid=false;
-        if (_state.setorCensitarioPainelList != null) {
-
+        if (_state.painelList != null) {
       _state.isDataValid = true;
     } else {
       _state.isDataValid = false;
     }
-    // if (_state.relatorioPdfMakeModel != null) {
-    //   _state.isDataValid = true;
-    // } else {
-    //   _state.isDataValid = false;
+
   }
 
   _mapEventToState(PainelListBlocEvent event) async {
-    if (event is UpdateUsuarioIDEvent) {
-      //Atualiza estado com usuario logado
-      _state.usuarioID = event.usuarioID;
-      eventSink(UpdateSetorCensitarioPainelIDEvent());
-      eventSink(UpdateRelatorioPdfMakeEvent());
-    }
 
-    if (event is UpdateSetorCensitarioPainelIDEvent) {
-      _state.setorCensitarioPainelList.clear();
+
+    if (event is UpdatePainelListEvent) {
+      _state.painelList.clear();
 
       final streamDocsRemetente = _firestore
-          .collection(SetorCensitarioPainelModel.collection)
-          .where("setorCensitarioID.id", isEqualTo: _state.usuarioID.setorCensitarioID.id)
+          .collection(PainelModel.collection)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) =>
-          snapDocs.documents.map((doc) => SetorCensitarioPainelModel(id: doc.documentID).fromMap(doc.data)).toList());
+          snapDocs.documents.map((doc) => PainelModel(id: doc.documentID).fromMap(doc.data)).toList());
 
-      snapListRemetente.listen((List<SetorCensitarioPainelModel> setorCensitarioPainelList) {
-        if (setorCensitarioPainelList.length > 1) {
-          setorCensitarioPainelList.sort((a, b) => a.painelID.nome.compareTo(b.painelID.nome));
+      snapListRemetente.listen((List<PainelModel> painelList) {
+        if (painelList.length > 1) {
+          painelList.sort((a, b) => a.nome.compareTo(b.nome));
         }
-        _state.setorCensitarioPainelList = setorCensitarioPainelList;
+        _state.painelList = painelList;
         if (!_stateController.isClosed) _stateController.add(_state);
-    print(_state.setorCensitarioPainelList.length);
-
+    print(_state.painelList.length);
       });
     }
-
-    if (event is UpdateRelatorioPdfMakeEvent) {
-      final streamDocRelatorio =
-          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id).snapshots();
-      streamDocRelatorio.listen((snapDoc) {
-        _state.relatorioPdfMakeModel = RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
-        if (!_stateController.isClosed) _stateController.add(_state);
-      });
-    }
-
-
-    if (event is GerarRelatorioPdfMakeEvent) {
-      final docRelatorio =
-          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id);
-      await docRelatorio.setData({
-        'pdfGerar': event.pdfGerar,
-        'pdfGerado': event.pdfGerado,
-        'tipo': event.tipo,
-        'collection': 'Usuario',
-        'document': _state.usuarioID.id,
-      }, merge: true);
-    }
-
 
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
+import 'package:pmsbmibile3/pages/painel/painel_list_page.dart';
 import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_concluida_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_crud_page.dart';
@@ -10,8 +12,8 @@ import 'package:pmsbmibile3/pages/controle/controle_tarefa_concluida_list_page.d
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_page.dart';
 import 'package:pmsbmibile3/pages/googledrive/usuario_googledrive_page.dart';
 import 'package:pmsbmibile3/pages/pages.dart';
-import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
-import 'package:pmsbmibile3/pages/painel/painel_list_page.dart';
+import 'package:pmsbmibile3/pages/setor_painel/setor_painel_crud_page.dart';
+import 'package:pmsbmibile3/pages/setor_painel/setor_painel_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_crud_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_page.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_preview_page.dart';
@@ -247,10 +249,15 @@ class MyApp extends StatelessWidget {
         },
 
         //Painel
-        "/painel/home": (context) => PainelListPage(authBloc),
+        "/painel/home": (context) => PainelListPage(),
         "/painel/crud": (context) {
           final settings = ModalRoute.of(context).settings;
           return PainelCrudPage(authBloc,settings.arguments);
+        },
+        "/setor_painel/home": (context) => SetorPainelListPage(authBloc),
+        "/setor_painel/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return SetorPainelCrudPage(authBloc,settings.arguments);
         },
 
 
