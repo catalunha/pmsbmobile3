@@ -621,7 +621,7 @@ class _ProdutoFunasaListaModalSelectState
 
   Widget _cardBuild(BuildContext context, ProdutoFunasaModel produto) {
     return ListTile(
-      title: Text('${produto.letra}. ${produto.descricao}'),
+      title: Text('${produto.id}. ${produto.descricao}'),
       subtitle: Text('${produto.nome}'),
       leading: IconButton(
         icon: Icon(Icons.check),
