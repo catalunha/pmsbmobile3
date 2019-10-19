@@ -30,8 +30,8 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
 
   @override
   void dispose() {
-    bloc.dispose();
     super.dispose();
+    bloc.dispose();
   }
 
   @override
