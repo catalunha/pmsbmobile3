@@ -169,7 +169,7 @@ class ControleTarefaListBloc {
       //   _state.setorList.add(SetorCensitarioModel(id: documentSnapshot.documentID).fromMap(documentSnapshot.data));
       // }
 
-      eventSink(UpdateRelatorioPdfMakeEvent());
+      // eventSink(UpdateRelatorioPdfMakeEvent());
     }
 
     if (event is VerAcaoGerouTarefaEvent) {
@@ -310,26 +310,26 @@ class ControleTarefaListBloc {
       }
     }
 
-    if (event is UpdateRelatorioPdfMakeEvent) {
-      final streamDocRelatorio =
-          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id).snapshots();
-      streamDocRelatorio.listen((snapDoc) {
-        _state.relatorioPdfMakeModel = RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
-        if (!_stateController.isClosed) _stateController.add(_state);
-      });
-    }
+    // if (event is UpdateRelatorioPdfMakeEvent) {
+    //   final streamDocRelatorio =
+    //       _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id).snapshots();
+    //   streamDocRelatorio.listen((snapDoc) {
+    //     _state.relatorioPdfMakeModel = RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
+    //     if (!_stateController.isClosed) _stateController.add(_state);
+    //   });
+    // }
 
-    if (event is GerarRelatorioPdfMakeEvent) {
-      final docRelatorio =
-          _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id);
-      await docRelatorio.setData({
-        'pdfGerar': event.pdfGerar,
-        'pdfGerado': event.pdfGerado,
-        'tipo': event.tipo,
-        'collection': event.collection,
-        'document': event.document,
-      }, merge: true);
-    }
+    // if (event is GerarRelatorioPdfMakeEvent) {
+    //   final docRelatorio =
+    //       _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id);
+    //   await docRelatorio.setData({
+    //     'pdfGerar': event.pdfGerar,
+    //     'pdfGerado': event.pdfGerado,
+    //     'tipo': event.tipo,
+    //     'collection': event.collection,
+    //     'document': event.document,
+    //   }, merge: true);
+    // }
 
     _validateDataDestinatario();
     _validateDataRemetente();

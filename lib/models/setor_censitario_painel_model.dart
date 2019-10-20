@@ -3,13 +3,13 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class SetorCensitarioPainelModel extends FirestoreModel {
   static final String collection = "SetorCensitarioPainel";
+
   SetorCensitarioID setorCensitarioID;
   PainelID painelID;
   UsuarioID usuarioID;
-
   String observacao;
   dynamic valor;
-  DateTime modificada;
+  dynamic modificada;
 
   SetorCensitarioPainelModel({String id}) : super(id);
 
