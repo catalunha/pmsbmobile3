@@ -128,7 +128,7 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
             return Text('Sem produtos');
           }
           Widget texto;
-          if (snapshot.data.usuarioID == null) {
+          if (snapshot.data.usuarioQVaiResponder == null) {
             texto = Text('Destinatário não selecionado');
           } else {
             texto = Text('${snapshot.data?.usuarioQVaiResponder?.nome}');
