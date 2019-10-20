@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/models/painel_model.dart';
 import 'package:pmsbmibile3/models/produto_funasa_model.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
-import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
-    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class PainelListPage extends StatefulWidget {
@@ -102,162 +99,41 @@ class _PainelListPageState extends State<PainelListPage> {
               List<Widget> listaWidget = List<Widget>();
               List<PainelInfo> painelList = List<PainelInfo>();
               String descricaoProdutoTab;
-              Map<String, List<PainelInfo>> painelEixo =
-                  Map<String, List<PainelInfo>>();
-              ProdutoFunasaModel produtoFunasa =
-                  snapshot.data.produtoMap[produto];
-
-              descricaoProdutoTab =
-                  '${produtoFunasa?.id}. ${produtoFunasa?.descricao}';
               if (produto == '*') {
-                descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
-
-                painelList.addAll(snapshot.data.paneilSemDPE['*']);
-                // print('paneilSemDPE: ${snapshot.data.paneilSemDPE}');
-                // print('painelList: ${painelList}');
-                if (painelList != null) {
-                  for (var painelInfo in painelList) {
-                    Widget icone;
-                    if (painelInfo.painel.tipo == 'texto') {
-                      icone = Icon(Icons.text_fields);
-                    } else if (painelInfo.painel.tipo == 'numero') {
-                      icone = Icon(Icons.looks_one);
-                    } else if (painelInfo.painel.tipo == 'booleano') {
-                      icone = Icon(Icons.thumbs_up_down);
-                    } else if (painelInfo.painel.tipo == 'urlimagem') {
-                      icone = Icon(Icons.image);
-                    } else if (painelInfo.painel.tipo == 'urlarquivo') {
-                      icone = Icon(Icons.attach_file);
-                    }
-
-                    listaWidget.add(Column(children: <Widget>[
-                      Card(
-                          // margin: EdgeInsets.only(left: 20),
-                          child: ListTile(
-                        selected: painelInfo.destacar == null
-                            ? false
-                            : painelInfo.destacar,
-                        title: Text('${painelInfo.painel?.nome}'),
-                        subtitle: Text(
-                            'Destinatário: ${painelInfo.painel?.usuarioQVaiResponder?.nome}\nProduto: ${painelInfo.painel?.produto?.nome}\nEixo: ${painelInfo.painel?.eixo?.nome}\nEditado por: ${painelInfo.painel?.usuarioQEditou?.nome}\nEm: ${painelInfo.painel?.modificado}\nid:${painelInfo.painel.id}'),
-                        trailing: icone,
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            "/painel/crud",
-                            arguments: painelInfo.painel.id,
-                          );
-                        },
-                      ))
-                    ]));
-                  }
-                }
+                descricaoProdutoTab =
+                    'Itens sem Destinatario, Produto ou eixo.';
+                if (snapshot.data.painelTreeProdutoEixo['*'] != null)
+                  painelList = snapshot.data.painelTreeProdutoEixo['*']['*'];
+                popularListaWidget(painelList, listaWidget, context);
               } else {
-                if (snapshot.data.painelPorProdutoEixo[produto] != null) {
-                  // painelList = snapshot.data.painelMapList[produto];
+                descricaoProdutoTab =
+                    '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
 
-                  painelEixo = snapshot.data.painelPorProdutoEixo[produto];
-
-                  for (var eixo in painelEixo.entries) {
-                    // print(
-                    //     'eixo.key: ${snapshot.data.eixoMap[eixo.key].eixo.nome}-${snapshot.data.eixoMap[eixo.key].expandir}');
+                if (snapshot.data.painelTreeProdutoEixo[produto] != null) {
+                  for (var eixo in snapshot
+                      .data.painelTreeProdutoEixo[produto].keys
+                      .toList()) {
                     listaWidget.add(Column(children: <Widget>[
-                      Card(
-                          color: snapshot.data.eixoMap[eixo.key].expandir
-                              ? Colors.deepOrange
-                              : Colors.deepPurple,
-                          child: ListTile(
-                            // selected: true,
-                            trailing: snapshot.data.eixoMap[eixo.key].expandir
-                                ? Icon(Icons.folder_open)
-                                : Icon(Icons.folder),
-                            title: Text(
-                                '${snapshot.data.eixoMap[eixo.key].eixo.nome}'),
-                            onTap: () {
-                              bloc.eventSink(
-                                  UpdateExpandeRetraiEixoMapEvent(eixo.key));
-                            },
-                          ))
+                      eixoCard(snapshot.data.eixoInfoMap[eixo])
                     ]));
 
-                    if (snapshot.data.eixoMap[eixo.key].expandir) {
-                      painelList = [];
-
+                    if (snapshot.data.eixoInfoMap[eixo].expandir) {
                       painelList =
-                          snapshot.data.painelPorProdutoEixo[produto][eixo.key];
-
-                      // print('painelEixo: ${painelEixo[eixo.key]}');
-                      // print('painelList: ${painelList}');
-
-                      if (painelList != null) {
-                        for (var painelInfo in painelList) {
-                          Widget icone;
-                          if (painelInfo.painel.tipo == 'texto') {
-                            icone = Icon(Icons.text_fields);
-                          } else if (painelInfo.painel.tipo == 'numero') {
-                            icone = Icon(Icons.looks_one);
-                          } else if (painelInfo.painel.tipo == 'booleano') {
-                            icone = Icon(Icons.thumbs_up_down);
-                          } else if (painelInfo.painel.tipo == 'urlimagem') {
-                            icone = Icon(Icons.image);
-                          } else if (painelInfo.painel.tipo == 'urlarquivo') {
-                            icone = Icon(Icons.attach_file);
-                          }
-
-                          listaWidget.add(Column(children: <Widget>[
-                            Card(
-                                margin: EdgeInsets.only(left: 20),
-                                child: ListTile(
-                                  selected: painelInfo.destacar == null
-                                      ? false
-                                      : painelInfo.destacar,
-                                  title: Text('${painelInfo.painel?.nome}'),
-                                  subtitle: Text(
-                                      'Destinatário: ${painelInfo.painel?.usuarioQVaiResponder?.nome}\nProduto: ${painelInfo.painel?.produto?.nome}\nEixo: ${painelInfo.painel?.eixo?.nome}\nEditado por: ${painelInfo.painel?.usuarioQEditou?.nome}\nEm: ${painelInfo.painel?.modificado}\nid:${painelInfo.painel.id}'),
-                                  trailing: icone,
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      "/painel/crud",
-                                      arguments: painelInfo.painel.id,
-                                    );
-                                  },
-                                ))
-                          ]));
-                        }
-                      }
+                          snapshot.data.painelTreeProdutoEixo[produto][eixo];
+                      popularListaWidget(painelList, listaWidget, context);
                     }
                   }
                 }
               }
-              // if (painelList != null) {
+
               listaWidget.add(Container(
                 padding: EdgeInsets.only(top: 70),
               ));
-              // return ListView(
-              //   children: listaWidget,
-              // );
+
               return Column(children: <Widget>[
-                Expanded(
-                  flex: 1, child: Center(child: Text('${descricaoProdutoTab}')),
-                  // child: ListTile(
-                  //   trailing: Text('${produto}'),
-                  //   title: Text('${descricaoProdutoTab}'),
-                  // ),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: listaWidget != null
-                      ? ListView(
-                          children: listaWidget,
-                        )
-                      : Container(),
-                )
+                _descricaoAba(descricaoProdutoTab),
+                _bodyAba(listaWidget)
               ]);
-              // }
-              //  else {
-              //   return Text('Nenhum item para este produto...');
-              // }
             } else {
               return Text('Dados inválidos...');
             }
@@ -265,5 +141,86 @@ class _PainelListPageState extends State<PainelListPage> {
         });
   }
 
+  Expanded _bodyAba(List<Widget> listaWidget) {
+    return Expanded(
+        flex: 10,
+        child: listaWidget == null
+            ? Container(
+                child: Text('Sem itens de painel'),
+              )
+            : ListView(
+                children: listaWidget,
+              ));
+  }
 
+  Expanded _descricaoAba(String descricaoProdutoTab) {
+    return Expanded(
+      flex: 1,
+      child: Center(child: Text('${descricaoProdutoTab}')),
+    );
+  }
+
+  void popularListaWidget(List<PainelInfo> painelList, List<Widget> listaWidget,
+      BuildContext context) {
+    if (painelList != null) {
+      for (var painelInfo in painelList) {
+        Widget icone;
+        icone = _defineTipoDeIconeDoItem(painelInfo.painel.tipo);
+
+        listaWidget.add(
+            Column(children: <Widget>[painelCard(painelInfo, icone, context)]));
+      }
+    }
+  }
+
+  Card eixoCard(EixoInfo eixoInfo) {
+    return Card(
+        color: eixoInfo.expandir ? Colors.deepOrange : Colors.deepPurple,
+        child: ListTile(
+          // selected: true,
+          trailing:
+              eixoInfo.expandir ? Icon(Icons.folder_open) : Icon(Icons.folder),
+          title: Text('${eixoInfo.eixo.nome}'),
+          onTap: () {
+            bloc.eventSink(UpdateExpandeRetraiEixoMapEvent(eixoInfo.eixo.id));
+          },
+        ));
+  }
+
+  Card painelCard(PainelInfo painelInfo, Widget icone, BuildContext context) {
+    return Card(
+        // margin: EdgeInsets.only(left: 20),
+        child: ListTile(
+      selected: painelInfo.destacarSeDestinadoAoUsuarioLogado == null
+          ? false
+          : painelInfo.destacarSeDestinadoAoUsuarioLogado,
+      title: Text('${painelInfo.painel?.nome}'),
+      subtitle: Text(
+          'Destinatário: ${painelInfo.painel?.usuarioQVaiResponder?.nome}\nProduto: ${painelInfo.painel?.produto?.nome}\nEixo: ${painelInfo.painel?.eixo?.nome}\nEditado por: ${painelInfo.painel?.usuarioQEditou?.nome}\nEm: ${painelInfo.painel?.modificado}\nid:${painelInfo.painel.id}'),
+      trailing: icone,
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          "/painel/crud",
+          arguments: painelInfo.painel.id,
+        );
+      },
+    ));
+  }
+
+  Widget _defineTipoDeIconeDoItem(String tipo) {
+    if (tipo == 'texto') {
+      return Icon(Icons.text_fields);
+    } else if (tipo == 'numero') {
+      return Icon(Icons.looks_one);
+    } else if (tipo == 'booleano') {
+      return Icon(Icons.thumbs_up_down);
+    } else if (tipo == 'urlimagem') {
+      return Icon(Icons.image);
+    } else if (tipo == 'urlarquivo') {
+      return Icon(Icons.attach_file);
+    } else {
+      return Text('?');
+    }
+  }
 }

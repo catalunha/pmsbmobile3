@@ -1,13 +1,9 @@
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/produto_funasa_model.dart';
-import 'package:pmsbmibile3/models/propriedade_for_model.dart';
-import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
-
 import 'package:pmsbmibile3/models/painel_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:rxdart/rxdart.dart';
-import 'dart:convert';
 
 class PainelListBlocEvent {}
 
@@ -19,9 +15,9 @@ class UpdateUsuarioIDEvent extends PainelListBlocEvent {
 
 class UpdatePainelListEvent extends PainelListBlocEvent {}
 
-class UpdateProdutoEvent extends PainelListBlocEvent {}
+class UpdateProdutoListEvent extends PainelListBlocEvent {}
 
-class UpdateEixoMapEvent extends PainelListBlocEvent {}
+class UpdateEixoListEvent extends PainelListBlocEvent {}
 
 class UpdateExpandeRetraiEixoMapEvent extends PainelListBlocEvent {
   final String eixoID;
@@ -29,97 +25,64 @@ class UpdateExpandeRetraiEixoMapEvent extends PainelListBlocEvent {
   UpdateExpandeRetraiEixoMapEvent(this.eixoID);
 }
 
-class EixoMap {
+class EixoInfo {
   final EixoModel eixo;
   bool expandir;
-  EixoMap({this.eixo, this.expandir});
+  EixoInfo({this.eixo, this.expandir});
 }
 
 class PainelInfo {
   final PainelModel painel;
-  bool destacar = false;
-  PainelInfo({this.painel, this.destacar});
+  bool destacarSeDestinadoAoUsuarioLogado = false;
+  PainelInfo({this.painel, this.destacarSeDestinadoAoUsuarioLogado});
 }
 
 class PainelListBlocState {
   bool isDataValid = false;
-  UsuarioModel usuarioID;
+  UsuarioModel usuarioLogado;
 
   List<PainelModel> painelList = List<PainelModel>();
-  Map<String, List<PainelInfo>> paneilSemDPE = Map<String, List<PainelInfo>>();
 
   Map<String, ProdutoFunasaModel> produtoMap =
       Map<String, ProdutoFunasaModel>();
 
-  Map<String, EixoMap> eixoMap = Map<String, EixoMap>();
+  Map<String, EixoInfo> eixoInfoMap = Map<String, EixoInfo>();
 
-  Map<String, Map<String, List<PainelInfo>>> painelPorProdutoEixo =
+  Map<String, Map<String, List<PainelInfo>>> painelTreeProdutoEixo =
       Map<String, Map<String, List<PainelInfo>>>();
 
-/*
-A: {
-  adm:[
-    painelInfo1,
-    painelInfo2,
-  ]
-  rs:[
-    painelInfo1,
-    painelInfo2,
-  ]
-},
-A: {
-  adm:[
-    painelInfo1,
-    painelInfo2,
-  ],
-  aa:[
-    painelInfo1,
-    painelInfo2,
-  ]
-}
-*/
-
-  updateProdutoEixoMap() {
-    painelPorProdutoEixo.clear();
-    paneilSemDPE.clear();
-    paneilSemDPE["*"] = [];
-
+  updateProdutoEixoMap(List<PainelModel> painelList) {
+    painelTreeProdutoEixo.clear();
+    String _produto;
+    String _eixo;
+    bool _destacarSeDestinadoAoUsuarioLogado;
     for (PainelModel painel in painelList) {
       if (painel?.produto?.id != null &&
           painel?.eixo?.id != null &&
           painel.produto.id.isNotEmpty &&
           painel.eixo.id.isNotEmpty) {
-        // print('painel: ${painel.produto.id} | ${painel.eixo.id}| ${painel.nome}');
-        if (painelPorProdutoEixo[painel.produto.id] == null) {
-          painelPorProdutoEixo[painel.produto.id] = {painel.eixo.id: []};
-        }
-        if (painelPorProdutoEixo[painel.produto.id][painel.eixo.id] == null) {
-          painelPorProdutoEixo[painel.produto.id][painel.eixo.id] = [];
-        }
-        painelPorProdutoEixo[painel.produto.id][painel.eixo.id].add(PainelInfo(
-            painel: painel,
-            destacar: painel?.usuarioQVaiResponder?.id == usuarioID?.id));
-        // print('painelPorProdutoEixo: ${painelPorProdutoEixo}');
+        _produto = painel.produto.id;
+        _eixo = painel.eixo.id;
+        _destacarSeDestinadoAoUsuarioLogado =
+            painel?.usuarioQVaiResponder?.id == usuarioLogado?.id;
       } else {
-        if (painel.eixo == null || painel.produto == null)
-          paneilSemDPE["*"].add(PainelInfo(painel: painel, destacar: false));
-        // print('painel: ${painel.id}');
+        _produto = '*';
+        _eixo = '*';
+        _destacarSeDestinadoAoUsuarioLogado = false;
       }
+      if (painelTreeProdutoEixo[_produto] == null) {
+        painelTreeProdutoEixo[_produto] = {_eixo: []};
+      }
+      if (painelTreeProdutoEixo[_produto][_eixo] == null) {
+        painelTreeProdutoEixo[_produto][_eixo] = [];
+      }
+      painelTreeProdutoEixo[_produto][_eixo].add(PainelInfo(
+          painel: painel,
+          destacarSeDestinadoAoUsuarioLogado:
+              _destacarSeDestinadoAoUsuarioLogado));
       // print('painelPorProdutoEixo: ${paneilSemDPE}');
     }
   }
-
-  // updateProdutoMap() {
-  //   painelMapList.clear();
-  //   for (var painel in painelList) {
-  //     if (painel?.produto?.id != null) {
-  //       if (painelMapList[painel.produto.id] == null)
-  //         painelMapList[painel.produto.id] = [];
-
-  //       painelMapList[painel.produto.id].add(painel);
-  //     }
-  //   }
-  // }
 
   updateProdutoToMap(List<ProdutoFunasaModel> produtoList) {
     produtoMap.clear();
@@ -129,9 +92,9 @@ A: {
   }
 
   updateEixoToMap(List<EixoModel> eixoList) {
-    eixoMap.clear();
+    eixoInfoMap.clear();
     for (var eixo in eixoList) {
-      eixoMap[eixo.id] = EixoMap(eixo: eixo, expandir: false);
+      eixoInfoMap[eixo.id] = EixoInfo(eixo: eixo, expandir: false);
     }
   }
 }
@@ -160,8 +123,8 @@ class PainelListBloc {
       eventSink(UpdateUsuarioIDEvent(usuarioID));
     });
     eventSink(UpdatePainelListEvent());
-    eventSink(UpdateProdutoEvent());
-    eventSink(UpdateEixoMapEvent());
+    eventSink(UpdateProdutoListEvent());
+    eventSink(UpdateEixoListEvent());
   }
 
   void dispose() async {
@@ -179,20 +142,18 @@ class PainelListBloc {
     if (_state.produtoMap != null) {
       _state.isDataValid = true;
     }
-    if (_state.eixoMap != null) {
+    if (_state.eixoInfoMap != null) {
       _state.isDataValid = true;
     }
-    if (_state.painelPorProdutoEixo != null) {
+    if (_state.painelTreeProdutoEixo != null) {
       _state.isDataValid = true;
     }
-    if (_state.paneilSemDPE != null) {
-      _state.isDataValid = true;
-    }
+
   }
 
   _mapEventToState(PainelListBlocEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
-      _state.usuarioID = event.usuarioID;
+      _state.usuarioLogado = event.usuarioID;
     }
     if (event is UpdatePainelListEvent) {
       _state.painelList.clear();
@@ -209,12 +170,12 @@ class PainelListBloc {
         if (painelList.length > 1) {
           painelList.sort((a, b) => a.nome.compareTo(b.nome));
         }
-        _state.painelList = painelList;
-        _state.updateProdutoEixoMap();
+        // _state.painelList = painelList;
+        _state.updateProdutoEixoMap(painelList);
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
-    if (event is UpdateProdutoEvent) {
+    if (event is UpdateProdutoListEvent) {
       _state.produtoMap.clear();
 
       final streamDocsRemetente =
@@ -227,12 +188,15 @@ class PainelListBloc {
           .toList());
 
       snapListRemetente.listen((List<ProdutoFunasaModel> produtoList) {
+        if (produtoList.length > 1) {
+          produtoList.sort((a, b) => a.id.compareTo(b.id));
+        }
         _state.updateProdutoToMap(produtoList);
         if (!_stateController.isClosed) _stateController.add(_state);
       });
     }
-    if (event is UpdateEixoMapEvent) {
-      _state.eixoMap.clear();
+    if (event is UpdateEixoListEvent) {
+      _state.eixoInfoMap.clear();
 
       final streamDocsRemetente =
           _firestore.collection(EixoModel.collection).snapshots();
@@ -248,9 +212,8 @@ class PainelListBloc {
       });
     }
     if (event is UpdateExpandeRetraiEixoMapEvent) {
-      _state.eixoMap[event.eixoID].expandir =
-          !_state.eixoMap[event.eixoID].expandir;
-      if (!_stateController.isClosed) _stateController.add(_state);
+      _state.eixoInfoMap[event.eixoID].expandir =
+          !_state.eixoInfoMap[event.eixoID].expandir;
     }
 
     _validateData();
@@ -258,3 +221,26 @@ class PainelListBloc {
     print('event.runtimeType em PainelListBloc  = ${event.runtimeType}');
   }
 }
+
+/*
+A: {
+  adm:[
+    painelInfo1,
+    painelInfo2,
+  ]
+  rs:[
+    painelInfo1,
+    painelInfo2,
+  ]
+},
+A: {
+  adm:[
+    painelInfo1,
+    painelInfo2,
+  ],
+  aa:[
+    painelInfo1,
+    painelInfo2,
+  ]
+}
+*/

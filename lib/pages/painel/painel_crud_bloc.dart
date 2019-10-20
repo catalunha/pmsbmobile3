@@ -203,7 +203,7 @@ class PainelCrudBloc {
         _state.produtoFunasaList.add(ProdutoFunasaModel(
             id: documentSnapshot.documentID).fromMap(documentSnapshot.data));
       }
-      _state.produtoFunasaList.sort((a, b) => a.nome.compareTo(b.nome));
+      _state.produtoFunasaList.sort((a, b) => a.id.compareTo(b.id));
     }
     if (event is SelectProdutoFunasaIDEvent) {
       _state.produtoFunasa =ProdutoFunasaID(id:event.produtoFunasa.id,nome:event.produtoFunasa.nome);
