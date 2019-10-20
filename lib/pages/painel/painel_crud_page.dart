@@ -621,10 +621,10 @@ class _ProdutoFunasaListaModalSelectState
 
   Widget _cardBuild(BuildContext context, ProdutoFunasaModel produto) {
     return ListTile(
-      title: Text('${produto.id}. ${produto.descricao}'),
+      title: Text('${produto.descricao}'),
       subtitle: Text('${produto.nome}'),
       leading: IconButton(
-        icon: Icon(Icons.check),
+        icon: Text('${produto.id}'),
         onPressed: () {
           bloc.eventSink(SelectProdutoFunasaIDEvent(produto));
           Navigator.pop(context);
