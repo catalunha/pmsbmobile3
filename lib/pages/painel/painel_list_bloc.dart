@@ -148,7 +148,6 @@ class PainelListBloc {
     if (_state.painelTreeProdutoEixo != null) {
       _state.isDataValid = true;
     }
-
   }
 
   _mapEventToState(PainelListBlocEvent event) async {
@@ -212,8 +211,9 @@ class PainelListBloc {
       });
     }
     if (event is UpdateExpandeRetraiEixoMapEvent) {
-      _state.eixoInfoMap[event.eixoID].expandir =
-          !_state.eixoInfoMap[event.eixoID].expandir;
+      if (_state.eixoInfoMap[event.eixoID].expandir != null)
+        _state.eixoInfoMap[event.eixoID].expandir =
+            !_state.eixoInfoMap[event.eixoID].expandir;
     }
 
     _validateData();

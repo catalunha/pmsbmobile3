@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/produto_funasa_model.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
@@ -45,13 +46,13 @@ class _PainelListPageState extends State<PainelListPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: myTabs.length,
-      child: Scaffold(
-        appBar: AppBar(
+      child: DefaultScaffold(
+        // appBar: AppBar(
           title: Text('Adicionar/Editar itens do painel'),
           bottom: TabBar(
             tabs: myTabs,
           ),
-        ),
+        // ),
         body: _body(context),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -117,7 +118,7 @@ class _PainelListPageState extends State<PainelListPage> {
                       eixoCard(snapshot.data.eixoInfoMap[eixo])
                     ]));
 
-                    if (snapshot.data.eixoInfoMap[eixo].expandir) {
+                    if (snapshot.data.eixoInfoMap[eixo].expandir!=null && snapshot.data.eixoInfoMap[eixo].expandir) {
                       painelList =
                           snapshot.data.painelTreeProdutoEixo[produto][eixo];
                       popularListaWidget(painelList, listaWidget, context);
@@ -175,11 +176,11 @@ class _PainelListPageState extends State<PainelListPage> {
 
   Card eixoCard(EixoInfo eixoInfo) {
     return Card(
-        color: eixoInfo.expandir ? Colors.deepOrange : Colors.deepPurple,
+        color: eixoInfo.expandir!=null && eixoInfo.expandir ? Colors.deepOrange : Colors.deepPurple,
         child: ListTile(
           // selected: true,
           trailing:
-              eixoInfo.expandir ? Icon(Icons.folder_open) : Icon(Icons.folder),
+              eixoInfo.expandir!=null && eixoInfo.expandir ? Icon(Icons.folder_open) : Icon(Icons.folder),
           title: Text('${eixoInfo.eixo.nome}'),
           onTap: () {
             bloc.eventSink(UpdateExpandeRetraiEixoMapEvent(eixoInfo.eixo.id));
