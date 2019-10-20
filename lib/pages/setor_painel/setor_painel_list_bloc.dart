@@ -1,3 +1,5 @@
+import 'package:pmsbmibile3/models/eixo_model.dart';
+import 'package:pmsbmibile3/models/produto_funasa_model.dart';
 import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
 
 import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
@@ -8,29 +10,96 @@ import 'package:rxdart/rxdart.dart';
 class SetorPainelListBlocEvent {}
 
 class UpdateUsuarioIDEvent extends SetorPainelListBlocEvent {
-  final UsuarioModel usuarioID;
+  final UsuarioModel usuarioLogado;
 
-  UpdateUsuarioIDEvent(this.usuarioID);
+  UpdateUsuarioIDEvent(this.usuarioLogado);
 }
 
-class UpdateSetorCensitarioPainelIDEvent extends SetorPainelListBlocEvent {}
+class UpdateSetorPainelIDEvent extends SetorPainelListBlocEvent {}
 
-class UpdateRelatorioPdfMakeEvent extends SetorPainelListBlocEvent {}
+class UpdateProdutoListEvent extends SetorPainelListBlocEvent {}
 
-class GerarRelatorioPdfMakeEvent extends SetorPainelListBlocEvent {
-  final bool pdfGerar;
-  final bool pdfGerado;
-  final String tipo;
+class UpdateEixoListEvent extends SetorPainelListBlocEvent {}
 
-  GerarRelatorioPdfMakeEvent({this.pdfGerar, this.pdfGerado, this.tipo});
+class UpdateExpandeRetraiEixoMapEvent extends SetorPainelListBlocEvent {
+  final String eixoID;
+
+  UpdateExpandeRetraiEixoMapEvent(this.eixoID);
+}
+
+class EixoInfo {
+  final EixoModel eixo;
+  bool expandir=false;
+  EixoInfo({this.eixo, this.expandir});
+}
+
+class SetorPainelInfo {
+  final SetorCensitarioPainelModel setorPainel;
+  bool destacarSeDestinadoAoUsuarioLogado = false;
+  SetorPainelInfo({this.setorPainel, this.destacarSeDestinadoAoUsuarioLogado});
 }
 
 class SetorPainelListBlocState {
-  UsuarioModel usuarioID;
+  UsuarioModel usuarioLogado;
   bool isDataValid = false;
-  List<SetorCensitarioPainelModel> setorCensitarioPainelList =
+  List<SetorCensitarioPainelModel> setorPainelList =
       List<SetorCensitarioPainelModel>();
-  RelatorioPdfMakeModel relatorioPdfMakeModel;
+
+  Map<String, ProdutoFunasaModel> produtoMap =
+      Map<String, ProdutoFunasaModel>();
+
+  Map<String, EixoInfo> eixoInfoMap = Map<String, EixoInfo>();
+
+  Map<String, Map<String, List<SetorPainelInfo>>> setorPainelTreeProdutoEixo =
+      Map<String, Map<String, List<SetorPainelInfo>>>();
+
+  updateSetorPainelTreeProdutoEixo(
+      List<SetorCensitarioPainelModel> painelList) {
+    setorPainelTreeProdutoEixo.clear();
+    String _produto;
+    String _eixo;
+    bool _destacarSeDestinadoAoUsuarioLogado;
+    for (SetorCensitarioPainelModel painel in painelList) {
+      if (painel?.produto?.id != null &&
+          painel?.eixo?.id != null &&
+          painel.produto.id.isNotEmpty &&
+          painel.eixo.id.isNotEmpty) {
+        _produto = painel.produto.id;
+        _eixo = painel.eixo.id;
+        _destacarSeDestinadoAoUsuarioLogado =
+            painel?.usuarioQVaiResponder?.id == usuarioLogado?.id;
+      } else {
+        _produto = '*';
+        _eixo = '*';
+        _destacarSeDestinadoAoUsuarioLogado = false;
+      }
+      if (setorPainelTreeProdutoEixo[_produto] == null) {
+        setorPainelTreeProdutoEixo[_produto] = {_eixo: []};
+      }
+      if (setorPainelTreeProdutoEixo[_produto][_eixo] == null) {
+        setorPainelTreeProdutoEixo[_produto][_eixo] = [];
+      }
+      setorPainelTreeProdutoEixo[_produto][_eixo].add(SetorPainelInfo(
+          setorPainel: painel,
+          destacarSeDestinadoAoUsuarioLogado:
+              _destacarSeDestinadoAoUsuarioLogado));
+      // print('painelPorProdutoEixo: ${paneilSemDPE}');
+    }
+  }
+
+  updateProdutoToMap(List<ProdutoFunasaModel> produtoList) {
+    produtoMap.clear();
+    for (var produto in produtoList) {
+      produtoMap[produto.id] = produto;
+    }
+  }
+
+  updateEixoToMap(List<EixoModel> eixoList) {
+    eixoInfoMap.clear();
+    for (var eixo in eixoList) {
+      eixoInfoMap[eixo.id] = EixoInfo(eixo: eixo, expandir: false);
+    }
+  }
 }
 
 class SetorPainelListBloc {
@@ -53,9 +122,11 @@ class SetorPainelListBloc {
   //Bloc
   SetorPainelListBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
-    _authBloc.perfil.listen((usuarioID) {
-      eventSink(UpdateUsuarioIDEvent(usuarioID));
-      eventSink(UpdateSetorCensitarioPainelIDEvent());
+    _authBloc.perfil.listen((usuarioLogado) {
+      eventSink(UpdateUsuarioIDEvent(usuarioLogado));
+      eventSink(UpdateSetorPainelIDEvent());
+      eventSink(UpdateProdutoListEvent());
+      eventSink(UpdateEixoListEvent());
     });
   }
 
@@ -68,29 +139,23 @@ class SetorPainelListBloc {
 
   _validateData() {
     _state.isDataValid = false;
-    if (_state.setorCensitarioPainelList != null) {
+    if (_state.setorPainelList != null) {
       _state.isDataValid = true;
-    } else {
-      _state.isDataValid = false;
     }
-    // if (_state.relatorioPdfMakeModel != null) {
-    //   _state.isDataValid = true;
-    // } else {
-    //   _state.isDataValid = false;
   }
 
   _mapEventToState(SetorPainelListBlocEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
-      _state.usuarioID = event.usuarioID;
+      _state.usuarioLogado = event.usuarioLogado;
     }
 
-    if (event is UpdateSetorCensitarioPainelIDEvent) {
-      _state.setorCensitarioPainelList.clear();
+    if (event is UpdateSetorPainelIDEvent) {
+      _state.setorPainelList.clear();
 
       final streamDocsRemetente = _firestore
           .collection(SetorCensitarioPainelModel.collection)
           .where("setorCensitarioID.id",
-              isEqualTo: _state.usuarioID.setorCensitarioID.id)
+              isEqualTo: _state.usuarioLogado.setorCensitarioID.id)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
@@ -100,38 +165,60 @@ class SetorPainelListBloc {
           .toList());
 
       snapListRemetente
-          .listen((List<SetorCensitarioPainelModel> setorCensitarioPainelList) {
-        if (setorCensitarioPainelList.length > 1) {
-          setorCensitarioPainelList
+          .listen((List<SetorCensitarioPainelModel> setorPainelList) {
+        if (setorPainelList.length > 1) {
+          setorPainelList
               .sort((a, b) => a.painelID.nome.compareTo(b.painelID.nome));
         }
-        _state.setorCensitarioPainelList = setorCensitarioPainelList;
+        _state.setorPainelList = setorPainelList;
+        _state.updateSetorPainelTreeProdutoEixo(setorPainelList);
+
         if (!_stateController.isClosed) _stateController.add(_state);
-        print(_state.setorCensitarioPainelList.length);
+        print(_state.setorPainelList.length);
       });
     }
 
-    // if (event is UpdateRelatorioPdfMakeEvent) {
-    //   final streamDocRelatorio =
-    //       _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id).snapshots();
-    //   streamDocRelatorio.listen((snapDoc) {
-    //     _state.relatorioPdfMakeModel = RelatorioPdfMakeModel(id: snapDoc.documentID).fromMap(snapDoc.data);
-    //     if (!_stateController.isClosed) _stateController.add(_state);
-    //   });
-    // }
+    if (event is UpdateProdutoListEvent) {
+      _state.produtoMap.clear();
 
-    // if (event is GerarRelatorioPdfMakeEvent) {
-    //   final docRelatorio =
-    //       _firestore.collection(RelatorioPdfMakeModel.collectionFirestore).document(_state.usuarioID.id);
-    //   await docRelatorio.setData({
-    //     'pdfGerar': event.pdfGerar,
-    //     'pdfGerado': event.pdfGerado,
-    //     'tipo': event.tipo,
-    //     'collection': 'Usuario',
-    //     'document': _state.usuarioID.id,
-    //   }, merge: true);
-    // }
+      final streamDocsRemetente =
+          _firestore.collection(ProdutoFunasaModel.collection).snapshots();
 
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map(
+              (doc) => ProdutoFunasaModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
+
+      snapListRemetente.listen((List<ProdutoFunasaModel> produtoList) {
+        if (produtoList.length > 1) {
+          produtoList.sort((a, b) => a.id.compareTo(b.id));
+        }
+        _state.updateProdutoToMap(produtoList);
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is UpdateEixoListEvent) {
+      _state.eixoInfoMap.clear();
+
+      final streamDocsRemetente =
+          _firestore.collection(EixoModel.collection).snapshots();
+
+      final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+          .documents
+          .map((doc) => EixoModel(id: doc.documentID).fromMap(doc.data))
+          .toList());
+
+      snapListRemetente.listen((List<EixoModel> eixoList) {
+        _state.updateEixoToMap(eixoList);
+        if (!_stateController.isClosed) _stateController.add(_state);
+      });
+    }
+    if (event is UpdateExpandeRetraiEixoMapEvent) {
+      if(_state.eixoInfoMap[event.eixoID].expandir!=null)
+      _state.eixoInfoMap[event.eixoID].expandir =
+          !_state.eixoInfoMap[event.eixoID].expandir;
+    }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em SetorPainelListBloc  = ${event.runtimeType}');

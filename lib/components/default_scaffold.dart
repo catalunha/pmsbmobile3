@@ -289,7 +289,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
               ),
             if (Recursos.instance.plataforma == 'android')
               ListTile(
-                title: Text('Perfil'),
+                title: Text('Itens do Perfil'),
                 onTap: () {
                   //noticias perfil
                   Navigator.pop(context);
@@ -297,6 +297,18 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                 },
                 leading: Icon(Icons.person),
               ),
+                          Divider(
+              color: Colors.black45,
+            ),
+            ListTile(
+              title: Text('Itens do Painel'),
+              onTap: () {
+                //noticias arquivadas
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/painel/home");
+              },
+              leading: Icon(Icons.table_chart),
+            ),
             // Divider(
             //   color: Colors.black45,
             // ),
