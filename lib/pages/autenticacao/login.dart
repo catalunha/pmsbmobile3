@@ -81,6 +81,17 @@ class LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.symmetric(
                           vertical: 12,
                         ),
+                        child: Center(
+                          child: Text(
+                          'PMSB - 22 - TO',
+                          style: TextStyle(fontSize: 30, color: Colors.blue),
+                        ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 12,
+                        ),
                         child: TextFormField(
                           onSaved: (email) {
                             authBloc.dispatch(UpdateEmailAuthBlocEvent(email));
@@ -96,7 +107,8 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           onSaved: (password) {
-                            authBloc.dispatch(UpdatePasswordAuthBlocEvent(password));
+                            authBloc.dispatch(
+                                UpdatePasswordAuthBlocEvent(password));
                           },
                           obscureText: true,
                           decoration: InputDecoration(
