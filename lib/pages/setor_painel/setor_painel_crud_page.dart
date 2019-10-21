@@ -52,32 +52,54 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
         body: StreamBuilder<SetorPainelCrudBlocState>(
             stream: bloc.stateStream,
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return Center( child: CircularProgressIndicator());
+              if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
               if (snapshot.hasData) {
                 if (snapshot.data.isDataValid) {
                   Widget valor;
                   if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'booleano') {
                     valor = Center(
                       child: SwitchListTile(
-                        title: Text('${snapshot.data?.setorCensitarioPainelID?.painelID?.tipo}'),
+                        title: Text('Item atendido ? '),
                         value: snapshot.data?.valor,
                         onChanged: (bool value) {
                           bloc.eventSink(UpdateBooleanoEvent(value));
                         },
-                        secondary: const Icon(Icons.lightbulb_outline),
+                        secondary: Icon(Icons.thumbs_up_down),
                       ),
                     );
                   } else {
                     valor = PainelValor(bloc);
                   }
+                  String tipo;
+                  if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'texto') {
+                    tipo = 'Informe um texto simples.';
+                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'numero') {
+                    tipo = 'Informe um número e se necessário a unidade na observação.';
+                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'numero') {
+                    tipo = 'Informe um número e se necessário a unidade na observação.';
+                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'booleano') {
+                    tipo = 'Marque ou desmarque. Se atendido ou não.';
+                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'urlimagem') {
+                    tipo = 'Informe o link da imagem. Use o Google Drive do Projeto ou pessoal.';
+                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'urlarquivo') {
+                    tipo = 'Informe o link do arquivo. Use o Google Drive do Projeto ou pessoal.';
+                  }
                   return ListView(
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Text(
-                            snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
-                            style: TextStyle(fontSize: 15, color: Colors.blue),
-                          )),
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
+                          style: TextStyle(fontSize: 15, color: Colors.blue),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          tipo,
+                          style: TextStyle(fontSize: 15, color: Colors.green),
+                        ),
+                      ),
                       Padding(padding: EdgeInsets.all(5.0), child: valor),
                       Padding(
                           padding: EdgeInsets.all(5.0),
