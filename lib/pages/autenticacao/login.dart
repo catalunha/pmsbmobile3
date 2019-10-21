@@ -68,10 +68,6 @@ class LoginPageState extends State<LoginPage> {
           child: ListView(
             children: <Widget>[
               Container(
-                alignment: Alignment.center,
-                child: Image.asset('assets/images/logos/Splash_1024x1024.png'),
-              ),
-              Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 12,
@@ -100,8 +96,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           onSaved: (password) {
-                            authBloc.dispatch(
-                                UpdatePasswordAuthBlocEvent(password));
+                            authBloc.dispatch(UpdatePasswordAuthBlocEvent(password));
                           },
                           obscureText: true,
                           decoration: InputDecoration(
@@ -129,7 +124,11 @@ class LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-              )
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Image.asset('assets/images/logos/Splash_1024x1024.png'),
+              ),
             ],
           ),
         ),
