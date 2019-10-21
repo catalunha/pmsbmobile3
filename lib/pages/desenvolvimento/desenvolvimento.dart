@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:universal_io/io.dart';
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
-    show FilePicker, FileType;
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
 import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
@@ -125,8 +124,12 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                         //     'N4xPaHBcyJSJeMOlhbjn2IrWjF73'); //anapaulafelicio@mail.uft.edu.br
                         // await usuarioAndre(
                         //     'lecuW7fVRsT6hJjTKmUtrAxcI9F2'); //andrema@uft.edu.br
-
                         //---Equipe do Rui
+
+                        //+++ Equipe do Funasa
+                        // await usuarioFunasaRenilton('7HdT6aUrckUMZEmz71hRSijJ6sm2'); //renilton.bezerra@funasa.gov.br
+
+                        //--- Equipe do Funasa
                       },
                     ),
                   ),
@@ -140,8 +143,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     ),
                   ),
                   ListTile(
-                    title:
-                        Text('Atualizar eixo de acesso de UsuarioCollection.'),
+                    title: Text('Atualizar eixo de acesso de UsuarioCollection.'),
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
@@ -185,8 +187,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       '/administracao/home',
       '/controle/home'
     ];
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData({"routes": routes}, merge: true);
     // print('>>> ok <<< ');
@@ -205,8 +206,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         EixoID(id: 'administracao', nome: 'Administração'),
       ],
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
@@ -246,8 +246,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'pal'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -278,8 +277,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       eixoIDAtual: EixoID(id: 'estatisticadsti', nome: ''),
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'pal'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -316,8 +314,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -353,8 +350,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -380,8 +376,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'coordenador', nome: 'Coordenador'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
         EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
@@ -390,8 +385,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -424,8 +418,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -451,8 +444,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'coordenador', nome: 'Coordenador'),
       eixoID: EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
-      eixoIDAtual:
-          EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
+      eixoIDAtual: EixoID(id: 'esgotamentosanitario', nome: 'Esgotamento Sanitário'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
         EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
@@ -461,8 +453,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -501,8 +492,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -531,8 +521,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -559,8 +548,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -595,8 +583,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -629,8 +616,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
@@ -658,8 +644,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -679,15 +664,13 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -707,15 +690,13 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -735,15 +716,13 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -763,15 +742,13 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -791,15 +768,13 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -819,15 +794,13 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       cargoID: CargoID(id: 'bolsista', nome: 'Bolsista'),
       eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
-      eixoIDAtual:
-          EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -856,8 +829,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -883,8 +855,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -910,8 +881,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -937,8 +907,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
@@ -966,8 +935,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
@@ -992,8 +960,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
@@ -1018,8 +985,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
@@ -1044,11 +1010,38 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
-    final docRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 //---Equipe do Rui
+
+//+++ Funasa
+
+  Future usuarioFunasaRenilton(String userId) async {
+    UsuarioModel usuarioModel = UsuarioModel(
+      id: userId,
+      ativo: true,
+      nome: 'renilton.bezerra',
+      celular: '123',
+      email: 'renilton.bezerra@funasa.gov.br',
+      routes: [
+        '/',
+        '/resposta/home',
+        '/administracao/home',
+        '/painel/home',
+      ],
+      cargoID: CargoID(id: 'coordenador', nome: 'Coordenador'),
+      eixoID: EixoID(id: 'direcao', nome: 'Direção'),
+      eixoIDAtual: EixoID(id: 'direcao', nome: 'Direção'),
+      eixoIDAcesso: [
+        EixoID(id: 'direcao', nome: 'Direção'),
+      ],
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
+    );
+    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    await docRef.setData(usuarioModel.toMap(), merge: true);
+  }
+//--- Funasa
 
 }
 
