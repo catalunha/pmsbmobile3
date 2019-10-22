@@ -8,7 +8,7 @@ class Versao extends StatelessWidget {
         title: Text('Versão & Sobre'),
       ),
       body: Center(
-        child: Text("Versão 3.0.7"),
+        child: Text("Versão 3.1.0"),
       ),
     );
   }

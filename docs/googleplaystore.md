@@ -2,6 +2,17 @@
 
 ## Gerar a versão de release
 
+### Passo 0
+
+Fechar versão atual q esta no emulator
+Chaves
+~~~
+catalunha@nbuft:~$ keytool -list -v -keystore ~/key_pmsb_paulo.jks
+Informe a senha da área de armazenamento de chaves: c@taft
+~~~
+
+
+
 ### Passo 1 
 
 Abra o arquivo: android/app/build.gradle
@@ -65,7 +76,10 @@ catalunha@nbuft:~/AndroidStudioProjects/pmsbmobile3$
 flutter build appbundle --release 
 ~~~
 
-
+Será gerado uma nova versão como este exemplo. 
+~~~
+Built build/app/outputs/bundle/release/app.aab (23.5MB).
+~~~
 ---
 
 ## Salvar na loja.
