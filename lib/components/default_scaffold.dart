@@ -82,25 +82,25 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                Widget imagem = Icon(Icons.people, size: 75);
-                if (snap.data?.foto?.localPath != null) {
-                  imagem = Container(
-                      color: Colors.yellow,
-                      child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: CircleAvatar(
-                            backgroundImage:
-                                ExactAssetImage(snap.data?.foto?.localPath),
-                            minRadius: 50,
-                            maxRadius: 50,
-                          )));
-                } else if (snap.data?.foto?.url != null) {
-                  imagem = CircleAvatar(
-                    backgroundImage: NetworkImage(snap.data?.foto?.url),
-                    minRadius: 50,
-                    maxRadius: 50,
-                  );
-                }
+                // Widget imagem;// = Icon(Icons.people, size: 75);
+                // if (snap.data?.foto?.localPath != null) {
+                //   imagem = Container(
+                //       color: Colors.yellow,
+                //       child: Padding(
+                //           padding: const EdgeInsets.all(2.0),
+                //           child: CircleAvatar(
+                //             backgroundImage:
+                //                 ExactAssetImage(snap.data?.foto?.localPath),
+                //             minRadius: 50,
+                //             maxRadius: 50,
+                //           )));
+                // } else if (snap.data?.foto?.url != null) {
+                //   imagem = CircleAvatar(
+                //     backgroundImage: NetworkImage(snap.data?.foto?.url),
+                //     minRadius: 50,
+                //     maxRadius: 50,
+                //   );
+                // }
                 return DrawerHeader(
                   child: Container(
                     decoration: BoxDecoration(

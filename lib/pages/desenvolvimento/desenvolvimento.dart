@@ -174,7 +174,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
-                        await testarFirebaseCmds('YaTtTki7PZPPHznqpVtZrW6mIa42');
+                        // await testarFirebaseCmds();
                       },
                     ),
                   ),
@@ -183,10 +183,10 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
             }));
   }
 
-  Future testarFirebaseCmds(String usuarioId) async {
+  Future testarFirebaseCmds() async {
     final docRef = await _firestore
         .collection(UsuarioModel.collection)
-        .where('routes', arrayContains: '/desenvolvimento')
+        .where('routes', arrayContains: '/comunicacao/home')
         .getDocuments();
 print('busca');
     for (var item in docRef.documents) {
