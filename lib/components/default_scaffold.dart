@@ -60,7 +60,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
       rotas["/administracao/home"] =
           Rota("Administração", Icons.business_center);
-    } else {}
+    }
   }
 
   @override
@@ -249,117 +249,177 @@ class _ImagemUnica extends StatelessWidget {
 }
 
 class DefaultEndDrawer extends StatefulWidget {
-  DefaultEndDrawer({Key key}) : super(key: key);
+  // DefaultEndDrawer({Key key}) : super(key: key);
 
   _DefaultEndDrawerState createState() => _DefaultEndDrawerState();
 }
 
 class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//        child: child,
-//     );
-//   }
-// }
-
-// class DefaultEndDrawer extends StatelessWidget {
   final AuthBloc authBloc;
+  Map<String, Rota> rotas;
 
-  _DefaultEndDrawerState() : authBloc = Bootstrap.instance.authBloc;
+  _DefaultEndDrawerState() : authBloc = Bootstrap.instance.authBloc {
+    rotas = Map<String, Rota>();
+    if (Recursos.instance.plataforma == 'android') {
+      rotas["/perfil/configuracao"] = Rota("Configurações", Icons.settings);
+      rotas["/perfil"] = Rota("Itens do Perfil", Icons.person);
+      rotas["/painel/home"] = Rota("Itens do Painel", Icons.table_chart);
+      rotas["/versao"] = Rota("Versão & Sobre", Icons.device_unknown);
+      // rotas["/noticias/noticias_visualizadas"] = Rota("Noticias lidas", Icons.event_available);
+      rotas["/modooffline"] = Rota("Habilitar modo offline", Icons.save);
+    } else if (Recursos.instance.plataforma == 'web') {
+      rotas["/perfil/configuracao"] = Rota("Configurações", Icons.settings);
+      rotas["/painel/home"] = Rota("Itens do Painel", Icons.table_chart);
+      rotas["/versao"] = Rota("Versão & Sobre", Icons.device_unknown);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            ListTile(
-              title: Text('Configurações'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/perfil/configuracao");
-              },
-              leading: Icon(Icons.settings),
-            ),
-            if (Recursos.instance.plataforma == 'android')
-              Divider(
-                color: Colors.black45,
-              ),
-            if (Recursos.instance.plataforma == 'android')
-              ListTile(
-                title: Text('Itens do Perfil'),
-                onTap: () {
-                  //noticias perfil
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, "/perfil");
-                },
-                leading: Icon(Icons.person),
-              ),
-                          Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Itens do Painel'),
-              onTap: () {
-                //noticias arquivadas
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/painel/home");
-              },
-              leading: Icon(Icons.table_chart),
-            ),
-            // Divider(
-            //   color: Colors.black45,
-            // ),
-            // ListTile(
-            //   title: Text('Noticias lidas'),
-            //   onTap: () {
-            //     //noticias arquivadas
-            //     Navigator.pop(context);
-            //     Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
-            //   },
-            //   leading: Icon(Icons.event_available),
-            // ),
-            Divider(
-              color: Colors.black45,
-            ),
-            ListTile(
-              title: Text('Trocar de usuário'),
-              onTap: () {
-                authBloc.dispatch(LogoutAuthBlocEvent());
-                Navigator.pushReplacementNamed(context, "/");
-              },
-              leading: Icon(Icons.exit_to_app),
-            ),
-            if (Recursos.instance.plataforma == 'android')
-              Divider(
-                color: Colors.black45,
-              ),
-            if (Recursos.instance.plataforma == 'android')
-              ListTile(
-                title: Text("Habilitar modo offline"),
-                onTap: () async {
-                  final cacheService =
-                      CacheService(Bootstrap.instance.firestore);
-                  await cacheService.load();
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text("Modo offline completo.")));
-                  Navigator.pop(context);
-                },
-                leading: Icon(Icons.save),
-              ),
-            if (Recursos.instance.plataforma == 'android')
-              Divider(
-                color: Colors.black45,
-              ),
-            if (Recursos.instance.plataforma == 'android')
-              ListTile(
-                title: Text("Versão 3.0.7"),
-                leading: Icon(Icons.info),
-              ),
-          ],
-        ),
+        child: Column(
+            // padding: EdgeInsets.zero,
+            children: <Widget>[
+              StreamBuilder<UsuarioModel>(
+                  stream: authBloc.perfil,
+                  builder: (context, snap) {
+                    if (snap.hasError) {
+                      return Center(
+                        child: Text("Erro"),
+                      );
+                    }
+                    List<Widget> list = List<Widget>();
+                    if (snap.data == null ||
+                        snap.data.routes == null ||
+                        snap.data.routes.isEmpty) {
+                      list.add(Container());
+                    } else {
+                      rotas.forEach((k, v) {
+                        if (snap.data.routes.contains(k)) {
+                          if (k == '/modooffline') {
+                            list.add(ListTile(
+                              title: Text("Habilitar modo offline"),
+                              onTap: () async {
+                                final cacheService =
+                                    CacheService(Bootstrap.instance.firestore);
+                                await cacheService.load();
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text("Modo offline completo.")));
+                                Navigator.pop(context);
+                              },
+                              leading: Icon(Icons.save),
+                            ));
+                          } else {
+                            list.add(ListTile(
+                              title: Text(v.nome),
+                              leading: Icon(v.Icons),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, k);
+                              },
+                            ));
+                          }
+                        }
+                      });
+                    }
+                    list.add(ListTile(
+                      title: Text('Trocar de usuário'),
+                      onTap: () {
+                        authBloc.dispatch(LogoutAuthBlocEvent());
+                        Navigator.pushReplacementNamed(context, "/");
+                      },
+                      leading: Icon(Icons.exit_to_app),
+                    ));
+                    return Expanded(child: ListView(children: list));
+                  })
+            ]),
+// ],
+        //   ListTile(
+        //     title: Text('Configurações'),
+        //     onTap: () {
+        //       Navigator.pop(context);
+        //       Navigator.pushNamed(context, "/perfil/configuracao");
+        //     },
+        //     leading: Icon(Icons.settings),
+        //   ),
+        //   if (Recursos.instance.plataforma == 'android')
+        //     Divider(
+        //       color: Colors.black45,
+        //     ),
+        //   if (Recursos.instance.plataforma == 'android')
+        //     ListTile(
+        //       title: Text('Itens do Perfil'),
+        //       onTap: () {
+        //         //noticias perfil
+        //         Navigator.pop(context);
+        //         Navigator.pushNamed(context, "/perfil");
+        //       },
+        //       leading: Icon(Icons.person),
+        //     ),
+        //                 Divider(
+        //     color: Colors.black45,
+        //   ),
+        //   ListTile(
+        //     title: Text('Itens do Painel'),
+        //     onTap: () {
+        //       //noticias arquivadas
+        //       Navigator.pop(context);
+        //       Navigator.pushNamed(context, "/painel/home");
+        //     },
+        //     leading: Icon(Icons.table_chart),
+        //   ),
+        //   // Divider(
+        //   //   color: Colors.black45,
+        //   // ),
+        //   // ListTile(
+        //   //   title: Text('Noticias lidas'),
+        //   //   onTap: () {
+        //   //     //noticias arquivadas
+        //   //     Navigator.pop(context);
+        //   //     Navigator.pushNamed(context, "/noticias/noticias_visualizadas");
+        //   //   },
+        //   //   leading: Icon(Icons.event_available),
+        //   // ),
+        //   Divider(
+        //     color: Colors.black45,
+        //   ),
+        //   ListTile(
+        //     title: Text('Trocar de usuário'),
+        //     onTap: () {
+        //       authBloc.dispatch(LogoutAuthBlocEvent());
+        //       Navigator.pushReplacementNamed(context, "/");
+        //     },
+        //     leading: Icon(Icons.exit_to_app),
+        //   ),
+        //   if (Recursos.instance.plataforma == 'android')
+        //     Divider(
+        //       color: Colors.black45,
+        //     ),
+        //   if (Recursos.instance.plataforma == 'android')
+        //     ListTile(
+        //       title: Text("Habilitar modo offline"),
+        //       onTap: () async {
+        //         final cacheService =
+        //             CacheService(Bootstrap.instance.firestore);
+        //         await cacheService.load();
+        //         Scaffold.of(context).showSnackBar(
+        //             SnackBar(content: Text("Modo offline completo.")));
+        //         Navigator.pop(context);
+        //       },
+        //       leading: Icon(Icons.save),
+        //     ),
+        //   if (Recursos.instance.plataforma == 'android')
+        //     Divider(
+        //       color: Colors.black45,
+        //     ),
+        //   if (Recursos.instance.plataforma == 'android')
+        //     ListTile(
+        //       title: Text("Versão 3.0.7"),
+        //       leading: Icon(Icons.info),
+        //     ),
+
+        // ),
       ),
     );
   }

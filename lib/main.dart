@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/geral/versao.dart';
 import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_page.dart';
 import 'package:pmsbmibile3/services/recursos.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
       routes: {
         //homePage
         "/": (context) => HomePage(authBloc),
+        "/versao": (context) => Versao(),
 
         //Desenvolvimento
         "/desenvolvimento": (context) => Desenvolvimento(),

@@ -138,7 +138,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
-                        // await atualizarRoutes('nsD07Jb8cqRy9liyX82JwDSq8d22');
+                        // await atualizarRoutes('YaTtTki7PZPPHznqpVtZrW6mIa42');
+                        // await atualizarRoutesTodos();
                       },
                     ),
                   ),
@@ -173,23 +174,72 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
             }));
   }
 
+  Future atualizarRoutesTodos() async {
+    var collRef = await _firestore.collection(UsuarioModel.collection).getDocuments();
+
+    for (var documentSnapshot in collRef.documents) {
+      if (documentSnapshot.data.containsKey('routes')) {
+        List<dynamic> routes = List<dynamic>();
+
+        routes.addAll(documentSnapshot.data['routes']);
+        print(routes.runtimeType);
+        routes.addAll([
+          // Drawer
+          // '/',
+          // '/upload',
+          // '/questionario/home',
+          // '/aplicacao/home',
+          // '/resposta/home',
+          // '/sintese/home',
+          // '/produto/home',
+          // '/comunicacao/home',
+          // '/administracao/home',
+          // '/controle/home',
+          // "/perfil/configuracao",
+          // endDrawer
+          '/perfil/configuracao',
+          '/perfil',
+          // '/painel/home',
+          '/modooffline',
+          "/versao",
+        ]);
+
+        await documentSnapshot.reference.setData({"routes": routes}, merge: true);
+      } else {
+        print('Sem routes ${documentSnapshot.documentID}');
+      }
+    }
+  }
+
   Future atualizarRoutes(String userId) async {
-    List<dynamic> routes = [
-      '/',
-      '/desenvolvimento',
-      '/upload',
-      '/questionario/home',
-      '/aplicacao/home',
-      '/resposta/home',
-      '/sintese/home',
-      '/produto/home',
-      '/comunicacao/home_page',
-      '/administracao/home',
-      '/controle/home'
-    ];
     final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    var snap = await docRef.get();
+    List<dynamic> routes = List<dynamic>();
+    routes.addAll(snap.data['routes']);
+    print(routes.runtimeType);
+    routes.addAll([
+      //Drawer
+      // '/',
+      // '/upload',
+      // '/questionario/home',
+      // '/aplicacao/home',
+      // '/resposta/home',
+      // '/sintese/home',
+      // '/produto/home',
+      // '/comunicacao/home',
+      // '/administracao/home',
+      // '/controle/home',
+      // "/perfil/configuracao",
+      // endDrawer
+      '/perfil/configuracao',
+      '/perfil',
+      // '/painel/home',
+      '/modooffline',
+      "/versao",
+    ]);
 
     await docRef.setData({"routes": routes}, merge: true);
+    // await docRef.updateData({"routes": routes});
     // print('>>> ok <<< ');
   }
 
