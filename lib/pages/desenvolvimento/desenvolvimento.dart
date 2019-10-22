@@ -169,9 +169,29 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       },
                     ),
                   ),
+                  ListTile(
+                    title: Text('Testar comandos firebase.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // await testarFirebaseCmds();
+                      },
+                    ),
+                  ),
                 ],
               );
             }));
+  }
+
+  Future testarFirebaseCmds() async {
+    final docRef = await _firestore
+        .collection(UsuarioModel.collection)
+        .where('routes', arrayContains: '/comunicacao/home')
+        .getDocuments();
+print('busca');
+    for (var item in docRef.documents) {
+      print('Doc encontrados: ${item.documentID}');
+    }
   }
 
   Future atualizarRoutesTodos() async {

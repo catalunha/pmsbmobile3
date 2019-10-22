@@ -27,7 +27,7 @@ class UpdateExpandeRetraiEixoMapEvent extends PainelListBlocEvent {
 
 class EixoInfo {
   final EixoModel eixo;
-  bool expandir;
+  bool expandir=false;
   EixoInfo({this.eixo, this.expandir});
 }
 
