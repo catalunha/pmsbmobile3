@@ -1,16 +1,11 @@
 import 'dart:async';
-import 'package:universal_io/io.dart';
-
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
-import 'package:uuid/uuid.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
     if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/state/upload_bloc.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 
 class PerfilCRUDArqPageEvent {}

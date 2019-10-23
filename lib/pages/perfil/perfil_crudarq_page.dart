@@ -73,8 +73,8 @@ class _FotoUsuario extends StatelessWidget {
             snapshot.data?.usuarioPerfilModel?.perfilID?.nome != null
                 ? Text(snapshot.data?.usuarioPerfilModel?.perfilID?.nome)
                 : Text('...'),
-            ButtonTheme.bar(
-                child: ButtonBar(children: <Widget>[
+            Wrap(
+                children: <Widget>[
               Text('Atualizar arquivo'),
               IconButton(
                 icon: Icon(Icons.file_download),
@@ -85,7 +85,7 @@ class _FotoUsuario extends StatelessWidget {
                   bloc.eventSink(UpDateArquivoEvent(fotoLocalPath));
                 },
               ),
-            ])),
+            ]),
             _ImagemUnica(
                 fotoUrl: snapshot.data?.arquivoUrl,
                 fotoLocalPath: snapshot.data?.arquivoLocalPath),
@@ -104,6 +104,7 @@ class _FotoUsuario extends StatelessWidget {
     } catch (e) {
       print("Unsupported operation" + e.toString());
     }
+    return null;
   }
 }
 
