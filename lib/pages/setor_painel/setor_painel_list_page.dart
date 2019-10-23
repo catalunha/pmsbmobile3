@@ -85,51 +85,48 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
           if (!snapshot.hasData) {
             return Text("SEM DADOS");
           }
-          if (snapshot.hasData) {
-            if (snapshot.data.isDataValid) {
-              List<Widget> listaWidget = List<Widget>();
-              List<SetorPainelInfo> painelList = List<SetorPainelInfo>();
-              String descricaoProdutoTab;
+          if (snapshot.data.isDataValid) {
+            List<Widget> listaWidget = List<Widget>();
+            List<SetorPainelInfo> painelList = List<SetorPainelInfo>();
+            String descricaoProdutoTab;
 
-              if (produto == '*') {
-                descricaoProdutoTab =
-                    'Itens sem Destinatario, Produto ou eixo.';
-                if (snapshot.data.setorPainelTreeProdutoEixo['*'] != null)
-                  painelList =
-                      snapshot.data.setorPainelTreeProdutoEixo['*']['*'];
-                popularListaWidget(painelList, listaWidget, context);
-              } else {
-                descricaoProdutoTab =
-                    '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
+            if (produto == '*') {
+              descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
+              if (snapshot.data.setorPainelTreeProdutoEixo['*'] != null)
+                painelList = snapshot.data.setorPainelTreeProdutoEixo['*']['*'];
+              popularListaWidget(painelList, listaWidget, context);
+            } else {
+              descricaoProdutoTab =
+                  '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
 
-                if (snapshot.data.setorPainelTreeProdutoEixo[produto] != null) {
-                  for (var eixo in snapshot
-                      .data.setorPainelTreeProdutoEixo[produto].keys
-                      .toList()) {
-                    listaWidget.add(Column(children: <Widget>[
-                      eixoCard(snapshot.data.eixoInfoMap[eixo])
-                    ]));
+              if (snapshot.data.setorPainelTreeProdutoEixo[produto] != null) {
+                for (var eixo in snapshot
+                    .data.setorPainelTreeProdutoEixo[produto].keys
+                    .toList()) {
+                  listaWidget.add(Column(children: <Widget>[
+                    eixoCard(snapshot.data.eixoInfoMap[eixo])
+                  ]));
 
-                    if (snapshot.data.eixoInfoMap[eixo].expandir!=null && snapshot.data.eixoInfoMap[eixo].expandir) {
-                      painelList = snapshot
-                          .data.setorPainelTreeProdutoEixo[produto][eixo];
-                      popularListaWidget(painelList, listaWidget, context);
-                    }
+                  if (snapshot.data.eixoInfoMap[eixo].expandir != null &&
+                      snapshot.data.eixoInfoMap[eixo].expandir) {
+                    painelList =
+                        snapshot.data.setorPainelTreeProdutoEixo[produto][eixo];
+                    popularListaWidget(painelList, listaWidget, context);
                   }
                 }
               }
-
-              listaWidget.add(Container(
-                padding: EdgeInsets.only(top: 70),
-              ));
-
-              return Column(children: <Widget>[
-                _descricaoAba(descricaoProdutoTab),
-                _bodyAba(listaWidget)
-              ]);
-            } else {
-              return Text('Dados inválidos...');
             }
+
+            listaWidget.add(Container(
+              padding: EdgeInsets.only(top: 70),
+            ));
+
+            return Column(children: <Widget>[
+              _descricaoAba(descricaoProdutoTab),
+              _bodyAba(listaWidget)
+            ]);
+          } else {
+            return Text('Dados inválidos...');
           }
         });
   }
@@ -151,7 +148,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
     return Expanded(
       flex: 2,
       child: ListTile(
-        title: Text('${descricaoProdutoTab}'),
+        title: Text('$descricaoProdutoTab'),
         trailing: IconButton(
           tooltip: 'Ver comparativo em planilha.',
           icon: Icon(Icons.table_chart),
@@ -180,11 +177,14 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
 
   Card eixoCard(EixoInfo eixoInfo) {
     return Card(
-        color: eixoInfo.expandir!=null && eixoInfo.expandir ? Colors.deepOrange : Colors.deepPurple,
+        color: eixoInfo.expandir != null && eixoInfo.expandir
+            ? Colors.deepOrange
+            : Colors.deepPurple,
         child: ListTile(
           // selected: true,
-          trailing:
-              eixoInfo.expandir!=null &&   eixoInfo.expandir ? Icon(Icons.folder_open) : Icon(Icons.folder),
+          trailing: eixoInfo.expandir != null && eixoInfo.expandir
+              ? Icon(Icons.folder_open)
+              : Icon(Icons.folder),
           title: Text('${eixoInfo.eixo.nome}'),
           onTap: () {
             bloc.eventSink(UpdateExpandeRetraiEixoMapEvent(eixoInfo.eixo.id));
