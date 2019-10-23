@@ -1,5 +1,3 @@
-import 'package:universal_io/io.dart' as io;
-
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
@@ -33,8 +31,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
   @override
   void initState() {
     super.initState();
-    bloc = AdministracaoHomePageBloc(
-        Bootstrap.instance.firestore, widget.authBloc);
+    bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -50,8 +47,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
       body: Container(
         child: StreamBuilder<AdministracaoHomePageBlocState>(
             stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<AdministracaoHomePageBlocState> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<AdministracaoHomePageBlocState> snapshot) {
               if (snapshot.hasError) {
                 return Center(
                   child: Text("Erro. Na leitura de usuarios."),
@@ -62,13 +58,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                   child: CircularProgressIndicator(),
                 );
               }
-              //  if (snapshot.hasData) {
-              //   return Center(
-              //     child: CircularProgressIndicator(),
-              //   );
-              // }
               if (snapshot.hasData) {
-                List<Widget> listaWdg = List<Widget>();
                 if (snapshot.data.isDataValid) {
                   List<Widget> listaWdg = List<Widget>();
                   for (var usuario in snapshot.data?.usuarioList) {
@@ -82,19 +72,11 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                             flex: 10,
                             child: Text('Lista dos usuarios ativos'),
                           ),
-                          Wrap(alignment: WrapAlignment.start, children: <
-                              Widget>[
-                            (snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                                        null &&
-                                    snapshot.data?.relatorioPdfMakeModel
-                                            ?.pdfGerar ==
-                                        false &&
-                                    snapshot.data?.relatorioPdfMakeModel
-                                            ?.pdfGerado ==
-                                        true &&
-                                    snapshot.data?.relatorioPdfMakeModel
-                                            ?.tipo ==
-                                        'administracao01')
+                          Wrap(alignment: WrapAlignment.start, children: <Widget>[
+                            (snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                                    snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
+                                    snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
+                                    snapshot.data?.relatorioPdfMakeModel?.tipo == 'administracao01')
                                 ? IconButton(
                                     tooltip: 'Ver relatório dos usuários.',
                                     icon: Icon(Icons.link),
@@ -105,28 +87,19 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                                         tipo: 'administracao01',
                                         collection: 'Usuario',
                                       ));
-                                      launch(snapshot
-                                          .data?.relatorioPdfMakeModel?.url);
+                                      launch(snapshot.data?.relatorioPdfMakeModel?.url);
                                     },
                                   )
-                                : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                                            null &&
-                                        snapshot.data?.relatorioPdfMakeModel
-                                                ?.pdfGerar ==
-                                            true &&
-                                        snapshot.data?.relatorioPdfMakeModel
-                                                ?.pdfGerado ==
-                                            false &&
-                                        snapshot.data?.relatorioPdfMakeModel
-                                                ?.tipo ==
-                                            'administracao01'
+                                : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                                        snapshot.data?.relatorioPdfMakeModel?.pdfGerar == true &&
+                                        snapshot.data?.relatorioPdfMakeModel?.pdfGerado == false &&
+                                        snapshot.data?.relatorioPdfMakeModel?.tipo == 'administracao01'
                                     ? CircularProgressIndicator()
                                     : IconButton(
                                         tooltip: 'Atualizar PDF dos usuários.',
                                         icon: Icon(Icons.picture_as_pdf),
                                         onPressed: () async {
-                                          bloc.eventSink(
-                                              GerarRelatorioPdfMakeEvent(
+                                          bloc.eventSink(GerarRelatorioPdfMakeEvent(
                                             pdfGerar: true,
                                             pdfGerado: false,
                                             tipo: 'administracao01',
@@ -149,6 +122,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                   return Text('Existem dados inválidos...');
                 }
               }
+              return Text('Dados incompletos...');
             }),
       ),
     );
@@ -164,8 +138,7 @@ class ItemListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, "/administracao/perfil",
-            arguments: usuario.id);
+        Navigator.pushNamed(context, "/administracao/perfil", arguments: usuario.id);
       },
       child: Card(
         child: Container(

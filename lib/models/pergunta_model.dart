@@ -449,7 +449,7 @@ class Requisito {
 
   @override
   String toString() {
-    return "Requisito(${referencia}, ${perguntaTipo})";
+    return "Requisito($referencia, $perguntaTipo)";
   }
 
   Requisito.fromMap(Map<dynamic, dynamic> map) {

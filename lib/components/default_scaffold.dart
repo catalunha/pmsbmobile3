@@ -7,9 +7,9 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class Rota {
   final String nome;
-  final Icons;
+  final IconData icone;
 
-  Rota(this.nome, this.Icons);
+  Rota(this.nome, this.icone);
 }
 
 class DefaultDrawer extends StatefulWidget {
@@ -186,7 +186,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
                       if (snap.data.routes.contains(k)) {
                         list.add(ListTile(
                           title: Text(v.nome),
-                          trailing: Icon(v.Icons),
+                          trailing: Icon(v.icone),
                           onTap: () {
                             Navigator.pushReplacementNamed(context, k);
                           },
@@ -313,7 +313,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                           } else {
                             list.add(ListTile(
                               title: Text(v.nome),
-                              leading: Icon(v.Icons),
+                              leading: Icon(v.icone),
                               onTap: () {
                                 Navigator.pop(context);
                                 Navigator.pushNamed(context, k);

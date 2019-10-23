@@ -3,7 +3,6 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
-import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ControleAcaoListBlocEvent {}

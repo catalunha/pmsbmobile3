@@ -72,7 +72,7 @@ class GoogleDriveID {
   String tipo;
 
   String url() {
-    return 'https://docs.google.com/${tipo}/d/${arquivoID}';
+    return 'https://docs.google.com/$tipo/d/$arquivoID';
   }
 
   GoogleDriveID({this.id, this.arquivoID, this.tipo});

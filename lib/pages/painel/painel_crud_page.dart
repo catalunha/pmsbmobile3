@@ -59,7 +59,7 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
             }),
         body: StreamBuilder<PainelCrudBlocState>(
             stream: bloc.stateStream,
-            builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
               if (snapshot.hasData) {
@@ -117,6 +117,7 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                 //   return Text('Dados inválidos...');
                 // }
               }
+              return Text('Dados incompletos...');
             }));
   }
 

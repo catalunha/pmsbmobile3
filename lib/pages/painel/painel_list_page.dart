@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/models/produto_funasa_model.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
@@ -48,10 +47,10 @@ class _PainelListPageState extends State<PainelListPage> {
       length: myTabs.length,
       child: DefaultScaffold(
         // appBar: AppBar(
-          title: Text('Adicionar/Editar itens do painel'),
-          bottom: TabBar(
-            tabs: myTabs,
-          ),
+        title: Text('Adicionar/Editar itens do painel'),
+        bottom: TabBar(
+          tabs: myTabs,
+        ),
         // ),
         body: _body(context),
         floatingActionButton: FloatingActionButton(
@@ -87,8 +86,7 @@ class _PainelListPageState extends State<PainelListPage> {
   _tabAComites(String produto) {
     return StreamBuilder<PainelListBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<PainelListBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<PainelListBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -101,8 +99,7 @@ class _PainelListPageState extends State<PainelListPage> {
               List<PainelInfo> painelList = List<PainelInfo>();
               String descricaoProdutoTab;
               if (produto == '*') {
-                descricaoProdutoTab =
-                    'Itens sem Destinatario, Produto ou eixo.';
+                descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
                 if (snapshot.data.painelTreeProdutoEixo['*'] != null)
                   painelList = snapshot.data.painelTreeProdutoEixo['*']['*'];
                 popularListaWidget(painelList, listaWidget, context);
@@ -111,16 +108,11 @@ class _PainelListPageState extends State<PainelListPage> {
                     '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
 
                 if (snapshot.data.painelTreeProdutoEixo[produto] != null) {
-                  for (var eixo in snapshot
-                      .data.painelTreeProdutoEixo[produto].keys
-                      .toList()) {
-                    listaWidget.add(Column(children: <Widget>[
-                      eixoCard(snapshot.data.eixoInfoMap[eixo])
-                    ]));
+                  for (var eixo in snapshot.data.painelTreeProdutoEixo[produto].keys.toList()) {
+                    listaWidget.add(Column(children: <Widget>[eixoCard(snapshot.data.eixoInfoMap[eixo])]));
 
-                    if (snapshot.data.eixoInfoMap[eixo].expandir!=null && snapshot.data.eixoInfoMap[eixo].expandir) {
-                      painelList =
-                          snapshot.data.painelTreeProdutoEixo[produto][eixo];
+                    if (snapshot.data.eixoInfoMap[eixo].expandir != null && snapshot.data.eixoInfoMap[eixo].expandir) {
+                      painelList = snapshot.data.painelTreeProdutoEixo[produto][eixo];
                       popularListaWidget(painelList, listaWidget, context);
                     }
                   }
@@ -131,14 +123,12 @@ class _PainelListPageState extends State<PainelListPage> {
                 padding: EdgeInsets.only(top: 70),
               ));
 
-              return Column(children: <Widget>[
-                _descricaoAba(descricaoProdutoTab),
-                _bodyAba(listaWidget)
-              ]);
+              return Column(children: <Widget>[_descricaoAba(descricaoProdutoTab), _bodyAba(listaWidget)]);
             } else {
               return Text('Dados inválidos...');
             }
           }
+          return Text('Dados incompletos...');
         });
   }
 
@@ -157,30 +147,27 @@ class _PainelListPageState extends State<PainelListPage> {
   Expanded _descricaoAba(String descricaoProdutoTab) {
     return Expanded(
       flex: 1,
-      child: Center(child: Text('${descricaoProdutoTab}')),
+      child: Center(child: Text('$descricaoProdutoTab')),
     );
   }
 
-  void popularListaWidget(List<PainelInfo> painelList, List<Widget> listaWidget,
-      BuildContext context) {
+  void popularListaWidget(List<PainelInfo> painelList, List<Widget> listaWidget, BuildContext context) {
     if (painelList != null) {
       for (var painelInfo in painelList) {
         Widget icone;
         icone = _defineTipoDeIconeDoItem(painelInfo.painel.tipo);
 
-        listaWidget.add(
-            Column(children: <Widget>[painelCard(painelInfo, icone, context)]));
+        listaWidget.add(Column(children: <Widget>[painelCard(painelInfo, icone, context)]));
       }
     }
   }
 
   Card eixoCard(EixoInfo eixoInfo) {
     return Card(
-        color: eixoInfo.expandir!=null && eixoInfo.expandir ? Colors.deepOrange : Colors.deepPurple,
+        color: eixoInfo.expandir != null && eixoInfo.expandir ? Colors.deepOrange : Colors.deepPurple,
         child: ListTile(
           // selected: true,
-          trailing:
-              eixoInfo.expandir!=null && eixoInfo.expandir ? Icon(Icons.folder_open) : Icon(Icons.folder),
+          trailing: eixoInfo.expandir != null && eixoInfo.expandir ? Icon(Icons.folder_open) : Icon(Icons.folder),
           title: Text('${eixoInfo.eixo.nome}'),
           onTap: () {
             bloc.eventSink(UpdateExpandeRetraiEixoMapEvent(eixoInfo.eixo.id));
@@ -192,9 +179,8 @@ class _PainelListPageState extends State<PainelListPage> {
     return Card(
         // margin: EdgeInsets.only(left: 20),
         child: ListTile(
-      selected: painelInfo.destacarSeDestinadoAoUsuarioLogado == null
-          ? false
-          : painelInfo.destacarSeDestinadoAoUsuarioLogado,
+      selected:
+          painelInfo.destacarSeDestinadoAoUsuarioLogado == null ? false : painelInfo.destacarSeDestinadoAoUsuarioLogado,
       title: Text('${painelInfo.painel?.nome}'),
       subtitle: Text(
           'Destinatário: ${painelInfo.painel?.usuarioQVaiResponder?.nome}\nProduto: ${painelInfo.painel?.produto?.nome}\nEixo: ${painelInfo.painel?.eixo?.nome}\nEditado por: ${painelInfo.painel?.usuarioQEditou?.nome}\nEm: ${painelInfo.painel?.modificado}\nid:${painelInfo.painel.id}'),

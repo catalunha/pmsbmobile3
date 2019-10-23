@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/pages/autenticacao/login.dart';

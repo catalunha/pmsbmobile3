@@ -84,8 +84,8 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                 ListTile(
                     selected: controleAcaoID.concluida,
                     trailing: controleAcaoID.concluida
-                        ? Text('*  ${ordemLocal}')
-                        : Text('${ordemLocal}'),
+                        ? Text('*  $ordemLocal')
+                        : Text('$ordemLocal'),
                     title: Text('${controleAcaoID.nome}'),
                     subtitle: Text(
                         'Obs: ${controleAcaoID.observacao}\nAtualizada: ${controleAcaoID.modificada}\nid: ${controleAcaoID.id}')),

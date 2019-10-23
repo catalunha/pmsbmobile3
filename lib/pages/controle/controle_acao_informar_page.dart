@@ -1,9 +1,6 @@
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_bloc.dart';
-import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ControleAcaoInformarPage extends StatefulWidget {
   final String acaoID;

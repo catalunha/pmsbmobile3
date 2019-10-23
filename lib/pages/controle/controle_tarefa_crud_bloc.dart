@@ -4,7 +4,6 @@ import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:uuid/uuid.dart' as uuid;
 

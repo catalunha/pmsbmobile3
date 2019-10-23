@@ -1,31 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:universal_io/io.dart';
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
-import 'package:pmsbmibile3/components/square_image.dart';
 import 'package:pmsbmibile3/models/models.dart';
-import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
-import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/desenvolvimento/desenvolvimento_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:pmsbmibile3/naosuportato/firebase_storage.dart'
-    if (dart.library.io) 'package:firebase_storage/firebase_storage.dart';
-
-import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/state/upload_bloc.dart';
 
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/models/perfil_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/bootstrap.dart';
 
 class Desenvolvimento extends StatefulWidget {
   @override
@@ -35,7 +20,7 @@ class Desenvolvimento extends StatefulWidget {
 class _DesenvolvimentoState extends State<Desenvolvimento> {
   final bloc = DesenvolvimentoPageBloc(Bootstrap.instance.firestore);
   final fw.Firestore _firestore = Bootstrap.instance.firestore;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+  // final FirebaseStorage _storage = FirebaseStorage.instance;
 
   @override
   void initState() {

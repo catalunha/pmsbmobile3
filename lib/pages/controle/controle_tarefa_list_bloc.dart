@@ -1,10 +1,8 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
-import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:uuid/uuid.dart' as uuid;
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';

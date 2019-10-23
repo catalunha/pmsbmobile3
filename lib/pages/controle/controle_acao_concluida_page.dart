@@ -50,8 +50,8 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
                     trailing: controleAcaoID.concluida
-                        ? Text('*  ${ordemLocal}')
-                        : Text('${ordemLocal}'),
+                        ? Text('*  $ordemLocal')
+                        : Text('$ordemLocal'),
                     selected: controleAcaoID.concluida,
                     title: Text('${controleAcaoID?.nome}'),
                     subtitle: Text(

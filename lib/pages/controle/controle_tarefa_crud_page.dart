@@ -29,9 +29,8 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
   @override
   void initState() {
     super.initState();
-    bloc =
-        ControleTarefaCrudBloc(Bootstrap.instance.firestore, widget.authBloc);
-    bloc.eventSink(UpdateTarefaIDEvent(tarefaId:widget.tarefa,acaoId:widget.acao,acaoNome:widget.acaoNome));
+    bloc = ControleTarefaCrudBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc.eventSink(UpdateTarefaIDEvent(tarefaId: widget.tarefa, acaoId: widget.acao, acaoNome: widget.acaoNome));
   }
 
   @override
@@ -126,17 +125,17 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
         children: <Widget>[
           StreamBuilder<ControleTarefaCrudBlocState>(
               stream: bloc.stateStream,
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data.inicio != null) {
-                    _date = DateTime(snapshot.data.inicio.year,
-                        snapshot.data.inicio.month, snapshot.data.inicio.day);
+                    _date = DateTime(snapshot.data.inicio.year, snapshot.data.inicio.month, snapshot.data.inicio.day);
                     _hora = TimeOfDay.fromDateTime(snapshot.data.inicio);
                     return Text(snapshot.data.inicio.toString());
                   }
                 } else {
                   return Text('...');
                 }
+                return Text('Algo não esta certo...');
               }),
           IconButton(
             icon: Icon(Icons.date_range),
@@ -163,17 +162,17 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
         children: <Widget>[
           StreamBuilder<ControleTarefaCrudBlocState>(
               stream: bloc.stateStream,
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data.fim != null) {
-                    _date = DateTime(snapshot.data.fim.year,
-                        snapshot.data.fim.month, snapshot.data.fim.day);
+                    _date = DateTime(snapshot.data.fim.year, snapshot.data.fim.month, snapshot.data.fim.day);
                     _hora = TimeOfDay.fromDateTime(snapshot.data.fim);
                     return Text(snapshot.data.fim.toString());
                   }
                 } else {
                   return Text('...');
                 }
+                return Text('Algo não esta certo...');
               }),
           IconButton(
             icon: Icon(Icons.date_range),
@@ -284,8 +283,7 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
                       }
                     : null,
                 child: Icon(Icons.cloud_upload),
-                backgroundColor:
-                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
               );
             }));
   }
@@ -308,8 +306,7 @@ class TarefaNomeState extends State<TarefaNome> {
   Widget build(BuildContext context) {
     return StreamBuilder<ControleTarefaCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.nome;
         }
@@ -346,8 +343,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   Widget build(BuildContext context) {
     return StreamBuilder<ControleTarefaCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
         return Row(
           children: <Widget>[
             Divider(),
@@ -382,8 +378,7 @@ class UsuarioListaModalSelect extends StatefulWidget {
   const UsuarioListaModalSelect(this.bloc);
 
   @override
-  _UsuarioListaModalSelectState createState() =>
-      _UsuarioListaModalSelectState(this.bloc);
+  _UsuarioListaModalSelectState createState() => _UsuarioListaModalSelectState(this.bloc);
 }
 
 class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
@@ -394,8 +389,7 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
   Widget _listaUsuarios() {
     return StreamBuilder<ControleTarefaCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
         if (snapshot.hasError)
           return Center(
             child: Text("Erro. Informe ao administrador do aplicativo"),
