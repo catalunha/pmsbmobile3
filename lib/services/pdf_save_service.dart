@@ -20,7 +20,7 @@ class PdfSaveService {
   static Future<File> _generateAndSavePdf(
       Document pdf, Directory pdfDirectory, String fileName) async {
     var targetPath = pdfDirectory.path;
-    final generatedPdfFile = File("${targetPath}/${fileName}.pdf");
+    final generatedPdfFile = File("$targetPath/$fileName.pdf");
     await generatedPdfFile.writeAsBytes(pdf.save());
     return generatedPdfFile;
   }

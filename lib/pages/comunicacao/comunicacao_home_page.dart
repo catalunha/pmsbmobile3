@@ -4,7 +4,6 @@ import 'package:pmsbmibile3/naosuportato/flutter_markdown.dart'
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-import 'package:pmsbmibile3/pages/chat/chat_page.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/services/gerador_md_service.dart';
 import 'package:pmsbmibile3/services/gerador_pdf_service.dart';
@@ -212,20 +211,18 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
                   return Column(
                     children: <Widget>[
                       Expanded(
-                        child: ButtonTheme.bar(
-                          child: ButtonBar(
-                            children: <Widget>[
-                              IconButton(
-                                icon: Icon(Icons.picture_as_pdf),
-                                onPressed: () {
-                                  var mdtext = GeradorMdService
-                                      .generateMdFromNoticiaModelList(
-                                          noticiaModelListData);
-                                  GeradorPdfService.generatePdfFromMd(mdtext);
-                                },
-                              ),
-                            ],
-                          ),
+                        child: Wrap(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.picture_as_pdf),
+                              onPressed: () {
+                                var mdtext = GeradorMdService
+                                    .generateMdFromNoticiaModelList(
+                                        noticiaModelListData);
+                                GeradorPdfService.generatePdfFromMd(mdtext);
+                              },
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(

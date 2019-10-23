@@ -1,5 +1,4 @@
 import 'package:pmsbmibile3/models/base_model.dart';
-import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
 class RelatorioPdfMakeModel extends FirestoreModel {
   static final String collectionFirestore = "RelatorioPdfMake";

@@ -2,7 +2,6 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 // Eventos da Pagina
 class ComunicacaoHomePageEvent {}

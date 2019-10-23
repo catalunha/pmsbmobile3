@@ -9,16 +9,19 @@ class SetorPainelCrudPage extends StatefulWidget {
 
   const SetorPainelCrudPage(this.authBloc, this.setorCensitarioId);
 
-  _SetorPainelCrudPageState createState() => _SetorPainelCrudPageState(this.authBloc);
+  _SetorPainelCrudPageState createState() =>
+      _SetorPainelCrudPageState(this.authBloc);
 }
 
 class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
   SetorPainelCrudBloc bloc;
-  _SetorPainelCrudPageState(AuthBloc authBloc) : bloc = SetorPainelCrudBloc(authBloc, Bootstrap.instance.firestore);
+  _SetorPainelCrudPageState(AuthBloc authBloc)
+      : bloc = SetorPainelCrudBloc(authBloc, Bootstrap.instance.firestore);
   @override
   void initState() {
     super.initState();
-    bloc.eventSink(GetSetorCensitarioIDEvent(setorCensitarioId: widget.setorCensitarioId));
+    bloc.eventSink(
+        GetSetorCensitarioIDEvent(setorCensitarioId: widget.setorCensitarioId));
   }
 
   @override
@@ -46,76 +49,93 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
                       }
                     : null,
                 child: Icon(Icons.cloud_upload),
-                backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                backgroundColor:
+                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
               );
             }),
         body: StreamBuilder<SetorPainelCrudBlocState>(
             stream: bloc.stateStream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
-              if (snapshot.hasData) {
-                if (snapshot.data.isDataValid) {
-                  Widget valor;
-                  if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'booleano') {
-                    valor = Center(
-                      child: SwitchListTile(
-                        title: Text('Item atendido ? '),
-                        value: snapshot.data?.valor,
-                        onChanged: (bool value) {
-                          bloc.eventSink(UpdateBooleanoEvent(value));
-                        },
-                        secondary: Icon(Icons.thumbs_up_down),
-                      ),
-                    );
-                  } else {
-                    valor = PainelValor(bloc);
-                  }
-                  String tipo;
-                  if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'texto') {
-                    tipo = 'Informe um texto simples.';
-                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'numero') {
-                    tipo = 'Informe um número e se necessário a unidade na observação.';
-                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'numero') {
-                    tipo = 'Informe um número e se necessário a unidade na observação.';
-                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'booleano') {
-                    tipo = 'Marque ou desmarque. Se atendido ou não.';
-                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'urlimagem') {
-                    tipo = 'Informe o link da imagem. Use o Google Drive do Projeto ou pessoal.';
-                  } else if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo == 'urlarquivo') {
-                    tipo = 'Informe o link do arquivo. Use o Google Drive do Projeto ou pessoal.';
-                  }
-                  return ListView(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          tipo,
-                          style: TextStyle(fontSize: 15, color: Colors.green),
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.all(5.0), child: valor),
-                      Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Text(
-                            "Observações ao informar este valor:",
-                            style: TextStyle(fontSize: 15, color: Colors.blue),
-                          )),
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: PainelObservacao(bloc),
-                      ),
-                    ],
+            builder: (BuildContext context,
+                AsyncSnapshot<SetorPainelCrudBlocState> snapshot) {
+              if (!snapshot.hasData)
+                return Center(child: CircularProgressIndicator());
+              if (snapshot.data.isDataValid) {
+                Widget valor;
+                if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo ==
+                    'booleano') {
+                  valor = Center(
+                    child: SwitchListTile(
+                      title: Text('Item atendido ? '),
+                      value: snapshot.data?.valor,
+                      onChanged: (bool value) {
+                        bloc.eventSink(UpdateBooleanoEvent(value));
+                      },
+                      secondary: Icon(Icons.thumbs_up_down),
+                    ),
                   );
                 } else {
-                  return Text('Dados inválidos...');
+                  valor = PainelValor(bloc);
                 }
+                String tipo;
+                if (snapshot.data?.setorCensitarioPainelID?.painelID?.tipo ==
+                    'texto') {
+                  tipo = 'Informe um texto simples.';
+                } else if (snapshot
+                        .data?.setorCensitarioPainelID?.painelID?.tipo ==
+                    'numero') {
+                  tipo =
+                      'Informe um número e se necessário a unidade na observação.';
+                } else if (snapshot
+                        .data?.setorCensitarioPainelID?.painelID?.tipo ==
+                    'numero') {
+                  tipo =
+                      'Informe um número e se necessário a unidade na observação.';
+                } else if (snapshot
+                        .data?.setorCensitarioPainelID?.painelID?.tipo ==
+                    'booleano') {
+                  tipo = 'Marque ou desmarque. Se atendido ou não.';
+                } else if (snapshot
+                        .data?.setorCensitarioPainelID?.painelID?.tipo ==
+                    'urlimagem') {
+                  tipo =
+                      'Informe o link da imagem. Use o Google Drive do Projeto ou pessoal.';
+                } else if (snapshot
+                        .data?.setorCensitarioPainelID?.painelID?.tipo ==
+                    'urlarquivo') {
+                  tipo =
+                      'Informe o link do arquivo. Use o Google Drive do Projeto ou pessoal.';
+                }
+                return ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
+                        style: TextStyle(fontSize: 15, color: Colors.blue),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        tipo,
+                        style: TextStyle(fontSize: 15, color: Colors.green),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.all(5.0), child: valor),
+                    Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          "Observações ao informar este valor:",
+                          style: TextStyle(fontSize: 15, color: Colors.blue),
+                        )),
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: PainelObservacao(bloc),
+                    ),
+                  ],
+                );
+              } else {
+                return Text('Dados inválidos...');
               }
             }));
   }
@@ -138,7 +158,8 @@ class PainelValorState extends State<PainelValor> {
   Widget build(BuildContext context) {
     return StreamBuilder<SetorPainelCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<SetorPainelCrudBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<SetorPainelCrudBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.valor;
         }
@@ -175,7 +196,8 @@ class PainelObservacaoState extends State<PainelObservacao> {
   Widget build(BuildContext context) {
     return StreamBuilder<SetorPainelCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<SetorPainelCrudBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<SetorPainelCrudBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.observacao;
         }

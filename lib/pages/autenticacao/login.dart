@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/naosuportato/permission_handler.dart'
     if (dart.library.io) 'package:permission_handler/permission_handler.dart';
-import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {

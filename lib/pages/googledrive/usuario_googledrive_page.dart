@@ -103,7 +103,8 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
   _eixoBody() {
     return StreamBuilder<UsuarioGoogleDriveState>(
         stream: bloc.stateStream,
-        builder: (context, snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<UsuarioGoogleDriveState> snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
           }
@@ -140,13 +141,15 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
               ],
             );
           }
+          return Text('Algo parece não estar certo...');
         });
   }
 
   _usuarioBody() {
     return StreamBuilder<UsuarioGoogleDriveState>(
         stream: bloc.stateStream,
-        builder: (context, snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<UsuarioGoogleDriveState> snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
           }
@@ -233,6 +236,7 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
               ],
             );
           }
+          return Text('Algo parece não estar certo...');
         });
   }
 }

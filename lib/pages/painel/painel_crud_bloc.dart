@@ -3,8 +3,6 @@ import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/painel_model.dart';
 import 'package:pmsbmibile3/models/produto_funasa_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
-import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
-// import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
 import 'package:pmsbmibile3/models/usuario_model.dart';

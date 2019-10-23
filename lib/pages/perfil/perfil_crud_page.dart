@@ -57,29 +57,27 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
                   textEditingController.text.isEmpty) {
                 textEditingController.text = snapshot.data?.textPlain;
               }
-              if (snapshot.hasData) {
-                return Column(
-                  children: <Widget>[
-                    Text(
-                      '${snapshot.data.perfilID.nome}',
-                      // 'a',
-                      style: Theme.of(context).textTheme.title,
+              return Column(
+                children: <Widget>[
+                  Text(
+                    '${snapshot.data.perfilID.nome}',
+                    // 'a',
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  TextField(
+                    controller: textEditingController,
+                    onChanged: (textPlain) {
+                      return bloc.perfilCRUDPageEventSink(
+                          UpDateTextPlainEvent(textPlain));
+                    },
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                     ),
-                    TextField(
-                      controller: textEditingController,
-                      onChanged: (textPlain) {
-                        return bloc.perfilCRUDPageEventSink(
-                            UpDateTextPlainEvent(textPlain));
-                      },
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ],
-                );
-              }
+                  ),
+                ],
+              );
             },
           ),
         ],

@@ -119,13 +119,13 @@ Lista de perguntas:
       //--- requisitos
 
       texto.writeln("""
-## ${contador} - ${pergunta.titulo}
+## $contador - ${pergunta.titulo}
 
 ### ${pergunta.textoMarkdown}
 
-${escolhaList}
+$escolhaList
 
-${requisitoList}
+$requisitoList
 
 
 Uso do sistema: Pergunta Tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id}
@@ -305,18 +305,18 @@ Nada informado.
 
 // - Pergunta id: ${pergunta.id}
       tudo.writeln("""
-## ${contador} - ${pergunta.titulo}
+## $contador - ${pergunta.titulo}
 ${pergunta.textoMarkdown}
-${texto}
-${numero}
-${escolhaList}
-${imagem}
-${arquivo}
-${coordenada}
+$texto
+$numero
+$escolhaList
+$imagem
+$arquivo
+$coordenada
 
 Obs: ${pergunta.observacao}.  
 
-Informações: ${temPendencias}. ${foiRespondida}. ${informada}. Tipo: ${pergunta.tipo.nome}. Id: ${pergunta.id}. 
+Informações: $temPendencias. $foiRespondida. $informada. Tipo: ${pergunta.tipo.nome}. Id: ${pergunta.id}. 
 
 ---
 """);

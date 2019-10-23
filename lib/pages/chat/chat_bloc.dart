@@ -97,20 +97,20 @@ class ChatPageBloc {
         // }
       });
 
-      // le todas as msgs deste chat
-      final collectionRef = _firestore
-          .collection(ChatModel.collection)
-          .document(state.chatID)
-          // .document('0W7B2AScdpfjOSmdsNk3')
-          .collection(ChatModel.subcollectionMensagem);
+      // // le todas as msgs deste chat
+      // final collectionRef = _firestore
+      //     .collection(ChatModel.collection)
+      //     .document(state.chatID)
+      //     // .document('0W7B2AScdpfjOSmdsNk3')
+      //     .collection(ChatModel.subcollectionMensagem);
 
-      final snapList = collectionRef
-          .snapshots()
-          .map((querySnapshot) => querySnapshot.documents
-              .map((docSnap) => ChatMensagemModel(id: docSnap.documentID)
-                  .fromMap(docSnap.data))
-              .toList())
-          .pipe(chatMensagemListController);
+      // final snapList = collectionRef
+      //     .snapshots()
+      //     .map((querySnapshot) => querySnapshot.documents
+      //         .map((docSnap) => ChatMensagemModel(id: docSnap.documentID)
+      //             .fromMap(docSnap.data))
+      //         .toList())
+      //     .pipe(chatMensagemListController);
 
       // snapList.listen((List<ChatMensagemModel> chatMensagemModelList) {
       //   // print('chatMensagemModelList.length: ${chatMensagemModelList.length}');
@@ -159,14 +159,12 @@ class ChatPageBloc {
           );
           await chatNotificacaoDocRef.setData(chatNotificacaoModel.toMap(), merge: true);
         }
-        print('>>> usuarioListAlertar <<< ${usuarioListAlertar}');
+        print('>>> usuarioListAlertar <<< $usuarioListAlertar');
       }
       state.msgToSend = null;
     }
 
     if (event is UpDateAlertaEvent) {
-      // print('>>> event.usuarioChatID <<< ${event.usuarioChatID}');
-      // print('>>> event.alertar <<< ${event.alertar}');
       state.usuario[event.usuarioChatID].alertar = event.alertar;
     }
     if (event is UpDateAlertarTodosEvent) {

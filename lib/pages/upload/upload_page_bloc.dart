@@ -1,7 +1,6 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/upload_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/state/upload_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -48,7 +47,6 @@ class UploadPageBloc {
   Stream<PageState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
- 
   UploadPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
   }
@@ -59,10 +57,11 @@ class UploadPageBloc {
     await _eventController.drain();
     _eventController.close();
   }
+
   _mapEventToState(PageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
       _authBloc.userId.listen((userId) {
-        final streamDocs = _firestore
+        _firestore
             .collection(UploadModel.collection)
             .where("usuario", isEqualTo: userId)
             .where("upload", isEqualTo: false)
@@ -111,5 +110,4 @@ class UploadPageBloc {
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em UploadPageBloc  = ${event.runtimeType}');
   }
-
 }

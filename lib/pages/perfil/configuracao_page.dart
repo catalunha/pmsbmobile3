@@ -390,6 +390,7 @@ class FotoUsuario extends StatelessWidget {
     } catch (e) {
       print("Unsupported operation" + e.toString());
     }
+    return null;
   }
 }
 

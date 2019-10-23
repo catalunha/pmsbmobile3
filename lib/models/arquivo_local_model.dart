@@ -50,7 +50,7 @@ class ArquivoLocalListModel {
 
   // pegar arquivo de um local do so
   Future<File> localFile(String _localPath) async {
-    final path = await _localPath;
+    final path = _localPath;
     return File('$path');
   }
 }

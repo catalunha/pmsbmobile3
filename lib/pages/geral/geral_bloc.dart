@@ -1,6 +1,5 @@
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
 class GeralBlocEvent {}
 

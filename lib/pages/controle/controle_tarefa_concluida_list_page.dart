@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_concluida_list_bloc.dart';
-import 'package:pmsbmibile3/services/pdf_create_service.dart';
-import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class ControleTarefaConcluidaListPage extends StatefulWidget {
@@ -106,7 +103,7 @@ class _ControleTarefaConcluidaListPageState
             return Text('Existem dados inválidos...');
           }
         }
-        // return Text("Algo não esta certo...");
+        return Text("Algo não esta certo...");
       },
     );
   }

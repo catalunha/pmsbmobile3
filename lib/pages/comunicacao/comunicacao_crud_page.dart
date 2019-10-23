@@ -6,7 +6,6 @@ import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
-import '../user_files.dart';
 import 'package:pmsbmibile3/pages/comunicacao/comunicacao_crud_page_bloc.dart';
 
 //TODO: Mudar esta abordagem para authBloc de main e revisar bloc
@@ -26,9 +25,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
   String _textoMarkdown = "  ";
   var myController = new SelectingTextEditingController();
   final _tituloController = TextEditingController();
-
-  @override
-  void initState() {}
 
 // --------- TELA DADOS ---------
 

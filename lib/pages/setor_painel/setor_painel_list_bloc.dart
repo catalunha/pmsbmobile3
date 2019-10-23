@@ -1,7 +1,5 @@
 import 'package:pmsbmibile3/models/eixo_model.dart';
 import 'package:pmsbmibile3/models/produto_funasa_model.dart';
-import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
-
 import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;

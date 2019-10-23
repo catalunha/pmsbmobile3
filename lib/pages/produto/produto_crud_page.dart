@@ -191,8 +191,8 @@ class ArquivoPDF extends StatelessWidget {
 
         return Column(
           children: <Widget>[
-            ButtonTheme.bar(
-                child: ButtonBar(children: <Widget>[
+            Wrap(
+                children: <Widget>[
               Text('Atualizar pdf do produto:'),
               IconButton(
                 icon: Icon(Icons.delete_forever),
@@ -210,10 +210,10 @@ class ArquivoPDF extends StatelessWidget {
                   // print('>>> pdfLocalPath <<< ${pdfLocalPath}');
                 },
               ),
-            ])),
+            ]),
             pdfLocalPath == null
                 ? Container()
-                : Text('Arquivo local: ${pdfLocalPath}'),
+                : Text('Arquivo local: $pdfLocalPath'),
             pdfUrl == null
                 ? Text('Sem arquivo na núvem.')
                 : Text('Arquivo já esta na núvem !'),
@@ -232,5 +232,6 @@ class ArquivoPDF extends StatelessWidget {
     } catch (e) {
       print("Unsupported operation" + e.toString());
     }
+    return null;
   }
 }

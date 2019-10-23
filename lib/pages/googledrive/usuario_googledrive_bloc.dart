@@ -1,4 +1,3 @@
-import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/google_drive_model.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';

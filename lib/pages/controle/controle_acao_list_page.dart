@@ -58,8 +58,8 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                       // leading: Text('${ordemLocal} (${v.ordem})'),
                       selected: acao.concluida,
                       trailing: acao.concluida
-                          ? Text('*  ${ordemLocal}')
-                          : Text('${ordemLocal}'),
+                          ? Text('*  $ordemLocal')
+                          : Text('$ordemLocal'),
                       title: Text(acao.nome),
                       subtitle: Text(
                           'id: ${acao.id}\nObs: ${acao.observacao}\nAtualizada: ${acao.modificada}'),
@@ -84,7 +84,6 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                                     // print(
                                     //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
                                     // Mover pra baixo na ordem
-                                    //TODO: refatorar este codigo com o i fica mais fácil
                                     bloc.eventSink(
                                         OrdenarAcaoEvent(acao, false));
                                   }
@@ -98,7 +97,6 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                                     //     'em up => ${i} ${ordemLocal} (${v.ordem})');
 
                                     // Mover pra cima na ordem
-                                    //TODO: refatorar este codigo com o i fica mais fácil
                                     bloc.eventSink(
                                         OrdenarAcaoEvent(acao, true));
                                   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/login_required.dart';
-import 'package:pmsbmibile3/pages/comunicacao/noticia_leitura_page.dart';
 import 'package:pmsbmibile3/pages/geral/bemvindo.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
