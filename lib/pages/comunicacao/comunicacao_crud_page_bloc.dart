@@ -3,7 +3,6 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
-import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
 class ComunicacaoCRUDPageEvent {}
@@ -89,7 +88,7 @@ class ComunicacaoCRUDPageState {
 // print('>> k >> ${k}');
 // print('>> v >> ${v}');
       destinatarioListMap.add(
-        {'usuarioID': '${k}', 'nome': '${v.nome}'},
+        {'usuarioID': '$k', 'nome': '${v.nome}'},
       );
     });
   }

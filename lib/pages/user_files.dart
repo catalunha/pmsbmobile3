@@ -90,15 +90,15 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
     );
   }
 
-  _body() {
-    return Column(children: <Widget>[
-      IconButton(
-        icon: Icon(Icons.attach_file),
-        onPressed: () => _openUserFilesFirebaseList(),
-      ),
-      _listaSelecionados()
-    ]);
-  }
+  // _body() {
+  //   return Column(children: <Widget>[
+  //     IconButton(
+  //       icon: Icon(Icons.attach_file),
+  //       onPressed: () => _openUserFilesFirebaseList(),
+  //     ),
+  //     _listaSelecionados()
+  //   ]);
+  // }
 
   @override
   Widget build(BuildContext context) {

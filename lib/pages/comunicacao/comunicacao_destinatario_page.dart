@@ -62,7 +62,8 @@ class _ComunicacaoDestinatariosPageState
   _cargoBody() {
     return StreamBuilder<ComunicacaoDestinatarioPageState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<ComunicacaoDestinatarioPageState> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<ComunicacaoDestinatarioPageState> snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
           }
@@ -86,7 +87,6 @@ class _ComunicacaoDestinatariosPageState
                               "${variavel.nome}",
                               style: TextStyle(fontSize: 18),
                             ),
-                     
                           )));
                 }).toList()
               ],
@@ -99,58 +99,56 @@ class _ComunicacaoDestinatariosPageState
   _eixoBody() {
     return StreamBuilder<ComunicacaoDestinatarioPageState>(
         stream: bloc.stateStream,
-        builder: (context, snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<ComunicacaoDestinatarioPageState> snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
           }
           if (!snapshot.hasData) {
             return Text('Sem dados.');
           }
-          if (snapshot.hasData) {
-            //  var cargoList = List<Cargo>();
-            var eixoList = snapshot.data.eixoList;
-            return ListView(
-              children: <Widget>[
-                ...eixoList.map((variavel) {
-                  return Card(
-                      color: variavel.checked ? Colors.deepOrange : null,
-                      child: InkWell(
-                          onTap: () {
-                            bloc.eventSink(SelectEixoIDEvent(variavel.id));
-                          },
-                          child: ListTile(
-                            title: Text(
-                              // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
-                              "${variavel.nome}",
-                              style: TextStyle(fontSize: 18),
-                            ),
+          //  var cargoList = List<Cargo>();
+          var eixoList = snapshot.data.eixoList;
+          return ListView(
+            children: <Widget>[
+              ...eixoList.map((variavel) {
+                return Card(
+                    color: variavel.checked ? Colors.deepOrange : null,
+                    child: InkWell(
+                        onTap: () {
+                          bloc.eventSink(SelectEixoIDEvent(variavel.id));
+                        },
+                        child: ListTile(
+                          title: Text(
+                            // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
+                            "${variavel.nome}",
+                            style: TextStyle(fontSize: 18),
+                          ),
 
-                            // subtitle: Text(
-                            //   "## ${variavel?.nome}",
-                            //   "CLIQUE AQUI PARA VER O ARQUIVO",
-                            //   style:
-                            //       TextStyle(fontSize: 16, color: Colors.blue),
-                            // ),
-                          )));
-                }).toList()
-              ],
-            );
-          }
+                          // subtitle: Text(
+                          //   "## ${variavel?.nome}",
+                          //   "CLIQUE AQUI PARA VER O ARQUIVO",
+                          //   style:
+                          //       TextStyle(fontSize: 16, color: Colors.blue),
+                          // ),
+                        )));
+              }).toList()
+            ],
+          );
         });
   }
 
   _usuarioBody() {
     return StreamBuilder<ComunicacaoDestinatarioPageState>(
         stream: bloc.stateStream,
-        builder: (context, snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<ComunicacaoDestinatarioPageState> snapshot) {
           if (snapshot.hasError) {
             return Text('Erro.');
           }
           if (!snapshot.hasData) {
             return Text('Sem dados.');
           }
-          if (snapshot.hasData) {
-            //  var cargoList = List<Cargo>();
             var usuarioList = snapshot.data.usuarioList;
             return ListView(
               children: <Widget>[
@@ -179,7 +177,7 @@ class _ComunicacaoDestinatariosPageState
                 }).toList()
               ],
             );
-          }
+          
         });
   }
 }
