@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/resposta/resposta_questionarioaplicado_home_bloc.dart';
-import 'package:pmsbmibile3/services/gerador_md_service.dart';
-import 'package:pmsbmibile3/services/gerador_pdf_service.dart';
-import 'package:pmsbmibile3/services/pdf_create_service.dart';
-import 'package:pmsbmibile3/services/pdf_save_service.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
@@ -53,72 +48,69 @@ class _RespostaQuestionarioAplicadoHomePageState
           if (!snapshot.hasData) {
             return Text("SEM DADOS");
           }
-          if (snapshot.hasData) {
-            List<Widget> listaWdg = List<Widget>();
-            if (snapshot.data.isDataValid) {
-              for (var questionarioAplicado
-                  in snapshot.data.questionarioAplicadoList) {
-                listaWdg.add(Card(
-                    child: ListTile(
-                  title: Text(
-                      'Questionário: ${questionarioAplicado.nome}\nReferência: ${questionarioAplicado.referencia}'),
-                  subtitle: Text(
-                      'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado} \nid: ${questionarioAplicado.id}'),
-                  trailing: snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                              null &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                              false &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                              true &&
-                          snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                              'resposta01' &&
-                          snapshot.data?.relatorioPdfMakeModel?.document ==
-                              questionarioAplicado.id
-                      ? IconButton(
-                          tooltip: 'Ver relatório geral das tarefas recebidas.',
-                          icon: Icon(Icons.link),
-                          onPressed: () async {
-                            bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                pdfGerar: false,
-                                pdfGerado: false,
-                                tipo: 'resposta01',
-                                collection: 'QuestionarioAplicado',
-                                document: questionarioAplicado.id));
-                            launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                          },
-                        )
-                      : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                                  null &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                                  true &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                                  false &&
-                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                                  'resposta01' &&
-                              snapshot.data?.relatorioPdfMakeModel?.document ==
-                                  questionarioAplicado.id
-                          ? CircularProgressIndicator()
-                          : IconButton(
-                              tooltip:
-                                  'Atualizar PDF geral das tarefas recebidas.',
-                              icon: Icon(Icons.picture_as_pdf),
-                              onPressed: () async {
-                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                    pdfGerar: true,
-                                    pdfGerado: false,
-                                    tipo: 'resposta01',
-                                    collection: 'QuestionarioAplicado',
-                                    document: questionarioAplicado.id));
-                              },
-                            ),
-                )));
-              }
-              return ListView(
-                children: listaWdg,
-              );
-            } else {
-              return Text('Existem dados inválidos...');
+          List<Widget> listaWdg = List<Widget>();
+          if (snapshot.data.isDataValid) {
+            for (var questionarioAplicado
+                in snapshot.data.questionarioAplicadoList) {
+              listaWdg.add(Card(
+                  child: ListTile(
+                title: Text(
+                    'Questionário: ${questionarioAplicado.nome}\nReferência: ${questionarioAplicado.referencia}'),
+                subtitle: Text(
+                    'Aplicador: ${questionarioAplicado.aplicador.nome}\nAplicado: ${questionarioAplicado.aplicado} \nid: ${questionarioAplicado.id}'),
+                trailing: snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                            null &&
+                        snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                            false &&
+                        snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                            true &&
+                        snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                            'resposta01' &&
+                        snapshot.data?.relatorioPdfMakeModel?.document ==
+                            questionarioAplicado.id
+                    ? IconButton(
+                        tooltip: 'Ver relatório geral das tarefas recebidas.',
+                        icon: Icon(Icons.link),
+                        onPressed: () async {
+                          bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                              pdfGerar: false,
+                              pdfGerado: false,
+                              tipo: 'resposta01',
+                              collection: 'QuestionarioAplicado',
+                              document: questionarioAplicado.id));
+                          launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                        },
+                      )
+                    : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                true &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                false &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                'resposta01' &&
+                            snapshot.data?.relatorioPdfMakeModel?.document ==
+                                questionarioAplicado.id
+                        ? CircularProgressIndicator()
+                        : IconButton(
+                            tooltip:
+                                'Atualizar PDF geral das tarefas recebidas.',
+                            icon: Icon(Icons.picture_as_pdf),
+                            onPressed: () async {
+                              bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: true,
+                                  pdfGerado: false,
+                                  tipo: 'resposta01',
+                                  collection: 'QuestionarioAplicado',
+                                  document: questionarioAplicado.id));
+                            },
+                          ),
+              )));
             }
+            return ListView(
+              children: listaWdg,
+            );
+          } else {
+            return Text('Existem dados inválidos...');
           }
         });
   }
@@ -141,22 +133,22 @@ class _RespostaQuestionarioAplicadoHomePageState
   }
 }
 
-class _CardText extends StatelessWidget {
-  final String text;
+// class _CardText extends StatelessWidget {
+//   final String text;
 
-  const _CardText(this.text, {Key key}) : super(key: key);
+//   const _CardText(this.text, {Key key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 2, left: 5),
-      child: Text(
-        text,
-        // style: TextStyle(fontSize: 15),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.only(top: 2, left: 5),
+//       child: Text(
+//         text,
+//         // style: TextStyle(fontSize: 15),
+//       ),
+//     );
+//   }
+// }
 
 // class QuestionarioAplicadoItem extends StatelessWidget {
 //   final QuestionarioAplicadoModel _questionario;

@@ -1,8 +1,6 @@
-import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/models/relatorio_pdf_make.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
-import 'package:queries/collections.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
