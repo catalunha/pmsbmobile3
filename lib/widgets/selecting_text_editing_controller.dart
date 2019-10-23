@@ -103,26 +103,26 @@ class _MarkdownTextEditorState extends State<MarkdownTextEditor> {
     );
   }
 
-  _bodyTexto(context) {
-    return ListView(
-      children: <Widget>[
-        Expanded(
-          child: ListView(
-            padding: EdgeInsets.all(5),
-            children: <Widget>[
-              _textoTitulo("Texto da notícia:"),
-              _textoMarkdownField(),
-            ],
-          ),
-        ),
-        new Container(
-          color: Colors.white,
-          padding: new EdgeInsets.all(10.0),
-          child: _iconesLista(),
-        ),
-      ],
-    );
-  }
+  // _bodyTexto(context) {
+  //   return ListView(
+  //     children: <Widget>[
+  //       Expanded(
+  //         child: ListView(
+  //           padding: EdgeInsets.all(5),
+  //           children: <Widget>[
+  //             _textoTitulo("Texto da notícia:"),
+  //             _textoMarkdownField(),
+  //           ],
+  //         ),
+  //       ),
+  //       new Container(
+  //         color: Colors.white,
+  //         padding: new EdgeInsets.all(10.0),
+  //         child: _iconesLista(),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
