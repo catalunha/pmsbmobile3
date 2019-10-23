@@ -15,38 +15,38 @@ class Alerta {
 }
 
 class ChatPageState {
-  // objetos
+  /// objetos
   UsuarioModel usuarioModel;
 
-  // Estados de entrada
+  /// Estados de entrada
   String chatID;
   String modulo;
   String titulo;
 
-  // Estados secundarios
+  /// Estados secundarios
   String msgToSend;
   Map<String, UsuarioChat> usuario = Map<String, UsuarioChat>();
 }
 
 class ChatPageBloc {
-  //Firestore
+  /// Firestore
   final fw.Firestore _firestore;
 
-  // Authenticacação
+  /// Authenticacação
   AuthBloc _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ChatPageEvent>();
   Stream<ChatPageEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ChatPageState state = ChatPageState();
   final _stateController = BehaviorSubject<ChatPageState>();
   Stream<ChatPageState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Stream para ChatMensagem
+  /// Stream para ChatMensagem
   final chatMensagemListController = BehaviorSubject<List<ChatMensagemModel>>();
   Stream<List<ChatMensagemModel>> get chatMensagemListStream =>
       chatMensagemListController.stream;
@@ -94,39 +94,13 @@ class ChatPageBloc {
           },
         );
         await chatDocRef.setData(chatModel.toMap(), merge: true);
-        // }
       });
-
-      // // le todas as msgs deste chat
-      // final collectionRef = _firestore
-      //     .collection(ChatModel.collection)
-      //     .document(state.chatID)
-      //     // .document('0W7B2AScdpfjOSmdsNk3')
-      //     .collection(ChatModel.subcollectionMensagem);
-
-      // final snapList = collectionRef
-      //     .snapshots()
-      //     .map((querySnapshot) => querySnapshot.documents
-      //         .map((docSnap) => ChatMensagemModel(id: docSnap.documentID)
-      //             .fromMap(docSnap.data))
-      //         .toList())
-      //     .pipe(chatMensagemListController);
-
-      // snapList.listen((List<ChatMensagemModel> chatMensagemModelList) {
-      //   // print('chatMensagemModelList.length: ${chatMensagemModelList.length}');
-      //   // for (var item in chatMensagemModelList) {
-      //   //   print('Msg: ${item.id}');
-      //   // }
-      //   chatMensagemListSink(chatMensagemModelList);
-      // });
     }
     if (event is UpDateMsgToSendEvent) {
       state.msgToSend = event.msgToSend;
-      print(event.msgToSend);
     }
 
     if (event is SendMsgEvent) {
-      print('Send: ${state.msgToSend}');
       if (state.msgToSend != null) {
         final chatMsgDocRef = _firestore
             .collection(ChatModel.collection)
@@ -157,9 +131,9 @@ class ChatPageBloc {
             texto: '${state.titulo}\nM: ${state.msgToSend}.',
             usuario: usuarioListAlertar,
           );
-          await chatNotificacaoDocRef.setData(chatNotificacaoModel.toMap(), merge: true);
+          await chatNotificacaoDocRef.setData(chatNotificacaoModel.toMap(),
+              merge: true);
         }
-        print('>>> usuarioListAlertar <<< $usuarioListAlertar');
       }
       state.msgToSend = null;
     }

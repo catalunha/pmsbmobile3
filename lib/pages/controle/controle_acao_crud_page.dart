@@ -9,7 +9,6 @@ class ControleAcaoCrudPage extends StatefulWidget {
 
   ControleAcaoCrudPage({this.tarefaID,this.acaoID});
 
-  // @override
   @override
   State<StatefulWidget> createState() {
     return _ControleAcaoCrudPageState();
@@ -40,14 +39,6 @@ class _ControleAcaoCrudPageState extends State<ControleAcaoCrudPage> {
       appBar: AppBar(
         title: Text('Editar ação'),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.cloud_upload),
-      //   onPressed: () {
-      //     // salvar e voltar
-      //     bloc.eventSink(SaveAcaoEvent());
-      //     Navigator.pop(context);
-      //   },
-      // ),
       floatingActionButton: StreamBuilder<ControleAcaoCrudBlocState>(
             stream: bloc.stateStream,
             builder: (context, snapshot) {
@@ -56,7 +47,6 @@ class _ControleAcaoCrudPageState extends State<ControleAcaoCrudPage> {
               return FloatingActionButton(
                 onPressed: snapshot.data.isDataValid
                     ? () {
-                        //salvar e voltar
                         bloc.eventSink(SaveEvent());
                         Navigator.pop(context);
                       }
@@ -171,40 +161,3 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   }
 }
 
-// class AcaoObs extends StatefulWidget {
-//   final ControleAcaoCrudBloc bloc;
-//   AcaoObs(this.bloc);
-//   @override
-//   AcaoObsState createState() {
-//     return AcaoObsState(bloc);
-//   }
-// }
-
-// class AcaoObsState extends State<AcaoObs> {
-//   final _textFieldController = TextEditingController();
-//   final ControleAcaoCrudBloc bloc;
-//   AcaoObsState(this.bloc);
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder<ControleAcaoCrudBlocState>(
-//       stream: bloc.stateStream,
-//       builder: (BuildContext context,
-//           AsyncSnapshot<ControleAcaoCrudBlocState> snapshot) {
-//         if (_textFieldController.text.isEmpty) {
-//           _textFieldController.text = snapshot.data?.obs;
-//         }
-//         return TextField(
-//           keyboardType: TextInputType.multiline,
-//           maxLines: null,
-//           decoration: InputDecoration(
-//             border: OutlineInputBorder(),
-//           ),
-//           controller: _textFieldController,
-//           onChanged: (text) {
-//             bloc.eventSink(UpdateObsEvent(text));
-//           },
-//         );
-//       },
-//     );
-//   }
-// }

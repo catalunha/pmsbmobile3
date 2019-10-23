@@ -63,7 +63,6 @@ class Usuario {
   String id;
   String nome;
   String email;
-  // String permissao;
   UsuarioGoogleDrive usuarioGoogleDrive;
   Cargo cargo;
   Eixo eixo;
@@ -82,18 +81,18 @@ class UsuarioGoogleDriveState {
 class UsuarioGoogleDriveBloc {
   final fsw.Firestore _firestore;
 
-  // Eventos da página todas as perguntas para
+  ///  Eventos
   final _eventController = BehaviorSubject<UsuarioGoogleDriveEvent>();
   Stream<UsuarioGoogleDriveEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  // Estados da página
+  ///  Estados da página
   UsuarioGoogleDriveState _state = UsuarioGoogleDriveState();
   final _stateController = BehaviorSubject<UsuarioGoogleDriveState>();
   Stream<UsuarioGoogleDriveState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Cargo
+  /// Cargo
   final _cargoModelListController = BehaviorSubject<List<CargoModel>>();
   Stream<List<CargoModel>> get cargoModelListStream =>
       _cargoModelListController.stream;
@@ -130,14 +129,11 @@ class UsuarioGoogleDriveBloc {
           if (item.value.usuarioID == usuarioList.id) {
             int index = _state.usuarioList.indexOf(usuarioList);
             _state.usuarioList[index].usuarioGoogleDrive = item.value;
-            // _state.usuarioList[index].permissao = item.value.permissao;
           }
         }
       }
     }
     if (event is UpdateCargoListEvent) {
-      print('UsuarioGoogleDriveBloc> 028474');
-
       final streamDocs =
           _firestore.collection(CargoModel.collection).snapshots();
 
@@ -190,20 +186,8 @@ class UsuarioGoogleDriveBloc {
       });
     }
     if (event is ChangePermissaoEvent) {
-      print('ChangePermissaoEvent: ${event.permissao}');
-      print('ChangePermissaoEvent: ${event.usuarioID}');
       for (var usuarioList in _state.usuarioList) {
         if (event.usuarioID == usuarioList.id) {
-//           int index = _state.usuarioList.indexOf(usuarioList);
-//           if (_state.usuarioList[index].usuarioGoogleDrive == null) {
-// _state.usuarioList[index].usuarioGoogleDrive[] = UsuarioGoogleDrive(
-//             atualizar: false,
-//             permissao: 'escrever',
-//             usuarioID: item.id,
-//           );
-//           }
-//             _state.usuarioList[index].usuarioGoogleDrive.permissao =
-//                 event.permissao;
 
           if (usuarioList.usuarioGoogleDrive == null) {
             usuarioList.usuarioGoogleDrive = UsuarioGoogleDrive(
@@ -217,15 +201,12 @@ class UsuarioGoogleDriveBloc {
       }
     }
     if (event is SelectCargoIDEvent) {
-      // print('evento de cargo: ${event.cargoID}');
       _updateCargoModeltoState(event.cargoID);
     }
     if (event is SelectEixoIDEvent) {
-      // print('evento de eixo: ${event.eixoID}');
       _updateEixoModeltoState(event.eixoID);
     }
     if (event is SelectUsuarioIDEvent) {
-      // print('evento de usuario: ${event.usuarioID}');
       _updateUsuarioModeltoState(event.usuarioID);
     }
 
@@ -238,9 +219,6 @@ class UsuarioGoogleDriveBloc {
           usuarioGoogleDrive[usuario.email] = usuario.usuarioGoogleDrive.toMap();
         }
       }
-      // var googleDriveModel = GoogleDriveModel(
-      //   usuario: usuarioGoogleDrive,
-      // );
       final docRefGoogleDrive = _firestore
           .collection(GoogleDriveModel.collection)
           .document(_state.googleDriveModel.id);
@@ -253,7 +231,6 @@ class UsuarioGoogleDriveBloc {
   }
 
   _updateCargoModeltoState(String id) {
-    // print('processando cargo: ${id}');
 
     bool marcou = false;
     for (var item in _state.cargoList) {
@@ -272,7 +249,6 @@ class UsuarioGoogleDriveBloc {
   }
 
   _updateEixoModeltoState(String id) {
-    // print('processando eixo: ${id}');
     bool marcou = false;
     for (var item in _state.eixoList) {
       if (item.id == id) {
@@ -290,7 +266,6 @@ class UsuarioGoogleDriveBloc {
   }
 
   _updateUsuarioModeltoState(String id) {
-    // print('processando eixo: ${id}');
     for (var item in _state.usuarioList) {
       if (item.id == id) {
         item.checked = !item.checked;

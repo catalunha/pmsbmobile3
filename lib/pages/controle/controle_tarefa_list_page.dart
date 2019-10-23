@@ -95,7 +95,6 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     tooltip: 'Marcar/Atualizar ação',
                     icon: Icon(Icons.check),
                     onPressed: () {
-                      // Listar paginas de perguntas
                       Navigator.pushNamed(
                         context,
                         "/controle/acao_marcar",
@@ -115,40 +114,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     child: Text('Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    // snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                    //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                    //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                    //         snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle01'
-                    //     ? IconButton(
-                    //         tooltip: 'Ver relatório geral das tarefas recebidas.',
-                    //         icon: Icon(Icons.link),
-                    //         onPressed: () async {
-                    //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                    //               pdfGerar: false,
-                    //               pdfGerado: false,
-                    //               tipo: 'controle01',
-                    //               collection: 'Usuario',
-                    //               document: snapshot.data.usuarioID.id));
-                    //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                    //         },
-                    //       )
-                    //     : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                    //             snapshot.data?.relatorioPdfMakeModel?.pdfGerar == true &&
-                    //             snapshot.data?.relatorioPdfMakeModel?.pdfGerado == false &&
-                    //             snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle01'
-                    //         ? CircularProgressIndicator()
-                    //         : IconButton(
-                    //             tooltip: 'Atualizar PDF geral das tarefas recebidas.',
-                    //             icon: Icon(Icons.picture_as_pdf),
-                    //             onPressed: () async {
-                    //               bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                    //                   pdfGerar: true,
-                    //                   pdfGerado: false,
-                    //                   tipo: 'controle01',
-                    //                   collection: 'Usuario',
-                    //                   document: snapshot.data.usuarioID.id));
-                    //             },
-                    //           ),
+                
                     IconButton(
                       tooltip: 'Ver tarefas recebidas concluidas',
                       icon: Icon(Icons.folder),
@@ -302,40 +268,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
                     child: Text('Setor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    // snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                    //         snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                    //         snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                    //         snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle03'
-                    //     ? IconButton(
-                    //         tooltip: 'Ver relatório geral das tarefas designadas.',
-                    //         icon: Icon(Icons.link),
-                    //         onPressed: () async {
-                    //           bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                    //               pdfGerar: false,
-                    //               pdfGerado: false,
-                    //               tipo: 'controle03',
-                    //               collection: 'Usuario',
-                    //               document: snapshot.data.usuarioID.id));
-                    //           launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                    //         },
-                    //       )
-                    //     : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                    //             snapshot.data?.relatorioPdfMakeModel?.pdfGerar == true &&
-                    //             snapshot.data?.relatorioPdfMakeModel?.pdfGerado == false &&
-                    //             snapshot.data?.relatorioPdfMakeModel?.tipo == 'controle03'
-                    //         ? CircularProgressIndicator()
-                    //         : IconButton(
-                    //             tooltip: 'Atualizar PDF geral das tarefas designadas.',
-                    //             icon: Icon(Icons.picture_as_pdf),
-                    //             onPressed: () async {
-                    //               bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                    //                   pdfGerar: true,
-                    //                   pdfGerado: false,
-                    //                   tipo: 'controle03',
-                    //                   collection: 'Usuario',
-                    //                   document: snapshot.data.usuarioID.id));
-                    //             },
-                    //           ),
+                 
                     IconButton(
                       tooltip: 'Ver tarefas designadas concluidas',
                       icon: Icon(Icons.folder),
@@ -401,7 +334,6 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
         title: Text('Controle de tarefas'),
         body: _body(context),
       ),
-      // ),
     );
   }
 }

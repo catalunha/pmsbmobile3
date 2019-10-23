@@ -5,12 +5,6 @@ import 'package:pmsbmibile3/pages/perfil/perfil_crud_page_bloc.dart';
 
 class PerfilCRUDPage extends StatefulWidget {
   final String usuarioPerfilID;
-  // final PerfilCRUDPageBloc bloc;
-
-  // PerfilCRUDPage(this.usuarioPerfilID)
-  //     : bloc = PerfilCRUDPageBloc(Bootstrap.instance.firestore) {
-  //   bloc.perfilCRUDPageEventSink(UpDateUsuarioPerfilIDEvent(usuarioPerfilID));
-  // }
 
   PerfilCRUDPage(this.usuarioPerfilID);
 
@@ -41,13 +35,11 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Editar item do perfil '),
-        // title: Text('Item de ${usuarioPerfilID.substring(0, 5)}'),
       ),
       body: ListView(
         children: <Widget>[
           StreamBuilder<UsuarioPerfilModel>(
             stream: bloc.usuarioPerfilModelStream,
-            // initialData: null,
             builder: (BuildContext context,
                 AsyncSnapshot<UsuarioPerfilModel> snapshot) {
               if (!snapshot.hasData) {
@@ -61,7 +53,6 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
                 children: <Widget>[
                   Text(
                     '${snapshot.data.perfilID.nome}',
-                    // 'a',
                     style: Theme.of(context).textTheme.title,
                   ),
                   TextField(

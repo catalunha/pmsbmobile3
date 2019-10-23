@@ -83,8 +83,6 @@ class QuestionarioModel extends FirestoreModel {
   @override
   QuestionarioModel fromMap(Map<String, dynamic> map) {
     nome = map["nome"];
-    // criado = map["criado"];
-    // modificado = map["modificado"];
     if (map.containsKey('criado'))
       criado = DateTime.fromMillisecondsSinceEpoch(
           map['criado'].millisecondsSinceEpoch);
@@ -132,29 +130,6 @@ class QuestionarioModel extends FirestoreModel {
   }
 }
 
-//  "QuestionarioAplicado": {
-//    "nome": "nome-valor",
-//    "referencia": "Local ou Pessoa ou Momento da aplicação.",
-//    "eixoID": {
-//      "id": "EixoID",
-//      "nome": "Eixo_nome"
-//    },
-//    "setorCensitarioID": {
-//      "id": "SetorCensitarioID",
-//      "nome": "SetorCensitario_nome"
-//    },
-//    "usuarioIDEditor": {
-//      "id": "UsuarioID",
-//      "nome": "Usuario_nome"
-//    },
-//    "modificado": "data-valor",
-//    "usuarioIDAplicador": {
-//      "id": "UsuarioID",
-//      "nome": "Usuario_nome"
-//    },
-//    "aplicado": "data-valor"
-//  }
-
 class QuestionarioAplicadoModel extends QuestionarioModel {
   static String collection = "QuestionarioAplicado";
   String referencia;
@@ -201,7 +176,6 @@ class QuestionarioAplicadoModel extends QuestionarioModel {
       }
     }
 
-    // aplicado = map["aplicado"];
     if (map.containsKey('aplicado'))
       aplicado = DateTime.fromMillisecondsSinceEpoch(
           map['aplicado'].millisecondsSinceEpoch);

@@ -29,14 +29,13 @@ class NoticiaPageState {
 class NoticiaPageBloc {
   final bool visualizada;
 
-  // Database
+  /// Database
   final fsw.Firestore firestore;
 
-  // Authenticacação
-  final _authBloc =
-      Bootstrap.instance.authBloc;
+  /// Authenticacação
+  final _authBloc = Bootstrap.instance.authBloc;
 
-  //Evento
+  /// Evento
   final _noticiaPageEventController = BehaviorSubject<NoticiaPageEvent>();
 
   Stream<NoticiaPageEvent> get noticiaPageEventStream =>
@@ -44,7 +43,7 @@ class NoticiaPageBloc {
 
   Function get noticiaPageEventSink => _noticiaPageEventController.sink.add;
 
-  //Estado
+  /// Estado
   final _noticiaPageState = NoticiaPageState();
   final _noticiaPageStateController = BehaviorSubject<NoticiaPageState>();
 
@@ -55,15 +54,7 @@ class NoticiaPageBloc {
 
   StreamSubscription firestoreSubscription;
 
-  // //UsuarioNoticiaModel
-  // final _usuarioNoticiaModelListController =
-  //     BehaviorSubject<List<UsuarioNoticiaModel>>();
-  // Stream<List<UsuarioNoticiaModel>> get usuarioNoticiaModelListStream =>
-  //     _usuarioNoticiaModelListController.stream;
-  // Function get usuarioNoticiaModelListSink =>
-  //     _usuarioNoticiaModelListController.sink.add;
-
-  //NoticiaModel
+  /// NoticiaModel
   final _noticiaModelListController = BehaviorSubject<List<NoticiaModel>>();
 
   Stream<List<NoticiaModel>> get noticiaModelListStream =>
@@ -97,13 +88,9 @@ class NoticiaPageBloc {
           .map((snap) => UsuarioModel(id: snap.documentID).fromMap(snap.data))
           .listen((usuario) {
         _noticiaPageState.usuarioIDNome = usuario.nome;
-        // print('>> usuario.nome >> ${usuario.nome}');
         noticiaPageStateSink(_noticiaPageState);
       });
-      noticiaPageStateStream.listen((event) {
-        // print('>> event >> ${event.usuarioID}');
-        // print('>> event >> ${event.usuarioIDNome}');
-      });
+      noticiaPageStateStream.listen((event) {});
       final stream = firestore
           .collection(NoticiaModel.collection)
           .where("usuarioIDDestino.${_noticiaPageState.usuarioID}.id",
@@ -127,18 +114,13 @@ class NoticiaPageBloc {
       });
 
       noticiaModelListStream.listen((noticia) {
-        noticia.forEach((item) {
-          // print('>> item. >> ${item.titulo}');
-          // print('>> item. >> ${item.publicar}');
-          // print('>> item. >> ${item.publicada}');
-        });
+        noticia.forEach((item) {});
       });
     }
     if (event is UpdateNoticiaVisualizadaEvent) {
       _noticiaPageState.noticiaID = event.noticiaID;
       noticiaPageStateSink(_noticiaPageState);
 
-      print('usuarioIDDestino.${_noticiaPageState.usuarioID}.visualizada');
       firestore
           .collection(NoticiaModel.collection)
           .document(_noticiaPageState.noticiaID)
@@ -148,7 +130,5 @@ class NoticiaPageBloc {
         }
       }, merge: true);
     }
-
-    // noticiaPageStateSink(_noticiaPageState);
   }
 }

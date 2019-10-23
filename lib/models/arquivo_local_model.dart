@@ -19,7 +19,7 @@ class ArquivoLocalListModel {
 
   getListaAquivos() => _listaArquivos.toList();
 
-  //funcao que vai converter de list para o formato que vai ser enviado ao firebase
+  ///funcao que vai converter de list para o formato que vai ser enviado ao firebase
   getListaFormatoFirebase() => null;
 
   getArquivoPorIndex(int index) => _listaArquivos.toList()[index];
@@ -35,7 +35,7 @@ class ArquivoLocalListModel {
   }
 
   void setNovosArquivo(arquivoNovo) {
-    //verificar se nao e nulo e entao retorna direcionar o dado de acordo com o tipo
+    ///verificar se nao e nulo e entao retorna direcionar o dado de acordo com o tipo
     if (arquivoNovo != null) {
       _adicionarArquivosLista(arquivoNovo);
     }
@@ -48,7 +48,7 @@ class ArquivoLocalListModel {
         });
   }
 
-  // pegar arquivo de um local do so
+  /// pegar arquivo de um local do so
   Future<File> localFile(String _localPath) async {
     final path = _localPath;
     return File('$path');

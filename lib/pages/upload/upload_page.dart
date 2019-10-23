@@ -14,15 +14,6 @@ class UploadPage extends StatefulWidget {
 }
 
 class _UploadPageState extends State<UploadPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//        child: child,
-//     );
-//   }
-// }
-
-// class UploadPage extends StatelessWidget {
   final UploadPageBloc bloc;
 
   _UploadPageState(AuthBloc authBloc)
@@ -57,21 +48,13 @@ class _UploadPageState extends State<UploadPage> {
             return Center(
               child: Text("Erro. Informe ao administrador do aplicativo"),
             );
-          // if (!snapshot.hasData) {
-          //   return Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
+  
           if (!snapshot.hasData) {
             return Center(
               child: Text("Nenhum upload pendente."),
             );
           }
-          // if (snapshot.data?.uploadingList == null) {
-          //   return Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
+  
           // +++ Com lista de uploading
           var lista = snapshot.data?.uploadingList;
           if (lista == null) {

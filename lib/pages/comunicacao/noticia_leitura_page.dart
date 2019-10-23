@@ -13,15 +13,6 @@ class NoticiaLeituraPage extends StatefulWidget {
 }
 
 class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//        child: child,
-//     );
-//   }
-// }
-
-// class NoticiaLeituraPage extends StatelessWidget {
   final bloc = NoticiaPageBloc(
       firestore: Bootstrap.instance.firestore, visualizada: false);
 
@@ -52,7 +43,6 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
           return Text("Oi ${snap.data?.usuarioIDNome}");
         },
       ),
-      // body: Text('oi')
       body: Container(
         child: StreamBuilder<List<NoticiaModel>>(
             stream: bloc.noticiaModelListStream,
@@ -109,34 +99,3 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
     );
   }
 }
-
-// import 'package:simple_permissions/simple_permissions.dart';
-
-// class NoticiaLeituraPage extends StatefulWidget {
-//   NoticiaLeituraPage({Key key}) : super(key: key);
-
-//   _NoticiaLeituraPageState createState() => _NoticiaLeituraPageState();
-// }
-
-// class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
-//   @override
-//   void initState() {
-//     super.initState();
-
-//     requestPermission();
-//   }
-
-//   requestPermission() async {
-//     final res = await SimplePermissions.requestPermission(
-//         Permission.WriteExternalStorage);
-//     print("permission request result is " + res.toString());
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultScaffold(
-//       title: Text('teste'),
-//       body: Text('oi'),
-//     );
-//   }
-// }

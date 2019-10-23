@@ -16,25 +16,20 @@ class GeralBlocState {
 }
 
 class GeralBloc {
-  //Firestore
-  //Firestore
-  // final fsw.Firestore _firestore;
-  // final fw.Firestore _firestore;
-
   final _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<GeralBlocEvent>();
   Stream<GeralBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final GeralBlocState _state = GeralBlocState();
   final _stateController = BehaviorSubject<GeralBlocState>();
   Stream<GeralBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   GeralBloc(
     this._authBloc
   ) {
@@ -60,7 +55,6 @@ class GeralBloc {
 
   _mapEventToState(GeralBlocEvent event) async {
     if (event is GetUsuarioIDEvent) {
-      //Atualiza estado com usuario logado
       _state.usuarioID = event.usuarioID;
     }
 

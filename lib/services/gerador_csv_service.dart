@@ -8,11 +8,9 @@ import 'package:csv/csv.dart';
 import 'package:pmsbmibile3/models/models.dart';
 
 class GeradorCsvService {
-  // PUBLIC
   static generateCsvFromUsuarioModel(UsuarioModel usuarioModel) async {
     List<List<dynamic>> colunas = List<List<dynamic>>();
 
-    //adicionar Colunas
     List<dynamic> colunaHead = List();
     colunaHead.add("Item");
     colunaHead.add("Valor");
@@ -48,7 +46,6 @@ class GeradorCsvService {
     colunaEixo.add("${usuarioModel.eixoID.nome}");
     colunas.add(colunaEixo);
 
-    //gerar e salvar
     var csvDirectory = (await getExternalStorageDirectory()).path + "/";
     var fileDirectory = "$csvDirectory";
     String filename = "filename.csv";
@@ -56,7 +53,6 @@ class GeradorCsvService {
     await _openFileFromDirectory(filename, fileDirectory);
   }
 
-  //PRIVATE
   static Future<File> _salvarArquivoCsv(
       List<List<dynamic>> rows, String filename, String fileDirectory) async {
     String csvData = ListToCsvConverter().convert(rows, fieldDelimiter: ';');

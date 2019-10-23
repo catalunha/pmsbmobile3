@@ -54,7 +54,6 @@ class _RespostaPerguntaAplicadaMarkdownPageState
               child: CircularProgressIndicator(),
             );
           }
-          // return Text("ok...");
           return Markdown(data: snapshot.data.questionarioPerguntaList2Mkd);
         });
   }

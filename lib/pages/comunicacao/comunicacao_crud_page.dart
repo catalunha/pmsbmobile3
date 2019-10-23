@@ -18,7 +18,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
   final bloc = ComunicacaoCRUDPageBloc();
   var result = List<Map<String, dynamic>>();
 
-  //Dados do formulario
   bool showFab;
   DateTime _date = new DateTime.now();
   TimeOfDay _hora = new TimeOfDay.now();
@@ -64,24 +63,12 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       initialDate: _date,
       firstDate: DateTime(2019),
       lastDate: DateTime(2022),
-      // locale: const Locale('pt','BR'),
-      // builder: (BuildContext context, Widget child) {
-      //   return FittedBox(
-      //     child: Theme(
-      //       child: child,
-      //       data: ThemeData(
-      //         primaryColor: Colors.purple[300],
-      //       ),
-      //     ),
-      //   );
-      // }
     );
     if (selectedDate != null) {
       bloc.eventSink(UpdatePublicarEvent(data: selectedDate));
       setState(() {
         _date = selectedDate;
       });
-      // print('selectedDate: ${_date.toString()}');
     }
   }
 
@@ -101,16 +88,8 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
         bloc.eventSink(UpdatePublicarEvent(hora: selectedTime));
         _hora = selectedTime;
       });
-      // print('selectedTime: ${_hora.toString()}');
     }
   }
-
-  // _ajustarTempoAux(tempo) {
-  //   if (tempo > 9) {
-  //     return tempo;
-  //   }
-  //   return "0$tempo";
-  // }
 
   _dataHorarioNoticia(context) {
     return Padding(
@@ -118,18 +97,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          // new Flexible(
-          //   child: TextField(
-          //     obscureText: true,
-          //     enabled: false,
-          //     keyboardType: TextInputType.datetime,
-          //     decoration: InputDecoration(
-          //         border: OutlineInputBorder(),
-          //         //labelText: '${_datestring}',
-          //         hintText:
-          //             "${_ajustarTempoAux(_date.day)}/${_ajustarTempoAux(_date.month)}/${_date.year} ${_ajustarTempoAux(_hora.hour)}:${_ajustarTempoAux(_hora.minute)}"),
-          //   ),
-          // ),
           StreamBuilder<ComunicacaoCRUDPageState>(
               stream: bloc.stateStream,
               builder: (context, snapshot) {
@@ -163,59 +130,7 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
     );
   }
 
-  // _botaoDeletarDocumento() {
-  //   return SafeArea(
-  //       child: Row(
-  //     children: <Widget>[
-  //       Padding(
-  //           padding: EdgeInsets.all(5.0),
-  //           child: RaisedButton(
-  //               // color: Colors.red,
-  //               onPressed: () {
-  //                 showDialog(
-  //                     context: context,
-  //                     barrierDismissible: true,
-  //                     builder: (context) {
-  //                       return SimpleDialog(
-  //                         children: <Widget>[
-  //                           SimpleDialogOption(
-  //                             onPressed: () {
-  //                               Navigator.pop(context);
-  //                             },
-  //                             child: Text("CANCELAR EXCLUSÃO"),
-  //                           ),
-  //                           Container(
-  //                             padding: EdgeInsets.all(20),
-  //                           ),
-  //                           Divider(),
-  //                           SimpleDialogOption(
-  //                             onPressed: () {
-  //                               bloc.comunicacaoCRUDPageEventSink(
-  //                                   DeleteNoticiaIDEvent());
-  //                               Navigator.pushNamed(
-  //                                   context, '/comunicacao/home');
-  //                             },
-  //                             child: Text("sim"),
-  //                           ),
-  //                         ],
-  //                       );
-  //                     });
-  //               },
-  //               child: Row(
-  //                 children: <Widget>[
-  //                   // Text('Apagar notícia', style: TextStyle(fontSize: 20)),
-  //                   Icon(Icons.delete)
-  //                 ],
-  //               ))),
-  //     ],
-  //   ));
-  // }
-
   _destinatarios(context) {
-    // List<Map<String, dynamic>> litems = [
-    //   {'id': '1', 'nome': 'um'},
-    //   {'id': '2', 'nome': 'dois'},
-    // ];
     return Column(
       children: <Widget>[
         IconButton(
@@ -228,7 +143,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             if (destinatarioList != null) {
               bloc.eventSink(UpdateDestinatarioListEvent(destinatarioList));
             }
-            // print('>>>> Retorno ${result}');
           },
         ),
         StreamBuilder<ComunicacaoCRUDPageState>(
@@ -248,41 +162,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             })
       ],
     );
-
-    // return Padding(
-    //   padding: EdgeInsets.all(5.0),
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //     children: <Widget>[
-    //       new Flexible(
-    //         child: TextField(
-    //           obscureText: true,
-    //           enabled: false,
-    //           // keyboardType: TextInputType.datetime,
-    //           decoration: InputDecoration(
-    //               border: OutlineInputBorder(),
-    //               //labelText: '${_datestring}',
-    //               hintText: ""),
-    //         ),
-    //       ),
-    //       IconButton(
-    //         icon: Icon(Icons.check_box),
-    //         onPressed: () async {
-    //           result = await Navigator.push(context,
-    //               MaterialPageRoute(builder: (context) {
-    //             return ComunicacaoDestinatariosPage();
-    //           }));
-    //           print('>>>> Retorno ${result}');
-    //         },
-    //       ),
-    //       // ListView.builder(
-    //       //     itemCount: result.length,
-    //       //     itemBuilder: (BuildContext ctxt, int index) {
-    //       //       return new Text(result[index]);
-    //       //     }),
-    //     ],
-    //   ),
-    // );
   }
 
   _bodyDados(context) {
@@ -319,7 +198,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
                 onChanged: (text) {
                   bloc.eventSink(UpdateTextoMarkdownEvent(text));
                   _textoMarkdown = text;
-                  // print(myController.selection);
                 },
                 controller: myController,
                 keyboardType: TextInputType.multiline,
@@ -331,70 +209,13 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
         });
   }
 
-  // _atualizarMarkdown(texto, posicao) {
-  //   String inicio =
-  //       _textoMarkdown.substring(0, myController.selection.baseOffset);
-  //   print("INICIO:" + inicio);
-  //   String fim = _textoMarkdown.substring(
-  //       myController.selection.baseOffset, _textoMarkdown.length);
-  //   print("FIM:" + fim);
-
-  //   _textoMarkdown = "$inicio$texto$fim";
-  //   myController.setTextAndPosition(_textoMarkdown,
-  //       caretPosition: myController.selection.baseOffset + posicao);
-  // }
-
-  // _iconesLista() {
-  //   return !showFab
-  //       ? Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //           children: <Widget>[
-  //             IconButton(
-  //               icon: Icon(Icons.format_bold),
-  //               onPressed: () {
-  //                 _atualizarMarkdown("****", 2);
-  //               },
-  //             ),
-  //             IconButton(
-  //               icon: Icon(Icons.format_size),
-  //               onPressed: () {
-  //                 _atualizarMarkdown("#", 1);
-  //               },
-  //             ),
-  //             IconButton(
-  //               icon: Icon(Icons.format_list_numbered),
-  //               onPressed: () {
-  //                 _atualizarMarkdown("- ", 2);
-  //               },
-  //             ),
-  //             IconButton(
-  //               icon: Icon(Icons.link),
-  //               onPressed: () {
-  //                 _atualizarMarkdown("[ clique aqui ](   )", 17);
-  //               },
-  //             ),
-  //             IconButton(
-  //                 icon: Icon(Icons.attach_file),
-  //                 onPressed: () {
-  //                   Navigator.push(context,
-  //                       MaterialPageRoute(builder: (context) {
-  //                     return UserFilesFirebaseList();
-  //                   }));
-  //                 })
-  //           ],
-  //         )
-  //       : null;
-  // }
-
   _bodyTexto(context) {
     return new Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         new Expanded(
           child: ListView(
-            // padding: EdgeInsets.all(5),
             children: <Widget>[
-              // _texto("Texto da notícia:"),
               ListTile(
                   title: _texto("Texto da notícia: (Use marcação markdown)"),
                   trailing: IconButton(
@@ -407,11 +228,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
             ],
           ),
         ),
-        // new Container(
-        //   color: Colors.white,
-        //   padding: new EdgeInsets.all(10.0),
-        //   child: _iconesLista(),
-        // ),
       ],
     );
   }
@@ -445,7 +261,6 @@ class _ComunicacaoCRUDPageState extends State<ComunicacaoCRUDPage> {
       length: 3,
       child: Scaffold(
           appBar: AppBar(
-            // backgroundColor: Colors.red,
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),

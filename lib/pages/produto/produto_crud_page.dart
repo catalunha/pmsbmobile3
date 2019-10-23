@@ -12,7 +12,6 @@ class ProdutoCRUDPage extends StatefulWidget {
 
   ProdutoCRUDPage(this.produtoID, this.authBloc);
 
-  // @override
   @override
   State<StatefulWidget> createState() {
     return _ProdutoCRUDPageState(authBloc);
@@ -51,7 +50,6 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.cloud_upload),
         onPressed: () {
-          // salvar e voltar
           bloc.eventSink(SaveProdutoIDEvent());
           Navigator.pop(context);
         },
@@ -207,7 +205,6 @@ class ArquivoPDF extends StatelessWidget {
                     pdfLocalPath = arq;
                   });
                   bloc.eventSink(UpdatePDFEvent(pdfLocalPath));
-                  // print('>>> pdfLocalPath <<< ${pdfLocalPath}');
                 },
               ),
             ]),

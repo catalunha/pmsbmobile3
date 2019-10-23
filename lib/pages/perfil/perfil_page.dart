@@ -5,23 +5,10 @@ import 'package:pmsbmibile3/pages/perfil/perfil_page_bloc.dart';
 
 
 class PerfilPage extends StatefulWidget {
-  // PerfilPage({Key key}) : super(key: key);
-
   _PerfilPageState createState() => _PerfilPageState();
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//        child: child,
-//     );
-//   }
-// }
-
-// class PerfilPage extends StatelessWidget {
-  // const PerfilPage({Key key}) : super(key: key);
-
   final bloc = PerfilPageBloc(Bootstrap.instance.firestore);
 
 @override
@@ -65,10 +52,6 @@ class _PerfilPageState extends State<PerfilPage> {
 
   Widget _listTile(BuildContext context, UsuarioPerfilModel usuarioPerfil) {
     return Card(
-      // color: (usuarioPerfil.arquivo == null) ==
-      //         (usuarioPerfil.textPlain == null)
-      //     ? Colors.yellow
-      //     : Colors.white,
       child: InkWell(
         onTap: () {
           if (usuarioPerfil.perfilID.contentType == 'text') {

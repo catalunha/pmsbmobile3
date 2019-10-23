@@ -28,24 +28,24 @@ class ControleTarefaConcluidaListBlocState {
 }
 
 class ControleTarefaConcluidaListBloc {
-  //Firestore
+  /// Firestore
   final fsw.Firestore _firestore;
   final _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ControleTarefaConcluidaListBlocEvent>();
   Stream<ControleTarefaConcluidaListBlocEvent> get eventStream =>
       _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  ///Estados
   final ControleTarefaConcluidaListBlocState _state = ControleTarefaConcluidaListBlocState();
   final _stateController = BehaviorSubject<ControleTarefaConcluidaListBlocState>();
   Stream<ControleTarefaConcluidaListBlocState> get stateStream =>
       _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   ControleTarefaConcluidaListBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
     _authBloc.perfil.listen((usuarioID) {
@@ -78,11 +78,9 @@ class ControleTarefaConcluidaListBloc {
 
   _mapEventToState(ControleTarefaConcluidaListBlocEvent event) async {
     if (event is UpdateTarefaUsuarioIDEvent) {
-      //Atualiza estado com usuario logado
       _state.usuarioID = event.usuarioID;
 
       _state.controleTarefaListRemetente.clear();
-      // le todas as tarefas deste usuario como remetente/designadas neste setor.
       final streamDocsRemetente = _firestore
           .collection(ControleTarefaModel.collection)
           .where("remetente.id", isEqualTo: _state.usuarioID.id)
@@ -102,7 +100,6 @@ class ControleTarefaConcluidaListBloc {
       });
 
       _state.controleTarefaListDestinatario.clear();
-      // le todas as tarefas deste usuario como destinatario/recebida neste setor.
       final streamDocsDestinatario = _firestore
           .collection(ControleTarefaModel.collection)
           .where("destinatario.id", isEqualTo: _state.usuarioID.id)

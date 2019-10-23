@@ -12,15 +12,7 @@ class NoticiaLidaPage extends StatefulWidget {
 }
 
 class _NoticiaLidaPageState extends State<NoticiaLidaPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//        child: child,
-//     );
-//   }
-// }
 
-// class NoticiaLidaPage extends StatelessWidget {
   final bloc = NoticiaPageBloc(
       firestore: Bootstrap.instance.firestore, visualizada: true);
 
@@ -41,7 +33,6 @@ class _NoticiaLidaPageState extends State<NoticiaLidaPage> {
       appBar: AppBar(
         title: Text('Notícias lidas'),
       ),
-      // body: Text('oi')
       body: Container(
         child: StreamBuilder<List<NoticiaModel>>(
             stream: bloc.noticiaModelListStream,
@@ -82,25 +73,9 @@ class _NoticiaLidaPageState extends State<NoticiaLidaPage> {
                             data: "${noticia.textoMarkdown}",
                           ),
                         ),
-                        // Container(
-                        //   // padding: EdgeInsets.symmetric(vertical: 6),
-                        //   child: Text(
-                        //     "${noticia.titulo}",
-                        //     style: Theme.of(context).textTheme.title,
-                        //   ),
-                        // ),
-                        // Text(
-                        //     "Editor: ${noticia.usuarioIDEditor.nome} em: ${noticia.publicar}\n"),
-                        // MarkdownBody(
-                        //   data: "${noticia.textoMarkdown}",
-                        // ),
                       ],
                     ),
                   );
-
-                  //   return ListTile(
-                  //     title: Text('Titulo ${noticia?.titulo}'),
-                  //   );
                 }).toList(),
               );
             }),

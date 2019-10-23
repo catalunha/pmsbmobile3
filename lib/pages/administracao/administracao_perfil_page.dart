@@ -12,7 +12,8 @@ class AdministracaoPerfilPage extends StatefulWidget {
 
   AdministracaoPerfilPage(this.authBloc);
 
-  _AdministracaoPerfilPageState createState() => _AdministracaoPerfilPageState();
+  _AdministracaoPerfilPageState createState() =>
+      _AdministracaoPerfilPageState();
 }
 
 class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
@@ -21,7 +22,8 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
   @override
   void initState() {
     super.initState();
-    bloc = AdministracaoPerfilPageBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc = AdministracaoPerfilPageBloc(
+        Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -41,7 +43,6 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Visualizar dados e perfil"),
       ),
@@ -89,15 +90,16 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                           Expanded(
                               flex: 5,
                               child: Container(
-                                // padding: EdgeInsets.only(left: 6),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text("ID: ${snapshot.data.id.substring(0, 10)}"),
+                                    Text(
+                                        "ID: ${snapshot.data.id.substring(0, 10)}"),
                                     Text("Nome: ${snapshot.data.nome}"),
                                     Text("Celular: ${snapshot.data.celular}"),
                                     Text("Email: ${snapshot.data.email}"),
-                                    Text("Eixo: ${snapshot.data.eixoIDAtual.nome}"),
+                                    Text(
+                                        "Eixo: ${snapshot.data.eixoIDAtual.nome}"),
                                   ],
                                 ),
                               ))
@@ -111,81 +113,61 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
         flex: 0,
         child: StreamBuilder<AdministracaoPerfilPageState>(
           stream: bloc.administracaoPerfilPageStateStream,
-          builder: (BuildContext context, AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
+          builder: (BuildContext context,
+              AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
             if (snapshot.hasError) {
               return Center(
                 child: Text("Error"),
               );
             }
-            // if (!snapshot.hasData) {
-            //   return Center(
-            //     child: Text("Sem dados de perfil"),
-            //   );
-            // }
-            return Wrap(alignment: WrapAlignment.start,
-                children: <Widget>[
-                  // Text('csv'),
-                  // IconButton(
-                  //   icon: Icon(Icons.border_bottom),
-                  //   onPressed: () {
-                  //     GeradorCsvService.generateCsvFromUsuarioModel(
-                  //         usuarioModelData);
-                  //     //launch(snapshot.data.urlCSV);
-                  //   },
-                  // ),
-                  // Text('web'),
-                  // IconButton(
-                  //   icon: Icon(Icons.web),
-                  //   onPressed: () {
-                  //     launch(snapshot.data.urlMD);
-                  //   },
-                  // ),
-                  // Text('pdf'),
-                  // IconButton(
-                  //   icon: Icon(Icons.picture_as_pdf),
-                  //   onPressed: () {
-                  //     var mdtext = GeradorMdService.generateMdFromUsuarioModel(
-                  //         usuarioModelData);
-                  //     GeradorPdfService.generatePdfFromMd(mdtext);
-                  //   },
-                  // ),
-                  snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerar == false &&
-                          snapshot.data?.relatorioPdfMakeModel?.pdfGerado == true &&
-                          snapshot.data?.relatorioPdfMakeModel?.tipo == 'administracao02'
-                      ? IconButton(
-                          tooltip: 'Ver relatório deste usuario.',
-                          icon: Icon(Icons.link),
-                          onPressed: () async {
-                            bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
-                                pdfGerar: false,
-                                pdfGerado: false,
-                                tipo: 'administracao02',
-                                collection: 'Usuario',
-                                document: snapshot.data.usuarioId));
-                            launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                          },
-                        )
-                      : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar == true &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado == false &&
-                              snapshot.data?.relatorioPdfMakeModel?.tipo == 'administracao02'
-                          ? CircularProgressIndicator()
-                          : IconButton(
-                              tooltip: 'Atualizar PDF deste usuario.',
-                              icon: Icon(Icons.picture_as_pdf),
-                              onPressed: () async {
-                                bloc.administracaoPerfilPageEventSink(GerarRelatorioPdfMakeEvent(
-                                    pdfGerar: true,
-                                    pdfGerado: false,
-                                    tipo: 'administracao02',
-                                    collection: 'Usuario',
-                                    document: snapshot.data.usuarioId));
-                              },
-                            ),
-                ],
+
+            return Wrap(
+              alignment: WrapAlignment.start,
+              children: <Widget>[
+                snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                        snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                            false &&
+                        snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                            true &&
+                        snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                            'administracao02'
+                    ? IconButton(
+                        tooltip: 'Ver relatório deste usuario.',
+                        icon: Icon(Icons.link),
+                        onPressed: () async {
+                          bloc.administracaoPerfilPageEventSink(
+                              GerarRelatorioPdfMakeEvent(
+                                  pdfGerar: false,
+                                  pdfGerado: false,
+                                  tipo: 'administracao02',
+                                  collection: 'Usuario',
+                                  document: snapshot.data.usuarioId));
+                          launch(snapshot.data?.relatorioPdfMakeModel?.url);
+                        },
+                      )
+                    : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                true &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                false &&
+                            snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                'administracao02'
+                        ? CircularProgressIndicator()
+                        : IconButton(
+                            tooltip: 'Atualizar PDF deste usuario.',
+                            icon: Icon(Icons.picture_as_pdf),
+                            onPressed: () async {
+                              bloc.administracaoPerfilPageEventSink(
+                                  GerarRelatorioPdfMakeEvent(
+                                      pdfGerar: true,
+                                      pdfGerado: false,
+                                      tipo: 'administracao02',
+                                      collection: 'Usuario',
+                                      document: snapshot.data.usuarioId));
+                            },
+                          ),
+              ],
             );
-            
           },
         ),
       ),
@@ -206,13 +188,9 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
               }
               return ListView(
                 children: <Widget>[
-                  // ignore: sdk_version_ui_as_code
                   ...snapshot.data.map((variavel) {
                     if (variavel.perfilID.contentType == 'text') {
                       return Card(
-                          // color: variavel.textPlain == null
-                          //     ? Colors.yellowAccent
-                          //     : Colors.white,
                           child: ListTile(
                         title: Text(
                           "${variavel.perfilID.nome}:",
@@ -226,7 +204,6 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                     } else {
                       if (variavel.arquivo == null) {
                         return Card(
-                            // color: Colors.yellowAccent,
                             child: ListTile(
                           title: Text(
                             "${variavel.perfilID.nome}:",
@@ -254,9 +231,11 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                                   subtitle: variavel?.arquivo?.url != null
                                       ? Text(
                                           "CLIQUE AQUI PARA VER O ARQUIVO",
-                                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.blue),
                                         )
-                                      : Text('Arquivo não disponivel. Usuario não fez upload.'),
+                                      : Text(
+                                          'Arquivo não disponivel. Usuario não fez upload.'),
                                 )));
                       }
                     }
@@ -288,14 +267,6 @@ class _ImagemUnica extends StatelessWidget {
       ));
     } else {
       foto = Center(child: Text('Não enviada.'));
-
-      // foto = Container(
-      //     color: Colors.yellow,
-      //     child: Padding(
-      //       padding: const EdgeInsets.all(2.0),
-      //       // child: Icon(Icons.people, size: 75),
-      //       child: Image.asset(fotoLocalPath),
-      //     ));
     }
 
     return Row(

@@ -20,9 +20,7 @@ class LoginRequired extends StatelessWidget {
   })  : assert(loadingPage != null),
         assert(loginPage != null),
         assert(splashPage != null),
-        assert(child != null)
-  // bloc = Bootstrap.instance.authBloc
-  ;
+        assert(child != null);
 
   @override
   Widget build(BuildContext context) {

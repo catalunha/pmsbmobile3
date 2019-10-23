@@ -1,7 +1,6 @@
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/setor_censitario_painel_model.dart';
-// import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fw;
 
 import 'package:pmsbmibile3/models/usuario_model.dart';
@@ -45,11 +44,8 @@ class SetorPainelCrudBlocState {
   String observacao;
   void updateState() {
     if (setorCensitarioPainelID.painelID.tipo == 'booleano' && setorCensitarioPainelID?.valor == null) {
-      // if (setorCensitarioPainelID?.valor == null) {
         valor = false;
-      // } else {
-      //   valor = setorCensitarioPainelID.valor;
-      // }
+ 
     } else {
       valor = setorCensitarioPainelID.valor;
     }
@@ -59,8 +55,6 @@ class SetorPainelCrudBlocState {
 
 class SetorPainelCrudBloc {
   //Firestore
-  //Firestore
-  // final fsw.Firestore _firestore;
     final fw.Firestore _firestore;
 
   final _authBloc;
@@ -109,13 +103,11 @@ class SetorPainelCrudBloc {
         _state.setorCensitarioPainelID = SetorCensitarioPainelModel(id: snap.documentID).fromMap(snap.data);
         _state.updateState();
       }
-      // print(_state.setorCensitarioPainelID.toString());
       _authBloc.perfil.listen((usuarioID) {
         eventSink(GetUsuarioIDEvent(usuarioID));
       });
     }
     if (event is GetUsuarioIDEvent) {
-      //Atualiza estado com usuario logado
       _state.usuarioID = event.usuarioID;
     }
     if (event is UpdateValorEvent) {

@@ -46,19 +46,16 @@ class _PainelListPageState extends State<PainelListPage> {
     return DefaultTabController(
       length: myTabs.length,
       child: DefaultScaffold(
-        // appBar: AppBar(
         title: Text('Adicionar/Editar itens do painel'),
         bottom: TabBar(
           tabs: myTabs,
         ),
-        // ),
         body: _body(context),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.pushNamed(context, '/painel/crud', arguments: null);
           },
-          // backgroundColor: Colors.blue,
         ),
       ),
     );
@@ -166,7 +163,6 @@ class _PainelListPageState extends State<PainelListPage> {
     return Card(
         color: eixoInfo.expandir != null && eixoInfo.expandir ? Colors.deepOrange : Colors.deepPurple,
         child: ListTile(
-          // selected: true,
           trailing: eixoInfo.expandir != null && eixoInfo.expandir ? Icon(Icons.folder_open) : Icon(Icons.folder),
           title: Text('${eixoInfo.eixo.nome}'),
           onTap: () {
@@ -177,7 +173,6 @@ class _PainelListPageState extends State<PainelListPage> {
 
   Card painelCard(PainelInfo painelInfo, Widget icone, BuildContext context) {
     return Card(
-        // margin: EdgeInsets.only(left: 20),
         child: ListTile(
       selected:
           painelInfo.destacarSeDestinadoAoUsuarioLogado == null ? false : painelInfo.destacarSeDestinadoAoUsuarioLogado,

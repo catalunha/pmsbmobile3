@@ -62,20 +62,20 @@ class Usuario {
 class ComunicacaoDestinatarioPageBloc {
   final fsw.Firestore _firestore;
 
-  // Eventos da página todas as perguntas para
+  /// Eventos da página todas as perguntas para
   final _eventController = BehaviorSubject<ComunicacaoDestinatarioPageEvent>();
   Stream<ComunicacaoDestinatarioPageEvent> get eventStream =>
       _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  // Estados da página
+  /// Estados da página
   ComunicacaoDestinatarioPageState _state = ComunicacaoDestinatarioPageState();
   final _stateController = BehaviorSubject<ComunicacaoDestinatarioPageState>();
   Stream<ComunicacaoDestinatarioPageState> get stateStream =>
       _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Cargo
+  /// Cargo
   final _cargoModelListController = BehaviorSubject<List<CargoModel>>();
   Stream<List<CargoModel>> get cargoModelListStream =>
       _cargoModelListController.stream;
@@ -97,7 +97,6 @@ class ComunicacaoDestinatarioPageBloc {
 
   _mapEventToState(ComunicacaoDestinatarioPageEvent event) async {
     if (event is UpdateCargoListEvent) {
-      print('ComunicacaoDestinatarioPageBloc> 028474');
 
       final streamDocs =
           _firestore.collection(CargoModel.collection).snapshots();
@@ -152,15 +151,12 @@ class ComunicacaoDestinatarioPageBloc {
     }
 
     if (event is SelectCargoIDEvent) {
-      // print('evento de cargo: ${event.cargoID}');
       _updateCargoModeltoState(event.cargoID);
     }
     if (event is SelectEixoIDEvent) {
-      // print('evento de eixo: ${event.eixoID}');
       _updateEixoModeltoState(event.eixoID);
     }
     if (event is SelectUsuarioIDEvent) {
-      // print('evento de usuario: ${event.usuarioID}');
       _updateUsuarioModeltoState(event.usuarioID);
     }
     if (!_stateController.isClosed) stateSink(_state);
@@ -169,7 +165,6 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _updateCargoModeltoState(String id) {
-    // print('processando cargo: ${id}');
 
     bool marcou = false;
     for (var item in _state.cargoList) {
@@ -188,7 +183,6 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _updateEixoModeltoState(String id) {
-    // print('processando eixo: ${id}');
     bool marcou = false;
     for (var item in _state.eixoList) {
       if (item.id == id) {
@@ -206,7 +200,6 @@ class ComunicacaoDestinatarioPageBloc {
   }
 
   _updateUsuarioModeltoState(String id) {
-    // print('processando eixo: ${id}');
     for (var item in _state.usuarioList) {
       if (item.id == id) {
         item.checked = !item.checked;

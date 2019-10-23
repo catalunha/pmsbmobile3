@@ -66,30 +66,10 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
                           },
                         )
                       : Container(),
-                  // IconButton(
-                  //   tooltip: 'Editar Url e Observações',
-                  //   icon: Icon(Icons.note_add),
-                  //   onPressed: () {
-                  //     Navigator.pushNamed(
-                  //         context, '/controle/acao_informar_urlobs',
-                  //         arguments: controleAcaoID.id);
-                  //   },
-                  // ),
-                  // IconButton(
-                  //   tooltip: 'Marcar como feita.',
-                  //   icon: controleAcaoID.concluida
-                  //       ? Icon(Icons.check_box)
-                  //       : Icon(Icons.check_box_outline_blank),
-                  //   onPressed: () {
-                  //     bloc.eventSink(UpdateAcaoEvent(
-                  //         controleAcaoID.id, controleAcaoID.concluida));
-                  //   },
-                  // ),
                 ])
               ]));
               ordemLocal++;
             }
-            print(listaWdg.toString());
             var controleTarefaID = snapshot.data.controleTarefaDestinatario;
             return Column(children: <Widget>[
               Row(
@@ -118,7 +98,6 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
           } else {
             return Text('Existem dados inválidos...');
           }
-          // return Text("listando acao...");
         }
         return Text("Algo não esta certo...");
       },
@@ -132,8 +111,6 @@ class _ControleAcaoConcluidaPageState extends State<ControleAcaoConcluidaPage> {
         title: Text('Ver ações'),
       ),
       body: _bodyDestinatario(context),
-
-      // ),
     );
   }
 }

@@ -34,7 +34,6 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
       length: 3,
       child: Scaffold(
           appBar: new AppBar(
-            // automaticallyImplyLeading: false,
             title: new Text('Atualizar acesso'),
             bottom: TabBar(
               tabs: <Widget>[
@@ -75,7 +74,6 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
             return Text('Sem dados.');
           }
           if (snapshot.hasData) {
-            //  var cargoList = List<Cargo>();
             var cargoList = snapshot.data.cargoList;
             return ListView(
               children: <Widget>[
@@ -112,7 +110,6 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
             return Text('Sem dados.');
           }
           if (snapshot.hasData) {
-            //  var cargoList = List<Cargo>();
             var eixoList = snapshot.data.eixoList;
             return ListView(
               children: <Widget>[
@@ -125,17 +122,11 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
                           },
                           child: ListTile(
                             title: Text(
-                              // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
                               "${variavel.nome}",
                               style: TextStyle(fontSize: 18),
                             ),
 
-                            // subtitle: Text(
-                            //   "## ${variavel?.nome}",
-                            //   "CLIQUE AQUI PARA VER O ARQUIVO",
-                            //   style:
-                            //       TextStyle(fontSize: 16, color: Colors.blue),
-                            // ),
+                        
                           )));
                 }).toList()
               ],
@@ -157,7 +148,6 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
             return Text('Sem dados.');
           }
           if (snapshot.hasData) {
-            //  var cargoList = List<Cargo>();
             var usuarioList = snapshot.data.usuarioList;
             return ListView(
               children: <Widget>[
@@ -178,12 +168,7 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
                                 subtitle: Text(
                                   "Eixo: ${usuario.eixo.nome}. Cargo: ${usuario.cargo.nome}.",
                                 ),
-                                // subtitle: Text(
-                                //   "## ${variavel?.nome}",
-                                //   "CLIQUE AQUI PARA VER O ARQUIVO",
-                                //   style:
-                                //       TextStyle(fontSize: 16, color: Colors.blue),
-                                // ),
+                             
                               ))),
                       usuario.checked == true
                           ? Row(
@@ -202,19 +187,7 @@ class _UsuarioGoogleDrivePageState extends State<UsuarioGoogleDrivePage> {
                                   new Text(
                                     'Escrever',
                                   ),
-                                  // new Radio(
-                                  //   value: 'comentar',
-                                  //   groupValue:
-                                  //       usuario.usuarioGoogleDrive?.permissao,
-                                  //   onChanged: (radioValue) {
-                                  //     bloc.eventSink(ChangePermissaoEvent(
-                                  //         radioValue, usuario.id));
-                                  //   },
-                                  //   activeColor: Colors.green,
-                                  // ),
-                                  // new Text(
-                                  //   'Comentar',
-                                  // ),
+                              
                                   new Radio(
                                     value: 'reader',
                                     groupValue:

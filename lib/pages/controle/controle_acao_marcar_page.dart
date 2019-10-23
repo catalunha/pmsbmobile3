@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_bloc.dart';
@@ -52,7 +51,6 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
               listaWdgLink.clear();
               if (controleAcaoID.tarefaLink != null) {
                 for (var item in controleAcaoID.tarefaLink.entries) {
-                  print(item.key);
                   listaWdgLink.add(IconButton(
                     tooltip: 'Ver tarefa linkada id: ${item.key}',
                     icon: Icon(Icons.link),
@@ -65,20 +63,6 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
                     },
                   ));
                 }
-                // controleAcaoID.tarefaLink.map((k, v) {
-                //   // listaWdgLink.add(IconButton(
-                //   //   tooltip: 'Ver tarefa linkada a esta ação',
-                //   //   icon: Icon(Icons.link),
-                //   //   onPressed: () async {
-                //   //     Navigator.pushNamed(
-                //   //       context,
-                //   //       "/controle/acao_concluida",
-                //   //       arguments: k,
-                //   //     );
-                //   //   },
-                //   // ));
-                //   print(k);
-                // });
               }
               listaWdg.add(Column(children: <Widget>[
                 ListTile(
@@ -137,7 +121,6 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
               ]));
               ordemLocal++;
             }
-            // print(listaWdg.toString());
             var controleTarefaID = snapshot.data.controleTarefaDestinatario;
             return Column(children: <Widget>[
               Row(
@@ -164,7 +147,6 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
           } else {
             return Text('Existem dados inválidos...');
           }
-          // return Text("listando acao...");
         }
         return Text("Algo não esta certo...");
       },
@@ -178,8 +160,6 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
         title: Text('Marcar ação'),
       ),
       body: _bodyDestinatario(context),
-
-      // ),
     );
   }
 }

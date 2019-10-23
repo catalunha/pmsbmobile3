@@ -44,18 +44,15 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
           }
           List<Widget> listaWdg = List<Widget>();
           if (snapshot.data.isDataValid) {
-                        var controleTarefaID = snapshot.data.controleTarefaID;
+            var controleTarefaID = snapshot.data.controleTarefaID;
 
             int lengthAcao = snapshot.data.controleAcaoList.length;
             int ordemLocal = 1;
             for (var acao in snapshot.data.controleAcaoList) {
-              // }
-              // snapshot.data.escolhaMap.forEach((k, v) {
               listaWdg.add(
                 Column(
                   children: <Widget>[
                     ListTile(
-                      // leading: Text('${ordemLocal} (${v.ordem})'),
                       selected: acao.concluida,
                       trailing: acao.concluida
                           ? Text('*  $ordemLocal')
@@ -81,9 +78,6 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                             icon: Icon(Icons.arrow_downward),
                             onPressed: (ordemLocal) < lengthAcao
                                 ? () {
-                                    // print(
-                                    //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
-                                    // Mover pra baixo na ordem
                                     bloc.eventSink(
                                         OrdenarAcaoEvent(acao, false));
                                   }
@@ -93,10 +87,6 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                             icon: Icon(Icons.arrow_upward),
                             onPressed: ordemLocal > 1
                                 ? () {
-                                    // print(
-                                    //     'em up => ${i} ${ordemLocal} (${v.ordem})');
-
-                                    // Mover pra cima na ordem
                                     bloc.eventSink(
                                         OrdenarAcaoEvent(acao, true));
                                   }
@@ -105,12 +95,11 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                           tooltip: 'Duplicar ação',
                           icon: Icon(Icons.content_copy),
                           onPressed: () {
-                            bloc.eventSink(
-                                        UpdateTarefaListEvent(acao));
+                            bloc.eventSink(UpdateTarefaListEvent(acao));
                             showModalBottomSheet(
                                 context: context,
                                 builder: (BuildContext bc) {
-                                  return TarefaListModalSelect(bloc,acao);
+                                  return TarefaListModalSelect(bloc, acao);
                                 });
                           },
                         ),
@@ -118,7 +107,6 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                             tooltip: 'Editar ação',
                             icon: Icon(Icons.edit),
                             onPressed: () {
-                              // Editar uma nova escolha
                               Navigator.pushNamed(
                                   context, "/controle/acao_crud",
                                   arguments: ControlePageArguments(
@@ -132,7 +120,7 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
               ordemLocal++;
             }
 
- return Column(children: <Widget>[
+            return Column(children: <Widget>[
               Row(
                 children: <Widget>[
                   Expanded(
@@ -149,13 +137,6 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
                 ),
               )
             ]);
-
-            // return ListView(
-            //   children: list,
-            // );
-
-
-
           } else {
             return Text('Dados inválidos...');
           }
@@ -166,13 +147,11 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.red,
           automaticallyImplyLeading: true,
           title: Text('Gerenciar ações'),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Editar ou Adicionar uma nova escolha
             Navigator.pushNamed(context, '/controle/acao_crud',
                 arguments: ControlePageArguments(
                     tarefa: widget.controleTarefaID, acao: null));
@@ -225,12 +204,8 @@ class _TarefaListModalSelectState extends State<TarefaListModalSelect> {
           );
         }
 
-        // var usuario = Map<String, UsuarioModel>();
-
-        // usuario = snapshot.data?.controleTarefaListRemetente;
         var lista = List<Widget>();
         for (var tarefa in snapshot.data.controleTarefaListRemetente) {
-          // print('setor: ${item.key}');
           lista.add(_cardBuild(context, tarefa));
         }
 
@@ -239,39 +214,9 @@ class _TarefaListModalSelectState extends State<TarefaListModalSelect> {
         );
       },
     );
-
-    // return ListView(
-    //   children: valores.keys.map((String key) {
-    //     return CheckboxListTile(
-    //       title: Text(key),
-    //       value: valores[key],
-    //       onChanged: (bool value) {
-    //         if (key == 'Todos') {
-    //           _marcarTodosDaListaComoTrue(value);
-    //         } else {
-    //           setState(() {
-    //             valores[key] = value;
-    //           });
-    //         }
-    //       },
-    //     );
-    //   }).toList(),
-    // );
   }
 
   Widget _cardBuild(BuildContext context, ControleTarefaModel tarefa) {
-    // print(setor.nome);
-    // return ListTile(
-    //   title: Text(setor.nome),
-    //   leading: setor.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
-    // );
-    // return CheckboxListTile(
-    //   title: Text(setor.nome),
-    //   value: setor.alertar == null ? false : setor.alertar,
-    //   onChanged: (bool alertar) {
-    //     bloc.eventSink(UpDateAlertaEvent(setorChatID: key, alertar: alertar));
-    //   },
-    // );
     return ListTile(
       title: Text('${tarefa.nome}'),
       subtitle: Text('Setor: ${tarefa?.setor?.nome}'),
@@ -291,42 +236,6 @@ class _TarefaListModalSelectState extends State<TarefaListModalSelect> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Escolha a tarefa"),
-        // automaticallyImplyLeading: false,
-        // backgroundColor: Colors.blueGrey,
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.check_box),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(true));
-        //     },
-        //   ),
-        //   IconButton(
-        //     icon: Icon(Icons.check_box_outline_blank),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(false));
-        //     },
-        //   ),
-        //   IconButton(
-        //     icon: Icon(Icons.repeat),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(null));
-        //     },
-        //   ),
-        //   // RaisedButton(
-        //   //     child: Text("Marcar todos"),
-        //   //     textColor: Colors.blue,
-        //   //     color: Colors.white,
-        //   //     onPressed: () {
-        //   //       bloc.eventSink(UpDateAlertarTodosEvent());
-        //   //     }),
-        //   // RaisedButton(
-        //   //     child: Text("Salvar"),
-        //   //     textColor: Colors.blue,
-        //   //     color: Colors.white,
-        //   //     onPressed: () {
-        //   //       Navigator.pop(context);
-        //   //     })
-        // ],
       ),
       body: _listaSetor(),
     );

@@ -54,7 +54,6 @@ class AuthBloc {
   final _state = AuthBlocState();
 
   //TODO: Creio q esta stream foi abandonada no codigo.
-  //UserId
   final _userId = BehaviorSubject<String>();
 
   Stream<String> get userId => _userId.stream;
@@ -70,10 +69,8 @@ class AuthBloc {
 
   Function get dispatch => _inputController.sink.add;
 
-  // NOTIFICACAO
   final dynamic firebaseMessaging = new FirebaseMessaging();
 
-  //Construtor AuthBloc
   AuthBloc(this._authApi, this._firestore) : assert(_authApi != null) {
     _statusController.sink.add(AuthStatus.Unauthenticated);
     var stream = _authApi.onUserIdChange.where((userId) => userId != null);
@@ -83,11 +80,9 @@ class AuthBloc {
 
     _authApi.onUserIdChange.listen(_updateStatus);
     _inputController.stream.listen(_handleInputEvent);
-    //metodo que registra o servico da notificacao.
     NotificacaoService.registerNotification();
   }
 
-  //Destrutor AuthBloc
   void dispose() async {
     await _perfilController.drain();
     _perfilController.close();
@@ -101,15 +96,13 @@ class AuthBloc {
   }
 
   void _setpushTokenfromUsuario(String userId) {
-    // Ao logar atualiza o token do usuario.
     firebaseMessaging.getToken().then((token) {
-      // print('Novo token >> $token');
       _firestore
           .collection(UsuarioModel.collection)
           .document(userId)
           .setData({'tokenFCM': token}, merge: true);
     }).catchError((err) {
-      print(err.message.toString());
+      print('authbloc: '+err.message.toString());
     });
   }
 

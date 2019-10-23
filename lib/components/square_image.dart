@@ -12,7 +12,6 @@ class SquareImage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            // fit: BoxFit.fill,
             image: image,
           ),
         ),

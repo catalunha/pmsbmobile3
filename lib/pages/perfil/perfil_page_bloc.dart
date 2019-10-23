@@ -17,22 +17,22 @@ class PerfilPageState {
 }
 
 class PerfilPageBloc {
-  //Database
+  /// Database
   final fsw.Firestore _firestore;
-  //Autenticacao
+  /// Autenticacao
   final _authBloc =
       Bootstrap.instance.authBloc;
 
-  //Eventos
+  /// Eventos
   final _perfilPageEventController = BehaviorSubject<PerfilPageEvent>();
   Stream<PerfilPageEvent> get perfilPageEventStream =>
       _perfilPageEventController.stream;
   Function get perfilPageEventSink => _perfilPageEventController.sink.add;
 
-  //Estados
+  /// Estados
   PerfilPageState perfilPageState = PerfilPageState();
 
-  //UsuarioPerfilModel
+  /// UsuarioPerfilModel
   final _usuarioPerfilModelListController =
       BehaviorSubject<List<UsuarioPerfilModel>>();
   Stream<List<UsuarioPerfilModel>> get usuarioPerfilModelListStream =>
@@ -56,7 +56,6 @@ class PerfilPageBloc {
 
   _mapEventToState(PerfilPageEvent event) {
     if (event is UpDateUsuarioIDEvent) {
-      //Usar State UsuarioPerfil
       _firestore
           .collection(UsuarioPerfilModel.collection)
           .where("usuarioID.id", isEqualTo: event.usuarioID)
@@ -66,14 +65,9 @@ class PerfilPageBloc {
                   UsuarioPerfilModel(id: doc.documentID).fromMap(doc.data))
               .toList())
           .pipe(_usuarioPerfilModelListController);
-      // ou esta abordagem
-      //     .listen((List<UsuarioPerfilModel> usuarioPerfilModelList) {
-      //       print('>> usuarioPerfilModelList >> ${usuarioPerfilModelList.runtimeType}');
-      //   usuarioPerfilModelListSink(usuarioPerfilModelList);
-      // });
+
 
     }
-    // if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em PerfilPageBloc  = ${event.runtimeType}');
   }
 }

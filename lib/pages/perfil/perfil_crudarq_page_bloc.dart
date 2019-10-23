@@ -50,17 +50,17 @@ class PerfilCRUDArqPageState {
 }
 
 class PerfilCRUDArqPageBloc {
-  // Database
+  /// Database
   final fsw.Firestore _firestore;
 
-  // Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<PerfilCRUDArqPageEvent>();
 
   Function get eventSink => _eventController.sink.add;
 
   Stream<PerfilCRUDArqPageEvent> get eventStream => _eventController.stream;
 
-  // Estados
+  /// Estados
   PerfilCRUDArqPageState _state = PerfilCRUDArqPageState();
   final _stateController = BehaviorSubject<PerfilCRUDArqPageState>();
 
@@ -68,7 +68,7 @@ class PerfilCRUDArqPageBloc {
 
   Function get stateSink => _stateController.sink.add;
 
-  //UsuarioPerfilModel
+  /// UsuarioPerfilModel
   final _usuarioPerfilModelController = BehaviorSubject<UsuarioPerfilModel>();
 
   Stream<UsuarioPerfilModel> get usuarioPerfilModelStream =>
@@ -100,9 +100,7 @@ class PerfilCRUDArqPageBloc {
             UsuarioPerfilModel(id: docSnap.documentID).fromMap(docSnap.data);
         _state.usuarioPerfilModel = usuarioPerfilModel;
         _state.updateStateFromUsuarioPerfilModel();
-      } else {
-        // print('>>> Perfil Nao econtrado <<< ');
-      }
+      } 
     }
     if (event is UpDateArquivoEvent) {
       _state.arquivoLocalPath = event.arquivoLocalPath;
@@ -147,8 +145,6 @@ class PerfilCRUDArqPageBloc {
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
-    // print('>>> _state.toMap() <<< ${_state.usuarioPerfilModel.toMap()}');
     print('event.runtimeType em PerfilCRUDArqPageBloc  = ${event.runtimeType}');
   }
 }

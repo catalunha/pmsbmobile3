@@ -16,28 +16,28 @@ class ProdutoHomePageState {
 }
 
 class ProdutoHomePageBloc {
-  //Firestore
+  /// Firestore
   final fw.Firestore _firestore;
   final _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ProdutoHomePageEvent>();
   Stream<ProdutoHomePageEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ProdutoHomePageState _state = ProdutoHomePageState();
   final _stateController = BehaviorSubject<ProdutoHomePageState>();
   Stream<ProdutoHomePageState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //ProdutoModel List
+  /// ProdutoModel List
   final _produtoModelListController = BehaviorSubject<List<ProdutoModel>>();
   Stream<List<ProdutoModel>> get produtoModelListStream =>
       _produtoModelListController.stream;
   Function get produtoModelListSink => _produtoModelListController.sink.add;
 
-  //Bloc
+  /// Bloc
   ProdutoHomePageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
     _authBloc.userId.listen((userId) {
@@ -56,7 +56,6 @@ class ProdutoHomePageBloc {
 
   _mapEventToState(ProdutoHomePageEvent event) async {
     if (event is UpdateUsuarioIDEvent) {
-      //Atualiza estado com usuario logado
       final docRef = _firestore
           .collection(UsuarioModel.collection)
           .document(event.usuarioID);
@@ -68,7 +67,6 @@ class ProdutoHomePageBloc {
         if (!_stateController.isClosed) _stateController.add(_state);
       }
 
-      // le todos os produtos associados e ele, setor e eixo.
       final streamDocs = _firestore
           .collection(ProdutoModel.collection)
           .where("eixoID.id", isEqualTo: _state.usuarioModel.eixoIDAtual.id)

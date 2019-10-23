@@ -40,9 +40,7 @@ class GerarRelatorioPdfMakeEvent extends AdministracaoPerfilPageEvent {
 /// Class base Estado da Pagina ConfiguracaoPage
 class AdministracaoPerfilPageState {
   String usuarioId;
-  // String urlCSV;
-  // String urlMD;
-  // String urlPDF;
+
   List<UsuarioModel> usuarioList;
   UsuarioModel usuarioModel;
   RelatorioPdfMakeModel relatorioPdfMakeModel;

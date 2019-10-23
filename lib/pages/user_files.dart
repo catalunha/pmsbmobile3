@@ -54,7 +54,7 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
     return ListTile(
       leading: Checkbox(value:false,onChanged: null,),
       trailing: IconButton(icon: Icon(Icons.delete),onPressed: (){
-        //apagar esse arquivo/imagem da lista do firebase
+        //TODO apagar esse arquivo/imagem da lista do firebase
       },),
       title: Text(name),
       subtitle: Text("Tipo: Imagem"),
@@ -64,8 +64,6 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
   _listaSelecionados() {
     return Builder(
       builder: (BuildContext context) => new Container(
-            //padding: const EdgeInsets.only(bottom: 30.0),
-            //height: MediaQuery.of(context).size.height * 0.90,
             child: _path != null || _paths != null
                 ? new ListView.separated(
                     itemCount: _paths != null && _paths.isNotEmpty ? _paths.length : 1,
@@ -90,15 +88,6 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
     );
   }
 
-  // _body() {
-  //   return Column(children: <Widget>[
-  //     IconButton(
-  //       icon: Icon(Icons.attach_file),
-  //       onPressed: () => _openUserFilesFirebaseList(),
-  //     ),
-  //     _listaSelecionados()
-  //   ]);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -108,14 +97,14 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
             IconButton(
               icon: Icon(Icons.camera_alt),
               onPressed: () {
-                // Apos selecionar imagem da camera já inserir na lista no firebase
+                //TODO Apos selecionar imagem da camera já inserir na lista no firebase
               },
             ),
             IconButton(
               icon: Icon(Icons.attach_file),
               onPressed: () {
                 _openUserFilesFirebaseList();
-                // Apos selecionar arquivo já inserir na lista no firebase
+                //TODO Apos selecionar arquivo já inserir na lista no firebase
               },
             ),
           ],
@@ -125,7 +114,6 @@ class _UserFilesFirebaseListState extends State<UserFilesFirebaseList> {
         body: _listaSelecionados(),
         floatingActionButton: FloatingActionButton(
             onPressed: (){
-              // retornar pras telas anteriores os setotes sensitarios que foram selecionados
               Navigator.of(context).pop();
               },
             child: Icon(Icons.thumb_up),

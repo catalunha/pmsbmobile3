@@ -61,14 +61,14 @@ class QuestionarioHomePageBloc {
   final fsw.Firestore _firestore;
   final _authBloc;
 
-  //Eventos
+  // Eventos
   final _eventController = BehaviorSubject<QuestionarioHomePageEvent>();
 
   Stream<QuestionarioHomePageEvent> get eventStream => _eventController.stream;
 
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  // Estados
   final QuestionarioHomePageBlocState _state = QuestionarioHomePageBlocState();
   final _stateController = BehaviorSubject<QuestionarioHomePageBlocState>();
 
@@ -76,13 +76,10 @@ class QuestionarioHomePageBloc {
 
   Function get stateSink => _stateController.sink.add;
 
-  // final _questionariosController = BehaviorSubject<List<QuestionarioModel>>();
-  // Stream<List<QuestionarioModel>> get questionarios =>
-  //     _questionariosController.stream;
 
   StreamSubscription<List<QuestionarioModel>> _questionarioSubscription;
 
-  //QuestionarioModel List
+  // QuestionarioModel List
   final _questionarioMapController = BehaviorSubject<Map<String, QuestionarioModel>>();
 
   Stream<Map<String, QuestionarioModel>> get questionarioMapStream => _questionarioMapController.stream;
@@ -141,12 +138,9 @@ class QuestionarioHomePageBloc {
 
       var dicDesordenado = Dictionary.fromMap(_state.questionarioMap);
       var dicOrdenadado = dicDesordenado
-          // Sort Ascending order by value ordem
           .orderBy((kv) => kv.value.ordem)
-          // Sort Descending order by value ordem
           // .orderByDescending((kv) => kv.value.ordem)
           .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-      // print(dicOrdenadado.toMap());
       _state.questionarioMap = dicOrdenadado.toMap();
     }
 
@@ -190,7 +184,6 @@ class QuestionarioHomePageBloc {
     }
     _validateData();
     if (!_stateController.isClosed) stateSink(_state);
-    // print('>>> _state.escolhaMap <<< ${_state.escolhaMap}');
     print('event.runtimeType em QuestionarioHomePageBloc  = ${event.runtimeType}');
   }
 }

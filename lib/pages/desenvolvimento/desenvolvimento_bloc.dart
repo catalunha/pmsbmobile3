@@ -40,13 +40,11 @@ class PageState {
 }
 
 class DesenvolvimentoPageBloc {
-  //Firestore
+  /// Firestore
   final fw.Firestore _firestore;
 
-  // Upload Bloc
-  // final uploadBloc = UploadBloc(Bootstrap.instance.firestore);
 
-  //Eventos
+  /// Eventos
   final BehaviorSubject<PageEvent> _eventController =
       BehaviorSubject<PageEvent>();
 
@@ -54,7 +52,7 @@ class DesenvolvimentoPageBloc {
 
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final PageState _state = PageState();
   final _stateController = BehaviorSubject<PageState>();
 
@@ -64,13 +62,10 @@ class DesenvolvimentoPageBloc {
 
   DesenvolvimentoPageBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
-    // uploadBloc.uploadModelStream.listen((arq) => UpdateUploadModelEvent(arq));
   }
 
   _mapEventToState(PageEvent event) async {
     if (event is UpdateArquivoEvent) {
-      // _state.arquivo = event.arquivo;
-      // uploadBloc.fileSink(_state.arquivo);
 
       final ref = _firestore
           .collection(UploadModel.collection)
@@ -93,7 +88,6 @@ class DesenvolvimentoPageBloc {
           }
         });
       }
-      print('>>> uploading.toString() <<< ${_state.uploading.toString()}');
     }
 
     if (event is UpdateUploadModelEvent) {
@@ -103,10 +97,8 @@ class DesenvolvimentoPageBloc {
       _state.arquivo = null;
     }
     if (event is SaveEvent) {
-      // print('>>> SaveEvent _state.toMap() <<< ${_state.toMap()}');
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
     print(
         'event.runtimeType em DesenvolvimentoPageBloc  = ${event.runtimeType}');
   }

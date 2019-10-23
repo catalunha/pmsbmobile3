@@ -21,7 +21,6 @@ class _HomePageState extends State<HomePage> {
       child: BemVindo(widget.authBloc),
       // child: NoticiaLeituraPage(),
       authBloc: this.authBloc,
-      // child: NoticiasNaoVisualizadasPage(),
     );
   }
 }
