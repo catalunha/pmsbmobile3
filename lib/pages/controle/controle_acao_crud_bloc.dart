@@ -39,21 +39,21 @@ class ControleAcaoCrudBlocState {
 }
 
 class ControleAcaoCrudBloc {
-  //Firestore
+  /// Firestore
   final fw.Firestore _firestore;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ControleAcaoCrudBlocEvent>();
   Stream<ControleAcaoCrudBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ControleAcaoCrudBlocState _state = ControleAcaoCrudBlocState();
   final _stateController = BehaviorSubject<ControleAcaoCrudBlocState>();
   Stream<ControleAcaoCrudBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   ControleAcaoCrudBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
@@ -76,9 +76,7 @@ class ControleAcaoCrudBloc {
     if (event is UpdateTarefaAcaoIDEvent) {
       _state.acaoID = event.acaoID;
       _state.tarefaID = event.tarefaID;
-      print(' Tarefa - Acao : ${_state.tarefaID} - ${_state.acaoID}');
       if (_state.acaoID != null) {
-        //Atualiza estado com acao
         final docRef = _firestore
             .collection(ControleAcaoModel.collection)
             .document(_state.acaoID);
@@ -101,7 +99,6 @@ class ControleAcaoCrudBloc {
               ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
         }
       }
-      print(_state.controleTarefaoID.toString());
     }
 
     if (event is UpdateNomeEvent) {

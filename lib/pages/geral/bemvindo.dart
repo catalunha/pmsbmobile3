@@ -48,27 +48,3 @@ class _BemVindoState extends State<BemVindo> {
     );
   }
 }
-
-// class BemVindo extends StatelessWidget {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultScaffold(
-//      title:StreamBuilder<GeralBlocState>(
-//         stream: bloc.noticiaPageStateStream,
-//         builder: (context, snap) {
-//           if (snap.hasError) {
-//             return Text("ERROR");
-//           }
-//           if (!snap.hasData) {
-//             return Text("Buscando usuario...");
-//           }
-//           return Text("Oi ${snap.data?.usuarioIDNome}");
-//         },
-//       ),
-//       body: Center(
-//         child: Text("Seja bem vindo(a)\nAo Aplicativo de gestão de dados para o\nPlano Municipal de Saneamento Básico\ndo estado do Tocantins.\nEscolha um menu a esquerda ou direita."),
-//       ),
-//     );
-//   }
-// }

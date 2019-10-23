@@ -7,7 +7,6 @@ class ControleAcaoInformarPage extends StatefulWidget {
 
   ControleAcaoInformarPage(this.acaoID);
 
-  // @override
   @override
   State<StatefulWidget> createState() {
     return _ControleAcaoInformarPageState();
@@ -36,15 +35,10 @@ class _ControleAcaoInformarPageState extends State<ControleAcaoInformarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          // leading: new IconButton(
-          //   icon: new Icon(Icons.arrow_back),
-          //   onPressed: () => Navigator.of(context).pop(),
-          // ),
           title: Text('Informar url / obs da ação'),),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.cloud_upload),
         onPressed: () {
-          // salvar e voltar
           bloc.eventSink(SaveAcaoEvent());
           Navigator.pop(context);
         },

@@ -33,8 +33,6 @@ class PerguntaRequisitoEscolhaMarcarPageState {
         requisitoEscolha[k] = v;
       }
     });
-    print(requisitos);
-    print(requisitoEscolha);
   }
 }
 
@@ -103,8 +101,6 @@ class PerguntaRequisitoEscolhaMarcarBloc {
     }
 
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
-
     print(
         'event.runtimeType em PerguntaRequisitoEscolhaMarcarBloc  = ${event.runtimeType}');
   }

@@ -31,7 +31,6 @@ class _ComunicacaoDestinatariosPageState
       length: 3,
       child: Scaffold(
           appBar: new AppBar(
-            // automaticallyImplyLeading: false,
             title: new Text('Selecionar destinatários'),
             bottom: TabBar(
               tabs: <Widget>[
@@ -71,7 +70,6 @@ class _ComunicacaoDestinatariosPageState
             return Text('Sem dados.');
           }
           if (snapshot.hasData) {
-            //  var cargoList = List<Cargo>();
             var cargoList = snapshot.data.cargoList;
             return ListView(
               children: <Widget>[
@@ -107,7 +105,6 @@ class _ComunicacaoDestinatariosPageState
           if (!snapshot.hasData) {
             return Text('Sem dados.');
           }
-          //  var cargoList = List<Cargo>();
           var eixoList = snapshot.data.eixoList;
           return ListView(
             children: <Widget>[
@@ -120,17 +117,9 @@ class _ComunicacaoDestinatariosPageState
                         },
                         child: ListTile(
                           title: Text(
-                            // "# ${variavel.id}-${variavel.nome}-${variavel.checked}",
                             "${variavel.nome}",
                             style: TextStyle(fontSize: 18),
                           ),
-
-                          // subtitle: Text(
-                          //   "## ${variavel?.nome}",
-                          //   "CLIQUE AQUI PARA VER O ARQUIVO",
-                          //   style:
-                          //       TextStyle(fontSize: 16, color: Colors.blue),
-                          // ),
                         )));
               }).toList()
             ],
@@ -149,35 +138,28 @@ class _ComunicacaoDestinatariosPageState
           if (!snapshot.hasData) {
             return Text('Sem dados.');
           }
-            var usuarioList = snapshot.data.usuarioList;
-            return ListView(
-              children: <Widget>[
-                ...usuarioList.map((variavel) {
-                  return Card(
-                      color: variavel.checked ? Colors.deepOrange : null,
-                      child: InkWell(
-                          onTap: () {
-                            bloc.eventSink(SelectUsuarioIDEvent(variavel.id));
-                          },
-                          child: ListTile(
-                            title: Text(
-                              "${variavel.nome}",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            subtitle: Text(
-                              "Eixo: ${variavel.eixo.nome}. Cargo: ${variavel.cargo.nome}",
-                            ),
-                            // subtitle: Text(
-                            //   "## ${variavel?.nome}",
-                            //   "CLIQUE AQUI PARA VER O ARQUIVO",
-                            //   style:
-                            //       TextStyle(fontSize: 16, color: Colors.blue),
-                            // ),
-                          )));
-                }).toList()
-              ],
-            );
-          
+          var usuarioList = snapshot.data.usuarioList;
+          return ListView(
+            children: <Widget>[
+              ...usuarioList.map((variavel) {
+                return Card(
+                    color: variavel.checked ? Colors.deepOrange : null,
+                    child: InkWell(
+                        onTap: () {
+                          bloc.eventSink(SelectUsuarioIDEvent(variavel.id));
+                        },
+                        child: ListTile(
+                          title: Text(
+                            "${variavel.nome}",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          subtitle: Text(
+                            "Eixo: ${variavel.eixo.nome}. Cargo: ${variavel.cargo.nome}",
+                          ),
+                        )));
+              }).toList()
+            ],
+          );
         });
   }
 }

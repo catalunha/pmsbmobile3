@@ -64,23 +64,23 @@ class ProdutoCRUDPageState {
 }
 
 class ProdutoCRUDPageBloc {
-  //Firestore
+  /// Firestore
   final fw.Firestore _firestore;
 
-  // Authenticacação
+  /// Authenticacação
   AuthBloc _authBloc;
 
-  //Storage
+  /// Storage
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ProdutoCRUDPageEvent>();
 
   Stream<ProdutoCRUDPageEvent> get eventStream => _eventController.stream;
 
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ProdutoCRUDPageState _state = ProdutoCRUDPageState();
   final _stateController = BehaviorSubject<ProdutoCRUDPageState>();
 
@@ -88,14 +88,14 @@ class ProdutoCRUDPageBloc {
 
   Function get stateSink => _stateController.sink.add;
 
-  //ProdutoModel
+  /// ProdutoModel
   final _produtoModelController = BehaviorSubject<ProdutoModel>();
 
   Stream<ProdutoModel> get produtoModelStream => _produtoModelController.stream;
 
   Function get produtoModelSink => _produtoModelController.sink.add;
 
-  //Bloc
+  /// Bloc
   ProdutoCRUDPageBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
   }
@@ -119,7 +119,6 @@ class ProdutoCRUDPageBloc {
     if (event is UpdateProdutoIDEvent) {
       if (event.produtoID != null) {
         _state.produtoModelID = event.produtoID;
-        //Atualiza estado com produto
         final docRef = _firestore
             .collection(ProdutoModel.collection)
             .document(event.produtoID);
@@ -176,9 +175,6 @@ class ProdutoCRUDPageBloc {
         _state.pdfUploadID = docRef.documentID;
       }
       // Se for produto novo cria o gdocs dele
-      print('>>> produtoModelID <<< ${_state.produtoModelID}');
-      print(
-          '>>> _state.produtoModel?.googleDriveID <<< ${_state.produtoModel?.googleDrive}');
       GoogleDriveID googleDriveID;
       if (_state.produtoModelID == null &&
           _state.produtoModel?.googleDrive == null) {
@@ -271,7 +267,6 @@ class ProdutoCRUDPageBloc {
           .delete();
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
     print('event.runtimeType em ProdutoCRUDPageBloc  = ${event.runtimeType}');
   }
 }

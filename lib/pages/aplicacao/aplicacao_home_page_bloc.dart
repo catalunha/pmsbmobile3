@@ -68,8 +68,7 @@ class AplicacaoHomePageBloc {
           .listen(
         (snapshot) {
           if (!_inputController.isClosed) {
-            //isto não deveria acontecer, não sei porque o inputController
-            //foi fechado nem onde
+            //TODO isto não deveria acontecer, não sei porque o inputController foi fechado nem onde
             dispatch(UpdateQuesionarioAplicadoListAplicacaoHomePageBlocEvent(
                 snapshot));
           }

@@ -64,7 +64,6 @@ class ControleTarefaCrudBlocState {
   ControleTarefaModel controleTarefaID;
   String controleTarefaId;
   String acaoId;
-  // String acaoNome;
   String nome;
   DateTime inicio = DateTime.now();
   DateTime dataInicio;
@@ -87,20 +86,20 @@ class ControleTarefaCrudBloc {
   final fsw.Firestore _firestore;
   final _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ControleTarefaCrudBlocEvent>();
   Stream<ControleTarefaCrudBlocEvent> get eventStream =>
       _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ControleTarefaCrudBlocState _state = ControleTarefaCrudBlocState();
   final _stateController = BehaviorSubject<ControleTarefaCrudBlocState>();
   Stream<ControleTarefaCrudBlocState> get stateStream =>
       _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //bloc
+  /// bloc
   ControleTarefaCrudBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
     _authBloc.perfil.listen((usuarioID) {
@@ -130,28 +129,17 @@ class ControleTarefaCrudBloc {
   _mapEventToState(ControleTarefaCrudBlocEvent event) async {
     if (event is UpdateTarefaCrudUsuarioIDEvent) {
       _state.usuarioID = event.usuarioID;
-      print('_state.usuarioID: ' + _state.usuarioID.toString());
     }
     if (event is UpdateUsuarioListEvent) {
       var collRef =
           await _firestore.collection(UsuarioModel.collection).getDocuments();
-      // final snap = await collRef.getDocuments();
 
       for (var documentSnapshot in collRef.documents) {
         _state.usuarioList.add(UsuarioModel(id: documentSnapshot.documentID)
             .fromMap(documentSnapshot.data));
       }
 
-      //     collRef.snapshots()
-      //     .listen((querySnapshot) {
-      //   for (var documentSnapshot in querySnapshot.documents) {
-      //     _state.usuarioList.add(UsuarioModel(id: documentSnapshot.documentID)
-      //         .fromMap(documentSnapshot.data));
-      //   }
       _state.usuarioList.sort((a, b) => a.nome.compareTo(b.nome));
-
-      // });
-      // print('_state.usuarioList: ' + _state.usuarioList.toString());
     }
     if (event is UpdateTarefaIDEvent) {
       _state.controleTarefaId = event.tarefaId;
@@ -181,7 +169,6 @@ class ControleTarefaCrudBloc {
         _state.horaInicio = event.hora;
       }
 
-      // if (_state.dataInicio != null && _state.horaInicio != null) {
       final newDate = DateTime(
           _state.dataInicio != null
               ? _state.dataInicio.year
@@ -197,7 +184,6 @@ class ControleTarefaCrudBloc {
               ? _state.horaInicio.minute
               : _state.inicio.minute);
       _state.inicio = newDate;
-      // }
     }
     if (event is UpdateFimEvent) {
       if (event.data != null) {
@@ -207,7 +193,6 @@ class ControleTarefaCrudBloc {
         _state.horaFim = event.hora;
       }
 
-      // if (_state.dataFim != null && _state.horaFim != null) {
       final newDate = DateTime(
           _state.dataFim != null ? _state.dataFim.year : _state.fim.year,
           _state.dataFim != null ? _state.dataFim.month : _state.fim.month,
@@ -215,10 +200,8 @@ class ControleTarefaCrudBloc {
           _state.horaFim != null ? _state.horaFim.hour : _state.fim.hour,
           _state.horaFim != null ? _state.horaFim.minute : _state.fim.minute);
       _state.fim = newDate;
-      // }
     }
     if (event is DeleteEvent) {
-      // le todas as tarefas deste usuario como remetente/designadas neste setor.
       final streamDocsRemetente = _firestore
           .collection(ControleAcaoModel.collection)
           .where("tarefa.id", isEqualTo: _state.controleTarefaID.id)
@@ -250,7 +233,6 @@ class ControleTarefaCrudBloc {
     }
 
     if (event is SaveEvent) {
-      // // print(map);
       final docRef = _firestore
           .collection(ControleTarefaModel.collection)
           .document(_state.controleTarefaId);

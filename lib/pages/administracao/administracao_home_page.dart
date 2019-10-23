@@ -18,16 +18,6 @@ class AdministracaoHomePage extends StatefulWidget {
 class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
   AdministracaoHomePageBloc bloc;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//        child: child,
-//     );
-//   }
-// }
-
-// class AdministracaoHomePage extends StatelessWidget {
-//   final bloc = AdministracaoHomePageBloc(Bootstrap.instance.firestore);
   @override
   void initState() {
     super.initState();
@@ -196,16 +186,6 @@ class _ImagemUnica extends StatelessWidget {
       ));
     } else {
       foto = Center(child: Text('Não enviada.'));
-
-      // foto = Container(
-      //     color: Colors.yellow,
-      //     child: Padding(
-      //       padding: const EdgeInsets.all(2.0),
-      //       // child: Icon(Icons.people, size: 75),
-      //       child: io.File(fotoLocalPath).existsSync()
-      //           ? Image.asset(fotoLocalPath)
-      //           : Text('Sem upload'),
-      //     ));
     }
 
     return Row(

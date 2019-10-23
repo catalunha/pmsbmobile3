@@ -87,16 +87,12 @@ class PerguntaEscolhaListPageBloc {
               // Sort Descending order by value ordem
               // .orderByDescending((kv) => kv.value.ordem)
               .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-          print(escolhasAscOrder.toMap());
           _state.escolhaMap = escolhasAscOrder.toMap();
-          // _state.escolhaMap = perguntaModel.escolhas;
           stateSink(_state);
-          // stateSink();
         }
       });
     }
     if (event is OrdenarEscolhaEvent) {
-      // print('>>>>>>>>>>>>TTT>>> ${event.ordem} <<<<<<<<<<<<<<<<');
       List<Escolha> valuesList = _state.escolhaMap.values.toList();
       List<String> keyList = _state.escolhaMap.keys.toList();
       final ordemOrigem = keyList.indexOf(event.escolhaUid);
@@ -112,20 +108,19 @@ class PerguntaEscolhaListPageBloc {
 
       docRef.setData({
         "escolhas": {
-          "${keyOrigem}": {"ordem": escolhaOutra.ordem}
+          "$keyOrigem": {"ordem": escolhaOutra.ordem}
         }
       }, merge: true);
 
       docRef.setData({
         "escolhas": {
-          "${keyOutra}": {"ordem": escolhaOrigem.ordem}
+          "$keyOutra": {"ordem": escolhaOrigem.ordem}
         }
       }, merge: true);
     }
 
     _validateData();
     if (!_stateController.isClosed) stateSink(_state);
-    print('>>> _state.escolhaMap <<< ${_state.escolhaMap}');
     print(
         'event.runtimeType em PerguntaEscolhaListPageBloc  = ${event.runtimeType}');
   }

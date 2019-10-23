@@ -130,7 +130,6 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
           }
         });
   }
-  // Fim tab
 
   Expanded _bodyAba(List<Widget> listaWidget) {
     return Expanded(
@@ -158,7 +157,6 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
           },
         ),
       ),
-      // child: Center(child: Text('${descricaoProdutoTab}')),
     );
   }
 
@@ -181,7 +179,6 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
             ? Colors.deepOrange
             : Colors.deepPurple,
         child: ListTile(
-          // selected: true,
           trailing: eixoInfo.expandir != null && eixoInfo.expandir
               ? Icon(Icons.folder_open)
               : Icon(Icons.folder),
@@ -195,7 +192,6 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
   Card painelCard(
       SetorPainelInfo setorPainelInfo, Widget icone, BuildContext context) {
     return Card(
-        // margin: EdgeInsets.only(left: 20),
         child: ListTile(
       selected: setorPainelInfo.destacarSeDestinadoAoUsuarioLogado == null
           ? false
@@ -203,8 +199,6 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
       title: Text('${setorPainelInfo.setorPainel?.painelID?.nome}'),
       subtitle: Text(
           'Obs: ${setorPainelInfo?.setorPainel?.observacao}\nDestinatário: ${setorPainelInfo.setorPainel?.usuarioQVaiResponder?.nome}\nEditado por: ${setorPainelInfo.setorPainel.usuarioQEditou?.nome}\nEm: ${setorPainelInfo.setorPainel?.modificada}\nid:${setorPainelInfo.setorPainel.id}'),
-      // subtitle: Text(
-      //     'Obs: ${setorPainelInfo?.setorPainel?.observacao}\nDestinatário: ${setorPainelInfo.setorPainel?.usuarioQVaiResponder?.nome}\nProduto: ${setorPainelInfo.setorPainel?.produto?.nome}\nEixo: ${setorPainelInfo.setorPainel.eixo?.nome}\nEditado por: ${setorPainelInfo.setorPainel.usuarioQEditou?.nome}\nEm: ${setorPainelInfo.setorPainel?.modificada}\nid:${setorPainelInfo.setorPainel.id}'),
       trailing: setorPainelInfo?.setorPainel?.valor == null
           ? Icon(Icons.edit)
           : icone,

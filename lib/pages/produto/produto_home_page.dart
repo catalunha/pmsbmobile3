@@ -77,14 +77,12 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
                 icon: Icon(Icons.edit),
                 tooltip: 'Editar titulo ou apagar este produto',
                 onPressed: () {
-                  //Ir a pagina de Adicionar ou editar Produtos
                   Navigator.pushNamed(context, '/produto/crud',
                       arguments: produto.id);
                 },
               ),
             ),
-            // ButtonTheme.bar(
-            //   child:
+       
             Wrap(
               children: <Widget>[
                 IconButton(
@@ -92,22 +90,11 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
                   tooltip: 'Editar texto',
                   onPressed: produto?.googleDrive?.arquivoID != null
                       ? () {
-                          //Ir para a edição do produto,
                           launch(produto?.googleDrive?.url());
                         }
                       : null,
                 ),
-                //                 IconButton(
-                //   icon: Icon(Icons.people),
-                //   tooltip: 'Editar acesso',
-                //   onPressed: produto?.googleDrive?.arquivoID != null
-                //       ? () {
-                //           //Ir para a edição do produto,
-                //           Navigator.pushNamed(context, '/googledrive/usuario',
-                //       arguments: produto.googleDrive.id);
-                //         }
-                //       : null,
-                // ),
+               
                 IconButton(
                   icon: Icon(Icons.picture_as_pdf),
                   tooltip: 'PDF finalizado do produto.',
@@ -175,7 +162,6 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
         onPressed: () {
           Navigator.pushNamed(context, '/produto/crud', arguments: null);
         },
-        // backgroundColor: Colors.blue,
       ),
     );
   }

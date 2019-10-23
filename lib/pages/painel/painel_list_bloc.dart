@@ -80,7 +80,6 @@ class PainelListBlocState {
           painel: painel,
           destacarSeDestinadoAoUsuarioLogado:
               _destacarSeDestinadoAoUsuarioLogado));
-      // print('painelPorProdutoEixo: ${paneilSemDPE}');
     }
   }
 
@@ -100,23 +99,23 @@ class PainelListBlocState {
 }
 
 class PainelListBloc {
-  //Firestore
+  /// Firestore
   final fsw.Firestore _firestore;
   final _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<PainelListBlocEvent>();
   Stream<PainelListBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final PainelListBlocState _state = PainelListBlocState();
   final _stateController = BehaviorSubject<PainelListBlocState>();
 
   Stream<PainelListBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   PainelListBloc(this._firestore, this._authBloc) {
     eventStream.listen(_mapEventToState);
     _authBloc.perfil.listen((usuarioID) {
@@ -169,7 +168,6 @@ class PainelListBloc {
         if (painelList.length > 1) {
           painelList.sort((a, b) => a.nome.compareTo(b.nome));
         }
-        // _state.painelList = painelList;
         _state.updateProdutoEixoMap(painelList);
         if (!_stateController.isClosed) _stateController.add(_state);
       });

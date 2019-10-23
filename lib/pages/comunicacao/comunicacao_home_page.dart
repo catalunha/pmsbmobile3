@@ -24,31 +24,18 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
     with SingleTickerProviderStateMixin {
   final bloc = ComunicacaoHomePageBloc(Bootstrap.instance.firestore);
   var noticiaModelListData;
-
-  // TabController _tabController;
-// final List<Tab> myTabs = <Tab>[
-//     Tab(text: 'LEFT'),
-//     Tab(text: 'RIGHT'),
-//     Tab(text: 'RIGHT'),
-//   ];
   @override
   void initState() {
     super.initState();
-    // _tabController = TabController(vsync: this, length: 3, initialIndex: 0);
-    // _tabController.addListener(_handleTabIndex);
+
   }
 
   @override
   void dispose() {
-    // _tabController.removeListener(_handleTabIndex);
-    // _tabController.dispose();
+
     bloc.dispose();
     super.dispose();
   }
-
-  // void _handleTabIndex() {
-  //   setState(() {});
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +44,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
       length: 2,
       child: DefaultScaffold(
           bottom: TabBar(
-            // controller: _tabController,
-            // tabs: myTabs
+
             tabs: <Widget>[
               Tab(
                 text: 'Em edição',
@@ -66,9 +52,7 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
               Tab(
                 text: 'Publicadas',
               ),
-              // Tab(
-              //   text: 'Chat',
-              // ),
+
             ],
           ),
           actionsMore: <Widget>[
@@ -86,16 +70,6 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
           ],
           title: Text("Notícias"),
           body: _body(context),
-          // floatingActionButton: _tabController.index == 0
-          //     ? FloatingActionButton(
-          //         onPressed: () async {
-          //           Navigator.pushNamed(context, '/comunicacao/crud_page');
-          //         },
-          //         child: Icon(Icons.add),
-          //         backgroundColor: Colors.blue,
-          //       )
-          //     : null,
-
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
               Navigator.pushNamed(context, '/comunicacao/crud_page');
@@ -103,28 +77,17 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
             child: Icon(Icons.add),
             backgroundColor: Colors.blue,
           )),
-      // ),
     );
   }
 
   Widget _body(context) {
     return TabBarView(
-      // controller: _tabController,
       children: <Widget>[
         _bodyEmEdicao(context),
         _bodyPublicadas(context),
-        // _bodyChat(widget.authBloc),
       ],
     );
   }
-
-  // Widget _bodyChat(AuthBloc authBloc) {
-  //   return ChatPage(
-  //       authBloc: authBloc,
-  //       modulo: 'Comunicação',
-  //       titulo: '',
-  //       chatID: 'comunicacao');
-  // }
 
   Widget _bodyEmEdicao(context) {
     return Container(
@@ -169,7 +132,6 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    // padding: EdgeInsets.symmetric(vertical: 6),
                     child: Text(
                       "${noticia.titulo}",
                       style: Theme.of(context).textTheme.title,
@@ -252,7 +214,6 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                // padding: EdgeInsets.symmetric(vertical: 6),
                 child: Text(
                   "${noticia.titulo}",
                   style: Theme.of(context).textTheme.title,

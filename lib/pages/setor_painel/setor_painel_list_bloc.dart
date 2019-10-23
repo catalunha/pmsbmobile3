@@ -81,7 +81,6 @@ class SetorPainelListBlocState {
           setorPainel: painel,
           destacarSeDestinadoAoUsuarioLogado:
               _destacarSeDestinadoAoUsuarioLogado));
-      // print('painelPorProdutoEixo: ${paneilSemDPE}');
     }
   }
 
@@ -172,7 +171,6 @@ class SetorPainelListBloc {
         _state.updateSetorPainelTreeProdutoEixo(setorPainelList);
 
         if (!_stateController.isClosed) _stateController.add(_state);
-        print(_state.setorPainelList.length);
       });
     }
 

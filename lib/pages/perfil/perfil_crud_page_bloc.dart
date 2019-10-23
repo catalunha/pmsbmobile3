@@ -25,20 +25,20 @@ class PerfilCRUDPageState {
 }
 
 class PerfilCRUDPageBloc {
-  // Database
+  ///  Database
   final fsw.Firestore _firestore;
 
-  //Estado
+  /// Estado
   PerfilCRUDPageState perfilCRUDPageState = PerfilCRUDPageState();
 
-  // Eventos
+  /// Eventos
   final _perfilCRUDPageEventController = BehaviorSubject<PerfilCRUDPageEvent>();
   Function get perfilCRUDPageEventSink =>
       _perfilCRUDPageEventController.sink.add;
   Stream<PerfilCRUDPageEvent> get perfilCRUDPageEventStream =>
       _perfilCRUDPageEventController.stream;
 
-  //UsuarioPerfilModel
+  /// UsuarioPerfilModel
   final _usuarioPerfilModelController = BehaviorSubject<UsuarioPerfilModel>();
   Stream<UsuarioPerfilModel> get usuarioPerfilModelStream =>
       _usuarioPerfilModelController.stream;
@@ -65,15 +65,11 @@ class PerfilCRUDPageBloc {
               .fromMap(snapDocs.data))
           .pipe(_usuarioPerfilModelController);
       usuarioPerfilModelStream.listen((usuarioPerfilModel) {
-        // print('>> usuarioPerfilModel >> ${usuarioPerfilModel}');
         perfilCRUDPageState.textPlain = usuarioPerfilModel.textPlain;
       });
     }
 
     if (event is UpDateTextPlainEvent) {
-      perfilCRUDPageState.textPlain = event.textPlain;
-      // print(
-      //     '>>perfilCRUDPageState.textPlain>>${perfilCRUDPageState.textPlain}');
     }
     if (event is SaveStateToFirebaseEvent) {
       _firestore

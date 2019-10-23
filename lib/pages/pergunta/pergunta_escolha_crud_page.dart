@@ -7,8 +7,7 @@ class PerguntaEscolhaCRUDPage extends StatefulWidget {
   final String escolhaUID;
 
   PerguntaEscolhaCRUDPage(this.perguntaID, this.escolhaUID) {
-    // print('>>> perguntaID <<< ${perguntaID}');
-    // print('>>> escolhaUID <<< ${escolhaUID}');
+
   }
 
   @override
@@ -46,7 +45,6 @@ class _PerguntaEscolhaCRUDPageState extends State<PerguntaEscolhaCRUDPage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.thumb_up),
           onPressed: () {
-            // salvar e voltar
             bloc.eventSink(SaveEvent());
             Navigator.pop(context);
           },
@@ -145,7 +143,6 @@ _DeleteDocumentOrFieldState(this.bloc);
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                //Ir para a pagina visuais do produto
                 if (_textFieldController.text == 'CONCORDO') {
                   bloc.eventSink(DeleteEvent());
                   Navigator.of(context).pop();

@@ -3,7 +3,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/noticia_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 
-// Eventos da Pagina
 class ComunicacaoHomePageEvent {}
 
 class UpdateUsuarioIDEvent extends ComunicacaoHomePageEvent {
@@ -12,7 +11,6 @@ class UpdateUsuarioIDEvent extends ComunicacaoHomePageEvent {
   UpdateUsuarioIDEvent(this.usuarioID);
 }
 
-// Estado da Pagina
 class ComunicacaoHomePageState {
   String usuarioId;
   String urlCSV;
@@ -22,11 +20,11 @@ class ComunicacaoHomePageState {
 
 class ComunicacaoHomePageBloc {
   final fsw.Firestore _firestore;
-  // Auth
+  /// Auth
   final _authBloc =
       Bootstrap.instance.authBloc;
 
-  // Eventos da Página
+  /// Eventos da Página
   final _comunicacaoHomePageEventController =
       BehaviorSubject<ComunicacaoHomePageEvent>();
 
@@ -36,7 +34,7 @@ class ComunicacaoHomePageBloc {
   Function get comunicacaoHomePageEventSink =>
       _comunicacaoHomePageEventController.sink.add;
 
-  // Estados da Página
+  /// Estados da Página
   final ComunicacaoHomePageState _comunicacaoHomePageState =
       ComunicacaoHomePageState();
   final _comunicacaoHomePageStateController =
@@ -48,13 +46,13 @@ class ComunicacaoHomePageBloc {
   Function get comunicacaoHomePageStateSink =>
       _comunicacaoHomePageStateController.sink.add;
 
-  // NoticiaModel Em Edicao
+  /// NoticiaModel Em Edicao
   final _noticiaModelListEdicaoController =
       BehaviorSubject<List<NoticiaModel>>();
   Stream<List<NoticiaModel>> get noticiaModelListEdicaoStream =>
       _noticiaModelListEdicaoController.stream;
 
-  // NoticiaModel Publicadas
+  /// NoticiaModel Publicadas
   final _noticiaModelListPublicadaController =
       BehaviorSubject<List<NoticiaModel>>();
   Stream<List<NoticiaModel>> get noticiaModelListPublicadaStream =>
@@ -68,14 +66,13 @@ class ComunicacaoHomePageBloc {
   }
   void _mapEventToState(ComunicacaoHomePageEvent event) {
     if (event is UpdateUsuarioIDEvent) {
-      // Atualizar State with Event
+      /// Atualizar State with Event
       _comunicacaoHomePageState.usuarioId = event.usuarioID;
       comunicacaoHomePageStateSink(_comunicacaoHomePageState);
 
-      //Noticia nao publicadas ou em edicao
+      /// Noticia nao publicadas ou em edicao
       final noticiasRef = _firestore
           .collection(NoticiaModel.collection)
-          // .where('publicada', isEqualTo: false)
           .where('usuarioIDEditor.id', isEqualTo: event.usuarioID)
           .where("publicar", isGreaterThan: DateTime.now().toUtc());
 
@@ -87,10 +84,9 @@ class ComunicacaoHomePageBloc {
               .toList())
           .pipe(_noticiaModelListEdicaoController);
 
-      //Noticia publicadas nao pode editar.
+      /// Noticia publicadas nao pode editar.
       _firestore
           .collection(NoticiaModel.collection)
-          // .where('publicada', isEqualTo: true)
           .where('usuarioIDEditor.id', isEqualTo: event.usuarioID)
           .where("publicar", isLessThan: DateTime.now().toUtc())
           .snapshots()

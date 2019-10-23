@@ -57,7 +57,6 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
                 padding: EdgeInsets.all(5.0),
                 child: NomeFormItem(bloc),
               ),
-              // _btnApagar(context),
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: _DeleteDocumentOrField(bloc),
@@ -80,7 +79,6 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.thumb_up),
         onPressed: () {
-          // salvar e voltar
           bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
           Navigator.pop(context);
         },
@@ -166,7 +164,6 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                //Ir para a pagina visuais do produto
                 if (_textFieldController.text == 'CONCORDO') {
                   bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
                   Navigator.of(context).pop();

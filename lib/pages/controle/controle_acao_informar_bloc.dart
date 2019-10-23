@@ -40,21 +40,21 @@ class ControleAcaoInformarBlocState {
 }
 
 class ControleAcaoInformarBloc {
-  //Firestore
+  /// Firestore
   final fw.Firestore _firestore;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ControleAcaoInformarBlocEvent>();
   Stream<ControleAcaoInformarBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ControleAcaoInformarBlocState _state = ControleAcaoInformarBlocState();
   final _stateController = BehaviorSubject<ControleAcaoInformarBlocState>();
   Stream<ControleAcaoInformarBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   ControleAcaoInformarBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
@@ -70,7 +70,6 @@ class ControleAcaoInformarBloc {
 
     if (event is UpdateAcaoIDEvent) {
       if (event.acaoID != null) {
-        //Atualiza estado com produto
         final docRef = _firestore
             .collection(ControleAcaoModel.collection)
             .document(event.acaoID);
@@ -101,7 +100,6 @@ _state.updateStateFromControleAcaoModel();
 
     }
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
     print('event.runtimeType em ControleAcaoInformarBloc  = ${event.runtimeType}');
   }
 }

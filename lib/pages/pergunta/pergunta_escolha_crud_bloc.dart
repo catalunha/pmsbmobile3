@@ -82,7 +82,6 @@ class PerguntaEscolhaCRUDPageBloc {
 
     if (event is UpdateEscolhaIDPageEvent) {
       _state.escolhaUID = event.escolhaUID;
-      print('>>>>>>>>>> _state.perguntaID <<< ${_state.perguntaID}');
       final docRef = _firestore
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
@@ -92,16 +91,10 @@ class PerguntaEscolhaCRUDPageBloc {
         perguntaModel =
             PerguntaModel(id: docSnap.documentID).fromMap(docSnap.data);
       }
-      print('>>> perguntaModel <<< ${perguntaModel.toMap()}');
-      // if (perguntaModel.ultimaOrdemEscolha == null) {
-      //   _state.ultimaOrdemEscolha = 0;
-      // } else {
-      //   _state.ultimaOrdemEscolha = perguntaModel.ultimaOrdemEscolha;
-      // }
+
       _state.ultimaOrdemEscolha = perguntaModel.ultimaOrdemEscolha;
 
       if (event.escolhaUID != null) {
-        // print('>>> perguntaModel <<< ${perguntaModel.toMap()}');
         perguntaModel.escolhas.forEach((k, v) {
           if (k == _state.escolhaUID) {
             _state.escolha = v;
@@ -141,8 +134,7 @@ class PerguntaEscolhaCRUDPageBloc {
       }, merge: true);
     }
     if (event is DeleteEvent) {
-      // print('>>>>>>>>>>>>>>>>>>>>>>>> ${_state.perguntaID}');
-      // print(_state.escolhaUID);
+
       final docRef = _firestore
           .collection(PerguntaModel.collection)
           .document(_state.perguntaID);
@@ -151,8 +143,6 @@ class PerguntaEscolhaCRUDPageBloc {
       }, merge: true);
     }
     if (!_stateController.isClosed) stateSink(_state);
-    print('>>> _state.texto <<< ${_state.texto}');
-    print('>>> _state.toString <<< ${_state.toString()}');
     print(
         'event.runtimeType em PerguntaEscolhaCRUDPageBloc  = ${event.runtimeType}');
   }

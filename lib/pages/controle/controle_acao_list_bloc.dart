@@ -41,22 +41,21 @@ class ControleAcaoListBlocState {
 }
 
 class ControleAcaoListBloc {
-  //Firestore
+  /// Firestore
   final fsw.Firestore _firestore;
-  // final _authBloc;
 
-  //Eventos
+  ///  Eventos
   final _eventController = BehaviorSubject<ControleAcaoListBlocEvent>();
   Stream<ControleAcaoListBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ControleAcaoListBlocState _state = ControleAcaoListBlocState();
   final _stateController = BehaviorSubject<ControleAcaoListBlocState>();
   Stream<ControleAcaoListBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   ControleAcaoListBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
@@ -83,17 +82,6 @@ class ControleAcaoListBloc {
 
   _mapEventToState(ControleAcaoListBlocEvent event) async {
     if (event is UpdateTarefaIDEvent) {
-      //Atualiza estado com usuario logado
-      // le todas as tarefas deste usuario como remetente/designadas neste setor.
-      // final docRef = _firestore
-      //     .collection(ControleTarefaModel.collection)
-      //     .document(event.controleTarefaID);
-      // final snap = await docRef.get();
-      // if (snap.exists) {
-      //   _state.controleTarefaID =
-      //       ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
-      // }
-
     final streamDocsTarefa = _firestore
           .collection(ControleTarefaModel.collection)
           .document(event.controleTarefaID)
@@ -101,8 +89,6 @@ class ControleAcaoListBloc {
 
       final snapTarefa = streamDocsTarefa.map((snapDocs) =>
           ControleTarefaModel(id: snapDocs.documentID).fromMap(snapDocs.data));
-      //       .toList());
-
       snapTarefa.listen((ControleTarefaModel controleTarefa) {
         _state.controleTarefaID = controleTarefa;
         if (!_stateController.isClosed) _stateController.add(_state);
@@ -112,7 +98,6 @@ class ControleAcaoListBloc {
 
 
       _state.controleAcaoList.clear();
-      // le todas as tarefas deste usuario como remetente/designadas neste setor.
       final streamDocsRemetente = _firestore
           .collection(ControleAcaoModel.collection)
           .where("tarefa.id", isEqualTo: event.controleTarefaID)
@@ -157,7 +142,6 @@ class ControleAcaoListBloc {
       final ControleAcaoModel acaoID = event.acaoID;
 
       _state.controleTarefaListRemetente.clear();
-      // le todas as tarefas deste usuario como remetente/designadas neste setor.
       final streamDocsRemetente = _firestore
           .collection(ControleTarefaModel.collection)
           .where("remetente.id", isEqualTo: acaoID.remetente.id)
@@ -188,7 +172,6 @@ class ControleAcaoListBloc {
       final snap = await streamDocsRemetente.getDocuments();
 
       if (snap.documents.isEmpty) {
-        // localizar a tarefa e atualizar o recebimento desta nova
       final docRefTarefa = _firestore
           .collection(ControleTarefaModel.collection)
           .document(tarefa.id);
@@ -214,13 +197,11 @@ class ControleAcaoListBloc {
           .toMap();
       acaoNOVA['nome'] = acao.nome ;
       acaoNOVA['setor'] = acao.setor.toMap();
-          // SetorCensitarioID(id: setor.id, nome: setor.nome).toMap();
       acaoNOVA['remetente'] = acao.remetente.toMap();
       acaoNOVA['destinatario'] = acao.destinatario.toMap();
       acaoNOVA['concluida'] = false;
       acaoNOVA['modificada'] = Bootstrap.instance.fieldValue.serverTimestamp();
       acaoNOVA['ordem'] = tarefaID.ultimaOrdemAcao;
-      // print(acaoNOVA);
       await docRefAcao.setData(acaoNOVA, merge: true);
 
      }
@@ -228,7 +209,6 @@ class ControleAcaoListBloc {
     }
 
     _validateData();
-    // print(_state.controleAcaoList.toString());
     if (!_stateController.isClosed) _stateController.add(_state);
     print(
         'event.runtimeType em ControleTarefaDestinatarioAcaoMarcarBloc  = ${event.runtimeType}');

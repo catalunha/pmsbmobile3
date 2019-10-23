@@ -6,9 +6,6 @@ import 'package:pmsbmibile3/naosuportato/permission_handler.dart'
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-  // final AuthBloc authBloc =
-  //     Bootstrap.instance.authBloc
-  // LoginPage();
 
   final AuthBloc authBloc;
 

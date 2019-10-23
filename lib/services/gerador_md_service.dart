@@ -44,7 +44,6 @@ ${noticia.textoMarkdown}
     StringBuffer escolhaList = new StringBuffer();
     StringBuffer requisitoList = new StringBuffer();
     int contador = 1;
-// Última edição em: ${questionarioModel.modificado.toDate()}
 
     texto.writeln("""
 # ${questionarioModel.nome}
@@ -70,7 +69,6 @@ Lista de perguntas:
       return PerguntaModel(id: doc.documentID).fromMap(doc.data);
     }).toList();
 
-    // perguntasList.forEach((pergunta) {
     for (var pergunta in perguntasList) {
       escolhaList.clear();
       requisitoList.clear();
@@ -82,12 +80,9 @@ Lista de perguntas:
         if (pergunta.escolhas != null && pergunta.escolhas.isNotEmpty) {
           var dicEscolhas = Dictionary.fromMap(pergunta.escolhas);
           var escolhasAscOrder = dicEscolhas
-              // Sort Ascending order by value ordem
               .orderBy((kv) => kv.value.ordem)
-              // Sort Descending order by value ordem
               // .orderByDescending((kv) => kv.value.ordem)
               .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-          print(escolhasAscOrder.toMap());
           Map<String, Escolha> escolhaMap = escolhasAscOrder.toMap();
           escolhaList.writeln("#### ${pergunta.tipo.nome}");
           escolhaMap?.forEach((k, v) {
@@ -134,7 +129,7 @@ Uso do sistema: Pergunta Tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id
 
 """);
       contador++;
-    } //Fim pergunta
+    }
     return texto.toString();
   }
 
@@ -149,7 +144,6 @@ Uso do sistema: Pergunta Tipo: ${pergunta.tipo.nome}. Pergunta id: ${pergunta.id
     StringBuffer arquivo = StringBuffer();
     StringBuffer coordenada = StringBuffer();
     int contador = 1;
-// - Modificado: ${questionarioAplicadoModel.modificado.toDate()}
 
     tudo.writeln("""
 # Questionário Aplicado : ${questionarioAplicadoModel.nome}
@@ -275,12 +269,9 @@ Nada informado.
         if (pergunta.escolhas != null && pergunta.escolhas.isNotEmpty) {
           var dicEscolhas = Dictionary.fromMap(pergunta.escolhas);
           var escolhasAscOrder = dicEscolhas
-              // Sort Ascending order by value ordem
               .orderBy((kv) => kv.value.ordem)
-              // Sort Descending order by value ordem
               // .orderByDescending((kv) => kv.value.ordem)
               .toDictionary$1((kv) => kv.key, (kv) => kv.value);
-          print(escolhasAscOrder.toMap());
           Map<String, Escolha> escolhaMap = escolhasAscOrder.toMap();
 
           escolhaList.writeln("#### Resposta em ${pergunta.tipo.nome}");
@@ -303,7 +294,6 @@ Nada informado.
       }
       //--- escolhas
 
-// - Pergunta id: ${pergunta.id}
       tudo.writeln("""
 ## $contador - ${pergunta.titulo}
 ${pergunta.textoMarkdown}
@@ -322,10 +312,6 @@ Informações: $temPendencias. $foiRespondida. $informada. Tipo: ${pergunta.tipo
 """);
       contador++;
     }
-    //Fim pergunta
     return tudo.toString();
   }
-
-
-  
 }

@@ -83,24 +83,22 @@ class PainelCrudBlocState {
 }
 
 class PainelCrudBloc {
-  //Firestore
-  //Firestore
-  // final fsw.Firestore _firestore;
+  /// Firestore
   final fw.Firestore _firestore;
   final _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<PainelCrudBlocEvent>();
   Stream<PainelCrudBlocEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final PainelCrudBlocState _state = PainelCrudBlocState();
   final _stateController = BehaviorSubject<PainelCrudBlocState>();
   Stream<PainelCrudBlocState> get stateStream => _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   PainelCrudBloc(
     this._firestore,
     this._authBloc,
@@ -153,14 +151,12 @@ class PainelCrudBloc {
       }
     }
     if (event is GetUsuarioIDEvent) {
-      //Atualiza estado com usuario logado
       _state.usuarioID = event.usuarioID;
     }
     if (event is UpdateUsuarioListEvent) {
       var collRef = await _firestore
           .collection(UsuarioModel.collection)
           .where("cargoID.id", isEqualTo: 'coordenador')
-          // .orderBy('nome')
           .getDocuments();
 
       for (var documentSnapshot in collRef.documents) {
@@ -177,7 +173,6 @@ class PainelCrudBloc {
     if (event is UpdateEixoListEvent) {
       var collRef = await _firestore
           .collection(EixoModel.collection)
-          // .orderBy('nome')
           .getDocuments();
 
       for (var documentSnapshot in collRef.documents) {
@@ -194,7 +189,6 @@ class PainelCrudBloc {
     if (event is UpdateProdutoFunasaListEvent) {
       var collRef = await _firestore
           .collection(ProdutoFunasaModel.collection)
-          // .orderBy('nome')
           .getDocuments();
 
       for (var documentSnapshot in collRef.documents) {
@@ -205,8 +199,6 @@ class PainelCrudBloc {
     }
     if (event is SelectProdutoFunasaIDEvent) {
       _state.produtoFunasa =ProdutoFunasaID(id:event.produtoFunasa.id,nome:event.produtoFunasa.nome);
-            print(_state.produtoFunasa.toMap());
-
     }
 
     if (event is UpdateNomeEvent) {
@@ -214,7 +206,6 @@ class PainelCrudBloc {
     }
     if (event is UpdateTipoEvent) {
       _state.tipo = event.tipo;
-      print('radiovalue=${_state.tipo}');
     }
     if (event is SaveEvent) {
       final docRef = _firestore
@@ -233,19 +224,6 @@ class PainelCrudBloc {
       );
 
       await docRef.setData(painelModel.toMap(), merge: true);
-
-      // await docRef.setData({
-      //   'nome': _state.nome,
-      //   'tipo': _state.tipo,
-      //   'modificado': Bootstrap.instance.fieldValue.serverTimestamp(),
-      //   'usuarioID':
-      //       UsuarioID(id: _state.usuarioID.id, nome: _state.usuarioID.nome)
-      //           .toMap(),
-      //                   'usuarioQVaiResponder':
-      //       UsuarioID(id: _state.usuarioID.id, nome: _state.usuarioID.nome)
-      //           .toMap()
-      // }, merge: true);
-
     }
 
     if (event is DeleteDocumentEvent) {

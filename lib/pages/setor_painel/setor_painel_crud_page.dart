@@ -43,7 +43,6 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
               return FloatingActionButton(
                 onPressed: snapshot.data.isDataValid
                     ? () {
-                        //salvar e voltar
                         bloc.eventSink(SaveEvent());
                         Navigator.pop(context);
                       }

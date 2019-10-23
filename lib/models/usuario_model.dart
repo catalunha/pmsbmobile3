@@ -1,4 +1,3 @@
-// import 'package:validators/validators.dart';
 import 'package:pmsbmibile3/models/base_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
@@ -10,7 +9,6 @@ class UsuarioModel extends FirestoreModel {
   String tokenFCM;
   bool ativo;
   UploadID foto;
-  // List<RotaID> rotaID;
   List<dynamic> routes;
   SetorCensitarioID setorCensitarioID;
   CargoID cargoID;
@@ -26,7 +24,6 @@ class UsuarioModel extends FirestoreModel {
       this.tokenFCM,
       this.ativo,
       this.foto,
-      // this.rotaID,
       this.routes,
       this.setorCensitarioID,
       this.cargoID,

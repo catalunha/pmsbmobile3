@@ -13,7 +13,6 @@ class ChatMensagemModel extends FirestoreModel {
 
   @override
   ChatMensagemModel fromMap(Map<String, dynamic> map) {
-    // if (map.containsKey('enviada')) enviada = map['enviada'].toDate();
     if (map.containsKey('enviada')) enviada = DateTime.fromMillisecondsSinceEpoch(
         map['enviada'].millisecondsSinceEpoch);
     if (map.containsKey('texto')) texto = map['texto'];
@@ -27,23 +26,11 @@ class ChatMensagemModel extends FirestoreModel {
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (texto != null) data['texto'] = this.texto;
-    // if (enviada != null) data['enviada'] = this.enviada.toUtc();
         data['enviada'] = Bootstrap.instance.fieldValue.serverTimestamp();
     if (this.autor != null) {
       data['autor'] = this.autor.toMap();
     }
     return data;
   }
-
-  // Map<String, dynamic> toMapFirestore() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   if (texto != null) data['texto'] = this.texto;
-  //   // if (enviada != null) data['enviada'] = this.enviada.toUtc();
-  //       data['enviada'] = Bootstrap.instance.fieldValue.serverTimestamp();
-  //   if (this.autor != null) {
-  //     data['autor'] = this.autor.toMap();
-  //   }
-  //   return data;
-  // }
 
 }

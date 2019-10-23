@@ -37,9 +37,7 @@ class NoticiaModel extends FirestoreModel {
       Map<dynamic, dynamic> dataFromMap = Map<dynamic, dynamic>();
       Map<String, Destinatario> dataToField = Map<String, Destinatario>();
       dataFromMap = map['usuarioIDDestino'];
-      // print('>> dataFromMap >> ${dataFromMap}');
       dataFromMap.forEach((k, v) {
-        // print(">> v[id].runtimeType >> ${v['id'].runtimeType}");
         dataToField[k] = Destinatario(
             uid: v['uid'],
             id: v['id'],
@@ -101,7 +99,6 @@ class Destinatario {
   Destinatario({this.uid, this.id, this.nome, this.visualizada});
 
   Destinatario fromMap(Map<dynamic, dynamic> map) {
-//     if (map.containsKey('uid')) uid = map['uid'];
     if (map.containsKey('id')) id = map['id'];
     if (map.containsKey('nome')) nome = map['nome'];
     if (map.containsKey('visualizada')) visualizada = map['visualizada'];
@@ -110,7 +107,6 @@ class Destinatario {
 
   Map<dynamic, dynamic> toMap() {
     final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    // if (uid != null) data['uid'] = this.uid;
     if (id != null) data['id'] = this.id;
     if (nome != null) data['nome'] = this.nome;
     if (visualizada != null) data['visualizada'] = this.visualizada;

@@ -164,40 +164,7 @@ class _ControleTarefaConcluidaListPageState
                     child: Text(
                         '\nSetor: ${snapshot.data.usuarioID.setorCensitarioID.nome}'),
                   ),
-                  Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    // IconButton(
-                    //   tooltip: 'Gerar PDF desta tarefa',
-                    //   icon: Icon(Icons.picture_as_pdf),
-                    //   onPressed: () {
-                    //     // Listar paginas de perguntas
-                    //   },
-                    // ),
-                    // IconButton(
-                    //   tooltip: 'Filtrar por',
-                    //   icon: Icon(Icons.search),
-                    //   onPressed: () {
-                    //     // Listar paginas de perguntas
-                    //   },
-                    // ),
-                    // IconButton(
-                    //   tooltip: 'Ver tarefas designadas concluidas',
-                    //   icon: Icon(Icons.folder),
-                    //   onPressed: () {
-                    //     // Listar paginas de perguntas
-                    //   },
-                    // ),
-                    // IconButton(
-                    //   tooltip: 'Adicionar mais uma tarefa',
-                    //   icon: Icon(Icons.plus_one),
-                    //   onPressed: () {
-                    //     Navigator.pushNamed(
-                    //       context,
-                    //       "/controle/tarefa_crud",
-                    //       arguments: null,
-                    //     );
-                    //   },
-                    // ),
-                  ]),
+                  Wrap(alignment: WrapAlignment.start, children: <Widget>[]),
                 ],
               ),
               Divider(),

@@ -141,7 +141,6 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               padding: EdgeInsets.all(5.0),
               child: TextField(
                 onChanged: (text) {
-                  // print(myController.selection);
                   bloc.dispatch(
                       UpdateTextoMarkdownPerguntaEditarApagarPerguntaBlocEvent(
                           text));
@@ -159,10 +158,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   _atualizarMarkdown(texto, posicao) {
     String inicio =
         myController.text.substring(0, myController.selection.baseOffset);
-    // print("INICIO:" + inicio);
-    String fim = myController.text
+   String fim = myController.text
         .substring(myController.selection.baseOffset, myController.text.length);
-    // print("FIM:" + fim);
 
     myController.text = "$inicio$texto$fim";
     myController.setTextAndPosition(myController.text,

@@ -63,15 +63,6 @@ class ComunicacaoCRUDPageState {
   TimeOfDay hora;
   List<Map<String, dynamic>> destinatarioListMap = List<Map<String, dynamic>>();
 
-/*
-[
-  {
-    usuarioID:usuarioID
-    nome:usuarioID->nome
-  },
-]
-*/
-
   void fromNoticiaModel(NoticiaModel noticiaModel) {
     currentNoticiaModel = noticiaModel;
     noticiaID = noticiaModel.id;
@@ -79,14 +70,8 @@ class ComunicacaoCRUDPageState {
     titulo = noticiaModel.titulo;
     textoMarkdown = noticiaModel.textoMarkdown;
     publicar = noticiaModel.publicar;
-    // print('>>> noticiaModel.id >>> ${noticiaModel.id}');
-    // print(
-    //     '>>> noticiaModel.usuarioIDDestino >>> ${noticiaModel.usuarioIDDestino}');
-    // destinatarioListMap =
-    //     noticiaModel.usuarioIDDestino.map((v) => v.toMap()).toList();
     noticiaModel.usuarioIDDestino.forEach((k, v) {
-// print('>> k >> ${k}');
-// print('>> v >> ${v}');
+
       destinatarioListMap.add(
         {'usuarioID': '$k', 'nome': '${v.nome}'},
       );
@@ -94,26 +79,19 @@ class ComunicacaoCRUDPageState {
   }
 
   NoticiaModel toNoticiaModel() {
-    // List<Destinatario> usuarioIDDestino = [];
     Map<String, Destinatario> usuarioIDDestino = Map<String, Destinatario>();
-    // print('>>>>>> ${destinatarioListMap}');
-    // destinatarioListMap.map((item) => destinatarioList.add(item['usuarioID']));
 
     destinatarioListMap.forEach((item) {
-      // print(item['usuarioID']);
-      // print(item['nome']);
+
       usuarioIDDestino[item['usuarioID']] = Destinatario(
           uid: item['usuarioID'],
           id: true,
           nome: item['nome'],
           visualizada: false);
-      // print('>> usuarioIDDestino >> ${usuarioIDDestino.toString()}');
     });
-    // print('>>>>>> ${destinatarioList}');
     return NoticiaModel(
       usuarioIDEditor: usuarioIDEditor,
       titulo: titulo,
-      // publicada: false,
       textoMarkdown: textoMarkdown,
       usuarioIDDestino: usuarioIDDestino,
       publicar: publicar ?? null,
@@ -126,18 +104,17 @@ class ComunicacaoCRUDPageBloc {
   final _authBloc =
       Bootstrap.instance.authBloc;
 
-  //Eventos da página
+  ///Eventos da página
   final _eventController = BehaviorSubject<ComunicacaoCRUDPageEvent>();
   Stream<ComunicacaoCRUDPageEvent> get eventStream => _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados da página
+  ///Estados da página
   final _state = ComunicacaoCRUDPageState();
   final _stateController = BehaviorSubject<ComunicacaoCRUDPageState>();
   Stream<ComunicacaoCRUDPageState> get stateStream => _stateController.stream;
 
   ComunicacaoCRUDPageBloc() {
-    // _authBloc.userId.listen(_dispatchUpdateUserId);
     _authBloc.userId
         .listen((userId) => eventSink(UpDateUsuarioIDEditorEvent(userId)));
     eventStream.listen(_mapEventToState);
@@ -150,10 +127,6 @@ class ComunicacaoCRUDPageBloc {
     await _stateController.drain();
     _stateController.close();
   }
-
-  // void _dispatchUpdateUserId(String userId) {
-  //   comunicacaoCRUDPageEventSink(UpDateUsuarioIDEditorEvent(userId));
-  // }
 
   _mapEventToState(ComunicacaoCRUDPageEvent event) {
     if (event is UpDateUsuarioIDEditorEvent) {
@@ -199,8 +172,7 @@ class ComunicacaoCRUDPageBloc {
           _state.hora != null ? _state.hora.hour : _state.publicar.hour,
           _state.hora != null ? _state.hora.minute : _state.publicar.minute);
       _state.publicar = newDate;
-      // print(
-      // 'Após comunicacaoCRUDPageState.publicar: ${comunicacaoCRUDPageState.publicar.toString()}'); // }
+
       _stateController.sink.add(_state);
     }
     if (event is SaveStateToFirebaseEvent) {
@@ -214,11 +186,9 @@ class ComunicacaoCRUDPageBloc {
 
   _saveStateToFirebase() {
     final map = _state.toNoticiaModel().toMap();
-    // // print(map);
     final docRef = _firestore
         .collection(NoticiaModel.collection)
         .document(_state.noticiaID);
-    // docRef.setData(map, merge: true); // se deixar merge ele amplia a lista e nao exclui.
     docRef.setData(map);
   }
 

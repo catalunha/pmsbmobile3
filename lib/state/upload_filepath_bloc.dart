@@ -62,7 +62,6 @@ class UploadFilePathBloc {
       fileStream.where((String filePath) => filePath != null),
       _uploadFromPathHandler,
     );
-    // uploadTasks.listen((_) => print("uploadTask iniciada"));
     storageTaskEventStream.listen(_handleStorageTaskEvent);
   }
 
@@ -110,33 +109,15 @@ class UploadFilePathBloc {
     }
     if (storageTaskEvent.type == StorageTaskEventType.failure) {}
 
-    // switch (storageTaskEvent.type) {
-    //   case StorageTaskEventType.resume:
-    //     // TODO: Handle this case.
-    //     break;
-    //   case StorageTaskEventType.progress:
-    //     // TODO: Handle this case.
-    //     break;
-    //   case StorageTaskEventType.pause:
-    //     // TODO: Handle this case.
-    //     break;
-    //   case StorageTaskEventType.success:
-    //     _uploadSucess();
-    //     break;
-    //   case StorageTaskEventType.failure:
-    //     // TODO: Handle this case.
-    //     break;
-    // }
+
   }
 
   _uploadSucess(StorageTaskEvent storageTaskEvent) async {
     var arquivo = UploadModel(
       usuario: _blocState.userId,
-      // nome: storageTaskEvent.snapshot.storageMetadata.name,
       nome: await storageTaskEvent.snapshot.ref.getName(),
       contentType: storageTaskEvent.snapshot.storageMetadata.contentType,
       storagePath: storageTaskEvent.snapshot.storageMetadata.path,
-      // storagePath: await storageTaskEvent.snapshot.ref.getBucket(),
       url: await storageTaskEvent.snapshot.ref.getDownloadURL(),
       upload: true,
     );

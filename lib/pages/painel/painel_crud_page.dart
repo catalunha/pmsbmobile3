@@ -47,7 +47,6 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
               return FloatingActionButton(
                 onPressed: snapshot.data.isDataValid
                     ? () {
-                        //salvar e voltar
                         bloc.eventSink(SaveEvent());
                         Navigator.pop(context);
                       }
@@ -63,7 +62,6 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
               if (snapshot.hasData) {
-                // if (snapshot.data.isDataValid) {
                 return ListView(
                   children: <Widget>[
                     Padding(
@@ -113,9 +111,7 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                     Padding(padding: EdgeInsets.only(top: 100)),
                   ],
                 );
-                // } else {
-                //   return Text('Dados inválidos...');
-                // }
+            
               }
               return Text('Dados incompletos...');
             }));
@@ -338,61 +334,6 @@ class PainelTipoState extends State<PainelTipo> {
                   ])
             ]);
 
-        // Column(
-        // return Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: <Widget>[
-        //       RadioListTile(
-        //         title: Text(
-        //           'Um texto simples',
-        //         ),
-        //         value: 'texto',
-        //         groupValue: snapshot.data?.tipo,
-        //         onChanged: (radioValue) {
-        //           bloc.eventSink(UpdateTipoEvent(radioValue));
-        //         },
-        //       ),
-        //       RadioListTile(
-        //         title: Text(
-        //           'Um número',
-        //         ),
-        //         value: 'numero',
-        //         groupValue: snapshot.data?.tipo,
-        //         onChanged: (radioValue) {
-        //           bloc.eventSink(UpdateTipoEvent(radioValue));
-        //         },
-        //       ),
-        //       RadioListTile(
-        //         title: Text(
-        //           'Um link para uma imagem',
-        //         ),
-        //         value: 'urlimagem',
-        //         groupValue: snapshot.data?.tipo,
-        //         onChanged: (radioValue) {
-        //           bloc.eventSink(UpdateTipoEvent(radioValue));
-        //         },
-        //       ),
-        //       RadioListTile(
-        //         title: Text(
-        //           'Um link para um arquivo',
-        //         ),
-        //         value: 'urlarquivo',
-        //         groupValue: snapshot.data?.tipo,
-        //         onChanged: (radioValue) {
-        //           bloc.eventSink(UpdateTipoEvent(radioValue));
-        //         },
-        //       ),
-        //       RadioListTile(
-        //         title: Text(
-        //           'Marcar Sim ou Não',
-        //         ),
-        //         value: 'booleano',
-        //         groupValue: snapshot.data?.tipo,
-        //         onChanged: (radioValue) {
-        //           bloc.eventSink(UpdateTipoEvent(radioValue));
-        //         },
-        //       ),
-        //     ]);
       },
     );
   }
@@ -439,12 +380,9 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
           );
         }
 
-        // var usuario = Map<String, UsuarioModel>();
 
-        // usuario = snapshot.data?.usuarioList;
         var lista = List<Widget>();
         for (var usuario in snapshot.data.usuarioList) {
-          // print('usuario: ${item.key}');
           lista.add(_cardBuild(context, usuario));
         }
 
@@ -521,12 +459,9 @@ class _EixoListaModalSelectState extends State<EixoListaModalSelect> {
           );
         }
 
-        // var usuario = Map<String, UsuarioModel>();
 
-        // usuario = snapshot.data?.usuarioList;
         var lista = List<Widget>();
         for (var eixo in snapshot.data.eixoList) {
-          // print('usuario: ${item.key}');
           lista.add(_cardBuild(context, eixo));
         }
 
@@ -540,7 +475,6 @@ class _EixoListaModalSelectState extends State<EixoListaModalSelect> {
   Widget _cardBuild(BuildContext context, EixoID eixo) {
     return ListTile(
       title: Text('${eixo.nome}'),
-      // subtitle: Text('Eixo: ${usuario.eixoID?.nome}'),
       leading: IconButton(
         icon: Icon(Icons.check),
         onPressed: () {
@@ -604,12 +538,9 @@ class _ProdutoFunasaListaModalSelectState
           );
         }
 
-        // var usuario = Map<String, UsuarioModel>();
 
-        // usuario = snapshot.data?.usuarioList;
         var lista = List<Widget>();
         for (var produto in snapshot.data.produtoFunasaList) {
-          // print('usuario: ${item.key}');
           lista.add(_cardBuild(context, produto));
         }
 

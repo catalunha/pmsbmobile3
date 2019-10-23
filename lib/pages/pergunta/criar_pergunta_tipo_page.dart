@@ -30,7 +30,6 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
         child: ListTile(
           title: Text("Pergunta tipo texto"),
           trailing: IconButton(icon:Icon(Icons.list, color: Colors.black), onPressed:(){
-            // pergunta do tipo texto
             Navigator.pushNamed(context, "/pergunta/criar_editar");
           },)
         ),
@@ -40,7 +39,6 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
         child: ListTile(
           title: Text("Pergunta tipo imagem"),
           trailing: IconButton(icon:Icon(Icons.image, color: Colors.black), onPressed:(){
-            // pergunta do tipo imagem
             Navigator.pushNamed(context, "/pergunta/criar_editar");
           },)
         ),
@@ -50,7 +48,6 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
         child: ListTile(
           title: Text("Pergunta tipo numero"),
           trailing: IconButton(icon:Icon(Icons.plus_one, color: Colors.black), onPressed:(){
-            // pergunta do tipo numero
             Navigator.pushNamed(context, "/pergunta/criar_editar");
           },)
         ),
@@ -60,7 +57,6 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
         child: ListTile(
           title: Text("Pergunta tipo coordenada"),
            trailing: IconButton(icon:Icon(Icons.room), color: Colors.black, onPressed:(){
-            // pergunta do tipo coordenada
             Navigator.pushNamed(context, "/pergunta/criar_editar");
           },)
         ),
@@ -70,7 +66,6 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
         child: ListTile(
           title: Text("Pergunta tipo escolha única"),
            trailing: IconButton(icon:Icon(Icons.looks_one, color: Colors.black), onPressed:(){
-            // pergunta do tipo escolha única"
             Navigator.pushNamed(context, "/pergunta/criar_editar");
           },)
         ),
@@ -80,7 +75,6 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
         child: ListTile(
           title: Text("Pergunta tipo escolha multipla"),
            trailing: IconButton(icon:Icon(Icons.queue, color: Colors.black), onPressed:(){
-            // pergunta do tipo escolha multipla
             Navigator.pushNamed(context, "/pergunta/criar_editar");
           },)
         ),
@@ -94,7 +88,6 @@ class _CriarPerguntaTipoPageState extends State<CriarPerguntaTipoPage> {
     final _questionarioId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.red,
         centerTitle: true,
         title: Text("Lista de perguntas"),
       ),

@@ -65,10 +65,8 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    // leading: Text('${ordemLocal} (${v.ordem})'),
                     trailing: Text('${ordemLocal}'),
                     title: Text('${questionario.nome}'),
-                    // subtitle: Text('${questionario.id}'),
                   ),
                   Wrap(
                     alignment: WrapAlignment.start,
@@ -77,7 +75,6 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                         tooltip: 'Criar perguntas neste questionário',
                         icon: Icon(Icons.list),
                         onPressed: () {
-                          // Listar paginas de perguntas
                           Navigator.pushNamed(
                             context,
                             '/pergunta/home',
@@ -85,15 +82,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                           );
                         },
                       ),
-                      // IconButton(
-                      //   tooltip: 'Conferir todas as perguntas criadas',
-                      //   icon: Icon(Icons.picture_as_pdf),
-                      //   onPressed: () async {
-                      //     var mdtext = await GeradorMdService
-                      //         .generateMdFromQuestionarioModel(questionario);
-                      //     GeradorPdfService.generatePdfFromMd(mdtext);
-                      //   },
-                      // ),
+           
                       snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
                               snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
                                   false &&
@@ -144,12 +133,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                   },
                                 ),
 
-                      // IconButton(
-                      //     tooltip: 'Listar perguntas criadas',
-                      //     icon: Icon(Icons.text_fields),
-                      //     onPressed: () async {
-                      //       Navigator.pushNamed(context, "/pergunta/pergunta_list_preview", arguments: questionario.id);
-                      //     }),
+                 
                       IconButton(
                           icon: Icon(Icons.arrow_downward),
                           onPressed: (ordemLocal) < lengthEscolha
@@ -175,21 +159,10 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                       OrdenarQuestionarioEvent(questID, true));
                                 }
                               : null),
-                      // IconButton(
-                      //   icon: Icon(Icons.message),
-                      //   tooltip: 'Chat para o produto',
-                      //   onPressed: () {
-                      //     Navigator.pushNamed(context, '/chat/home',
-                      //         arguments: ChatPageArguments(
-                      //             chatID: questionario.id,
-                      //             modulo: 'Q: ${questionario.eixo.nome}.',
-                      //             titulo: 'T: ${questionario.nome}. '));
-                      //   },
-                      // ),
+                   
                       IconButton(
                           icon: Icon(Icons.edit),
                           onPressed: () {
-                            // Editar uma nova escolha
                             Navigator.pushNamed(
                               context,
                               "/questionario/form",
@@ -218,18 +191,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                         Text('Eixo: ${snapshot.data.usuarioModel.eixoID.nome}'),
                   ),
                   Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                    // IconButton(
-                    //   tooltip: 'Relatorio em PDF.',
-                    //   icon: Icon(Icons.picture_as_pdf),
-                    //   onPressed: () async {
-                    //     var pdf = await PdfCreateService
-                    //         .pdfwidgetForControleTarefaDoUsuario(
-                    //             usuarioModel: snapshot.data.usuarioID,
-                    //             remetente: false,
-                    //             concluida: false);
-                    //     PdfSaveService.generatePdfAndOpen(pdf);
-                    //   },
-                    // ),
+                   
                     snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
                             snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
                                 false &&
@@ -280,15 +242,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                   ]),
                 ],
               ),
-              // Expanded(
-              //   flex: 1,
-              //   child: Container(
-              //     padding: EdgeInsets.only(top: 15, bottom: 15),
-              //     child: Center(
-              //       child: EixoAtualUsuario(widget.authBloc),
-              //     ),
-              //   ),
-              // ),
+            
               Expanded(
                 flex: 10,
                 child: ListView(
@@ -314,12 +268,10 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            // Adicionar novo questionario a lista
             Navigator.pushNamed(context, "/questionario/form");
           },
         ),
       ),
-      // ),
     );
   }
 }

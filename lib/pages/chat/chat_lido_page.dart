@@ -12,19 +12,9 @@ class ChatLidoPage extends StatefulWidget {
 }
 
 class _ChatLidoPageState extends State<ChatLidoPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//        child: child,
-//     );
-//   }
-// }
 
-// class ChatLidoPage extends StatelessWidget {
   final ChatLidoPageBloc bloc;
-  // final String chatID;
   _ChatLidoPageState() : bloc = ChatLidoPageBloc(Bootstrap.instance.firestore);
-  // }
 
   @override
   void initState() {
@@ -73,7 +63,6 @@ class _ChatLidoPageState extends State<ChatLidoPage> {
           usuario = snapshot.data?.usuario;
           var lista = List<Widget>();
           for (var item in usuario.entries) {
-            // print('usuario: ${item.key}');
             lista.add(_cardBuild(context, item.key, item.value));
           }
 
@@ -86,7 +75,6 @@ class _ChatLidoPageState extends State<ChatLidoPage> {
   }
 
   Widget _cardBuild(BuildContext context, String key, UsuarioChat usuario) {
-    print(usuario.nome);
     return ListTile(
       title: Text(usuario.nome),
       leading: usuario.lido

@@ -30,20 +30,16 @@ class ControleTarefaModel extends FirestoreModel {
     if (map.containsKey("concluida")) concluida = map["concluida"];
     if (map.containsKey("ultimaOrdemAcao"))
       ultimaOrdemAcao = map["ultimaOrdemAcao"];
-    // if (map.containsKey("modificada") && map["modificada"] != null)
-    //   modificada = map["modificada"].toDate();
+
     if (map.containsKey("modificada") && map["modificada"] != null){
-      // modificada = Timestamp(map["modificada"].seconds, map["modificada"].nanoseconds).toDate();
-      // modificada = DateFormat('dd MMM kk:mm').format(map["modificada"]);
+
       modificada = DateTime.fromMillisecondsSinceEpoch(
         map['modificada'].millisecondsSinceEpoch);
     }
-    // if (map.containsKey("inicio") && map["inicio"] != null)
-    //   inicio = map["inicio"].toDate();
+
     if (map.containsKey("inicio") && map["inicio"] != null)
       inicio = DateTime.fromMillisecondsSinceEpoch(
         map['inicio'].millisecondsSinceEpoch);
-    // if (map.containsKey("fim") && map["fim"] != null) fim = map["fim"].toDate();
     if (map.containsKey("fim") && map["fim"] != null) fim = DateTime.fromMillisecondsSinceEpoch(
         map['fim'].millisecondsSinceEpoch);
     if (map.containsKey('setor')) {

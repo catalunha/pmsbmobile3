@@ -10,7 +10,8 @@ class ControleTarefaCrudPage extends StatefulWidget {
   final String acao;
   final String acaoNome;
 
-  const ControleTarefaCrudPage({this.authBloc, this.tarefa, this.acao, this.acaoNome});
+  const ControleTarefaCrudPage(
+      {this.authBloc, this.tarefa, this.acao, this.acaoNome});
 
   @override
   _ControleTarefaCrudBlocState createState() => _ControleTarefaCrudBlocState();
@@ -20,17 +21,18 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
   ControleTarefaCrudBloc bloc;
   var result = List<Map<String, dynamic>>();
 
-  //Dados do formulario
-  // bool showFab;
   DateTime _date = new DateTime.now();
   TimeOfDay _hora = new TimeOfDay.now();
-  // var myController = new SelectingTextEditingController();
 
   @override
   void initState() {
     super.initState();
-    bloc = ControleTarefaCrudBloc(Bootstrap.instance.firestore, widget.authBloc);
-    bloc.eventSink(UpdateTarefaIDEvent(tarefaId: widget.tarefa, acaoId: widget.acao, acaoNome: widget.acaoNome));
+    bloc =
+        ControleTarefaCrudBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc.eventSink(UpdateTarefaIDEvent(
+        tarefaId: widget.tarefa,
+        acaoId: widget.acao,
+        acaoNome: widget.acaoNome));
   }
 
   @override
@@ -58,9 +60,6 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
     );
     if (selectedDate != null) {
       bloc.eventSink(UpdateInicioEvent(data: selectedDate));
-      // setState(() {
-      //   _date = selectedDate;
-      // });
     }
   }
 
@@ -125,10 +124,12 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
         children: <Widget>[
           StreamBuilder<ControleTarefaCrudBlocState>(
               stream: bloc.stateStream,
-              builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data.inicio != null) {
-                    _date = DateTime(snapshot.data.inicio.year, snapshot.data.inicio.month, snapshot.data.inicio.day);
+                    _date = DateTime(snapshot.data.inicio.year,
+                        snapshot.data.inicio.month, snapshot.data.inicio.day);
                     _hora = TimeOfDay.fromDateTime(snapshot.data.inicio);
                     return Text(snapshot.data.inicio.toString());
                   }
@@ -162,10 +163,12 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
         children: <Widget>[
           StreamBuilder<ControleTarefaCrudBlocState>(
               stream: bloc.stateStream,
-              builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data.fim != null) {
-                    _date = DateTime(snapshot.data.fim.year, snapshot.data.fim.month, snapshot.data.fim.day);
+                    _date = DateTime(snapshot.data.fim.year,
+                        snapshot.data.fim.month, snapshot.data.fim.day);
                     _hora = TimeOfDay.fromDateTime(snapshot.data.fim);
                     return Text(snapshot.data.fim.toString());
                   }
@@ -192,10 +195,6 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
   }
 
   _destinatarios(context) {
-    // List<Map<String, dynamic>> litems = [
-    //   {'id': '1', 'nome': 'um'},
-    //   {'id': '2', 'nome': 'dois'},
-    // ];
     return Row(
       children: <Widget>[
         IconButton(
@@ -206,23 +205,8 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
                 builder: (BuildContext bc) {
                   return UsuarioListaModalSelect(bloc);
                 });
-          }, //getSticker,
-          // color: Colors.black54,
+          },
         ),
-        // IconButton(
-        //   icon: Icon(Icons.check_box),
-        //   onPressed: () async {
-        //     var destinatarioList = await Navigator.push(context,
-        //         MaterialPageRoute(builder: (context) {
-        //       return ComunicacaoDestinatariosPage();
-        //     }));
-        //     if (destinatarioList != null) {
-        //       bloc.eventSink(
-        //           UpdateDestinatarioListEvent(destinatarioList));
-        //     }
-        //     // print('>>>> Retorno ${result}');
-        //   },
-        // ),
         StreamBuilder<ControleTarefaCrudBlocState>(
             stream: bloc.stateStream,
             builder: (context, snapshot) {
@@ -277,13 +261,13 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
               return FloatingActionButton(
                 onPressed: snapshot.data.isDataValid
                     ? () {
-                        //salvar e voltar
                         bloc.eventSink(SaveEvent());
                         Navigator.pop(context);
                       }
                     : null,
                 child: Icon(Icons.cloud_upload),
-                backgroundColor: snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                backgroundColor:
+                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
               );
             }));
   }
@@ -306,7 +290,8 @@ class TarefaNomeState extends State<TarefaNome> {
   Widget build(BuildContext context) {
     return StreamBuilder<ControleTarefaCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.nome;
         }
@@ -343,7 +328,8 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
   Widget build(BuildContext context) {
     return StreamBuilder<ControleTarefaCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
         return Row(
           children: <Widget>[
             Divider(),
@@ -378,7 +364,8 @@ class UsuarioListaModalSelect extends StatefulWidget {
   const UsuarioListaModalSelect(this.bloc);
 
   @override
-  _UsuarioListaModalSelectState createState() => _UsuarioListaModalSelectState(this.bloc);
+  _UsuarioListaModalSelectState createState() =>
+      _UsuarioListaModalSelectState(this.bloc);
 }
 
 class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
@@ -389,7 +376,8 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
   Widget _listaUsuarios() {
     return StreamBuilder<ControleTarefaCrudBlocState>(
       stream: bloc.stateStream,
-      builder: (BuildContext context, AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleTarefaCrudBlocState> snapshot) {
         if (snapshot.hasError)
           return Center(
             child: Text("Erro. Informe ao administrador do aplicativo"),
@@ -410,12 +398,8 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
           );
         }
 
-        // var usuario = Map<String, UsuarioModel>();
-
-        // usuario = snapshot.data?.usuarioList;
         var lista = List<Widget>();
         for (var usuario in snapshot.data.usuarioList) {
-          // print('usuario: ${item.key}');
           lista.add(_cardBuild(context, usuario));
         }
 
@@ -424,39 +408,9 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
         );
       },
     );
-
-    // return ListView(
-    //   children: valores.keys.map((String key) {
-    //     return CheckboxListTile(
-    //       title: Text(key),
-    //       value: valores[key],
-    //       onChanged: (bool value) {
-    //         if (key == 'Todos') {
-    //           _marcarTodosDaListaComoTrue(value);
-    //         } else {
-    //           setState(() {
-    //             valores[key] = value;
-    //           });
-    //         }
-    //       },
-    //     );
-    //   }).toList(),
-    // );
   }
 
   Widget _cardBuild(BuildContext context, UsuarioModel usuario) {
-    // print(usuario.nome);
-    // return ListTile(
-    //   title: Text(usuario.nome),
-    //   leading: usuario.lido ?  Icon(Icons.playlist_add_check): Icon(Icons.not_interested),
-    // );
-    // return CheckboxListTile(
-    //   title: Text(usuario.nome),
-    //   value: usuario.alertar == null ? false : usuario.alertar,
-    //   onChanged: (bool alertar) {
-    //     bloc.eventSink(UpDateAlertaEvent(usuarioChatID: key, alertar: alertar));
-    //   },
-    // );
     return ListTile(
       title: Text('${usuario.nome}'),
       subtitle: Text('Eixo: ${usuario.eixoID?.nome}'),
@@ -475,42 +429,6 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Escolha um destinatário"),
-        // automaticallyImplyLeading: false,
-        // backgroundColor: Colors.blueGrey,
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.check_box),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(true));
-        //     },
-        //   ),
-        //   IconButton(
-        //     icon: Icon(Icons.check_box_outline_blank),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(false));
-        //     },
-        //   ),
-        //   IconButton(
-        //     icon: Icon(Icons.repeat),
-        //     onPressed: () {
-        //       bloc.eventSink(UpDateAlertarTodosEvent(null));
-        //     },
-        //   ),
-        //   // RaisedButton(
-        //   //     child: Text("Marcar todos"),
-        //   //     textColor: Colors.blue,
-        //   //     color: Colors.white,
-        //   //     onPressed: () {
-        //   //       bloc.eventSink(UpDateAlertarTodosEvent());
-        //   //     }),
-        //   // RaisedButton(
-        //   //     child: Text("Salvar"),
-        //   //     textColor: Colors.blue,
-        //   //     color: Colors.white,
-        //   //     onPressed: () {
-        //   //       Navigator.pop(context);
-        //   //     })
-        // ],
       ),
       body: _listaUsuarios(),
     );

@@ -26,17 +26,16 @@ class ControleAcaoConcluidaBlocState {
 }
 
 class ControleAcaoConcluidaBloc {
-  //Firestore
+  /// Firestore
   final fsw.Firestore _firestore;
-  // final _authBloc;
 
-  //Eventos
+  /// Eventos
   final _eventController = BehaviorSubject<ControleAcaoConcluidaBlocEvent>();
   Stream<ControleAcaoConcluidaBlocEvent> get eventStream =>
       _eventController.stream;
   Function get eventSink => _eventController.sink.add;
 
-  //Estados
+  /// Estados
   final ControleAcaoConcluidaBlocState _state =
       ControleAcaoConcluidaBlocState();
   final _stateController = BehaviorSubject<ControleAcaoConcluidaBlocState>();
@@ -44,7 +43,7 @@ class ControleAcaoConcluidaBloc {
       _stateController.stream;
   Function get stateSink => _stateController.sink.add;
 
-  //Bloc
+  /// Bloc
   ControleAcaoConcluidaBloc(this._firestore) {
     eventStream.listen(_mapEventToState);
   }
@@ -71,9 +70,6 @@ class ControleAcaoConcluidaBloc {
 
   _mapEventToState(ControleAcaoConcluidaBlocEvent event) async {
     if (event is UpdateTarefaIDEvent) {
-      //Atualiza estado com usuario logado
-      print('event.controleTarefaID:' + event.controleTarefaID);
-      // le todas as tarefas deste usuario como remetente/designadas neste setor.
       final streamDocsTarefa = _firestore
           .collection(ControleTarefaModel.collection)
           .document(event.controleTarefaID)
@@ -81,20 +77,14 @@ class ControleAcaoConcluidaBloc {
 
       final snapTarefa = streamDocsTarefa.map((snapDocs) =>
           ControleTarefaModel(id: snapDocs.documentID).fromMap(snapDocs.data));
-      //       .toList());
 
       snapTarefa.listen((ControleTarefaModel controleTarefa) {
         _state.controleTarefaDestinatario = controleTarefa;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
-      // final snap = await docRef.get();
-      // if (snap.exists) {
-      //   _state.controleTarefaDestinatario =
-      //       ControleTarefaModel(id: snap.documentID).fromMap(snap.data);
-      // }
+
 
       _state.controleAcaoList.clear();
-      // le todas as tarefas deste usuario como remetente/designadas neste setor.
       final streamDocsRemetente = _firestore
           .collection(ControleAcaoModel.collection)
           .where("tarefa.id", isEqualTo: event.controleTarefaID)
@@ -150,7 +140,6 @@ class ControleAcaoConcluidaBloc {
     }
 
     _validateData();
-    print(_state.controleAcaoList.toString());
     if (!_stateController.isClosed) _stateController.add(_state);
     print(
         'event.runtimeType em ControleTarefaDestinatarioAcaoMarcarBloc  = ${event.runtimeType}');

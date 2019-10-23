@@ -14,21 +14,11 @@ class PerguntaEscolhaListPage extends StatelessWidget {
   PerguntaEscolhaListPage(this.perguntaID)
       : bloc = PerguntaEscolhaListPageBloc(Bootstrap.instance.firestore) {
     bloc.eventSink(UpdatePerguntaIDEvent(perguntaID));
-    // print('>>> PerguntaEscolhaListPage.perguntaID <<< ${perguntaID}');
   }
   void dispose() {
     bloc.dispose();
   }
 
-  _textoTopo(text) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 16, color: Colors.blue),
-      ),
-    );
-  }
 
   _listarPerguntaEscolha() {
     return StreamBuilder<PerguntaEscolhaListPageState>(

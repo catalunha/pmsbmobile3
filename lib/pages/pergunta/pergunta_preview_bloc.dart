@@ -66,9 +66,7 @@ class PerguntaPreviewBloc {
         _state.updateStateFromPerguntaModel();
       }
     }
-    // if (event is UpdatePerguntaIDEvent) {}
     if (!_stateController.isClosed) _stateController.add(_state);
-    // print('>>> _state.toMap() <<< ${_state.toMap()}');
 
     print('event.runtimeType em PerguntaPreviewBloc  = ${event.runtimeType}');
   }
