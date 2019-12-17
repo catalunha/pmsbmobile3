@@ -129,6 +129,18 @@ class LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 4,
+                        ),
+                        child: RaisedButton(
+                          child: Text("Resetar senha"),
+                          onPressed: () {
+                            _formKey.currentState.save();
+                            authBloc.dispatch(ResetPasswordAuthBlocEvent());
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
