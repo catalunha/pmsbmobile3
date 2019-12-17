@@ -5,6 +5,7 @@ import 'package:pmsbmibile3/services/notificacao_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
 import 'package:firebaseauth_wrapper/firebaseauth_wrapper.dart' as fba;
+import 'package:validators/validators.dart';
 
 enum AuthStatus {
   Uninitialized,
@@ -27,6 +28,8 @@ class UpdatePasswordAuthBlocEvent extends AuthBlocEvent {
   UpdatePasswordAuthBlocEvent(this.password);
 }
 
+class ResetPasswordAuthBlocEvent extends AuthBlocEvent {}
+
 class LoginAuthBlocEvent extends AuthBlocEvent {}
 
 class LogoutAuthBlocEvent extends AuthBlocEvent {}
@@ -45,8 +48,7 @@ class AuthBloc {
   final fba.FirebaseAuth _authApi;
 
   //AuthStatus
-  final _statusController =
-      BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);
+  final _statusController = BehaviorSubject<AuthStatus>.seeded(AuthStatus.Uninitialized);
 
   Stream<AuthStatus> get status => _statusController.stream;
 
@@ -97,23 +99,19 @@ class AuthBloc {
 
   void _setpushTokenfromUsuario(String userId) {
     firebaseMessaging.getToken().then((token) {
-      _firestore
-          .collection(UsuarioModel.collection)
-          .document(userId)
-          .setData({'tokenFCM': token}, merge: true);
+      _firestore.collection(UsuarioModel.collection).document(userId).setData({'tokenFCM': token}, merge: true);
     }).catchError((err) {
-      print('authbloc: '+err.message.toString());
+      print('authbloc: ' + err.message.toString());
     });
   }
 
   void _getPerfilUsuarioFromFirebaseUser(String userId) {
     _state.usuarioID = userId;
 
-    final perfilRef =
-        _firestore.collection(UsuarioModel.collection).document(userId);
+    final perfilRef = _firestore.collection(UsuarioModel.collection).document(userId);
 
-    final perfilStream = perfilRef.snapshots().map((perfilSnap) =>
-        UsuarioModel(id: perfilSnap.documentID).fromMap(perfilSnap.data));
+    final perfilStream =
+        perfilRef.snapshots().map((perfilSnap) => UsuarioModel(id: perfilSnap.documentID).fromMap(perfilSnap.data));
     if (_perfilSubscription != null) {
       _perfilSubscription.cancel().then((_) {
         _perfilSubscription = perfilStream.listen(_pipPerfil);
@@ -144,6 +142,8 @@ class AuthBloc {
       _state.email = event.email;
     } else if (event is UpdatePasswordAuthBlocEvent) {
       _state.password = event.password;
+    } else if (event is ResetPasswordAuthBlocEvent) {
+      _handleResetPassword();
     } else if (event is LoginAuthBlocEvent) {
       _handleLoginAuthBlocEvent();
     } else if (event is LogoutAuthBlocEvent) {
@@ -151,12 +151,16 @@ class AuthBloc {
     }
   }
 
+  void _handleResetPassword() {
+    if (isEmail(_state.email)) _authApi.sendPasswordResetEmail(_state.email);
+  }
+
   void _handleLoginAuthBlocEvent() {
     _statusController.sink.add(AuthStatus.Authenticating);
-    _authApi.loginWithEmailAndPassword(_state.email, _state.password).then((r){
-      if(r){
+    _authApi.loginWithEmailAndPassword(_state.email, _state.password).then((r) {
+      if (r) {
         _statusController.sink.add(AuthStatus.Authenticated);
-      }else{
+      } else {
         _statusController.sink.add(AuthStatus.Unauthenticated);
       }
     });

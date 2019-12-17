@@ -7,7 +7,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.10"
+    version: "2.0.11"
   args:
     dependency: transitive
     description:
@@ -21,7 +21,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.4.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -127,7 +127,7 @@ packages:
     description:
       path: firebaseauth_wrapper
       ref: HEAD
-      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
+      resolved-ref: "41530ff66ee8f21356da5a543d09e55915eb7208"
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -136,7 +136,7 @@ packages:
     description:
       path: firebaseauth_wrapper_flutter
       ref: HEAD
-      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
+      resolved-ref: "41530ff66ee8f21356da5a543d09e55915eb7208"
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.1"
@@ -145,7 +145,7 @@ packages:
     description:
       path: firebaseauth_wrapper_web
       ref: HEAD
-      resolved-ref: e416d407070eeaed902069f3e21f7d184091b65b
+      resolved-ref: "41530ff66ee8f21356da5a543d09e55915eb7208"
       url: "https://github.com/paulorobertocruz/firebaseauth_wrapper.git"
     source: git
     version: "0.0.0"
@@ -276,14 +276,14 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.5"
+    version: "0.12.6"
   meta:
     dependency: transitive
     description:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.7"
+    version: "1.1.8"
   mime:
     dependency: "direct main"
     description:
@@ -421,7 +421,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.5"
+    version: "0.2.11"
   typed_data:
     dependency: transitive
     description:
