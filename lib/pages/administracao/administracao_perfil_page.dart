@@ -138,284 +138,170 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
             );
           }),
 
-      // Text(
-      //                               "ID: ${snapshot.data.id.substring(0, 10)}"),
-      //                           Text("Nome: ${snapshot.data.nome}"),
-      //                           Text("Celular: ${snapshot.data.celular}"),
-      //                           Text("Email: ${snapshot.data.email}"),
-      //                           Text(
-      //                               "Eixo: ${snapshot.data.eixoIDAtual.nome}"),
-
       //Icone de download Pdf
-      Padding(
-        padding: const EdgeInsets.only(left: 300),
-        child: IconButton(
-          icon: Icon(
-            Icons.picture_as_pdf,
-            color: PmsbColors.texto_primario,
-          ),
-          onPressed: () {},
-        ),
-      ),
-
-      Divider(color: PmsbColors.texto_secundario),
-
-      // Cards de documento
-      SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: _width * 0.90,
-              height: _height * 0.10,
-              color: PmsbColors.card,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 10),
-                    child: Text("Número do CPF:",
-                        style: TextStyle(
-                          color: PmsbColors.texto_primario,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 10),
-                    child: Text(
-                      "12",
-                      style: TextStyle(
-                        color: PmsbColors.texto_secundario,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ],
-
-                //trailing: Text("${questions.length}", style: trailingStyle),
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Card(
-              color: PmsbColors.card,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(10.0),
-                title: Text("Imagem do CPF:",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: PmsbColors.texto_primario,
-                      fontWeight: FontWeight.bold,
-                    )),
-                trailing: Text("CLIQUE AQUI PARA VER O ARQUIVO",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 16,
-                    )),
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[],
-            )
-          ],
-        ),
-      ),
-    ]);
-
-    Column(children: <Widget>[
-      Expanded(
-          flex: 1,
-          child: StreamBuilder<UsuarioModel>(
-              stream: bloc.usuarioModelStream,
-              builder: (context, snapshot) {
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: StreamBuilder<AdministracaoPerfilPageState>(
+              stream: bloc.administracaoPerfilPageStateStream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
                 if (snapshot.hasError) {
                   return Center(
                     child: Text("Error"),
                   );
                 }
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: Text("Sem perfil em pdf/csv/web"),
-                  );
-                }
-                usuarioModelData = snapshot.data;
-                return Container(
-                  child: Column(children: <Widget>[
-                    Divider(),
-                    Padding(padding: EdgeInsets.all(3)),
-                    Expanded(
-                      flex: 2,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // Expanded(
-                          //   flex: 2,
-                          //   child: _ImagemUnica(
-                          //     fotoLocalPath: usuarioModelData?.foto?.localPath,
-                          //     fotoUrl: usuarioModelData?.foto?.url,
-                          //   ),
-                          //),
-                          Expanded(
-                              flex: 5,
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                        "ID: ${snapshot.data.id.substring(0, 10)}"),
-                                    Text("Nome: ${snapshot.data.nome}"),
-                                    Text("Celular: ${snapshot.data.celular}"),
-                                    Text("Email: ${snapshot.data.email}"),
-                                    Text(
-                                        "Eixo: ${snapshot.data.eixoIDAtual.nome}"),
-                                  ],
-                                ),
-                              ))
-                        ],
-                      ),
-                    ),
-                  ]),
-                );
-              })),
-      Expanded(
-        flex: 0,
-        child: StreamBuilder<AdministracaoPerfilPageState>(
-          stream: bloc.administracaoPerfilPageStateStream,
-          builder: (BuildContext context,
-              AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text("Error"),
-              );
-            }
-
-            return Wrap(
-              alignment: WrapAlignment.start,
-              children: <Widget>[
-                snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                        snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                            false &&
-                        snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                            true &&
-                        snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                            'administracao02'
-                    ? IconButton(
-                        tooltip: 'Ver relatório deste usuario.',
-                        icon: Icon(Icons.link),
-                        onPressed: () async {
-                          bloc.administracaoPerfilPageEventSink(
-                              GerarRelatorioPdfMakeEvent(
-                                  pdfGerar: false,
-                                  pdfGerado: false,
-                                  tipo: 'administracao02',
-                                  collection: 'Usuario',
-                                  document: snapshot.data.usuarioId));
-                          launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                        },
-                      )
-                    : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                return Wrap(
+                  alignment: WrapAlignment.start,
+                  children: <Widget>[
+                    snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
                             snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                                true &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
                                 false &&
+                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                true &&
                             snapshot.data?.relatorioPdfMakeModel?.tipo ==
                                 'administracao02'
-                        ? CircularProgressIndicator()
-                        : IconButton(
-                            tooltip: 'Atualizar PDF deste usuario.',
-                            icon: Icon(Icons.picture_as_pdf),
+                        ? IconButton(
+                            tooltip: 'Ver relatório deste usuario.',
+                            icon: Icon(Icons.link),
                             onPressed: () async {
                               bloc.administracaoPerfilPageEventSink(
                                   GerarRelatorioPdfMakeEvent(
-                                      pdfGerar: true,
+                                      pdfGerar: false,
                                       pdfGerado: false,
                                       tipo: 'administracao02',
                                       collection: 'Usuario',
                                       document: snapshot.data.usuarioId));
+                              launch(snapshot.data?.relatorioPdfMakeModel?.url);
                             },
-                          ),
+                          )
+                        : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                    null &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerar ==
+                                    true &&
+                                snapshot.data?.relatorioPdfMakeModel
+                                        ?.pdfGerado ==
+                                    false &&
+                                snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                    'administracao02'
+                            ? CircularProgressIndicator()
+                            : IconButton(
+                                tooltip: 'Atualizar PDF deste usuario.',
+                                icon: Icon(Icons.picture_as_pdf),
+                                onPressed: () async {
+                                  bloc.administracaoPerfilPageEventSink(
+                                      GerarRelatorioPdfMakeEvent(
+                                          pdfGerar: true,
+                                          pdfGerado: false,
+                                          tipo: 'administracao02',
+                                          collection: 'Usuario',
+                                          document: snapshot.data.usuarioId));
+                                },
+                              ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+
+      Divider(color: PmsbColors.texto_secundario),
+
+      // Cards de documento
+      StreamBuilder<List<UsuarioPerfilModel>>(
+          stream: bloc.usuarioPerfilModelStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Erro"),
+              );
+            }
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Column(
+              children: <Widget>[
+                ...snapshot.data.map((variavel) {
+                  return Padding(
+                      padding: const EdgeInsets.only(top: 5, bottom: 5),
+                      // Card de variavel do perfil
+                      child: VariavelPerfilCard(
+                        usuarioPerfilModel: variavel,
+                      ));
+                }).toList()
               ],
             );
-          },
-        ),
-      ),
-      Expanded(
-        flex: 4,
-        child: StreamBuilder<List<UsuarioPerfilModel>>(
-            stream: bloc.usuarioPerfilModelStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Erro"),
-                );
-              }
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return ListView(
-                children: <Widget>[
-                  ...snapshot.data.map((variavel) {
-                    if (variavel.perfilID.contentType == 'text') {
-                      return Card(
-                          child: ListTile(
-                        title: Text(
-                          "${variavel.perfilID.nome}:",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        subtitle: Text(
-                          "${variavel.textPlain}",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ));
-                    } else {
-                      if (variavel.arquivo == null) {
-                        return Card(
-                            child: ListTile(
-                          title: Text(
-                            "${variavel.perfilID.nome}:",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          subtitle: Text(
-                            "null",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          selected: variavel.arquivo == null ? true : false,
-                        ));
-                      } else {
-                        return Card(
-                            child: InkWell(
-                                onTap: variavel?.arquivo?.url != null
-                                    ? () {
-                                        launch(variavel.arquivo.url);
-                                      }
-                                    : null,
-                                child: ListTile(
-                                  title: Text(
-                                    "${variavel.perfilID.nome}:",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  subtitle: variavel?.arquivo?.url != null
-                                      ? Text(
-                                          "CLIQUE AQUI PARA VER O ARQUIVO",
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.blue),
-                                        )
-                                      : Text(
-                                          'Arquivo não disponivel. Usuario não fez upload.'),
-                                )));
-                      }
-                    }
-                  }).toList()
-                ],
-              );
-            }),
-      ),
+          }),
+
+      SizedBox(height: 10)
     ]);
+  }
+}
+
+class VariavelPerfilCard extends StatelessWidget {
+  VariavelPerfilCard({@required this.usuarioPerfilModel});
+
+  final UsuarioPerfilModel usuarioPerfilModel;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget widgetPerfil;
+
+    if (this.usuarioPerfilModel.perfilID.contentType == 'text') {
+      widgetPerfil = Text(
+        "${this.usuarioPerfilModel.textPlain}",
+        style: TextStyle(
+          color: PmsbColors.texto_secundario,
+          fontSize: 16,
+        ),
+      );
+    } else {
+      widgetPerfil = InkWell(
+          onTap: this.usuarioPerfilModel?.arquivo?.url != null
+              ? () {
+                  launch(this.usuarioPerfilModel.arquivo.url);
+                }
+              : null,
+          child: this.usuarioPerfilModel?.arquivo?.url != null
+              ? Text(
+                  "CLIQUE AQUI PARA VER O ARQUIVO",
+                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                )
+              : Text('Arquivo não disponivel. Usuario não fez upload.'));
+    }
+
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.95,
+      height: MediaQuery.of(context).size.height * 0.10,
+      decoration: BoxDecoration(
+        color: PmsbColors.card,
+        borderRadius: BorderRadius.all(
+            Radius.circular(5.0) //                 <--- border radius here
+            ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 10, left: 10),
+            child: Text("${this.usuarioPerfilModel.perfilID.nome}:",
+                style: TextStyle(
+                  color: PmsbColors.texto_primario,
+                  fontWeight: FontWeight.bold,
+                )),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top: 10, left: 10),
+              child: widgetPerfil)
+        ],
+      ),
+    );
   }
 }
 
@@ -432,8 +318,8 @@ class _ImagemAdminUnica extends StatelessWidget {
 
     if (fotoUrl != null) {
       foto = Container(
-        width: 200.0, // espessura da imagem de perfil
-        height: 200.0, // altura da imagem de perfil
+        width: _width * 0.50, // espessura da imagem de perfil
+        height: _width * 0.50, // altura da imagem de perfil
         decoration: BoxDecoration(
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -460,8 +346,8 @@ class _ImagemAdminUnica extends StatelessWidget {
       foto = Stack(
         children: <Widget>[
           Container(
-            width: _width * 0.30, // espessura da imagem de perfil
-            height: _width * 0.30, // altura da imagem de perfil
+            width: _width * 0.50, // espessura da imagem de perfil
+            height: _width * 0.50, // altura da imagem de perfil
             decoration: BoxDecoration(
               color: PmsbColors.card,
               //borda ao redor da imagem de perfil
@@ -473,7 +359,7 @@ class _ImagemAdminUnica extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: _width * 0.13, left: _width * 0.03, child: Text(mensagem)),
+              top: _width * 0.25, left: _width * 0.125, child: Text(mensagem)),
         ],
       );
     }
@@ -518,3 +404,317 @@ class _ImagemAdminUnica extends StatelessWidget {
 //     );
 //   }
 // }
+
+// -------------------------------------------
+
+// SingleChildScrollView(
+//   padding: const EdgeInsets.all(16.0),
+//   child: Column(
+//     children: <Widget>[
+//       Container(
+//         width: _width * 0.90,
+//         height: _height * 0.10,
+//         color: PmsbColors.card,
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: <Widget>[
+//             Padding(
+//               padding: const EdgeInsets.only(top: 10, left: 10),
+//               child: Text("Número do CPF:",
+//                   style: TextStyle(
+//                     color: PmsbColors.texto_primario,
+//                     fontWeight: FontWeight.bold,
+//                   )),
+//             ),
+//             Padding(
+//               padding: const EdgeInsets.only(top: 10, left: 10),
+//               child: Text(
+//                 "12",
+//                 style: TextStyle(
+//                   color: PmsbColors.texto_secundario,
+//                   fontSize: 16,
+//                 ),
+//               ),
+//             ),
+//           ],
+
+//           //trailing: Text("${questions.length}", style: trailingStyle),
+//         ),
+//       ),
+//       SizedBox(height: 10.0),
+//       Card(
+//         color: PmsbColors.card,
+//         shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(10.0)),
+//         child: ListTile(
+//           contentPadding: const EdgeInsets.all(10.0),
+//           title: Text("Imagem do CPF:",
+//               textAlign: TextAlign.center,
+//               style: TextStyle(
+//                 color: PmsbColors.texto_primario,
+//                 fontWeight: FontWeight.bold,
+//               )),
+//           trailing: Text("CLIQUE AQUI PARA VER O ARQUIVO",
+//               style: TextStyle(
+//                 color: Colors.blue,
+//                 fontSize: 16,
+//               )),
+//         ),
+//       ),
+//       SizedBox(height: 10.0),
+//       Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: <Widget>[],
+//       )
+//     ],
+//   ),
+// ),
+
+// // -----------------------------
+// Column(children: <Widget>[
+//   Expanded(
+//       flex: 1,
+//       child: StreamBuilder<UsuarioModel>(
+//           stream: bloc.usuarioModelStream,
+//           builder: (context, snapshot) {
+//             if (snapshot.hasError) {
+//               return Center(
+//                 child: Text("Error"),
+//               );
+//             }
+//             if (!snapshot.hasData) {
+//               return Center(
+//                 child: Text("Sem perfil em pdf/csv/web"),
+//               );
+//             }
+//             usuarioModelData = snapshot.data;
+//             return Container(
+//               child: Column(children: <Widget>[
+//                 Divider(),
+//                 Padding(padding: EdgeInsets.all(3)),
+//                 Expanded(
+//                   flex: 2,
+//                   child: Row(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: <Widget>[
+//                       Expanded(
+//                           flex: 5,
+//                           child: Container(
+//                             child: Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: <Widget>[
+//                                 Text(
+//                                     "ID: ${snapshot.data.id.substring(0, 10)}"),
+//                                 Text("Nome: ${snapshot.data.nome}"),
+//                                 Text("Celular: ${snapshot.data.celular}"),
+//                                 Text("Email: ${snapshot.data.email}"),
+//                                 Text(
+//                                     "Eixo: ${snapshot.data.eixoIDAtual.nome}"),
+//                               ],
+//                             ),
+//                           ))
+//                     ],
+//                   ),
+//                 ),
+//               ]),
+//             );
+//           })),
+
+//   //
+//   Expanded(
+//     flex: 0,
+//     child: StreamBuilder<AdministracaoPerfilPageState>(
+//       stream: bloc.administracaoPerfilPageStateStream,
+//       builder: (BuildContext context,
+//           AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
+//         if (snapshot.hasError) {
+//           return Center(
+//             child: Text("Error"),
+//           );
+//         }
+
+//         return Wrap(
+//           alignment: WrapAlignment.start,
+//           children: <Widget>[
+//             snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+//                     snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+//                         false &&
+//                     snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+//                         true &&
+//                     snapshot.data?.relatorioPdfMakeModel?.tipo ==
+//                         'administracao02'
+//                 ? IconButton(
+//                     tooltip: 'Ver relatório deste usuario.',
+//                     icon: Icon(Icons.link),
+//                     onPressed: () async {
+//                       bloc.administracaoPerfilPageEventSink(
+//                           GerarRelatorioPdfMakeEvent(
+//                               pdfGerar: false,
+//                               pdfGerado: false,
+//                               tipo: 'administracao02',
+//                               collection: 'Usuario',
+//                               document: snapshot.data.usuarioId));
+//                       launch(snapshot.data?.relatorioPdfMakeModel?.url);
+//                     },
+//                   )
+//                 : snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+//                         snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+//                             true &&
+//                         snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+//                             false &&
+//                         snapshot.data?.relatorioPdfMakeModel?.tipo ==
+//                             'administracao02'
+//                     ? CircularProgressIndicator()
+//                     : IconButton(
+//                         tooltip: 'Atualizar PDF deste usuario.',
+//                         icon: Icon(Icons.picture_as_pdf),
+//                         onPressed: () async {
+//                           bloc.administracaoPerfilPageEventSink(
+//                               GerarRelatorioPdfMakeEvent(
+//                                   pdfGerar: true,
+//                                   pdfGerado: false,
+//                                   tipo: 'administracao02',
+//                                   collection: 'Usuario',
+//                                   document: snapshot.data.usuarioId));
+//                         },
+//                       ),
+//           ],
+//         );
+//       },
+//     ),
+//   ),
+//   Expanded(
+//     flex: 4,
+//     child: StreamBuilder<List<UsuarioPerfilModel>>(
+//         stream: bloc.usuarioPerfilModelStream,
+//         builder: (context, snapshot) {
+//           if (snapshot.hasError) {
+//             return Center(
+//               child: Text("Erro"),
+//             );
+//           }
+//           if (!snapshot.hasData) {
+//             return Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           }
+//           return ListView(
+//             children: <Widget>[
+//               ...snapshot.data.map((variavel) {
+//                 if (variavel.perfilID.contentType == 'text') {
+//                   return Card(
+//                       child: ListTile(
+//                     title: Text(
+//                       "${variavel.perfilID.nome}:",
+//                       style: TextStyle(fontSize: 14),
+//                     ),
+//                     subtitle: Text(
+//                       "${variavel.textPlain}",
+//                       style: TextStyle(fontSize: 16),
+//                     ),
+//                   ));
+//                 } else {
+//                   if (variavel.arquivo == null) {
+//                     return Card(
+//                         child: ListTile(
+//                       title: Text(
+//                         "${variavel.perfilID.nome}:",
+//                         style: TextStyle(fontSize: 14),
+//                       ),
+//                       subtitle: Text(
+//                         "null",
+//                         style: TextStyle(fontSize: 16),
+//                       ),
+//                       selected: variavel.arquivo == null ? true : false,
+//                     ));
+//                   } else {
+//                     return Card(
+//                         child: InkWell(
+//                             onTap: variavel?.arquivo?.url != null
+//                                 ? () {
+//                                     launch(variavel.arquivo.url);
+//                                   }
+//                                 : null,
+//                             child: ListTile(
+//                               title: Text(
+//                                 "${variavel.perfilID.nome}:",
+//                                 style: TextStyle(fontSize: 14),
+//                               ),
+//                               subtitle: variavel?.arquivo?.url != null
+//                                   ? Text(
+//                                       "CLIQUE AQUI PARA VER O ARQUIVO",
+//                                       style: TextStyle(
+//                                           fontSize: 16, color: Colors.blue),
+//                                     )
+//                                   : Text(
+//                                       'Arquivo não disponivel. Usuario não fez upload.'),
+//                             )));
+//                   }
+//                 }
+//               }).toList()
+//             ],
+//           );
+//         }),
+//   ),
+// ]);
+
+// Documento tipo texto
+// if (variavel.perfilID.contentType == 'text') {
+//   return Padding(
+//       padding: const EdgeInsets.only(top: 5, bottom: 5),
+//       // Card de variavel do perfil
+//       child: VariavelPerfilCard(
+//         nome: variavel.perfilID.nome,
+//         valor: variavel.textPlain,
+//         url: variavel.arquivo.url,
+//         height: _height * 0.2,
+//         width: _width * 0.90,
+//       ));
+// } else {
+//   VariavelPerfilCard(
+
+//     nome: variavel.perfilID.nome,
+//     valor: variavel.textPlain,
+//     url: variavel.arquivo.url,
+//     height: _height * 0.2,
+//     width: _width * 0.90,
+//   );
+// Documento não disponivel
+// if (variavel.arquivo == null) {
+//   return  Card(
+//       child: ListTile(
+//     title: Text(
+//       "${variavel.perfilID.nome}:",
+//       style: TextStyle(fontSize: 14),
+//     ),
+//     subtitle: Text(
+//       "null",
+//       style: TextStyle(fontSize: 16),
+//     ),
+//     selected: variavel.arquivo == null ? true : false,
+//   ));
+// } else {
+//   // Documento Disponivel
+//   return Card(
+//       child: InkWell(
+//           onTap: variavel?.arquivo?.url != null
+//               ? () {
+//                   launch(variavel.arquivo.url);
+//                 }
+//               : null,
+//           child: ListTile(
+//             title: Text(
+//               "${variavel.perfilID.nome}:",
+//               style: TextStyle(fontSize: 14),
+//             ),
+//             subtitle: variavel?.arquivo?.url != null
+//                 ? Text(
+//                     "CLIQUE AQUI PARA VER O ARQUIVO",
+//                     style: TextStyle(
+//                         fontSize: 16, color: Colors.blue),
+//                   )
+//                 : Text(
+//                     'Arquivo não disponivel. Usuario não fez upload.'),
+//           )));
+// }
+//}
