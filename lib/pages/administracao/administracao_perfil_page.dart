@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
@@ -54,7 +56,176 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
   }
 
   Widget _body() {
-    return Column(children: <Widget>[
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+
+    return ListView(children: <Widget>[
+      //Metade superior ( Imagem Usuario )
+      StreamBuilder<UsuarioModel>(
+          stream: bloc.usuarioModelStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Error"),
+              );
+            }
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("Sem perfil em pdf/csv/web"),
+              );
+            }
+            usuarioModelData = snapshot.data;
+            return Column(
+              children: <Widget>[
+                Container(
+                  width: _width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new SizedBox(
+                        height: _height / 20,
+                      ),
+                      _ImagemAdminUnica(
+                        fotoLocalPath: usuarioModelData?.foto?.localPath,
+                        fotoUrl: usuarioModelData?.foto?.url,
+                      ),
+                      new SizedBox(
+                        height: _height / 15,
+                      ),
+                      new Text(
+                        '${snapshot.data.nome}',
+                        style: new TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: _width / 15,
+                            color: Colors.white),
+                      ),
+                      new SizedBox(
+                        height: _height / 25,
+                      )
+                    ],
+                  ),
+                ),
+                // Informacoes usuario ( celular, email e etc)
+                new Center(
+                    child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Celular: ",
+                              style: PmsbStyles.textStyleListBold),
+                          Text("${snapshot.data.celular}",
+                              style: PmsbStyles.textStyleListPerfil01),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("E-mail: ", style: PmsbStyles.textStyleListBold),
+                          Text("${snapshot.data.email}",
+                              style: PmsbStyles.textStyleListPerfil01),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Eixo: ", style: PmsbStyles.textStyleListBold),
+                          Text("${snapshot.data.eixoIDAtual.nome}",
+                              style: PmsbStyles.textStyleListPerfil01),
+                        ]),
+                  ],
+                )),
+              ],
+            );
+          }),
+
+      // Text(
+      //                               "ID: ${snapshot.data.id.substring(0, 10)}"),
+      //                           Text("Nome: ${snapshot.data.nome}"),
+      //                           Text("Celular: ${snapshot.data.celular}"),
+      //                           Text("Email: ${snapshot.data.email}"),
+      //                           Text(
+      //                               "Eixo: ${snapshot.data.eixoIDAtual.nome}"),
+
+      //Icone de download Pdf
+      Padding(
+        padding: const EdgeInsets.only(left: 300),
+        child: IconButton(
+          icon: Icon(
+            Icons.picture_as_pdf,
+            color: PmsbColors.texto_primario,
+          ),
+          onPressed: () {},
+        ),
+      ),
+
+      Divider(color: PmsbColors.texto_secundario),
+
+      // Cards de documento
+      SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: _width * 0.90,
+              height: _height * 0.10,
+              color: PmsbColors.card,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, left: 10),
+                    child: Text("Número do CPF:",
+                        style: TextStyle(
+                          color: PmsbColors.texto_primario,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, left: 10),
+                    child: Text(
+                      "12",
+                      style: TextStyle(
+                        color: PmsbColors.texto_secundario,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+
+                //trailing: Text("${questions.length}", style: trailingStyle),
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Card(
+              color: PmsbColors.card,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(10.0),
+                title: Text("Imagem do CPF:",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: PmsbColors.texto_primario,
+                      fontWeight: FontWeight.bold,
+                    )),
+                trailing: Text("CLIQUE AQUI PARA VER O ARQUIVO",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                    )),
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[],
+            )
+          ],
+        ),
+      ),
+    ]);
+
+    Column(children: <Widget>[
       Expanded(
           flex: 1,
           child: StreamBuilder<UsuarioModel>(
@@ -80,13 +251,13 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: _ImagemUnica(
-                              fotoLocalPath: usuarioModelData?.foto?.localPath,
-                              fotoUrl: usuarioModelData?.foto?.url,
-                            ),
-                          ),
+                          // Expanded(
+                          //   flex: 2,
+                          //   child: _ImagemUnica(
+                          //     fotoLocalPath: usuarioModelData?.foto?.localPath,
+                          //     fotoUrl: usuarioModelData?.foto?.url,
+                          //   ),
+                          //),
                           Expanded(
                               flex: 5,
                               child: Container(
@@ -248,40 +419,102 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
   }
 }
 
-class _ImagemUnica extends StatelessWidget {
+class _ImagemAdminUnica extends StatelessWidget {
   final String fotoUrl;
   final String fotoLocalPath;
 
-  const _ImagemUnica({this.fotoUrl, this.fotoLocalPath});
+  const _ImagemAdminUnica({this.fotoUrl, this.fotoLocalPath});
 
   @override
   Widget build(BuildContext context) {
     Widget foto;
-    if (fotoUrl == null && fotoLocalPath == null) {
-      foto = Center(child: Text('Sem imagem.'));
-    } else if (fotoUrl != null) {
-      foto = Container(
-          child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Image.network(fotoUrl),
-      ));
-    } else {
-      foto = Center(child: Text('Não enviada.'));
-    }
+    final _width = MediaQuery.of(context).size.width;
 
-    return Row(
-      children: <Widget>[
-        Spacer(
-          flex: 1,
+    if (fotoUrl != null) {
+      foto = Container(
+        width: 200.0, // espessura da imagem de perfil
+        height: 200.0, // altura da imagem de perfil
+        decoration: BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: PmsbColors.texto_terciario,
+                blurRadius: 12.0,
+                offset: Offset(0.57, 0.57))
+          ],
+          border: Border.all(
+            width: 8.0,
+            color: PmsbColors.cor_destaque, // cor da borda
+          ),
+          shape: BoxShape.circle, //formato imagem
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(fotoUrl), //chama url
+          ),
         ),
-        Expanded(
-          flex: 8,
-          child: foto,
-        ),
-        Spacer(
-          flex: 1,
-        ),
-      ],
-    );
+      );
+    } else {
+      String mensagem = (fotoUrl == null && fotoLocalPath == null)
+          ? "Sem imagem."
+          : "Não enviada.";
+
+      foto = Stack(
+        children: <Widget>[
+          Container(
+            width: _width * 0.30, // espessura da imagem de perfil
+            height: _width * 0.30, // altura da imagem de perfil
+            decoration: BoxDecoration(
+              color: PmsbColors.card,
+              //borda ao redor da imagem de perfil
+              border: Border.all(
+                width: 5.0, //espessura da borda
+                color: PmsbColors.cor_destaque, // cor da borda
+              ),
+              shape: BoxShape.circle, //formato imagem
+            ),
+          ),
+          Positioned(
+              top: _width * 0.13, left: _width * 0.03, child: Text(mensagem)),
+        ],
+      );
+    }
+    return foto;
   }
 }
+
+// class _ImagemUnica extends StatelessWidget {
+//   final String fotoUrl;
+//   final String fotoLocalPath;
+
+//   const _ImagemUnica({this.fotoUrl, this.fotoLocalPath});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     Widget foto;
+//     if (fotoUrl == null && fotoLocalPath == null) {
+//       foto = Center(child: Text('Sem imagem.'));
+//     } else if (fotoUrl != null) {
+//       foto = Container(
+//           child: Padding(
+//         padding: const EdgeInsets.all(2.0),
+//         child: Image.network(fotoUrl),
+//       ));
+//     } else {
+//       foto = Center(child: Text('Não enviada.'));
+//     }
+
+//     return Row(
+//       children: <Widget>[
+//         Spacer(
+//           flex: 1,
+//         ),
+//         Expanded(
+//           flex: 8,
+//           child: foto,
+//         ),
+//         Spacer(
+//           flex: 1,
+//         ),
+//       ],
+//     );
+//   }
+// }
