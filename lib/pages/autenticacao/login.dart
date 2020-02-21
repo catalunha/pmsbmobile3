@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/naosuportato/permission_handler.dart'
     if (dart.library.io) 'package:permission_handler/permission_handler.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -58,9 +59,10 @@ class LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFFFEB3B), Color(0xFFFBC02D)],
-            ),
+            color: PmsbColors.fundo
+            // gradient: LinearGradient(
+            //   colors: [ PmsbColors.fundo],
+            // ),
           ),
           padding: EdgeInsets.symmetric(
             horizontal: 24,
@@ -90,7 +92,7 @@ class LoginPageState extends State<LoginPage> {
                   //color: Colors.white,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: Colors.white,
+                      color: PmsbColors.card,
                       boxShadow: [
                         BoxShadow(color: Colors.black12, blurRadius: 5)
                       ]),
@@ -124,7 +126,7 @@ class LoginPageState extends State<LoginPage> {
                             border: InputBorder.none,
                             icon: Icon(
                               Icons.email,
-                              color: Colors.black,
+                              color: Colors.black54,
                             ),
                             hintText: 'E-mail',
                           ),
@@ -158,7 +160,7 @@ class LoginPageState extends State<LoginPage> {
                             border: InputBorder.none,
                             icon: Icon(
                               Icons.vpn_key,
-                              color: Colors.black,
+                              color: Colors.black54,
                             ),
                             hintText: 'Senha',
                           ),
@@ -183,7 +185,7 @@ class LoginPageState extends State<LoginPage> {
                               0.40, // tamanho do botão entrar,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [Color(0xFFFFEB3B), Color(0xFFFBC02D)],
+                                colors: [PmsbColors.cor_destaque, Colors.greenAccent],
                               ),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(50))),
@@ -191,7 +193,7 @@ class LoginPageState extends State<LoginPage> {
                             child: Text(
                               'entrar'.toUpperCase(),
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14),
                             ),
@@ -218,7 +220,7 @@ class LoginPageState extends State<LoginPage> {
                               },
                               child: Text(
                                 'Esqueci minha senha',
-                                style: TextStyle(color: Colors.blueAccent),
+                                style: TextStyle(color: Colors.white),
                               ),
                             )),
                       ),
