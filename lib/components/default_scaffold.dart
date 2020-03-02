@@ -27,16 +27,14 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
       rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
       rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
-      rotas["/aplicacao/home"] =
-          Rota("Aplicar Questionário", Icons.directions_walk);
+      rotas["/aplicacao/home"] = Rota("Aplicar Questionário", Icons.directions_walk);
       rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
       rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
       // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
-      rotas["/administracao/home"] =
-          Rota("Administração", Icons.business_center);
+      rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
@@ -45,8 +43,7 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
-      rotas["/administracao/home"] =
-          Rota("Administração", Icons.business_center);
+      rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
     }
   }
 
