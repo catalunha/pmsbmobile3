@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/login_required.dart';
 import 'package:pmsbmibile3/models/models.dart';
+import 'package:pmsbmibile3/pages/geral/home_grid.dart';
 // import 'package:pmsbmibile3/pages/geral/bemvindo.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
@@ -157,24 +158,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
 
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                    iconeRow(),
-                  ],
-                ),
-              ),
+              Expanded(child: HomeGrid()),
             ],
           ),
         ),
