@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class Rota {
   final String nome;
@@ -35,11 +36,12 @@ class _HomeGridState extends State<HomeGrid> {
       rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
-      rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
+      // rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
 
       // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
 
-      rotas["/administracao/home"] =  Rota("Administração", Icons.business_center);
+      rotas["/administracao/home"] =
+          Rota("Administração", Icons.business_center);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
@@ -55,98 +57,103 @@ class _HomeGridState extends State<HomeGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
-        children: <Widget>[
-          iconeRow(
-            <Widget>[
-              icone(
-                icon: Icons.assignment,
-                iconName: "Questionários",
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/questionario/home");
-                },
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-              icone(
-                icon: Icons.playlist_add_check,
-                iconName: "Resposta",
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/resposta/home");
-                },
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-              icone(
-                icon: Icons.directions_walk,
-                iconName: "Aplicar",
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/aplicacao/home");
-                },
-              ),
-            ],
+    return Column(
+      children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Text("Geral", style: PmsbStyles.textStyleListBold),
           ),
-      
-      //rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
-      //rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
-     // rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
-      //rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
+        iconeRow(
+          <Widget>[
+            icone(
+              icon: Icons.assignment,
+              iconName: "Questionários",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/questionario/home");
+              },
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            icone(
+              icon: Icons.playlist_add_check,
+              iconName: "Resposta",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/resposta/home");
+              },
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            icone(
+              icon: Icons.directions_walk,
+              iconName: "Aplicar",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/aplicacao/home");
+              },
+            ),
+          ],
+        ),
+        iconeRow(
+          <Widget>[
+            icone(
+              icon: Icons.file_upload,
+              iconName: "Upload",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/upload");
+              },
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            icone(
+              icon: Icons.equalizer,
+              iconName: "Síntese",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/sintese/home");
+              },
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            icone(
+              icon: Icons.chrome_reader_mode,
+              iconName: "Produto",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/produto/home");
+              },
+            ),
+          ],
+        ),
+        iconeRow(
+          <Widget>[
+            icone(
+              icon: Icons.control_point,
+              iconName: "Controle",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/controle/home");
+              },
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
 
-          iconeRow(
-            <Widget>[
-              icone(
-                icon: Icons.file_upload,
-                iconName: "Upload",
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/upload");
-                },
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-              icone(
-                icon: Icons.equalizer,
-                iconName: "Síntese",
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/sintese/home");
-                },
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-              icone(
-                icon: Icons.chrome_reader_mode,
-                iconName: "Produto",
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/produto/home");
-                },
-              ),
-            ],
-          ),
-           iconeRow(
-            <Widget>[
-              icone(
-                icon: Icons.control_point,
-                iconName: "Controle",
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/controle/home");
-                },
-              ),
-              // SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-              // icone(
-              //   icon: Icons.equalizer,
-              //   iconName: "Síntese",
-              //   onTap: () {
-              //     Navigator.pushReplacementNamed(context, "/sintese/home");
-              //   },
-              // ),
-              // SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-              // icone(
-              //   icon: Icons.directions_walk,
-              //   iconName: "Produto",
-              //   onTap: () {
-              //     Navigator.pushReplacementNamed(context, "/produto/home");
-              //   },
-              // ),
-            ],
-          ),
-        ],
-      ),
+            icone(
+              icon: Icons.compare,
+              iconName: "Painel",
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/setor_painel/home");
+              },
+            ),
+            // SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            // icone(
+            //   icon: Icons.equalizer,
+            //   iconName: "Síntese",
+            //   onTap: () {
+            //     Navigator.pushReplacementNamed(context, "/sintese/home");
+            //   },
+            // ),
+            // SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            // icone(
+            //   icon: Icons.directions_walk,
+            //   iconName: "Produto",
+            //   onTap: () {
+            //     Navigator.pushReplacementNamed(context, "/produto/home");
+            //   },
+            // ),
+          ],
+        ),
+      ],
     );
   }
 

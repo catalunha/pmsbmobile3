@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
     final authBloc = Bootstrap.instance.authBloc;
     Recursos.initialize(Theme.of(context).platform);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'PMSB-TO-22',
       theme: ThemeData.dark(),
       initialRoute: "/",

@@ -27,14 +27,16 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/desenvolvimento"] = Rota("Desenvolvimento", Icons.build);
       rotas["/upload"] = Rota("Upload de arquivos", Icons.file_upload);
       rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
-      rotas["/aplicacao/home"] = Rota("Aplicar Questionário", Icons.directions_walk);
+      rotas["/aplicacao/home"] =
+          Rota("Aplicar Questionário", Icons.directions_walk);
       rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
       rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
       // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
-      rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
+      rotas["/administracao/home"] =
+          Rota("Administração", Icons.business_center);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
@@ -43,7 +45,8 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
-      rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
+      rotas["/administracao/home"] =
+          Rota("Administração", Icons.business_center);
     }
   }
 
@@ -251,7 +254,9 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                 } else {
                   rotas.forEach((k, v) {
                     if (snap.data.routes.contains(k)) {
+                      
                       if (k == '/modooffline') {
+                        // MODO OFFLINE -----------------------------------------------
                         list.add(ListTile(
                           title: Text("Habilitar modo offline"),
                           onTap: () async {
@@ -265,6 +270,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                           leading: Icon(Icons.save),
                         ));
                       } else {
+                        
                         list.add(ListTile(
                           title: Text(v.nome),
                           leading: Icon(v.icone),
@@ -277,14 +283,17 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                     }
                   });
                 }
-                list.add(ListTile(
-                  title: Text('Trocar de usuário'),
-                  onTap: () {
-                    authBloc.dispatch(LogoutAuthBlocEvent());
-                    Navigator.pushReplacementNamed(context, "/");
-                  },
-                  leading: Icon(Icons.exit_to_app),
-                ));
+                list.add(
+                  // Sair do APP --------------------------------------------------
+                  ListTile(
+                    title: Text('Trocar de usuário'),
+                    onTap: () {
+                      authBloc.dispatch(LogoutAuthBlocEvent());
+                      Navigator.pushReplacementNamed(context, "/");
+                    },
+                    leading: Icon(Icons.exit_to_app),
+                  ),
+                );
                 return Expanded(child: ListView(children: list));
               })
         ]),
