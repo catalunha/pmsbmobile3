@@ -9,6 +9,7 @@ import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:pmsbmibile3/widgets/round_image.dart';
 
+
 class HomePage extends StatefulWidget {
   final AuthBloc authBloc;
   HomePage(this.authBloc);
@@ -116,10 +117,15 @@ class _HomePageState extends State<HomePage> {
                               // Icone do menu
                               Padding(
                                 padding: EdgeInsets.all(5),
-                                child: Icon(
-                                  Icons.list,
-                                  size: 30,
-                                  color: Colors.white,
+                                child: GestureDetector(
+                                  onTap: (){
+                                     Navigator.pushNamed(context, "/configuracao/home");
+                                  },
+                                  child: Icon(
+                                    Icons.list,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               )
                             ],

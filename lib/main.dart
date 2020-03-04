@@ -239,6 +239,11 @@ class MyApp extends StatelessWidget {
           return SetorPainelCrudPage(authBloc,settings.arguments);
         },
 
+       //configuracao
+       "/configuracao/home": (context) {
+         return ConfiguracaoHome(authBloc);
+       },
+      
 
         //googleDrive
         "/googledrive/usuario": (context) {
