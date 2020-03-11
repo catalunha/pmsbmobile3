@@ -5,6 +5,7 @@ import 'package:pmsbmibile3/pages/resposta/resposta_questionarioaplicado_home_bl
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class RespostaQuestionarioAplicadoHomePage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -53,6 +54,7 @@ class _RespostaQuestionarioAplicadoHomePageState
             for (var questionarioAplicado
                 in snapshot.data.questionarioAplicadoList) {
               listaWdg.add(Card(
+                color: PmsbColors.card,
                   child: ListTile(
                 title: Text(
                     'Questionário: ${questionarioAplicado.nome}\nReferência: ${questionarioAplicado.referencia}'),
@@ -70,7 +72,7 @@ class _RespostaQuestionarioAplicadoHomePageState
                             questionarioAplicado.id
                     ? IconButton(
                         tooltip: 'Ver relatório geral das tarefas recebidas.',
-                        icon: Icon(Icons.link),
+                        icon: Icon(Icons.link,color: Colors.blue,),
                         onPressed: () async {
                           bloc.eventSink(GerarRelatorioPdfMakeEvent(
                               pdfGerar: false,
@@ -116,8 +118,11 @@ class _RespostaQuestionarioAplicadoHomePageState
   }
 
   _body() {
-    return Column(
-      children: <Widget>[Expanded(child: _listaQuestionarioAplicado())],
+    return Container(
+      color: PmsbColors.fundo,
+      child: Column(
+        children: <Widget>[Expanded(child: _listaQuestionarioAplicado())],
+      ),
     );
   }
 
@@ -126,7 +131,7 @@ class _RespostaQuestionarioAplicadoHomePageState
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
-        title: Text('Resposta do questionario'),
+        title: Text('Resposta do Questionário'),
         body: _body(),
       ),
     );
