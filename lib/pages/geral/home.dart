@@ -9,7 +9,6 @@ import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:pmsbmibile3/widgets/round_image.dart';
 
-
 class HomePage extends StatefulWidget {
   final AuthBloc authBloc;
   HomePage(this.authBloc);
@@ -101,14 +100,6 @@ class _HomePageState extends State<HomePage> {
                                         "${snap.data.celular}",
                                         style: PmsbStyles.textStyleListPerfil01,
                                       ),
-                                      // Text(
-                                      //   "Eixo: ${snap.data.eixoIDAtual.nome}",
-                                      //   style: PmsbStyles.textStyleListPerfil01,
-                                      // ),
-                                      // Text(
-                                      //   "Setor: ${snap.data.setorCensitarioID.nome}",
-                                      //   style: PmsbStyles.textStyleListPerfil01,
-                                      // ),
                                     ],
                                   ),
                                 ],
@@ -118,8 +109,9 @@ class _HomePageState extends State<HomePage> {
                               Padding(
                                 padding: EdgeInsets.all(5),
                                 child: GestureDetector(
-                                  onTap: (){
-                                     Navigator.pushNamed(context, "/configuracao/home");
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "/configuracao/home");
                                   },
                                   child: Icon(
                                     Icons.list,
@@ -135,16 +127,17 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5),
-                                    ),
-                                    color: Colors.black12,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
                                   ),
-                                  child: Text(
-                                    " ${snap.data.eixoIDAtual.nome} ",
-                                    style: PmsbStyles.textStyleListPerfil01,
-                                  )),
+                                  color: Colors.black12,
+                                ),
+                                child: Text(
+                                  " ${snap.data.eixoIDAtual.nome} ",
+                                  style: PmsbStyles.textStyleListPerfil01,
+                                ),
+                              ),
                               Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(

@@ -22,7 +22,6 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
   _QuestionarioFormPageState(AuthBloc authBloc)
       : bloc = QuestionarioFormPageBloc(Bootstrap.instance.firestore, authBloc);
 
-
   @override
   void initState() {
     super.initState();
@@ -70,12 +69,13 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
-              " Questionario")),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
+            " Questionario"),
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.thumb_up),
         onPressed: () {

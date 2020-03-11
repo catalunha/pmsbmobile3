@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/services/cache_service.dart';
 import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class Rota {
   final String nome;
@@ -254,7 +255,6 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                 } else {
                   rotas.forEach((k, v) {
                     if (snap.data.routes.contains(k)) {
-                      
                       if (k == '/modooffline') {
                         // MODO OFFLINE -----------------------------------------------
                         list.add(ListTile(
@@ -270,7 +270,6 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                           leading: Icon(Icons.save),
                         ));
                       } else {
-                        
                         list.add(ListTile(
                           title: Text(v.nome),
                           leading: Icon(v.icone),
@@ -338,11 +337,23 @@ class DefaultScaffold extends StatelessWidget {
 
   Widget _appBarBuild(BuildContext context) {
     return AppBar(
-      backgroundColor: backgroundColor,
-      actions: <Widget>[
-        if (actionsMore != null) ...actionsMore,
-        MoreAppAction(),
-      ],
+      leading: new IconButton(
+        icon: new Icon(
+          Icons.arrow_back,
+          size: 25,
+        ),
+        onPressed: () {
+          Navigator.popAndPushNamed(context, "/");
+        },
+      ),
+      // backgroundColor: PmsbColors.fundo,
+      backgroundColor: PmsbColors.fundo,
+      bottomOpacity: 0.0,
+      elevation: 0.0,
+      // actions: <Widget>[
+      //   if (actionsMore != null) ...actionsMore,
+      //   MoreAppAction(),
+      // ],
       centerTitle: true,
       title: title,
       bottom: bottom,
@@ -352,8 +363,8 @@ class DefaultScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DefaultDrawer(),
-      endDrawer: DefaultEndDrawer(),
+      // drawer: DefaultDrawer(),
+      // endDrawer: DefaultEndDrawer(),
       appBar: _appBarBuild(context),
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,

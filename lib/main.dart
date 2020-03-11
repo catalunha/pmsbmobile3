@@ -231,19 +231,18 @@ class MyApp extends StatelessWidget {
         "/painel/home": (context) => PainelListPage(authBloc),
         "/painel/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return PainelCrudPage(authBloc,settings.arguments);
+          return PainelCrudPage(authBloc, settings.arguments);
         },
         "/setor_painel/home": (context) => SetorPainelListPage(authBloc),
         "/setor_painel/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return SetorPainelCrudPage(authBloc,settings.arguments);
+          return SetorPainelCrudPage(authBloc, settings.arguments);
         },
 
-       //configuracao
-       "/configuracao/home": (context) {
-         return ConfiguracaoHome(authBloc);
-       },
-      
+        //configuracao
+        "/configuracao/home": (context) {
+          return ConfiguracaoHome(authBloc);
+        },
 
         //googleDrive
         "/googledrive/usuario": (context) {
@@ -251,7 +250,6 @@ class MyApp extends StatelessWidget {
           return UsuarioGoogleDrivePage(settings.arguments);
         },
       },
-      
     );
   }
 }
