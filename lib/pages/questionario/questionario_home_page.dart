@@ -89,94 +89,92 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                           Wrap(
                             alignment: WrapAlignment.spaceBetween,
                             children: <Widget>[
-                              Icon(
-                                Icons.list,
+
+                              IconButton(
+                                tooltip: 'Criar perguntas neste questionário',
                                 color: Colors.pink,
-                                semanticLabel:
-                                    'Text to announce in accessibility modes',
+                                icon: Icon(Icons.list),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/pergunta/home',
+                                    arguments: questionario.id,
+                                  );
+                                },
                               ),
-                              SizedBox(width: 20),
-                              Icon(
-                                Icons.picture_as_pdf,
-                                color: Colors.green,
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                          null &&
+                                      snapshot.data?.relatorioPdfMakeModel
+                                              ?.pdfGerar ==
+                                          false &&
+                                      snapshot.data?.relatorioPdfMakeModel
+                                              ?.pdfGerado ==
+                                          true &&
+                                      snapshot.data?.relatorioPdfMakeModel
+                                              ?.tipo ==
+                                          'questionario02' &&
+                                      snapshot.data?.relatorioPdfMakeModel
+                                              ?.document ==
+                                          questionario.id
+                                  ? IconButton(
+                                      tooltip:
+                                          'Ver relatório desta questionario.',
+                                      icon: Icon(
+                                        Icons.link,
+                                        color: Colors.green,
+                                      ),
+                                      onPressed: () async {
+                                        bloc.eventSink(
+                                            GerarRelatorioPdfMakeEvent(
+                                                pdfGerar: false,
+                                                pdfGerado: false,
+                                                tipo: 'questionario02',
+                                                collection: 'Questionario',
+                                                document: questionario.id));
+                                        launch(snapshot
+                                            .data?.relatorioPdfMakeModel?.url);
+                                      },
+                                    )
+                                  : snapshot.data?.relatorioPdfMakeModel
+                                                  ?.pdfGerar !=
+                                              null &&
+                                          snapshot.data?.relatorioPdfMakeModel
+                                                  ?.pdfGerar ==
+                                              true &&
+                                          snapshot.data?.relatorioPdfMakeModel
+                                                  ?.pdfGerado ==
+                                              false &&
+                                          snapshot.data?.relatorioPdfMakeModel
+                                                  ?.tipo ==
+                                              'questionario02' &&
+                                          snapshot.data?.relatorioPdfMakeModel
+                                                  ?.document ==
+                                              questionario.id
+                                      ? CircularProgressIndicator()
+                                      : IconButton(
+                                          tooltip:
+                                              'Atualizar PDF deste questionario.',
+                                          icon: Icon(Icons.picture_as_pdf, color: Colors.green,),
+                                          onPressed: () async {
+                                            bloc.eventSink(
+                                                GerarRelatorioPdfMakeEvent(
+                                                    pdfGerar: true,
+                                                    pdfGerado: false,
+                                                    tipo: 'questionario02',
+                                                    collection: 'Questionario',
+                                                    document: questionario.id));
+                                          },
+                                        ),
+                              IconButton(
+                                icon: Icon(Icons.edit, color: Colors.blue,),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    "/questionario/form",
+                                    arguments: questionario.id,
+                                  );
+                                },
                               ),
-                              SizedBox(width: 20),
-                              Icon(
-                                Icons.edit,
-                                color: Colors.blue,
-                              ),
-                              
-                              // IconButton(
-                              //   tooltip: 'Criar perguntas neste questionário',
-                              //   icon: Icon(Icons.list),
-                              //   onPressed: () {
-                              //     Navigator.pushNamed(
-                              //       context,
-                              //       '/pergunta/home',
-                              //       arguments: questionario.id,
-                              //     );
-                              //   },
-                              // ),
-                              // snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                              //             null &&
-                              //         snapshot.data?.relatorioPdfMakeModel
-                              //                 ?.pdfGerar ==
-                              //             false &&
-                              //         snapshot.data?.relatorioPdfMakeModel
-                              //                 ?.pdfGerado ==
-                              //             true &&
-                              //         snapshot.data?.relatorioPdfMakeModel
-                              //                 ?.tipo ==
-                              //             'questionario02' &&
-                              //         snapshot.data?.relatorioPdfMakeModel
-                              //                 ?.document ==
-                              //             questionario.id
-                              //     ? IconButton(
-                              //         tooltip:
-                              //             'Ver relatório desta questionario.',
-                              //         icon: Icon(Icons.link),
-                              //         onPressed: () async {
-                              //           bloc.eventSink(
-                              //               GerarRelatorioPdfMakeEvent(
-                              //                   pdfGerar: false,
-                              //                   pdfGerado: false,
-                              //                   tipo: 'questionario02',
-                              //                   collection: 'Questionario',
-                              //                   document: questionario.id));
-                              //           launch(snapshot
-                              //               .data?.relatorioPdfMakeModel?.url);
-                              //         },
-                              //       )
-                              //     : snapshot.data?.relatorioPdfMakeModel
-                              //                     ?.pdfGerar !=
-                              //                 null &&
-                              //             snapshot.data?.relatorioPdfMakeModel
-                              //                     ?.pdfGerar ==
-                              //                 true &&
-                              //             snapshot.data?.relatorioPdfMakeModel
-                              //                     ?.pdfGerado ==
-                              //                 false &&
-                              //             snapshot.data?.relatorioPdfMakeModel
-                              //                     ?.tipo ==
-                              //                 'questionario02' &&
-                              //             snapshot.data?.relatorioPdfMakeModel
-                              //                     ?.document ==
-                              //                 questionario.id
-                              //         ? CircularProgressIndicator()
-                              //         : IconButton(
-                              //             tooltip:
-                              //                 'Atualizar PDF deste questionario.',
-                              //             icon: Icon(Icons.picture_as_pdf),
-                              //             onPressed: () async {
-                              //               bloc.eventSink(
-                              //                   GerarRelatorioPdfMakeEvent(
-                              //                       pdfGerar: true,
-                              //                       pdfGerado: false,
-                              //                       tipo: 'questionario02',
-                              //                       collection: 'Questionario',
-                              //                       document: questionario.id));
-                              //             },
-                              //           ),
                               // IconButton(
                               //     icon: Icon(Icons.arrow_downward),
                               //     onPressed: (ordemLocal) < lengthEscolha
@@ -206,15 +204,6 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                               //             );
                               //           }
                               //         : null),
-                              // IconButton(
-                              //     icon: Icon(Icons.edit),
-                              //     onPressed: () {
-                              //       Navigator.pushNamed(
-                              //         context,
-                              //         "/questionario/form",
-                              //         arguments: questionario.id,
-                              //       );
-                              //     }),
                             ],
                           ),
                         ],
@@ -255,56 +244,60 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                       ),
                     ),
                     //),
-                    Wrap(alignment: WrapAlignment.start, children: <Widget>[
-                      snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                                  false &&
-                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                                  true &&
-                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                                  'questionario01'
-                          ? IconButton(
-                              tooltip:
-                                  'Ver relatório geral das tarefas recebidas.',
-                              icon: Icon(Icons.link),
-                              onPressed: () async {
-                                bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                    pdfGerar: false,
-                                    pdfGerado: false,
-                                    tipo: 'questionario01',
-                                    collection: 'Eixo',
-                                    document:
-                                        snapshot.data.usuarioModel.eixoID.id));
-                                launch(
-                                    snapshot.data?.relatorioPdfMakeModel?.url);
-                              },
-                            )
-                          : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                                      null &&
-                                  snapshot.data?.relatorioPdfMakeModel
-                                          ?.pdfGerar ==
-                                      true &&
-                                  snapshot.data?.relatorioPdfMakeModel
-                                          ?.pdfGerado ==
-                                      false &&
-                                  snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                                      'questionario01'
-                              ? CircularProgressIndicator()
-                              : IconButton(
-                                  tooltip:
-                                      'Atualizar PDF geral das tarefas recebidas.',
-                                  icon: Icon(Icons.picture_as_pdf),
-                                  onPressed: () async {
-                                    bloc.eventSink(GerarRelatorioPdfMakeEvent(
-                                        pdfGerar: true,
-                                        pdfGerado: false,
-                                        tipo: 'questionario01',
-                                        collection: 'Eixo',
-                                        document: snapshot
-                                            .data.usuarioModel.eixoID.id));
-                                  },
-                                ),
-                    ]),
+                    Wrap(
+                      alignment: WrapAlignment.start,
+                      children: <Widget>[
+                        snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                                snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                    false &&
+                                snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                    true &&
+                                snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                    'questionario01'
+                            ? IconButton(
+                                tooltip:
+                                    'Ver relatório geral das tarefas recebidas.',
+                                icon: Icon(Icons.link),
+                                onPressed: () async {
+                                  bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                      pdfGerar: false,
+                                      pdfGerado: false,
+                                      tipo: 'questionario01',
+                                      collection: 'Eixo',
+                                      document: snapshot
+                                          .data.usuarioModel.eixoID.id));
+                                  launch(snapshot
+                                      .data?.relatorioPdfMakeModel?.url);
+                                },
+                              )
+                            : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                        null &&
+                                    snapshot.data?.relatorioPdfMakeModel
+                                            ?.pdfGerar ==
+                                        true &&
+                                    snapshot.data?.relatorioPdfMakeModel
+                                            ?.pdfGerado ==
+                                        false &&
+                                    snapshot.data?.relatorioPdfMakeModel
+                                            ?.tipo ==
+                                        'questionario01'
+                                ? CircularProgressIndicator()
+                                : IconButton(
+                                    tooltip:
+                                        'Atualizar PDF geral das tarefas recebidas.',
+                                    icon: Icon(Icons.picture_as_pdf),
+                                    onPressed: () async {
+                                      bloc.eventSink(GerarRelatorioPdfMakeEvent(
+                                          pdfGerar: true,
+                                          pdfGerado: false,
+                                          tipo: 'questionario01',
+                                          collection: 'Eixo',
+                                          document: snapshot
+                                              .data.usuarioModel.eixoID.id));
+                                    },
+                                  ),
+                      ],
+                    ),
                   ],
                 ),
                 // Expanded(

@@ -1,23 +1,53 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 
+
+// class PreambuloTexto extends StatelessWidget {
+//   final String text;
+
+//   const PreambuloTexto(this.text, {Key key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: EdgeInsets.only(top: 2),
+//       child: Text(
+//         text,
+//         style: TextStyle(fontSize: 16, color: Colors.blue),
+//       ),
+//     );
+//   }
+// }
+
+
 class PreambuloTexto extends StatelessWidget {
+  
   final String text;
 
-  const PreambuloTexto(this.text, {Key key}) : super(key: key);
+  const PreambuloTexto(this.text);
 
   @override
+  
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 2),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 16, color: Colors.blue),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
+        color: Colors.black12,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          " ${this.text} ",
+          style: PmsbStyles.textStyleListPerfil01,
+        ),
       ),
     );
   }
@@ -59,15 +89,19 @@ class _PreambuloState extends State<Preambulo> {
     return StreamBuilder<PreambuloBlocState>(
         stream: bloc.stream,
         builder: (context, snapshot) {
-          return Column(
-            children: <Widget>[
-              PreambuloTexto(
-                  "${widget.eixo ? snapshot.data?.usuario?.eixoIDAtual?.nome : ""} - ${widget.setor ? snapshot.data?.usuario?.setorCensitarioID?.nome : ""}"),
-              if (widget.questionarioID != null)
-                PreambuloTexto("Q: ${snapshot.data?.questionario?.nome}"),
-              if (widget.referencia && widget.questionarioID != null)
-                PreambuloTexto("R: ${snapshot.data?.questionario?.referencia}"),
-            ],
+          return Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                PreambuloTexto(
+                    "${widget.eixo ? snapshot.data?.usuario?.eixoIDAtual?.nome : ""} - ${widget.setor ? snapshot.data?.usuario?.setorCensitarioID?.nome : ""}"),
+                if (widget.questionarioID != null)
+                  PreambuloTexto("Q: ${snapshot.data?.questionario?.nome}"),
+                if (widget.referencia && widget.questionarioID != null)
+                  PreambuloTexto("R: ${snapshot.data?.questionario?.referencia}"),
+              ],
+            ),
           );
         });
   }
