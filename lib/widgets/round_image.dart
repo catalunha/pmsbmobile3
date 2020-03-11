@@ -52,8 +52,8 @@ class RoundImage extends StatelessWidget {
       foto = Stack(
         children: <Widget>[
           Container(
-            width: _width * 0.50, // espessura da imagem de perfil
-            height: _width * 0.50, // altura da imagem de perfil
+            width: width, // espessura da imagem de perfil
+            height: heigth, // altura da imagem de perfil
             decoration: BoxDecoration(
               color: PmsbColors.card,
               //borda ao redor da imagem de perfil
