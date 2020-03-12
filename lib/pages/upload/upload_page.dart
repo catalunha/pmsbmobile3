@@ -85,10 +85,8 @@ class _UploadPageState extends State<UploadPage> {
             title:
                 Text('Menu: ${uploading.upload.updateCollection.collection}'),
             subtitle: dispositivo != null
-                ? Text(dispositivo +
-                    '')
-                : Text(
-                    '${uploading.upload.localPath}\nuploadID:${uploading.upload.id}\n${uploading.upload.updateCollection.collection}ID:${uploading.upload.updateCollection.document}'),
+                ? Text(dispositivo + '')
+                : Text('${uploading.upload.localPath}\nuploadID:${uploading.upload.id}\n${uploading.upload.updateCollection.collection}ID:${uploading.upload.updateCollection.document}'),
             trailing: dispositivo != null
                 ? Icon(Icons.cloud_off)
                 : IconButton(

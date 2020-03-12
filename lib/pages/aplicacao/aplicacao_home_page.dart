@@ -6,6 +6,8 @@ import 'package:pmsbmibile3/pages/aplicacao/aplicacao_home_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class AplicacaoHomePage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -66,14 +68,17 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   }
 
   _bodyTodos() {
-    return Column(
-      children: <Widget>[
-        Preambulo(
-          eixo: true,
-          setor: true,
-        ),
-        Expanded(child: _listaQuestionarioAplicado())
-      ],
+    return Container(
+      color: PmsbColors.fundo,
+      child: Column(
+        children: <Widget>[
+          Preambulo(
+            eixo: true,
+            setor: true,
+          ),
+          Expanded(child: _listaQuestionarioAplicado())
+        ],
+      ),
     );
   }
 
@@ -91,10 +96,11 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-      title: Text('Aplicando questionario'),
+      title: Text('Aplicando Questionário'),
       body: _bodyTodos(),
 
       floatingActionButton: FloatingActionButton(
+        backgroundColor: PmsbColors.cor_destaque,
         child: Icon(Icons.add),
         onPressed: () {
           // Adicionar novo questionario aplicado
@@ -132,49 +138,80 @@ class QuestionarioAplicadoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 10,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // CardText("QuestionarioId: ${_questionario.id}"),
-            CardText("Questionario: ${_questionario.nome}"),
-            CardText("Referencia: ${_questionario.referencia}"),
-            ButtonTheme.bar(
-              child: ButtonBar(
-                alignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  IconButton(
-                    tooltip: 'Aplicando perguntas',
-                    icon: Icon(Icons.assignment),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, "/aplicacao/aplicando_pergunta",
-                          arguments:
-                              AplicandoPerguntaPageArguments(_questionario.id));
-                    },
+      color: PmsbColors.card,
+      elevation: 10,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // CardText("QuestionarioId: ${_questionario.id}"),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8, top: 5, left: 8),
+            child: Text(
+              "Questionario: ${_questionario.nome}",
+              style: PmsbStyles.textoPrimario,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text(
+              "Referencia: ${_questionario.referencia}",
+              style: PmsbStyles.textoSecundario,
+            ),
+          ),
+          ButtonTheme.bar(
+            child: ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                  tooltip: 'Aplicando perguntas',
+                  icon: Icon(
+                    Icons.assignment,
+                    color: Colors.pink,
                   ),
-                  IconButton(
-                    tooltip: 'Verificando pendencias',
-                    icon: Icon(Icons.assignment_turned_in),
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/aplicacao/pendencias",
-                          arguments: _questionario.id);
-                    },
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/aplicacao/aplicando_pergunta",
+                      arguments: AplicandoPerguntaPageArguments(
+                        _questionario.id,
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  tooltip: 'Verificando pendencias',
+                  icon: Icon(
+                    Icons.assignment_turned_in,
+                    color: Colors.green,
                   ),
-                  IconButton(
-                    tooltip: 'Editar aplicação',
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      // Abrir questionário
-                      Navigator.pushNamed(
-                          context, "/aplicacao/momento_aplicacao",
-                          arguments: _questionario.id);
-                    },
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/aplicacao/pendencias",
+                      arguments: _questionario.id,
+                    );
+                  },
+                ),
+                IconButton(
+                  tooltip: 'Editar aplicação',
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.blue,
                   ),
-                ],
-              ),
-            )
-          ],
-        ));
+                  onPressed: () {
+                    // Abrir questionário
+                    Navigator.pushNamed(
+                      context,
+                      "/aplicacao/momento_aplicacao",
+                      arguments: _questionario.id,
+                    );
+                  },
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

@@ -38,6 +38,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
     return DefaultScaffold(
       title: Text("Administração"),
       body: Container(
+        color: PmsbColors.fundo,
         child: StreamBuilder<AdministracaoHomePageBlocState>(
             stream: bloc.stateStream,
             builder: (BuildContext context,
@@ -61,11 +62,12 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                   return Column(
                     children: <Widget>[
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Expanded(
-                            flex: 10,
-                            child: Text('Lista dos usuarios ativos'),
-                          ),
+                          // Expanded(
+                          //   flex: 10,
+                          //   child: Text('Lista dos usuarios ativos'),
+                          // ),
                           Wrap(alignment: WrapAlignment.start, children: <
                               Widget>[
                             (snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
@@ -110,12 +112,13 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
                                         icon: Icon(Icons.picture_as_pdf),
                                         onPressed: () async {
                                           bloc.eventSink(
-                                              GerarRelatorioPdfMakeEvent(
-                                            pdfGerar: true,
-                                            pdfGerado: false,
-                                            tipo: 'administracao01',
-                                            collection: 'Usuario',
-                                          ));
+                                            GerarRelatorioPdfMakeEvent(
+                                              pdfGerar: true,
+                                              pdfGerado: false,
+                                              tipo: 'administracao01',
+                                              collection: 'Usuario',
+                                            ),
+                                          );
                                         },
                                       ),
                           ]),
@@ -213,18 +216,20 @@ class ItemListView extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         top: 9.0,
                         //bottom: 20.0,
-                        left: 80.0, // distância do campo de texto para o da imagem
+                        left:
+                            80.0, // distância do campo de texto para o da imagem
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("${usuario.nome}",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold)),
-
+                          Text(
+                            "${usuario.nome}",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
                           admimRowLine("Celular", usuario.celular),
                           admimRowLine("E-mail:", usuario.email),
                           admimRowLine("Eixo", usuario.eixoIDAtual.nome),
@@ -248,7 +253,7 @@ class ItemListView extends StatelessWidget {
   admimRowLine(String intancia, String valor) {
     return Row(
         //mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start ,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text("$intancia: ",
               style: TextStyle(

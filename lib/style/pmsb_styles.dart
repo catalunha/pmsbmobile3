@@ -8,14 +8,23 @@ class PmsbStyles {
     fontSize: 14,
   );
 
-   static const TextStyle textStyleListPerfil01 = TextStyle(
+  static const TextStyle textStyleListPerfil01 = TextStyle(
     color: PmsbColors.texto_secundario,
     fontSize: 16,
   );
- 
+
   static const TextStyle textStyleListBold = TextStyle(
+      color: PmsbColors.texto_secundario,
+      fontSize: 18,
+      fontWeight: FontWeight.bold);
+
+  static const TextStyle textoPrimario = TextStyle(
+    color: PmsbColors.texto_primario,
+    fontSize: 16,
+  );
+
+  static const TextStyle textoSecundario = TextStyle(
     color: PmsbColors.texto_secundario,
-    fontSize: 18,
-    fontWeight: FontWeight.bold
+    fontSize: 14,
   );
 }

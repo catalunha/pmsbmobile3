@@ -43,7 +43,7 @@ class PreambuloTexto extends StatelessWidget {
         color: Colors.black12,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(right: 5, left: 5, top:5, bottom: 5),
         child: Text(
           " ${this.text} ",
           style: PmsbStyles.textStyleListPerfil01,
@@ -91,11 +91,10 @@ class _PreambuloState extends State<Preambulo> {
         builder: (context, snapshot) {
           return Padding(
             padding: const EdgeInsets.all(5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Wrap(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                PreambuloTexto(
-                    "${widget.eixo ? snapshot.data?.usuario?.eixoIDAtual?.nome : ""} - ${widget.setor ? snapshot.data?.usuario?.setorCensitarioID?.nome : ""}"),
+                PreambuloTexto("${widget.eixo ? snapshot.data?.usuario?.eixoIDAtual?.nome : ""} - ${widget.setor ? snapshot.data?.usuario?.setorCensitarioID?.nome : ""}"),
                 if (widget.questionarioID != null)
                   PreambuloTexto("Q: ${snapshot.data?.questionario?.nome}"),
                 if (widget.referencia && widget.questionarioID != null)

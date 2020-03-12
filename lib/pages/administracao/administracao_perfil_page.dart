@@ -45,10 +45,13 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
     }
     return Scaffold(
       appBar: AppBar(
+        bottomOpacity: 0.0,
+        backgroundColor: PmsbColors.fundo,
         centerTitle: true,
         title: Text("Visualizar dados e perfil"),
       ),
       body: Container(
+        color: PmsbColors.fundo,
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: _body(),
       ),
