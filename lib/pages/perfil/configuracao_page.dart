@@ -8,6 +8,9 @@ import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
     show FilePicker, FileType;
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
+import 'package:pmsbmibile3/widgets/round_image.dart';
 
 class ConfiguracaoPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -43,32 +46,46 @@ class ConfiguracaoState extends State<ConfiguracaoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: PmsbColors.fundo,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        centerTitle: true,
         title: Text("Configurações"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12),
-        child: ListView(
-          children: <Widget>[
-            SelecionarEixo(bloc),
-            SelecionarSetorCensitario(bloc),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: AtualizarNumeroCelular(bloc),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: AtualizarNomeNoProjeto(bloc),
-            ),
-            FotoUsuario(bloc),
-          ],
+      body: Container(
+        color: PmsbColors.fundo,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: ListView(
+            children: <Widget>[
+              FotoUsuario(bloc),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: AtualizarNomeNoProjeto(bloc),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: AtualizarNumeroCelular(bloc),
+              ),
+              SelecionarEixo(bloc),
+              SelecionarSetorCensitario(bloc),
+              SizedBox(
+                height: 60,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: PmsbColors.cor_destaque,
         onPressed: () {
           bloc.eventSink(SaveEvent());
           Navigator.pop(context);
         },
-        child: Icon(Icons.check),
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -96,12 +113,16 @@ class SelecionarEixo extends StatelessWidget {
             }
             return Container(
               margin: EdgeInsets.symmetric(vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text("Alterar Eixo: ${snapshot.data.eixoIDAtualNome}"),
-                  Icon(Icons.search),
-                ],
+              child: ListTile(
+                trailing: Icon(Icons.search),
+                subtitle: Text(
+                  "${snapshot.data.eixoIDAtualNome}",
+                  style: PmsbStyles.textoPrimario,
+                ),
+                title: Text(
+                  "Alterar eixo: ",
+                  style: PmsbStyles.textoSecundario,
+                ),
               ),
             );
           }),
@@ -169,13 +190,16 @@ class SelecionarSetorCensitario extends StatelessWidget {
             }
             return Container(
               margin: EdgeInsets.symmetric(vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                      "Alterar Setor Censitário: ${snapshot.data.setorCensitarioIDnome}"),
-                  Icon(Icons.search),
-                ],
+              child: ListTile(
+                trailing: Icon(Icons.search),
+                title: Text(
+                  "Alterar setor censitário:",
+                  style: PmsbStyles.textoSecundario,
+                ),
+                subtitle: Text(
+                  "${snapshot.data.setorCensitarioIDnome}",
+                  style: PmsbStyles.textoPrimario,
+                ),
               ),
             );
           }),
@@ -284,7 +308,10 @@ class AtualizarNumeroCelularState extends State<AtualizarNumeroCelular> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Atualizar número do celular"),
+              Text(
+                "Atualizar número do celular:",
+                style: PmsbStyles.textoSecundario,
+              ),
               TextField(
                 controller: _controller,
                 onChanged: (celular) {
@@ -326,8 +353,12 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Atualizar nome no projeto"),
+              Text(
+                "Atualizar nome no projeto:",
+                style: PmsbStyles.textoSecundario,
+              ),
               TextField(
+                style: PmsbStyles.textoPrimario,
                 controller: _controller,
                 onChanged: (nomeProjeto) {
                   bloc.eventSink(UpdateNomeEvent(nomeProjeto));
@@ -359,22 +390,28 @@ class FotoUsuario extends StatelessWidget {
         }
         return Column(
           children: <Widget>[
-            if (Recursos.instance.disponivel("file_picking"))
-              ButtonBar(children: <Widget>[
-                Text('Atualizar foto de usuario'),
-                IconButton(
-                  icon: Icon(Icons.file_download),
-                  onPressed: () async {
-                    await _selecionarNovoArquivo().then((arq) {
-                      fotoLocalPath = arq;
-                    });
-                    bloc.eventSink(UpdateFotoEvent(fotoLocalPath));
-                  },
-                ),
-              ]),
-            _ImagemUnica(
+            RoundImage(
+                heigth: 150,
+                width: 150,
+                corBorda: Colors.white54,
+                espesuraBorda: 6,
                 fotoUrl: snapshot.data?.fotoUrl,
                 fotoLocalPath: snapshot.data?.fotoLocalPath),
+            if (Recursos.instance.disponivel("file_picking"))
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Atualizar foto de usuário:'),
+                    IconButton(
+                      icon: Icon(Icons.file_upload),
+                      onPressed: () async {
+                        await _selecionarNovoArquivo().then((arq) {
+                          fotoLocalPath = arq;
+                        });
+                        bloc.eventSink(UpdateFotoEvent(fotoLocalPath));
+                      },
+                    ),
+                  ]),
           ],
         );
       },
