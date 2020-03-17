@@ -368,7 +368,7 @@ class DefaultScaffold extends StatelessWidget {
       appBar: _appBarBuild(context),
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
-      body: body,
+      body: Container(color: PmsbColors.fundo, child: body),
     );
   }
 }

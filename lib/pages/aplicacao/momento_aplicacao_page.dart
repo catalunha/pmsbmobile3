@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class MomentoAplicacaoPage extends StatefulWidget {
   final String usuarioID;
@@ -148,28 +151,53 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
             }),
         Divider(color: Colors.black87),
         Padding(
-            padding: EdgeInsets.all(5),
-            child: Text("Referencia: Local/Pessoa/Momento na aplicação:",
-                style: TextStyle(color: Colors.blue, fontSize: 15))),
+          padding: EdgeInsets.all(5),
+          child: Text(
+            "Referencia: Local/Pessoa/Momento na aplicação:",
+            style: TextStyle(color: Colors.blue, fontSize: 15),
+          ),
+        ),
         ReferenciaInput(bloc),
         Divider(color: Colors.black87),
         ListaRequisitos(bloc),
         // _botaoDeletar(),
-        _DeleteDocumentOrField(bloc),
+
+        Divider(color: Colors.black87),
+
+        ListTile(
+          title: Text("Apagar"),
+          trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                _apagarAplicacao(context, bloc);
+              }),
+        ),
+        Divider(color: Colors.black87),
+
+        // _DeleteDocumentOrField(bloc),
         Container(
-              padding: EdgeInsets.only(top: 80),
-            )
+          padding: EdgeInsets.only(top: 80),
+        )
       ],
     );
   }
 
+  void _apagarAplicacao(context, MomentoAplicacaoPageBloc bloc) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(child: _DeleteDocumentOrField(bloc));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Local/Pessoa/Momento de aplicação"),
-      ),
+    return DefaultScaffold(
+      title: Text("Local/Pessoa/Momento de aplicação"),
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: Text("Local/Pessoa/Momento de aplicação"),
+      // ),
       body: _body(context),
       floatingActionButton: StreamBuilder<MomentoAplicacaoPageBlocState>(
           stream: bloc.state,
@@ -186,7 +214,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                   : null,
               child: Icon(Icons.thumb_up),
               backgroundColor:
-                  snapshot.data.isValid ? Colors.blue : Colors.grey,
+                  snapshot.data.isValid ? PmsbColors.cor_destaque : Colors.grey,
             );
           }),
     );
@@ -216,28 +244,76 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
       stream: bloc.state,
       builder: (BuildContext context,
           AsyncSnapshot<MomentoAplicacaoPageBlocState> snapshot) {
-        return Row(
-          children: <Widget>[
-            Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
-            Container(
-              child: Flexible(
-                child: TextField(
-                  controller: _textFieldController,
+        return Container(
+          height: 250,
+          color: PmsbColors.fundo,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text(
+                    'Para apagar a aplicação digite CONCORDO na caixa de texto abaixo e confirme:  '),
+                Divider(),
+                Container(
+                  child: Flexible(
+                    child: TextField(
+                      controller: _textFieldController,
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    // Botao de cancelar delete
+                    GestureDetector(
+                      onTap: () {
+                        return;
+                      },
+                      child: Container(
+                        color: Colors.red,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child:
+                              Text('Cancelar', style: PmsbStyles.textoPrimario),
+                        ),
+                      ),
+                    ),
+
+                    // Botao de confirmar delete
+                    GestureDetector(
+                      onTap: () {
+                        if (_textFieldController.text == 'CONCORDO') {
+                          bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Container(
+                        color: Colors.green,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text('Confirmar',
+                              style: PmsbStyles.textoPrimario),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                // IconButton(
+                //   icon: Icon(Icons.delete),
+                //   onPressed: () {
+                //     //Ir para a pagina visuais do produto
+                //     if (_textFieldController.text == 'CONCORDO') {
+                //       bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+                //       Navigator.of(context).pop();
+                //     }
+                //   },
+                // )
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                //Ir para a pagina visuais do produto
-                if (_textFieldController.text == 'CONCORDO') {
-                  bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
+          ),
         );
       },
     );
