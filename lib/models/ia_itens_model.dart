@@ -1,7 +1,7 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 
-class IAProdutoModel extends FirestoreModel {
-  static final String collection = "IAProduto";
+class IAItensModel extends FirestoreModel {
+  static final String collection = "IAItens";
 
   String iaprodutoId;
   int numero;
@@ -15,8 +15,9 @@ class IAProdutoModel extends FirestoreModel {
   String requisitoAtendeTR; // valor do atendeTR no red ou busca ?
   List<String> requisitoStatus; // [s|p|n]
 
-  IAProdutoModel({
+  IAItensModel({
     String id,
+    this.iaprodutoId,
     this.numero,
     this.indice,
     this.descricao,
@@ -30,7 +31,8 @@ class IAProdutoModel extends FirestoreModel {
   }) : super(id);
 
   @override
-  IAProdutoModel fromMap(Map<String, dynamic> map) {
+  IAItensModel fromMap(Map<String, dynamic> map) {
+    if (map.containsKey('iaprodutoId')) iaprodutoId = map['iaprodutoId'];
     if (map.containsKey('numero')) numero = map['numero'];
     if (map.containsKey('indice')) indice = map['indice'];
     if (map.containsKey('descricao')) descricao = map['descricao'];
@@ -48,6 +50,7 @@ class IAProdutoModel extends FirestoreModel {
   @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (iaprodutoId != null) data['iaprodutoId'] = this.iaprodutoId;
     if (numero != null) data['numero'] = this.numero;
     if (indice != null) data['indice'] = this.indice;
     if (descricao != null) data['descricao'] = this.descricao;

@@ -15,7 +15,7 @@ class IAConfigModel extends FirestoreModel {
   int simPontos;
   int parcialPontos;
   int naoPontos;
-  int itensNumero;
+  int itensNumero;//360
 
   IAConfigModel({
     String id,
