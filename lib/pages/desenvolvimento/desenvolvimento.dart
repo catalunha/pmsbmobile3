@@ -48,6 +48,15 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 children: <Widget>[
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
+                      ListTile(
+                    title: Text('Instrumentos de avaliacao.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        //Desenvolvimento
+                      },
+                    ),
+                  ),
                   ListTile(
                     title: Text('Criar Usuario em UsuarioCollection.'),
                     trailing: IconButton(
