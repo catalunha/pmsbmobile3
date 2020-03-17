@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/initial_value_text_field.dart';
 import 'package:pmsbmibile3/pages/aplicacao/aplicando_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/pergunta/pergunta.dart';
@@ -40,10 +41,10 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
     super.dispose();
   }
 
-  String _eixo = "eixo exemplo";
-  String _questionario = "questionarios exemplo";
-  String _local = "local exemplo";
-  String _setor = "setor exemplo";
+  // String _eixo = "eixo exemplo";
+  // String _questionario = "questionarios exemplo";
+  // String _local = "local exemplo";
+  // String _setor = "setor exemplo";
 
   _botoes() {
     return Row(
@@ -132,11 +133,12 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
             _listaDadosSuperior(),
             Divider(height: 50, indent: 5, color: Colors.black54),
             Padding(
-                padding: EdgeInsets.all(5),
-                child: ListTile(
-                  title: Text(snapshot.data.perguntaAtual.titulo),
-                  subtitle: Text(snapshot.data.perguntaAtual.textoMarkdown),
-                )),
+              padding: EdgeInsets.all(5),
+              child: ListTile(
+                title: Text(snapshot.data.perguntaAtual.titulo),
+                subtitle: Text(snapshot.data.perguntaAtual.textoMarkdown),
+              ),
+            ),
             Text(snapshot.data.perguntaAtual.tipo.nome),
             Divider(color: Colors.black54),
             // Widget de tipo pergunta
@@ -148,26 +150,28 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 child:
                     Text("Observações:", style: TextStyle(color: Colors.blue))),
             Padding(
-                padding: EdgeInsets.all(5.0),
-                child: InitialValueTextField(
-                  id: snapshot.data.perguntaAtual.id,
-                  value: snapshot.data.perguntaAtual.observacao,
-                  onChanged: (observacao) {
-                    bloc.dispatch(
-                        UpdateObservacaoAplicandoPerguntaPageBlocEvent(
-                            observacao));
-                  },
-                  initialize: () =>
-                      snapshot.data.perguntaAtual.observacao != null
-                          ? true
-                          : false,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                )),
-            Padding(padding: EdgeInsets.all(5)),
+              padding: EdgeInsets.all(5.0),
+              child: InitialValueTextField(
+                id: snapshot.data.perguntaAtual.id,
+                value: snapshot.data.perguntaAtual.observacao,
+                onChanged: (observacao) {
+                  bloc.dispatch(
+                    UpdateObservacaoAplicandoPerguntaPageBlocEvent(observacao),
+                  );
+                },
+                initialize: () => snapshot.data.perguntaAtual.observacao != null
+                    ? true
+                    : false,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+            ),
             _botoes()
           ],
         );
@@ -177,11 +181,11 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Aplicando pergunta"),
-      ),
+    return DefaultScaffold(
+      //appBar: AppBar(
+      //  centerTitle: true,
+      title: Text("Aplicando pergunta"),
+      //),
       body: _body(),
     );
   }

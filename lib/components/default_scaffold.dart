@@ -343,7 +343,7 @@ class DefaultScaffold extends StatelessWidget {
           size: 25,
         ),
         onPressed: () {
-          Navigator.popAndPushNamed(context, "/");
+          Navigator.pop(context);
         },
       ),
       // backgroundColor: PmsbColors.fundo,
