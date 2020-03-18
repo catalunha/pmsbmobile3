@@ -1,6 +1,6 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 
-class IAItensModel extends FirestoreModel {
+class IAItemModel extends FirestoreModel {
   static final String collection = "IAItens";
 
   String iaprodutoId;
@@ -11,11 +11,11 @@ class IAItensModel extends FirestoreModel {
   String cor;
   String documento;
   String observacoes;
-  String requisito; // Se null=faz perg automaticamente. Se id= tem ligação
-  String requisitoAtendeTR; // valor do atendeTR no red ou busca ?
-  List<String> requisitoStatus; // [s|p|n]
+  // String requisito; // Se null=faz perg automaticamente. Se id= tem ligação
+  // String requisitoAtendeTR; // valor do atendeTR no red ou busca ?
+  // List<String> requisitoStatus; // [s|p|n]
 
-  IAItensModel({
+  IAItemModel({
     String id,
     this.iaprodutoId,
     this.numero,
@@ -25,13 +25,13 @@ class IAItensModel extends FirestoreModel {
     this.cor,
     this.documento,
     this.observacoes,
-    this.requisito,
-    this.requisitoAtendeTR,
-    this.requisitoStatus,
+    // this.requisito,
+    // this.requisitoAtendeTR,
+    // this.requisitoStatus,
   }) : super(id);
 
   @override
-  IAItensModel fromMap(Map<String, dynamic> map) {
+  IAItemModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('iaprodutoId')) iaprodutoId = map['iaprodutoId'];
     if (map.containsKey('numero')) numero = map['numero'];
     if (map.containsKey('indice')) indice = map['indice'];
@@ -40,9 +40,9 @@ class IAItensModel extends FirestoreModel {
     if (map.containsKey('cor')) cor = map['cor'];
     if (map.containsKey('documento')) documento = map['documento'];
     if (map.containsKey('observacoes')) observacoes = map['observacoes'];
-    if (map.containsKey('requisito')) requisito = map['requisito'];
-    if (map.containsKey('requisitoAtendeTR')) requisitoAtendeTR = map['requisitoAtendeTR'];
-    if (map.containsKey('requisitoStatus')) requisitoStatus = map['requisitoStatus'];
+    // if (map.containsKey('requisito')) requisito = map['requisito'];
+    // if (map.containsKey('requisitoAtendeTR')) requisitoAtendeTR = map['requisitoAtendeTR'];
+    // if (map.containsKey('requisitoStatus')) requisitoStatus = map['requisitoStatus'];
 
     return this;
   }
@@ -58,9 +58,9 @@ class IAItensModel extends FirestoreModel {
     if (cor != null) data['cor'] = this.cor;
     if (documento != null) data['documento'] = this.documento;
     if (observacoes != null) data['observacoes'] = this.observacoes;
-    if (requisito != null) data['requisito'] = this.requisito;
-    if (requisitoAtendeTR != null) data['requisitoAtendeTR'] = this.requisitoAtendeTR;
-    if (requisitoStatus != null) data['requisitoStatus'] = this.requisitoStatus;
+    // if (requisito != null) data['requisito'] = this.requisito;
+    // if (requisitoAtendeTR != null) data['requisitoAtendeTR'] = this.requisitoAtendeTR;
+    // if (requisitoStatus != null) data['requisitoStatus'] = this.requisitoStatus;
 
     return data;
   }

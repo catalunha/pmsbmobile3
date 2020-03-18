@@ -37,18 +37,22 @@ dependencies:
     git:
       url: https://github.com/paulorobertocruz/firestore_wrapper.git
       path: packages/firestore_wrapper_flutter
+      ref: master
   firestore_wrapper_web:
     git:
       url: https://github.com/paulorobertocruz/firestore_wrapper.git
       path: packages/firestore_wrapper_web
+      ref: master
   firebaseauth_wrapper_flutter:
     git:
       url: https://github.com/paulorobertocruz/firebaseauth_wrapper.git
       path: firebaseauth_wrapper_flutter
+      ref: master
   firebaseauth_wrapper_web:
     git:
       url: https://github.com/paulorobertocruz/firebaseauth_wrapper.git
       path: firebaseauth_wrapper_web
+      ref: master
   location: ^2.3.5
   image_picker: ^0.6.0+17
   image: ^2.1.4

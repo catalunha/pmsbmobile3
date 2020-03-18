@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/pages/avaliacao/produto_bloc.dart';
+import 'package:pmsbmibile3/pages/avaliacao/item_list_bloc.dart';
 // import 'package:pmsbmibile3/state/auth_bloc.dart';
 // import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
 //     if (dart.library.io) 'packaimport 'package:piprof/auth_bloc.dart';
 
-class ProdutoListPage extends StatefulWidget {
-  // final AuthBloc authBloc;
+class ItemListPage extends StatefulWidget {
+  final String produtoId;
 
-  // const ProdutoListPage(this.authBloc);
-  const ProdutoListPage();
+  const ItemListPage(this.produtoId);
 
   @override
-  _ProdutoListPageState createState() {
-    return _ProdutoListPageState();
+  _ItemListPageState createState() {
+    return _ItemListPageState();
   }
 }
 
-class _ProdutoListPageState extends State<ProdutoListPage> {
-  ProdutoListBloc bloc;
+class _ItemListPageState extends State<ItemListPage> {
+  ItemListBloc bloc;
 
-  // _ProdutoListPageState(AuthBloc authBloc)
-  //     : bloc = ProdutoListBloc(
+  // _ItemListPageState(AuthBloc authBloc)
+  //     : bloc = ItemListBloc(
   //           authBloc, Bootstrap.instance.firestore);
 
   @override
   void initState() {
     super.initState();
-    bloc = ProdutoListBloc(
+    bloc = ItemListBloc(
       Bootstrap.instance.firestore,
       // widget.authBloc,
     );
+    bloc.eventSink(GetItemListEvent(widget.produtoId));
   }
 
   @override
@@ -42,8 +41,10 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultScaffold(
-      title: Text('Inst. Avaliação  - Produtos'),
+    return Scaffold(
+      appBar: AppBar(
+          title: Text('Itens deste produto'),
+        ),
       // floatingActionButton: FloatingActionButton(
       //   child: Icon(Icons.add),
       //   onPressed: () {
@@ -54,10 +55,10 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
       //     );
       //   },
       // ),
-      body: StreamBuilder<ProdutoListBlocState>(
+      body: StreamBuilder<ItemListBlocState>(
         stream: bloc.stateStream,
         builder:
-            (BuildContext context, AsyncSnapshot<ProdutoListBlocState> snapshot) {
+            (BuildContext context, AsyncSnapshot<ItemListBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -70,22 +71,22 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
             // int lengthTurma = snapshot.data.produtoList.length;
 
             // int ordemLocal = 1;
-            for (var produto in snapshot.data.produtoList) {
-              print('listando produto: ${produto.id}');
+            for (var item in snapshot.data.itemList) {
+              print('listando item: ${item.id}');
               listaWidget.add(
                 Card(
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        leading: Text('${produto.indice}'),
-                        title: Text('${produto.titulo}'),
-                        subtitle: Text('${produto.subtitulo}'),
-                        onTap: (){
+                        leading: Text('${item.indice}'),
+                        title: Text('${item.descricao}'),
+                        subtitle: Text('${item.id}'),
+                        onTap: () {
                           Navigator.pushNamed(
-                                  context,
-                                  "/produto/crud",
-                                  arguments: produto.id,
-                                );
+                            context,
+                            "/avaliacao/resposta/list",
+                            arguments: item.id,
+                          );
                         },
                       ),
                       // Center(

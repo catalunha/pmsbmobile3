@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:firestore_wrapper_flutter/firestore_wrapper_flutter.dart';
 import 'package:pmsbmibile3/models/ia_config_model.dart';
 import 'package:pmsbmibile3/models/ia_execucao_model.dart';
-import 'package:pmsbmibile3/models/ia_itens_model.dart';
+import 'package:pmsbmibile3/models/ia_item_model.dart';
+import 'package:pmsbmibile3/models/ia_item_resposta_model.dart';
 import 'package:pmsbmibile3/models/ia_produto_model.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
@@ -52,6 +54,16 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 children: <Widget>[
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
+                  ListTile(
+                    title: Text('collectionGroup'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        //Desenvolvimento
+                        await testeCollectionGroup();
+                      },
+                    ),
+                  ),
                   ListTile(
                     title: Text('IA - Execucao.'),
                     trailing: IconButton(
@@ -145,6 +157,33 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
             }));
   }
 
+  Future testeCollectionGroup() async {
+    print('inicio teste');
+    // final futureQuerySnapshot = _firestore
+    //     .collectionGroup(IAItemRespostaModel.collection)
+    //     .where('setorId', isEqualTo: 'almas').getDocuments();
+    // var setorList = futureQuerySnapshot.documents
+    //     .map((doc) => IAItemRespostaModel(id: doc.documentID).fromMap(doc.data))
+    //     .toList();
+    //     print(setorList);
+    final futureQuerySnapshot = _firestore
+        .collectionGroup(IAItemRespostaModel.collection)
+        .where('setorId', isEqualTo: 'almas');
+    futureQuerySnapshot.getDocuments().then((querySnapshot) {
+      var setorList = querySnapshot.documents
+          .map((doc) =>
+              IAItemRespostaModel(id: doc.documentID).fromMap(doc.data))
+          .toList();
+      print(setorList);
+    });
+    print('fim teste');
+  }
+
+  //     .getDocuments();
+  // var setorList = futureQuerySnapshot.documents
+  //     .map((doc) => IAItemRespostaModel(id: doc.documentID).fromMap(doc.data))
+  //     .toList();
+  //     print(setorList);
   Future iaConfig() async {
     final corRef = _firestore.collection(IAConfigModel.collection);
 
@@ -1891,9 +1930,9 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     int numero = 45;
     print('iaItens $numero');
 
-    final corRef = _firestore.collection(IAItensModel.collection);
+    final corRef = _firestore.collection(IAItemModel.collection);
     itens.forEach((linha) async {
-      await corRef.document().setData(IAItensModel(
+      await corRef.document().setData(IAItemModel(
               numero: numero++,
               iaprodutoId: linha[0],
               indice: linha[1],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
-import 'package:pmsbmibile3/pages/avaliacao/produto_list.dart';
+import 'package:pmsbmibile3/pages/avaliacao/item_list_page.dart';
+import 'package:pmsbmibile3/pages/avaliacao/item_resposta_list_page.dart';
+import 'package:pmsbmibile3/pages/avaliacao/produto_list_page.dart';
 import 'package:pmsbmibile3/pages/geral/versao.dart';
 import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_page.dart';
@@ -232,14 +234,13 @@ class MyApp extends StatelessWidget {
         "/painel/home": (context) => PainelListPage(authBloc),
         "/painel/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return PainelCrudPage(authBloc,settings.arguments);
+          return PainelCrudPage(authBloc, settings.arguments);
         },
         "/setor_painel/home": (context) => SetorPainelListPage(authBloc),
         "/setor_painel/crud": (context) {
           final settings = ModalRoute.of(context).settings;
-          return SetorPainelCrudPage(authBloc,settings.arguments);
+          return SetorPainelCrudPage(authBloc, settings.arguments);
         },
-
 
         //googleDrive
         "/googledrive/usuario": (context) {
@@ -249,11 +250,15 @@ class MyApp extends StatelessWidget {
 
         //Instrumento de avaliação
         "/avaliacao/produto/list": (context) => ProdutoListPage(),
-
-
-
+        "/avaliacao/item/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ItemListPage(settings.arguments);
+        },
+        "/avaliacao/resposta/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ItemRespostaListPage(settings.arguments);
+        },
       },
-      
     );
   }
 }
