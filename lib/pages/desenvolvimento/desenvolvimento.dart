@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:pmsbmibile3/models/ia_config_model.dart';
 import 'package:pmsbmibile3/models/ia_execucao_model.dart';
 import 'package:pmsbmibile3/models/ia_itens_model.dart';
 import 'package:pmsbmibile3/models/ia_produto_model.dart';
@@ -57,7 +58,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       icon: Icon(Icons.menu),
                       onPressed: () async {
                         //Desenvolvimento
-                        await iaExecucao();
+                        // await iaExecucao();
                       },
                     ),
                   ),
@@ -67,7 +68,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       icon: Icon(Icons.menu),
                       onPressed: () async {
                         //Desenvolvimento
-                        await iaProduto();
+                        // await iaProduto();
                       },
                     ),
                   ),
@@ -77,7 +78,17 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       icon: Icon(Icons.menu),
                       onPressed: () async {
                         //Desenvolvimento
-                        await iaItens();
+                        // await iaItens();
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('IA - Config.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        //Desenvolvimento
+                        // await iaConfig();
                       },
                     ),
                   ),
@@ -132,6 +143,29 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 ],
               );
             }));
+  }
+
+  Future iaConfig() async {
+    final corRef = _firestore.collection(IAConfigModel.collection);
+
+    await corRef.document().setData(IAConfigModel(
+          simNome: 'Sim',
+          parcialNome: 'Parcialmente',
+          naoNome: 'Não',
+          azul:
+              'Alicação normal da avaliação, ou seja, cabem as respostas para as alternativas SIM ou NÃO ou PARCIALMENTE com suas respecitvas pontuações. Se a resposta for NÃO (a célula encontra-se desbloqueada para receber a resposta NÃO), o produto deve ser devolvido para o parceiro visando ajuste/alinhamento ao TR.',
+          vermelho:
+              'Bloqueia a tecla NÃO, para evitar que o produto seja devolvido ou reprovado, mas também não pontua. Ou seja, se a resposta for NÃO, não reprova, mas também não pontua no quesito. O analista deve tratar deste ponto com o parceiro, buscando convergência com o TR, se for possível/se viável, dependerá do seu bom senso. Na planilha, a célula tem um B (bloqueada).',
+          verde:
+              'Faz a função da tecla NA (não se aplica),ou seja, se o que for perguntado não existir no município, não faz sentido responder às perguntas seguintes correlacionadas ao quesito. A solução eletrônica mais simples encontrada para este tipo de caso foi bloquear as células dos quesitos que não devem ser respondidos com a expressão "Passe para a próxima questão". Este tipo de bloqueio atua eletronicamente até que o cursor seja posicionado no próximo quesito a ser respondido. No formulário original, antes de serem inseridas as respostas, essas células estão tarjadas de amarelo.',
+          lilas:
+              'A pergunta é longa porque só faz sentido se o PMSB atendeu a um conjunto de aspectos, ainda que seja PARCIALMENTE, mas se não atendeu a nenhum, a resposta é NÃO e o produto é reprovado, ou pode ser devolvido ao parceiro para ajuste, fica a critério do bom senso do analista. ',
+          observacoes: '',
+          simPontos: 10,
+          parcialPontos: 5,
+          naoPontos: 0,
+          itensNumero: 360,
+        ).toMap());
   }
 
   Future iaExecucao() async {
@@ -281,7 +315,10 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     final corRef = _firestore.collection(IAProdutoModel.collection);
     itens.forEach((linha) async {
       await corRef.document().setData(IAProdutoModel(
-              numero: numero++, indice: linha[0],titulo: linha[1], subtitulo: linha[2])
+              numero: numero++,
+              indice: linha[0],
+              titulo: linha[1],
+              subtitulo: linha[2])
           .toMap());
     });
     print('iaProduto $numero');
@@ -289,19 +326,31 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
 
   Future iaItens() async {
     List<List<String>> itens = [
-      ["FkhMejGmzKsKWo38IgO3", "4.1", "Foi emitida ordem de serviço para o início dos trabalhos?"],
+      [
+        "FkhMejGmzKsKWo38IgO3",
+        "4.1",
+        "Foi emitida ordem de serviço para o início dos trabalhos?"
+      ],
       [
         "FkhMejGmzKsKWo38IgO3",
         "4.2",
         "A execução do PMSB está de acordo com o(s) projeto(s) aprovado(s) [Plano de trabalho, Planilha Orçamentária]? O cronograma de execução do PMSB, definido pelo Comitê  Executor, inclusive com relação ao repasse de recursos entre a Funasa e o parceiro (proponente/gestão recebedora), que deve obedecer ao desembolso previsto quando da aprovação do Plano de Trabalho e da Planilha Orçamentária pela Funasa. Caso o cronograma de execução do Plano não esteja coerente com o desembolso previsto, o parceiro (gestão recebedora) deverá ser notificado a apresentar justificativas da alteração do Plano de Trabalho, que, por sua vez, deverá ser analisada pelo NICT. Se as alterações não tiverem embasamento técnico, o parceiro (gestão recebedora) deverá ser notificado a retomar o desembolso previsto inicialmente."
       ],
-      ["FkhMejGmzKsKWo38IgO3", "4.3", "Houve proposta de alteração do projeto aprovado? "],
+      [
+        "FkhMejGmzKsKWo38IgO3",
+        "4.3",
+        "Houve proposta de alteração do projeto aprovado? "
+      ],
       [
         "FkhMejGmzKsKWo38IgO3",
         "4.4",
         "A proposta de alteração do projeto foi aprovada pela Funasa?  "
       ],
-      ["spNantMXEqgF3K3BEnfY", "5.1", "Foi publicada Portaria de nomeação do Comitê Executivo?"],
+      [
+        "spNantMXEqgF3K3BEnfY",
+        "5.1",
+        "Foi publicada Portaria de nomeação do Comitê Executivo?"
+      ],
       [
         "spNantMXEqgF3K3BEnfY",
         "5.2",
@@ -312,7 +361,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         "5.3",
         "A equipe técnica mínima do Comitê Executivo estabelecida no Anexo 1 do TR foi considerada?"
       ],
-      ["spNantMXEqgF3K3BEnfY", "5.4", "Apresenta o mapeamento dos atores locais?"],
+      [
+        "spNantMXEqgF3K3BEnfY",
+        "5.4",
+        "Apresenta o mapeamento dos atores locais?"
+      ],
       [
         "spNantMXEqgF3K3BEnfY",
         "5.5",
@@ -498,7 +551,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         "7.5",
         "Informa sobre a existência de população indígena no município?"
       ],
-      ["sSVbafBM80HvLlcqFxH9", "7.5.1", "Existe população indígena no município?"],
+      [
+        "sSVbafBM80HvLlcqFxH9",
+        "7.5.1",
+        "Existe população indígena no município?"
+      ],
       [
         "sSVbafBM80HvLlcqFxH9",
         "7.5.2",
@@ -589,7 +646,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         "7.10",
         "Informa se a população local faz uso de transporte fluvial?"
       ],
-      ["sSVbafBM80HvLlcqFxH9", "7.10.1", "A população faz uso de transporte fluvial?"],
+      [
+        "sSVbafBM80HvLlcqFxH9",
+        "7.10.1",
+        "A população faz uso de transporte fluvial?"
+      ],
       [
         "sSVbafBM80HvLlcqFxH9",
         "7.10.2",
@@ -1236,7 +1297,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         "12.4.1",
         "Informa sobre a ocorrência de pesagem dos resíduos e onde fica a balança? Faz o registro das quantidades em base mensal?"
       ],
-      ["tJElrX1DY1u0emYxz1iy", "12.4.2", "Informa o índice de cobertura que a coleta atinge?"],
+      [
+        "tJElrX1DY1u0emYxz1iy",
+        "12.4.2",
+        "Informa o índice de cobertura que a coleta atinge?"
+      ],
       [
         "tJElrX1DY1u0emYxz1iy",
         "12.4.3",
@@ -1447,7 +1512,11 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         "13.4",
         "Informa se existe população flutuante no município (comum em municípios com vocação turística, ou que sejam polo de agronegócio, ou acadêmico/uma instituição de ensino de alcance regional)? "
       ],
-      ["WeuoKFemSAdTeMJfn8pt", "13.4.1", "Existe população flutuante no município? "],
+      [
+        "WeuoKFemSAdTeMJfn8pt",
+        "13.4.1",
+        "Existe população flutuante no município? "
+      ],
       [
         "WeuoKFemSAdTeMJfn8pt",
         "13.4.2",

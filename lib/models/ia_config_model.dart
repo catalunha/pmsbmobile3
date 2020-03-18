@@ -3,7 +3,6 @@ import 'package:pmsbmibile3/models/base_model.dart';
 class IAConfigModel extends FirestoreModel {
   static final String collection = "IAConfig";
 
-  int numero;
   String simNome;
   String parcialNome;
   String naoNome;
@@ -19,7 +18,6 @@ class IAConfigModel extends FirestoreModel {
 
   IAConfigModel({
     String id,
-    this.numero,
     this.simNome,
     this.parcialNome,
     this.naoNome,
@@ -36,7 +34,6 @@ class IAConfigModel extends FirestoreModel {
 
   @override
   IAConfigModel fromMap(Map<String, dynamic> map) {
-    if (map.containsKey('numero')) numero = map['numero'];
     if (map.containsKey('simNome')) simNome = map['simNome'];
     if (map.containsKey('parcialNome')) parcialNome = map['parcialNome'];
     if (map.containsKey('naoNome')) naoNome = map['naoNome'];
@@ -56,7 +53,6 @@ class IAConfigModel extends FirestoreModel {
   @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (numero != null) data['numero'] = this.numero;
     if (simNome != null) data['simNome'] = this.simNome;
     if (parcialNome != null) data['parcialNome'] = this.parcialNome;
     if (naoNome != null) data['naoNome'] = this.naoNome;
