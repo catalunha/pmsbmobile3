@@ -77,7 +77,7 @@ class ItemRespostaListBloc {
           .collection(IAItemModel.collection)
           .document(event.itemId)
           .collection(IAItemRespostaModel.collection)
-          .orderBy('setorNome')
+          .orderBy('setor.nome')
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/avaliacao/item_list_page.dart';
+import 'package:pmsbmibile3/pages/avaliacao/item_resposta_crud_page.dart';
 import 'package:pmsbmibile3/pages/avaliacao/item_resposta_list_page.dart';
 import 'package:pmsbmibile3/pages/avaliacao/produto_list_page.dart';
 import 'package:pmsbmibile3/pages/geral/versao.dart';
@@ -257,6 +258,15 @@ class MyApp extends StatelessWidget {
         "/avaliacao/resposta/list": (context) {
           final settings = ModalRoute.of(context).settings;
           return ItemRespostaListPage(settings.arguments);
+        },
+        "/avaliacao/resposta/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          ItemRespostaPageCRUDArguments args = settings.arguments;
+          return ItemRespostaCRUDPage(
+            authBloc: authBloc,
+            itemId: args.item,
+            respostaId: args.resposta,
+          );
         },
       },
     );

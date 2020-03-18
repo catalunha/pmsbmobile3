@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/avaliacao/item_resposta_list_bloc.dart';
+import 'package:pmsbmibile3/pages/page_arguments.dart';
 // import 'package:pmsbmibile3/state/auth_bloc.dart';
 // import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
 //     if (dart.library.io) 'packaimport 'package:piprof/auth_bloc.dart';
@@ -43,22 +44,23 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Setores deste item'),
-        ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: () {
-      //     Navigator.pushNamed(
-      //       context,
-      //       "/produto/crud",
-      //       arguments: null,
-      //     );
-      //   },
-      // ),
+        title: Text('Setores deste item'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            "/avaliacao/resposta/crud",
+            arguments: ItemRespostaPageCRUDArguments(
+                item: widget.itemId, resposta: null),
+          );
+        },
+      ),
       body: StreamBuilder<ItemRespostaListBlocState>(
         stream: bloc.stateStream,
-        builder:
-            (BuildContext context, AsyncSnapshot<ItemRespostaListBlocState> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<ItemRespostaListBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("Existe algo errado! Informe o suporte.");
           }
@@ -79,14 +81,15 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
                     children: <Widget>[
                       ListTile(
                         // leading: Text('${setor.indice}'),
-                        title: Text('${setor.setorNome}'),
+                        title: Text('${setor.setor.nome}'),
                         subtitle: Text('${setor.id}'),
                         onTap: () {
-                          // Navigator.pushNamed(
-                          //   context,
-                          //   "/item/crud",
-                          //   arguments: item.id,
-                          // );
+                          Navigator.pushNamed(
+                            context,
+                            "/avaliacao/resposta/crud",
+                            arguments: ItemRespostaPageCRUDArguments(
+                                item: widget.itemId, resposta: setor.id),
+                          );
                         },
                       ),
                       // Center(
