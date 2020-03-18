@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/avaliacao/produto_list.dart';
 import 'package:pmsbmibile3/pages/geral/versao.dart';
 import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_page.dart';
@@ -245,6 +246,12 @@ class MyApp extends StatelessWidget {
           final settings = ModalRoute.of(context).settings;
           return UsuarioGoogleDrivePage(settings.arguments);
         },
+
+        //Instrumento de avaliação
+        "/avaliacao/produto/list": (context) => ProdutoListPage(),
+
+
+
       },
       
     );
