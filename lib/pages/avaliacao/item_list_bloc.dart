@@ -49,6 +49,7 @@ class ItemListBloc {
   ItemListBloc(
     this._firestore,
     // this._authBloc,
+    produtoId
   ) {
     eventStream.listen(_mapEventToState);
     // _authBloc.perfil.listen((usuarioAuth) {
@@ -56,7 +57,6 @@ class ItemListBloc {
     //   if (!_stateController.isClosed) _stateController.add(_state);
     //   eventSink(GetProdutoEvent());
     // });
-    // eventSink(GetProdutoEvent());
   }
 
   void dispose() async {
@@ -72,6 +72,7 @@ class ItemListBloc {
 
   _mapEventToState(ItemListBlocEvent event) async {
     if (event is GetItemListEvent) {
+      print('event.produtoId: ${event.produtoId}');
       final streamDocsRemetente = _firestore
           .collection(IAItemModel.collection)
           .where("iaprodutoId", isEqualTo: event.produtoId)
@@ -82,10 +83,9 @@ class ItemListBloc {
           .documents
           .map((doc) => IAItemModel(id: doc.documentID).fromMap(doc.data))
           .toList());
-
       snapListRemetente.listen((List<IAItemModel> itemList) {
         // itemList.sort((a, b) => a.numero.compareTo(b.numero));
-        // print(itemList);
+        print('GetItemListEvent itemList.length${itemList.length}');
         // _state.itemList.clear();
         _state.itemList = itemList;
         if (!_stateController.isClosed) _stateController.add(_state);

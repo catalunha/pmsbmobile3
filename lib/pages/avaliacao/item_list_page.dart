@@ -72,7 +72,7 @@ class _ItemListPageState extends State<ItemListPage> {
             print('snapshot.data.itemList.length: ${snapshot.data.itemList.length}');
             // int ordemLocal = 1;
             for (var item in snapshot.data.itemList) {
-              print('listando item: ${item.id}');
+              // print('listando item: ${item.id}');
               listaWidget.add(
                 Card(
                   child: Column(

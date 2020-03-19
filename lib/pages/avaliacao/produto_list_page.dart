@@ -78,8 +78,8 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
                       ListTile(
                         leading: Text('${produto.indice}'),
                         title: Text('${produto.titulo}'),
-                        subtitle: Text('${produto.subtitulo}'),
-                        // subtitle: Text('${produto.subtitulo}\n${produto.id}'),
+                        // subtitle: Text('${produto.subtitulo}'),
+                        subtitle: Text('${produto.subtitulo}\n${produto.id}'),
                         onTap: (){
                           Navigator.pushNamed(
                                   context,
