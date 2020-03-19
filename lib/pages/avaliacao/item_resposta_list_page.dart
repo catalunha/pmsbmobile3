@@ -5,6 +5,8 @@ import 'package:pmsbmibile3/pages/page_arguments.dart';
 // import 'package:pmsbmibile3/state/auth_bloc.dart';
 // import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
 //     if (dart.library.io) 'packaimport 'package:piprof/auth_bloc.dart';
+import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
+    if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
 class ItemRespostaListPage extends StatefulWidget {
   final String itemId;
@@ -44,7 +46,7 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setores deste item'),
+        title: Text('Municípios neste item'),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -75,14 +77,47 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
             // int ordemLocal = 1;
             for (var setor in snapshot.data.itemRespostaList) {
               print('listando setor: ${setor.id}');
+              var icone;
+              if (setor.atendeTR == 'Sim') {
+                icone = Icon(
+                  Icons.thumb_up,
+                  color: Colors.green,
+                );
+              } else if (setor.atendeTR == 'Não') {
+                icone = Icon(
+                  Icons.thumb_down,
+                  color: Colors.red,
+                );
+              } else if (setor.atendeTR == 'Parcialmente') {
+                icone = Icon(
+                  Icons.thumbs_up_down,
+                  color: Colors.yellow,
+                );
+              }
               listaWidget.add(
                 Card(
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        // leading: Text('${setor.indice}'),
+                        // trailing: setor.documento != null
+                        //     ? Icon(
+                        //         Icons.link,
+                        //         // color: Colors.yellow,
+                        //       )
+                        //     : null,
+                        trailing: setor.documento != null
+                            ? IconButton(
+                                icon: Icon(Icons.link),
+                                onPressed: () {
+                                  try {
+                                    launch(setor.documento);
+                                  } catch (e) {}
+                                })
+                            : null,
+                        leading: icone,
                         title: Text('${setor.setor.nome}'),
-                        subtitle: Text('${setor.id}'),
+                        // subtitle: Text('${setor.id} | ${setor.atendeTR}'),
+                        subtitle: Text('${setor.descricao??''}'),
                         onTap: () {
                           Navigator.pushNamed(
                             context,
@@ -91,6 +126,13 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
                                 item: widget.itemId, resposta: setor.id),
                           );
                         },
+                        // onLongPress: setor.documento != null
+                        //     ? () {
+                        //         try {
+                        //           launch(setor.documento);
+                        //         } catch (e) {}
+                        //       }
+                        //     : null,
                       ),
                       // Center(
                       //   child: Wrap(

@@ -21,6 +21,10 @@ class GetItemEvent extends ItemRespostaCRUDBlocEvent {
   GetItemEvent(this.itemId);
 }
 
+class UpdateAtendeTREvent extends ItemRespostaCRUDBlocEvent {
+  final String atendeTR;
+  UpdateAtendeTREvent(this.atendeTR);
+}
 class GetSetorListEvent extends ItemRespostaCRUDBlocEvent {}
 
 class GetRespostaEvent extends ItemRespostaCRUDBlocEvent {
@@ -118,18 +122,16 @@ class ItemRespostaCRUDBloc {
     if (_state.atendeTR == null) {
       _state.isDataValid = false;
     }
-    if (_state.descricao == null) {
-      _state.isDataValid = false;
-    }
-    if (_state.documento == null) {
-      _state.isDataValid = false;
-    }
+    // if (_state.descricao == null) {
+    //   _state.isDataValid = false;
+    // }
+    // if (_state.documento == null) {
+    //   _state.isDataValid = false;
+    // }
     if (_state.setorDestino == null) {
       _state.isDataValid = false;
     }
-    if (_state.documento == null) {
-      _state.isDataValid = false;
-    }
+
   }
 
   _mapEventToState(ItemRespostaCRUDBlocEvent event) async {
@@ -182,15 +184,15 @@ class ItemRespostaCRUDBloc {
     }
 
     if (event is UpdateTextFieldEvent) {
-      if (event.campo == 'atendeTR') {
-        _state.atendeTR = event.texto;
-      } else if (event.campo == 'descricao') {
+      if (event.campo == 'descricao') {
         _state.descricao = event.texto;
       } else if (event.campo == 'documento') {
         _state.documento = event.texto;
       }
     }
-
+    if (event is UpdateAtendeTREvent) {
+      _state.atendeTR = event.atendeTR;
+    }
     if (event is SelectPastaIDEvent) {
       _state.setorDestino =
           SetorCensitarioID(id: event.pasta.id, nome: event.pasta.nome);

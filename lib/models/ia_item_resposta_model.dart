@@ -4,7 +4,6 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class IAItemRespostaModel extends FirestoreModel {
   static final String collection = "IAItemResposta";
 
-
   String atendeTR;
   String documento;
   String descricao;
@@ -16,7 +15,6 @@ class IAItemRespostaModel extends FirestoreModel {
 
   IAItemRespostaModel({
     String id,
-
     this.atendeTR,
     this.documento,
     this.descricao,
@@ -59,9 +57,11 @@ class IAItemRespostaModel extends FirestoreModel {
   @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (descricao != null) data['descricao'] = this.descricao;
+    if (descricao != null && descricao.isNotEmpty)
+      data['descricao'] = this.descricao.isEmpty ? null : this.descricao;
     if (atendeTR != null) data['atendeTR'] = this.atendeTR;
-    if (documento != null) data['documento'] = this.documento;
+    if (documento != null)
+      data['documento'] = this.documento.isEmpty ? null : this.documento;
     if (requisitoAtendeTR != null)
       data['requisitoAtendeTR'] = this.requisitoAtendeTR;
     if (requisitoStatus != null) data['requisitoStatus'] = this.requisitoStatus;

@@ -45,7 +45,7 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar resposta do setor'),
+        title: Text('Editar resposta no município'),
       ),
       floatingActionButton: StreamBuilder<ItemRespostaCRUDBlocState>(
           stream: bloc.stateStream,
@@ -82,10 +82,59 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
                     '* Atende ao Termo Referência:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
-              Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: _TextFieldMultiplo(bloc, 'atendeTR')),
-
+              // Padding(
+              //     padding: EdgeInsets.all(5.0),
+              //     child: _TextFieldMultiplo(bloc, 'atendeTR')),
+Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'Sim',
+                      groupValue: snapshot.data?.atendeTR,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                      },
+                    ),
+                    Icon(
+                  Icons.thumb_up,
+                  color: Colors.green,
+                ),
+                  ]),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'Parcialmente',
+                      groupValue: snapshot.data?.atendeTR,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                      },
+                    ),
+                    Icon(
+                  Icons.thumbs_up_down,
+                  color: Colors.yellow,
+                ),
+                  ]),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 'Não',
+                      groupValue: snapshot.data?.atendeTR,
+                      onChanged: (radioValue) {
+                        bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                      },
+                    ),
+                    Icon(
+                  Icons.thumb_down,
+                  color: Colors.red,
+                )
+                  ]),
+          
+            ]),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(

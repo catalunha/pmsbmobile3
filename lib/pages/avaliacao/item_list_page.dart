@@ -80,7 +80,7 @@ class _ItemListPageState extends State<ItemListPage> {
                       ListTile(
                         leading: Text('${item.indice}'),
                         title: Text('${item.descricao}'),
-                        subtitle: Text('${item.id}'),
+                        // subtitle: Text('${item.id}'),
                         onTap: () {
                           Navigator.pushNamed(
                             context,
