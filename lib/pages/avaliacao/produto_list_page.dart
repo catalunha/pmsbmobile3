@@ -36,8 +36,8 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,12 +66,11 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
+            print('iniciando produto_list_page');
+            print('snapshot.data.produtoList.length: ${snapshot.data.produtoList.length}');
 
-            // int lengthTurma = snapshot.data.produtoList.length;
-
-            // int ordemLocal = 1;
             for (var produto in snapshot.data.produtoList) {
-              print('listando produto: ${produto.id}');
+              // print('listando produto: ${produto.id}');
               listaWidget.add(
                 Card(
                   child: Column(

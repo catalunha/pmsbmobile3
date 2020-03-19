@@ -35,16 +35,16 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Itens deste produto'),
-        ),
+        title: Text('Itens deste produto'),
+      ),
       // floatingActionButton: FloatingActionButton(
       //   child: Icon(Icons.add),
       //   onPressed: () {
@@ -67,9 +67,9 @@ class _ItemListPageState extends State<ItemListPage> {
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
-
+            print('iniciando item_list_page');
             // int lengthTurma = snapshot.data.produtoList.length;
-
+            print('snapshot.data.itemList.length: ${snapshot.data.itemList.length}');
             // int ordemLocal = 1;
             for (var item in snapshot.data.itemList) {
               print('listando item: ${item.id}');
@@ -89,43 +89,6 @@ class _ItemListPageState extends State<ItemListPage> {
                           );
                         },
                       ),
-                      // Center(
-                      //   child: Wrap(
-                      //     children: <Widget>[
-                      //       // IconButton(
-                      //       //   tooltip: 'Descer ordem da turma',
-                      //       //   icon: Icon(Icons.arrow_downward),
-                      //       //   onPressed: (ordemLocal) < lengthTurma
-                      //       //       ? () {
-                      //       //           bloc.eventSink(
-                      //       //               OrdenarEvent(produto, false));
-                      //       //         }
-                      //       //       : null,
-                      //       // ),
-                      //       // IconButton(
-                      //       //   tooltip: 'Subir ordem da turma',
-                      //       //   icon: Icon(Icons.arrow_upward),
-                      //       //   onPressed: ordemLocal > 1
-                      //       //       ? () {
-                      //       //           bloc.eventSink(
-                      //       //               OrdenarEvent(produto, true));
-                      //       //         }
-                      //       //       : null,
-                      //       // ),
-                      //       IconButton(
-                      //         tooltip: 'Ver itens deste produto',
-                      //         icon: Icon(Icons.edit),
-                      //         onPressed: () {
-                      //           Navigator.pushNamed(
-                      //             context,
-                      //             "/produto/crud",
-                      //             arguments: produto.id,
-                      //           );
-                      //         },
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -135,7 +98,6 @@ class _ItemListPageState extends State<ItemListPage> {
             listaWidget.add(Container(
               padding: EdgeInsets.only(top: 70),
             ));
-
             return ListView(
               children: listaWidget,
             );

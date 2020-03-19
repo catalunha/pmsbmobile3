@@ -38,8 +38,8 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
 
   @override
   void dispose() {
-    super.dispose();
     bloc.dispose();
+    super.dispose();
   }
 
   @override

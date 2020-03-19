@@ -82,8 +82,8 @@ class ProdutoListBloc {
 
       snapListRemetente.listen((List<IAProdutoModel> produtoList) {
         // produtoList.sort((a, b) => a.numero.compareTo(b.numero));
-        print(produtoList);
-        _state.produtoList.clear();
+        // print(produtoList);
+        // _state.produtoList.clear();
         _state.produtoList = produtoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
@@ -114,6 +114,6 @@ class ProdutoListBloc {
     // }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
-    print('event.runtimeType em PastaList  = ${event.runtimeType}');
+    print('event.runtimeType em produto_list_bloc  = ${event.runtimeType}');
   }
 }

@@ -85,8 +85,8 @@ class ItemListBloc {
 
       snapListRemetente.listen((List<IAItemModel> itemList) {
         // itemList.sort((a, b) => a.numero.compareTo(b.numero));
-        print(itemList);
-        _state.itemList.clear();
+        // print(itemList);
+        // _state.itemList.clear();
         _state.itemList = itemList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
