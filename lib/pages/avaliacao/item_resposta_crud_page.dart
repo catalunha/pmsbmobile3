@@ -33,6 +33,7 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
     bloc.eventSink(GetItemEvent(widget.itemId));
     if (widget.respostaId != null)
       bloc.eventSink(GetRespostaEvent(widget.respostaId));
+    bloc.eventSink(GetSetorListEvent());
   }
 
   @override
@@ -85,60 +86,59 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
               // Padding(
               //     padding: EdgeInsets.all(5.0),
               //     child: _TextFieldMultiplo(bloc, 'atendeTR')),
-Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
+              Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Radio(
-                      value: 'Sim',
-                      groupValue: snapshot.data?.atendeTR,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateAtendeTREvent(radioValue));
-                      },
-                    ),
-                    Icon(
-                  Icons.thumb_up,
-                  color: Colors.green,
-                ),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Radio(
+                            value: 'Sim',
+                            groupValue: snapshot.data?.atendeTR,
+                            onChanged: (radioValue) {
+                              bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                            },
+                          ),
+                          Icon(
+                            Icons.thumb_up,
+                            color: Colors.green,
+                          ),
+                        ]),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Radio(
+                            value: 'Parcialmente',
+                            groupValue: snapshot.data?.atendeTR,
+                            onChanged: (radioValue) {
+                              bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                            },
+                          ),
+                          Icon(
+                            Icons.thumbs_up_down,
+                            color: Colors.yellow,
+                          ),
+                        ]),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Radio(
+                            value: 'Não',
+                            groupValue: snapshot.data?.atendeTR,
+                            onChanged: (radioValue) {
+                              bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                            },
+                          ),
+                          Icon(
+                            Icons.thumb_down,
+                            color: Colors.red,
+                          )
+                        ]),
                   ]),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'Parcialmente',
-                      groupValue: snapshot.data?.atendeTR,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateAtendeTREvent(radioValue));
-                      },
-                    ),
-                    Icon(
-                  Icons.thumbs_up_down,
-                  color: Colors.yellow,
-                ),
-                  ]),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'Não',
-                      groupValue: snapshot.data?.atendeTR,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateAtendeTREvent(radioValue));
-                      },
-                    ),
-                    Icon(
-                  Icons.thumb_down,
-                  color: Colors.red,
-                )
-                  ]),
-          
-            ]),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'Documento:',
+                    'Link do documento no Google Drive:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -148,45 +148,26 @@ Row(
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    '* Descrição:',
+                    'Descrição:',
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'descricao')),
+              snapshot.data?.respostaId == null
+                  ? Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        'Setor deste item:',
+                        style: TextStyle(fontSize: 15, color: Colors.blue),
+                      ))
+                  : Container(),
+              snapshot.data?.respostaId == null
+                  ? _pasta(context)
+                  : Container(),
 
+              
 
-              // SwitchListTile(
-              //   title: Text(
-              //     'Precisa de algoritmo para simulação ? ',
-              //     style: TextStyle(fontSize: 15, color: Colors.blue),
-              //   ),
-              //   value: snapshot.data?.precisaAlgoritmoPSimulacao ?? false,
-              //   onChanged: (bool value) {
-              //     bloc.eventSink(UpdatePrecisaAlgoritmoPSimulacaoEvent(value));
-              //   },
-              // ),
-              // if (snapshot.data?.precisaAlgoritmoPSimulacao != null &&
-              //     snapshot.data?.precisaAlgoritmoPSimulacao == false)
-              //   Padding(
-              //       padding: EdgeInsets.all(5.0),
-              //       child: Text(
-              //         '* Link para o arquivo do problema, que será visto pelo aluno:',
-              //         style: TextStyle(fontSize: 15, color: Colors.blue),
-              //       )),
-              // if (snapshot.data?.precisaAlgoritmoPSimulacao != null &&
-              //     snapshot.data?.precisaAlgoritmoPSimulacao == false)
-              //   Padding(
-              //       padding: EdgeInsets.all(5.0),
-              //       child:
-              //           _TextFieldMultiplo(bloc, 'urlSemAlgoritmo')),
-               Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Setor deste item:',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  )),
-                  _pasta(context),
               Divider(),
               Padding(
                 padding: EdgeInsets.all(5.0),

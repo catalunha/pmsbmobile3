@@ -83,7 +83,7 @@ class ProdutoListBloc {
       snapListRemetente.listen((List<IAProdutoModel> produtoList) {
         // produtoList.sort((a, b) => a.numero.compareTo(b.numero));
         // print(produtoList);
-        // _state.produtoList.clear();
+        _state.produtoList.clear();
         _state.produtoList = produtoList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });

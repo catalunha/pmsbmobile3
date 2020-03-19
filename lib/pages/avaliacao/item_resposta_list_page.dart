@@ -34,6 +34,7 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
       // widget.authBloc,
     );
     bloc.eventSink(GetItemRespostaListEvent(widget.itemId));
+    bloc.eventSink(GetItemEvent(widget.itemId));
   }
 
   @override
@@ -71,12 +72,7 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
-
-            // int lengthTurma = snapshot.data.produtoList.length;
-
-            // int ordemLocal = 1;
             for (var setor in snapshot.data.itemRespostaList) {
-              print('listando setor: ${setor.id}');
               var icone;
               if (setor.atendeTR == 'Sim') {
                 icone = Icon(
@@ -181,8 +177,21 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
               padding: EdgeInsets.only(top: 70),
             ));
 
-            return ListView(
-              children: listaWidget,
+            return Column(
+              children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: ListTile(
+                      subtitle: Text(
+                          '${snapshot.data.item.indice} - ${snapshot.data.item.descricao}'),
+                    )),
+                Expanded(
+                  flex: 10,
+                  child: ListView(
+                    children: listaWidget,
+                  ),
+                )
+              ],
             );
           } else {
             return Text('Existem dados inválidos. Informe o suporte.');

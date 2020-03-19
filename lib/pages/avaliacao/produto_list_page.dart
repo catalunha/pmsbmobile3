@@ -66,8 +66,8 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
-            print('iniciando produto_list_page');
-            print('snapshot.data.produtoList.length: ${snapshot.data.produtoList.length}');
+            // print('iniciando produto_list_page');
+            // print('snapshot.data.produtoList.length: ${snapshot.data.produtoList.length}');
 
             for (var produto in snapshot.data.produtoList) {
               // print('listando produto: ${produto.id}');

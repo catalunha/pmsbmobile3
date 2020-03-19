@@ -25,6 +25,7 @@ class UpdateAtendeTREvent extends ItemRespostaCRUDBlocEvent {
   final String atendeTR;
   UpdateAtendeTREvent(this.atendeTR);
 }
+
 class GetSetorListEvent extends ItemRespostaCRUDBlocEvent {}
 
 class GetRespostaEvent extends ItemRespostaCRUDBlocEvent {
@@ -107,7 +108,7 @@ class ItemRespostaCRUDBloc {
       eventSink(GetUsuarioAuthEvent(usuarioAuth));
       if (!_stateController.isClosed) _stateController.add(_state);
     });
-    eventSink(GetSetorListEvent());
+    // eventSink(GetSetorListEvent());
   }
 
   void dispose() async {
@@ -122,42 +123,57 @@ class ItemRespostaCRUDBloc {
     if (_state.atendeTR == null) {
       _state.isDataValid = false;
     }
-    // if (_state.descricao == null) {
-    //   _state.isDataValid = false;
-    // }
-    // if (_state.documento == null) {
-    //   _state.isDataValid = false;
-    // }
+
     if (_state.setorDestino == null) {
       _state.isDataValid = false;
     }
-
   }
 
   _mapEventToState(ItemRespostaCRUDBlocEvent event) async {
     if (event is GetUsuarioAuthEvent) {
       _state.usuarioAuth = event.usuarioAuth;
     }
+
     if (event is GetSetorListEvent) {
       final streamDocsRemetente = _firestore
-          .collection(SetorCensitarioModel.collection)
-          .orderBy('nome')
+          .collection(IAItemModel.collection)
+          .document(_state.itemId)
+          .collection(IAItemRespostaModel.collection)
+          // .orderBy('setor.nome')
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
           .documents
-          .map((doc) =>
-              SetorCensitarioModel(id: doc.documentID).fromMap(doc.data))
+          // .map((doc) => IAItemRespostaModel(id: doc.documentID).fromMap(doc.data))
+          .map((doc) => doc.documentID)
+          // .map((doc) => doc.data['setor.id'])
           .toList());
 
-      snapListRemetente.listen((List<SetorCensitarioModel> setorList) {
-        // setorList.sort((a, b) => a.numero.compareTo(b.numero));
-        _state.setorList.clear();
-        _state.setorList = setorList;
-        // print(_state.pastaList);
-        if (!_stateController.isClosed) _stateController.add(_state);
+      snapListRemetente.listen((List<dynamic> itemRespostaList) {
+        final streamDocsRemetente = _firestore
+            .collection(SetorCensitarioModel.collection)
+            .orderBy('nome')
+            .snapshots();
+
+        final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
+            .documents
+            .map((doc) =>
+                SetorCensitarioModel(id: doc.documentID).fromMap(doc.data))
+            .toList());
+
+        snapListRemetente.listen((List<SetorCensitarioModel> setorList) {
+          // setorList.sort((a, b) => a.numero.compareTo(b.numero));
+          // print(itemRespostaList);
+          setorList.removeWhere((item) => itemRespostaList.contains(item.id));
+          // print(setorList);
+          _state.setorList.clear();
+          _state.setorList = setorList;
+          // print(_state.pastaList);
+          if (!_stateController.isClosed) _stateController.add(_state);
+        });
       });
     }
+
     if (event is GetItemEvent) {
       _state.itemId = event.itemId;
       final docRef =
@@ -199,6 +215,9 @@ class ItemRespostaCRUDBloc {
     }
 
     if (event is SaveEvent) {
+      if (_state.respostaId == null) {
+        _state.respostaId = _state.setorDestino.id;
+      }
       final docRef = _firestore
           .collection(IAItemModel.collection)
           .document(_state.itemId)

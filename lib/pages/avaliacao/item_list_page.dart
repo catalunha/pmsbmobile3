@@ -31,6 +31,7 @@ class _ItemListPageState extends State<ItemListPage> {
       // widget.authBloc,
     );
     bloc.eventSink(GetItemListEvent(widget.produtoId));
+    bloc.eventSink(GetProdutoEvent(widget.produtoId));
   }
 
   @override
@@ -67,9 +68,12 @@ class _ItemListPageState extends State<ItemListPage> {
           }
           if (snapshot.data.isDataValid) {
             List<Widget> listaWidget = List<Widget>();
-            print('iniciando item_list_page');
+            // listaWidget.add(ListTile(
+            //   title: Text(
+            //       '${snapshot.data.produto.indice} - ${snapshot.data.produto.titulo} ${snapshot.data.produto.subtitulo}'),
+            // ));
+            print('iniciando item_list_page: ${snapshot.data.itemList.length}');
             // int lengthTurma = snapshot.data.produtoList.length;
-            print('snapshot.data.itemList.length: ${snapshot.data.itemList.length}');
             // int ordemLocal = 1;
             for (var item in snapshot.data.itemList) {
               // print('listando item: ${item.id}');
@@ -98,8 +102,21 @@ class _ItemListPageState extends State<ItemListPage> {
             listaWidget.add(Container(
               padding: EdgeInsets.only(top: 70),
             ));
-            return ListView(
-              children: listaWidget,
+            return Column(
+              children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: ListTile(
+                      subtitle: Text(
+                          '${snapshot.data.produto.indice} - ${snapshot.data.produto.titulo} ${snapshot.data.produto.subtitulo}'),
+                    )),
+                Expanded(
+                  flex: 10,
+                  child: ListView(
+                    children: listaWidget,
+                  ),
+                )
+              ],
             );
           } else {
             return Text('Existem dados inválidos. Informe o suporte.');

@@ -1,3 +1,4 @@
+import 'package:pmsbmibile3/models/ia_produto_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:pmsbmibile3/models/ia_item_model.dart';
 import 'package:firestore_wrapper/firestore_wrapper.dart' as fsw;
@@ -8,6 +9,12 @@ class GetItemListEvent extends ItemListBlocEvent {
   final String produtoId;
 
   GetItemListEvent(this.produtoId);
+}
+
+class GetProdutoEvent extends ItemListBlocEvent {
+  final String produtoId;
+
+  GetProdutoEvent(this.produtoId);
 }
 // class OrdenarEvent extends ItemListBlocEvent {
 //   final IAProdutoModel obj;
@@ -26,6 +33,7 @@ class GetItemListEvent extends ItemListBlocEvent {
 
 class ItemListBlocState {
   bool isDataValid = false;
+  IAProdutoModel produto = IAProdutoModel();
   List<IAItemModel> itemList = List<IAItemModel>();
 }
 
@@ -49,7 +57,6 @@ class ItemListBloc {
   ItemListBloc(
     this._firestore,
     // this._authBloc,
-    produtoId
   ) {
     eventStream.listen(_mapEventToState);
     // _authBloc.perfil.listen((usuarioAuth) {
@@ -72,7 +79,7 @@ class ItemListBloc {
 
   _mapEventToState(ItemListBlocEvent event) async {
     if (event is GetItemListEvent) {
-      print('event.produtoId: ${event.produtoId}');
+      // print('event.produtoId: ${event.produtoId}');
       final streamDocsRemetente = _firestore
           .collection(IAItemModel.collection)
           .where("iaprodutoId", isEqualTo: event.produtoId)
@@ -85,8 +92,8 @@ class ItemListBloc {
           .toList());
       snapListRemetente.listen((List<IAItemModel> itemList) {
         // itemList.sort((a, b) => a.numero.compareTo(b.numero));
-        print('GetItemListEvent itemList.length${itemList.length}');
-        // _state.itemList.clear();
+        // print('GetItemListEvent itemList.length${itemList.length}');
+        _state.itemList.clear();
         _state.itemList = itemList;
         if (!_stateController.isClosed) _stateController.add(_state);
       });
@@ -112,9 +119,15 @@ class ItemListBloc {
     //     if (!_stateController.isClosed) _stateController.add(_state);
     //   });
     // }
-    // if (event is ResetCreateRelatorioEvent) {
-    //   _state.pedidoRelatorio = null;
-    // }
+    if (event is GetProdutoEvent) {
+      final futureDocSnap = await _firestore
+          .collection(IAProdutoModel.collection)
+          .document(event.produtoId)
+          .get();
+
+      _state.produto = IAProdutoModel(id: futureDocSnap.documentID)
+          .fromMap(futureDocSnap.data);
+    }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em item_list_bloc.dart  = ${event.runtimeType}');

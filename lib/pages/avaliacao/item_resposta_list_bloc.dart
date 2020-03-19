@@ -10,6 +10,12 @@ class GetItemRespostaListEvent extends ItemRespostaListBlocEvent {
 
   GetItemRespostaListEvent(this.itemId);
 }
+
+class GetItemEvent extends ItemRespostaListBlocEvent {
+  final String itemId;
+
+  GetItemEvent(this.itemId);
+}
 // class OrdenarEvent extends ItemRespostaListBlocEvent {
 //   final IAProdutoModel obj;
 //   final bool up;
@@ -27,6 +33,8 @@ class GetItemRespostaListEvent extends ItemRespostaListBlocEvent {
 
 class ItemRespostaListBlocState {
   bool isDataValid = false;
+  IAItemModel item = IAItemModel();
+
   List<IAItemRespostaModel> itemRespostaList = List<IAItemRespostaModel>();
 }
 
@@ -82,12 +90,13 @@ class ItemRespostaListBloc {
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
           .documents
-          .map((doc) => IAItemRespostaModel(id: doc.documentID).fromMap(doc.data))
+          .map((doc) =>
+              IAItemRespostaModel(id: doc.documentID).fromMap(doc.data))
           .toList());
 
       snapListRemetente.listen((List<IAItemRespostaModel> itemRespostaList) {
         // itemRespostaList.sort((a, b) => a.numero.compareTo(b.numero));
-        print(itemRespostaList);
+        // print(itemRespostaList);
         _state.itemRespostaList.clear();
         _state.itemRespostaList = itemRespostaList;
         if (!_stateController.isClosed) _stateController.add(_state);
@@ -114,9 +123,15 @@ class ItemRespostaListBloc {
     //     if (!_stateController.isClosed) _stateController.add(_state);
     //   });
     // }
-    // if (event is ResetCreateRelatorioEvent) {
-    //   _state.pedidoRelatorio = null;
-    // }
+    if (event is GetItemEvent) {
+      final futureDocSnap = await _firestore
+          .collection(IAItemModel.collection)
+          .document(event.itemId)
+          .get();
+
+      _state.item =
+          IAItemModel(id: futureDocSnap.documentID).fromMap(futureDocSnap.data);
+    }
     _validateData();
     if (!_stateController.isClosed) _stateController.add(_state);
     print('event.runtimeType em PastaList  = ${event.runtimeType}');
