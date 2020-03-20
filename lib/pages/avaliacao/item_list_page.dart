@@ -72,7 +72,7 @@ class _ItemListPageState extends State<ItemListPage> {
             //   title: Text(
             //       '${snapshot.data.produto.indice} - ${snapshot.data.produto.titulo} ${snapshot.data.produto.subtitulo}'),
             // ));
-            print('iniciando item_list_page: ${snapshot.data.itemList.length}');
+            print('iniciando item_list_page do IAProduto: ${snapshot.data.produto.id}');
             // int lengthTurma = snapshot.data.produtoList.length;
             // int ordemLocal = 1;
             for (var item in snapshot.data.itemList) {
@@ -84,7 +84,7 @@ class _ItemListPageState extends State<ItemListPage> {
                       ListTile(
                         leading: Text('${item.indice}'),
                         title: Text('${item.descricao}'),
-                        // subtitle: Text('${item.id}'),
+                        subtitle: Text('${item.id}'),
                         onTap: () {
                           Navigator.pushNamed(
                             context,

@@ -71,6 +71,8 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.data.isDataValid) {
+                        print('iniciando ItemRespostaListPage do IAItem: ${snapshot.data.item.id}');
+
             List<Widget> listaWidget = List<Widget>();
             for (var setor in snapshot.data.itemRespostaList) {
               var icone;

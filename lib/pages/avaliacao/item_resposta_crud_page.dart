@@ -46,7 +46,9 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar resposta no município'),
+        title: widget?.respostaId == null
+            ? Text('Criar resposta  do item')
+            : Text('Atualizar resposta do item'),
       ),
       floatingActionButton: StreamBuilder<ItemRespostaCRUDBlocState>(
           stream: bloc.stateStream,
@@ -77,6 +79,17 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
           return ListView(
             padding: EdgeInsets.all(5),
             children: <Widget>[
+              ListTile(
+                subtitle: Text(
+                    '${snapshot.data?.item?.indice} - ${snapshot.data?.item?.descricao}'),
+              ),
+              snapshot.data?.respostaId == null
+                  ? _pasta(context)
+                  : ListTile(
+                      title: widget?.respostaId == null
+                          ? Text('Para: escolha logo abaixo')
+                          : Text('Para: ${snapshot.data?.resposta?.setor?.nome}'),
+                    ),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -154,19 +167,15 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'descricao')),
-              snapshot.data?.respostaId == null
-                  ? Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Text(
-                        'Setor deste item:',
-                        style: TextStyle(fontSize: 15, color: Colors.blue),
-                      ))
-                  : Container(),
-              snapshot.data?.respostaId == null
-                  ? _pasta(context)
-                  : Container(),
-
-              
+              // snapshot.data?.respostaId == null
+              //     ? Padding(
+              //         padding: EdgeInsets.all(5.0),
+              //         child: Text(
+              //           'Setor deste item:',
+              //           style: TextStyle(fontSize: 15, color: Colors.blue),
+              //         ))
+              //     : Container(),
+              // snapshot.data?.respostaId == null ? _pasta(context) : Container(),
 
               Divider(),
               Padding(
@@ -192,11 +201,11 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
         stream: bloc.stateStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Text('Sem setor');
+            return Text('Sem município');
           }
           Widget texto;
           if (snapshot.data.setorDestino == null) {
-            texto = Text('Setor não selecionado');
+            texto = Text('Município não selecionado');
           } else {
             texto = Text('${snapshot.data?.setorDestino?.nome}');
           }
