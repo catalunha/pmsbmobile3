@@ -185,6 +185,7 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: true,
       title: Text("Produto"),
       body: _body(context),
       floatingActionButton: FloatingActionButton(

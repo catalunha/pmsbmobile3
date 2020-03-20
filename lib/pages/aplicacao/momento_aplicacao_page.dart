@@ -193,6 +193,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: false,
       title: Text("Local/Pessoa/Momento de aplicação"),
       // appBar: AppBar(
       //   centerTitle: true,

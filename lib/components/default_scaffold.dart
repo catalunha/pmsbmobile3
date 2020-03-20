@@ -322,6 +322,7 @@ class DefaultScaffold extends StatelessWidget {
   final Widget bottom;
   final Color backgroundColor;
   final FloatingActionButtonLocation floatingActionButtonLocation;
+  final bool backToRootPage;
 
   const DefaultScaffold({
     Key key,
@@ -333,6 +334,7 @@ class DefaultScaffold extends StatelessWidget {
     this.backgroundColor,
     this.bottom,
     this.floatingActionButtonLocation,
+    @required this.backToRootPage
   }) : super(key: key);
 
   Widget _appBarBuild(BuildContext context) {
@@ -342,9 +344,12 @@ class DefaultScaffold extends StatelessWidget {
           Icons.arrow_back,
           size: 25,
         ),
-        onPressed: () {
+        onPressed: this.backToRootPage ?        
+        () {
+          Navigator.popAndPushNamed(context,'/');
+        }:(){
           Navigator.pop(context);
-        },
+        }
       ),
       // backgroundColor: PmsbColors.fundo,
       backgroundColor: PmsbColors.fundo,

@@ -35,6 +35,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+        backToRootPage: true,
         title: Text('Desenvolvimento - teste'),
         body: StreamBuilder<PageState>(
             stream: bloc.stateStream,
@@ -69,7 +70,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                     ),
                   ),
                   ListTile(
-                    title: Text('Atualizar eixo de acesso de UsuarioCollection.'),
+                    title:
+                        Text('Atualizar eixo de acesso de UsuarioCollection.'),
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
@@ -111,7 +113,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future atualizarRoutesTodos() async {
-    var collRef = await _firestore.collection(UsuarioModel.collection).getDocuments();
+    var collRef =
+        await _firestore.collection(UsuarioModel.collection).getDocuments();
 
     for (var documentSnapshot in collRef.documents) {
       if (documentSnapshot.data.containsKey('routes')) {
@@ -140,7 +143,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
           "/versao",
         ]);
 
-        await documentSnapshot.reference.setData({"routes": routes}, merge: true);
+        await documentSnapshot.reference
+            .setData({"routes": routes}, merge: true);
       } else {
         print('Sem routes ${documentSnapshot.documentID}');
       }
@@ -148,7 +152,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   }
 
   Future atualizarRoutes(String userId) async {
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
     var snap = await docRef.get();
     List<dynamic> routes = List<dynamic>();
     routes.addAll(snap.data['routes']);
@@ -175,7 +180,6 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     ]);
 
     await docRef.setData({"routes": routes}, merge: true);
-
   }
 
   Future atualizarEixoAcesso(String userId) async {
@@ -191,7 +195,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         EixoID(id: 'administracao', nome: 'Administração'),
       ],
     );
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
@@ -231,10 +236,10 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       ],
       setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'pal'),
     );
-    final docRef = _firestore.collection(UsuarioModel.collection).document(userId);
+    final docRef =
+        _firestore.collection(UsuarioModel.collection).document(userId);
 
     await docRef.setData(usuarioModel.toMap(), merge: true);
     // print('>>> ok <<< ');
   }
-
 }

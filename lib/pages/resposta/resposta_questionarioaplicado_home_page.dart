@@ -151,6 +151,7 @@ class _RespostaQuestionarioAplicadoHomePageState
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
+        backToRootPage: true,
         title: Text('Resposta do Questionário'),
         body: _body(),
       ),

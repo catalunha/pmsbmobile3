@@ -96,9 +96,9 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: false,
       title: Text('Aplicando Questionário'),
       body: _bodyTodos(),
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: PmsbColors.cor_destaque,
         child: Icon(Icons.add),

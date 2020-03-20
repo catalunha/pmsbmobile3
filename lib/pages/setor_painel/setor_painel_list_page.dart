@@ -47,6 +47,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
     return DefaultTabController(
         length: myTabs.length,
         child: DefaultScaffold(
+          backToRootPage: true,
           title: Text('Painel'),
           bottom: TabBar(
             tabs: myTabs,

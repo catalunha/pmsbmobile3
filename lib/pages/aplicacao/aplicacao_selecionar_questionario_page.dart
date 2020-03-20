@@ -25,6 +25,7 @@ class _AplicacaoSelecionarQuestionarioPage
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: false,
       title: Text("Selecionar Questionario"),
       body: SafeArea(
         child: StreamBuilder<MomentoAplicacaoPageBlocState>(

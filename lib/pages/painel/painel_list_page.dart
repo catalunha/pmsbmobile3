@@ -46,6 +46,7 @@ class _PainelListPageState extends State<PainelListPage> {
     return DefaultTabController(
       length: myTabs.length,
       child: DefaultScaffold(
+        backToRootPage: false,
         title: Text('Adicionar/Editar itens do painel'),
         bottom: TabBar(
           tabs: myTabs,

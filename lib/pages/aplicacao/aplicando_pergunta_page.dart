@@ -182,6 +182,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: false,
       //appBar: AppBar(
       //  centerTitle: true,
       title: Text("Aplicando pergunta"),

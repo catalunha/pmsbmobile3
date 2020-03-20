@@ -35,6 +35,7 @@ class _UploadPageState extends State<UploadPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+        backToRootPage: true,
         title: Text("Uploads Pendentes"),
         body: Container(
           color: PmsbColors.fundo,

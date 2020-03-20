@@ -36,6 +36,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: true,
       title: Text("Administração"),
       body: Container(
         color: PmsbColors.fundo,

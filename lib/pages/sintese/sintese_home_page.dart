@@ -5,6 +5,7 @@ class SinteseHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage:true ,
       backgroundColor: Colors.red,
       title: Text("Síntese dos questionários"),
       body: Center(

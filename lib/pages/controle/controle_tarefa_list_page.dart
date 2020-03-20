@@ -325,6 +325,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
     return DefaultTabController(
       length: 2,
       child: DefaultScaffold(
+        backToRootPage: true,
         bottom: TabBar(
           tabs: [
             Tab(text: "Destinatário/Recebida"),
