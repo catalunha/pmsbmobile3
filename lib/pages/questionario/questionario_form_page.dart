@@ -83,7 +83,8 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
             " Questionário"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.thumb_up), 
+        child: Icon(Icons.thumb_up, color: Colors.white,), 
+        backgroundColor: PmsbColors.cor_destaque,
         onPressed: () {
           bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
           Navigator.pop(context);

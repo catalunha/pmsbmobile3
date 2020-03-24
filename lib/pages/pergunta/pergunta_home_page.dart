@@ -100,7 +100,7 @@ class PerguntaHomePage extends StatelessWidget {
                 questionarioID: _questionarioId),
           );
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white,),
         backgroundColor: PmsbColors.cor_destaque,
       ),
     );
