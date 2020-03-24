@@ -144,7 +144,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                         }),
                 title: isBound
                     ? Text("Escolhido: ${questionario.id}")
-                    : Text("Escolha um questionario: "),
+                    : Text("Escolha um questionário: "),
                 subtitle:
                     Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
               );
@@ -153,7 +153,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         Padding(
           padding: EdgeInsets.all(5),
           child: Text(
-            "Referencia: Local/Pessoa/Momento na aplicação:",
+            "Referência: Local/Pessoa/Momento na aplicação:",
             style: TextStyle(color: Colors.blue, fontSize: 15),
           ),
         ),
@@ -341,7 +341,7 @@ class ListaRequisitos extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text("Lista de referencias:"),
+              title: Text("Lista de referências:"),
             ),
             ...requisitosMap
                 .map(
