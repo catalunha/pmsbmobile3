@@ -286,7 +286,10 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                     bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
                     Navigator.of(context).pop();
                   },
-            child: Icon(Icons.check, color: Colors.white,),
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
             backgroundColor: PmsbColors.cor_destaque,
           );
         },
