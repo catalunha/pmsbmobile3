@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
@@ -47,7 +48,6 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     super.dispose();
   }
 
-
   Widget _pergunta() {
     return StreamBuilder<EditarApagarPerguntaBlocState>(
       stream: bloc.state,
@@ -66,7 +66,6 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
       },
     );
   }
-
 
   _iconesLista() {
     return Row(
@@ -158,7 +157,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   _atualizarMarkdown(texto, posicao) {
     String inicio =
         myController.text.substring(0, myController.selection.baseOffset);
-   String fim = myController.text
+    String fim = myController.text
         .substring(myController.selection.baseOffset, myController.text.length);
 
     myController.text = "$inicio$texto$fim";
@@ -231,7 +230,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                   ));
                 },
               ),
-              _texto("Titulo da pergunta:"),
+              _texto("Título da pergunta:"),
               TituloInputField(bloc),
               _texto("Texto da pergunta:"),
               _textoMarkdownField(),
@@ -239,8 +238,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               // _botaoDeletarPergunta(),
               _DeleteDocumentOrField(bloc),
               Container(
-              padding: EdgeInsets.only(top: 80),
-            ),
+                padding: EdgeInsets.only(top: 80),
+              ),
             ],
           ),
         ),
@@ -261,12 +260,17 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     myController.setTextAndPosition(myController.text);
 
     return Scaffold(
+      backgroundColor: PmsbColors.fundo,
       appBar: AppBar(
+        backgroundColor: PmsbColors.fundo,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        centerTitle: true,
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Editar apagar pergunta"),
+        title: Text("Editar/Apagar pergunta"),
       ),
       body: _bodyTexto(context),
       floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
@@ -282,8 +286,8 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                     bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
                     Navigator.of(context).pop();
                   },
-            child: Icon(Icons.cloud_upload),
-            backgroundColor: !snapshot.data.isValid ? Colors.grey : Colors.blue,
+            child: Icon(Icons.check, color: Colors.white,),
+            backgroundColor: PmsbColors.cor_destaque,
           );
         },
       ),

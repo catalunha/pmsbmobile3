@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class QuestionarioFormPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -49,7 +50,7 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    "Titulo do questionario:",
+                    "Título do questionário:",
                     style: TextStyle(fontSize: 15, color: Colors.blue),
                   )),
               Padding(
@@ -68,16 +69,22 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: PmsbColors.fundo,
       appBar: AppBar(
+        backgroundColor: PmsbColors.fundo,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        centerTitle: true,
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
-            " Questionario"),
+            " Questionário"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.thumb_up),
+        child: Icon(Icons.thumb_up, color: Colors.white,), 
+        backgroundColor: PmsbColors.cor_destaque,
         onPressed: () {
           bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
           Navigator.pop(context);
@@ -153,7 +160,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
         return Row(
           children: <Widget>[
             Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
+            Text('Para apagar digite CONCORDO e clique:  '),
             Container(
               child: Flexible(
                 child: TextField(

@@ -118,7 +118,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                           questionario.id
                                   ? IconButton(
                                       tooltip:
-                                          'Ver relatório desta questionario.',
+                                          'Ver relatório deste questionario.',
                                       icon: Icon(
                                         Icons.link,
                                         color: Colors.green,
