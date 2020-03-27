@@ -53,6 +53,7 @@ class _ConfiguracaoHomeState extends State<ConfiguracaoHome> {
               ),
             ),
             Card(
+              color: PmsbColors.card,
               child: ListTile(
                 onTap: () {
                   Navigator.pushNamed(context, "/perfil/configuracao");
@@ -67,6 +68,7 @@ class _ConfiguracaoHomeState extends State<ConfiguracaoHome> {
               ),
             ),
             Card(
+              color: PmsbColors.card,
               child: ListTile(
                 onTap: () {
                   Navigator.pushNamed(context, "/perfil");
@@ -81,6 +83,7 @@ class _ConfiguracaoHomeState extends State<ConfiguracaoHome> {
               ),
             ),
             Card(
+              color: PmsbColors.card,
               child: ListTile(
                 onTap: () {
                   Navigator.pushNamed(context, "/versao");
@@ -110,6 +113,7 @@ class _ConfiguracaoHomeState extends State<ConfiguracaoHome> {
                   } else {
                     // MODO OFFLINE -----------------------------------------------
                     list.add(Card(
+                      color: PmsbColors.card,
                       child: ListTile(
                         title: Text("Habilitar modo offline"),
                         onTap: () async {
@@ -130,6 +134,7 @@ class _ConfiguracaoHomeState extends State<ConfiguracaoHome> {
                   }
                   list.add(
                     Card(
+                      color: PmsbColors.card,
                       child: ListTile(
                         onTap: () {
                           authBloc.dispatch(LogoutAuthBlocEvent());

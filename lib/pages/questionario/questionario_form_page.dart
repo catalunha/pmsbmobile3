@@ -5,6 +5,7 @@ import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart'
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class QuestionarioFormPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -57,12 +58,25 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
                 padding: EdgeInsets.all(5.0),
                 child: NomeFormItem(bloc),
               ),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: _DeleteDocumentOrField(bloc),
-              )
+              ListTile(
+                title: Text("Apagar"),
+                trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      _apagarAplicacao(context, bloc);
+                    }),
+              ),
+              Divider(color: Colors.black87),
             ],
           );
+        });
+  }
+
+  void _apagarAplicacao(context, QuestionarioFormPageBloc bloc) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(child: _DeleteDocumentOrField(bloc));
         });
   }
 
@@ -83,7 +97,10 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
             " Questionário"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.thumb_up, color: Colors.white,), 
+        child: Icon(
+          Icons.thumb_up,
+          color: Colors.white,
+        ),
         backgroundColor: PmsbColors.cor_destaque,
         onPressed: () {
           bloc.dispatch(SaveQuestionarioFormPageBlocEvent());
@@ -157,29 +174,139 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
       stream: bloc.instance,
       builder:
           (BuildContext context, AsyncSnapshot<QuestionarioModel> snapshot) {
-        return Row(
-          children: <Widget>[
-            Divider(),
-            Text('Para apagar digite CONCORDO e clique:  '),
-            Container(
-              child: Flexible(
-                child: TextField(
-                  controller: _textFieldController,
+        return Container(
+          height: 250,
+          color: PmsbColors.fundo,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text(
+                  'Para apagar, digite CONCORDO na caixa de texto abaixo e confirme:  ',
+                  style: PmsbStyles.textoPrimario,
                 ),
-              ),
+                Container(
+                  child: Flexible(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Digite aqui",
+                        hintStyle: TextStyle(
+                            color: Colors.white38, fontStyle: FontStyle.italic),
+                      ),
+                      controller: _textFieldController,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    // Botao de cancelar delete
+                    // GestureDetector(
+                    //  onTap: () {
+                    //return;
+                    // },
+                    Container(
+                      height: 50.0,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffEB3349),
+                                Color(0xffF45C43),
+                                Color(0xffEB3349)
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: 150.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Cancelar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Botao de confirmar delete
+                    GestureDetector(
+                      onTap: () {
+                        if (_textFieldController.text == 'CONCORDO') {
+                          bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Container(
+                        height: 50.0,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xff1D976C),
+                                  Color(0xff1D976C),
+                                  Color(0xff93F9B9)
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: 150.0, minHeight: 50.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Confirmar",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                // IconButton(
+                //   icon: Icon(Icons.delete),
+                //   onPressed: () {
+                //     //Ir para a pagina visuais do produto
+                //     if (_textFieldController.text == 'CONCORDO') {
+                //       bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+                //       Navigator.of(context).pop();
+                //     }
+                //   },
+                // )
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                if (_textFieldController.text == 'CONCORDO') {
-                  bloc.dispatch(DeleteQuestionarioFormPageBlocEvent());
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
+          ),
         );
       },
     );
   }
 }
+//child: Container(
+// color: Colors.red,
+//child: Padding(
+//padding: const EdgeInsets.all(10.0),
+// child:
+// Text('Cancelar', style: PmsbStyles.textoPrimario),
+// ),
+// ),
