@@ -40,7 +40,7 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
         bottomOpacity: 0.0,
         elevation: 0.0,
         centerTitle: true,
-        title: Text('Editar número do CPF'),
+        title: Text('Editar Documento'),
       ),
       body: ListView(
         children: <Widget>[
