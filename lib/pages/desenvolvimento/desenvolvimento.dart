@@ -2060,8 +2060,8 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
       // '/produto/home',
       // '/comunicacao/home',
       '/controle/home',
-      '/setor_painel/home'
-      '/avaliacao/produto/list'
+      '/setor_painel/home',
+      '/avaliacao/produto/list',
       '/administracao/home',
       // endDrawer
       '/perfil/configuracao',
