@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:firestore_wrapper_flutter/firestore_wrapper_flutter.dart';
+// import 'package:firestore_wrapper_flutter/firestore_wrapper_flutter.dart';
 import 'package:pmsbmibile3/models/ia_config_model.dart';
 import 'package:pmsbmibile3/models/ia_execucao_model.dart';
 import 'package:pmsbmibile3/models/ia_item_model.dart';
@@ -54,104 +54,104 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                 children: <Widget>[
                   Text(
                       'Algumas vezes precisamos fazer alimentação das coleções, teste de telas ou outras ações dentro do aplicativo em desenvolvimento. Por isto criei estes botões para facilitar de forma rápida estas ações.'),
-                  ListTile(
-                    title: Text('collectionGroup'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        //Desenvolvimento
-                        await testeCollectionGroup();
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('IA - Execucao.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        //Desenvolvimento
-                        // await iaExecucao();
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('IA - Produto.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        //Desenvolvimento
-                        // await iaProduto();
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('IA - Itens.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        //Desenvolvimento
-                        // await iaItens();
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('IA - Config.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        //Desenvolvimento
-                        // await iaConfig();
-                      },
-                    ),
-                  ),
+                  // ListTile(
+                  //   title: Text('collectionGroup'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       //Desenvolvimento
+                  //       // await testeCollectionGroup();
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text('IA - Execucao.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       //Desenvolvimento
+                  //       // await iaExecucao();
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text('IA - Produto.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       //Desenvolvimento
+                  //       // await iaProduto();
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text('IA - Itens.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       //Desenvolvimento
+                  //       // await iaItens();
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text('IA - Config.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       //Desenvolvimento
+                  //       // await iaConfig();
+                  //     },
+                  //   ),
+                  // ),
                   ListTile(
                     title: Text('Criar Usuario em UsuarioCollection.'),
                     trailing: IconButton(
                       icon: Icon(Icons.menu),
                       onPressed: () async {
                         //Desenvolvimento
-                        // await usuarioPMSBWEB('Aq96qoxA0zgLfNDPGPCzFRAYtkl2');
+                        await criarUsuarioCollection();
                       },
                     ),
                   ),
-                  ListTile(
-                    title: Text('Atualizar routes de UsuarioCollection.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        // await atualizarRoutes('YaTtTki7PZPPHznqpVtZrW6mIa42');
-                        // await atualizarRoutesTodos();
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title:
-                        Text('Atualizar eixo de acesso de UsuarioCollection.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        // await atualizarEixoAcesso('ysqq0XARJnZoxIzIc43suDm7gaK2');
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Teste delete.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        // await atualizarEixoAcesso('SftB5Ix0d4MaHLEs8LASoT7KKl13');
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Testar comandos firebase.'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () async {
-                        // await testarFirebaseCmds();
-                      },
-                    ),
-                  ),
+                  // ListTile(
+                  //   title: Text('Atualizar routes de UsuarioCollection.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       // await atualizarRoutes('YaTtTki7PZPPHznqpVtZrW6mIa42');
+                  //       // await atualizarRoutesTodos();
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title:
+                  //       Text('Atualizar eixo de acesso de UsuarioCollection.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       // await atualizarEixoAcesso('ysqq0XARJnZoxIzIc43suDm7gaK2');
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text('Teste delete.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       // await atualizarEixoAcesso('SftB5Ix0d4MaHLEs8LASoT7KKl13');
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: Text('Testar comandos firebase.'),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.menu),
+                  //     onPressed: () async {
+                  //       // await testarFirebaseCmds();
+                  //     },
+                  //   ),
+                  // ),
                 ],
               );
             }));
@@ -2041,29 +2041,38 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
     await docRef.setData(usuarioModel.toMap(), merge: true);
   }
 
-  Future usuarioCatalunhaUFT(String userId) async {
+  Future criarUsuarioCollection() async {
+    String userId='qgCxh7Rw2CRGmzySw8DGBUSDj9B2';
     UsuarioModel usuarioModel = UsuarioModel(
       id: userId,
       ativo: true,
-      nome: 'Catalunha UFT',
+      nome: 'Jucilene',
       celular: '0',
-      email: 'catalunha@uft.edu.br',
+      email: 'jucilene@uft.edu.br',
       routes: [
-        '/',
-        '/desenvolvimento',
-        '/upload',
-        '/questionario/home',
-        '/aplicacao/home',
-        '/resposta/home',
-        '/sintese/home',
-        '/produto/home',
-        '/comunicacao/home',
-        '/administracao/home',
-        '/controle/home'
+      //Drawer
+      '/',
+      '/upload',
+      '/questionario/home',
+      '/aplicacao/home',
+      '/resposta/home',
+      // '/sintese/home',
+      // '/produto/home',
+      // '/comunicacao/home',
+      '/controle/home',
+      '/setor_painel/home'
+      '/avaliacao/produto/list'
+      '/administracao/home',
+      // endDrawer
+      '/perfil/configuracao',
+      '/perfil',
+      // '/painel/home',
+      '/modooffline',
+      "/versao",
       ],
-      cargoID: CargoID(id: 'coordenador', nome: 'Coord'),
-      eixoID: EixoID(id: 'estatisticadsti', nome: ''),
-      eixoIDAtual: EixoID(id: 'estatisticadsti', nome: ''),
+      cargoID: CargoID(id: 'estagiario', nome: 'Estagiário'),
+      eixoID: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
+      eixoIDAtual: EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
       eixoIDAcesso: [
         EixoID(id: 'abastecimentodeagua', nome: 'Abastecimento de Agua'),
         EixoID(id: 'drenagemurbana', nome: 'Drenagem Urbana'),
@@ -2074,7 +2083,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
         EixoID(id: 'administracao', nome: 'Administração'),
         EixoID(id: 'saude', nome: 'Saúde'),
       ],
-      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'pal'),
+      setorCensitarioID: SetorCensitarioID(id: 'palmas', nome: 'Palmas'),
     );
     final docRef =
         _firestore.collection(UsuarioModel.collection).document(userId);
