@@ -371,6 +371,7 @@ class AtualizarNomeNoProjetoState extends State<AtualizarNomeNoProjeto> {
 }
 
 class FotoUsuario extends StatelessWidget {
+  
   String fotoUrl;
   String fotoLocalPath;
   final ConfiguracaoPageBloc bloc;
