@@ -9,6 +9,7 @@ import 'package:pmsbmibile3/style/pmsb_colors.dart';
 class PerguntaRequisitoPage extends StatelessWidget {
   final String perguntaID;
   final PerguntaRequisitoBloc bloc;
+
   bool isGoingDown = true;
   PerguntaRequisitoPage({this.perguntaID})
       : bloc = PerguntaRequisitoBloc(Bootstrap.instance.firestore) {
@@ -114,7 +115,10 @@ class PerguntaRequisitoPage extends StatelessWidget {
                 }
                 Navigator.pop(context);
               },
-              child: Icon(Icons.check, color: Colors.white,),
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
               backgroundColor: PmsbColors.cor_destaque,
             );
           }),
@@ -138,9 +142,35 @@ class QuestionarioListItem extends StatelessWidget {
     return ListTile(
       title: Text("${questionario.nome}"),
       trailing: InkWell(
-        child: onSelecionar == null ? Text("Remover") : Container(child: Text("Selecionar")),
-        onTap: onSelecionar == null ? onRemover : onSelecionar,
+        child: onSelecionar == null
+            ? Text("Remover")
+            : Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    //begin: Alignment.topLeft,
+                   // end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Color(0xFF02AAB0),
+                      Color(0xFF00CDAC),
+                      Color(0xFF02AAB0),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 100.0, minHeight: 50.0),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Selecionar",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
       ),
+      onTap: onSelecionar == null ? onRemover : onSelecionar,
     );
   }
 }
