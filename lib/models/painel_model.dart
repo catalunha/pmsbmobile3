@@ -4,16 +4,16 @@ import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 class PainelModel extends FirestoreModel {
   static final String collection = "Painel";
 
-  String nome;
+    String nome;
 
-  /// Os tipos pode ser: texto | numero | booleano | urlimagem | urlarquivo
-  String tipo;
+    /// Os tipos pode ser: texto | numero | booleano | urlimagem | urlarquivo
+    String tipo;
 
-  UsuarioID usuarioQEditou;
-  UsuarioID usuarioQVaiResponder;
-  EixoID eixo;
-  ProdutoFunasaID produto;
-  dynamic modificado;
+    UsuarioID usuarioQEditou;
+    UsuarioID usuarioQVaiResponder;
+    EixoID eixo;
+    ProdutoFunasaID produto;
+    dynamic modificado;
 
   PainelModel(
       {String id,

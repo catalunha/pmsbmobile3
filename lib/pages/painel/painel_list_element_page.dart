@@ -2,52 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
-import 'package:pmsbmibile3/pages/painel/painel_list_element_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
-class PainelListPage extends StatefulWidget {
+class PainelListElement extends StatefulWidget {
+  
   final AuthBloc authBloc;
+  final String element;
 
-  PainelListPage(this.authBloc);
-
-  _PainelListPageState createState() => _PainelListPageState();
-}
-
-class _PainelListPageState extends State<PainelListPage> {
-  PainelListBloc bloc;
-
-  final List<String> _myTabs = <String>[
-    "*",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-  ];
-
-  final List<Tab> myTabs = <Tab>[
-    Tab(text: "*"),
-    Tab(text: "A"),
-    Tab(text: "B"),
-    Tab(text: "C"),
-    Tab(text: "D"),
-    Tab(text: "E"),
-    Tab(text: "F"),
-    Tab(text: "G"),
-    Tab(text: "H"),
-    Tab(text: "I"),
-    Tab(text: "J"),
-    Tab(text: "K"),
-  ];
+  const PainelListElement(
+      {Key key, @required this.authBloc, @required this.element})
+      : super(key: key);
 
   @override
+  _PainelListElementState createState() => _PainelListElementState();
+}
+
+class _PainelListElementState extends State<PainelListElement> {
+  
+  PainelListBloc bloc;
+
+  // final List<String> _myTabs = <String>[
+  //   "*",
+  //   "A",
+  //   "B",
+  //   "C",
+  //   "D",
+  //   "E",
+  //   "F",
+  //   "G",
+  //   "H",
+  //   "I",
+  //   "J",
+  //   "K",
+  // ];
+
   void initState() {
     super.initState();
     bloc = PainelListBloc(Bootstrap.instance.firestore, widget.authBloc);
@@ -62,96 +50,16 @@ class _PainelListPageState extends State<PainelListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-      backToRootPage: true,
-      title: Text("Adicionar/Editar itens do painel"),
-      body: _body(context),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: PmsbColors.cor_destaque,
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, '/painel/crud', arguments: null);
-        },
-      ),
+      title: Text(widget.element),
+      backToRootPage: false,
+      body: _body(),
     );
-
-    // return DefaultTabController(
-    //   length: myTabs.length,
-    //   child: DefaultScaffold(
-    //     backToRootPage: true,
-    //     title: Text('Adicionar/Editar itens do painel'),
-    //     bottom: TabBar(
-    //       tabs: myTabs,
-    //     ),
-    //     body: _body(context),
-    //     floatingActionButton: FloatingActionButton(
-    //       child: Icon(Icons.add),
-    //       onPressed: () {
-    //         Navigator.pushNamed(context, '/painel/crud', arguments: null);
-    //       },
-    //     ),
-    //   ),
-    // );
   }
 
-  _body(context) {
-    return StreamBuilder<PainelListBlocState>(
-      stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<PainelListBlocState> snapshot) {
-        List<Widget> list = List<Widget>();
-        String descricaoProdutoTab;
-        list.add(Divider());
-
-        _myTabs.forEach((produto) {
-          if (produto == '*') {
-            descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
-          } else {
-            descricaoProdutoTab =
-                '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
-          }
-
-          list.add(
-            ListTile(
-              trailing: Icon(Icons.arrow_forward),
-              title: Text(descricaoProdutoTab),
-              onTap: () {
-                Navigator.of(context).push(
-                  // With MaterialPageRoute, you can pass data between pages,
-                  // but if you have a more complex app, you will quickly get lost.
-                  MaterialPageRoute(
-                    builder: (context) => PainelListElement(
-                        authBloc: widget.authBloc, element: produto),
-                  ),
-                );
-              },
-            ),
-          );
-
-          list.add(Divider());
-        });
-
-         list.add(SizedBox(height: 80));
-
-        return ListView(children: list);
-      },
+  _body() {
+    return Container(
+      child: _tabAComites(widget.element),
     );
-
-    // return TabBarView(
-    //   children: [
-    //     _tabAComites('*'),
-    //     _tabAComites('A'),
-    //     _tabAComites('B'),
-    //     _tabAComites('C'),
-    //     _tabAComites('D'),
-    //     _tabAComites('E'),
-    //     _tabAComites('F'),
-    //     _tabAComites('G'),
-    //     _tabAComites('H'),
-    //     _tabAComites('I'),
-    //     _tabAComites('J'),
-    //     _tabAComites('K'),
-    //   ],
-    // );
   }
 
   _tabAComites(String produto) {
@@ -179,6 +87,7 @@ class _PainelListPageState extends State<PainelListPage> {
               } else {
                 descricaoProdutoTab =
                     '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
+
                 if (snapshot.data.painelTreeProdutoEixo[produto] != null) {
                   for (var eixo in snapshot
                       .data.painelTreeProdutoEixo[produto].keys

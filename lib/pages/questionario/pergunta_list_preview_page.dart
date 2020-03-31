@@ -24,25 +24,26 @@ class PerguntaListPreviewPage extends StatelessWidget {
     return DefaultScaffold(
       backToRootPage: true,
       body: _bodyPreview(),
-      title: Text('Visão geral da Pergunta'),
+      title: Text('Visão geral da Pergunta sad as'),
     );
   }
 
   _bodyPreview() {
     return StreamBuilder<PerguntaListPreviewPageState>(
-        stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<PerguntaListPreviewPageState> snapshot) {
-          if (snapshot.hasError) {
-            return Text("ERROR");
-          }
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      stream: bloc.stateStream,
+      builder: (BuildContext context,
+          AsyncSnapshot<PerguntaListPreviewPageState> snapshot) {
+        if (snapshot.hasError) {
+          return Text("ERROR");
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-          return Markdown(data: snapshot.data.questionarioPerguntaList2Mkd);
-        });
+        return Markdown(data: snapshot.data.questionarioPerguntaList2Mkd);
+      },
+    );
   }
 }

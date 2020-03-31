@@ -61,7 +61,10 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Text('Não Responder', style: TextStyle(fontSize: 20)),
+                  Text(
+                    'Não Responder',
+                    style: TextStyle(fontSize: 16),
+                  ),
                   Icon(Icons.undo, textDirection: TextDirection.rtl)
                 ],
               ),
@@ -80,7 +83,10 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Text('Responder', style: TextStyle(fontSize: 20)),
+                  Text(
+                    'Responder',
+                    style: TextStyle(fontSize: 16),
+                  ),
                   Icon(Icons.thumb_up)
                 ],
               ),
@@ -139,7 +145,10 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                 subtitle: Text(snapshot.data.perguntaAtual.textoMarkdown),
               ),
             ),
-            Text(snapshot.data.perguntaAtual.tipo.nome),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(snapshot.data.perguntaAtual.tipo.nome),
+            ),
             Divider(color: Colors.black54),
             // Widget de tipo pergunta
             PerguntaAplicada(

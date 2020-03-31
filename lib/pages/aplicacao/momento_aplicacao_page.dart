@@ -172,6 +172,8 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                 _apagarAplicacao(context, bloc);
               }),
         ),
+
+        
         Divider(color: Colors.black87),
 
         // _DeleteDocumentOrField(bloc),
@@ -273,6 +275,8 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                         return;
                       },
                       child: Container(
+                        
+
                         color: Colors.red,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
