@@ -3,9 +3,10 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class PainelListElement extends StatefulWidget {
-  
   final AuthBloc authBloc;
   final String element;
 
@@ -18,24 +19,8 @@ class PainelListElement extends StatefulWidget {
 }
 
 class _PainelListElementState extends State<PainelListElement> {
-  
   PainelListBloc bloc;
-
-  // final List<String> _myTabs = <String>[
-  //   "*",
-  //   "A",
-  //   "B",
-  //   "C",
-  //   "D",
-  //   "E",
-  //   "F",
-  //   "G",
-  //   "H",
-  //   "I",
-  //   "J",
-  //   "K",
-  // ];
-
+  
   void initState() {
     super.initState();
     bloc = PainelListBloc(Bootstrap.instance.firestore, widget.authBloc);
@@ -50,7 +35,7 @@ class _PainelListElementState extends State<PainelListElement> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-      title: Text(widget.element),
+      title: Text("Editar itens do painel"),
       backToRootPage: false,
       body: _body(),
     );
@@ -92,9 +77,13 @@ class _PainelListElementState extends State<PainelListElement> {
                   for (var eixo in snapshot
                       .data.painelTreeProdutoEixo[produto].keys
                       .toList()) {
-                    listaWidget.add(Column(children: <Widget>[
-                      eixoCard(snapshot.data.eixoInfoMap[eixo])
-                    ]));
+                    listaWidget.add(
+                      Column(
+                        children: <Widget>[
+                          eixoCard(snapshot.data.eixoInfoMap[eixo])
+                        ],
+                      ),
+                    );
 
                     if (snapshot.data.eixoInfoMap[eixo].expandir != null &&
                         snapshot.data.eixoInfoMap[eixo].expandir) {
@@ -106,14 +95,21 @@ class _PainelListElementState extends State<PainelListElement> {
                 }
               }
 
-              listaWidget.add(Container(
-                padding: EdgeInsets.only(top: 70),
-              ));
+              listaWidget.add(
+                Container(
+                  padding: EdgeInsets.only(top: 70),
+                ),
+              );
 
-              return Column(children: <Widget>[
-                _descricaoAba(descricaoProdutoTab),
-                _bodyAba(listaWidget)
-              ]);
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: _descricaoAba(descricaoProdutoTab),
+                  ),
+                  _bodyAba(listaWidget)
+                ],
+              );
             } else {
               return Text('Dados inválidos...');
             }
@@ -124,21 +120,24 @@ class _PainelListElementState extends State<PainelListElement> {
 
   Expanded _bodyAba(List<Widget> listaWidget) {
     return Expanded(
-        flex: 10,
-        child: listaWidget == null
-            ? Container(
-                child: Text('Sem itens de painel'),
-              )
-            : ListView(
-                children: listaWidget,
-              ));
+      flex: 10,
+      child: listaWidget == null
+          ? Container(
+              child: Text('Sem itens de painel'),
+            )
+          : ListView(
+              children: listaWidget,
+            ),
+    );
   }
 
-  Expanded _descricaoAba(String descricaoProdutoTab) {
-    return Expanded(
-      flex: 1,
-      child: Center(child: Text('$descricaoProdutoTab')),
-    );
+  _descricaoAba(String descricaoProdutoTab) {
+    return Text('$descricaoProdutoTab');
+
+    // return Expanded(
+    //   flex: 1,
+    //   child: Center(child: Text('$descricaoProdutoTab')),
+    // );
   }
 
   void popularListaWidget(List<PainelInfo> painelList, List<Widget> listaWidget,
@@ -149,7 +148,12 @@ class _PainelListElementState extends State<PainelListElement> {
         icone = _defineTipoDeIconeDoItem(painelInfo.painel.tipo);
 
         listaWidget.add(
-            Column(children: <Widget>[painelCard(painelInfo, icone, context)]));
+          Column(
+            children: <Widget>[
+              painelCard(painelInfo, icone, context),
+            ],
+          ),
+        );
       }
     }
   }
@@ -172,22 +176,27 @@ class _PainelListElementState extends State<PainelListElement> {
 
   Card painelCard(PainelInfo painelInfo, Widget icone, BuildContext context) {
     return Card(
-        child: ListTile(
-      selected: painelInfo.destacarSeDestinadoAoUsuarioLogado == null
-          ? false
-          : painelInfo.destacarSeDestinadoAoUsuarioLogado,
-      title: Text('${painelInfo.painel?.nome}'),
-      subtitle: Text(
-          'Destinatário: ${painelInfo.painel?.usuarioQVaiResponder?.nome}\nProduto: ${painelInfo.painel?.produto?.nome}\nEixo: ${painelInfo.painel?.eixo?.nome}\nEditado por: ${painelInfo.painel?.usuarioQEditou?.nome}\nEm: ${painelInfo.painel?.modificado}\nid:${painelInfo.painel.id}'),
-      trailing: icone,
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          "/painel/crud",
-          arguments: painelInfo.painel.id,
-        );
-      },
-    ));
+      color: PmsbColors.card,
+      child: ListTile(
+        selected: painelInfo.destacarSeDestinadoAoUsuarioLogado == null
+            ? false
+            : painelInfo.destacarSeDestinadoAoUsuarioLogado,
+        title: Text(
+          '${painelInfo.painel?.nome}',
+          style: PmsbStyles.textoPrimario,
+        ),
+        subtitle: Text(
+            'Destinatário: ${painelInfo.painel?.usuarioQVaiResponder?.nome}\nProduto: ${painelInfo.painel?.produto?.nome}\nEixo: ${painelInfo.painel?.eixo?.nome}\nEditado por: ${painelInfo.painel?.usuarioQEditou?.nome}\nEm: ${painelInfo.painel?.modificado}\nid:${painelInfo.painel.id}'),
+        trailing: icone,
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            "/painel/crud",
+            arguments: painelInfo.painel.id,
+          );
+        },
+      ),
+    );
   }
 
   Widget _defineTipoDeIconeDoItem(String tipo) {
