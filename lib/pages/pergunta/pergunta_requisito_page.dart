@@ -57,6 +57,7 @@ class PerguntaRequisitoPage extends StatelessWidget {
             return MapEntry(
               i,
               Card(
+                color: PmsbColors.card,
                 child: CheckboxListTile(
                   value: e['checkbox'],
                   title: new Text('${e['questionario']}\n${e['pergunta']}'),
@@ -143,13 +144,36 @@ class QuestionarioListItem extends StatelessWidget {
       title: Text("${questionario.nome}"),
       trailing: InkWell(
         child: onSelecionar == null
-            ? Text("Remover")
+            ? Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    //begin: Alignment.topLeft,
+                    // end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Color(0xFF02AAB0),
+                      Color(0xFF00CDAC),
+                      Color(0xFF02AAB0),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 100.0, minHeight: 50.0),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Remover",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ))
             : Container(
                 height: 40,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     //begin: Alignment.topLeft,
-                   // end: Alignment.bottomRight,
+                    // end: Alignment.bottomRight,
                     colors: <Color>[
                       Color(0xFF02AAB0),
                       Color(0xFF00CDAC),
