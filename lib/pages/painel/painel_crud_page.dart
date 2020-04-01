@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/produto_funasa_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/pages/painel/painel_crud_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class PainelCrudPage extends StatefulWidget {
   final String painelId;
@@ -36,10 +39,9 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Editar item do painel'),
-        ),
+    return DefaultScaffold(
+        backToRootPage: false,
+        title: Text('Editar item do painel'),
         floatingActionButton: StreamBuilder<PainelCrudBlocState>(
             stream: bloc.stateStream,
             builder: (context, snapshot) {
@@ -51,14 +53,16 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                         Navigator.pop(context);
                       }
                     : null,
-                child: Icon(Icons.cloud_upload),
-                backgroundColor:
-                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                child: Icon(Icons.check),
+                backgroundColor: snapshot.data.isDataValid
+                    ? PmsbColors.cor_destaque
+                    : Colors.grey,
               );
             }),
         body: StreamBuilder<PainelCrudBlocState>(
             stream: bloc.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<PainelCrudBlocState> snapshot) {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
               if (snapshot.hasData) {
@@ -67,34 +71,37 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                     Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text(
-                          'Nome do item',
+                          'Nome do item:',
                           style: TextStyle(fontSize: 15, color: Colors.blue),
                         )),
                     Padding(
                         padding: EdgeInsets.all(5.0), child: PainelNome(bloc)),
                     Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Tipo do item:",
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        )),
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        "Tipo do item:",
+                        style: TextStyle(fontSize: 15, color: Colors.blue),
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsets.all(5.0),
                       child: PainelTipo(bloc),
                     ),
                     Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Escolha quem responderá este item:",
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        )),
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        "Escolha quem responderá este item:",
+                        style: TextStyle(fontSize: 15, color: Colors.blue),
+                      ),
+                    ),
                     _destinatarios(context),
                     Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Escolha a que produto esta associado este item:",
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        )),
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        "Escolha a que produto esta associado este item:",
+                        style: TextStyle(fontSize: 15, color: Colors.blue),
+                      ),
+                    ),
                     _produto(context),
                     Padding(
                         padding: EdgeInsets.all(5.0),
@@ -111,7 +118,6 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                     Padding(padding: EdgeInsets.only(top: 100)),
                   ],
                 );
-            
               }
               return Text('Dados incompletos...');
             }));
@@ -131,17 +137,16 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
             texto = Text('${snapshot.data?.usuarioQVaiResponder?.nome}');
           }
           return ListTile(
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext bc) {
+                    return UsuarioListaModalSelect(bloc);
+                  });
+            },
             title: texto,
-            leading: IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext bc) {
-                      return UsuarioListaModalSelect(bloc);
-                    });
-              },
-            ),
+            leading: Icon(Icons.person),
+            trailing: Icon(Icons.edit),
           );
         });
   }
@@ -157,21 +162,20 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
           if (snapshot.data.produtoFunasa == null) {
             texto = Text('Produto não selecionado');
           } else {
-            texto = Text(
-                '${snapshot.data?.produtoFunasa?.nome}');
+            texto = Text('${snapshot.data?.produtoFunasa?.nome}');
           }
           return ListTile(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext bc) {
+                  return ProdutoFunasaListaModalSelect(bloc);
+                },
+              );
+            },
             title: texto,
-            leading: IconButton(
-              icon: Icon(Icons.format_line_spacing),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext bc) {
-                      return ProdutoFunasaListaModalSelect(bloc);
-                    });
-              },
-            ),
+            leading: Icon(Icons.format_line_spacing),
+            trailing: Icon(Icons.edit),
           );
         });
   }
@@ -204,7 +208,6 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
           );
         });
   }
-
 }
 
 class PainelNome extends StatefulWidget {
@@ -263,81 +266,194 @@ class PainelTipoState extends State<PainelTipo> {
       stream: bloc.stateStream,
       builder:
           (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'texto',
-                      groupValue: snapshot.data?.tipo,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateTipoEvent(radioValue));
-                      },
-                    ),
-                    Icon(Icons.text_fields),
-                  ]),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'numero',
-                      groupValue: snapshot.data?.tipo,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateTipoEvent(radioValue));
-                      },
-                    ),
-                    Icon(Icons.looks_one),
-                  ]),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'urlimagem',
-                      groupValue: snapshot.data?.tipo,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateTipoEvent(radioValue));
-                      },
-                    ),
-                    Icon(
-                      Icons.image,
-                    )
-                  ]),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'urlarquivo',
-                      groupValue: snapshot.data?.tipo,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateTipoEvent(radioValue));
-                      },
-                    ),
-                    Icon(
-                      Icons.attach_file,
-                    )
-                  ]),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Radio(
-                      value: 'booleano',
-                      groupValue: snapshot.data?.tipo,
-                      onChanged: (radioValue) {
-                        bloc.eventSink(UpdateTipoEvent(radioValue));
-                      },
-                    ),
-                    Icon(
-                      Icons.thumbs_up_down,
-                    )
-                  ])
-            ]);
-
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            rowTipoItem(
+              'Texto',
+              Icons.text_fields,
+              Radio(
+                value: 'texto',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+            ),
+            rowTipoItem(
+              'Número',
+              Icons.looks_one,
+              Radio(
+                value: 'numero',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+            ),
+            rowTipoItem(
+              'Url imagem',
+              Icons.image,
+              Radio(
+                value: 'urlimagem',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+            ),
+            rowTipoItem(
+              "Url arquivo",
+              Icons.attach_file,
+              Radio(
+                value: 'urlarquivo',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+            ),
+            rowTipoItem(
+              "Booleano",
+              Icons.thumbs_up_down,
+              Radio(
+                value: 'booleano',
+                groupValue: snapshot.data?.tipo,
+                onChanged: (radioValue) {
+                  bloc.eventSink(UpdateTipoEvent(radioValue));
+                },
+              ),
+            )
+          ],
+        );
       },
     );
   }
+
+  rowTipoItem(String valor, IconData icon, Radio radio) {
+    return Row(
+      children: <Widget>[
+        // Flexible(
+        //   flex: 2,
+        //   child: Container(),
+        // ),
+        Flexible(
+          flex: 3,
+          child: radio,
+        ),
+        SizedBox(
+          width: 15,
+        ),
+        Flexible(
+          flex: 4,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(valor, style: PmsbStyles.textoPrimario),
+              Icon(icon)
+            ],
+          ),
+        ),
+        Flexible(
+          flex: 2,
+          child: Container(),
+        ),
+      ],
+    );
+  }
 }
+
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//   children: <Widget>[
+//     Radio(
+//       value: 'texto',
+//       groupValue: snapshot.data?.tipo,
+//       onChanged: (radioValue) {
+//         bloc.eventSink(UpdateTipoEvent(radioValue));
+//       },
+//     ),
+//     Text(
+//       "Texto",
+//       style: PmsbStyles.textoPrimario,
+//     ),
+//     Icon(Icons.text_fields),
+//   ],
+// ),
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//   children: <Widget>[
+//     Radio(
+//       value: 'numero',
+//       groupValue: snapshot.data?.tipo,
+//       onChanged: (radioValue) {
+//         bloc.eventSink(UpdateTipoEvent(radioValue));
+//       },
+//     ),
+//     Text(
+//       "Número",
+//       style: PmsbStyles.textoPrimario,
+//     ),
+//     Icon(Icons.looks_one),
+//   ],
+// ),
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//   children: <Widget>[
+//     Radio(
+//       value: 'urlimagem',
+//       groupValue: snapshot.data?.tipo,
+//       onChanged: (radioValue) {
+//         bloc.eventSink(UpdateTipoEvent(radioValue));
+//       },
+//     ),
+//     Text(
+//       "Url imagem",
+//       style: PmsbStyles.textoPrimario,
+//     ),
+//     Icon(
+//       Icons.image,
+//     )
+//   ],
+// ),
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//   children: <Widget>[
+//     Radio(
+//       value: 'urlarquivo',
+//       groupValue: snapshot.data?.tipo,
+//       onChanged: (radioValue) {
+//         bloc.eventSink(UpdateTipoEvent(radioValue));
+//       },
+//     ),
+//     Text(
+//       "Url arquivo",
+//       style: PmsbStyles.textoPrimario,
+//     ),
+//     Icon(
+//       Icons.attach_file,
+//     )
+//   ],
+// ),
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceAround,
+//   children: <Widget>[
+//     Radio(
+//       value: 'booleano',
+//       groupValue: snapshot.data?.tipo,
+//       onChanged: (radioValue) {
+//         bloc.eventSink(UpdateTipoEvent(radioValue));
+//       },
+//     ),
+//     Text(
+//       "Booleano",
+//       style: PmsbStyles.textoPrimario,
+//     ),
+//     Icon(
+//       Icons.thumbs_up_down,
+//     ),
+//   ],
+// )
 
 /// Selecao de usuario que vao receber alerta
 class UsuarioListaModalSelect extends StatefulWidget {
@@ -380,14 +496,16 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
           );
         }
 
-
         var lista = List<Widget>();
         for (var usuario in snapshot.data.usuarioList) {
           lista.add(_cardBuild(context, usuario));
         }
 
-        return ListView(
-          children: lista,
+        return Container(
+          color: PmsbColors.fundo,
+          child: ListView(
+            children: lista,
+          ),
         );
       },
     );
@@ -397,13 +515,43 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
     return ListTile(
       title: Text('${usuario.nome}'),
       subtitle: Text('Eixo: ${usuario.eixoID?.nome}'),
-      leading: IconButton(
-        icon: Icon(Icons.check),
-        onPressed: () {
+      trailing: GestureDetector(
+        onTap: () {
           bloc.eventSink(SelectDestinatarioIDEvent(usuario));
           Navigator.pop(context);
         },
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              //begin: Alignment.topLeft,
+              // end: Alignment.bottomRight,
+              colors: <Color>[
+                Color(0xFF02AAB0),
+                Color(0xFF00CDAC),
+                Color(0xFF02AAB0),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 100.0, minHeight: 50.0),
+            alignment: Alignment.center,
+            child: Text(
+              "Selecionar",
+              textAlign: TextAlign.center,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
       ),
+      // leading: IconButton(
+      //   icon: Icon(Icons.check),
+      //   onPressed: () {
+
+      //   },
+      // ),
     );
   }
 
@@ -411,6 +559,9 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: PmsbColors.navbar,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
         title: Text("Escolha um destinatário"),
       ),
       body: _listaUsuarios(),
@@ -458,7 +609,6 @@ class _EixoListaModalSelectState extends State<EixoListaModalSelect> {
             child: Text("Vazio."),
           );
         }
-
 
         var lista = List<Widget>();
         for (var eixo in snapshot.data.eixoList) {
@@ -538,14 +688,16 @@ class _ProdutoFunasaListaModalSelectState
           );
         }
 
-
         var lista = List<Widget>();
         for (var produto in snapshot.data.produtoFunasaList) {
           lista.add(_cardBuild(context, produto));
         }
 
-        return ListView(
-          children: lista,
+        return Container(
+          color: PmsbColors.fundo,
+          child: ListView(
+            children: lista,
+          ),
         );
       },
     );
@@ -555,13 +707,38 @@ class _ProdutoFunasaListaModalSelectState
     return ListTile(
       title: Text('${produto.descricao}'),
       subtitle: Text('${produto.nome}'),
-      leading: IconButton(
-        icon: Text('${produto.id}'),
-        onPressed: () {
+      trailing: GestureDetector(
+        onTap: () {
           bloc.eventSink(SelectProdutoFunasaIDEvent(produto));
           Navigator.pop(context);
         },
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              //begin: Alignment.topLeft,
+              // end: Alignment.bottomRight,
+              colors: <Color>[
+                Color(0xFF02AAB0),
+                Color(0xFF00CDAC),
+                Color(0xFF02AAB0),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 100.0, minHeight: 50.0),
+            alignment: Alignment.center,
+            child: Text(
+              "Selecionar",
+              textAlign: TextAlign.center,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
       ),
+      // leading: Text('${produto.id}'),
     );
   }
 
@@ -569,6 +746,9 @@ class _ProdutoFunasaListaModalSelectState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: PmsbColors.navbar,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
         title: Text("Escolha um produto"),
       ),
       body: _listaProdutos(),
