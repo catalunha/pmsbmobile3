@@ -1,3 +1,4 @@
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
     show FilePicker, FileType;
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/produto/produto_crud_page_bloc.dart';
 import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class ProdutoCRUDPage extends StatefulWidget {
   final String produtoID;
@@ -39,16 +42,13 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text((widget.produtoID != null ? "Editar" : "Adicionar") +
-              " Produto")),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text(
+          (widget.produtoID != null ? "Editar" : "Adicionar") + " Produto"),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.cloud_upload),
+        child: Icon(Icons.check, color: Colors.white,),
+        backgroundColor: PmsbColors.cor_destaque,
         onPressed: () {
           bloc.eventSink(SaveProdutoIDEvent());
           Navigator.pop(context);
@@ -57,10 +57,11 @@ class _ProdutoCRUDPageState extends State<ProdutoCRUDPage> {
       body: ListView(
         children: <Widget>[
           Padding(
-              padding: EdgeInsets.all(5.0),
+              padding: EdgeInsets.all(10.0),
               child: Text(
-                "Titulo:",
-                style: TextStyle(fontSize: 15, color: Colors.blue),
+                "Título:",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
               )),
           Padding(
             padding: EdgeInsets.all(5.0),
@@ -189,9 +190,8 @@ class ArquivoPDF extends StatelessWidget {
 
         return Column(
           children: <Widget>[
-            Wrap(
-                children: <Widget>[
-              Text('Atualizar pdf do produto:'),
+            Wrap(children: <Widget>[
+              Text('Atualizar PDF do produto:', style: PmsbStyles.textoPrimario,),
               IconButton(
                 icon: Icon(Icons.delete_forever),
                 onPressed: () {
@@ -212,8 +212,8 @@ class ArquivoPDF extends StatelessWidget {
                 ? Container()
                 : Text('Arquivo local: $pdfLocalPath'),
             pdfUrl == null
-                ? Text('Sem arquivo na núvem.')
-                : Text('Arquivo já esta na núvem !'),
+                ? Text('Sem arquivo na nuvem', style: PmsbStyles.textoPrimario,)
+                : Text('Arquivo já esta na núvem!', style: PmsbStyles.textoPrimario,),
           ],
         );
       },
