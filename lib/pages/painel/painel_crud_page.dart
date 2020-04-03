@@ -40,87 +40,96 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-        backToRootPage: false,
-        title: Text('Editar item do painel'),
-        floatingActionButton: StreamBuilder<PainelCrudBlocState>(
-            stream: bloc.stateStream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Container();
-              return FloatingActionButton(
-                onPressed: snapshot.data.isDataValid
-                    ? () {
-                        bloc.eventSink(SaveEvent());
-                        Navigator.pop(context);
-                      }
-                    : null,
-                child: Icon(Icons.check),
-                backgroundColor: snapshot.data.isDataValid
-                    ? PmsbColors.cor_destaque
-                    : Colors.grey,
-              );
-            }),
-        body: StreamBuilder<PainelCrudBlocState>(
-            stream: bloc.stateStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<PainelCrudBlocState> snapshot) {
-              if (!snapshot.hasData)
-                return Center(child: CircularProgressIndicator());
-              if (snapshot.hasData) {
-                return ListView(
-                  children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          'Nome do item:',
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        )),
-                    Padding(
-                        padding: EdgeInsets.all(5.0), child: PainelNome(bloc)),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Text(
-                        "Tipo do item:",
-                        style: TextStyle(fontSize: 15, color: Colors.blue),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: PainelTipo(bloc),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Text(
-                        "Escolha quem responderá este item:",
-                        style: TextStyle(fontSize: 15, color: Colors.blue),
-                      ),
-                    ),
-                    _destinatarios(context),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Text(
-                        "Escolha a que produto esta associado este item:",
-                        style: TextStyle(fontSize: 15, color: Colors.blue),
-                      ),
-                    ),
-                    _produto(context),
-                    Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Escolha o eixo a que esta ligado este item:",
-                          style: TextStyle(fontSize: 15, color: Colors.blue),
-                        )),
-                    _eixo(context),
-                    Divider(),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: _DeleteDocumentOrField(bloc),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 100)),
-                  ],
-                );
-              }
-              return Text('Dados incompletos...');
-            }));
+      backToRootPage: false,
+      title: Text('Editar item do painel'),
+      floatingActionButton: StreamBuilder<PainelCrudBlocState>(
+          stream: bloc.stateStream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Container();
+            return FloatingActionButton(
+              onPressed: snapshot.data.isDataValid
+                  ? () {
+                      bloc.eventSink(SaveEvent());
+                      Navigator.pop(context);
+                    }
+                  : null,
+              child: Icon(Icons.check),
+              backgroundColor: snapshot.data.isDataValid
+                  ? PmsbColors.cor_destaque
+                  : Colors.grey,
+            );
+          }),
+      body: StreamBuilder<PainelCrudBlocState>(
+        stream: bloc.stateStream,
+        builder: (BuildContext context,
+            AsyncSnapshot<PainelCrudBlocState> snapshot) {
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
+          if (snapshot.hasData) {
+            return ListView(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      'Nome do item:',
+                      style: TextStyle(fontSize: 15, color: Colors.blue),
+                    )),
+                Padding(padding: EdgeInsets.all(5.0), child: PainelNome(bloc)),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "Tipo do item:",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: PainelTipo(bloc),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "Escolha quem responderá este item:",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  ),
+                ),
+                _destinatarios(context),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "Escolha a que produto esta associado este item:",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  ),
+                ),
+                _produto(context),
+                Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      "Escolha o eixo a que esta ligado este item:",
+                      style: TextStyle(fontSize: 15, color: Colors.blue),
+                    )),
+                _eixo(context),
+                Divider(),
+                ListTile(
+                  title: Text("Apagar"),
+                  trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _apagarAplicacao(context, bloc);
+                      }),
+                ),
+                // Padding(
+                //   padding: EdgeInsets.all(5.0),
+                //   child: _DeleteDocumentOrField(bloc),
+                // ),
+                Padding(padding: EdgeInsets.only(top: 100)),
+              ],
+            );
+          }
+          return Text('Dados incompletos...');
+        },
+      ),
+    );
   }
 
   _destinatarios(context) {
@@ -182,31 +191,31 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
 
   _eixo(context) {
     return StreamBuilder<PainelCrudBlocState>(
-        stream: bloc.stateStream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Text('Sem produtos');
-          }
-          Widget texto;
-          if (snapshot.data.eixo == null) {
-            texto = Text('Eixo não selecionado');
-          } else {
-            texto = Text('${snapshot.data?.eixo?.nome}');
-          }
-          return ListTile(
-            title: texto,
-            leading: IconButton(
-              icon: Icon(Icons.card_travel),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext bc) {
-                      return EixoListaModalSelect(bloc);
-                    });
-              },
-            ),
-          );
-        });
+      stream: bloc.stateStream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text('Sem produtos');
+        }
+        Widget texto;
+        if (snapshot.data.eixo == null) {
+          texto = Text('Eixo não selecionado');
+        } else {
+          texto = Text('${snapshot.data?.eixo?.nome}');
+        }
+        return ListTile(
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext bc) {
+                  return EixoListaModalSelect(bloc);
+                });
+          },
+          title: texto,
+          leading: Icon(Icons.card_travel),
+          trailing: Icon(Icons.edit),
+        );
+      },
+    );
   }
 }
 
@@ -615,8 +624,11 @@ class _EixoListaModalSelectState extends State<EixoListaModalSelect> {
           lista.add(_cardBuild(context, eixo));
         }
 
-        return ListView(
-          children: lista,
+        return Container(
+          color: PmsbColors.fundo,
+          child: ListView(
+            children: lista,
+          ),
         );
       },
     );
@@ -625,13 +637,44 @@ class _EixoListaModalSelectState extends State<EixoListaModalSelect> {
   Widget _cardBuild(BuildContext context, EixoID eixo) {
     return ListTile(
       title: Text('${eixo.nome}'),
-      leading: IconButton(
-        icon: Icon(Icons.check),
-        onPressed: () {
+      trailing: GestureDetector(
+        onTap: () {
           bloc.eventSink(SelectEixoIDEvent(eixo));
           Navigator.pop(context);
         },
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              //begin: Alignment.topLeft,
+              // end: Alignment.bottomRight,
+              colors: <Color>[
+                Color(0xFF02AAB0),
+                Color(0xFF00CDAC),
+                Color(0xFF02AAB0),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 100.0, minHeight: 50.0),
+            alignment: Alignment.center,
+            child: Text(
+              "Selecionar",
+              textAlign: TextAlign.center,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
       ),
+      // leading: IconButton(
+      //   icon: Icon(Icons.check),
+      //   onPressed: () {
+      //     bloc.eventSink(SelectEixoIDEvent(eixo));
+      //     Navigator.pop(context);
+      //   },
+      // ),
     );
   }
 
@@ -639,6 +682,9 @@ class _EixoListaModalSelectState extends State<EixoListaModalSelect> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: PmsbColors.navbar,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
         title: Text("Escolha um eixo"),
       ),
       body: _listaEixos(),
@@ -756,6 +802,14 @@ class _ProdutoFunasaListaModalSelectState
   }
 }
 
+void _apagarAplicacao(context, PainelCrudBloc bloc) {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(child: _DeleteDocumentOrField(bloc));
+      });
+}
+
 class _DeleteDocumentOrField extends StatefulWidget {
   final PainelCrudBloc bloc;
   _DeleteDocumentOrField(this.bloc);
@@ -775,28 +829,153 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
       stream: bloc.stateStream,
       builder:
           (BuildContext context, AsyncSnapshot<PainelCrudBlocState> snapshot) {
-        return Row(
-          children: <Widget>[
-            Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
-            Container(
-              child: Flexible(
-                child: TextField(
-                  controller: _textFieldController,
+        return Container(
+          height: 250,
+          color: PmsbColors.fundo,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text(
+                  'Para apagar, digite CONCORDO na caixa de texto abaixo e confirme:  ',
+                  style: PmsbStyles.textoPrimario,
                 ),
-              ),
+                Container(
+                  child: Flexible(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Digite aqui",
+                        hintStyle: TextStyle(
+                            color: Colors.white38, fontStyle: FontStyle.italic),
+                      ),
+                      controller: _textFieldController,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    // Botao de cancelar delete
+                    // GestureDetector(
+                    //  onTap: () {
+                    //return;
+                    // },
+                    Container(
+                      height: 50.0,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffEB3349),
+                                Color(0xffF45C43),
+                                Color(0xffEB3349)
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: 150.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Cancelar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Botao de confirmar delete
+                    GestureDetector(
+                      onTap: () {
+                        if (_textFieldController.text == 'CONCORDO') {
+                          bloc.eventSink(DeleteDocumentEvent());
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Container(
+                        height: 50.0,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xff1D976C),
+                                  Color(0xff1D976C),
+                                  Color(0xff93F9B9)
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: 150.0, minHeight: 50.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Confirmar",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                // IconButton(
+                //   icon: Icon(Icons.delete),
+                //   onPressed: () {
+                //     //Ir para a pagina visuais do produto
+                //     if (_textFieldController.text == 'CONCORDO') {
+                //       bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+                //       Navigator.of(context).pop();
+                //     }
+                //   },
+                // )
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                if (_textFieldController.text == 'CONCORDO') {
-                  bloc.eventSink(DeleteDocumentEvent());
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
+          ),
         );
+
+        // return Row(
+        //   children: <Widget>[
+        //     Divider(),
+        //     Text('Para apagar digite CONCORDO e click:  '),
+        //     Container(
+        //       child: Flexible(
+        //         child: TextField(
+        //           controller: _textFieldController,
+        //         ),
+        //       ),
+        //     ),
+        //     IconButton(
+        //       icon: Icon(Icons.delete),
+        //       onPressed: () {
+        //         if (_textFieldController.text == 'CONCORDO') {
+        //           bloc.eventSink(DeleteDocumentEvent());
+        //           Navigator.of(context).pop();
+        //         }
+        //       },
+        //     )
+        //   ],
+        // );
       },
     );
   }
