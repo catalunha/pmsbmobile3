@@ -1,7 +1,7 @@
 import 'package:pmsbmibile3/models/base_model.dart';
 import 'package:pmsbmibile3/models/propriedade_for_model.dart';
 
-class ChecklistItemSetorModel extends FirestoreModel {
+class ChecklistItemRespostaModel extends FirestoreModel {
   static final String collection = "ChecklistItemResposta";
 
   SetorCensitarioRef setor;
@@ -11,7 +11,7 @@ class ChecklistItemSetorModel extends FirestoreModel {
   String linkDocumento;
   String comentario;
 
-  ChecklistItemSetorModel({
+  ChecklistItemRespostaModel({
     String id,
     this.atendeTR,
     this.linkDocumento,
@@ -22,7 +22,7 @@ class ChecklistItemSetorModel extends FirestoreModel {
   }) : super(id);
 
   @override
-  ChecklistItemSetorModel fromMap(Map<String, dynamic> map) {
+  ChecklistItemRespostaModel fromMap(Map<String, dynamic> map) {
     if (map.containsKey('atendeTR')) atendeTR = map['atendeTR'];
     if (map.containsKey('linkDocumento')) linkDocumento = map['linkDocumento'];
     if (map.containsKey('comentario')) comentario = map['comentario'];
@@ -49,8 +49,8 @@ class ChecklistItemSetorModel extends FirestoreModel {
   @override
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (comentario != null && comentario.isNotEmpty)
-      data['comentario'] = this.comentario.isEmpty ? null : this.comentario;
+    if (atendeTR != null && atendeTR.isNotEmpty)
+      data['atendeTR'] = this.atendeTR.isEmpty ? null : this.atendeTR;
     if (comentario != null)
       data['comentario'] = this.comentario.isEmpty ? null : this.comentario;
     if (linkDocumento != null)

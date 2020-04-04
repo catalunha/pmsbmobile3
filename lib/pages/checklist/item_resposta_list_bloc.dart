@@ -21,7 +21,7 @@ class ItemRespostaListBlocState {
   bool isDataValid = false;
   ChecklistItemModel item = ChecklistItemModel();
 
-  List<ChecklistItemSetorModel> itemRespostaList = List<ChecklistItemSetorModel>();
+  List<ChecklistItemRespostaModel> itemRespostaList = List<ChecklistItemRespostaModel>();
 }
 
 class ItemRespostaListBloc {
@@ -70,17 +70,17 @@ class ItemRespostaListBloc {
       final streamDocsRemetente = _firestore
           .collection(ChecklistItemModel.collection)
           .document(event.itemId)
-          .collection(ChecklistItemSetorModel.collection)
+          .collection(ChecklistItemRespostaModel.collection)
           .orderBy('setor.nome')
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) => snapDocs
           .documents
           .map((doc) =>
-              ChecklistItemSetorModel(id: doc.documentID).fromMap(doc.data))
+              ChecklistItemRespostaModel(id: doc.documentID).fromMap(doc.data))
           .toList());
 
-      snapListRemetente.listen((List<ChecklistItemSetorModel> itemRespostaList) {
+      snapListRemetente.listen((List<ChecklistItemRespostaModel> itemRespostaList) {
         // itemRespostaList.sort((a, b) => a.numero.compareTo(b.numero));
         // print(itemRespostaList);
         _state.itemRespostaList.clear();

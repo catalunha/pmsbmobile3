@@ -50,6 +50,8 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/administracao/home"] =
           Rota("Administração", Icons.business_center);
       // rotas["/avaliacao/produto/list"] = Rota("Avaliação", Icons.check);
+      rotas["/checklist/produto/list"] = Rota("Checklist", Icons.check);
+
     }
   }
 

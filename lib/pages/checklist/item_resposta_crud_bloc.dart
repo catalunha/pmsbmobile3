@@ -68,7 +68,7 @@ class ItemRespostaCRUDBlocState {
   ChecklistItemModel item = ChecklistItemModel();
   List<SetorCensitarioModel> setorList = List<SetorCensitarioModel>();
 
-  ChecklistItemSetorModel resposta = ChecklistItemSetorModel();
+  ChecklistItemRespostaModel resposta = ChecklistItemRespostaModel();
 
   // dynamic data;
   String atendeTR;
@@ -137,7 +137,7 @@ class ItemRespostaCRUDBloc {
       final streamDocsRemetente = _firestore
           .collection(ChecklistItemModel.collection)
           .document(_state.itemId)
-          .collection(ChecklistItemSetorModel.collection)
+          .collection(ChecklistItemRespostaModel.collection)
           .snapshots();
 
       final snapListRemetente = streamDocsRemetente.map((snapDocs) =>
@@ -181,12 +181,12 @@ class ItemRespostaCRUDBloc {
       final docRef = _firestore
           .collection(ChecklistItemModel.collection)
           .document(_state.itemId)
-          .collection(ChecklistItemSetorModel.collection)
+          .collection(ChecklistItemRespostaModel.collection)
           .document(event.respostaId);
       final snap = await docRef.get();
       if (snap.exists) {
         _state.resposta =
-            ChecklistItemSetorModel(id: snap.documentID).fromMap(snap.data);
+            ChecklistItemRespostaModel(id: snap.documentID).fromMap(snap.data);
         _state.updateState();
       }
     }
@@ -214,10 +214,10 @@ class ItemRespostaCRUDBloc {
       final docRef = _firestore
           .collection(ChecklistItemModel.collection)
           .document(_state.itemId)
-          .collection(ChecklistItemSetorModel.collection)
+          .collection(ChecklistItemRespostaModel.collection)
           .document(_state.respostaId);
 
-      ChecklistItemSetorModel itemrespostaUpdate = ChecklistItemSetorModel(
+      ChecklistItemRespostaModel itemrespostaUpdate = ChecklistItemRespostaModel(
         atendeTR: _state.atendeTR,
         comentario: _state.comentario,
         linkDocumento: _state.linkDocumento,
@@ -233,7 +233,7 @@ class ItemRespostaCRUDBloc {
       _firestore
           .collection(ChecklistItemModel.collection)
           .document(_state.itemId)
-          .collection(ChecklistItemSetorModel.collection)
+          .collection(ChecklistItemRespostaModel.collection)
           .document(_state.respostaId)
           .delete();
     }

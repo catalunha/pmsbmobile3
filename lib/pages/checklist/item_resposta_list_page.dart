@@ -129,7 +129,7 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
                                 icon: Icon(Icons.folder),
                                 onPressed: () {
                                   try {
-                                    launch(setor.setor.checklistPasta);
+                                    launch('https://drive.google.com/open?id='+setor.setor.checklistPasta);
                                   } catch (e) {}
                                 },
                               )
@@ -140,7 +140,8 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
                                 icon: Icon(Icons.table_chart),
                                 onPressed: () {
                                   try {
-                                    launch(setor.setor.checklistPlanilha);
+                                    //https://drive.google.com/open?id=16HMh1igzPdHI9bzs2TiWDwR-wYQ-BuTbmBHW0pQcg-0
+                                    launch('https://drive.google.com/open?id='+setor.setor.checklistPlanilha);
                                   } catch (e) {}
                                 },
                               )
