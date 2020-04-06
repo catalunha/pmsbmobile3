@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
+// import 'package:pmsbmibile3/pages/painel/painel_list_bloc.dart';
+import 'package:pmsbmibile3/pages/setor_painel/setor_painel_list_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
@@ -19,11 +20,11 @@ class SetorPainelListElement extends StatefulWidget {
 }
 
 class _SetorPainelListElementState extends State<SetorPainelListElement> {
-  PainelListBloc bloc;
-  
+  SetorPainelListBloc bloc;
+
   void initState() {
     super.initState();
-    bloc = PainelListBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc = SetorPainelListBloc(Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
@@ -48,10 +49,9 @@ class _SetorPainelListElementState extends State<SetorPainelListElement> {
   }
 
   _tabAComites(String produto) {
-    return StreamBuilder<PainelListBlocState>(
+    return StreamBuilder<SetorPainelListBlocState>(
         stream: bloc.stateStream,
-        builder: (BuildContext context,
-            AsyncSnapshot<PainelListBlocState> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<SetorPainelListBlocState> snapshot) {
           if (snapshot.hasError) {
             return Text("ERROR");
           }
@@ -60,23 +60,18 @@ class _SetorPainelListElementState extends State<SetorPainelListElement> {
           }
           if (snapshot.hasData) {
             if (snapshot.data.isDataValid) {
-              List<Widget> listaWidget = List<Widget>();
-              List<PainelInfo> painelList = List<PainelInfo>();
-              String descricaoProdutoTab;
+                 List<Widget> listaWidget = List<Widget>();
+            List<SetorPainelInfo> painelList = List<SetorPainelInfo>();
+            String descricaoProdutoTab;
               if (produto == '*') {
-                descricaoProdutoTab =
-                    'Itens sem Destinatario, Produto ou eixo.';
-                if (snapshot.data.painelTreeProdutoEixo['*'] != null)
-                  painelList = snapshot.data.painelTreeProdutoEixo['*']['*'];
-                popularListaWidget(painelList, listaWidget, context);
+                descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
+                if (snapshot.data.setorPainelTreeProdutoEixo['*'] != null)
+                  painelList = snapshot.data.setorPainelTreeProdutoEixo['*']['*'];;
+                  popularListaWidget(painelList, listaWidget, context);
               } else {
-                descricaoProdutoTab =
-                    '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
-
-                if (snapshot.data.painelTreeProdutoEixo[produto] != null) {
-                  for (var eixo in snapshot
-                      .data.painelTreeProdutoEixo[produto].keys
-                      .toList()) {
+                descricaoProdutoTab = '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
+                if (snapshot.data.setorPainelTreeProdutoEixo[produto] != null) {
+                  for (var eixo in snapshot.data.setorPainelTreeProdutoEixo[produto].keys.toList()) {
                     listaWidget.add(
                       Column(
                         children: <Widget>[
@@ -85,10 +80,8 @@ class _SetorPainelListElementState extends State<SetorPainelListElement> {
                       ),
                     );
 
-                    if (snapshot.data.eixoInfoMap[eixo].expandir != null &&
-                        snapshot.data.eixoInfoMap[eixo].expandir) {
-                      painelList =
-                          snapshot.data.painelTreeProdutoEixo[produto][eixo];
+                    if (snapshot.data.eixoInfoMap[eixo].expandir != null && snapshot.data.eixoInfoMap[eixo].expandir) {
+                      painelList = snapshot.data.setorPainelTreeProdutoEixo[produto][eixo];
                       popularListaWidget(painelList, listaWidget, context);
                     }
                   }
@@ -140,12 +133,12 @@ class _SetorPainelListElementState extends State<SetorPainelListElement> {
     // );
   }
 
-  void popularListaWidget(List<PainelInfo> painelList, List<Widget> listaWidget,
+  void popularListaWidget(List<SetorPainelInfo> painelList, List<Widget> listaWidget,
       BuildContext context) {
     if (painelList != null) {
       for (var painelInfo in painelList) {
         Widget icone;
-        icone = _defineTipoDeIconeDoItem(painelInfo.painel.tipo);
+        icone = _defineTipoDeIconeDoItem(painelInfo.setorPainel.painelID.tipo);
 
         listaWidget.add(
           Column(
@@ -169,30 +162,28 @@ class _SetorPainelListElementState extends State<SetorPainelListElement> {
               : Icon(Icons.folder),
           title: Text('${eixoInfo.eixo.nome}'),
           onTap: () {
-            bloc.eventSink(UpdateExpandeRetraiEixoMapEvent(eixoInfo.eixo.id));
+           bloc.eventSink(UpdateExpandeRetraiEixoMapEvent(eixoInfo.eixo.id));
           },
         ));
   }
 
-  Card painelCard(PainelInfo painelInfo, Widget icone, BuildContext context) {
+  Card painelCard(SetorPainelInfo setorPainelInfo, Widget icone, BuildContext context) {
     return Card(
       color: PmsbColors.card,
       child: ListTile(
-        selected: painelInfo.destacarSeDestinadoAoUsuarioLogado == null
+        selected: setorPainelInfo.destacarSeDestinadoAoUsuarioLogado == null
             ? false
-            : painelInfo.destacarSeDestinadoAoUsuarioLogado,
-        title: Text(
-          '${painelInfo.painel?.nome}',
+            : setorPainelInfo.destacarSeDestinadoAoUsuarioLogado,
+        title: Text('${setorPainelInfo.setorPainel?.painelID?.nome}',
           style: PmsbStyles.textoPrimario,
         ),
-        subtitle: Text(
-            'Destinatário: ${painelInfo.painel?.usuarioQVaiResponder?.nome}\nProduto: ${painelInfo.painel?.produto?.nome}\nEixo: ${painelInfo.painel?.eixo?.nome}\nEditado por: ${painelInfo.painel?.usuarioQEditou?.nome}\nEm: ${painelInfo.painel?.modificado}\nid:${painelInfo.painel.id}'),
+        subtitle: Text('Obs: ${setorPainelInfo?.setorPainel?.observacao}\nDestinatário: ${setorPainelInfo.setorPainel?.usuarioQVaiResponder?.nome}\nEditado por: ${setorPainelInfo.setorPainel.usuarioQEditou?.nome}\nEm: ${setorPainelInfo.setorPainel?.modificada}\nid:${setorPainelInfo.setorPainel.id}'),
         trailing: icone,
         onTap: () {
           Navigator.pushNamed(
             context,
-            "/painel/crud",
-            arguments: painelInfo.painel.id,
+            "/setor_painel/crud",
+            arguments: setorPainelInfo.setorPainel.id,
           );
         },
       ),

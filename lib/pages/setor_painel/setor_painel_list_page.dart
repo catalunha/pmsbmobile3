@@ -51,6 +51,15 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
       backToRootPage: true,
       title: Text('Painel'),
       body: _body(context),
+      actionsMore: <Widget>[
+        IconButton(
+          icon: Icon(Icons.table_chart),
+          onPressed: () {
+            launch(
+                'https://docs.google.com/spreadsheets/d/1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA/edit#gid=0');
+          },
+        )
+      ],
     );
   }
 
@@ -171,8 +180,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
 
   //                 if (snapshot.data.eixoInfoMap[eixo].expandir != null &&
   //                     snapshot.data.eixoInfoMap[eixo].expandir) {
-  //                   painelList =
-  //                       snapshot.data.setorPainelTreeProdutoEixo[produto][eixo];
+  //                   painelList = snapshot.data.setorPainelTreeProdutoEixo[produto][eixo];
   //                   popularListaWidget(painelList, listaWidget, context);
   //                 }
   //               }
@@ -214,8 +222,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
   //         tooltip: 'Ver comparativo em planilha.',
   //         icon: Icon(Icons.table_chart),
   //         onPressed: () async {
-  //           launch(
-  //               'https://docs.google.com/spreadsheets/d/1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA/edit#gid=0');
+  //           launch('https://docs.google.com/spreadsheets/d/1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA/edit#gid=0');
   //         },
   //       ),
   //     ),
@@ -251,8 +258,7 @@ class _SetorPainelListPageState extends State<SetorPainelListPage> {
   //       ));
   // }
 
-  // Card painelCard(
-  //     SetorPainelInfo setorPainelInfo, Widget icone, BuildContext context) {
+  // Card painelCard( SetorPainelInfo setorPainelInfo, Widget icone, BuildContext context) {
   //   return Card(
   //       child: ListTile(
   //     selected: setorPainelInfo.destacarSeDestinadoAoUsuarioLogado == null
