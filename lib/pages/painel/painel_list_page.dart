@@ -102,35 +102,37 @@ class _PainelListPageState extends State<PainelListPage> {
         String descricaoProdutoTab;
         list.add(Divider());
 
-        _myTabs.forEach((produto) {
-          if (produto == '*') {
-            descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
-          } else {
-            descricaoProdutoTab =
-                '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
-          }
+        _myTabs.forEach(
+          (produto) {
+            if (produto == '*') {
+              descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
+            } else {
+              descricaoProdutoTab =
+                  '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
+            }
 
-          list.add(
-            ListTile(
-              trailing: Icon(Icons.arrow_forward),
-              title: Text(descricaoProdutoTab),
-              onTap: () {
-                Navigator.of(context).push(
-                  // With MaterialPageRoute, you can pass data between pages,
-                  // but if you have a more complex app, you will quickly get lost.
-                  MaterialPageRoute(
-                    builder: (context) => PainelListElement(
-                      authBloc: widget.authBloc,
-                      element: produto,
+            list.add(
+              ListTile(
+                trailing: Icon(Icons.arrow_forward),
+                title: Text(descricaoProdutoTab),
+                onTap: () {
+                  Navigator.of(context).push(
+                    // With MaterialPageRoute, you can pass data between pages,
+                    // but if you have a more complex app, you will quickly get lost.
+                    MaterialPageRoute(
+                      builder: (context) => PainelListElement(
+                        authBloc: widget.authBloc,
+                        element: produto,
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          );
+                  );
+                },
+              ),
+            );
 
-          list.add(Divider());
-        });
+            list.add(Divider());
+          },
+        );
 
         list.add(SizedBox(height: 80));
 
