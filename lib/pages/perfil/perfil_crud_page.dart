@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crud_page_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
@@ -33,15 +34,10 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultScaffold(
+      backToRootPage: false,
       backgroundColor: PmsbColors.fundo,
-      appBar: AppBar(
-        backgroundColor: PmsbColors.fundo,
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text('Editar Documento'),
-      ),
+      title: Text('Editar Documento'),
       body: ListView(
         children: <Widget>[
           StreamBuilder<UsuarioPerfilModel>(

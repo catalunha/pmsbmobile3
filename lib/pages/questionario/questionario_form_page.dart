@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/questionario_model.dart';
 import 'package:pmsbmibile3/pages/questionario/questionario_form_page_bloc.dart';
@@ -52,7 +53,7 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     "Título do questionário:",
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textoPrimario,
                   )),
               Padding(
                 padding: EdgeInsets.all(5.0),
@@ -82,23 +83,13 @@ class _QuestionarioFormPageState extends State<QuestionarioFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PmsbColors.fundo,
-      appBar: AppBar(
-        backgroundColor: PmsbColors.fundo,
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text((_questionarioId != null ? "Editar" : "Adicionar") +
-            " Questionário"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text(
+          (_questionarioId != null ? "Editar" : "Adicionar") + " Questionário"),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.thumb_up,
+          Icons.check,
           color: Colors.white,
         ),
         backgroundColor: PmsbColors.cor_destaque,

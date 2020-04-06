@@ -190,7 +190,10 @@ class _ProdutoHomePageState extends State<ProdutoHomePage> {
       body: _body(context),
       floatingActionButton: FloatingActionButton(
         backgroundColor: PmsbColors.cor_destaque,
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         onPressed: () {
           Navigator.pushNamed(context, '/produto/crud', arguments: null);
         },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
     show FilePicker, FileType;
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -26,15 +27,9 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PmsbColors.fundo,
-      appBar: AppBar(
-        backgroundColor: PmsbColors.fundo,
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text("Editar Imagem"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text("Editar Imagem"),
       body: Padding(
         padding: const EdgeInsets.only(left: 12, right: 12),
         child: ListView(
@@ -48,7 +43,10 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
           bloc.eventSink(SaveEvent());
           Navigator.pop(context);
         },
-        child: Icon(Icons.check, color: Colors.white,),
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
         backgroundColor: PmsbColors.cor_destaque,
       ),
     );
@@ -78,22 +76,26 @@ class _FotoUsuario extends StatelessWidget {
             snapshot.data?.usuarioPerfilModel?.perfilID?.nome != null
                 ? Text(snapshot.data?.usuarioPerfilModel?.perfilID?.nome)
                 : Text('...'),
-            Wrap(children: <Widget>[
-              Text('Atualizar arquivo', style: PmsbStyles.textoPrimario,),
-              IconButton(
-                icon: Icon(Icons.file_download),
-                onPressed: () async {
-                  await _selecionarNovoArquivo().then((arq) {
-                    fotoLocalPath = arq;
-                  });
-                  bloc.eventSink(UpDateArquivoEvent(fotoLocalPath));
-                },
-              ),
-            ]),
+            Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Atualizar arquivo',
+                    style: PmsbStyles.textoPrimario,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.file_download),
+                    onPressed: () async {
+                      await _selecionarNovoArquivo().then((arq) {
+                        fotoLocalPath = arq;
+                      });
+                      bloc.eventSink(UpDateArquivoEvent(fotoLocalPath));
+                    },
+                  ),
+                ]),
             Column(
-              
               children: <Widget>[
-                _ImagemUnica(              
+                _ImagemUnica(
                     fotoUrl: snapshot.data?.arquivoUrl,
                     fotoLocalPath: snapshot.data?.arquivoLocalPath),
               ],
@@ -127,7 +129,18 @@ class _ImagemUnica extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget foto;
     if (fotoUrl == null && fotoLocalPath == null) {
-      foto = Center(child: Text('Sem imagem.', style: PmsbStyles.textStyleListBold,));
+      foto = Column(
+        children: <Widget>[
+          Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Sem imagem.',
+                  style: PmsbStyles.textoPrimario,
+                )
+              ]),
+        ],
+      );
     } else if (fotoUrl != null) {
       foto = Container(
           child: Padding(
