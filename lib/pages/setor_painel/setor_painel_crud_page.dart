@@ -37,7 +37,7 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: false,
-      title: Text('Editar Item do Painel'),
+      title: Text('Item do Painel'),
       floatingActionButton: StreamBuilder<SetorPainelCrudBlocState>(
         stream: bloc.stateStream,
         builder: (context, snapshot) {
