@@ -36,7 +36,7 @@ class _SetorPainelListElementState extends State<SetorPainelListElement> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-      title: Text("Editar itens do painel"),
+      title: Text("Itens do Painel"),
       backToRootPage: false,
       body: _body(),
     );

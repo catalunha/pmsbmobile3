@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/setor_painel/setor_painel_crud_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class SetorPainelCrudPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -32,10 +35,9 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Editar item do painel'),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text('Editar Item do Painel'),
       floatingActionButton: StreamBuilder<SetorPainelCrudBlocState>(
         stream: bloc.stateStream,
         builder: (context, snapshot) {
@@ -47,9 +49,9 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
                     Navigator.pop(context);
                   }
                 : null,
-            child: Icon(Icons.cloud_upload),
+            child: Icon(Icons.check),
             backgroundColor:
-                snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                snapshot.data.isDataValid ? PmsbColors.cor_destaque : Colors.grey,
           );
         },
       ),
@@ -103,12 +105,13 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
             return ListView(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     snapshot.data?.setorCensitarioPainelID?.painelID?.nome,
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textStyleListPerfil01,
                   ),
                 ),
+                Divider(),
                 Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
@@ -117,11 +120,12 @@ class _SetorPainelCrudPageState extends State<SetorPainelCrudPage> {
                   ),
                 ),
                 Padding(padding: EdgeInsets.all(5.0), child: valor),
+                Divider(),
                 Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     "Observações ao informar este valor:",
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textoSecundario,
                   ),
                 ),
                 Padding(
