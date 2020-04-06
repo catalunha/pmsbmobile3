@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:pmsbmibile3/widgets/selecting_text_editing_controller.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/pergunta_tipo_model.dart';
@@ -58,13 +60,22 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
         if (!snapshot.hasData) {
           return Text("SEM DADOS");
         }
+
         if (snapshot.data.instance != null) {
           return _textoTopo("Pergunta: ${snapshot.data.instance.titulo}");
         } else {
-          return _textoTopo("Pergunta: criando");
+          return _textoTopo("Pergunta: Criando");
         }
       },
     );
+  }
+
+  void _apagarAplicacao(context, EditarApagarPerguntaBloc bloc) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(child: _DeleteDocumentOrField(bloc));
+        });
   }
 
   _iconesLista() {
@@ -169,7 +180,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     return Center(
       child: Text(
         "$text",
-        style: TextStyle(fontSize: 16, color: Colors.blue),
+        style: TextStyle(fontSize: 17, color: Colors.blue),
       ),
     );
   }
@@ -187,9 +198,14 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                 setor: true,
                 questionarioID: widget.questionarioID,
               ),
+              Padding(padding: EdgeInsets.all(15)),
               _pergunta(),
-              Padding(padding: EdgeInsets.all(10)),
-              _texto("Tipo da pergunta:"),
+              Padding(padding: EdgeInsets.all(15)),
+              Text(
+                "Tipo da pergunta:",
+                style: PmsbStyles.textoPrimario,
+              ),
+
               PerguntaTipoInput(bloc),
               // Card(
               //     child: ListTile(
@@ -230,13 +246,30 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                   ));
                 },
               ),
-              _texto("Título da pergunta:"),
+              Text(
+                "Título da pergunta:",
+                style: PmsbStyles.textoPrimario,
+              ),
+              Padding(padding: EdgeInsets.all(8)),
               TituloInputField(bloc),
-              _texto("Texto da pergunta:"),
+              Padding(padding: EdgeInsets.all(8)),
+              Text(
+                "Texto da pergunta:",
+                style: PmsbStyles.textoPrimario,
+              ),
+              Padding(padding: EdgeInsets.all(8)),
               _textoMarkdownField(),
-              Padding(padding: EdgeInsets.all(10)),
-              // _botaoDeletarPergunta(),
-              _DeleteDocumentOrField(bloc),
+              Padding(padding: EdgeInsets.all(11)),
+
+              ListTile(
+                title: Text("Apagar"),
+                trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      _apagarAplicacao(context, bloc);
+                    }),
+              ),
+              Divider(color: Colors.black87),
               Container(
                 padding: EdgeInsets.only(top: 80),
               ),
@@ -259,19 +292,9 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   Widget build(BuildContext context) {
     myController.setTextAndPosition(myController.text);
 
-    return Scaffold(
-      backgroundColor: PmsbColors.fundo,
-      appBar: AppBar(
-        backgroundColor: PmsbColors.fundo,
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text("Editar/Apagar pergunta"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text("Editar/Apagar Pergunta"),
       body: _bodyTexto(context),
       floatingActionButton: StreamBuilder<EditarApagarPerguntaBlocState>(
         stream: bloc.state,
@@ -308,10 +331,16 @@ class PerguntaTipoInput extends StatelessWidget {
         stream: bloc.state,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Text("ERROR");
+            return Text(
+              "ERROR",
+              style: PmsbStyles.textoPrimario,
+            );
           }
           if (!snapshot.hasData) {
-            return _texto("SEM DADOS");
+            return Text(
+              "SEM DADOS",
+              style: PmsbStyles.textoPrimario,
+            );
           }
           return Container(
             child: Column(
@@ -320,7 +349,7 @@ class PerguntaTipoInput extends StatelessWidget {
                   Wrap(
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.list, color: Colors.black),
+                        icon: Icon(Icons.text_fields, color: Colors.white),
                         onPressed: () {
                           // pergunta do tipo texto
                           bloc.dispatch(
@@ -330,7 +359,7 @@ class PerguntaTipoInput extends StatelessWidget {
                       ),
                       IconButton(
                         icon:
-                            Icon(Icons.insert_drive_file, color: Colors.black),
+                            Icon(Icons.insert_drive_file, color: Colors.white),
                         onPressed: () {
                           // pergunta do tipo arquivo
                           bloc.dispatch(
@@ -339,7 +368,7 @@ class PerguntaTipoInput extends StatelessWidget {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.image, color: Colors.black),
+                        icon: Icon(Icons.image, color: Colors.white),
                         onPressed: () {
                           // pergunta do tipo imagem
                           bloc.dispatch(
@@ -348,7 +377,7 @@ class PerguntaTipoInput extends StatelessWidget {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.plus_one, color: Colors.black),
+                        icon: Icon(Icons.plus_one, color: Colors.white),
                         onPressed: () {
                           // pergunta do tipo numero
                           bloc.dispatch(
@@ -358,7 +387,7 @@ class PerguntaTipoInput extends StatelessWidget {
                       ),
                       IconButton(
                         icon: Icon(Icons.room),
-                        color: Colors.black,
+                        color: Colors.white,
                         onPressed: () {
                           // pergunta do tipo coordenada
                           bloc.dispatch(
@@ -367,7 +396,7 @@ class PerguntaTipoInput extends StatelessWidget {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.looks_one, color: Colors.black),
+                        icon: Icon(Icons.done, color: Colors.white),
                         onPressed: () {
                           // pergunta do tipo escolha única"
                           bloc.dispatch(
@@ -376,7 +405,7 @@ class PerguntaTipoInput extends StatelessWidget {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.queue, color: Colors.black),
+                        icon: Icon(Icons.done_all, color: Colors.white),
                         onPressed: () {
                           // pergunta do tipo escolha multipla
                           bloc.dispatch(
@@ -460,30 +489,145 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
       stream: bloc.state,
       builder: (BuildContext context,
           AsyncSnapshot<EditarApagarPerguntaBlocState> snapshot) {
-        return Row(
-          children: <Widget>[
-            Divider(),
-            Text('Para apagar digite CONCORDO e click:  '),
-            Container(
-              child: Flexible(
-                child: TextField(
-                  controller: _textFieldController,
+        return Container(
+          height: 250,
+          color: PmsbColors.fundo,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text(
+                  'Para apagar, digite CONCORDO na caixa de texto abaixo e confirme:  ',
+                  style: PmsbStyles.textoPrimario,
                 ),
-              ),
+                Container(
+                  child: Flexible(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Digite aqui",
+                        hintStyle: TextStyle(
+                            color: Colors.white38, fontStyle: FontStyle.italic),
+                      ),
+                      controller: _textFieldController,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    // Botao de cancelar delete
+                    // GestureDetector(
+                    //  onTap: () {
+                    //return;
+                    // },
+                    Container(
+                      height: 50.0,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffEB3349),
+                                Color(0xffF45C43),
+                                Color(0xffEB3349)
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: 150.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Cancelar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Botao de confirmar delete
+                    GestureDetector(
+                      onTap: () {
+                        if (_textFieldController.text == 'CONCORDO') {
+                          bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Container(
+                        height: 50.0,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xff1D976C),
+                                  Color(0xff1D976C),
+                                  Color(0xff93F9B9)
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: 150.0, minHeight: 50.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Confirmar",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                // IconButton(
+                //   icon: Icon(Icons.delete),
+                //   onPressed: () {
+                //     //Ir para a pagina visuais do produto
+                //     if (_textFieldController.text == 'CONCORDO') {
+                //       bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+                //       Navigator.of(context).pop();
+                //     }
+                //   },
+                // )
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                //Ir para a pagina visuais do produto
-                if (_textFieldController.text == 'CONCORDO') {
-                  bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          ],
+          ),
         );
       },
     );
   }
 }
+
+//ListTile(
+//title: Text("Apagar"),
+// trailing: IconButton(
+// icon: Icon(Icons.delete),
+// onPressed: () {
+// _apagarAplicacao(context, bloc);
+// }),
+// ),
+// Divider(color: Colors.black87),
+//if (_textFieldController.text == 'CONCORDO') {
+//bloc.dispatch(DeletarEditarApagarPerguntaBlocEvent());
+// Navigator.of(context).pop();
+// }

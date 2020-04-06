@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/preambulo.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_home_page_bloc.dart';
@@ -81,14 +82,9 @@ class PerguntaHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: PmsbColors.fundo,
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text("Lista de perguntas"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text("Lista de Perguntas"),
       body: _body(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -100,7 +96,10 @@ class PerguntaHomePage extends StatelessWidget {
                 questionarioID: _questionarioId),
           );
         },
-        child: Icon(Icons.add, color: Colors.white,),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         backgroundColor: PmsbColors.cor_destaque,
       ),
     );
@@ -168,7 +167,10 @@ class PerguntaItem extends StatelessWidget {
                 // ),
                 IconButton(
                     tooltip: 'Visão geral da pergunta',
-                    icon: Icon(Icons.remove_red_eye, color: Colors.pink,),
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.pink,
+                    ),
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
@@ -178,7 +180,8 @@ class PerguntaItem extends StatelessWidget {
                     }),
                 IconButton(
                     tooltip: 'Definir Requisitos',
-                    icon: Icon(Icons.rotate_90_degrees_ccw, color: Colors.green),
+                    icon:
+                        Icon(Icons.rotate_90_degrees_ccw, color: Colors.green),
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
@@ -188,7 +191,10 @@ class PerguntaItem extends StatelessWidget {
                     }),
                 IconButton(
                   tooltip: 'Editar esta pergunta',
-                  icon: Icon(Icons.edit, color: Colors.blue,),
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                  ),
                   onPressed: () {
                     final result = Navigator.pushNamed(
                       context,
