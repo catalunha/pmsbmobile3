@@ -41,7 +41,7 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: false,
-      title: Text('Editar item do painel'),
+      title: Text( widget.painelId != null ? "Editar item do painel" : "Adicionar item do painel"),
       floatingActionButton: StreamBuilder<PainelCrudBlocState>(
           stream: bloc.stateStream,
           builder: (context, snapshot) {
@@ -110,18 +110,16 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
                     )),
                 _eixo(context),
                 Divider(),
-                ListTile(
+                
+                
+                widget.painelId != null ? ListTile(
                   title: Text("Apagar"),
                   trailing: IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
                         _apagarAplicacao(context, bloc);
                       }),
-                ),
-                // Padding(
-                //   padding: EdgeInsets.all(5.0),
-                //   child: _DeleteDocumentOrField(bloc),
-                // ),
+                ): Container(),
                 Padding(padding: EdgeInsets.only(top: 100)),
               ],
             );
@@ -803,11 +801,23 @@ class _ProdutoFunasaListaModalSelectState
 }
 
 void _apagarAplicacao(context, PainelCrudBloc bloc) {
-  showModalBottomSheet(
+ showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext bc) {
-        return Container(child: _DeleteDocumentOrField(bloc));
-      });
+        return SingleChildScrollView(
+          child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(bc).viewInsets.bottom,
+              ),
+              child: Container(
+                  height: 250,
+                  color: Colors.black38,
+                  child: _DeleteDocumentOrField(bloc))
+              ),
+        );
+      },
+    );
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
@@ -858,38 +868,34 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     // Botao de cancelar delete
-                    // GestureDetector(
-                    //  onTap: () {
-                    //return;
-                    // },
-                    Container(
-                      height: 50.0,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xffEB3349),
-                                Color(0xffF45C43),
-                                Color(0xffEB3349)
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            borderRadius: BorderRadius.circular(30.0),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xffEB3349),
+                              Color(0xffF45C43),
+                              Color(0xffEB3349)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
                           ),
-                          child: Container(
-                            constraints: BoxConstraints(
-                                maxWidth: 150.0, minHeight: 50.0),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Cancelar",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Cancelar",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -900,82 +906,74 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                       onTap: () {
                         if (_textFieldController.text == 'CONCORDO') {
                           bloc.eventSink(DeleteDocumentEvent());
-                          Navigator.of(context).pop();
+                          _alerta(
+                            "O item do painel foi removido.",
+                            () {
+                              var count = 0;
+                              Navigator.popUntil(context, (route) {
+                                return count++ == 3;
+                              });
+                            },
+                          );
+                        } else {
+                          _alerta(
+                            "Verifique se a caixa de texto abaixo foi preenchida corretamente.",
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
                         }
                       },
                       child: Container(
                         height: 50.0,
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xff1D976C),
-                                  Color(0xff1D976C),
-                                  Color(0xff93F9B9)
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            child: Container(
-                              constraints: BoxConstraints(
-                                  maxWidth: 150.0, minHeight: 50.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Confirmar",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xff1D976C),
+                              Color(0xff1D976C),
+                              Color(0xff93F9B9)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Confirmar",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-
-                // IconButton(
-                //   icon: Icon(Icons.delete),
-                //   onPressed: () {
-                //     //Ir para a pagina visuais do produto
-                //     if (_textFieldController.text == 'CONCORDO') {
-                //       bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
-                //       Navigator.of(context).pop();
-                //     }
-                //   },
-                // )
               ],
             ),
           ),
         );
+      },
+    );
+  }
 
-        // return Row(
-        //   children: <Widget>[
-        //     Divider(),
-        //     Text('Para apagar digite CONCORDO e click:  '),
-        //     Container(
-        //       child: Flexible(
-        //         child: TextField(
-        //           controller: _textFieldController,
-        //         ),
-        //       ),
-        //     ),
-        //     IconButton(
-        //       icon: Icon(Icons.delete),
-        //       onPressed: () {
-        //         if (_textFieldController.text == 'CONCORDO') {
-        //           bloc.eventSink(DeleteDocumentEvent());
-        //           Navigator.of(context).pop();
-        //         }
-        //       },
-        //     )
-        //   ],
-        // );
+    Future<void> _alerta(String msgAlerta, Function acao) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: PmsbColors.card,
+          title: Text(msgAlerta),
+          actions: <Widget>[
+            FlatButton(child: Text('Ok'), onPressed: acao),
+          ],
+        );
       },
     );
   }
