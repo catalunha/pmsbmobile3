@@ -158,22 +158,101 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
 
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    // Grid de icons livres para todos usuarios
-                    HomeGrid(),
-                    // Grid de icons para admin
-                    HomeGridAdmin()
-                  ],
-                ),
-              )
+              // HomeGrid(),
+
+              Expanded(child: _body()),
+              // Expanded(child: HomeGrid()),
+
+              // (child:  HomeGrid()),
+
+              // Expanded(child:  HomeGridAdmin())
+
+              // ListView(
+              //   children: <Widget>[
+              //     HomeGrid(),
+              //     //  HomeGrid()),
+              //   ],
+              // ),
             ],
           ),
         ),
         //BemVindo(widget.authBloc),
         // child: NoticiaLeituraPage(),
         authBloc: this.authBloc,
+      ),
+    );
+  }
+
+  _body() {
+    return Container(
+      child: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Text("Geral", style: PmsbStyles.textStyleListBold),
+          ),
+          HomeGrid(),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Text("Geral", style: PmsbStyles.textStyleListBold),
+          ),
+          // HomeGrid()
+          // Container(
+          //   child: Column(
+          //     children: <Widget>[
+          //       ListView(
+          //         children: <Widget>[
+          //           Container(
+          //             height: 100,
+          //             width: 100,
+          //             color: Colors.purple,
+          //           ),
+          //         ],
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.black,
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.red,
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.black,
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.red,
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.black,
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.black,
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.red,
+          //       ),
+          //       Container(
+          //         height: 100,
+          //         width: 100,
+          //         color: Colors.black,
+          //       ),
+          //     ],
+          //   ),
+          // )
+        ],
       ),
     );
   }
