@@ -15,7 +15,7 @@ _texto(String texto) {
     padding: EdgeInsets.all(5.0),
     child: Text(
       texto,
-      style: TextStyle(fontSize: 15, color: Colors.blue),
+      style: PmsbStyles.textStyleListBold,
     ),
   );
 }
@@ -180,7 +180,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
     return Center(
       child: Text(
         "$text",
-        style: TextStyle(fontSize: 17, color: Colors.blue),
+        style: PmsbStyles.textoPrimario,
       ),
     );
   }
@@ -201,9 +201,12 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
               Padding(padding: EdgeInsets.all(15)),
               _pergunta(),
               Padding(padding: EdgeInsets.all(15)),
-              Text(
-                "Tipo da pergunta:",
-                style: PmsbStyles.textoPrimario,
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
+                  "Tipo da pergunta:",
+                  style: PmsbStyles.textoPrimario,
+                ),
               ),
 
               PerguntaTipoInput(bloc),
@@ -231,7 +234,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                   }
                   return Card(
                       child: ListTile(
-                    title: Text('Defina as escolhas:'),
+                    title: Text('Defina as escolhas:', style: PmsbStyles.textoPrimario),
                     trailing: IconButton(
                         icon: Icon(Icons.search),
                         onPressed: () async {
@@ -246,16 +249,22 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                   ));
                 },
               ),
-              Text(
-                "Título da pergunta:",
-                style: PmsbStyles.textoPrimario,
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
+                  "Título da pergunta:",
+                  style: PmsbStyles.textoPrimario,
+                ),
               ),
               Padding(padding: EdgeInsets.all(8)),
               TituloInputField(bloc),
               Padding(padding: EdgeInsets.all(8)),
-              Text(
-                "Texto da pergunta:",
-                style: PmsbStyles.textoPrimario,
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
+                  "Texto da pergunta:",
+                  style: PmsbStyles.textoPrimario,
+                ),
               ),
               Padding(padding: EdgeInsets.all(8)),
               _textoMarkdownField(),
