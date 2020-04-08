@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/definir_requisitos_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 // Aplicação 05
@@ -58,119 +59,23 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
 
         final perguntas =
             snapshot.data.perguntas != null ? snapshot.data.perguntas : [];
-        PerguntaAplicadaModel pergunta;
-        // List<Widget> list = List<Widget>();
+        List<Widget> list = List<Widget>();
 
-        // perguntas.forEach(
-        //   (pergunta) => {
-        //     list.add(
-        //       _requisitoRadioTile(widget.momentoBloc, bloc, pergunta,
-        //           widget.requisitoId, widget.perguntaSelecionadaId, context),
-        //     )
-        //   },
-        // );
+        perguntas.forEach(
+          (pergunta) => {
+            list.add(
+              RequisitoRadioTile(widget.momentoBloc, bloc, pergunta,
+                  widget.requisitoId, widget.perguntaSelecionadaId),
+            )
+          },
+        );
 
         return perguntas.length <= 0
             ? Center(
                 child: Text("Nenhuma pergunta elegivel"),
               )
-            : Column(
-                children: perguntas.map(
-                  (per) {
-                    pergunta = per;
-                    values[pergunta.id] =
-                        widget.perguntaSelecionadaId == pergunta.id
-                            ? true
-                            : false;
-
-                    return new CheckboxListTile(
-                      title: new Text(
-                        "Questionario: ${pergunta.questionario.nome}\nReferencia: ${pergunta.questionario.referencia}",
-                        style: TextStyle(
-                            color: widget.perguntaSelecionadaId == pergunta.id
-                                ? Colors.green
-                                : null),
-                      ),
-                      value: values[pergunta.id],
-                      onChanged: (bool value) {
-                        setState(
-                          () {
-                            values[pergunta.id] =
-                                widget.perguntaSelecionadaId == pergunta.id
-                                    ? true
-                                    : false;
-                          },
-                        );
-                      },
-                    );
-                  },
-                ).toList(),
-
-                //list
-
-                // perguntas
-                //     .map(
-                //       (pergunta) => _requisitoRadioTile(
-                //         widget.momentoBloc,
-                //         bloc,
-                //         pergunta,
-                //         widget.requisitoId,
-                //         widget.perguntaSelecionadaId,
-                //       ),
-                //     )
-                //     .toList(),
-              );
+            : Column(children: list);
       },
-    );
-  }
-
-  _requisitoRadioTile(bloc, momentoBloc, PerguntaAplicadaModel perguntaAplicada,
-      final String requisitoId, final String perguntaSelecionadaId, context) {
-    return
-
-        // GestureDetector(
-        //   onTap: () {
-        //     // momentoBloc.dispatch(SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
-        //     //     requisitoId, perguntaAplicada.id));
-        //     Scaffold.of(context).showSnackBar(
-        //       SnackBar(
-        //         content: Text('Tap'),
-        //       ),
-        //     );
-        //     //Navigator.of(context).pop();
-        //   },
-        //   child:
-
-        Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Divider(),
-          ListTile(
-            onTap: () {
-              // _handleTapboxChanged();
-              momentoBloc.dispatch(
-                  SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
-                      requisitoId, perguntaAplicada.id));
-
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Tap'),
-                ),
-              );
-              print("FOIFOIFIOJU OIJHF OIhoih");
-            },
-            title: Text(
-              "Questionario: ${perguntaAplicada.questionario.nome}\nReferencia: ${perguntaAplicada.questionario.referencia}",
-              style: TextStyle(
-                  color: perguntaSelecionadaId == perguntaAplicada.id
-                      ? Colors.green
-                      : null),
-            ),
-            subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
-          ),
-        ],
-      ),
     );
   }
 
@@ -186,139 +91,79 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
   }
 }
 
-// class RequisitoRadioTile extends StatefulWidget {
-//   final bloc;
-//   final momentoBloc;
-//   final perguntaAplicada;
-//   final perguntaSelecionadaId;
-//   final requisitoId;
+class RequisitoRadioTile extends StatelessWidget {
+  const RequisitoRadioTile(this.momentoBloc, this.bloc, this.perguntaAplicada,
+      this.requisitoId, this.perguntaSelecionadaId,
+      {Key key})
+      : super(key: key);
 
-//   RequisitoRadioTile(this.momentoBloc, this.bloc, this.perguntaAplicada,
-//       this.requisitoId, this.perguntaSelecionadaId,
-//       {Key key})
-//       : super(key: key);
+  final DefinirRequisitosPageBloc bloc;
+  final MomentoAplicacaoPageBloc momentoBloc;
+  final PerguntaAplicadaModel perguntaAplicada;
+  final String requisitoId;
+  final String perguntaSelecionadaId;
 
-//   @override
-//   _RequisitoRadioTileState createState() => _RequisitoRadioTileState(
-//       this.momentoBloc,
-//       this.bloc,
-//       this.perguntaAplicada,
-//       this.requisitoId,
-//       this.perguntaSelecionadaId);
-// }
+  @override
+  Widget build(BuildContext context) {
+    //TODO: mudar para radio ou seleção por toque, porque é pra escolher somente um das opções disponiveis
 
-// class RequisitoRadioTile extends StatelessWidget {
-//   final Color color;
-//   final Function onChanged;
+    return InkWell(
+      onTap: () {
+        _alerta(
+            "Questionário: ${perguntaAplicada.questionario.nome}\nReferência: ${perguntaAplicada.questionario.referencia} \nfoi selecionado como requisito.",
+            context);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Divider(),
+          ListTile(
+            title: Text(
+              "Questionario: ${perguntaAplicada.questionario.nome}\nReferência: ${perguntaAplicada.questionario.referencia}",
+              style: TextStyle(
+                  color: perguntaSelecionadaId == perguntaAplicada.id
+                      ? Colors.green
+                      : null),
+            ),
+            subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
+          ),
+        ],
+      ),
+    );
+  }
 
-//   RequisitoRadioTile(this.momentoBloc, this.bloc, this.perguntaAplicada,
-//       this.requisitoId, this.perguntaSelecionadaId, this.color, this.onChanged);
-
-//   final DefinirRequisitosPageBloc bloc;
-//   final MomentoAplicacaoPageBloc momentoBloc;
-//   final PerguntaAplicadaModel perguntaAplicada;
-//   final String requisitoId;
-//   final String perguntaSelecionadaId;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     //TODO: mudar para radio ou seleção por toque, porque é pra escolher somente um das opções disponiveis
-
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       children: <Widget>[
-//         Divider(),
-//         ListTile(
-//           onTap: () {
-//             this.onChanged();
-//             momentoBloc.dispatch(
-//                 SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
-//                     requisitoId, perguntaAplicada.id));
-//             Scaffold.of(context).showSnackBar(
-//               SnackBar(
-//                 content: Text('Tap'),
-//               ),
-//             );
-//           },
-//           title: Text(
-//             "Questionario: ${perguntaAplicada.questionario.nome}\nReferencia: ${perguntaAplicada.questionario.referencia}",
-//             style: TextStyle(color: this.color),
-//           ),
-//           subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
-//         ),
-//       ],
-//     );
-
-//     // child: ListTile(
-//     //   title: Text(
-//     //     "${perguntaSelecionadaId == perguntaAplicada.id ? "(selecionado)" : ""} \n Questionario: ${perguntaAplicada.questionario.nome} \nReferencia: ${perguntaAplicada.questionario.referencia}",
-//     //     style: TextStyle(
-//     //         color: perguntaSelecionadaId == perguntaAplicada.id
-//     //             ? Colors.green
-//     //             : null),
-//     //   ),
-//     //   subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
-//     // ),
-//   }
-// }
-
-// class RequisitoRadioTile extends StatelessWidget {
-//   const RequisitoRadioTile(this.momentoBloc, this.bloc, this.perguntaAplicada,
-//       this.requisitoId, this.perguntaSelecionadaId,
-//       {Key key})
-//       : super(key: key);
-
-//   final DefinirRequisitosPageBloc bloc;
-//   final MomentoAplicacaoPageBloc momentoBloc;
-//   final PerguntaAplicadaModel perguntaAplicada;
-//   final String requisitoId;
-//   final String perguntaSelecionadaId;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     //TODO: mudar para radio ou seleção por toque, porque é pra escolher somente um das opções disponiveis
-
-//     return InkWell(
-//         onTap: () {
-//           momentoBloc.dispatch(SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
-//               requisitoId, perguntaAplicada.id));
-//           Scaffold.of(context).showSnackBar(
-//             SnackBar(
-//               content: Text('Tap'),
-//             ),
-//           );
-//           //Navigator.of(context).pop();
-//         },
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           children: <Widget>[
-//             Divider(),
-//             ListTile(
-//               title: Text(
-//                 "Questionario: ${perguntaAplicada.questionario.nome}\nReferencia: ${perguntaAplicada.questionario.referencia}",
-//                 style: TextStyle(
-//                     color: perguntaSelecionadaId == perguntaAplicada.id
-//                         ? Colors.green
-//                         : null),
-//               ),
-//               subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
-//             ),
-//           ],
-//         )
-
-//         // child: ListTile(
-//         //   title: Text(
-//         //     "${perguntaSelecionadaId == perguntaAplicada.id ? "(selecionado)" : ""} \n Questionario: ${perguntaAplicada.questionario.nome} \nReferencia: ${perguntaAplicada.questionario.referencia}",
-//         //     style: TextStyle(
-//         //         color: perguntaSelecionadaId == perguntaAplicada.id
-//         //             ? Colors.green
-//         //             : null),
-//         //   ),
-//         //   subtitle: Text("Pergunta: ${perguntaAplicada.titulo}"),
-//         // ),
-//         );
-//   }
-// }
+  Future<void> _alerta(String msgAlerta, BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: PmsbColors.card,
+          title: Text(msgAlerta),
+          titleTextStyle: PmsbStyles.textoSecundario,
+          actions: <Widget>[
+            FlatButton(
+                child: Text('Cancelar'),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            FlatButton(
+                child: Text('Salvar'),
+                onPressed: () {
+                  momentoBloc.dispatch(
+                      SelecionarRequisitoMomentoAplicacaoPageBlocEvent(
+                          requisitoId, perguntaAplicada.id));
+                  int count = 0;
+                  Navigator.popUntil(context, (route) {
+                    return count++ == 2;
+                  });
+                }),
+          ],
+        );
+      },
+    );
+  }
+}
 
 // Widget _preambulo() {
 //   return Column(
