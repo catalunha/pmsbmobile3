@@ -60,6 +60,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
           questionarioAplicado: true,
         ),
         // _listaDadosSuperior(),
+
         StreamBuilder<MomentoAplicacaoPageBlocState>(
             stream: bloc.state,
             builder: (context, snapshot) {
@@ -73,7 +74,10 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                 trailing: isBound
                     ? null
                     : IconButton(
-                        icon: Icon(Icons.search),
+                        icon: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
                         onPressed: () {
                           bloc.dispatch(
                               CarregarListaQuestionarioMomentoAplicacaoPageBlocEvent());
@@ -83,14 +87,22 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                           //selecionar o questionario
                         }),
                 title: isBound
-                    ? Text("Escolhido: ${questionario.id}")
-                    : Text("Escolha um questionário: "),
-                subtitle:
-                    Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
+                    ? Text("Escolhido: ${questionario.id}") : Text("Escolha um questionário: ",style: PmsbStyles.textoPrimario,),
+                subtitle: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "$nomeQuestionario",
+                      style: PmsbStyles.textStyleListBold,
+                    ),
+                  ),
+                ),
               );
             }),
+
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(14),
           child: Text(
             "Referência: Local/Pessoa/Momento na aplicação:",
             style: PmsbStyles.textoSecundario,
@@ -364,6 +376,7 @@ class ListaRequisitos extends StatelessWidget {
                           title: Text(
                             "${r.referencia}",
                             style: TextStyle(fontSize: 15),
+
                           ),
                           onTap: () {
                             Navigator.pushNamed(

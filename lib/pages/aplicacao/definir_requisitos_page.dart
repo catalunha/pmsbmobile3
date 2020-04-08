@@ -72,7 +72,7 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
 
         return perguntas.length <= 0
             ? Center(
-                child: Text("Nenhuma pergunta elegivel"),
+                child: Text("Nenhuma pergunta elegível", style: PmsbStyles.textoSecundario,),
               )
             : Column(children: list);
       },
@@ -83,7 +83,7 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: false,
-      title: Text("Definindo referencias"),
+      title: Text("Definindo Referências"),
       body: ListView(children: <Widget>[
         _radioTules(context),
       ]),

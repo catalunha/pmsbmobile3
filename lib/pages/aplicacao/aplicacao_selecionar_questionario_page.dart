@@ -26,7 +26,7 @@ class _AplicacaoSelecionarQuestionarioPage
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: false,
-      title: Text("Selecionar Questionario"),
+      title: Text("Selecionar Questionário"),
       body: SafeArea(
         child: StreamBuilder<MomentoAplicacaoPageBlocState>(
             stream: bloc.state,
