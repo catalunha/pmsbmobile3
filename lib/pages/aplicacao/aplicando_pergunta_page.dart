@@ -172,8 +172,10 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
                     arguments: snapshot.data.questionarioAplicadoID);
               },
               child: Text(
-                "Você alcançou o fim do questionário.\nClique aqui para ir ao resumo.",
-                style: PmsbStyles.textoSecundario,
+                "Você alcançou o fim do questionário!\n Clique aqui para ir ao resumo",
+                style: TextStyle(
+                  fontSize: 19,
+                ),
               ),
             ),
           );
@@ -200,8 +202,8 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
             Padding(padding: EdgeInsets.all(5)),
             // Divider(color: Colors.black54),
             Padding(
-                padding: EdgeInsets.all(9),
-                child: Text("Observações:", style: PmsbStyles.textoPrimario)),
+                padding: EdgeInsets.all(15),
+                child: Text("Observações: ", style: PmsbStyles.textoPrimario)),
             Padding(
               padding: EdgeInsets.all(5.0),
               child: InitialValueTextField(
@@ -223,7 +225,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(40),
+              padding: EdgeInsets.all(80),
             ),
             _botoes()
           ],
