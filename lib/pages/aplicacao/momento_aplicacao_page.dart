@@ -119,7 +119,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
           questionarioAplicado: true,
         ),
         // _listaDadosSuperior(),
-        Divider(color: Colors.black87),
+        // Divider(color: Colors.black87),
         StreamBuilder<MomentoAplicacaoPageBlocState>(
             stream: bloc.state,
             builder: (context, snapshot) {
@@ -133,7 +133,10 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                 trailing: isBound
                     ? null
                     : IconButton(
-                        icon: Icon(Icons.search),
+                        icon: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
                         onPressed: () {
                           bloc.dispatch(
                               CarregarListaQuestionarioMomentoAplicacaoPageBlocEvent());
@@ -143,37 +146,46 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                           //selecionar o questionario
                         }),
                 title: isBound
-                    ? Text("Escolhido: ${questionario.id}")
-                    : Text("Escolha um questionário: "),
-                subtitle:
-                    Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
+                    ? Text("Escolhido: ${questionario.id}") : Text("Escolha um questionário: ",style: PmsbStyles.textoPrimario,),
+                subtitle: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "$nomeQuestionario",
+                      style: PmsbStyles.textStyleListBold,
+                    ),
+                  ),
+                ),
               );
             }),
-        Divider(color: Colors.black87),
+        //Divider(color: Colors.black87),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(14),
           child: Text(
-            "Referência: Local/Pessoa/Momento na aplicação:",
-            style: TextStyle(color: Colors.blue, fontSize: 15),
+            "Referência: Local/Pessoa/Momento de aplicação:",
+            style: PmsbStyles.textoPrimario,
           ),
         ),
         ReferenciaInput(bloc),
-        Divider(color: Colors.black87),
+        //Divider(color: Colors.black87),
         ListaRequisitos(bloc),
         // _botaoDeletar(),
 
-        Divider(color: Colors.black87),
+        // Divider(color: Colors.black87),
 
         ListTile(
-          title: Text("Apagar"),
+          title: Text(
+            "Apagar",
+            style: PmsbStyles.textoPrimario,
+          ),
           trailing: IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.delete, color: Colors.white,),
               onPressed: () {
                 _apagarAplicacao(context, bloc);
               }),
         ),
 
-        
         Divider(color: Colors.black87),
 
         // _DeleteDocumentOrField(bloc),
@@ -197,10 +209,6 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     return DefaultScaffold(
       backToRootPage: false,
       title: Text("Local/Pessoa/Momento de aplicação"),
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: Text("Local/Pessoa/Momento de aplicação"),
-      // ),
       body: _body(context),
       floatingActionButton: StreamBuilder<MomentoAplicacaoPageBlocState>(
           stream: bloc.state,
@@ -208,17 +216,18 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
             if (!snapshot.hasData) return Container();
 
             return FloatingActionButton(
-              onPressed: snapshot.data.isValid
-                  ? () {
-                      //salvar e voltar
-                      bloc.dispatch(SaveMomentoAplicacaoPageBlocEvent());
-                      Navigator.pop(context);
-                    }
-                  : null,
-              child: Icon(Icons.thumb_up),
-              backgroundColor:
-                  snapshot.data.isValid ? PmsbColors.cor_destaque : Colors.grey,
-            );
+                onPressed: snapshot.data.isValid
+                    ? () {
+                        //salvar e voltar
+                        bloc.dispatch(SaveMomentoAplicacaoPageBlocEvent());
+                        Navigator.pop(context);
+                      }
+                    : null,
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+                backgroundColor: PmsbColors.cor_destaque);
           }),
     );
   }
@@ -256,32 +265,59 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
               children: <Widget>[
                 SizedBox(height: 20),
                 Text(
-                    'Para apagar a aplicação digite CONCORDO na caixa de texto abaixo e confirme:  '),
-                Divider(),
+                  'Para apagar, digite CONCORDO na caixa de texto abaixo e confirme:  ',
+                  style: PmsbStyles.textoPrimario,
+                ),
                 Container(
                   child: Flexible(
                     child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Digite aqui",
+                        hintStyle: TextStyle(
+                            color: Colors.white38, fontStyle: FontStyle.italic),
+                      ),
                       controller: _textFieldController,
                     ),
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     // Botao de cancelar delete
-                    GestureDetector(
-                      onTap: () {
-                        return;
-                      },
-                      child: Container(
-                        
-
-                        color: Colors.red,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child:
-                              Text('Cancelar', style: PmsbStyles.textoPrimario),
+                    // GestureDetector(
+                    //  onTap: () {
+                    //return;
+                    // },
+                    Container(
+                      height: 50.0,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffEB3349),
+                                Color(0xffF45C43),
+                                Color(0xffEB3349)
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth: 150.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Cancelar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -295,11 +331,35 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                         }
                       },
                       child: Container(
-                        color: Colors.green,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text('Confirmar',
-                              style: PmsbStyles.textoPrimario),
+                        height: 50.0,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xff1D976C),
+                                  Color(0xff1D976C),
+                                  Color(0xff93F9B9)
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: 150.0, minHeight: 50.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Confirmar",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     )
@@ -362,7 +422,7 @@ class ListaRequisitos extends StatelessWidget {
                                   "${r.referencia}",
                                   style: TextStyle(fontSize: 15),
                                 ),
-                                Icon(Icons.search),
+                                Icon(Icons.search, color: Colors.white,),
                               ],
                             ),
                             onPressed: () {

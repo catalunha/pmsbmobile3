@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/aplicacao/definir_requisitos_page_bloc.dart';
 import 'package:pmsbmibile3/pages/aplicacao/momento_aplicacao_page_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 // Aplicação 05
 
@@ -56,7 +58,7 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
 
         return perfungas.length <= 0
             ? Center(
-                child: Text("Nenhuma pergunta elegivel"),
+                child: Text("Nenhuma pergunta elegível", style: PmsbStyles.textoSecundario,),
               )
             : Column(
                 children: perfungas
@@ -109,7 +111,10 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
         ),
         Padding(
           padding: EdgeInsets.all(5),
-          child: Text("Questionário 03 -> Pergunta 01"),
+          child: Text(
+            "Questionário 03 -> Pergunta 01",
+            style: PmsbStyles.textoPrimario,
+          ),
         ),
       ],
     );
@@ -117,12 +122,9 @@ class _DefinirRequisistosPageState extends State<DefinirRequisistosPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[],
-        centerTitle: true,
-        title: Text("Definindo referencias"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text("Definindo Referências"),
       body: ListView(children: <Widget>[
         //_preambulo(),
         _RadioTules(),
