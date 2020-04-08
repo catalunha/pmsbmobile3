@@ -187,15 +187,10 @@ class _HomePageState extends State<HomePage> {
     return Container(
       child: ListView(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text("Geral", style: PmsbStyles.textStyleListBold),
-          ),
+         
           HomeGrid(),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Text("Geral", style: PmsbStyles.textStyleListBold),
-          ),
+        
+          HomeGridAdmin()
           // HomeGrid()
           // Container(
           //   child: Column(

@@ -32,7 +32,7 @@ class _HomeGridState extends State<HomeGrid> {
     if (Recursos.instance.plataforma == 'android') {
       rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
       rotas["/resposta/home"] = Rota("Resposta", Icons.playlist_add_check);
-      rotas["/aplicacao/home"] =  Rota("Aplicar", Icons.directions_walk);
+      rotas["/aplicacao/home"] = Rota("Aplicar", Icons.directions_walk);
       rotas["/upload"] = Rota("Upload", Icons.file_upload);
       rotas["/sintese/home"] = Rota("Síntese", Icons.equalizer);
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
@@ -50,11 +50,11 @@ class _HomeGridState extends State<HomeGrid> {
       rotas["/produto/home"] = Rota("Produto", Icons.chrome_reader_mode);
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
-      rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
+      rotas["/administracao/home"] =
+          Rota("Administração", Icons.business_center);
     }
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -105,21 +105,27 @@ class _HomeGridState extends State<HomeGrid> {
             list.add(Container());
           }
 
-          return GridView.count(
-            shrinkWrap: true,
-            physics: ScrollPhysics(),
-            crossAxisCount: 3,
-            children: List.generate(
-              opcoes.length,
-              (index) {
-                return Center(
-                  child: OpcaoCard(rotaAction: opcoes[index]),
-                );
-              },
-            ),
+          return Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Text("Geral", style: PmsbStyles.textStyleListBold),
+              ),
+              GridView.count(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                crossAxisCount: 3,
+                children: List.generate(
+                  opcoes.length,
+                  (index) {
+                    return Center(
+                      child: OpcaoCard(rotaAction: opcoes[index]),
+                    );
+                  },
+                ),
+              )
+            ],
           );
-
-          //return Column(children: list);
         },
       ),
     );
@@ -320,17 +326,5 @@ class OpcaoCard extends StatelessWidget {
         ),
       ),
     );
-
-    // Card(
-    //     color: Colors.white,
-    //     child: Center(
-    //       child: Column(
-    //           mainAxisSize: MainAxisSize.min,
-    //           crossAxisAlignment: CrossAxisAlignment.center,
-    //           children: <Widget>[
-    //             Icon(opcao.icone, size: 80.0, color: textStyle.color),
-    //             Text(opcao.nome, style: textStyle),
-    //           ]),
-    //     ));
   }
 }
