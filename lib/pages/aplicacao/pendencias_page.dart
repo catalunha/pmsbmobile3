@@ -101,252 +101,251 @@ class PerguntaAplicadaListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Padding(
-    //   padding: const EdgeInsets.only(top: 5),
-    //   child: Container(
-    //     color: PmsbColors.card,
-    //     // width: MediaQuery.of(context).size.width * 0.95, //distância entre os cards
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(8.0),
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.start,
-    //         children: <Widget>[
-    //           //Primeira linha
-    //           Align(
-    //             alignment: Alignment.centerLeft,
-    //             child: Text(
-    //               _perguntaAplicada.titulo,
-    //               style: TextStyle(
-    //                 color: Colors.white,
-    //                 fontSize: 20,
-    //                 fontWeight: FontWeight.bold,
-    //               ),
-    //             ),
-    //           ),
-    //           SizedBox(height: 8),
-
-    //           Row(
-    //             mainAxisAlignment: MainAxisAlignment.start,
-    //             crossAxisAlignment: CrossAxisAlignment.center,
-    //             children: <Widget>[
-    //               Flexible(
-    //                 flex: 8,
-    //                 child: Text(
-    //                   "Tem informação: ",
-    //                   style: PmsbStyles.textoSecundario,
-    //                 ),
-    //               ),
-    //               Flexible(
-    //                   flex: 8,
-    //                   child: _iconResposta(_perguntaAplicada.temRespostaValida))
-    //             ],
-    //           ),
-
-    //           Row(
-    //             mainAxisAlignment: MainAxisAlignment.start,
-    //             crossAxisAlignment: CrossAxisAlignment.center,
-    //             children: <Widget>[
-    //               Flexible(
-    //                 flex: 8,
-    //                 child: Text(
-    //                   "Pode ser respondida: ",
-    //                   style: PmsbStyles.textoSecundario,
-    //                 ),
-    //               ),
-    //               Flexible(
-    //                   flex: 8,
-    //                   child: _iconResposta(!_perguntaAplicada.temPendencias)
-
-    //                   // Icon(
-    //                   //   Icons.check,
-    //                   //   size: 25,
-    //                   //   color: Colors.green,
-    //                   // ),
-    //                   )
-    //             ],
-    //           ),
-    //           SizedBox(height: 5),
-    //           Align(
-    //             alignment: Alignment.centerRight,
-    //             child: Row(
-    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //               children: <Widget>[
-    //                 GestureDetector(
-    //                   onTap: _perguntaAplicada.temPendencias ? null : onPressed,
-    //                   child: Container(
-    //                     // width: 65,
-    //                     height: 30,
-    //                     decoration: BoxDecoration(
-    //                       gradient: LinearGradient(
-    //                           begin: Alignment.topRight,
-    //                           end: Alignment.bottomLeft,
-    //                           colors: _perguntaAplicada.foiRespondida
-    //                               ? [
-    //                                   Colors.green[300],
-    //                                   PmsbColors.cor_destaque,
-    //                                 ]
-    //                               : [
-    //                                   Colors.red[300],
-    //                                   Colors.redAccent,
-    //                                 ]),
-    //                       //vermelho: red[300] e achar outro tom
-    //                       //verde: green[300] e cor_destaque
-    //                       //laranja: orange[300] e deppOrange
-    //                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
-    //                     ),
-    //                     child: Text(
-    //                       _perguntaAplicada.foiRespondida
-    //                           ? '  Respodida  '
-    //                           : '  Não Respondida  ',
-    //                       style: TextStyle(
-    //                         color: PmsbColors.texto_secundario,
-    //                         fontSize: 20,
-    //                         //fontWeight: FontWeight.bold,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 IconButton(
-    //                   tooltip: 'Listar requisitos',
-    //                   icon: Icon(
-    //                     Icons.rotate_90_degrees_ccw,
-    //                     color: _perguntaAplicada.referenciasRequitosDefinidas
-    //                         ? Colors.green
-    //                         : Colors.red,
-    //                   ),
-    //                   onPressed: () {
-    //                     showDialog(
-    //                       context: context,
-    //                       builder: (context) => Dialog(
-    //                         elevation: 5,
-    //                         child: ListView(
-    //                           children: <Widget>[
-    //                             ListTile(
-    //                               title: Text("Requisitos"),
-    //                             ),
-    //                             for (var item
-    //                                 in _perguntaAplicada.requisitos.entries)
-    //                               RequisitoListItem(item.value),
-    //                             FlatButton(
-    //                               child: Text("OK"),
-    //                               onPressed: () {
-    //                                 Navigator.pop(context);
-    //                               },
-    //                             ),
-    //                           ],
-    //                         ),
-    //                       ),
-    //                     );
-    //                   },
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-  return 
-    Column(
-      children: <Widget>[
-        ListTile(
-          title: Text(_perguntaAplicada.titulo),
-          // trailing: IconButton(
-          //   tooltip: 'Pergunta pode ser respondida ?',
-          //   //Sim.
-          //   //Nao. Pois tem pendencia e podem ser:
-          //   //- tem req e nao foi especificada a pergunta req
-          //   //- se tem o req ele pode nao ter sido atendido.
-          //   icon: _perguntaAplicada.temPendencias
-          //       ? Icon(Icons.clear, color: Colors.red)
-          //       : Icon(Icons.check, color: Colors.green),
-          //   onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
-          // ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
+      child: Container(
+        color: PmsbColors.card,
+        // width: MediaQuery.of(context).size.width * 0.95, //distância entre os cards
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              // Pode ser respondida
-              IconButton(
-                tooltip: 'Pergunta pode ser respondida ?',
-                icon: _perguntaAplicada.temPendencias
-                    ? Icon(Icons.clear, color: Colors.red)
-                    : Icon(Icons.check, color: Colors.green),
-                onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+              //Primeira linha
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  _perguntaAplicada.titulo,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    flex: 8,
+                    child: Text(
+                      "Tem informação: ",
+                      style: PmsbStyles.textoSecundario,
+                    ),
+                  ),
+                  Flexible(
+                      flex: 8,
+                      child: _iconResposta(_perguntaAplicada.temRespostaValida))
+                ],
               ),
 
-              // Foi respondida
-              if (_perguntaAplicada.foiRespondida)
-                IconButton(
-                  tooltip: 'Pergunta foi respondida ?',
-                  icon: Icon(Icons.thumb_up, color: Colors.green),
-                  onPressed: () {},
-                )
-              else
-                IconButton(
-                  tooltip: 'Pergunta foi respondida ?',
-                  icon: Icon(Icons.thumb_down),
-                  onPressed: () {},
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    flex: 8,
+                    child: Text(
+                      "Pode ser respondida: ",
+                      style: PmsbStyles.textoSecundario,
+                    ),
+                  ),
+                  Flexible(
+                      flex: 8,
+                      child: _iconResposta(!_perguntaAplicada.temPendencias)
 
-              // Tem informacao valida
-
-              if (!_perguntaAplicada.foiRespondida &&
-                  _perguntaAplicada.temRespostaValida)
-                IconButton(
-                  tooltip:
-                      'Pergunta não foi respondida e tem informação válida ?',
-                  icon: Icon(Icons.thumbs_up_down),
-                  onPressed: () {},
-                )
-              else
-                IconButton(
-                    tooltip:
-                        'Pergunta não foi respondida e tem informação válida ?',
-                    icon: Icon(Icons.thumb_down),
-                    onPressed: () {}),
-
-              // Requisitos
-              IconButton(
-                tooltip: 'Requisitos definidos ?',
-                icon: Icon(
-                  Icons.rotate_90_degrees_ccw,
-                  color: _perguntaAplicada.referenciasRequitosDefinidas
-                      ? Colors.green
-                      : Colors.red,
-                ),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => Dialog(
-                      elevation: 5,
-                      child: ListView(
-                        children: <Widget>[
-                          ListTile(
-                            title: Text("Requisitos"),
+                      // Icon(
+                      //   Icons.check,
+                      //   size: 25,
+                      //   color: Colors.green,
+                      // ),
+                      )
+                ],
+              ),
+              SizedBox(height: 5),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: _perguntaAplicada.temPendencias ? null : onPressed,
+                      child: Container(
+                        // width: 65,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: _perguntaAplicada.foiRespondida
+                                  ? [
+                                      Colors.green[300],
+                                      PmsbColors.cor_destaque,
+                                    ]
+                                  : [
+                                      Colors.red[300],
+                                      Colors.redAccent,
+                                    ]),
+                          //vermelho: red[300] e achar outro tom
+                          //verde: green[300] e cor_destaque
+                          //laranja: orange[300] e deppOrange
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        ),
+                        child: Text(
+                          _perguntaAplicada.foiRespondida
+                              ? '  Respodida  '
+                              : '  Não Respondida  ',
+                          style: TextStyle(
+                            color: PmsbColors.texto_secundario,
+                            fontSize: 20,
+                            //fontWeight: FontWeight.bold,
                           ),
-                          for (var item in _perguntaAplicada.requisitos.entries)
-                            RequisitoListItem(item.value),
-                          FlatButton(
-                            child: Text("OK"),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  );
-                },
+                    IconButton(
+                      tooltip: 'Listar requisitos',
+                      icon: Icon(
+                        Icons.rotate_90_degrees_ccw,
+                        color: _perguntaAplicada.referenciasRequitosDefinidas
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            elevation: 5,
+                            child: ListView(
+                              children: <Widget>[
+                                ListTile(
+                                  title: Text("Requisitos"),
+                                ),
+                                for (var item in _perguntaAplicada.requisitos.entries)
+                                  RequisitoListItem(item.value),
+                                FlatButton(
+                                  child: Text("OK"),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
-      ],
+      ),
     );
+
+    // Column(
+    //   children: <Widget>[
+    //     ListTile(
+    //       title: Text(_perguntaAplicada.titulo),
+    //       // trailing: IconButton(
+    //       //   tooltip: 'Pergunta pode ser respondida ?',
+    //       //   //Sim.
+    //       //   //Nao. Pois tem pendencia e podem ser:
+    //       //   //- tem req e nao foi especificada a pergunta req
+    //       //   //- se tem o req ele pode nao ter sido atendido.
+    //       //   icon: _perguntaAplicada.temPendencias
+    //       //       ? Icon(Icons.clear, color: Colors.red)
+    //       //       : Icon(Icons.check, color: Colors.green),
+    //       //   onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+    //       // ),
+    //     ),
+    //     Container(
+    //       padding: EdgeInsets.symmetric(horizontal: 8),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: <Widget>[
+    //           // Pode ser respondida
+    //           IconButton(
+    //             tooltip: 'Pergunta pode ser respondida ?',
+    //             icon: _perguntaAplicada.temPendencias
+    //                 ? Icon(Icons.clear, color: Colors.red)
+    //                 : Icon(Icons.check, color: Colors.green),
+    //             onPressed: _perguntaAplicada.temPendencias ? null : onPressed,
+    //           ),
+
+    //           // Foi respondida
+    //           if (_perguntaAplicada.foiRespondida)
+    //             IconButton(
+    //               tooltip: 'Pergunta foi respondida ?',
+    //               icon: Icon(Icons.thumb_up, color: Colors.green),
+    //               onPressed: () {},
+    //             )
+    //           else
+    //             IconButton(
+    //               tooltip: 'Pergunta foi respondida ?',
+    //               icon: Icon(Icons.thumb_down),
+    //               onPressed: () {},
+    //             ),
+
+    //           // Tem informacao valida
+
+    //           if (!_perguntaAplicada.foiRespondida &&
+    //               _perguntaAplicada.temRespostaValida)
+    //             IconButton(
+    //               tooltip:
+    //                   'Pergunta não foi respondida e tem informação válida ?',
+    //               icon: Icon(Icons.thumbs_up_down),
+    //               onPressed: () {},
+    //             )
+    //           else
+    //             IconButton(
+    //                 tooltip:
+    //                     'Pergunta não foi respondida e tem informação válida ?',
+    //                 icon: Icon(Icons.thumb_down),
+    //                 onPressed: () {}),
+
+    //           // Requisitos
+    //           IconButton(
+    //             tooltip: 'Requisitos definidos ?',
+    //             icon: Icon(
+    //               Icons.rotate_90_degrees_ccw,
+    //               color: _perguntaAplicada.referenciasRequitosDefinidas
+    //                   ? Colors.green
+    //                   : Colors.red,
+    //             ),
+    //             onPressed: () {
+    //               showDialog(
+    //                 context: context,
+    //                 builder: (context) => Dialog(
+    //                   elevation: 5,
+    //                   child: ListView(
+    //                     children: <Widget>[
+    //                       ListTile(
+    //                         title: Text("Requisitos"),
+    //                       ),
+    //                       for (var item in _perguntaAplicada.requisitos.entries)
+    //                         RequisitoListItem(item.value),
+    //                       FlatButton(
+    //                         child: Text("OK"),
+    //                         onPressed: () {
+    //                           Navigator.pop(context);
+    //                         },
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //               );
+    //             },
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 
   _iconResposta(bool item) {

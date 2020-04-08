@@ -50,65 +50,6 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
     super.dispose();
   }
 
-  // _botaoDeletar() {
-  //   return SafeArea(
-  //       child: Row(
-  //     children: <Widget>[
-  //       Padding(
-  //         padding: EdgeInsets.all(5.0),
-  //         child: RaisedButton(
-  //           color: Colors.red,
-  //           onPressed: () {
-  //             bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
-  //             Navigator.pop(context);
-  //           },
-  //           child: Row(
-  //             children: <Widget>[
-  //               Text('Apagar', style: TextStyle(fontSize: 20)),
-  //               Icon(Icons.delete)
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   ));
-  // }
-
-  // _listaDadosSuperior() {
-  //   return Column(
-  //     children: <Widget>[
-  //       Padding(
-  //         padding: EdgeInsets.only(top: 5),
-  //         child: Text(
-  //           "Eixo - $_eixo",
-  //           style: TextStyle(fontSize: 16, color: Colors.blue),
-  //         ),
-  //       ),
-  //       Padding(
-  //         padding: EdgeInsets.only(top: 5),
-  //         child: Text(
-  //           "Setor - $_setor",
-  //           style: TextStyle(fontSize: 16, color: Colors.blue),
-  //         ),
-  //       ),
-  //       Padding(
-  //         padding: EdgeInsets.only(top: 5),
-  //         child: Text(
-  //           "Questionario - $_questionario",
-  //           style: TextStyle(fontSize: 16, color: Colors.blue),
-  //         ),
-  //       ),
-  //       Padding(
-  //         padding: EdgeInsets.only(top: 5, bottom: 5),
-  //         child: Text(
-  //           "Local - $_local",
-  //           style: TextStyle(fontSize: 16, color: Colors.blue),
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
-
   Widget _body(context) {
     return ListView(
       children: <Widget>[
@@ -119,7 +60,6 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
           questionarioAplicado: true,
         ),
         // _listaDadosSuperior(),
-        Divider(color: Colors.black87),
         StreamBuilder<MomentoAplicacaoPageBlocState>(
             stream: bloc.state,
             builder: (context, snapshot) {
@@ -149,32 +89,30 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                     Text("$nomeQuestionario", style: TextStyle(fontSize: 18)),
               );
             }),
-        Divider(color: Colors.black87),
         Padding(
           padding: EdgeInsets.all(5),
           child: Text(
             "Referência: Local/Pessoa/Momento na aplicação:",
-            style: TextStyle(color: Colors.blue, fontSize: 15),
+            style: PmsbStyles.textoSecundario,
           ),
         ),
         ReferenciaInput(bloc),
-        Divider(color: Colors.black87),
         ListaRequisitos(bloc),
         // _botaoDeletar(),
 
-        Divider(color: Colors.black87),
+        // Divider(color: Colors.black87),
 
-        ListTile(
-          title: Text("Apagar"),
-          trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                _apagarAplicacao(context, bloc);
-              }),
-        ),
-
-        
-        Divider(color: Colors.black87),
+        widget.questionarioAplicadoID != null
+            ? ListTile(
+                title: Text("Apagar"),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    _apagarAplicacao(context, bloc);
+                  },
+                ),
+              )
+            : Container(),
 
         // _DeleteDocumentOrField(bloc),
         Container(
@@ -186,27 +124,35 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
 
   void _apagarAplicacao(context, MomentoAplicacaoPageBloc bloc) {
     showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(child: _DeleteDocumentOrField(bloc));
-        });
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext bc) {
+        return SingleChildScrollView(
+          child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(bc).viewInsets.bottom,
+              ),
+              child: Container(
+                  height: 250,
+                  color: Colors.black38,
+                  child: _DeleteDocumentOrField(bloc))),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: false,
-      title: Text("Local/Pessoa/Momento de aplicação"),
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: Text("Local/Pessoa/Momento de aplicação"),
-      // ),
+      title: Text(widget.questionarioAplicadoID != null
+          ? "Editar aplicação de questionário"
+          : "Criar nova aplicação de questionário"),
       body: _body(context),
       floatingActionButton: StreamBuilder<MomentoAplicacaoPageBlocState>(
           stream: bloc.state,
           builder: (context, snapshot) {
             if (!snapshot.hasData) return Container();
-
             return FloatingActionButton(
               onPressed: snapshot.data.isValid
                   ? () {
@@ -215,7 +161,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                       Navigator.pop(context);
                     }
                   : null,
-              child: Icon(Icons.thumb_up),
+              child: Icon(Icons.check),
               backgroundColor:
                   snapshot.data.isValid ? PmsbColors.cor_destaque : Colors.grey,
             );
@@ -256,32 +202,55 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
               children: <Widget>[
                 SizedBox(height: 20),
                 Text(
-                    'Para apagar a aplicação digite CONCORDO na caixa de texto abaixo e confirme:  '),
-                Divider(),
+                  'Para apagar, digite CONCORDO na caixa de texto abaixo e confirme:  ',
+                  style: PmsbStyles.textoPrimario,
+                ),
                 Container(
                   child: Flexible(
                     child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Digite aqui",
+                        hintStyle: TextStyle(
+                            color: Colors.white38, fontStyle: FontStyle.italic),
+                      ),
                       controller: _textFieldController,
                     ),
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     // Botao de cancelar delete
                     GestureDetector(
                       onTap: () {
-                        return;
+                        Navigator.of(context).pop();
                       },
                       child: Container(
-                        
-
-                        color: Colors.red,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child:
-                              Text('Cancelar', style: PmsbStyles.textoPrimario),
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xffEB3349),
+                              Color(0xffF45C43),
+                              Color(0xffEB3349)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Cancelar",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
@@ -291,34 +260,73 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                       onTap: () {
                         if (_textFieldController.text == 'CONCORDO') {
                           bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
-                          Navigator.of(context).pop();
+                          _alerta(
+                            "A aplicação do questionário foi removida",
+                            () {
+                              var count = 0;
+                              Navigator.popUntil(context, (route) {
+                                return count++ == 3;
+                              });
+                            },
+                          );
+                        } else {
+                          _alerta(
+                            "Verifique se a caixa de texto abaixo foi preenchida corretamente.",
+                            () {
+                              Navigator.pop(context);
+                            },
+                          );
                         }
                       },
                       child: Container(
-                        color: Colors.green,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text('Confirmar',
-                              style: PmsbStyles.textoPrimario),
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xff1D976C),
+                              Color(0xff1D976C),
+                              Color(0xff93F9B9)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Container(
+                          constraints:
+                              BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Confirmar",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-
-                // IconButton(
-                //   icon: Icon(Icons.delete),
-                //   onPressed: () {
-                //     //Ir para a pagina visuais do produto
-                //     if (_textFieldController.text == 'CONCORDO') {
-                //       bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
-                //       Navigator.of(context).pop();
-                //     }
-                //   },
-                // )
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Future<void> _alerta(String msgAlerta, Function acao) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: PmsbColors.card,
+          title: Text(msgAlerta),
+          actions: <Widget>[
+            FlatButton(child: Text('Ok'), onPressed: acao),
+          ],
         );
       },
     );
@@ -351,42 +359,72 @@ class ListaRequisitos extends StatelessWidget {
                 .map(
                   (k, r) {
                     return MapEntry(
-                      k,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          FlatButton(
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  "${r.referencia}",
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                                Icon(Icons.search),
-                              ],
-                            ),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, '/aplicacao/definir_requisitos',
-                                  arguments: DefinirRequisitosPageArguments(
-                                      bloc,
-                                      r.referencia,
-                                      k,
-                                      snapshot.data.requisitosSelecionados[k]));
-                            },
+                        k,
+                        ListTile(
+                          title: Text(
+                            "${r.referencia}",
+                            style: TextStyle(fontSize: 15),
                           ),
-                          snapshot.data.requisitosSelecionados.containsKey(k)
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/aplicacao/definir_requisitos',
+                              arguments: DefinirRequisitosPageArguments(
+                                bloc,
+                                r.referencia,
+                                k,
+                                snapshot.data.requisitosSelecionados[k],
+                              ),
+                            );
+                          },
+                          trailing: Icon(Icons.edit),
+                          leading: snapshot.data.requisitosSelecionados
+                                  .containsKey(k)
                               ? Icon(
                                   Icons.check,
                                   color: Colors.green,
                                 )
                               : Icon(
-                                  Icons.check,
+                                  Icons.close,
                                   color: Colors.red,
                                 ),
-                        ],
-                      ),
-                    );
+                        )
+
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: <Widget>[
+                        //     FlatButton(
+                        //       child: Row(
+                        //         children: <Widget>[
+                        //           Text(
+                        //             "${r.referencia}",
+                        //             style: TextStyle(fontSize: 15),
+                        //           ),
+                        //           Icon(Icons.search),
+                        //         ],
+                        //       ),
+                        //       onPressed: () {
+                        //         Navigator.pushNamed(
+                        //             context, '/aplicacao/definir_requisitos',
+                        //             arguments: DefinirRequisitosPageArguments(
+                        //                 bloc,
+                        //                 r.referencia,
+                        //                 k,
+                        //                 snapshot.data.requisitosSelecionados[k]));
+                        //       },
+                        //     ),
+                        //     snapshot.data.requisitosSelecionados.containsKey(k)
+                        //         ? Icon(
+                        //             Icons.check,
+                        //             color: Colors.green,
+                        //           )
+                        //         : Icon(
+                        //             Icons.check,
+                        //             color: Colors.red,
+                        //           ),
+                        //   ],
+                        // ),
+                        );
                   },
                 )
                 .values
@@ -445,3 +483,62 @@ class _ReferenciaInput extends State<ReferenciaInput> {
     );
   }
 }
+
+// _botaoDeletar() {
+//   return SafeArea(
+//       child: Row(
+//     children: <Widget>[
+//       Padding(
+//         padding: EdgeInsets.all(5.0),
+//         child: RaisedButton(
+//           color: Colors.red,
+//           onPressed: () {
+//             bloc.dispatch(DeleteMomentoAplicacaoPageBlocEvent());
+//             Navigator.pop(context);
+//           },
+//           child: Row(
+//             children: <Widget>[
+//               Text('Apagar', style: TextStyle(fontSize: 20)),
+//               Icon(Icons.delete)
+//             ],
+//           ),
+//         ),
+//       ),
+//     ],
+//   ));
+// }
+
+// _listaDadosSuperior() {
+//   return Column(
+//     children: <Widget>[
+//       Padding(
+//         padding: EdgeInsets.only(top: 5),
+//         child: Text(
+//           "Eixo - $_eixo",
+//           style: TextStyle(fontSize: 16, color: Colors.blue),
+//         ),
+//       ),
+//       Padding(
+//         padding: EdgeInsets.only(top: 5),
+//         child: Text(
+//           "Setor - $_setor",
+//           style: TextStyle(fontSize: 16, color: Colors.blue),
+//         ),
+//       ),
+//       Padding(
+//         padding: EdgeInsets.only(top: 5),
+//         child: Text(
+//           "Questionario - $_questionario",
+//           style: TextStyle(fontSize: 16, color: Colors.blue),
+//         ),
+//       ),
+//       Padding(
+//         padding: EdgeInsets.only(top: 5, bottom: 5),
+//         child: Text(
+//           "Local - $_local",
+//           style: TextStyle(fontSize: 16, color: Colors.blue),
+//         ),
+//       )
+//     ],
+//   );
+// }

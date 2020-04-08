@@ -25,8 +25,7 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
   @override
   void initState() {
     super.initState();
-    bloc =
-        QuestionarioHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
+    bloc = QuestionarioHomePageBloc(Bootstrap.instance.firestore, widget.authBloc);
   }
 
   @override
