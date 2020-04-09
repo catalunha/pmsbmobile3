@@ -174,35 +174,35 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                                   );
                                 },
                               ),
-                              // IconButton(
-                              //     icon: Icon(Icons.arrow_downward),
-                              //     onPressed: (ordemLocal) < lengthEscolha
-                              //         ? () {
-                              //             // print(
-                              //             //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
-                              //             // Mover pra baixo na ordem
-                              //             //TODO: refatorar este codigo com o i fica mais fácil
-                              //             bloc.eventSink(
-                              //               OrdenarQuestionarioEvent(
-                              //                   questID, false),
-                              //             );
-                              //           }
-                              //         : null),
-                              // IconButton(
-                              //     icon: Icon(Icons.arrow_upward),
-                              //     onPressed: ordemLocal > 1
-                              //         ? () {
-                              //             // print(
-                              //             //     'em up => ${i} ${ordemLocal} (${v.ordem})');
+                              IconButton(
+                                  icon: Icon(Icons.arrow_downward),
+                                  onPressed: (ordemLocal) < lengthEscolha
+                                      ? () {
+                                          // print(
+                                          //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
+                                          // Mover pra baixo na ordem
+                                          //TODO: refatorar este codigo com o i fica mais fácil
+                                          bloc.eventSink(
+                                            OrdenarQuestionarioEvent(
+                                                questID, false),
+                                          );
+                                        }
+                                      : null),
+                              IconButton(
+                                  icon: Icon(Icons.arrow_upward),
+                                  onPressed: ordemLocal > 1
+                                      ? () {
+                                          // print(
+                                          //     'em up => ${i} ${ordemLocal} (${v.ordem})');
 
-                              //             // Mover pra cima na ordem
-                              //             //TODO: refatorar este codigo com o i fica mais fácil
-                              //             bloc.eventSink(
-                              //               OrdenarQuestionarioEvent(
-                              //                   questID, true),
-                              //             );
-                              //           }
-                              //         : null),
+                                          // Mover pra cima na ordem
+                                          //TODO: refatorar este codigo com o i fica mais fácil
+                                          bloc.eventSink(
+                                            OrdenarQuestionarioEvent(
+                                                questID, true),
+                                          );
+                                        }
+                                      : null),
                             ],
                           ),
                         ],
@@ -306,8 +306,10 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                 //   ),
                 // )
 
+                
+
                 Expanded(
-                    child: ReorderableListView(
+                    child: ListView(
                   // header: Row(
                   //     mainAxisAlignment: MainAxisAlignment.center,
                   //     children: <Widget>[
@@ -321,13 +323,13 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
                   //       Text(" Palmas", style: PmsbStyles.textStyleListPerfil),
                   //     ]),
                   children: list,
-                  onReorder: (int oldIndex, int newIndex) {
+                  // onReorder: (int oldIndex, int newIndex) {
                     // setState(
                     //   () {
                     //     _updateMyItems(oldIndex, newIndex);
                     //   },
                     // );
-                  },
+                  // },
                 ))
               ],
             );
@@ -341,39 +343,39 @@ class _QuestionarioHomePageState extends State<QuestionarioHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Scaffold(
-      body: Container(
-        color: PmsbColors.fundo,
-        child: ListView(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 9, top: 9),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        size: 30,
-                        color: PmsbColors.texto_terciario,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                  SizedBox(
-                    width: 70,
-                  ),
-                  Text(
-                    "Configurações",
-                    style: PmsbStyles.textStyleListBold,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    // Scaffold(
+    //   body: Container(
+    //     color: PmsbColors.fundo,
+    //     child: ListView(
+    //       children: <Widget>[
+    //         Padding(
+    //           padding: EdgeInsets.only(bottom: 9, top: 9),
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             children: <Widget>[
+    //               IconButton(
+    //                   icon: Icon(
+    //                     Icons.arrow_back,
+    //                     size: 30,
+    //                     color: PmsbColors.texto_terciario,
+    //                   ),
+    //                   onPressed: () {
+    //                     Navigator.pop(context);
+    //                   }),
+    //               SizedBox(
+    //                 width: 70,
+    //               ),
+    //               Text(
+    //                 "Configurações",
+    //                 style: PmsbStyles.textStyleListBold,
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
 
     return DefaultTabController(
       length: 2,

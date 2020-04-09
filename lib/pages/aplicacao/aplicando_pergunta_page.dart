@@ -225,7 +225,7 @@ class _AplicacaoPerguntaPageState extends State<AplicacaoPerguntaPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(80),
+              padding: EdgeInsets.all(10),
             ),
             _botoes()
           ],

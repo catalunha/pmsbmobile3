@@ -143,28 +143,6 @@ class PerguntaItem extends StatelessWidget {
             child: ButtonBar(
               alignment: MainAxisAlignment.center,
               children: <Widget>[
-                // IconButton(
-                //   tooltip: 'Descer ordem da pergunta',
-                //   icon: Icon(Icons.arrow_downward),
-                //   onPressed: down
-                //       ? () {
-                //           //Mover pergunta para baixo na ordem
-                //           bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
-                //               _pergunta.id, false));
-                //         }
-                //       : null,
-                // ),
-                // IconButton(
-                //   tooltip: 'Subir ordem na pergunta',
-                //   icon: Icon(Icons.arrow_upward),
-                //   onPressed: up
-                //       ? () {
-                //           //Mover pergunta para cima na ordem
-                //           bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
-                //               _pergunta.id, true));
-                //         }
-                //       : null,
-                // ),
                 IconButton(
                     tooltip: 'Visão geral da pergunta',
                     icon: Icon(
@@ -213,6 +191,28 @@ class PerguntaItem extends StatelessWidget {
                       }
                     });
                   },
+                ),
+                 IconButton(
+                  tooltip: 'Descer ordem da pergunta',
+                  icon: Icon(Icons.arrow_downward),
+                  onPressed: down
+                      ? () {
+                          //Mover pergunta para baixo na ordem
+                          bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
+                              _pergunta.id, false));
+                        }
+                      : null,
+                ),
+                IconButton(
+                  tooltip: 'Subir ordem na pergunta',
+                  icon: Icon(Icons.arrow_upward),
+                  onPressed: up
+                      ? () {
+                          //Mover pergunta para cima na ordem
+                          bloc.dispatch(OrdemPerguntaPerguntaHomePageBlocEvent(
+                              _pergunta.id, true));
+                        }
+                      : null,
                 ),
               ],
             ),
