@@ -41,7 +41,9 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: false,
-      title: Text( widget.painelId != null ? "Editar item do painel" : "Adicionar item do painel"),
+      title: Text(widget.painelId != null
+          ? "Editar Item do Painel"
+          : "Adicionar Item do Painel"),
       floatingActionButton: StreamBuilder<PainelCrudBlocState>(
           stream: bloc.stateStream,
           builder: (context, snapshot) {
@@ -69,57 +71,57 @@ class _PainelCrudPageState extends State<PainelCrudPage> {
             return ListView(
               children: <Widget>[
                 Padding(
-                    padding: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(10),
                     child: Text(
                       'Nome do item:',
-                      style: TextStyle(fontSize: 15, color: Colors.blue),
+                      style: PmsbStyles.textoSecundario,
                     )),
-                Padding(padding: EdgeInsets.all(5.0), child: PainelNome(bloc)),
+                Padding(padding: EdgeInsets.all(10), child: PainelNome(bloc)),
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(10),
                   child: Text(
                     "Tipo do item:",
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textoSecundario,
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(10),
                   child: PainelTipo(bloc),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(10),
                   child: Text(
                     "Escolha quem responderá este item:",
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textoSecundario,
                   ),
                 ),
                 _destinatarios(context),
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(10),
                   child: Text(
                     "Escolha a que produto esta associado este item:",
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textoSecundario,
                   ),
                 ),
                 _produto(context),
                 Padding(
-                    padding: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(10),
                     child: Text(
                       "Escolha o eixo a que esta ligado este item:",
-                      style: TextStyle(fontSize: 15, color: Colors.blue),
+                      style: PmsbStyles.textoSecundario,
                     )),
                 _eixo(context),
                 Divider(),
-                
-                
-                widget.painelId != null ? ListTile(
-                  title: Text("Apagar"),
-                  trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _apagarAplicacao(context, bloc);
-                      }),
-                ): Container(),
+                widget.painelId != null
+                    ? ListTile(
+                        title: Text("Apagar"),
+                        trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _apagarAplicacao(context, bloc);
+                            }),
+                      )
+                    : Container(),
                 Padding(padding: EdgeInsets.only(top: 100)),
               ],
             );
@@ -788,36 +790,31 @@ class _ProdutoFunasaListaModalSelectState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: PmsbColors.navbar,
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        title: Text("Escolha um produto"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text("Escolha um Produto"),
       body: _listaProdutos(),
     );
   }
 }
 
 void _apagarAplicacao(context, PainelCrudBloc bloc) {
- showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext bc) {
-        return SingleChildScrollView(
-          child: Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(bc).viewInsets.bottom,
-              ),
-              child: Container(
-                  height: 250,
-                  color: Colors.black38,
-                  child: _DeleteDocumentOrField(bloc))
-              ),
-        );
-      },
-    );
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    builder: (BuildContext bc) {
+      return SingleChildScrollView(
+        child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(bc).viewInsets.bottom,
+            ),
+            child: Container(
+                height: 250,
+                color: Colors.black38,
+                child: _DeleteDocumentOrField(bloc))),
+      );
+    },
+  );
 }
 
 class _DeleteDocumentOrField extends StatefulWidget {
@@ -907,7 +904,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                         if (_textFieldController.text == 'CONCORDO') {
                           bloc.eventSink(DeleteDocumentEvent());
                           _alerta(
-                            "O item do painel foi removido.",
+                            "O item do painel foi removido",
                             () {
                               var count = 0;
                               Navigator.popUntil(context, (route) {
@@ -917,7 +914,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                           );
                         } else {
                           _alerta(
-                            "Verifique se a caixa de texto abaixo foi preenchida corretamente.",
+                            "Verifique se a caixa de texto abaixo foi preenchida corretamente",
                             () {
                               Navigator.pop(context);
                             },
@@ -962,7 +959,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
     );
   }
 
-    Future<void> _alerta(String msgAlerta, Function acao) async {
+  Future<void> _alerta(String msgAlerta, Function acao) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
