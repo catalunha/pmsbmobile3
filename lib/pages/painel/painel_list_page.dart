@@ -63,11 +63,11 @@ class _PainelListPageState extends State<PainelListPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: true,
-      title: Text("Adicionar/Editar itens do painel"),
+      title: Text("Adicionar/Editar Itens do Painel"),
       body: _body(context),
       floatingActionButton: FloatingActionButton(
         backgroundColor: PmsbColors.cor_destaque,
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white,),
         onPressed: () {
           Navigator.pushNamed(context, '/painel/crud', arguments: null);
         },
@@ -105,7 +105,7 @@ class _PainelListPageState extends State<PainelListPage> {
         _myTabs.forEach(
           (produto) {
             if (produto == '*') {
-              descricaoProdutoTab = 'Itens sem Destinatario, Produto ou eixo.';
+              descricaoProdutoTab = 'Itens sem Destinatário, Produto ou Eixo.';
             } else {
               descricaoProdutoTab =
                   '${snapshot.data.produtoMap[produto]?.id}. ${snapshot.data.produtoMap[produto]?.descricao}';
