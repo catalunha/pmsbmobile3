@@ -82,16 +82,16 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
     );
   }
 
-  _bodyArvore() {
-    return Container(
-      child: Center(
-        child: Text(
-          "Em construção",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
-  }
+  // _bodyArvore() {
+  //   return Container(
+  //     child: Center(
+  //       child: Text(
+  //         "Em construção",
+  //         style: TextStyle(fontSize: 20),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,10 @@ class _AplicacaoHomePageState extends State<AplicacaoHomePage> {
       body: _bodyTodos(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: PmsbColors.cor_destaque,
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         onPressed: () {
           // Adicionar novo questionario aplicado
           Navigator.pushNamed(context, "/aplicacao/momento_aplicacao");

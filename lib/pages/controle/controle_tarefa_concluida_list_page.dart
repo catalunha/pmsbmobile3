@@ -196,6 +196,7 @@ class _ControleTarefaConcluidaListPageState
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      
       length: 2,
       child: Scaffold(
         appBar: AppBar(
