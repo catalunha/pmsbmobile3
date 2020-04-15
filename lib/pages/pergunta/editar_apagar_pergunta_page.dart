@@ -243,21 +243,29 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                           PerguntaTipoEnum.EscolhaMultipla) {
                     return Container();
                   }
-                  return Card(
+
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Card(
+                      color: PmsbColors.card,
                       child: ListTile(
-                    title: Text('Defina as escolhas:', style: PmsbStyles.textoPrimario),
-                    trailing: IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () async {
-                          // SELECIONAR ESCOLHA
-                          bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
-                          if (snapshot.data.isValid) {
-                            Navigator.pushNamed(
-                                context, "/pergunta/escolha_list",
-                                arguments: snapshot.data.instance.id);
-                          }
-                        }),
-                  ));
+                        title: Text('Defina as escolhas:',
+                            style: PmsbStyles.textoPrimario),
+                        trailing: IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () async {
+                            // SELECIONAR ESCOLHA
+                            bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
+                            if (snapshot.data.isValid) {
+                              Navigator.pushNamed(
+                                  context, "/pergunta/escolha_list",
+                                  arguments: snapshot.data.instance.id);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
               ),
               Padding(
