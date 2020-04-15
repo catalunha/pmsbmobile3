@@ -92,7 +92,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
   _iconesLista() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
+      children: <Widget>[ 
         IconButton(
           icon: Icon(Icons.format_bold),
           onPressed: () {

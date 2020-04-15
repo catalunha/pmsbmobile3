@@ -3,11 +3,22 @@ import 'package:pmsbmibile3/components/login_required.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/geral/home_grid.dart';
 import 'package:pmsbmibile3/pages/geral/home_grid_admin.dart';
+import 'package:pmsbmibile3/services/page_size_map.dart';
 // import 'package:pmsbmibile3/pages/geral/bemvindo.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:pmsbmibile3/widgets/round_image.dart';
+
+class HomePageSizeMap extends PageSizeMap {
+
+  double iconSize;
+  double alturaHeader;
+  double alturaImagem;
+  double larguraImagem;
+  
+  HomePageSizeMap();
+}
 
 class HomePage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -17,8 +28,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
   final AuthBloc authBloc;
+  
+  // Mapeamento do tamanho dos elementos de tela
+
+  HomePageSizeMap homePageSizeMap;
+  
+  PageSizeMapController homePageSizeMapController = new PageSizeMapController(
+    webPageSizeMap: HomePageSizeMap(),
+    mobileSizeMap: HomePageSizeMap(),
+  );
+
   _HomePageState(this.authBloc);
+
+  void initState() {
+    this.homePageSizeMap = this.homePageSizeMapController.definirSizeMap();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +68,15 @@ class _HomePageState extends State<HomePage> {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-
+                  
+                  // Header da pagina
                   return ClipRRect(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(16),
                       bottomRight: Radius.circular(16),
                     ),
                     child: Container(
-                      height: 150,
+                      height: MediaQuery.of(context).size.height * 0.25 ,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: PmsbColors.cor_destaque,
@@ -63,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Column(
                         children: <Widget>[
-                          SizedBox(height: 23),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -157,130 +185,20 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-
-              // HomeGrid(),
-
-              Expanded(child: _body()),
-              // Expanded(child: HomeGrid()),
-
-              // (child:  HomeGrid()),
-
-              // Expanded(child:  HomeGridAdmin())
-
-              // ListView(
-              //   children: <Widget>[
-              //     HomeGrid(),
-              //     //  HomeGrid()),
-              //   ],
-              // ),
+              Expanded(child: _gridListContainer()),
             ],
           ),
         ),
-        //BemVindo(widget.authBloc),
-        // child: NoticiaLeituraPage(),
         authBloc: this.authBloc,
       ),
     );
   }
 
-  _body() {
+  Container _gridListContainer() {
     return Container(
       child: ListView(
-        children: <Widget>[
-         
-          HomeGrid(),
-        
-          HomeGridAdmin()
-          // HomeGrid()
-          // Container(
-          //   child: Column(
-          //     children: <Widget>[
-          //       ListView(
-          //         children: <Widget>[
-          //           Container(
-          //             height: 100,
-          //             width: 100,
-          //             color: Colors.purple,
-          //           ),
-          //         ],
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.black,
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.red,
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.black,
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.red,
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.black,
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.black,
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.red,
-          //       ),
-          //       Container(
-          //         height: 100,
-          //         width: 100,
-          //         color: Colors.black,
-          //       ),
-          //     ],
-          //   ),
-          // )
-        ],
+        children: <Widget>[HomeGrid(), HomeGridAdmin()],
       ),
-    );
-  }
-
-  iconeRow() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          //SizedBox(width: MediaQuery.of(context).size.width * 0.066),
-          icone(),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-          icone(),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-          icone(),
-          //SizedBox(width: MediaQuery.of(context).size.width * 0.066),
-        ],
-      ),
-    );
-  }
-
-  icone() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.28,
-      height: MediaQuery.of(context).size.width * 0.28,
-      decoration: BoxDecoration(
-        color: PmsbColors.card,
-        borderRadius: BorderRadius.all(
-          Radius.circular(5.0),
-        ),
-      ),
-      child: Icon(Icons.info, size: 60),
     );
   }
 }
