@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/services/cache_service.dart';
 import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class Rota {
   final String nome;
@@ -260,6 +261,7 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                   rotas.forEach((k, v) {
                     if (snap.data.routes.contains(k)) {
                       if (k == '/modooffline') {
+                        // MODO OFFLINE -----------------------------------------------
                         list.add(ListTile(
                           title: Text("Habilitar modo offline"),
                           onTap: () async {
@@ -285,14 +287,17 @@ class _DefaultEndDrawerState extends State<DefaultEndDrawer> {
                     }
                   });
                 }
-                list.add(ListTile(
-                  title: Text('Trocar de usuário'),
-                  onTap: () {
-                    authBloc.dispatch(LogoutAuthBlocEvent());
-                    Navigator.pushReplacementNamed(context, "/");
-                  },
-                  leading: Icon(Icons.exit_to_app),
-                ));
+                list.add(
+                  // Sair do APP --------------------------------------------------
+                  ListTile(
+                    title: Text('Trocar de usuário'),
+                    onTap: () {
+                      authBloc.dispatch(LogoutAuthBlocEvent());
+                      Navigator.pushReplacementNamed(context, "/");
+                    },
+                    leading: Icon(Icons.exit_to_app),
+                  ),
+                );
                 return Expanded(child: ListView(children: list));
               })
         ]),
@@ -322,6 +327,7 @@ class DefaultScaffold extends StatelessWidget {
   final Widget bottom;
   final Color backgroundColor;
   final FloatingActionButtonLocation floatingActionButtonLocation;
+  final bool backToRootPage;
 
   const DefaultScaffold({
     Key key,
@@ -333,15 +339,32 @@ class DefaultScaffold extends StatelessWidget {
     this.backgroundColor,
     this.bottom,
     this.floatingActionButtonLocation,
+    @required this.backToRootPage
   }) : super(key: key);
 
   Widget _appBarBuild(BuildContext context) {
     return AppBar(
-      backgroundColor: backgroundColor,
-      actions: <Widget>[
-        if (actionsMore != null) ...actionsMore,
-        MoreAppAction(),
-      ],
+      leading: new IconButton(
+        icon: new Icon(
+          Icons.arrow_back,
+          size: 25,
+        ),
+        onPressed: this.backToRootPage ?        
+        () {
+          Navigator.popAndPushNamed(context,'/');
+        }:(){
+          Navigator.pop(context);
+        }
+      ),
+      // backgroundColor: PmsbColors.fundo,
+      backgroundColor: PmsbColors.fundo,
+      bottomOpacity: 0.0,
+      elevation: 0.0,
+      actions: actionsMore,
+      // actions: <Widget>[
+      //   if (actionsMore != null) ...actionsMore,
+      //   MoreAppAction(),
+      // ],
       centerTitle: true,
       title: title,
       bottom: bottom,
@@ -351,12 +374,12 @@ class DefaultScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DefaultDrawer(),
-      endDrawer: DefaultEndDrawer(),
+      // drawer: DefaultDrawer(),
+      // endDrawer: DefaultEndDrawer(),
       appBar: _appBarBuild(context),
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
-      body: body,
+      body: Container(color: PmsbColors.fundo, child: body),
     );
   }
 }

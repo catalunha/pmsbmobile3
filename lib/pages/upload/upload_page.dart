@@ -1,3 +1,4 @@
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:universal_io/io.dart' as io;
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
@@ -34,8 +35,10 @@ class _UploadPageState extends State<UploadPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-        title: Text("Uploads pendentes"),
+        backToRootPage: true,
+        title: Text("Uploads Pendentes"),
         body: Container(
+          color: PmsbColors.fundo,
           child: _uploadBody(),
         ));
   }
@@ -83,10 +86,8 @@ class _UploadPageState extends State<UploadPage> {
             title:
                 Text('Menu: ${uploading.upload.updateCollection.collection}'),
             subtitle: dispositivo != null
-                ? Text(dispositivo +
-                    '\nuploadID:${uploading.upload.id}\n${uploading.upload.updateCollection.collection}ID:${uploading.upload.updateCollection.document}')
-                : Text(
-                    '${uploading.upload.localPath}\nuploadID:${uploading.upload.id}\n${uploading.upload.updateCollection.collection}ID:${uploading.upload.updateCollection.document}'),
+                ? Text(dispositivo + '')
+                : Text('${uploading.upload.localPath}\nuploadID:${uploading.upload.id}\n${uploading.upload.updateCollection.collection}ID:${uploading.upload.updateCollection.document}'),
             trailing: dispositivo != null
                 ? Icon(Icons.cloud_off)
                 : IconButton(
@@ -111,3 +112,5 @@ class _UploadPageState extends State<UploadPage> {
     );
   }
 }
+
+// 'uploadID:${uploading.upload.id}\n${uploading.upload.updateCollection.collection}ID:${uploading.upload.updateCollection.document}')

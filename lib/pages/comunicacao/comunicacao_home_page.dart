@@ -43,8 +43,8 @@ class _ComunicacaoHomePageState extends State<ComunicacaoHomePage>
       initialIndex: 0,
       length: 2,
       child: DefaultScaffold(
+        backToRootPage: true,
           bottom: TabBar(
-
             tabs: <Widget>[
               Tab(
                 text: 'Em edição',

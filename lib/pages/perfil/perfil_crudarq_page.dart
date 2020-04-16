@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/naosuportato/naosuportado.dart' show FilePicker, FileType;
+import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/naosuportato/naosuportado.dart'
+    show FilePicker, FileType;
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crudarq_page_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class PerfilCRUDArqPage extends StatefulWidget {
   final String usuarioPerfilID;
@@ -23,27 +27,28 @@ class _PerfilCRUDArqPageState extends State<PerfilCRUDArqPage> {
 
   @override
   Widget build(BuildContext context) {
-    return 
- 
-      Scaffold(
-        appBar: AppBar(
-          title: Text("Configurações"),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text("Editar Imagem"),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 12, right: 12),
+        child: ListView(
+          children: <Widget>[
+            _FotoUsuario(bloc),
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: ListView(
-            children: <Widget>[
-              _FotoUsuario(bloc),
-            ],
-          ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          bloc.eventSink(SaveEvent());
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            bloc.eventSink(SaveEvent());
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.check),
-        ),
+        backgroundColor: PmsbColors.cor_destaque,
+      ),
     );
   }
 }
@@ -54,7 +59,6 @@ class _FotoUsuario extends StatelessWidget {
   final PerfilCRUDArqPageBloc bloc;
 
   _FotoUsuario(this.bloc);
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,21 +77,29 @@ class _FotoUsuario extends StatelessWidget {
                 ? Text(snapshot.data?.usuarioPerfilModel?.perfilID?.nome)
                 : Text('...'),
             Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
-              Text('Atualizar arquivo'),
-              IconButton(
-                icon: Icon(Icons.file_download),
-                onPressed: () async {
-                  await _selecionarNovoArquivo().then((arq) {
-                    fotoLocalPath = arq;
-                  });
-                  bloc.eventSink(UpDateArquivoEvent(fotoLocalPath));
-                },
-              ),
-            ]),
-            _ImagemUnica(
-                fotoUrl: snapshot.data?.arquivoUrl,
-                fotoLocalPath: snapshot.data?.arquivoLocalPath),
+                  Text(
+                    'Atualizar arquivo',
+                    style: PmsbStyles.textoPrimario,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.file_download),
+                    onPressed: () async {
+                      await _selecionarNovoArquivo().then((arq) {
+                        fotoLocalPath = arq;
+                      });
+                      bloc.eventSink(UpDateArquivoEvent(fotoLocalPath));
+                    },
+                  ),
+                ]),
+            Column(
+              children: <Widget>[
+                _ImagemUnica(
+                    fotoUrl: snapshot.data?.arquivoUrl,
+                    fotoLocalPath: snapshot.data?.arquivoLocalPath),
+              ],
+            ),
           ],
         );
       },
@@ -117,7 +129,18 @@ class _ImagemUnica extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget foto;
     if (fotoUrl == null && fotoLocalPath == null) {
-      foto = Center(child: Text('Sem imagem.'));
+      foto = Column(
+        children: <Widget>[
+          Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Sem imagem.',
+                  style: PmsbStyles.textoPrimario,
+                )
+              ]),
+        ],
+      );
     } else if (fotoUrl != null) {
       foto = Container(
           child: Padding(

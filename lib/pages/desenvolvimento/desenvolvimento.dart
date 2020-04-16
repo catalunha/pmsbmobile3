@@ -41,6 +41,7 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+        backToRootPage: true,
         title: Text('Desenvolvimento - teste'),
         body: StreamBuilder<PageState>(
             stream: bloc.stateStream,
@@ -111,6 +112,45 @@ class _DesenvolvimentoState extends State<Desenvolvimento> {
                       onPressed: () async {
                         //Desenvolvimento
                         await criarUsuarioCollection();
+                        // await usuarioPMSBWEB('Aq96qoxA0zgLfNDPGPCzFRAYtkl2');
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Atualizar routes de UsuarioCollection.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // await atualizarRoutes('YaTtTki7PZPPHznqpVtZrW6mIa42');
+                        // await atualizarRoutesTodos();
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title:
+                        Text('Atualizar eixo de acesso de UsuarioCollection.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // await atualizarEixoAcesso('ysqq0XARJnZoxIzIc43suDm7gaK2');
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Teste delete.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // await atualizarEixoAcesso('SftB5Ix0d4MaHLEs8LASoT7KKl13');
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Testar comandos firebase.'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () async {
+                        // await testarFirebaseCmds();
                       },
                     ),
                   ),

@@ -29,6 +29,7 @@ class _BemVindoState extends State<BemVindo> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: false,
       title: StreamBuilder<GeralBlocState>(
         stream: bloc.stateStream,
         builder: (context, snap) {

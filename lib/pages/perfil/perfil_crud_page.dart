@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/pages/perfil/perfil_crud_page_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class PerfilCRUDPage extends StatefulWidget {
   final String usuarioPerfilID;
@@ -32,10 +34,10 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Editar item do perfil '),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      backgroundColor: PmsbColors.fundo,
+      title: Text('Editar Documento'),
       body: ListView(
         children: <Widget>[
           StreamBuilder<UsuarioPerfilModel>(
@@ -51,9 +53,11 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
               }
               return Column(
                 children: <Widget>[
-                  Text(
-                    '${snapshot.data.perfilID.nome}',
-                    style: Theme.of(context).textTheme.title,
+                  Card(
+                    child: Text(
+                      '${snapshot.data.perfilID.nome}',
+                      style: Theme.of(context).textTheme.title,
+                    ),
                   ),
                   TextField(
                     controller: textEditingController,
@@ -78,7 +82,11 @@ class _PerfilCRUDPageState extends State<PerfilCRUDPage> {
           bloc.perfilCRUDPageEventSink(SaveStateToFirebaseEvent());
           Navigator.pop(context);
         },
-        child: Icon(Icons.check),
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+        backgroundColor: PmsbColors.cor_destaque,
       ),
     );
   }

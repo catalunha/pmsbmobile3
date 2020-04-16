@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final authBloc = Bootstrap.instance.authBloc;
     Recursos.initialize(Theme.of(context).platform);
-
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'PMSB-TO-22',
       theme: ThemeData.dark(),
       initialRoute: "/",
@@ -249,6 +249,10 @@ class MyApp extends StatelessWidget {
           return SetorPainelCrudPage(authBloc, settings.arguments);
         },
 
+        //configuracao
+        "/configuracao/home": (context) {
+          return ConfiguracaoHome(authBloc);
+        },
         //googleDrive
         "/googledrive/usuario": (context) {
           final settings = ModalRoute.of(context).settings;

@@ -31,6 +31,7 @@ class _NoticiaLeituraPageState extends State<NoticiaLeituraPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
+      backToRootPage: true,
       title: StreamBuilder<NoticiaPageState>(
         stream: bloc.noticiaPageStateStream,
         builder: (context, snap) {

@@ -256,6 +256,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+1"
+  linear_gradient:
+    dependency: "direct main"
+    description:
+      name: linear_gradient
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.12"
   location:
     dependency: "direct main"
     description:

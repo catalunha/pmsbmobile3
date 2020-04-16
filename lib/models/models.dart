@@ -7,4 +7,5 @@ export 'package:pmsbmibile3/models/eixo_model.dart';
 export 'package:pmsbmibile3/models/cargo_model.dart';
 export 'package:pmsbmibile3/models/questionario_model.dart';
 
+export 'package:flutter/foundation.dart' show kIsWeb;
 

@@ -1,3 +1,5 @@
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:universal_io/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,18 +106,18 @@ class _PerguntaWigdetImagemArquivoState
             children: <Widget>[
               Text(
                 "${widget.arquivoTipo == ArquivoTipo.aplication ? _mensageaquivo : _mensageimagem}",
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: PmsbStyles.textoPrimario,
               ),
               ButtonBar(
                 children: <Widget>[
                   widget.arquivoTipo == ArquivoTipo.image
                       ? IconButton(
-                          icon: Icon(Icons.camera_alt),
+                          icon: Icon(Icons.camera_alt, color: Colors.white,),
                           onPressed: _selecionarNovaImagem,
                         )
                       : Container(),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: Icon(Icons.add, color: Colors.white,),
                     onPressed: _selecionarNovosArquivos,
                   )
                 ],
@@ -165,7 +167,7 @@ class ArquivoImagemItem extends StatelessWidget {
               bottom: 0.0,
               child: Text(nome,
                   style: TextStyle(
-                    color: Colors.yellow,
+                    color: PmsbColors.cor_destaque,
                     fontWeight: FontWeight.bold,
                     fontSize: 12.0,
                   )),
@@ -180,7 +182,7 @@ class ArquivoImagemItem extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(
                         Icons.delete,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                       onPressed: onDeleted,
                     ),
@@ -203,9 +205,9 @@ class ArquivoGenericoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.attach_file),
+      leading: Icon(Icons.attach_file, color: Colors.white,),
       trailing: IconButton(
-        icon: Icon(Icons.delete),
+        icon: Icon(Icons.delete, color: Colors.white,),
         onPressed: onDeleted,
       ),
       title: Text(nome),

@@ -67,3 +67,6 @@ export 'package:pmsbmibile3/pages/controle/controle_tarefa_list_page.dart';
 //chat
 export 'package:pmsbmibile3/pages/chat/chat_page.dart';
 export 'package:pmsbmibile3/pages/chat/chat_lido_page.dart';
+
+//configuracoes
+export 'package:pmsbmibile3/pages/configuracao/configuracao_home.dart';
