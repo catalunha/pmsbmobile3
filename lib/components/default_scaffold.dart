@@ -38,6 +38,8 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
       rotas["/administracao/home"] =
           Rota("Administração", Icons.business_center);
+      // rotas["/avaliacao/produto/list"] = Rota("Avaliação", Icons.check);
+      rotas["/checklist/produto/list"] = Rota("Checklist", Icons.check);
     } else if (Recursos.instance.plataforma == 'web') {
       rotas["/"] = Rota("Home", Icons.home);
       rotas["/questionario/home"] = Rota("Questionários", Icons.assignment);
@@ -48,6 +50,9 @@ class _DefaultDrawerState extends State<DefaultDrawer> {
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
       rotas["/administracao/home"] =
           Rota("Administração", Icons.business_center);
+      // rotas["/avaliacao/produto/list"] = Rota("Avaliação", Icons.check);
+      rotas["/checklist/produto/list"] = Rota("Checklist", Icons.check);
+
     }
   }
 

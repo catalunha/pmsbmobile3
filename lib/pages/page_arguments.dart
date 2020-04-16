@@ -56,3 +56,10 @@ class ControlePageArguments {
 
   ControlePageArguments({this.tarefa, this.acao,this.acaoNome});
 }
+
+class ItemRespostaPageCRUDArguments {
+  final String item;
+  final String resposta;
+
+  ItemRespostaPageCRUDArguments({this.item, this.resposta});
+}

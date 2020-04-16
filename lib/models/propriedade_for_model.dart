@@ -333,3 +333,21 @@ class PainelID {
     return data;
   }
 }
+class Celula {
+ String linha;
+ String coluna;
+
+Celula({this.linha, this.coluna});
+
+Celula.fromMap(Map<dynamic, dynamic> map) {
+   if (map.containsKey(linha)) linha = map[linha];
+   if (map.containsKey(coluna)) coluna = map[coluna];
+ }
+
+ Map<dynamic, dynamic> toMap() {
+   final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+   if (linha != null) data[linha] = this.linha;
+   if (coluna != null) data[coluna] = this.coluna;
+   return data;
+ }
+}
