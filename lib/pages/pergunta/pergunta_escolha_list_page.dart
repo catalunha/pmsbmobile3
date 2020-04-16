@@ -1,4 +1,5 @@
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/eixo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -6,6 +7,7 @@ import 'package:pmsbmibile3/models/pergunta_model.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/pages/pergunta/editar_apagar_pergunta_page_bloc.dart';
 import 'package:pmsbmibile3/pages/pergunta/pergunta_escolha_list_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class PerguntaEscolhaListPage extends StatelessWidget {
   final PerguntaEscolhaListPageBloc bloc;
@@ -18,7 +20,6 @@ class PerguntaEscolhaListPage extends StatelessWidget {
   void dispose() {
     bloc.dispose();
   }
-
 
   _listarPerguntaEscolha() {
     return StreamBuilder<PerguntaEscolhaListPageState>(
@@ -38,6 +39,7 @@ class PerguntaEscolhaListPage extends StatelessWidget {
           snapshot.data.escolhaMap.forEach((k, v) {
             final i = ordemLocal;
             list.add(Card(
+              color: PmsbColors.card,
               elevation: 10,
               child: Row(
                 children: <Widget>[
@@ -61,8 +63,8 @@ class PerguntaEscolhaListPage extends StatelessWidget {
                                     //     'em  down => ${i} ${ordemLocal} (${v.ordem})');
                                     // Mover pra baixo na ordem
                                     //TODO: refatorar este codigo com o i fica mais fácil
-                                    bloc.eventSink(OrdenarEscolhaEvent(
-                                        k, false));
+                                    bloc.eventSink(
+                                        OrdenarEscolhaEvent(k, false));
                                   }
                                 : null),
                         IconButton(
@@ -74,8 +76,8 @@ class PerguntaEscolhaListPage extends StatelessWidget {
 
                                     // Mover pra cima na ordem
                                     //TODO: refatorar este codigo com o i fica mais fácil
-                                    bloc.eventSink(OrdenarEscolhaEvent(
-                                        k, true));
+                                    bloc.eventSink(
+                                        OrdenarEscolhaEvent(k, true));
                                   }
                                 : null),
                         IconButton(
@@ -120,21 +122,17 @@ class PerguntaEscolhaListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-        appBar: AppBar(
-          // backgroundColor: Colors.red,
-          automaticallyImplyLeading: true,
-          title: Text('Gerenciar escolha'),
-        ),
+    return DefaultScaffold(
+        backToRootPage: false,
+        title: Text('Gerenciar Escolha'),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             // Editar ou Adicionar uma nova escolha
             Navigator.pushNamed(context, "/pergunta/escolha_crud",
                 arguments: PerguntaIDEscolhaIDPageArguments(perguntaID, null));
           },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.blue,
+          child: Icon(Icons.add, color: Colors.white,),
+          backgroundColor: PmsbColors.cor_destaque,
         ),
         body: _body());
   }
