@@ -1,11 +1,7 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
-abstract class PageSizeMap {
-
-
-}
-
+abstract class PageSizeMap {}
 
 class PageSizeMapController {
   final PageSizeMap webPageSizeMap;
@@ -24,8 +20,6 @@ class PageSizeMapController {
     }
   }
 }
-
-
 
 // class PageSizeMapController {
 //   final PageSizeMap webPageSizeMap;

@@ -83,20 +83,6 @@ class _HomeGridState extends State<HomeGrid> {
                     },
                   ),
                 );
-                // list.add(icone(
-                //         icon: Icons.ac_unit,
-                //         iconName: "Teste",
-                //         onTap: () {
-                //           print("hey");
-                //         })
-                //   ListTile(
-                //   title: Text(v.nome,style: PmsbStyles.textStyleListBold,),
-                //   trailing: Icon(v.icone),
-                //   onTap: () {
-                //     Navigator.pushReplacementNamed(context, k);
-                //   },
-                // )
-                // );
               }
             });
           }
@@ -113,7 +99,9 @@ class _HomeGridState extends State<HomeGrid> {
               GridView.count(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
-                crossAxisCount: 3,
+                crossAxisCount: kIsWeb
+                    ? (MediaQuery.of(context).size.width > 800 ? 5 : 3)
+                    : 3,
                 children: List.generate(
                   opcoes.length,
                   (index) {
@@ -140,8 +128,12 @@ class OpcaoCard extends StatelessWidget {
     return GestureDetector(
       onTap: rotaAction.action,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.28,
-        height: MediaQuery.of(context).size.width * 0.28,
+        width: MediaQuery.of(context).size.width > 800
+            ? MediaQuery.of(context).size.width * 0.14
+            : MediaQuery.of(context).size.width * 0.28,
+        height: MediaQuery.of(context).size.width > 800
+            ? MediaQuery.of(context).size.width * 0.14
+            : MediaQuery.of(context).size.width * 0.28,
         decoration: BoxDecoration(
           color: PmsbColors.card,
           borderRadius: BorderRadius.all(
