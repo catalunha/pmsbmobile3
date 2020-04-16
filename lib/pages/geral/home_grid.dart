@@ -39,6 +39,8 @@ class _HomeGridState extends State<HomeGrid> {
       rotas["/controle/home"] = Rota("Controle", Icons.control_point);
       rotas["/setor_painel/home"] = Rota("Painel", Icons.compare);
       rotas["/desenvolvimento"] = Rota("Desenvolv", Icons.build);
+      rotas["/checklist/produto/list"] = Rota("Checklist", Icons.check_box);
+        
       // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
       // rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
       // rotas["/"] = Rota("Home", Icons.home);

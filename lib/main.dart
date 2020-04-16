@@ -261,6 +261,7 @@ class MyApp extends StatelessWidget {
 
         //Instrumento de avaliação
         "/avaliacao/produto/list": (context) => ProdutoListPage(),
+        
         "/avaliacao/item/list": (context) {
           final settings = ModalRoute.of(context).settings;
           return ItemListPage(settings.arguments);
@@ -281,6 +282,7 @@ class MyApp extends StatelessWidget {
 
         //Checklist
         "/checklist/produto/list": (context) => checklist.ProdutoListPage(),
+        
         "/checklist/item/list": (context) {
           final settings = ModalRoute.of(context).settings;
           return checklist.ItemListPage(settings.arguments);
