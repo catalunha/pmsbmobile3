@@ -32,7 +32,7 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-      backToRootPage: false,
+      backToRootPage: true,
       title: Text('Checklist  - Produtos'),
       body: StreamBuilder<ProdutoListBlocState>(
         stream: bloc.stateStream,
