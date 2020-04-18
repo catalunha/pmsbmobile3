@@ -227,9 +227,9 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                     GestureDetector(
                       onTap: () {
                         if (_textFieldController.text == 'CONCORDO') {
-                          bloc.eventSink((DeleteProdutoIDEvent));
+                          bloc.eventSink((DeleteEvent));
                           _alerta(
-                            "A aplicação do questionário foi removida",
+                            "O texto da escolha foi removido",
                             () {
                               var count = 0;
                               Navigator.popUntil(context, (route) {
