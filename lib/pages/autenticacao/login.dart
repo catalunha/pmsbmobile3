@@ -14,13 +14,19 @@ class LoginPageSizeMap {
   final double larguraBotao;
   final double tamanhoMinCaixaLogin;
 
-  LoginPageSizeMap(
-      {this.symmetricHorizontal,
-      this.alturaTextField,
-      this.larguraTextField,
-      this.alturaBotao,
-      this.larguraBotao,
-      this.tamanhoMinCaixaLogin,});
+  LoginPageSizeMap({
+    this.symmetricHorizontal,
+    this.alturaTextField,
+    this.larguraTextField,
+    this.alturaBotao,
+    this.larguraBotao,
+    this.tamanhoMinCaixaLogin,
+  });
+}
+
+class _LoginData {
+  String email = '';
+  String password = '';
 }
 
 class LoginPage extends StatefulWidget {
@@ -36,7 +42,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   // PermissionStatus _status;
-
+  _LoginData _data = new _LoginData();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthBloc authBloc;
 
@@ -81,7 +87,7 @@ class LoginPageState extends State<LoginPage> {
     if (kIsWeb) {
       return LoginPageSizeMap(
         symmetricHorizontal: MediaQuery.of(context).size.width * 0.30,
-        tamanhoMinCaixaLogin: MediaQuery.of(context).size.width * 0.40 ,
+        tamanhoMinCaixaLogin: MediaQuery.of(context).size.width * 0.40,
         alturaTextField: MediaQuery.of(context).size.height * 0.06,
         larguraTextField: MediaQuery.of(context).size.width * 0.38,
         alturaBotao: MediaQuery.of(context).size.height * 0.06,
@@ -90,7 +96,7 @@ class LoginPageState extends State<LoginPage> {
     } else {
       return LoginPageSizeMap(
         symmetricHorizontal: 20,
-        tamanhoMinCaixaLogin: MediaQuery.of(context).size.width * 0.80 ,
+        tamanhoMinCaixaLogin: MediaQuery.of(context).size.width * 0.80,
         alturaTextField: MediaQuery.of(context).size.height * 0.08,
         larguraTextField: MediaQuery.of(context).size.width * 0.80,
         alturaBotao: MediaQuery.of(context).size.height * 0.08,
@@ -103,192 +109,253 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     loginPageSizeMap = definirSizeMap(context);
 
+    bool _validateEmail(String value) {
+      print("---" + value);
+      bool emailValid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(value);
+
+      if (emailValid) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    bool _validatePassword(String value) {
+      print("---" + value);
+      if (value.length < 6) {
+        // _alerta('Informe uma senha valida.');
+        return false;
+      }
+      return true;
+    }
+
     return Scaffold(
       body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(color: PmsbColors.fundo),
-          padding: EdgeInsets.symmetric(
-            horizontal: this.loginPageSizeMap.symmetricHorizontal,
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Imagem de cima
-                Image.asset('assets/images/img_login_top.png'),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(color: PmsbColors.fundo),
+        padding: EdgeInsets.symmetric(
+          horizontal: this.loginPageSizeMap.symmetricHorizontal,
+        ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Imagem de cima
+              Image.asset('assets/images/img_login_top.png'),
 
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.03,
-                  ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.03,
+                ),
+              ),
+
+              Container(
+                constraints: BoxConstraints(
+                    minWidth: this.loginPageSizeMap.tamanhoMinCaixaLogin),
+
+                //color: Colors.white,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  color: PmsbColors.texto_primario,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 5),
+                  ],
                 ),
 
-                Container(
-                  constraints: BoxConstraints(minWidth: this.loginPageSizeMap.tamanhoMinCaixaLogin ),
-
-                  //color: Colors.white,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    color: PmsbColors.texto_primario,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 5),
-                    ],
-                  ),
-
-                  padding: EdgeInsets.only(top: 22),
-                  child: Column(
-                    children: <Widget>[
-                      // Entrada de email
-                      Container(
-                        width: this.loginPageSizeMap.larguraTextField,
-                        height: this.loginPageSizeMap.alturaTextField,
-                        padding: EdgeInsets.only(
-                          top: 5,
-                          left: 20,
-                          right: 20,
-                          bottom: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: Colors.black26, blurRadius: 5)
-                          ],
-                        ),
-                        child: TextFormField(
-                          onSaved: (email) {
-                            authBloc.dispatch(UpdateEmailAuthBlocEvent(email));
-                          },
-                          style: TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.email,
-                              color: Colors.black54,
-                            ),
-                            hintText: 'E-mail',
+                padding: EdgeInsets.only(top: 22),
+                child: Column(
+                  children: <Widget>[
+                    // Entrada de email
+                    Container(
+                      width: this.loginPageSizeMap.larguraTextField,
+                      height: this.loginPageSizeMap.alturaTextField,
+                      padding: EdgeInsets.only(
+                        top: 5,
+                        left: 20,
+                        right: 20,
+                        bottom: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.black26, blurRadius: 5)
+                        ],
+                      ),
+                      child: TextFormField(
+                        // keyboardType: TextInputType.text,
+                        onSaved: (email) {
+                          this._data.email = email;
+                          authBloc.dispatch(UpdateEmailAuthBlocEvent(email));
+                        },
+                        style: TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          icon: Icon(
+                            Icons.email,
+                            color: Colors.black54,
                           ),
+                          hintText: 'E-mail',
                         ),
                       ),
+                    ),
 
-                      // Entrada de senha
-                      Container(
-                        width: this.loginPageSizeMap.larguraTextField,
-                        height: this.loginPageSizeMap.alturaTextField,
-                        margin: EdgeInsets.only(
-                            top: 15), //distância de uma box para a outra
-                        padding: EdgeInsets.only(
-                          top: 5,
-                          left: 20,
-                          right: 20,
-                          bottom: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: Colors.black26, blurRadius: 5)
-                          ],
-                        ),
-                        child: TextFormField(
-                          onSaved: (password) {
-                            authBloc.dispatch(
-                                UpdatePasswordAuthBlocEvent(password));
-                          },
-                          obscureText: true,
-                          style: TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.vpn_key,
-                              color: Colors.black54,
-                            ),
-                            hintText: 'Senha',
+                    // Entrada de senha
+                    Container(
+                      width: this.loginPageSizeMap.larguraTextField,
+                      height: this.loginPageSizeMap.alturaTextField,
+                      //distância de uma box para a outra
+                      margin: EdgeInsets.only(top: 15),
+                      padding: EdgeInsets.only(
+                        top: 5,
+                        left: 20,
+                        right: 20,
+                        bottom: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.black26, blurRadius: 5)
+                        ],
+                      ),
+                      child: TextFormField(
+                        onSaved: (password) {
+                          this._data.password = password;
+                          authBloc
+                              .dispatch(UpdatePasswordAuthBlocEvent(password));
+                        },
+                        obscureText: true,
+                        style: TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          icon: Icon(
+                            Icons.vpn_key,
+                            color: Colors.black54,
                           ),
+                          hintText: 'Senha',
                         ),
                       ),
+                    ),
 
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.05,
-                        ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.05,
                       ),
+                    ),
 
-                      // Botao
-
-                      GestureDetector(
-                        onTap: () {
+                    // Botao
+                    GestureDetector(
+                      onTap: () {
+                        _formKey.currentState.save();
+                        if (_validateEmail(this._data.email) &&
+                            _validatePassword(this._data.password)) {
                           _formKey.currentState.save();
                           authBloc.dispatch(LoginAuthBlocEvent());
-                        },
-                        child: Container(
-                          height: this.loginPageSizeMap.alturaBotao,
-                          width: this.loginPageSizeMap.larguraBotao,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  PmsbColors.cor_destaque,
-                                  Colors.greenAccent
-                                ],
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Center(
-                            child: Text(
-                              'entrar'.toUpperCase(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14),
-                            ),
+                        } else {
+                          _alerta(
+                              "Verifique se o campo de e-mail e senha estão preenchidos corretamente.");
+                        }
+                      },
+                      child: Container(
+                        height: this.loginPageSizeMap.alturaBotao,
+                        width: this.loginPageSizeMap.larguraBotao,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              PmsbColors.cor_destaque,
+                              Colors.greenAccent
+                            ],
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(50),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'entrar'.toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
                           ),
                         ),
                       ),
+                    ),
 
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                      ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
 
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 35,
-                              right: 25,
-                              bottom: 10,
-                            ), // posições do texto esqueci minha senha
-                            child: GestureDetector(
-                              onTap: () {
-                                _formKey.currentState.save();
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 35,
+                            right: 25,
+                            bottom: 10,
+                          ), // posições do texto esqueci minha senha
+                          child: GestureDetector(
+                            onTap: () {
+                              _formKey.currentState.save();
+                              if (_validateEmail(this._data.email)) {
                                 authBloc.dispatch(ResetPasswordAuthBlocEvent());
-                              },
-                              child: Text(
-                                'Esqueci minha senha',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            )),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(5),
-                      ),
-                    ],
-                  ),
+                                _alerta(
+                                    "Um link para redefinição de senha foi enviado para o seu e-mail.");
+                              } else {
+                                _alerta(
+                                    "Para resetar sua senha preencha o campo de email.");
+                              }
+                            },
+                            child: Text(
+                              'Esqueci minha senha',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          )),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                    ),
+                  ],
                 ),
+              ),
 
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.03,
-                  ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.03,
                 ),
+              ),
 
-                // Imagem inferior
-                Image.asset('assets/images/img_login_bot.png'),
-              ],
-            ),
+              // Imagem inferior
+              Image.asset('assets/images/img_login_bot.png'),
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  Future<void> _alerta(String msgAlerta) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: PmsbColors.card,
+          title: Text(msgAlerta),
+          actions: <Widget>[
+            FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        );
+      },
     );
   }
 }
