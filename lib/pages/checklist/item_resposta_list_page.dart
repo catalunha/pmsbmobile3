@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/checklist/item_resposta_list_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
 
 import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class ItemRespostaListPage extends StatefulWidget {
   final String itemId;
@@ -38,12 +40,15 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Municípios neste item'),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text('Municípios neste item'),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        foregroundColor: PmsbColors.cor_destaque,
+        child: Icon(
+          Icons.add,
+          color: PmsbColors.texto_primario,
+        ),
         onPressed: () {
           Navigator.pushNamed(
             context,
@@ -65,28 +70,30 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
           }
           if (snapshot.data.isDataValid) {
             // print('iniciando ItemRespostaListPage do IAItem: ${snapshot.data.item.id}');
-
+            // lens
             List<Widget> listaWidget = List<Widget>();
             for (var setor in snapshot.data.itemRespostaList) {
               var icone;
               if (setor.atendeTR == 'Sim') {
                 icone = Icon(
-                  Icons.thumb_up,
+                  Icons.check_circle_outline,
                   color: Colors.green,
                 );
               } else if (setor.atendeTR == 'Não') {
                 icone = Icon(
-                  Icons.thumb_down,
+                  Icons.highlight_off,
                   color: Colors.red,
                 );
               } else if (setor.atendeTR == 'Parcialmente') {
                 icone = Icon(
-                  Icons.thumbs_up_down,
+                  Icons.radio_button_unchecked,
                   color: Colors.yellow,
                 );
               }
+
               listaWidget.add(
                 Card(
+                  color: PmsbColors.card,
                   child: Column(
                     children: <Widget>[
                       ListTile(
@@ -129,7 +136,8 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
                                 icon: Icon(Icons.folder),
                                 onPressed: () {
                                   try {
-                                    launch('https://drive.google.com/open?id='+setor.setor.checklistPasta);
+                                    launch('https://drive.google.com/open?id=' +
+                                        setor.setor.checklistPasta);
                                   } catch (e) {}
                                 },
                               )
@@ -141,7 +149,8 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
                                 onPressed: () {
                                   try {
                                     //https://drive.google.com/open?id=16HMh1igzPdHI9bzs2TiWDwR-wYQ-BuTbmBHW0pQcg-0
-                                    launch('https://drive.google.com/open?id='+setor.setor.checklistPlanilha);
+                                    launch('https://drive.google.com/open?id=' +
+                                        setor.setor.checklistPlanilha);
                                   } catch (e) {}
                                 },
                               )
@@ -179,4 +188,5 @@ class _ItemRespostaListPageState extends State<ItemRespostaListPage> {
       ),
     );
   }
+
 }
