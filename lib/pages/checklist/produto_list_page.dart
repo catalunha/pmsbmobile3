@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/pages/checklist/produto_list_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class ProdutoListPage extends StatefulWidget {
   const ProdutoListPage();
@@ -33,7 +34,7 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: true,
-      title: Text('Checklist  - Produtos'),
+      title: Text('Checklist - Produtos'),
       body: StreamBuilder<ProdutoListBlocState>(
         stream: bloc.stateStream,
         builder: (BuildContext context,
@@ -50,6 +51,7 @@ class _ProdutoListPageState extends State<ProdutoListPage> {
             for (var produto in snapshot.data.produtoList) {
               listaWidget.add(
                 Card(
+                  color: PmsbColors.card,
                   child: Column(
                     children: <Widget>[
                       ListTile(
