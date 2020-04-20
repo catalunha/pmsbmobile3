@@ -227,7 +227,7 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
                     GestureDetector(
                       onTap: () {
                         if (_textFieldController.text == 'CONCORDO') {
-                          bloc.eventSink((DeleteEvent));
+                          bloc.eventSink((DeleteEvent()));
                           _alerta(
                             "O texto da escolha foi removido",
                             () {
