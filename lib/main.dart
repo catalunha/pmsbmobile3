@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/pages/avaliacao/produto_list_page.dart';
+import 'package:pmsbmibile3/pages/avaliacao/item_list_page.dart';
+import 'package:pmsbmibile3/pages/avaliacao/item_resposta_list_page.dart';
+import 'package:pmsbmibile3/pages/avaliacao/item_resposta_crud_page.dart';
+import 'package:pmsbmibile3/pages/checklist/produto_list_page.dart'
+    as checklist;
+import 'package:pmsbmibile3/pages/checklist/item_list_page.dart' as checklist;
+import 'package:pmsbmibile3/pages/checklist/item_resposta_list_page.dart'
+    as checklist;
+import 'package:pmsbmibile3/pages/checklist/item_resposta_crud_page.dart' as checklist;
 import 'package:pmsbmibile3/pages/geral/versao.dart';
 import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
 import 'package:pmsbmibile3/pages/painel/painel_list_page.dart';
@@ -243,11 +253,52 @@ class MyApp extends StatelessWidget {
         "/configuracao/home": (context) {
           return ConfiguracaoHome(authBloc);
         },
-
         //googleDrive
         "/googledrive/usuario": (context) {
           final settings = ModalRoute.of(context).settings;
           return UsuarioGoogleDrivePage(settings.arguments);
+        },
+
+        //Instrumento de avaliação
+        "/avaliacao/produto/list": (context) => ProdutoListPage(),
+        
+        "/avaliacao/item/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ItemListPage(settings.arguments);
+        },
+        "/avaliacao/resposta/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return ItemRespostaListPage(settings.arguments);
+        },
+        "/avaliacao/resposta/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          ItemRespostaPageCRUDArguments args = settings.arguments;
+          return ItemRespostaCRUDPage(
+            authBloc: authBloc,
+            itemId: args.item,
+            respostaId: args.resposta,
+          );
+        },
+
+        //Checklist
+        "/checklist/produto/list": (context) => checklist.ProdutoListPage(),
+        
+        "/checklist/item/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return checklist.ItemListPage(settings.arguments);
+        },
+        "/checklist/resposta/list": (context) {
+          final settings = ModalRoute.of(context).settings;
+          return checklist.ItemRespostaListPage(settings.arguments);
+        },
+        "/checklist/resposta/crud": (context) {
+          final settings = ModalRoute.of(context).settings;
+          ItemRespostaPageCRUDArguments args = settings.arguments;
+          return checklist.ItemRespostaCRUDPage(
+            authBloc: authBloc,
+            itemId: args.item,
+            respostaId: args.resposta,
+          );
         },
       },
     );

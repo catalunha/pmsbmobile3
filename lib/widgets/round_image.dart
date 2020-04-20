@@ -27,12 +27,8 @@ class RoundImage extends StatelessWidget {
         width: width, // espessura da imagem de perfil
         height: heigth, // altura da imagem de perfil
         decoration: BoxDecoration(
-          // boxShadow: <BoxShadow>[
-          //   BoxShadow(
-          //       color: PmsbColors.texto_terciario,
-          //       blurRadius: 12.0,
-          //       offset: Offset(0.57, 0.57))
-          // ],
+          color: PmsbColors.card,
+
           border: Border.all(
             width: this.espesuraBorda, //espessura da borda
             color: this.corBorda,
@@ -65,7 +61,7 @@ class RoundImage extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: _width * 0.25, left: _width * 0.125, child: Text(mensagem)),
+              top: _width * 0.15, left: _width * 0.050, child: Text(mensagem)),
         ],
       );
     }
