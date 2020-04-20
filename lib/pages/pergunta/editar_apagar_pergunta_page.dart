@@ -243,33 +243,28 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                           PerguntaTipoEnum.EscolhaMultipla) {
                     return Container();
                   }
-
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Card(
+                  return Card(
                       color: PmsbColors.card,
                       child: ListTile(
                         title: Text('Defina as escolhas:',
                             style: PmsbStyles.textoPrimario),
                         trailing: IconButton(
-                          icon: Icon(Icons.search),
-                          onPressed: () async {
-                            // SELECIONAR ESCOLHA
-                            bloc.dispatch(SaveEditarApagarPerguntaBlocEvent());
-                            if (snapshot.data.isValid) {
-                              Navigator.pushNamed(
-                                  context, "/pergunta/escolha_list",
-                                  arguments: snapshot.data.instance.id);
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                  );
+                            icon: Icon(Icons.search),
+                            onPressed: () async {
+                              // SELECIONAR ESCOLHA
+                              bloc.dispatch(
+                                  SaveEditarApagarPerguntaBlocEvent());
+                              if (snapshot.data.isValid) {
+                                Navigator.pushNamed(
+                                    context, "/pergunta/escolha_list",
+                                    arguments: snapshot.data.instance.id);
+                              }
+                            }),
+                      ));
                 },
               ),
               Padding(
-                padding: EdgeInsets.only(left: 8),
+                padding: EdgeInsets.all(13),
                 child: Text(
                   "Título da pergunta:",
                   style: PmsbStyles.textoPrimario,
@@ -299,6 +294,7 @@ class _EditarApagarPerguntaPageState extends State<EditarApagarPerguntaPage> {
                           }),
                     )
                   : Container(),
+              Divider(color: Colors.black87),
 
               Container(
                 padding: EdgeInsets.only(top: 80),

@@ -87,7 +87,11 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                           //selecionar o questionario
                         }),
                 title: isBound
-                    ? Text("Escolhido: ${questionario.id}") : Text("Escolha um questionário: ",style: PmsbStyles.textoPrimario,),
+                    ? Text("Escolhido: ${questionario.id}")
+                    : Text(
+                        "Escolha um questionário: ",
+                        style: PmsbStyles.textoPrimario,
+                      ),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Align(
@@ -112,7 +116,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         ListaRequisitos(bloc),
         // _botaoDeletar(),
 
-        // Divider(color: Colors.black87),
+         Divider(color: Colors.black87),
 
         widget.questionarioAplicadoID != null
             ? ListTile(
@@ -376,7 +380,6 @@ class ListaRequisitos extends StatelessWidget {
                           title: Text(
                             "${r.referencia}",
                             style: TextStyle(fontSize: 15),
-
                           ),
                           onTap: () {
                             Navigator.pushNamed(
