@@ -1,13 +1,23 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/usuario_model.dart';
 import 'package:pmsbmibile3/models/usuario_perfil_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
+import 'package:pmsbmibile3/widgets/round_image.dart';
 import 'administracao_perfil_page_bloc.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
+
+double getWidgetSize(
+    {double medida, double webFullScream, double webHalf, double mobile}) {
+  return kIsWeb
+      ? (medida > 1000 ? medida * webFullScream : medida * webHalf)
+      : medida * mobile;
+}
 
 class AdministracaoPerfilPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -43,13 +53,10 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
     if (usuarioId != null) {
       bloc.administracaoPerfilPageEventSink(UpdateUsuarioIdEvent(usuarioId));
     }
-    return Scaffold(
-      appBar: AppBar(
-        bottomOpacity: 0.0,
-        backgroundColor: PmsbColors.fundo,
-        centerTitle: true,
-        title: Text("Visualizar dados e perfil"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      backgroundColor: PmsbColors.fundo,
+      title: Text("Visualizar dados e perfil"),
       body: Container(
         color: PmsbColors.fundo,
         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -61,6 +68,12 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
   Widget _body() {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
+    double _horizontalSize = getWidgetSize(
+      medida: _width,
+      mobile: 0.02,
+      webFullScream: 0.20,
+      webHalf: 0.05,
+    );
 
     return ListView(children: <Widget>[
       //Metade superior ( Imagem Usuario )
@@ -88,7 +101,21 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                       new SizedBox(
                         height: _height / 20,
                       ),
-                      _ImagemAdminUnica(
+                      RoundImage(
+                        corBorda: PmsbColors.cor_destaque,
+                        espesuraBorda: 5.0,
+                        heigth: getWidgetSize(
+                          medida: _height,
+                          mobile: 0.50,
+                          webFullScream: 0.35,
+                          webHalf: 0.30,
+                        ),
+                        width: getWidgetSize(
+                          medida: _height,
+                          mobile: 0.50,
+                          webFullScream: 0.35,
+                          webHalf: 0.30,
+                        ),
                         fotoLocalPath: usuarioModelData?.foto?.localPath,
                         fotoUrl: usuarioModelData?.foto?.url,
                       ),
@@ -99,7 +126,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                         '${snapshot.data.nome}',
                         style: new TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: _width / 15,
+                            fontSize: kIsWeb ? 20 : _width / 15,
                             color: Colors.white),
                       ),
                       new SizedBox(
@@ -142,77 +169,85 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
           }),
 
       //Icone de download Pdf
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: StreamBuilder<AdministracaoPerfilPageState>(
-              stream: bloc.administracaoPerfilPageStateStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Error"),
+
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: _horizontalSize),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: StreamBuilder<AdministracaoPerfilPageState>(
+                stream: bloc.administracaoPerfilPageStateStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<AdministracaoPerfilPageState> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Error"),
+                    );
+                  }
+                  return Wrap(
+                    alignment: WrapAlignment.start,
+                    children: <Widget>[
+                      snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
+                                  false &&
+                              snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
+                                  true &&
+                              snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                  'administracao02'
+                          ? IconButton(
+                              tooltip: 'Ver relatório deste usuario.',
+                              icon: Icon(Icons.link),
+                              onPressed: () async {
+                                bloc.administracaoPerfilPageEventSink(
+                                    GerarRelatorioPdfMakeEvent(
+                                        pdfGerar: false,
+                                        pdfGerado: false,
+                                        tipo: 'administracao02',
+                                        collection: 'Usuario',
+                                        document: snapshot.data.usuarioId));
+                                launch(
+                                    snapshot.data?.relatorioPdfMakeModel?.url);
+                              },
+                            )
+                          : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
+                                      null &&
+                                  snapshot.data?.relatorioPdfMakeModel
+                                          ?.pdfGerar ==
+                                      true &&
+                                  snapshot.data?.relatorioPdfMakeModel
+                                          ?.pdfGerado ==
+                                      false &&
+                                  snapshot.data?.relatorioPdfMakeModel?.tipo ==
+                                      'administracao02'
+                              ? CircularProgressIndicator()
+                              : IconButton(
+                                  tooltip: 'Atualizar PDF deste usuario.',
+                                  icon: Icon(Icons.picture_as_pdf),
+                                  onPressed: () async {
+                                    bloc.administracaoPerfilPageEventSink(
+                                        GerarRelatorioPdfMakeEvent(
+                                            pdfGerar: true,
+                                            pdfGerado: false,
+                                            tipo: 'administracao02',
+                                            collection: 'Usuario',
+                                            document: snapshot.data.usuarioId));
+                                  },
+                                ),
+                    ],
                   );
-                }
-                return Wrap(
-                  alignment: WrapAlignment.start,
-                  children: <Widget>[
-                    snapshot.data?.relatorioPdfMakeModel?.pdfGerar != null &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerar ==
-                                false &&
-                            snapshot.data?.relatorioPdfMakeModel?.pdfGerado ==
-                                true &&
-                            snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                                'administracao02'
-                        ? IconButton(
-                            tooltip: 'Ver relatório deste usuario.',
-                            icon: Icon(Icons.link),
-                            onPressed: () async {
-                              bloc.administracaoPerfilPageEventSink(
-                                  GerarRelatorioPdfMakeEvent(
-                                      pdfGerar: false,
-                                      pdfGerado: false,
-                                      tipo: 'administracao02',
-                                      collection: 'Usuario',
-                                      document: snapshot.data.usuarioId));
-                              launch(snapshot.data?.relatorioPdfMakeModel?.url);
-                            },
-                          )
-                        : snapshot.data?.relatorioPdfMakeModel?.pdfGerar !=
-                                    null &&
-                                snapshot.data?.relatorioPdfMakeModel
-                                        ?.pdfGerar ==
-                                    true &&
-                                snapshot.data?.relatorioPdfMakeModel
-                                        ?.pdfGerado ==
-                                    false &&
-                                snapshot.data?.relatorioPdfMakeModel?.tipo ==
-                                    'administracao02'
-                            ? CircularProgressIndicator()
-                            : IconButton(
-                                tooltip: 'Atualizar PDF deste usuario.',
-                                icon: Icon(Icons.picture_as_pdf),
-                                onPressed: () async {
-                                  bloc.administracaoPerfilPageEventSink(
-                                      GerarRelatorioPdfMakeEvent(
-                                          pdfGerar: true,
-                                          pdfGerado: false,
-                                          tipo: 'administracao02',
-                                          collection: 'Usuario',
-                                          document: snapshot.data.usuarioId));
-                                },
-                              ),
-                  ],
-                );
-              },
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
 
-      Divider(color: PmsbColors.texto_secundario),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: _horizontalSize),
+        child: Divider(color: PmsbColors.texto_secundario),
+      ),
 
       // Cards de documento
       StreamBuilder<List<UsuarioPerfilModel>>(
@@ -228,17 +263,20 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                 child: CircularProgressIndicator(),
               );
             }
-            return Column(
-              children: <Widget>[
-                ...snapshot.data.map((variavel) {
-                  return Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      // Card de variavel do perfil
-                      child: VariavelPerfilCard(
-                        usuarioPerfilModel: variavel,
-                      ));
-                }).toList()
-              ],
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: _horizontalSize),
+              child: Column(
+                children: <Widget>[
+                  ...snapshot.data.map((variavel) {
+                    return Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        // Card de variavel do perfil
+                        child: VariavelPerfilCard(
+                          usuarioPerfilModel: variavel,
+                        ));
+                  }).toList()
+                ],
+              ),
             );
           }),
 
