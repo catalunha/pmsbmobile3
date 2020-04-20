@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/components/delete_document.dart';
 import 'package:pmsbmibile3/models/setor_censitario_model.dart';
 import 'package:pmsbmibile3/pages/checklist/item_resposta_crud_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class ItemRespostaCRUDPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -44,12 +47,11 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: widget?.respostaId == null
-            ? Text('Criar município do item')
-            : Text('Atualizar município do item'),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: widget?.respostaId == null
+          ? Text('Criar município do item')
+          : Text('Atualizar município do item'),
       floatingActionButton: StreamBuilder<ItemRespostaCRUDBlocState>(
           stream: bloc.stateStream,
           builder: (context, snapshot) {
@@ -61,9 +63,9 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
                       Navigator.pop(context);
                     }
                   : null,
-              child: Icon(Icons.cloud_upload),
+              child: Icon(Icons.check, color: PmsbColors.texto_primario,),
               backgroundColor:
-                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                  snapshot.data.isDataValid ? PmsbColors.cor_destaque : Colors.grey,
             );
           }),
       body: StreamBuilder<ItemRespostaCRUDBlocState>(
@@ -88,100 +90,191 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
                   : ListTile(
                       title: widget?.respostaId == null
                           ? Text('Para: escolha logo abaixo')
-                          : Text('Para: ${snapshot.data?.resposta?.setor?.nome}'),
+                          : Text(
+                              'Município: ${snapshot.data?.resposta?.setor?.nome}',
+                              style: PmsbStyles.textStyleListBold,
+                            ),
                     ),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     '* Atende ao Termo Referência:',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textoSecundario,
                   )),
-
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Radio(
-                            value: 'Sim',
-                            groupValue: snapshot.data?.atendeTR,
-                            onChanged: (radioValue) {
-                              bloc.eventSink(UpdateAtendeTREvent(radioValue));
-                            },
-                          ),
-                          Icon(
-                            Icons.thumb_up,
-                            color: Colors.green,
-                          ),
-                        ]),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Radio(
-                            value: 'Parcialmente',
-                            groupValue: snapshot.data?.atendeTR,
-                            onChanged: (radioValue) {
-                              bloc.eventSink(UpdateAtendeTREvent(radioValue));
-                            },
-                          ),
-                          Icon(
-                            Icons.thumbs_up_down,
-                            color: Colors.yellow,
-                          ),
-                        ]),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Radio(
-                            value: 'Não',
-                            groupValue: snapshot.data?.atendeTR,
-                            onChanged: (radioValue) {
-                              bloc.eventSink(UpdateAtendeTREvent(radioValue));
-                            },
-                          ),
-                          Icon(
-                            Icons.thumb_down,
-                            color: Colors.red,
-                          )
-                        ]),
-                  ]),
+              Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 2,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.green,
+                            ),
+                            SizedBox(width: 15),
+                            Text(
+                              'Sim',
+                              style: PmsbStyles.textStyleListPerfil,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: Radio(
+                          value: 'Sim',
+                          groupValue: snapshot.data?.atendeTR,
+                          onChanged: (radioValue) {
+                            bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 2,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.radio_button_unchecked,
+                              color: Colors.yellow,
+                            ),
+                            SizedBox(width: 15),
+                            Text(
+                              'Parcialmente',
+                              style: PmsbStyles.textStyleListPerfil,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: Radio(
+                          value: 'Parcialmente',
+                          groupValue: snapshot.data?.atendeTR,
+                          onChanged: (radioValue) {
+                            bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 2,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.highlight_off,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 15),
+                            Text(
+                              'Não',
+                              style: PmsbStyles.textStyleListPerfil,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: Radio(
+                          value: 'Não',
+                          groupValue: snapshot.data?.atendeTR,
+                          onChanged: (radioValue) {
+                            bloc.eventSink(UpdateAtendeTREvent(radioValue));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Link do documento no Google Drive:',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  )),
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Link do documento no Google Drive:',
+                  style: PmsbStyles.textoSecundario,
+                ),
+              ),
               Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(8.0),
                   child: _TextFieldMultiplo(bloc, 'linkDocumento')),
-
               Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     'Comentário:',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                    style: PmsbStyles.textoSecundario,
                   )),
               Padding(
                   padding: EdgeInsets.all(5.0),
                   child: _TextFieldMultiplo(bloc, 'comentario')),
+              widget?.respostaId == null
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Divider(),
+                    ),
+              widget?.respostaId != null
+                  ? ListTile(
+                      title: Text("Apagar"),
+                      trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _apagarAplicacao(context, bloc);
+                          }),
+                    )
+                  : Container(),
 
-              Divider(),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: DeleteDocument(
-                  onDelete: () {
-                    bloc.eventSink(DeleteDocumentEvent());
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
+              // Padding(
+              //     padding: EdgeInsets.all(5.0),
+              //     child: DeleteDocument(
+              //       onDelete: () {
+              //         bloc.eventSink(DeleteDocumentEvent());
+              //         Navigator.of(context).pop();
+              //       },
+              //     ),
+              //   ),
               Padding(padding: EdgeInsets.only(top: 100)),
             ],
             // ),
           );
         },
       ),
+    );
+  }
+
+  void _apagarAplicacao(context, ItemRespostaCRUDBloc bloc) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext bc) {
+        return SingleChildScrollView(
+          child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(bc).viewInsets.bottom,
+              ),
+              child: Container(
+                height: 250,
+                color: Colors.black38,
+                child: DeleteDocument(
+                  onDelete: () {
+                    bloc.eventSink(DeleteDocumentEvent());
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )),
+        );
+      },
     );
   }
 
@@ -194,21 +287,24 @@ class _ItemRespostaCRUDPageState extends State<ItemRespostaCRUDPage> {
           }
           Widget texto;
           if (snapshot.data.setorDestino == null) {
-            texto = Text('Município não selecionado');
+            texto = Text('Selecione o município');
           } else {
             texto = Text('${snapshot.data?.setorDestino?.nome}');
           }
-          return ListTile(
-            title: texto,
-            leading: IconButton(
-              icon: Icon(Icons.folder),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext bc) {
-                      return UsuarioListaModalSelect(bloc);
-                    });
-              },
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: ListTile(
+              title: texto,
+              trailing: IconButton(
+                icon: Icon(Icons.folder),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext bc) {
+                        return UsuarioListaModalSelect(bloc);
+                      });
+                },
+              ),
             ),
           );
         });
@@ -295,16 +391,19 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
           return Center(
             child: Text("Erro. Informe ao administrador do aplicativo"),
           );
+
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
+
         if (snapshot.data.setorList == null) {
           return Center(
             child: Text("Nenhum setor encontrada"),
           );
         }
+
         if (snapshot.data.setorList.isEmpty) {
           return Center(
             child: Text("Vazio."),
@@ -325,8 +424,11 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
 
   Widget _cardBuild(BuildContext context, SetorCensitarioModel setor) {
     return ListTile(
-      title: Text('${setor.nome}'),
-      leading: IconButton(
+      title: Text(
+        '${setor.nome}',
+        style: PmsbStyles.textoPrimario,
+      ),
+      trailing: IconButton(
         icon: Icon(Icons.check),
         onPressed: () {
           bloc.eventSink(SelectPastaIDEvent(setor));
@@ -338,10 +440,9 @@ class _UsuarioListaModalSelectState extends State<UsuarioListaModalSelect> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Escolha um setor"),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text("Escolha um setor"),
       body: _listarPasta(),
     );
   }

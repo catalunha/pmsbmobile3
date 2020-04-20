@@ -87,11 +87,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
                           //selecionar o questionario
                         }),
                 title: isBound
-                    ? Text("Escolhido: ${questionario.id}")
-                    : Text(
-                        "Escolha um questionário: ",
-                        style: PmsbStyles.textoPrimario,
-                      ),
+                    ? Text("Questionário : ${questionario.id}") : Text("Escolha um questionário: ",style: PmsbStyles.textoPrimario,),
                 subtitle: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Align(
