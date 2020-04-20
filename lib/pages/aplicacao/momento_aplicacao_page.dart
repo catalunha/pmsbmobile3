@@ -112,7 +112,7 @@ class _MomentoAplicacaoPageState extends State<MomentoAplicacaoPage> {
         ListaRequisitos(bloc),
         // _botaoDeletar(),
 
-        // Divider(color: Colors.black87),
+         Divider(color: Colors.black87),
 
         widget.questionarioAplicadoID != null
             ? ListTile(
@@ -376,7 +376,6 @@ class ListaRequisitos extends StatelessWidget {
                           title: Text(
                             "${r.referencia}",
                             style: TextStyle(fontSize: 15),
-
                           ),
                           onTap: () {
                             Navigator.pushNamed(
