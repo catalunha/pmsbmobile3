@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/checklist/item_list_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class ItemListPage extends StatefulWidget {
   final String produtoId;
@@ -34,17 +37,15 @@ class _ItemListPageState extends State<ItemListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Itens deste produto'),
-      ),
-
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text('Itens deste Produto'),
       body: StreamBuilder<ItemListBlocState>(
         stream: bloc.stateStream,
         builder:
             (BuildContext context, AsyncSnapshot<ItemListBlocState> snapshot) {
           if (snapshot.hasError) {
-            return Text("Existe algo errado! Informe o suporte.");
+            return Text("Existe algo errado! Informe o suporte.", style: PmsbStyles.textoSecundario,);
           }
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -56,6 +57,7 @@ class _ItemListPageState extends State<ItemListPage> {
               // print('listando item: ${item.id}');
               listaWidget.add(
                 Card(
+                  color: PmsbColors.card,
                   child: Column(
                     children: <Widget>[
                       ListTile(
@@ -95,7 +97,7 @@ class _ItemListPageState extends State<ItemListPage> {
               ],
             );
           } else {
-            return Text('Existem dados inválidos. Informe o suporte.');
+            return Text('Existem dados inválidos. Informe o suporte.', style: PmsbStyles.textoSecundario,);
           }
         },
       ),
