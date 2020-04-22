@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.black12,
                                 ),
                                 child: Text(
-                                  " ${snap.data.eixoIDAtual.nome} ",
+                                  " Eixo: ${snap.data.eixoIDAtual.nome} ",
                                   style: PmsbStyles.textStyleListPerfil01,
                                 ),
                               ),
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                                     color: Colors.black12,
                                   ),
                                   child: Text(
-                                    " ${snap.data.setorCensitarioID.nome} ",
+                                    " Setor: ${snap.data.setorCensitarioID.nome} ",
                                     style: PmsbStyles.textStyleListPerfil01,
                                   )),
                             ],
