@@ -53,7 +53,6 @@ class _HomeGridState extends State<HomeGrid> {
 
   @override
   Widget build(BuildContext context) {
-
     double _width = MediaQuery.of(context).size.width;
     double _heigth = MediaQuery.of(context).size.height;
 
@@ -78,14 +77,14 @@ class _HomeGridState extends State<HomeGrid> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(5),
                   // child: Text("Geral", style: PmsbStyles.textStyleListBold),
                 ),
                 GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: kIsWeb ? (_width > 1000 ? 5 : 3) : 3,
-                    crossAxisSpacing: kIsWeb ? (_width > 1000 ? 30 : 30 ) : 5,
-                    mainAxisSpacing: kIsWeb ? (_width > 1000 ? 30 : 30) : 5,
+                    crossAxisCount: kIsWeb ? (_width > 1000 ? 6 : 4) : 3,
+                    // crossAxisSpacing: kIsWeb ? (_width > 1000 ? 30 : 30 ) : 5,
+                    // mainAxisSpacing: kIsWeb ? (_width > 1000 ? 30 : 30) : 5,
                   ),
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -99,20 +98,32 @@ class _HomeGridState extends State<HomeGrid> {
                         snap.data.routes.isEmpty) {
                       return Container();
                     } else if (snap.data.routes.contains(rotaKey)) {
-                      return OpcaoCard(
-                        width: kIsWeb
-                            ? (_width > 800 ? _width * 0.10 : _width * 0.30)
-                            : _width * 0.28,
-                        height: kIsWeb
-                            ? (_heigth > 800
-                                ? _heigth * 0.10
-                                : _heigth * 0.30)
-                            : _heigth * 0.28,
-                        rotaAction: RotaGridAction(
-                          RotaGrid(rotaValue.nome, rotaValue.icone),
-                          () {
-                            Navigator.pushReplacementNamed(context, rotaKey);
-                          },
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: kIsWeb
+                              ? (_width > 800 ? _heigth * 0.03 : _heigth * 0.00125)
+                              : _width * 0.00125,
+                          vertical: kIsWeb
+                              ? (_width > 800 ? _heigth * 0.03 : _heigth * 0.00125)
+                              : _width * 0.00125,
+                        ),
+                        child: OpcaoCard(
+                          width: _width * 0.28,
+                          // kIsWeb
+                          //     ? (_width > 800 ? _width * 0.10 : _width * 0.30)
+                          //     : _width * 0.28,
+                          height: _width * 0.28,
+                          //  kIsWeb
+                          //     ? (_heigth > 800
+                          //         ? _heigth * 0.10
+                          //         : _heigth * 0.30)
+                          //     : _heigth * 0.28,
+                          rotaAction: RotaGridAction(
+                            RotaGrid(rotaValue.nome, rotaValue.icone),
+                            () {
+                              Navigator.pushReplacementNamed(context, rotaKey);
+                            },
+                          ),
                         ),
                       );
                     } else {
@@ -121,7 +132,7 @@ class _HomeGridState extends State<HomeGrid> {
                   },
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(5),
                   // child: Text("Geral", style: PmsbStyles.textStyleListBold),
                 ),
               ],
