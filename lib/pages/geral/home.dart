@@ -130,15 +130,15 @@ class _HomePageState extends State<HomePage> {
                                     children: <Widget>[
                                       Text(
                                         "${snap.data.nome}",
-                                        style: PmsbStyles.textStyleListBold,
+                                        style: PmsbStyles.textStyleListDarkBold,
                                       ),
                                       Text(
                                         "${snap.data.email}",
-                                        style: PmsbStyles.textStyleListPerfil01,
+                                        style: PmsbStyles.textStyleListPerfilDark01,
                                       ),
                                       Text(
                                         "${snap.data.celular}",
-                                        style: PmsbStyles.textStyleListPerfil01,
+                                        style: PmsbStyles.textStyleListPerfilDark01,
                                       ),
                                     ],
                                   ),
@@ -171,11 +171,11 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(5),
                                   ),
-                                  color: Colors.black12,
+                                  color: Colors.white30,
                                 ),
                                 child: Text(
                                   " Eixo: ${snap.data.eixoIDAtual.nome} ",
-                                  style: PmsbStyles.textStyleListPerfil01,
+                                  style: PmsbStyles.textStyleListPerfilDarkMedio01,
                                 ),
                               ),
                               Container(
@@ -183,11 +183,11 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(5),
                                     ),
-                                    color: Colors.black12,
+                                    color: Colors.white30,
                                   ),
                                   child: Text(
                                     " Setor: ${snap.data.setorCensitarioID.nome} ",
-                                    style: PmsbStyles.textStyleListPerfil01,
+                                    style: PmsbStyles.textStyleListPerfilDarkMedio01,
                                   )),
                             ],
                           )
