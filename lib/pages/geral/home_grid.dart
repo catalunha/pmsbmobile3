@@ -3,7 +3,6 @@ import 'package:pmsbmibile3/bootstrap.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/services/recursos.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
-import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:pmsbmibile3/widgets/opcao_card.dart';
 
 class HomeGrid extends StatefulWidget {
@@ -54,6 +53,10 @@ class _HomeGridState extends State<HomeGrid> {
 
   @override
   Widget build(BuildContext context) {
+
+    double _width = MediaQuery.of(context).size.width;
+    double _heigth = MediaQuery.of(context).size.height;
+
     return Container(
       // height: 500,
       child: StreamBuilder<UsuarioModel>(
@@ -70,7 +73,7 @@ class _HomeGridState extends State<HomeGrid> {
 
           return Padding(
             padding: EdgeInsets.all(
-              kIsWeb ? (MediaQuery.of(context).size.width > 800 ? 20 : 3) : 3,
+              kIsWeb ? (_width > 800 ? 20 : 3) : 3,
             ),
             child: Column(
               children: <Widget>[
@@ -80,15 +83,9 @@ class _HomeGridState extends State<HomeGrid> {
                 ),
                 GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: kIsWeb
-                        ? (MediaQuery.of(context).size.width > 800 ? 5 : 3)
-                        : 3,
-                    crossAxisSpacing: kIsWeb
-                        ? (MediaQuery.of(context).size.width > 800 ? 30 : 5)
-                        : 5,
-                    mainAxisSpacing: kIsWeb
-                        ? (MediaQuery.of(context).size.width > 800 ? 30 : 5)
-                        : 5,
+                    crossAxisCount: kIsWeb ? (_width > 1000 ? 5 : 3) : 3,
+                    crossAxisSpacing: kIsWeb ? (_width > 1000 ? 30 : 30 ) : 5,
+                    mainAxisSpacing: kIsWeb ? (_width > 1000 ? 30 : 30) : 5,
                   ),
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -103,7 +100,14 @@ class _HomeGridState extends State<HomeGrid> {
                       return Container();
                     } else if (snap.data.routes.contains(rotaKey)) {
                       return OpcaoCard(
-                        contextTela: context,
+                        width: kIsWeb
+                            ? (_width > 800 ? _width * 0.10 : _width * 0.30)
+                            : _width * 0.28,
+                        height: kIsWeb
+                            ? (_heigth > 800
+                                ? _heigth * 0.10
+                                : _heigth * 0.30)
+                            : _heigth * 0.28,
                         rotaAction: RotaGridAction(
                           RotaGrid(rotaValue.nome, rotaValue.icone),
                           () {

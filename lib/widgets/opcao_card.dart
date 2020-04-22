@@ -15,10 +15,14 @@ class RotaGridAction {
 }
 
 class OpcaoCard extends StatelessWidget {
-  const OpcaoCard({Key key, this.rotaAction, this.contextTela}) : super(key: key);
-  
+  final double width;
+  final double height;
   final RotaGridAction rotaAction;
-  final BuildContext contextTela;
+
+  const OpcaoCard(
+      {Key key, this.rotaAction, @required this.height, @required this.width})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,22 +30,18 @@ class OpcaoCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(
-          width: 30,
+          width: this.width,
           // kIsWeb
           //     ? (MediaQuery.of(this.contextTela).size.width > 800
           //         ? MediaQuery.of(this.contextTela).size.width * 0.10
           //         : MediaQuery.of(this.contextTela).size.width * 0.10)
           //     : MediaQuery.of(this.contextTela).size.width * 0.28,
-          height: 30,
+          height: this.height,
           // kIsWeb
           //     ? (MediaQuery.of(this.contextTela).size.width > 800
           //         ? MediaQuery.of(this.contextTela).size.width * 0.10
           //         : MediaQuery.of(this.contextTela).size.width * 0.10)
-          //     : MediaQuery.of(this.contextTela).size.width * 0.28,
-
-          // MediaQuery.of(context).size.width > 800
-          //     ? MediaQuery.of(context).size.width * 0.14
-          //     : MediaQuery.of(context).size.width * 0.28,
+          //     : MediaQuery.of(this.contextTela).size.width * 0.28,,
           decoration: BoxDecoration(
             color: PmsbColors.card,
             borderRadius: BorderRadius.all(
