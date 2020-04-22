@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_marcar_bloc.dart';
 import 'package:pmsbmibile3/pages/page_arguments.dart';
 import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
@@ -155,10 +156,9 @@ class _ControleAcaoMarcarPageState extends State<ControleAcaoMarcarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Marcar ação'),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text('Marcar ação'),
       body: _bodyDestinatario(context),
     );
   }
