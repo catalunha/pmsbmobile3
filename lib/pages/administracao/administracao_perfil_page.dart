@@ -106,13 +106,13 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                         espesuraBorda: 5.0,
                         heigth: getWidgetSize(
                           medida: _height,
-                          mobile: 0.50,
+                          mobile: 0.30,
                           webFullScream: 0.35,
                           webHalf: 0.30,
                         ),
                         width: getWidgetSize(
                           medida: _height,
-                          mobile: 0.50,
+                          mobile: 0.30,
                           webFullScream: 0.35,
                           webHalf: 0.30,
                         ),

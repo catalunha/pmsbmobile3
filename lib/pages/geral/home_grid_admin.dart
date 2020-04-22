@@ -153,3 +153,69 @@ class OpcaoCard extends StatelessWidget {
     );
   }
 }
+
+
+
+    // return Container(
+    //   // height: 500,
+    //   child: StreamBuilder<UsuarioModel>(
+    //     stream: authBloc.perfil,
+    //     builder: (context, snap) {
+    //       if (snap.hasError) {
+    //         return Center(
+    //           child: Text("Erro"),
+    //         );
+    //       }
+
+    //       List<Widget> list = List<Widget>();
+
+    //       if (snap.data == null ||
+    //           snap.data.routes == null ||
+    //           snap.data.routes.isEmpty) {
+    //         list.add(Container());
+    //       } else {
+    //         rotas.forEach((k, v) {
+    //           if (snap.data.routes.contains(k)) {
+    //             opcoes.add(
+    //               RotaAction(
+    //                 Rota(v.nome, v.icone),
+    //                 () {
+    //                   Navigator.pushReplacementNamed(context, k);
+    //                 },
+    //               ),
+    //             );
+    //           }
+    //         });
+    //       }
+
+    //       // if (list.isEmpty || list == null) {
+    //       //   list.add(Container());
+    //       // }
+
+    //       return Column(
+    //         children: <Widget>[
+    //           Padding(
+    //             padding: EdgeInsets.all(8),
+    //             child:
+    //                 Text("Administração", style: PmsbStyles.textStyleListBold),
+    //           ),
+    //           GridView.count(
+    //             shrinkWrap: true,
+    //             physics: ScrollPhysics(),
+    //             crossAxisCount: kIsWeb
+    //                 ? (MediaQuery.of(context).size.width > 800 ? 5 : 3)
+    //                 : 3,
+    //             children: List.generate(
+    //               opcoes.length,
+    //               (index) {
+    //                 return Center(
+    //                   child: OpcaoCard(rotaAction: opcoes[index]),
+    //                 );
+    //               },
+    //             ),
+    //           )
+    //         ],
+    //       );
+    //     },
+    //   ),
+    // );
