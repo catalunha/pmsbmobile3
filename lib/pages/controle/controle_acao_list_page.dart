@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/controle_acao_model.dart';
 import 'package:pmsbmibile3/models/controle_tarefa_model.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_list_bloc.dart';
@@ -145,11 +146,9 @@ class _ControleAcaoListPageState extends State<ControleAcaoListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: Text('Gerenciar ações'),
-        ),
+    return DefaultScaffold(
+        backToRootPage: false,
+        title: Text('Gerenciar ações'),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, '/controle/acao_crud',

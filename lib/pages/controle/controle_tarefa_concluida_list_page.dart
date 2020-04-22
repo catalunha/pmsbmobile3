@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_concluida_list_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class ControleTarefaConcluidaListPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -125,6 +127,7 @@ class _ControleTarefaConcluidaListPageState
             for (var controleTarefaID
                 in snapshot.data.controleTarefaListRemetente) {
               listaWdg.add(Card(
+                color: PmsbColors.card,
                   child: Column(children: <Widget>[
                 ListTile(
                     trailing: Text(
@@ -196,18 +199,16 @@ class _ControleTarefaConcluidaListPageState
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
-            tabs: [
-              Tab(text: "Destinatário/Recebida"),
-              Tab(text: "Remetente/Designada"),
-            ],
-          ),
-          title: Text('Tarefas concluídas'),
+      child: DefaultScaffold(
+        backToRootPage: true,
+        bottom: TabBar(
+          tabs: [
+            Tab(text: "Destinatário/Recebida"),
+            Tab(text: "Remetente/Designada"),
+          ],
         ),
+        title: Text('Tarefas concluídas'),
         body: _body(context),
       ),
     );

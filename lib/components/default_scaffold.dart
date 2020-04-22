@@ -358,7 +358,7 @@ class DefaultScaffold extends StatelessWidget {
       ),
       // backgroundColor: PmsbColors.fundo,
       backgroundColor: PmsbColors.fundo,
-      bottomOpacity: 0.0,
+      // bottomOpacity: 0.0,
       elevation: 0.0,
       actions: actionsMore,
       // actions: <Widget>[

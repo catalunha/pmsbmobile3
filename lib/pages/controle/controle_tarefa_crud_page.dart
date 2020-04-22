@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_crud_bloc.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class ControleTarefaCrudPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -248,10 +250,9 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Criação e edição de tarefa'),
-        ),
+    return DefaultScaffold(
+        backToRootPage: false,
+        title: Text('Criação e edição de tarefa'),
         body: _bodyDados(context),
         floatingActionButton: StreamBuilder<ControleTarefaCrudBlocState>(
             stream: bloc.stateStream,
@@ -265,9 +266,10 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
                         Navigator.pop(context);
                       }
                     : null,
-                child: Icon(Icons.cloud_upload),
-                backgroundColor:
-                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+                child: Icon(Icons.check),
+                backgroundColor: snapshot.data.isDataValid
+                    ? PmsbColors.cor_destaque
+                    : Colors.grey,
               );
             }));
   }

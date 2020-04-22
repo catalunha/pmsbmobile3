@@ -110,7 +110,6 @@ class LoginPageState extends State<LoginPage> {
     loginPageSizeMap = definirSizeMap(context);
 
     bool _validateEmail(String value) {
-      print("---" + value);
       bool emailValid = RegExp(
               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
           .hasMatch(value);
@@ -123,9 +122,7 @@ class LoginPageState extends State<LoginPage> {
     }
 
     bool _validatePassword(String value) {
-      print("---" + value);
       if (value.length < 6) {
-        // _alerta('Informe uma senha valida.');
         return false;
       }
       return true;

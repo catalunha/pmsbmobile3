@@ -13,7 +13,6 @@ class UpDateUsuarioPerfilIDEvent extends PerfilCRUDPageEvent {
 
 class UpDateTextPlainEvent extends PerfilCRUDPageEvent {
   final String textPlain;
-
   UpDateTextPlainEvent(this.textPlain);
 }
 

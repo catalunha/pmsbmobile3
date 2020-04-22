@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/pages/controle/controle_acao_informar_bloc.dart';
+import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class ControleAcaoInformarPage extends StatefulWidget {
   final String acaoID;
@@ -33,11 +35,12 @@ class _ControleAcaoInformarPageState extends State<ControleAcaoInformarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text('Informar url / obs da ação'),),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text('Informar url / obs da ação'),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.cloud_upload),
+        backgroundColor: PmsbColors.cor_destaque,
+        child: Icon(Icons.check, color: Colors.white,),
         onPressed: () {
           bloc.eventSink(SaveAcaoEvent());
           Navigator.pop(context);
@@ -86,8 +89,8 @@ class AcaoUrlState extends State<AcaoUrl> {
   Widget build(BuildContext context) {
     return StreamBuilder<ControleAcaoInformarBlocState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<ControleAcaoInformarBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleAcaoInformarBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.url;
         }
@@ -107,7 +110,6 @@ class AcaoUrlState extends State<AcaoUrl> {
   }
 }
 
-
 class AcaoObs extends StatefulWidget {
   final ControleAcaoInformarBloc bloc;
   AcaoObs(this.bloc);
@@ -125,8 +127,8 @@ class AcaoObsState extends State<AcaoObs> {
   Widget build(BuildContext context) {
     return StreamBuilder<ControleAcaoInformarBlocState>(
       stream: bloc.stateStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<ControleAcaoInformarBlocState> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<ControleAcaoInformarBlocState> snapshot) {
         if (_textFieldController.text.isEmpty) {
           _textFieldController.text = snapshot.data?.obs;
         }
@@ -145,4 +147,3 @@ class AcaoObsState extends State<AcaoObs> {
     );
   }
 }
-

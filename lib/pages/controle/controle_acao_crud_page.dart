@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/bootstrap.dart';
+import 'package:pmsbmibile3/components/default_scaffold.dart';
 
 import 'controle_acao_crud_bloc.dart';
 
@@ -7,7 +8,7 @@ class ControleAcaoCrudPage extends StatefulWidget {
   final String tarefaID;
   final String acaoID;
 
-  ControleAcaoCrudPage({this.tarefaID,this.acaoID});
+  ControleAcaoCrudPage({this.tarefaID, this.acaoID});
 
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +25,8 @@ class _ControleAcaoCrudPageState extends State<ControleAcaoCrudPage> {
   @override
   void initState() {
     super.initState();
-    bloc.eventSink(UpdateTarefaAcaoIDEvent(acaoID:widget.acaoID,tarefaID: widget.tarefaID));
+    bloc.eventSink(UpdateTarefaAcaoIDEvent(
+        acaoID: widget.acaoID, tarefaID: widget.tarefaID));
   }
 
   @override
@@ -35,27 +37,26 @@ class _ControleAcaoCrudPageState extends State<ControleAcaoCrudPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Editar ação'),
-      ),
+    return DefaultScaffold(
+      backToRootPage: false,
+      title: Text('Editar ação'),
       floatingActionButton: StreamBuilder<ControleAcaoCrudBlocState>(
-            stream: bloc.stateStream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Container();
+          stream: bloc.stateStream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Container();
 
-              return FloatingActionButton(
-                onPressed: snapshot.data.isDataValid
-                    ? () {
-                        bloc.eventSink(SaveEvent());
-                        Navigator.pop(context);
-                      }
-                    : null,
-                child: Icon(Icons.cloud_upload),
-                backgroundColor:
-                    snapshot.data.isDataValid ? Colors.blue : Colors.grey,
-              );
-            }),
+            return FloatingActionButton(
+              onPressed: snapshot.data.isDataValid
+                  ? () {
+                      bloc.eventSink(SaveEvent());
+                      Navigator.pop(context);
+                    }
+                  : null,
+              child: Icon(Icons.cloud_upload),
+              backgroundColor:
+                  snapshot.data.isDataValid ? Colors.blue : Colors.grey,
+            );
+          }),
       body: ListView(
         children: <Widget>[
           Padding(
@@ -69,7 +70,7 @@ class _ControleAcaoCrudPageState extends State<ControleAcaoCrudPage> {
             child: AcaoEditar(bloc),
           ),
           Divider(),
-            _DeleteDocumentOrField(bloc),
+          _DeleteDocumentOrField(bloc),
         ],
       ),
     );
@@ -113,7 +114,6 @@ class AcaoEditarState extends State<AcaoEditar> {
     );
   }
 }
-
 
 class _DeleteDocumentOrField extends StatefulWidget {
   final ControleAcaoCrudBloc bloc;
@@ -160,4 +160,3 @@ class _DeleteDocumentOrFieldState extends State<_DeleteDocumentOrField> {
     );
   }
 }
-
