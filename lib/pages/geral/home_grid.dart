@@ -22,15 +22,17 @@ class _HomeGridState extends State<HomeGrid> {
 
     if (Recursos.instance.plataforma == 'android') {
       rotas["/questionario/home"] = RotaGrid("Questionários", Icons.assignment);
-      rotas["/resposta/home"] = RotaGrid("Resposta", Icons.playlist_add_check);
       rotas["/aplicacao/home"] = RotaGrid("Aplicar", Icons.directions_walk);
-      rotas["/upload"] = RotaGrid("Upload", Icons.file_upload);
+      rotas["/resposta/home"] = RotaGrid("Resposta", Icons.playlist_add_check);
       rotas["/sintese/home"] = RotaGrid("Síntese", Icons.equalizer);
       rotas["/produto/home"] = RotaGrid("Produto", Icons.chrome_reader_mode);
-      rotas["/controle/home"] = RotaGrid("Controle", Icons.control_point);
+      rotas["/painel/home"] = RotaGrid("Itens do painel", Icons.table_chart);
       rotas["/setor_painel/home"] = RotaGrid("Painel", Icons.compare);
-      rotas["/desenvolvimento"] = RotaGrid("Desenvolv", Icons.build);
+      rotas["/controle/home"] = RotaGrid("Controle", Icons.control_point);
       rotas["/checklist/produto/list"] = RotaGrid("Checklist", Icons.check_box);
+      rotas["/administracao/home"] = RotaGrid("Equipe", Icons.business_center);
+      rotas["/upload"] = RotaGrid("Upload", Icons.file_upload);
+      rotas["/desenvolvimento"] = RotaGrid("Desenvolv", Icons.build);
 
       // rotas["/comunicacao/home"] = Rota("Comunicação", Icons.contact_mail);
       // rotas["/administracao/home"] = Rota("Administração", Icons.business_center);
@@ -41,10 +43,11 @@ class _HomeGridState extends State<HomeGrid> {
       rotas["/resposta/home"] = RotaGrid("Resposta", Icons.playlist_add_check);
       rotas["/sintese/home"] = RotaGrid("Síntese", Icons.equalizer);
       rotas["/produto/home"] = RotaGrid("Produto", Icons.chrome_reader_mode);
-      rotas["/controle/home"] = RotaGrid("Controle", Icons.control_point);
+      rotas["/painel/home"] = RotaGrid("Itens do painel", Icons.table_chart);
       rotas["/setor_painel/home"] = RotaGrid("Painel", Icons.compare);
+      rotas["/controle/home"] = RotaGrid("Controle", Icons.control_point);
       rotas["/checklist/produto/list"] = RotaGrid("Checklist", Icons.check_box);
-
+      rotas["/administracao/home"] = RotaGrid("Equipe", Icons.business_center);
       // rotas["/administracao/home"] =  Rota("Administração", Icons.business_center);
     }
   }
@@ -56,7 +59,6 @@ class _HomeGridState extends State<HomeGrid> {
       child: StreamBuilder<UsuarioModel>(
         stream: authBloc.perfil,
         builder: (context, snap) {
-          
           if (snap.hasError) {
             return Center(
               child: Text("Erro"),
@@ -67,23 +69,30 @@ class _HomeGridState extends State<HomeGrid> {
           var listaRotasValue = rotas.values.toList();
 
           return Padding(
-            padding: EdgeInsets.all(kIsWeb ? ( MediaQuery.of(context).size.width > 800 ? 20 : 3) : 3,),
+            padding: EdgeInsets.all(
+              kIsWeb ? (MediaQuery.of(context).size.width > 800 ? 20 : 3) : 3,
+            ),
             child: Column(
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(8),
-                  child: Text("Geral", style: PmsbStyles.textStyleListBold),
+                  // child: Text("Geral", style: PmsbStyles.textStyleListBold),
                 ),
                 GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: kIsWeb ? (MediaQuery.of(context).size.width > 800 ? 5 : 3) : 3,
-                    crossAxisSpacing: kIsWeb ? (MediaQuery.of(context).size.width > 800 ? 30 : 5) : 5,
-                    mainAxisSpacing: kIsWeb ? (MediaQuery.of(context).size.width > 800 ? 30 : 5) : 5,
+                    crossAxisCount: kIsWeb
+                        ? (MediaQuery.of(context).size.width > 800 ? 5 : 3)
+                        : 3,
+                    crossAxisSpacing: kIsWeb
+                        ? (MediaQuery.of(context).size.width > 800 ? 30 : 5)
+                        : 5,
+                    mainAxisSpacing: kIsWeb
+                        ? (MediaQuery.of(context).size.width > 800 ? 30 : 5)
+                        : 5,
                   ),
-
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemCount: rotas.length,                
+                  itemCount: rotas.length,
                   itemBuilder: (context, int index) {
                     var rotaKey = listaRotasKey[index];
                     var rotaValue = listaRotasValue[index];
@@ -102,11 +111,15 @@ class _HomeGridState extends State<HomeGrid> {
                           },
                         ),
                       );
-                    }else{
+                    } else {
                       return Container();
                     }
                   },
-                )
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  // child: Text("Geral", style: PmsbStyles.textStyleListBold),
+                ),
               ],
             ),
           );
@@ -116,28 +129,27 @@ class _HomeGridState extends State<HomeGrid> {
   }
 }
 
+// this.list = List<Widget>();
 
-          // this.list = List<Widget>();
+// if (snap.data == null ||
+//     snap.data.routes == null ||
+//     snap.data.routes.isEmpty) {
+//   this.list.add(Container());
+// } else {
+//   rotas.forEach((k, v) {
+//     if (snap.data.routes.contains(k)) {
+//       opcoes.add(
+//         RotaGridAction(
+//           RotaGrid(v.nome, v.icone),
+//           () {
+//             Navigator.pushReplacementNamed(context, k);
+//           },
+//         ),
+//       );
+//     }
+//   });
+// }
 
-          // if (snap.data == null ||
-          //     snap.data.routes == null ||
-          //     snap.data.routes.isEmpty) {
-          //   this.list.add(Container());
-          // } else {
-          //   rotas.forEach((k, v) {
-          //     if (snap.data.routes.contains(k)) {
-          //       opcoes.add(
-          //         RotaGridAction(
-          //           RotaGrid(v.nome, v.icone),
-          //           () {
-          //             Navigator.pushReplacementNamed(context, k);
-          //           },
-          //         ),
-          //       );
-          //     }
-          //   });
-          // }
-
-          // if (list.isEmpty || list == null) {
-          //   list.add(Container());
-          // }
+// if (list.isEmpty || list == null) {
+//   list.add(Container());
+// }

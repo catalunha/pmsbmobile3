@@ -39,7 +39,7 @@ class _AdministracaoHomePageState extends State<AdministracaoHomePage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backToRootPage: true,
-      title: Text("Administração"),
+      title: Text("Equipe"),
       body: Container(
         color: PmsbColors.fundo,
         child: StreamBuilder<AdministracaoHomePageBlocState>(

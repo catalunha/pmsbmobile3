@@ -211,7 +211,7 @@ class _HomePageState extends State<HomePage> {
       child: ListView(
         children: <Widget>[
           HomeGrid(),
-          HomeGridAdmin(),
+          // HomeGridAdmin(),
         ],
       ),
     );
