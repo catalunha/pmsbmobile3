@@ -251,27 +251,29 @@ class _ControleTarefaCrudBlocState extends State<ControleTarefaCrudPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
-        backToRootPage: false,
-        title: Text('Criação e edição de tarefa'),
-        body: _bodyDados(context),
-        floatingActionButton: StreamBuilder<ControleTarefaCrudBlocState>(
-            stream: bloc.stateStream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Container();
+      backToRootPage: false,
+      title: Text('Criação e edição de tarefa'),
+      body: _bodyDados(context),
+      floatingActionButton: StreamBuilder<ControleTarefaCrudBlocState>(
+        stream: bloc.stateStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
 
-              return FloatingActionButton(
-                onPressed: snapshot.data.isDataValid
-                    ? () {
-                        bloc.eventSink(SaveEvent());
-                        Navigator.pop(context);
-                      }
-                    : null,
-                child: Icon(Icons.check),
-                backgroundColor: snapshot.data.isDataValid
-                    ? PmsbColors.cor_destaque
-                    : Colors.grey,
-              );
-            }));
+          return FloatingActionButton(
+            onPressed: snapshot.data.isDataValid
+                ? () {
+                    bloc.eventSink(SaveEvent());
+                    Navigator.pop(context);
+                  }
+                : null,
+            child: Icon(Icons.check),
+            backgroundColor: snapshot.data.isDataValid
+                ? PmsbColors.cor_destaque
+                : Colors.grey,
+          );
+        },
+      ),
+    );
   }
 }
 

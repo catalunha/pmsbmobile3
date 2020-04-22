@@ -184,6 +184,7 @@ class _ControleTarefaListPageState extends State<ControleTarefaListPage> {
             for (var controleTarefaID
                 in snapshot.data.controleTarefaListRemetente) {
               listaWdg.add(Card(
+                color: PmsbColors.card,
                   child: Column(children: <Widget>[
                 ListTile(
                     trailing: Text(
