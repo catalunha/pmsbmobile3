@@ -56,7 +56,7 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
     return DefaultScaffold(
       backToRootPage: false,
       backgroundColor: PmsbColors.fundo,
-      title: Text("Visualizar dados e perfil"),
+      title: Text("Visualizar dados e Perfil"),
       body: Container(
         color: PmsbColors.fundo,
         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -106,13 +106,13 @@ class _AdministracaoPerfilPageState extends State<AdministracaoPerfilPage> {
                         espesuraBorda: 5.0,
                         heigth: getWidgetSize(
                           medida: _height,
-                          mobile: 0.30,
+                          mobile: 0.23,
                           webFullScream: 0.35,
                           webHalf: 0.30,
                         ),
                         width: getWidgetSize(
                           medida: _height,
-                          mobile: 0.30,
+                          mobile: 0.23,
                           webFullScream: 0.35,
                           webHalf: 0.30,
                         ),
