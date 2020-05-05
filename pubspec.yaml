@@ -68,6 +68,7 @@ dependencies:
   flutter_local_notifications: 0.7.1
   fixnum: ^0.10.9
   universal_io: ^0.8.4
+  drag_list: ^1.0.8
 
 dev_dependencies:
   flutter_test:
