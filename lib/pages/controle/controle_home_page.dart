@@ -84,18 +84,18 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
         vertical: height * 0.02,
       ),
       child: Container(
-        color: Colors.black12,
+        // color: Colors.black12,
         child: ListView(
           children: <Widget>[
             textoQuadro("Meus quadros"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-              child: Column(children: _listaQuadros()),
+              child: Column(children: _listaMeusQuadros()),
             ),
             textoQuadro("Meus gerais"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-              child: Column(children: _listaQuadros()),
+              child: Column(children: _listasQuadrosGerais()),
             ),
           ],
         ),
@@ -116,23 +116,34 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
     );
   }
 
-  _listaQuadros() {
+  _listaMeusQuadros() {
     return <Widget>[
-      Card(
-        //color: Colors.grey[100],
-        child: ListTile(
-          title: Text("Teste do titulo"),
-          subtitle: Text("Teste do subtitulo"),
+      Padding(
+        padding: EdgeInsets.all(4.0),
+        child: QuadroCardWidget(
+          cor: PmsbColors.card,
+          quadro: cardModel02,
         ),
       ),
-      Card(
-        //color: Colors.grey[100],
-        child: ListTile(
-          title: Text("Teste do titulo"),
-          subtitle: Text("Teste do subtitulo"),
+      Padding(
+        padding: EdgeInsets.all(4.0),
+        child: QuadroCardWidget(
+          cor: PmsbColors.card,
+          quadro: cardModel01,
         ),
-      ),
+      )
     ];
   }
 
+  _listasQuadrosGerais() {
+    return <Widget>[
+      Padding(
+        padding: EdgeInsets.all(4.0),
+        child: QuadroCardWidget(
+          cor: Colors.black12,
+          quadro: cardModel01,
+        ),
+      )
+    ];
+  }
 }
