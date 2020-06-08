@@ -4,7 +4,7 @@ import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class RotaGrid {
   final String nome;
-  final IconData icone;
+  final IconData icone; 
   RotaGrid(this.nome, this.icone);
 }
 
