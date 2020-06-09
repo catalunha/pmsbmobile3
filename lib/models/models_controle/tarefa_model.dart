@@ -22,9 +22,20 @@ class TarefaModel {
       this.acoes,
       this.feed});
 
+  int getQuantAcoesFeitas() {
+    int quant = 0;
+    this.acoes.forEach((Acao acao) {
+      if (acao.status) {
+        quant++;
+      }
+    });
+    return quant;
+  }
+
   TarefaModel.fromJson(Map<String, dynamic> json) {
-    coluna =
-        json['coluna'] != null ? new ColunaModel.fromJson(json['coluna']) : null;
+    coluna = json['coluna'] != null
+        ? new ColunaModel.fromJson(json['coluna'])
+        : null;
     tituloAtividade = json['titulo_atividade'];
     descricaoAtividade = json['descricao_atividade'];
     if (json['usuarios'] != null) {

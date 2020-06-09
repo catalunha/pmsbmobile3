@@ -1,7 +1,7 @@
 class Etiqueta {
   String id;
   String titulo;
-  String cor;
+  int cor;
 
   Etiqueta({this.id, this.titulo, this.cor});
 
