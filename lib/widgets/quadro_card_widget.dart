@@ -6,9 +6,10 @@ class QuadroCardWidget extends StatelessWidget {
   final double altura;
   final double largura;
   final QuadroModel quadro;
+  final Function onTap;
 
   QuadroCardWidget(
-      {Key key, @required this.cor, this.altura, this.largura, this.quadro})
+      {Key key, @required this.cor, this.altura, this.largura, this.quadro, this.onTap})
       : super(key: key);
 
   @override
@@ -18,6 +19,7 @@ class QuadroCardWidget extends StatelessWidget {
       height: this.altura,
       width: this.largura,
       child: ListTile(
+        onTap: this.onTap,
         trailing: Icon(this.quadro.publico ? Icons.lock_open : Icons.lock),
         title: Text("${this.quadro.titulo}"),
         subtitle: Text("Descrição: ${this.quadro.descricao}"),
