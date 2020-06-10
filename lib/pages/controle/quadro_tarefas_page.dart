@@ -1,9 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/models/models_controle/acao_model.dart';
+import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
+import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
+import 'package:pmsbmibile3/widgets/tarefa_card_widget.dart';
 
 // import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
 //     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
@@ -19,9 +23,24 @@ class QuadroTarefasPageHomePage extends StatefulWidget {
 }
 
 class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
-  TextEditingController _cardTextController = TextEditingController();
+  static List<Acao> listaAcao = [
+    Acao(titulo: "", status: true),
+    Acao(titulo: "", status: false),
+  ];
 
-  TextEditingController _taskTextController = TextEditingController();
+  static List<Etiqueta> listaEtiquetas = [
+    Etiqueta(cor: 0xFF20BBE8, titulo: "Wip"),
+    Etiqueta(cor: 0xFFFF5733, titulo: "Help"),
+    Etiqueta(cor: 0xFF8FD619, titulo: "Working"),
+  ];
+
+  TarefaModel tarefa01 = new TarefaModel(
+    descricaoAtividade: "Descrição teste",
+    tituloAtividade: "Título do Card 01",
+    acoes: listaAcao,
+    etiquetas: listaEtiquetas,
+    // publico: true,
+  );
 
   List<String> cards = [
     "Story",
@@ -184,7 +203,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
                     //   ),
                     // ),
 
-                    child:DragAndDropList<String>(
+                    child: DragAndDropList<String>(
                       childres[index],
                       itemBuilder: (BuildContext context, item) {
                         return _cardTarefa(
@@ -241,15 +260,14 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
           child: Container(
             width: 284.0,
             padding: const EdgeInsets.all(16.0),
-            color: Colors.greenAccent,
-            child: Text(childres[index][innerIndex]),
+            color: PmsbColors.card,
+            child: Text('${tarefa01.tituloAtividade}'),
           ),
         ),
         childWhenDragging: Container(),
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          color: Colors.greenAccent,
-          child: Text(childres[index][innerIndex]),
+        child: TarefaCardWidget(
+          tarefa: tarefa01,
+          cor: PmsbColors.card,
         ),
         data: {"from": index, "string": childres[index][innerIndex]},
       ),

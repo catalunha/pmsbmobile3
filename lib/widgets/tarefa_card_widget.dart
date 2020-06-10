@@ -37,7 +37,8 @@ class TarefaCardWidget extends StatelessWidget {
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.start,
             children: gerarListaEtiquetas(),
-          )
+          ),
+          SizedBox(height: 8,)
         ],
       ),
     );
@@ -46,9 +47,11 @@ class TarefaCardWidget extends StatelessWidget {
   List<Widget> gerarListaEtiquetas() {
     List<Widget> listaEtiqueta = List<Widget>();
     for (Etiqueta etq in tarefa.etiquetas) {
-      listaEtiqueta.add(EtiquetaCardWidget(
-        etiqueta: etq,
-      ));
+      listaEtiqueta.add(
+        EtiquetaCardWidget(
+          etiqueta: etq,
+        ),
+      );
     }
     return listaEtiqueta;
   }
