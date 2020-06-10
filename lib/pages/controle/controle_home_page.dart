@@ -3,8 +3,8 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/quadro_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
-import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:pmsbmibile3/widgets/quadro_card_widget.dart';
+
 // import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
 //     if (dart.library.io) 'package:url_launcher/url_launcher.dart';
 
@@ -84,7 +84,7 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
         vertical: height * 0.02,
       ),
       child: Container(
-        // color: Colors.black12,
+        //  color: Colors[],
         child: ListView(
           children: <Widget>[
             textoQuadro("Meus quadros"),
@@ -121,6 +121,9 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
       Padding(
         padding: EdgeInsets.all(4.0),
         child: QuadroCardWidget(
+          onTap: () {
+            Navigator.pushNamed(context, "/controle/quadro_tarefas");
+          },
           cor: PmsbColors.card,
           quadro: cardModel02,
         ),
@@ -128,6 +131,9 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
       Padding(
         padding: EdgeInsets.all(4.0),
         child: QuadroCardWidget(
+          onTap: () {
+            Navigator.pushNamed(context, "/controle/quadro_tarefas");
+          },
           cor: PmsbColors.card,
           quadro: cardModel01,
         ),
@@ -140,6 +146,9 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
       Padding(
         padding: EdgeInsets.all(4.0),
         child: QuadroCardWidget(
+          onTap: () {
+            Navigator.pushNamed(context, "/controle/quadro_tarefas");
+          },
           cor: Colors.black12,
           quadro: cardModel01,
         ),
