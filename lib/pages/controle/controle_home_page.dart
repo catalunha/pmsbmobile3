@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/models/models_controle/quadro_model.dart';
+import 'package:pmsbmibile3/models/models_controle/acao_model.dart';
+import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
+import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/widgets/quadro_card_widget.dart';
@@ -18,17 +20,30 @@ class ControleTarefaHomePage extends StatefulWidget {
 }
 
 class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
-  QuadroModel cardModel01 = new QuadroModel(
-    descricao: "Descrição teste",
-    titulo: "Titulo do Card 01",
-    publico: true,
+  static List<Acao> listaAcao = [
+    Acao(titulo: "", status: true),
+    Acao(titulo: "", status: false),
+  ];
+
+  static List<Etiqueta> listaEtiquetas = [
+    Etiqueta(cor: 0xFF20BBE8, titulo: "Wip"),
+    Etiqueta(cor: 0xFFFF5733, titulo: "Help"),
+    Etiqueta(cor: 0xFF8FD619 , titulo: "Working"),
+  ];
+
+  TarefaModel cardModel01 = new TarefaModel(
+    descricaoAtividade: "Descrição teste",
+    tituloAtividade: "Título do Card 01",
+    acoes: listaAcao,
+    etiquetas: listaEtiquetas,
+   // publico: true,
   );
 
-  QuadroModel cardModel02 = new QuadroModel(
-    descricao: "Descrição teste",
-    titulo: "Titulo do Card 02",
-    publico: false,
-  );
+  //QuadroModel cardModel02 = new QuadroModel(
+   // descricao: "Descrição teste",
+   // titulo: "Titulo do Card 02",
+   // publico: false,
+ // );
 
   @override
   Widget build(BuildContext context) {
