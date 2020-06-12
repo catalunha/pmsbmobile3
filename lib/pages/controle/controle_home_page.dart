@@ -56,7 +56,9 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
                 RaisedButton(
                   child: Text("Adicionar"),
                   color: PmsbColors.cor_destaque,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/controle/editar_criar_quadro");
+                  },
                 )
               ],
             ),
