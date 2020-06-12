@@ -63,6 +63,7 @@ export 'package:pmsbmibile3/pages/administracao/administracao_perfil_page.dart';
 
 //controle
 export 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
+export 'package:pmsbmibile3/pages/controle/controle_criar_editar_page.dart';
 
 //chat
 export 'package:pmsbmibile3/pages/chat/chat_page.dart';

@@ -196,6 +196,7 @@ class MyApp extends StatelessWidget {
         //controle
         "/controle/home": (context) => ControleTarefaHomePage(authBloc),
         "/controle/quadro_tarefas": (context) => QuadroTarefasPageHomePage(authBloc),
+        "/controle/editar_criar_quadro": (context) => ControleEditarCriarPage(),
         
         //Painel
         "/painel/home": (context) => PainelListPage(authBloc),
