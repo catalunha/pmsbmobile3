@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
+import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
 
 class ControleEditarCriarPage extends StatefulWidget {
   @override
@@ -57,7 +58,7 @@ class _ControleEditarCriarPageState extends State<ControleEditarCriarPage> {
             textoSubtitulo(
                 "Supervisione, gerencie e atualize seu trabalho em um só local, para que as tarefas continuem dentro do conograma."),
             Padding(
-              padding: const EdgeInsets.only(left: 30),
+              padding:  EdgeInsets.only(left: 30),
               child: Container(
                 color: Colors.white24,
                 width: MediaQuery.of(context).size.width * 0.05,
@@ -67,13 +68,13 @@ class _ControleEditarCriarPageState extends State<ControleEditarCriarPage> {
             Padding(padding: EdgeInsets.all(15)),
             textoQuadro("Nome do Quadro"),
             Padding(
-              padding: const EdgeInsets.only(left: 30),
+              padding: EdgeInsets.only(left: 30),
               child: TextField(
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     fillColor: Colors.black12,
-                    hintText: 'Nome da diretoria do quadro'),
+                    hintText: 'Nome do eixo do quadro'),
               ),
             ),
             Padding(padding: EdgeInsets.all(10)),
@@ -94,7 +95,7 @@ class _ControleEditarCriarPageState extends State<ControleEditarCriarPage> {
               //),
             ),
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: EdgeInsets.all(15),
               child: Column(
                 children: <Widget>[
                   RadioListTile(
@@ -103,7 +104,7 @@ class _ControleEditarCriarPageState extends State<ControleEditarCriarPage> {
                       style: PmsbStyles.textoPrimario,
                     ),
                     subtitle: Text(
-                      "Qualquer pessoa pode ver este quadro. Você escolhe quem pode editar",
+                      "Qualquer pessoa pode ver este quadro. Você escolhe quem pode editar.",
                       style: PmsbStyles.textoSecundario,
                     ),
                     value: 1,
@@ -129,15 +130,19 @@ class _ControleEditarCriarPageState extends State<ControleEditarCriarPage> {
                       setBotaoRadioSelecionado(val);
                     },
                   ),
-                  RaisedButton(
-                    child: Text("Criar Quadro"),
-                    color: PmsbColors.cor_destaque,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, "/controle/editar_criar_quadro");
-                    },
-                  ),
                 ],
+              ),
+            ),
+            EquipeWrapWidget(),
+            Padding(padding: EdgeInsets.all(10)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.35),
+              child: RaisedButton(
+                child: Text("Criar Quadro"),
+                color: PmsbColors.cor_destaque,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
           ],
