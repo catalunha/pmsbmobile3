@@ -10,6 +10,7 @@ import 'package:pmsbmibile3/pages/checklist/item_list_page.dart' as checklist;
 import 'package:pmsbmibile3/pages/checklist/item_resposta_list_page.dart'
     as checklist;
 import 'package:pmsbmibile3/pages/checklist/item_resposta_crud_page.dart' as checklist;
+import 'package:pmsbmibile3/pages/controle/controle_tarefa_page.dart';
 import 'package:pmsbmibile3/pages/controle/quadro_tarefas_page.dart';
 import 'package:pmsbmibile3/pages/geral/versao.dart';
 import 'package:pmsbmibile3/pages/painel/painel_crud_page.dart';
@@ -197,6 +198,7 @@ class MyApp extends StatelessWidget {
         "/controle/home": (context) => ControleTarefaHomePage(authBloc),
         "/controle/quadro_tarefas": (context) => QuadroTarefasPageHomePage(authBloc),
         "/controle/editar_criar_quadro": (context) => ControleEditarCriarPage(),
+        "/controle/tarefa": (context) => ControleTarefaPage(),
         
         //Painel
         "/painel/home": (context) => PainelListPage(authBloc),

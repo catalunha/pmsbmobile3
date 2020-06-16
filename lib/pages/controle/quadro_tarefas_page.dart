@@ -61,7 +61,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
   Widget build(BuildContext context) {
     return DefaultScaffold(
       backgroundColor: PmsbColors.navbar,
-      backToRootPage: true,
+      backToRootPage: false,
       title: Text("Quadro 01"),
       body: body(context),
     );
@@ -266,6 +266,9 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         ),
         childWhenDragging: Container(),
         child: TarefaCardWidget(
+          onTap: (){
+            Navigator.pushNamed(context, '/controle/tarefa');
+          },
           tarefa: tarefa01,
           cor: PmsbColors.card,
         ),
