@@ -9,9 +9,10 @@ class TarefaCardWidget extends StatelessWidget {
   final double altura;
   final double largura;
   final TarefaModel tarefa;
+  final Function() onTap;
 
   TarefaCardWidget(
-      {Key key, @required this.cor, this.altura, this.largura, this.tarefa})
+      {Key key, @required this.cor, this.altura, this.largura, this.tarefa, this.onTap})
       : super(key: key);
 
   @override
@@ -32,6 +33,7 @@ class TarefaCardWidget extends StatelessWidget {
             title: Text("${this.tarefa.tituloAtividade}"),
             subtitle: Text(
                 "Ações:${tarefa.getQuantAcoesFeitas()}/${tarefa.acoes.length}"),
+            onTap: onTap,
             //subtitle: Text("Descrição: ${this.tarefa.descricaoAtividade}"),
           ),
           Wrap(

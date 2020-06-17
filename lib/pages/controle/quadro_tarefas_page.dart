@@ -266,6 +266,9 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         ),
         childWhenDragging: Container(),
         child: TarefaCardWidget(
+          onTap: (){
+            Navigator.pushNamed(context, '/controle/tarefa');
+          },
           tarefa: tarefa01,
           cor: PmsbColors.card,
         ),
