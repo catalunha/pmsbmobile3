@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
+import 'package:pmsbmibile3/widgets/etiqueta_wrap_widget.dart';
 
 class ControleTarefaPage extends StatefulWidget {
   final TarefaModel tarefa;
@@ -69,12 +70,12 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
       child: ListView(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(5),
+            padding: EdgeInsets.all(5),
             child: EquipeWrapWidget(),
           ),
-          Container(
-            height: 300,
-            color: Colors.greenAccent,
+          Padding(
+            padding: EdgeInsets.all(5) ,
+            child: EtiquetaWrapWidget(etiquetas:widget.tarefa.etiquetas),
           ),
           Container(
             height: 400,
