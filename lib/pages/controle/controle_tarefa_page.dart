@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
 
 class ControleTarefaPage extends StatefulWidget {
+  final TarefaModel tarefa;
+
+  const ControleTarefaPage({Key key, @required this.tarefa}) : super(key: key);
+
   @override
   _ControleTarefaPageState createState() => _ControleTarefaPageState();
 }
@@ -62,6 +68,10 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
       color: Colors.deepOrangeAccent[50],
       child: ListView(
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: EquipeWrapWidget(),
+          ),
           Container(
             height: 300,
             color: Colors.greenAccent,
@@ -98,8 +108,8 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
   Widget _caixaComemtario() {
     return Container(
       color: Colors.black,
-        //height: 100,
-        );
+      //height: 100,
+    );
   }
 
   Widget _listaComentario() {

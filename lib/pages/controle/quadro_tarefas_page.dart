@@ -4,6 +4,7 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/acao_model.dart';
 import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
+import 'package:pmsbmibile3/pages/controle/controle_tarefa_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
@@ -266,8 +267,15 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         ),
         childWhenDragging: Container(),
         child: TarefaCardWidget(
-          onTap: (){
-            Navigator.pushNamed(context, '/controle/tarefa');
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => (ControleTarefaPage(
+                  tarefa: tarefa01,
+                )),
+              ),
+            );
           },
           tarefa: tarefa01,
           cor: PmsbColors.card,
