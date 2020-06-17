@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
+import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
+import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/widgets/comentario_feed_widget.dart';
 
 class ControleTarefaPage extends StatefulWidget {
+  final TarefaModel tarefa;
+
+  ControleTarefaPage({Key key, @required this.tarefa}) : super(key: key);
+
   @override
   _ControleTarefaPageState createState() => _ControleTarefaPageState();
 }
@@ -13,7 +20,7 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
     return DefaultScaffold(
       backgroundColor: PmsbColors.navbar,
       backToRootPage: false,
-      title: Text("Tarefa 01"),
+      title: Text("${widget.tarefa.tituloAtividade}"),
       body: body(),
     );
   }
@@ -98,32 +105,24 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
   Widget _caixaComemtario() {
     return Container(
       color: Colors.black,
-        //height: 100,
-        );
+      //height: 100,
+    );
   }
 
   Widget _listaComentario() {
     return Container(
-      child: ListView(
-        children: <Widget>[
-          Container(
-            height: 300,
-            color: Colors.white,
-          ),
-          Container(
-            height: 400,
-            color: Colors.grey[100],
-          ),
-          Container(
-            height: 500,
-            color: Colors.white,
-          ),
-          Container(
-            height: 300,
-            color: Colors.grey[100],
-          )
-        ],
-      ),
+      // child: Text("${widget.tarefa.feed[0].corpoTexto}"),
+      child: ListView(children: getListaComentarios()),
     );
+  }
+
+  List<Widget> getListaComentarios() {
+    List<Widget> listaComentarios = List<Widget>();
+
+    for (Feed feed in widget.tarefa.feed) {
+      listaComentarios.add(ComentarioFeedWidget(feed: feed));
+    }
+
+    return listaComentarios;
   }
 }
