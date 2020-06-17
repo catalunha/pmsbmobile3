@@ -70,7 +70,7 @@ dependencies:
   universal_io: ^0.8.4
   drag_list: ^1.0.8
   flutter_list_drag_and_drop: ^0.1.6
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

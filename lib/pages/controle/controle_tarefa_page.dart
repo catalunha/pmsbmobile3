@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/widgets/caixa_texto_feed_widget.dart';
 import 'package:pmsbmibile3/widgets/comentario_feed_widget.dart';
 
 class ControleTarefaPage extends StatefulWidget {
@@ -15,6 +16,7 @@ class ControleTarefaPage extends StatefulWidget {
 }
 
 class _ControleTarefaPageState extends State<ControleTarefaPage> {
+
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
@@ -95,17 +97,10 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
       color: Colors.purple[50],
       child: Column(
         children: <Widget>[
-          Flexible(child: _caixaComemtario(), flex: 2),
+          Flexible(child: CaixaTextoFeedWidget(), flex: 2),
           Flexible(child: _listaComentario(), flex: 8),
         ],
       ),
-    );
-  }
-
-  Widget _caixaComemtario() {
-    return Container(
-      color: Colors.black,
-      //height: 100,
     );
   }
 
