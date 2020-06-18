@@ -16,7 +16,6 @@ class ControleTarefaPage extends StatefulWidget {
 }
 
 class _ControleTarefaPageState extends State<ControleTarefaPage> {
-
   @override
   Widget build(BuildContext context) {
     return DefaultScaffold(
@@ -33,14 +32,11 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
     return Center(
       child: Container(
         width: width * 0.7,
-        color: Colors.black26,
+        color: Colors.black12,
         child: Column(
           children: <Widget>[
-            Flexible(
-              flex: 2,
-              child: _descricao(),
-            ),
-            Flexible(
+            _descricao(),
+            Expanded(
               flex: 10,
               child: _painel(),
             ),
@@ -51,12 +47,49 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
   }
 
   Widget _descricao() {
-    return Container(color: Colors.black38);
+    return Container(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              RaisedButton.icon(
+                color: Colors.transparent,
+                onPressed: () {
+                  print("teste");
+                },
+                icon: Icon(Icons.edit),
+                label: Text("Editar"),
+                elevation: 0,
+                disabledElevation: 0,
+                disabledColor: Colors.transparent,
+                focusColor: Colors.transparent,
+              ),
+              SizedBox(
+                width: 5,
+              )
+            ],
+          ),
+          SizedBox(height: 10),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.05,
+            ),
+            child: Text(
+              "${widget.tarefa.descricaoAtividade}",
+              style: TextStyle(color: PmsbColors.texto_terciario, fontSize: 14),
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
+      ),
+    );
   }
 
   Widget _painel() {
     return Container(
-      color: Colors.black54,
+      color: Colors.black12,
       child: Row(
         children: <Widget>[
           Flexible(child: _colunaOpcoes(), flex: 2),
@@ -68,7 +101,6 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
 
   Widget _colunaOpcoes() {
     return Container(
-      color: Colors.deepOrangeAccent[50],
       child: ListView(
         children: <Widget>[
           Container(
@@ -94,10 +126,9 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
 
   Widget _feedComentarios() {
     return Container(
-      color: Colors.purple[50],
       child: Column(
         children: <Widget>[
-          Flexible(child: CaixaTextoFeedWidget(), flex: 2),
+          CaixaTextoFeedWidget(),
           Flexible(child: _listaComentario(), flex: 8),
         ],
       ),

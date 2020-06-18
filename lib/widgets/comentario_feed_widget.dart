@@ -72,20 +72,31 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
         Padding(
           padding: EdgeInsets.all(8.0),
           child: GestureDetector(
-            onTap: () {},
-            child: Text(
-              "${anexo.titulo}",
-              style: TextStyle(
-                color: Colors.blue[500],
-                decoration: TextDecoration.underline,
-              ),
+            onTap: () {
+              print("Teste foi");
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(width: 10),
+                Icon(Icons.link),
+                SizedBox(width: 20),
+                Text(
+                  "${anexo.titulo}",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue[500],
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       );
     }
 
-    return widget.feed.anexos.length <= 0
+    return (widget.feed.anexos.length <= 0)
         ? Container()
         : Container(
             child: Column(
