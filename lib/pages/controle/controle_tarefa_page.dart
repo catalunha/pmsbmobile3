@@ -5,11 +5,14 @@ import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/widgets/caixa_texto_feed_widget.dart';
 import 'package:pmsbmibile3/widgets/comentario_feed_widget.dart';
+import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
+import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
+import 'package:pmsbmibile3/widgets/etiqueta_wrap_widget.dart';
 
 class ControleTarefaPage extends StatefulWidget {
   final TarefaModel tarefa;
-
   ControleTarefaPage({Key key, @required this.tarefa}) : super(key: key);
+
 
   @override
   _ControleTarefaPageState createState() => _ControleTarefaPageState();
@@ -103,9 +106,13 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
     return Container(
       child: ListView(
         children: <Widget>[
-          Container(
-            height: 300,
-            color: Colors.greenAccent,
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: EquipeWrapWidget(),
+          ),
+          Padding(
+            padding: EdgeInsets.all(5) ,
+            child: EtiquetaWrapWidget(etiquetas:widget.tarefa.etiquetas),
           ),
           Container(
             height: 400,
@@ -132,6 +139,14 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
           Flexible(child: _listaComentario(), flex: 8),
         ],
       ),
+    );
+  }
+
+
+  Widget _caixaComemtario() {
+    return Container(
+      color: Colors.black,
+      //height: 100,
     );
   }
 

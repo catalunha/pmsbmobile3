@@ -13,7 +13,7 @@ class _EquipeWrapWidgetState extends State<EquipeWrapWidget> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               textoQuadro("Equipe"),
               IconButton(icon: Icon(Icons.person_add), onPressed: () {})

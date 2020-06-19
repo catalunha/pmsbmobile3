@@ -303,7 +303,9 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => (ControleTarefaPage(tarefa: tarefa01)),
+                builder: (context) => (ControleTarefaPage(
+                  tarefa: tarefa01,
+                )),
               ),
             );
           },
