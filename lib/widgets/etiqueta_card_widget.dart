@@ -12,8 +12,11 @@ class EtiquetaCardWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 3),
       child: Container(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
-          child: Text(etiqueta.titulo),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            etiqueta.titulo,
+            style: TextStyle(fontSize: 14),
+          ),
         ),
         color: Color(etiqueta.cor),
       ),

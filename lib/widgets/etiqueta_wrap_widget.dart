@@ -23,7 +23,7 @@ class _EtiquetaWrapWidgetState extends State<EtiquetaWrapWidget> {
           children: [
             textoQuadro("Etiquetas"),
             IconButton(icon: Icon(Icons.label), onPressed: () {}),
-          ], 
+          ],
         ),
         Wrap(
             direction: Axis.horizontal,
@@ -37,7 +37,7 @@ class _EtiquetaWrapWidgetState extends State<EtiquetaWrapWidget> {
 
   Widget textoQuadro(String texto) {
     return Padding(
-      padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 30),
+      padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 5),
       child: Text(
         texto,
         style: TextStyle(

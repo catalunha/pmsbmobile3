@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
-import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
+import 'package:pmsbmibile3/pages/controle/controle_feed_page.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
-import 'package:pmsbmibile3/widgets/caixa_texto_feed_widget.dart';
-import 'package:pmsbmibile3/widgets/comentario_feed_widget.dart';
-import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
 import 'package:pmsbmibile3/widgets/etiqueta_wrap_widget.dart';
 
@@ -31,7 +28,6 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
 
   Widget body() {
     double width = MediaQuery.of(context).size.width;
-    // double height = MediaQuery.of(context).size.height;
     return Center(
       child: Container(
         width: width * 0.7,
@@ -96,7 +92,7 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
       child: Row(
         children: <Widget>[
           Flexible(child: _colunaOpcoes(), flex: 2),
-          Flexible(child: _feedComentarios(), flex: 8),
+          Flexible(child: ControleFeedPage(tarefa: widget.tarefa,), flex: 8),
         ],
       ),
     );
@@ -104,66 +100,20 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
 
   Widget _colunaOpcoes() {
     return Container(
+      color: Colors.black12,
       child: ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(5),
             child: EquipeWrapWidget(),
           ),
+          SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.all(5) ,
             child: EtiquetaWrapWidget(etiquetas:widget.tarefa.etiquetas),
           ),
-          Container(
-            height: 400,
-            color: Colors.red,
-          ),
-          Container(
-            height: 500,
-            color: Colors.yellowAccent,
-          ),
-          Container(
-            height: 300,
-            color: Colors.purple,
-          )
         ],
       ),
     );
-  }
-
-  Widget _feedComentarios() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          CaixaTextoFeedWidget(),
-          Flexible(child: _listaComentario(), flex: 8),
-        ],
-      ),
-    );
-  }
-
-
-  Widget _caixaComemtario() {
-    return Container(
-      color: Colors.black,
-      //height: 100,
-    );
-  }
-
-  Widget _listaComentario() {
-    return Container(
-      // child: Text("${widget.tarefa.feed[0].corpoTexto}"),
-      child: ListView(children: getListaComentarios()),
-    );
-  }
-
-  List<Widget> getListaComentarios() {
-    List<Widget> listaComentarios = List<Widget>();
-
-    for (Feed feed in widget.tarefa.feed) {
-      listaComentarios.add(ComentarioFeedWidget(feed: feed));
-    }
-
-    return listaComentarios;
   }
 }
