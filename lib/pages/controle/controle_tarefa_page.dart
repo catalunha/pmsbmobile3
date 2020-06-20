@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/widgets/acao_wrap_widget.dart';
 import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
 import 'package:pmsbmibile3/widgets/etiqueta_wrap_widget.dart';
 
@@ -74,12 +75,12 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
             child: EquipeWrapWidget(),
           ),
           Padding(
-            padding: EdgeInsets.all(5) ,
-            child: EtiquetaWrapWidget(etiquetas:widget.tarefa.etiquetas),
+            padding: EdgeInsets.all(5),
+            child: EtiquetaWrapWidget(etiquetas: widget.tarefa.etiquetas),
           ),
-          Container(
-            height: 400,
-            color: Colors.red,
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: AcaoWrapWidget(),
           ),
           Container(
             height: 500,
