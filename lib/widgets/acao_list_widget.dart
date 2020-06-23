@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/models_controle/acao_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
-class AcaoWrapWidget extends StatefulWidget {
+class AcaoListWidget extends StatefulWidget {
   final List<Acao> acoes;
 
-  const AcaoWrapWidget({Key key, @required this.acoes}) : super(key: key);
+  const AcaoListWidget({Key key, @required this.acoes}) : super(key: key);
 
   @override
-  _AcaoWrapWidgetState createState() => _AcaoWrapWidgetState();
+  _AcaoListWidgetState createState() => _AcaoListWidgetState();
 }
 
-class _AcaoWrapWidgetState extends State<AcaoWrapWidget> {
+class _AcaoListWidgetState extends State<AcaoListWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,7 +22,10 @@ class _AcaoWrapWidgetState extends State<AcaoWrapWidget> {
             textoQuadro("Ações"),
             IconButton(icon: Icon(Icons.add_box), onPressed: () {}),
           ],
-        )
+        ),
+        Column(
+          children: gerarListaAcoesWidgets(),
+        ),
       ],
     );
   }
@@ -40,10 +43,25 @@ class _AcaoWrapWidgetState extends State<AcaoWrapWidget> {
     );
   }
 
-  gerarListaAcoesWidgets() {
+  List<Widget> gerarListaAcoesWidgets() {
     List<Widget> lista = List<Widget>();
-    for(Acao acao in widget.acoes) {
-      
+    for (Acao acao in widget.acoes) {
+      lista.add(CheckboxListTile(
+        value: acao.status,
+        title: Text(acao.titulo),
+        onChanged: (bool newValue) {
+          setState(() {
+            acao.status = newValue;
+          });
+        },
+        secondary: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+            onPressed: () {}),
+      ));
     }
+    return lista;
   }
 }
