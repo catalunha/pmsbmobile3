@@ -10,10 +10,13 @@ class CaixaTextoFeedWidget extends StatefulWidget {
 class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
   FeedModel feedModel;
   TextEditingController textController;
+  Widget caixaDeEntrada;
+  bool entrada;
 
   @override
   initState() {
-    this.feedModel = new FeedModel();
+    this.entrada = true;
+    this.caixaDeEntrada = caixaTexto();
     this.textController = new TextEditingController();
     super.initState();
   }
@@ -24,14 +27,15 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
       padding: const EdgeInsets.all(10.0),
       child: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[botaoAdicionarLink(onTap: () {})],
+              children: <Widget>[botaoAdicionarLink()],
             ),
             SizedBox(height: 10),
-            caixaTexto(),
+            this.caixaDeEntrada,
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -46,6 +50,56 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
             SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget caixaTextoLink() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: 5),
+          Text("Descrição link:"),
+          SizedBox(height: 5),
+          Container(
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: PmsbColors.card, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            padding: EdgeInsets.all(10),
+            child: TextField(
+              style: TextStyle(color: Colors.black),
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text("Link:"),
+          SizedBox(height: 5),
+          Container(
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: PmsbColors.card, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            padding: EdgeInsets.all(10),
+            child: TextField(
+              style: TextStyle(color: Colors.black),
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          SizedBox(height: 5),
+        ],
       ),
     );
   }
@@ -73,20 +127,29 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
     );
   }
 
-  botaoAdicionarLink({Function onTap}) {
+  botaoAdicionarLink() {
     return Container(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Row(
-          children: <Widget>[
-            Text(
-              "Adicionar link",
-              style: TextStyle(color: PmsbColors.texto_secundario),
-            ),
-            SizedBox(width: 5),
-            Icon(Icons.link),
-            SizedBox(width: 5),
-          ],
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              this.entrada = !this.entrada;
+              this.caixaDeEntrada = this.entrada ? this.caixaTexto() : this.caixaTextoLink();
+            });
+          },
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 5),
+              Text(
+                this.entrada ? "Adicionar Link" : "Adicionar Comentario",
+                style: TextStyle(color: PmsbColors.texto_secundario),
+              ),
+              SizedBox(width: 5),
+              Icon( this.entrada ? Icons.link : Icons.text_fields),
+              SizedBox(width: 5),
+            ],
+          ),
         ),
       ),
     );
