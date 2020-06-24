@@ -6,7 +6,6 @@ import 'package:pmsbmibile3/models/models_controle/anexos_model.dart';
 import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
 import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
-import 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';

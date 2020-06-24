@@ -8,6 +8,7 @@ class CaixaTextoFeedWidget extends StatefulWidget {
 }
 
 class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
+  
   FeedModel feedModel;
   TextEditingController textController;
 

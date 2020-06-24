@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/models/models_controle/anexos_model.dart';
-import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
+import 'package:pmsbmibile3/models/models_controle/feed_models.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
 class ComentarioFeedWidget extends StatefulWidget {
-  final Feed feed;
+  final FeedModel feed;
 
   ComentarioFeedWidget({Key key, this.feed}) : super(key: key);
 
@@ -17,7 +16,6 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: width * 0.01, vertical: 5),
       child: Card(
@@ -34,7 +32,7 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
                         backgroundColor: Colors.blue.shade300,
                         child: Text('LT')),
                     label: Text(
-                      '${widget.feed.usuario}',
+                      '${widget.feed.usuario.nome}',
                       style: PmsbStyles.textoSecundario,
                     ),
                   ),
@@ -53,55 +51,78 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
             SizedBox(height: 5),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: GestureDetector(child: Text('${widget.feed.corpoTexto}')),
+              child: _selecionarTipoFeed(),
             ),
-            SizedBox(height: 5),
-            _listaAnexos(),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
 
-  Widget _listaAnexos() {
-    List<Widget> lista = List<Widget>();
+  Widget _selecionarTipoFeed() {
+    Widget widgetSelect;
 
-    for (Anexo anexo in widget.feed.anexos) {
-      lista.add(
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: GestureDetector(
-            onTap: () {
-              print("Teste foi");
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(width: 10),
-                Icon(Icons.link),
-                SizedBox(width: 20),
-                Text(
-                  "${anexo.titulo}",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.blue[500],
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
+    switch (widget.feed.feedType) {
+      case FeedType.texto:
+        widgetSelect = _feedTipoTexto();
+        break;
+      case FeedType.url:
+        widgetSelect = _feedTipoLink();
+        break;
+      case FeedType.historico:
+        widgetSelect = _feedTipoHistorico();
+        break;
     }
 
-    return (widget.feed.anexos.length <= 0)
-        ? Container()
-        : Container(
-            child: Column(
-              children: lista,
-            ),
-          );
+    return widgetSelect;
+  }
+
+  Widget _feedTipoLink() {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: InkWell(
+          hoverColor: Colors.white12,
+          onTap: () {
+            // Abrir url
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(width: 10),
+              Icon(Icons.link),
+              SizedBox(width: 20),
+              Text(
+                "${widget.feed.valorFeed}",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.blue[100],
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _feedTipoTexto() {
+    return Container(
+      child: Text(widget.feed.valorFeed),
+    );
+  }
+
+  Widget _feedTipoHistorico() {
+    return Container(
+      child: Text(
+        widget.feed.valorFeed,
+        style: TextStyle(
+          color: PmsbColors.texto_secundario,
+          fontSize: 16
+        ),
+      ),
+    );
   }
 }
