@@ -2,8 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/acao_model.dart';
+import 'package:pmsbmibile3/models/models_controle/anexos_model.dart';
 import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
+import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
+import 'package:pmsbmibile3/pages/controle/controle_home_page.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
@@ -24,6 +27,33 @@ class QuadroTarefasPageHomePage extends StatefulWidget {
 }
 
 class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
+  static List<Feed> listaFeed = [
+    Feed(
+        anexos: [
+          Anexo(tipo: "url", titulo: "Url teste", url: "www.google.com")
+        ],
+        usuario: "Lucas teste",
+        dataPostagem: "15 de julho de 2020",
+        corpoTexto:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
+    Feed(
+        anexos: [
+          Anexo(tipo: "url", titulo: "Url teste", url: "www.google.com")
+        ],
+        usuario: "Lucas teste",
+        dataPostagem: "15 de julho de 2020",
+        corpoTexto:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
+    Feed(
+        anexos: [
+          Anexo(tipo: "url", titulo: "Url teste", url: "www.google.com")
+        ],
+        usuario: "Lucas teste",
+        dataPostagem: "15 de julho de 2020",
+        corpoTexto:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
+  ];
+
   static List<Acao> listaAcao = [
     Acao(titulo: "Ação 01", status: true),
     Acao(titulo: "Ação 02", status: false),
@@ -36,12 +66,14 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
   ];
 
   TarefaModel tarefa01 = new TarefaModel(
-    descricaoAtividade: "Descrição teste",
-    tituloAtividade: "Título do Card 01",
-    acoes: listaAcao,
-    etiquetas: listaEtiquetas,
-    // publico: true,
-  );
+      descricaoAtividade:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+      tituloAtividade: "Título do Card 01",
+      acoes: listaAcao,
+      etiquetas: listaEtiquetas,
+      feed: listaFeed
+      // publico: true,
+      );
 
   List<String> cards = [
     "Story",
