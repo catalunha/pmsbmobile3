@@ -3,6 +3,7 @@ import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/widgets/acao_list_widget.dart';
 import 'package:pmsbmibile3/widgets/caixa_texto_feed_widget.dart';
 import 'package:pmsbmibile3/widgets/comentario_feed_widget.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
@@ -111,12 +112,12 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
             child: EquipeWrapWidget(),
           ),
           Padding(
-            padding: EdgeInsets.all(5) ,
-            child: EtiquetaWrapWidget(etiquetas:widget.tarefa.etiquetas),
+            padding: EdgeInsets.all(5),
+            child: EtiquetaWrapWidget(etiquetas: widget.tarefa.etiquetas),
           ),
-          Container(
-            height: 400,
-            color: Colors.red,
+          Padding(
+            padding: EdgeInsets.only(top:2),
+            child: AcaoListWidget(acoes: widget.tarefa.acoes),
           ),
           Container(
             height: 500,

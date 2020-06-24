@@ -55,8 +55,8 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
   ];
 
   static List<Acao> listaAcao = [
-    Acao(titulo: "", status: true),
-    Acao(titulo: "", status: false),
+    Acao(titulo: "Ação 01", status: true),
+    Acao(titulo: "Ação 02", status: false),
   ];
 
   static List<Etiqueta> listaEtiquetas = [
