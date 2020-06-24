@@ -33,7 +33,7 @@ class _ControleFeedPageState extends State<ControleFeedPage>
         dataPostagem: "15 de julho de 2020",
         feedType: FeedType.historico,
         usuario: UsuarioQuadroModel(nome: "Usuario teste"),
-        valorFeed: "Movel essa tarefa de Em avaliação para Concluido"),
+        valorFeed: "Moveu essa tarefa de Em avaliação para Concluido"),
     FeedModel(
         dataPostagem: "15 de julho de 2020",
         feedType: FeedType.texto,
