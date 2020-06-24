@@ -3,6 +3,8 @@ import 'package:pmsbmibile3/models/models_controle/feed_models.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/style/pmsb_styles.dart';
 
+enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
+
 class ComentarioFeedWidget extends StatefulWidget {
   final FeedModel feed;
 
@@ -37,14 +39,19 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    '${widget.feed.dataPostagem}',
-                    style: TextStyle(
-                      color: Colors.grey,
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        '${widget.feed.dataPostagem}',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
-                  ),
+                    botaoMore()
+                  ],
                 )
               ],
             ),
@@ -57,6 +64,45 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget botaoMore() {
+    return PopupMenuButton<Function>(
+      color: PmsbColors.fundo,
+      onSelected: (Function result) {
+        result();
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Function>>[
+        PopupMenuItem<Function>(
+          value: () {
+            print("Abrir tela de edição");
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(Icons.edit),
+              SizedBox(width: 5),
+              Text('Editar'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+        PopupMenuItem<Function>(
+          value: () {
+            print("Abrir tela de apagar");
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(Icons.delete),
+              SizedBox(width: 5),
+              Text('Apagar'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -118,10 +164,7 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
     return Container(
       child: Text(
         widget.feed.valorFeed,
-        style: TextStyle(
-          color: PmsbColors.texto_secundario,
-          fontSize: 16
-        ),
+        style: TextStyle(color: PmsbColors.texto_secundario, fontSize: 16),
       ),
     );
   }
