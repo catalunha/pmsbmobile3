@@ -26,6 +26,9 @@ class QuadroCardWidget extends StatelessWidget {
       width: this.largura,
       child: Row(
         children: [
+          IconButton(
+            icon: Icon(Icons.new_releases, color: Colors.redAccent,),
+          ),
           Expanded(
             child: ListTile(
               onTap: this.onTap,
