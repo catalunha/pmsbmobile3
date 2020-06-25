@@ -1,5 +1,5 @@
 class UsuarioQuadroModel {
-  String id;
+  int id;
   String nome;
   String urlImagem;
 
