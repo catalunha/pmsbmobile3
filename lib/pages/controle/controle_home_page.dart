@@ -46,13 +46,6 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
               children: <Widget>[
                 Container(),
                 Container(),
-                // Text(
-                //   "QUADROS DE EQUIPE",
-                //   style: TextStyle(
-                //     color: PmsbColors.texto_secundario,
-                //     fontSize: 18,
-                //   ),
-                // ),
                 RaisedButton(
                   child: Text("Adicionar"),
                   color: PmsbColors.cor_destaque,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/widgets/lista_usuarios_modal.dart';
 
 class EquipeWrapWidget extends StatefulWidget {
   @override
@@ -16,7 +17,12 @@ class _EquipeWrapWidgetState extends State<EquipeWrapWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               textoQuadro("Equipe"),
-              IconButton(icon: Icon(Icons.person_add), onPressed: () {})
+              IconButton(icon: Icon(Icons.person_add), onPressed: () {
+                                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                ListaUsuariosModal(selecaoMultipla: true,));
+              })
             ],
           ),
           Container(

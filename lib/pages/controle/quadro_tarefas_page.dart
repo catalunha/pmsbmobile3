@@ -124,29 +124,58 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
                         message: "Filtrar por equipe",
                         child: CircleAvatar(
                           backgroundImage: NetworkImage("userAvatarUrl"),
-                          backgroundColor: Colors.lightBlue[100],
-                          child: Text('AH'),
+                          backgroundColor: PmsbColors.navbar,
+                          child: Icon(
+                            Icons.supervised_user_circle,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       onTap: () {
                         showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                ListaUsuariosModal(selecaoMultipla: false,));
+                          context: context,
+                          builder: (BuildContext context) => ListaUsuariosModal(
+                            selecaoMultipla: false,
+                          ),
+                        );
                       },
-                    )
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: CircleAvatar(
+                        backgroundColor: PmsbColors.navbar,
+                        child: botaoMore(),
+                      ),
+                    ),
+                                        InkWell(
+                      child: Tooltip(
+                        message: "Tarefas arquivadas",
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage("userAvatarUrl"),
+                          backgroundColor: PmsbColors.navbar,
+                          child: Icon(
+                            Icons.archive,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        
+                      },
+                    ),
                   ],
                 )
               ],
             ),
           ),
+          SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.05,
             ),
-            child: Divider(
+            child: Container(
               color: Colors.white12,
-              height: 15,
+              height: 2,
             ),
           ),
           SizedBox(height: 15),
@@ -160,6 +189,64 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget botaoMore() {
+    return PopupMenuButton<Function>(
+      color: PmsbColors.navbar,
+      tooltip: "Filtrar por prioridade",
+      icon: Icon(
+        Icons.group_work,
+        color: Colors.white,
+      ),
+      onSelected: (Function result) {
+        result();
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Function>>[
+        PopupMenuItem<Function>(
+          value: () {
+            // Filtrar mostrando todos
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(Icons.brightness_1,color: Colors.white,),
+              SizedBox(width: 5),
+              Text('Listar todos'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+        PopupMenuItem<Function>(
+          value: () {
+           // Listar por prioridade alta
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(Icons.brightness_1,color: Colors.red,),
+              SizedBox(width: 5),
+              Text('Prioridade alta'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+        PopupMenuItem<Function>(
+          value: () {
+            // Listar por prioridade baixa
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(Icons.brightness_1,color: Colors.green,),
+              SizedBox(width: 5),
+              Text('Prioridade baixa'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
