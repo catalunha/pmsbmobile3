@@ -4,8 +4,6 @@ import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/pages/controle/controle_feed_page.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/widgets/acao_list_widget.dart';
-import 'package:pmsbmibile3/widgets/caixa_texto_feed_widget.dart';
-import 'package:pmsbmibile3/widgets/comentario_feed_widget.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
 import 'package:pmsbmibile3/widgets/etiqueta_wrap_widget.dart';
@@ -13,7 +11,6 @@ import 'package:pmsbmibile3/widgets/etiqueta_wrap_widget.dart';
 class ControleTarefaPage extends StatefulWidget {
   final TarefaModel tarefa;
   ControleTarefaPage({Key key, @required this.tarefa}) : super(key: key);
-
 
   @override
   _ControleTarefaPageState createState() => _ControleTarefaPageState();
@@ -96,7 +93,11 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
       child: Row(
         children: <Widget>[
           Flexible(child: _colunaOpcoes(), flex: 2),
-          Flexible(child: ControleFeedPage(tarefa: widget.tarefa,), flex: 8),
+          Flexible(
+              child: ControleFeedPage(
+                tarefa: widget.tarefa,
+              ),
+              flex: 8),
         ],
       ),
     );
@@ -116,9 +117,8 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
             padding: EdgeInsets.all(5),
             child: EtiquetaWrapWidget(etiquetas: widget.tarefa.etiquetas),
           ),
-
           Padding(
-            padding: EdgeInsets.only(top:2),
+            padding: EdgeInsets.only(top: 2),
             child: AcaoListWidget(acoes: widget.tarefa.acoes),
           ),
           Container(
@@ -129,17 +129,6 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
             height: 300,
             color: Colors.purple,
           )
-        ],
-      ),
-    );
-  }
-
-  Widget _feedComentarios() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          CaixaTextoFeedWidget(),
-          Flexible(child: _listaComentario(), flex: 8),
         ],
       ),
     );
