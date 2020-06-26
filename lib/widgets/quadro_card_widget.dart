@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/models_controle/quadro_model.dart';
+import 'package:pmsbmibile3/models/models_controle/usuario_quadro_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 
 class QuadroCardWidget extends StatelessWidget {
@@ -24,21 +25,35 @@ class QuadroCardWidget extends StatelessWidget {
       color: this.cor,
       height: this.altura,
       width: this.largura,
-      child: Row(
+      child: Column(
         children: [
-          IconButton(
-            icon: Icon(Icons.new_releases, color: Colors.redAccent,),
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.new_releases,
+                  color: Colors.redAccent,
+                ),
+                onPressed: () {},
+              ),
+              Expanded(
+                child: ListTile(
+                  onTap: this.onTap,
+                  trailing:
+                      Icon(this.quadro.publico ? Icons.lock_open : Icons.lock),
+                  title: Text("${this.quadro.titulo}"),
+                  subtitle: Text("Descrição: ${this.quadro.descricao}"),
+                ),
+              ),
+              botaoMore(),
+            ],
           ),
-          Expanded(
-            child: ListTile(
-              onTap: this.onTap,
-              trailing:
-                  Icon(this.quadro.publico ? Icons.lock_open : Icons.lock),
-              title: Text("${this.quadro.titulo}"),
-              subtitle: Text("Descrição: ${this.quadro.descricao}"),
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              children: gerarListaUsuarios(),
             ),
           ),
-          botaoMore(),
         ],
       ),
     );
@@ -82,5 +97,23 @@ class QuadroCardWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  List<Widget> gerarListaUsuarios() {
+    List<Widget> usuariosWidget = List<Widget>();
+    for (UsuarioQuadroModel usuario in this.quadro.usuarios) {
+      usuariosWidget.add(Padding(
+        padding: const EdgeInsets.all(5),
+        child: Tooltip(
+          message: usuario.nome,
+          child: CircleAvatar(
+            backgroundColor: Colors.lightBlue[50],
+            child: Text(usuario.nome[0].toUpperCase()+usuario.nome[1].toUpperCase()),
+            backgroundImage: NetworkImage(''),
+          ),
+        ),
+      ));
+    }
+    return usuariosWidget;
   }
 }
