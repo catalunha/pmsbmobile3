@@ -8,6 +8,7 @@ import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/models/models_controle/usuario_quadro_model.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_page.dart';
+import 'package:pmsbmibile3/pages/controle/controle_tarefas_arquivadas.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
@@ -28,7 +29,6 @@ class QuadroTarefasPageHomePage extends StatefulWidget {
 }
 
 class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
-  
   static List<Feed> listaFeed = [
     Feed(
         anexos: [
@@ -95,7 +95,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
     ["ToDo 1", "ToDo 2"],
     ["Done 1", "Done 2"],
     [],
-    [], 
+    [],
     [],
   ];
 
@@ -168,7 +168,16 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
                           ),
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => (TarefasArquivadasPage(
+                              tarefa: tarefa01,
+                            )),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 )
@@ -389,6 +398,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         ),
         childWhenDragging: Container(),
         child: TarefaCardWidget(
+          arquivado: false,
           onTap: () {
             Navigator.push(
               context,

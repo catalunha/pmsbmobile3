@@ -14,7 +14,7 @@ class TarefaCardWidget extends StatelessWidget {
   TarefaCardWidget(
       {Key key,
       @required this.cor,
-      this.arquivado,
+      @required this.arquivado,
       this.altura,
       this.largura,
       this.tarefa,
@@ -33,10 +33,25 @@ class TarefaCardWidget extends StatelessWidget {
       width: this.largura,
       child: Column(
         children: [
+          arquivado
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "PENDENTE",
+                        style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
           ListTile(
             trailing: Tooltip(
-                message: "Prioridade alta",
-                child: Icon(Icons.brightness_1, color: Colors.redAccent),),
+              message: "Prioridade alta",
+              child: Icon(Icons.brightness_1, color: Colors.redAccent),
+            ),
             title: Text("${this.tarefa.tituloAtividade}"),
             subtitle: Text(
                 "Ações:${tarefa.getQuantAcoesFeitas()}/${tarefa.acoes.length}"),
@@ -94,7 +109,8 @@ class TarefaCardWidget extends StatelessWidget {
             width: 30,
             child: CircleAvatar(
               backgroundColor: Colors.grey,
-              child: Text(user.nome[0].toUpperCase() + user.nome[1].toUpperCase()),
+              child:
+                  Text(user.nome[0].toUpperCase() + user.nome[1].toUpperCase()),
             ),
           ),
         ),
