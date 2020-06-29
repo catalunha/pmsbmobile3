@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/components/default_scaffold.dart';
 import 'package:pmsbmibile3/models/models_controle/quadro_model.dart';
+import 'package:pmsbmibile3/models/models_controle/usuario_quadro_model.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/widgets/quadro_card_widget.dart';
@@ -18,11 +19,11 @@ class ControleTarefaHomePage extends StatefulWidget {
 }
 
 class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
-
   QuadroModel quadro01 = new QuadroModel(
     descricao: "Descrição teste",
     titulo: "Titulo do Card 02",
     publico: false,
+    usuarios: [UsuarioQuadroModel(nome: "Pedro", urlImagem: ''), UsuarioQuadroModel(nome:"Natã",urlImagem: ''),UsuarioQuadroModel(nome:"Élenn",urlImagem: '')],
   );
 
   @override
@@ -53,13 +54,19 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
                 //     fontSize: 18,
                 //   ),
                 // ),
-                RaisedButton(
-                  child: Text("Adicionar"),
-                  color: PmsbColors.cor_destaque,
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/controle/editar_criar_quadro");
-                  },
-                )
+                Row(
+                  children: [
+                    RaisedButton(
+                      child: Text("Adicionar"),
+                      color: PmsbColors.cor_destaque,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, "/controle/editar_criar_quadro");
+                      },
+                    ),
+                    botaoMore(),
+                  ],
+                ),
               ],
             ),
           ),
@@ -89,14 +96,50 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
               padding: EdgeInsets.symmetric(horizontal: width * 0.05),
               child: Column(children: _listaMeusQuadros()),
             ),
-            textoQuadro("Meus gerais"),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-              child: Column(children: _listasQuadrosGerais()),
-            ),
+            //textoQuadro("Meus gerais"),
           ],
         ),
       ),
+    );
+  }
+
+  Widget botaoMore() {
+    return PopupMenuButton<Function>(
+      tooltip: "Mostrar Menu",
+      color: PmsbColors.fundo,
+      onSelected: (Function result) {
+        result();
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Function>>[
+        PopupMenuItem<Function>(
+          value: () {
+            print("Abrir tela de quadros arquivados");
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(Icons.archive),
+              SizedBox(width: 5),
+              Text('Quadros Arquivados'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+        PopupMenuItem<Function>(
+          value: () {
+            print("Abrir tela de quadros públicos");
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(Icons.public),
+              SizedBox(width: 5),
+              Text('Quadros Públicos'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
