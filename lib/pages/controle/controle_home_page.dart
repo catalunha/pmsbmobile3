@@ -37,7 +37,7 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
   }
 
   Widget body() {
-    return Column(
+ return Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 10.0),
@@ -47,26 +47,13 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
               children: <Widget>[
                 Container(),
                 Container(),
-                // Text(
-                //   "QUADROS DE EQUIPE",
-                //   style: TextStyle(
-                //     color: PmsbColors.texto_secundario,
-                //     fontSize: 18,
-                //   ),
-                // ),
-                Row(
-                  children: [
-                    RaisedButton(
-                      child: Text("Adicionar"),
-                      color: PmsbColors.cor_destaque,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, "/controle/editar_criar_quadro");
-                      },
-                    ),
-                    botaoMore(),
-                  ],
-                ),
+                RaisedButton(
+                  child: Text("Adicionar"),
+                  color: PmsbColors.cor_destaque,
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/controle/editar_criar_quadro");
+                  },
+                )
               ],
             ),
           ),

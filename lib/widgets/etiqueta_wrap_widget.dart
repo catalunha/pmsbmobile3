@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/style/pmsb_styles.dart';
 import 'package:pmsbmibile3/widgets/etiqueta_card_widget.dart';
 
 class EtiquetaWrapWidget extends StatefulWidget {
@@ -14,6 +15,12 @@ class EtiquetaWrapWidget extends StatefulWidget {
 }
 
 class _EtiquetaWrapWidgetState extends State<EtiquetaWrapWidget> {
+  int botaoradioSelecionado;
+  void initState() {
+    super.initState();
+    botaoradioSelecionado = 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,18 +28,50 @@ class _EtiquetaWrapWidgetState extends State<EtiquetaWrapWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            textoQuadro("Etiquetas"),
+            textoQuadro("Prioridade"),
             IconButton(icon: Icon(Icons.label), onPressed: () {}),
           ],
         ),
-        Wrap(
-            direction: Axis.horizontal,
-            textDirection: TextDirection.ltr,
-            spacing: 8.0,
-            runSpacing: 4.0,
-            children: gerarListaEtiquetasWidgets()),
+        RadioListTile(
+          title: Text(
+            "Baixa",
+            style: PmsbStyles.textoPrimario,
+          ),
+          subtitle: Text(
+            "Tarefa que não necessita de resolução imediata",
+            style: PmsbStyles.textoSecundario,
+          ),
+          value: 1,
+          groupValue: botaoradioSelecionado,
+          activeColor: PmsbColors.cor_destaque,
+          onChanged: (val) {
+            print("Radio $val");
+            setBotaoRadioSelecionado(val);
+          },
+        ),
+        RadioListTile(
+          title: Text(
+            "Alta",
+            style: PmsbStyles.textoPrimario,
+          ),
+          subtitle: Text(
+              "Tarefa que necessita de resolução imediata"),
+          value: 2,
+          groupValue: botaoradioSelecionado,
+          activeColor: PmsbColors.cor_destaque,
+          onChanged: (val) {
+            print("Radio $val");
+            setBotaoRadioSelecionado(val);
+          },
+        ),
       ],
     );
+  }
+
+  setBotaoRadioSelecionado(int val) {
+    setState(() {
+      botaoradioSelecionado = val;
+    });
   }
 
   Widget textoQuadro(String texto) {

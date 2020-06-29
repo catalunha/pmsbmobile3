@@ -88,11 +88,6 @@ class _ControleEditarCriarPageState extends State<ControleEditarCriarPage> {
                   fillColor: Colors.black12,
                 ),
               ),
-              //RadioListTile(
-              // value: 1,
-              // groupValue: 1,
-              // title: Text("Botão 1"),
-              //),
             ),
             Padding(
               padding: EdgeInsets.all(15),

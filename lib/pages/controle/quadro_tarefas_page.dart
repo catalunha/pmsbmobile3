@@ -6,10 +6,13 @@ import 'package:pmsbmibile3/models/models_controle/anexos_model.dart';
 import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
 import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
+import 'package:pmsbmibile3/models/models_controle/usuario_quadro_model.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_page.dart';
+import 'package:pmsbmibile3/pages/controle/controle_tarefas_arquivadas.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
+import 'package:pmsbmibile3/widgets/lista_usuarios_modal.dart';
 import 'package:pmsbmibile3/widgets/tarefa_card_widget.dart';
 
 // import 'package:pmsbmibile3/naosuportato/url_launcher.dart'
@@ -64,13 +67,20 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
     Etiqueta(cor: 0xFF8FD619, titulo: "Working"),
   ];
 
+  static List<UsuarioQuadroModel> usuarios = [
+    UsuarioQuadroModel(nome: "Élenn"),
+    UsuarioQuadroModel(nome: "Lucas"),
+    UsuarioQuadroModel(nome: "Natã"),
+  ];
+
   TarefaModel tarefa01 = new TarefaModel(
       descricaoAtividade:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
       tituloAtividade: "Título do Card 01",
       acoes: listaAcao,
       etiquetas: listaEtiquetas,
-      feed: listaFeed
+      feed: listaFeed,
+      usuarios: usuarios
       // publico: true,
       );
 
@@ -109,23 +119,79 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
               horizontal: MediaQuery.of(context).size.width * 0.10,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Quadro 01",
+                  "Quadro 01 - descrição",
                   style: TextStyle(
                       fontSize: 18, color: PmsbColors.texto_terciario),
                 ),
+                Row(
+                  children: [
+                    InkWell(
+                      child: Tooltip(
+                        message: "Filtrar por equipe",
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage("userAvatarUrl"),
+                          backgroundColor: PmsbColors.navbar,
+                          child: Icon(
+                            Icons.supervised_user_circle,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => ListaUsuariosModal(
+                            selecaoMultipla: false,
+                          ),
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: CircleAvatar(
+                        backgroundColor: PmsbColors.navbar,
+                        child: botaoMore(),
+                      ),
+                    ),
+                    InkWell(
+                      child: Tooltip(
+                        message: "Tarefas arquivadas",
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage("userAvatarUrl"),
+                          backgroundColor: PmsbColors.navbar,
+                          child: Icon(
+                            Icons.archive,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => (TarefasArquivadasPage(
+                              tarefa: tarefa01,
+                            )),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                )
               ],
             ),
           ),
+          SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.05,
             ),
-            child: Divider(
+            child: Container(
               color: Colors.white12,
-              height: 15,
+              height: 2,
             ),
           ),
           SizedBox(height: 15),
@@ -142,21 +208,74 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
     );
   }
 
-  Widget _listaColunas(BuildContext context) {
-    // return Listener(
-    //   onPointerMove: (PointerMoveEvent onPointerMove){
-    //     // if((MediaQuery.of(context).size.width-30)>){
+  Widget botaoMore() {
+    return PopupMenuButton<Function>(
+      color: PmsbColors.navbar,
+      tooltip: "Filtrar por prioridade",
+      icon: Icon(
+        Icons.group_work,
+        color: Colors.white,
+      ),
+      onSelected: (Function result) {
+        result();
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Function>>[
+        PopupMenuItem<Function>(
+          value: () {
+            // Filtrar mostrando todos
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(
+                Icons.brightness_1,
+                color: Colors.white,
+              ),
+              SizedBox(width: 5),
+              Text('Listar todos'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+        PopupMenuItem<Function>(
+          value: () {
+            // Listar por prioridade alta
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(
+                Icons.brightness_1,
+                color: Colors.red,
+              ),
+              SizedBox(width: 5),
+              Text('Prioridade alta'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+        PopupMenuItem<Function>(
+          value: () {
+            // Listar por prioridade baixa
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 2),
+              Icon(
+                Icons.brightness_1,
+                color: Colors.green,
+              ),
+              SizedBox(width: 5),
+              Text('Prioridade baixa'),
+              SizedBox(width: 5),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
-    //     // }
-    //     print('X1: ${onPointerMove.position.dx}, Y1: ${onPointerMove.position.dy}');
-    //   },
-    // onPointerSignal: (PointerSignalEvent event) {
-    //   // if (event is PointerMoveEvent) {
-    //     print('x: ${event.position.dx}, y: ${event.position.dy}');
-    //    // print('scroll delta: ${event.scrollDelta}');
-    //   // }
-    // },
-    // child:
+  Widget _listaColunas(BuildContext context) {
     return Container(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -216,25 +335,6 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
                 SingleChildScrollView(
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.7,
-                    // child: ReorderableListView(
-                    //   onReorder: (oldIndex, newIndex) {
-                    //     setState(() {
-                    //       _handleReOrder(oldIndex, newIndex, index);
-                    //     });
-                    //   },
-                    //   scrollDirection: Axis.vertical,
-                    //   padding: EdgeInsets.symmetric(vertical: 8.0),
-                    //   children: List.generate(
-                    //     childres[index].length,
-                    //     (indexCard) {
-                    //       return _cardTarefa(
-                    //         indexCard,
-                    //         childres[index].indexOf(childres[index][indexCard]),
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
-
                     child: DragAndDropList<String>(
                       childres[index],
                       itemBuilder: (BuildContext context, item) {
@@ -298,6 +398,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         ),
         childWhenDragging: Container(),
         child: TarefaCardWidget(
+          arquivado: false,
           onTap: () {
             Navigator.push(
               context,
@@ -321,162 +422,4 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
     childres[index][oldIndex] = childres[index][newIndex];
     childres[index][newIndex] = oldValue;
   }
-
-  // Widget _buildAddCardWidget(context) {
-  //   return Column(
-  //     children: <Widget>[
-  //       InkWell(
-  //         onTap: () {
-  //           _showAddCard();
-  //         },
-  //         child: Container(
-  //           width: 300.0,
-  //           decoration: BoxDecoration(
-  //             boxShadow: [
-  //               BoxShadow(
-  //                   blurRadius: 8,
-  //                   offset: Offset(0, 0),
-  //                   color: Color.fromRGBO(127, 140, 141, 0.5),
-  //                   spreadRadius: 2)
-  //             ],
-  //             borderRadius: BorderRadius.circular(10.0),
-  //             color: Colors.white,
-  //           ),
-  //           margin: const EdgeInsets.all(16.0),
-  //           padding: const EdgeInsets.all(16.0),
-  //           child: Row(
-  //             children: <Widget>[
-  //               Icon(
-  //                 Icons.add,
-  //               ),
-  //               SizedBox(
-  //                 width: 16.0,
-  //               ),
-  //               Text("Add Card"),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildAddCardTaskWidget(context, index) {
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-  //     child: InkWell(
-  //       onTap: () {
-  //         _showAddCardTask(index);
-  //       },
-  //       child: Row(
-  //         children: <Widget>[
-  //           Icon(
-  //             Icons.add,
-  //           ),
-  //           SizedBox(
-  //             width: 16.0,
-  //           ),
-  //           Text("Add Card Task jhg"),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // _showAddCard() {
-  //   showDialog(
-  //       context: context,
-  //       barrierDismissible: true,
-  //       builder: (context) {
-  //         return Dialog(
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: Text(
-  //                   "Add Card",
-  //                   style:
-  //                       TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: TextField(
-  //                   decoration: InputDecoration(hintText: "Card Title"),
-  //                   controller: _cardTextController,
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 height: 30.0,
-  //               ),
-  //               Center(
-  //                 child: RaisedButton(
-  //                   onPressed: () {
-  //                     Navigator.of(context).pop();
-  //                     _addCard(_cardTextController.text.trim());
-  //                   },
-  //                   child: Text("Add Card"),
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //         );
-  //       });
-  // }
-
-  // _addCard(String text) {
-  //   cards.add(text);
-  //   childres.add([]);
-  //   _cardTextController.text = "";
-  //   setState(() {});
-  // }
-
-  // _showAddCardTask(int index) {
-  //   showDialog(
-  //       context: context,
-  //       barrierDismissible: true,
-  //       builder: (context) {
-  //         return Dialog(
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: Text(
-  //                   "Add Card task",
-  //                   style:
-  //                       TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: TextField(
-  //                   decoration: InputDecoration(hintText: "Task Title"),
-  //                   controller: _taskTextController,
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 height: 30.0,
-  //               ),
-  //               Center(
-  //                 child: RaisedButton(
-  //                   onPressed: () {
-  //                     Navigator.of(context).pop();
-  //                     _addCardTask(index, _taskTextController.text.trim());
-  //                   },
-  //                   child: Text("Add Task"),
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //         );
-  //       });
-  // }
-
-  // _addCardTask(int index, String text) {
-  //   childres[index].add(text);
-  //   _taskTextController.text = "";
-  //   setState(() {});
-  // }
 }
