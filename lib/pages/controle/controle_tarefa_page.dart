@@ -30,7 +30,7 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
     double width = MediaQuery.of(context).size.width;
     return Center(
       child: Container(
-        width: width * 0.7,
+        width: width * 0.8,
         color: Colors.black12,
         child: Column(
           children: <Widget>[
@@ -91,12 +91,15 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
       color: Colors.black12,
       child: Row(
         children: <Widget>[
-          Flexible(child: _colunaOpcoes(), flex: 2),
           Flexible(
               child: ControleFeedPage(
                 tarefa: widget.tarefa,
               ),
-              flex: 8),
+              flex: 7),
+          SizedBox(
+            width: 10,
+          ),
+          Flexible(child: _colunaOpcoes(), flex: 3),
         ],
       ),
     );
@@ -104,30 +107,32 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
 
   Widget _colunaOpcoes() {
     return Container(
-      color: Colors.black12,
       child: ListView(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(5),
-            child: EquipeWrapWidget(),
+          SizedBox(height: 10),
+          Container(
+            color: Color(0xFF77869c),
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: EquipeWrapWidget(),
+            ),
           ),
           SizedBox(height: 10),
-          Padding(
-            padding: EdgeInsets.all(5),
-            child: EtiquetaWrapWidget(etiquetas: widget.tarefa.etiquetas),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 2),
-            child: AcaoListWidget(acoes: widget.tarefa.acoes),
-          ),
           Container(
-            height: 500,
-            color: Colors.yellowAccent,
+            color: Color(0xFF77869c),
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: EtiquetaWrapWidget(etiquetas: widget.tarefa.etiquetas),
+            ),
           ),
+          SizedBox(height: 10),
           Container(
-            height: 300,
-            color: Colors.purple,
-          )
+            color: Color(0xFF77869c),
+            child: Padding(
+              padding: EdgeInsets.only(top: 2),
+              child: AcaoListWidget(acoes: widget.tarefa.acoes),
+            ),
+          ),
         ],
       ),
     );

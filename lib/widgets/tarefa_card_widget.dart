@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
+import 'package:pmsbmibile3/models/models_controle/usuario_quadro_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
-import 'package:pmsbmibile3/widgets/etiqueta_card_widget.dart';
 
 class TarefaCardWidget extends StatelessWidget {
   final Color cor;
   final double altura;
   final double largura;
   final TarefaModel tarefa;
+  final bool arquivado;
   final Function() onTap;
 
   TarefaCardWidget(
-      {Key key, @required this.cor, this.altura, this.largura, this.tarefa, this.onTap})
+      {Key key,
+      @required this.cor,
+      this.arquivado,
+      this.altura,
+      this.largura,
+      this.tarefa,
+      this.onTap})
       : super(key: key);
 
   @override
@@ -23,38 +29,81 @@ class TarefaCardWidget extends StatelessWidget {
         color: PmsbColors.card,
         border: Border(),
       ),
-      //color: this.cor,
       height: this.altura,
       width: this.largura,
       child: Column(
         children: [
           ListTile(
-            //trailing: Icon(this.tarefa.publico ? Icons.lock_open : Icons.lock),
+            trailing: Tooltip(
+                message: "Prioridade alta",
+                child: Icon(Icons.brightness_1, color: Colors.redAccent),),
             title: Text("${this.tarefa.tituloAtividade}"),
             subtitle: Text(
                 "Ações:${tarefa.getQuantAcoesFeitas()}/${tarefa.acoes.length}"),
             onTap: onTap,
-            //subtitle: Text("Descrição: ${this.tarefa.descricaoAtividade}"),
           ),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.start,
-            children: gerarListaEtiquetas(),
+            children: gerarListaUsuarios(),
           ),
-          SizedBox(height: 8,)
+          Container(
+            height: 30,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 2),
+                  child: Text(
+                    " terça, 14 de julho",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.archive,
+                    size: 20,
+                  ),
+                  onPressed: () {},
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
   }
 
-  List<Widget> gerarListaEtiquetas() {
+  List<Widget> gerarListaUsuarios() {
     List<Widget> listaEtiqueta = List<Widget>();
-    for (Etiqueta etq in tarefa.etiquetas) {
-      listaEtiqueta.add(
-        EtiquetaCardWidget(
-          etiqueta: etq,
-        ),
-      );
+    for (UsuarioQuadroModel user in tarefa.usuarios) {
+      listaEtiqueta.add(userCard(user));
     }
     return listaEtiqueta;
+  }
+
+  Widget userCard(UsuarioQuadroModel user) {
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Tooltip(
+          message: user.nome,
+          child: Container(
+            padding: EdgeInsets.all(1),
+            height: 30,
+            width: 30,
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              child: Text(user.nome[0].toUpperCase() + user.nome[1].toUpperCase()),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 20,
+          left: 20,
+          child: Icon(Icons.brightness_1, color: Colors.redAccent, size: 10),
+        )
+      ],
+    );
   }
 }

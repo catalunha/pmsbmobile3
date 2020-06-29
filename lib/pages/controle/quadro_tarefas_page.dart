@@ -6,6 +6,7 @@ import 'package:pmsbmibile3/models/models_controle/anexos_model.dart';
 import 'package:pmsbmibile3/models/models_controle/etiqueta_model.dart';
 import 'package:pmsbmibile3/models/models_controle/feed_model.dart';
 import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
+import 'package:pmsbmibile3/models/models_controle/usuario_quadro_model.dart';
 import 'package:pmsbmibile3/pages/controle/controle_tarefa_page.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
@@ -27,6 +28,7 @@ class QuadroTarefasPageHomePage extends StatefulWidget {
 }
 
 class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
+  
   static List<Feed> listaFeed = [
     Feed(
         anexos: [
@@ -65,13 +67,20 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
     Etiqueta(cor: 0xFF8FD619, titulo: "Working"),
   ];
 
+  static List<UsuarioQuadroModel> usuarios = [
+    UsuarioQuadroModel(nome: "Élenn"),
+    UsuarioQuadroModel(nome: "Lucas"),
+    UsuarioQuadroModel(nome: "Natã"),
+  ];
+
   TarefaModel tarefa01 = new TarefaModel(
       descricaoAtividade:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
       tituloAtividade: "Título do Card 01",
       acoes: listaAcao,
       etiquetas: listaEtiquetas,
-      feed: listaFeed
+      feed: listaFeed,
+      usuarios: usuarios
       // publico: true,
       );
 
@@ -86,7 +95,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
     ["ToDo 1", "ToDo 2"],
     ["Done 1", "Done 2"],
     [],
-    [],
+    [], 
     [],
   ];
 
@@ -147,7 +156,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
                         child: botaoMore(),
                       ),
                     ),
-                                        InkWell(
+                    InkWell(
                       child: Tooltip(
                         message: "Tarefas arquivadas",
                         child: CircleAvatar(
@@ -159,9 +168,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
                           ),
                         ),
                       ),
-                      onTap: () {
-                        
-                      },
+                      onTap: () {},
                     ),
                   ],
                 )
@@ -211,7 +218,10 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
           child: Row(
             children: [
               SizedBox(width: 2),
-              Icon(Icons.brightness_1,color: Colors.white,),
+              Icon(
+                Icons.brightness_1,
+                color: Colors.white,
+              ),
               SizedBox(width: 5),
               Text('Listar todos'),
               SizedBox(width: 5),
@@ -220,12 +230,15 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         ),
         PopupMenuItem<Function>(
           value: () {
-           // Listar por prioridade alta
+            // Listar por prioridade alta
           },
           child: Row(
             children: [
               SizedBox(width: 2),
-              Icon(Icons.brightness_1,color: Colors.red,),
+              Icon(
+                Icons.brightness_1,
+                color: Colors.red,
+              ),
               SizedBox(width: 5),
               Text('Prioridade alta'),
               SizedBox(width: 5),
@@ -239,7 +252,10 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
           child: Row(
             children: [
               SizedBox(width: 2),
-              Icon(Icons.brightness_1,color: Colors.green,),
+              Icon(
+                Icons.brightness_1,
+                color: Colors.green,
+              ),
               SizedBox(width: 5),
               Text('Prioridade baixa'),
               SizedBox(width: 5),

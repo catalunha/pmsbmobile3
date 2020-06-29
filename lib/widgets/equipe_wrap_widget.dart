@@ -17,12 +17,15 @@ class _EquipeWrapWidgetState extends State<EquipeWrapWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               textoQuadro("Equipe"),
-              IconButton(icon: Icon(Icons.person_add), onPressed: () {
-                                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                ListaUsuariosModal(selecaoMultipla: true,));
-              })
+              IconButton(
+                  icon: Icon(Icons.person_add),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => ListaUsuariosModal(
+                              selecaoMultipla: true,
+                            ));
+                  })
             ],
           ),
           Container(
@@ -36,7 +39,6 @@ class _EquipeWrapWidgetState extends State<EquipeWrapWidget> {
                 Chip(
                   backgroundColor: PmsbColors.card,
                   avatar: CircleAvatar(
-
                       backgroundColor: PmsbColors.cor_destaque,
                       child: Text('BS')),
                   label: Text('Bruno'),
