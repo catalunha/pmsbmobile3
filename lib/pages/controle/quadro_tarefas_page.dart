@@ -37,7 +37,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         usuario: "Lucas teste",
         dataPostagem: "15 de julho de 2020",
         corpoTexto:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1800s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
     Feed(
         anexos: [
           Anexo(tipo: "url", titulo: "Url teste", url: "www.google.com")
@@ -45,7 +45,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         usuario: "Lucas teste",
         dataPostagem: "15 de julho de 2020",
         corpoTexto:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1800s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
     Feed(
         anexos: [
           Anexo(tipo: "url", titulo: "Url teste", url: "www.google.com")
@@ -53,11 +53,12 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         usuario: "Lucas teste",
         dataPostagem: "15 de julho de 2020",
         corpoTexto:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1800s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,"),
   ];
 
   static List<Acao> listaAcao = [
     Acao(titulo: "Ação 01", status: true),
+    Acao(titulo: "Ação 02", status: false),
     Acao(titulo: "Ação 02", status: false),
   ];
 
@@ -75,8 +76,8 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
 
   TarefaModel tarefa01 = new TarefaModel(
       descricaoAtividade:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
-      tituloAtividade: "Título do Card 01",
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1800s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+      tituloAtividade: "Título do Card 01 Título do Card 01 Título do Card 01 ",
       acoes: listaAcao,
       etiquetas: listaEtiquetas,
       feed: listaFeed,
@@ -91,6 +92,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
     "Em avaliação",
     "Concluído"
   ];
+
   List<List<String>> childres = [
     ["ToDo 1", "ToDo 2"],
     ["Done 1", "Done 2"],
@@ -110,13 +112,15 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
   }
 
   Widget body(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Container(
       child: Column(
         children: <Widget>[
-          SizedBox(height: 15),
+          SizedBox(height: width > 1800 ? 15 : 3),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.10,
+              horizontal: width > 1800 ? (width * 0.10) : (width * 0.01),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,7 +191,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
           SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.05,
+              horizontal: width > 1800 ? (width * 0.5) : (width * 0.01),
             ),
             child: Container(
               color: Colors.white12,
@@ -198,7 +202,7 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.05,
+                horizontal: width > 1800 ? (width * 0.05) : (width * 0.01),
               ),
               child: _listaColunas(context),
             ),
@@ -285,15 +289,16 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
         },
       ),
     );
-    // // );
   }
 
   Widget _gerarColuna(BuildContext context, int index) {
+    double width = MediaQuery.of(context).size.width;
+
     return Container(
       child: Stack(
         children: <Widget>[
           Container(
-            width: 300.0,
+            width: width > 1800 ? 300 : 260,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -305,55 +310,55 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
               borderRadius: BorderRadius.circular(10.0),
               color: Colors.white,
             ),
-            margin: const EdgeInsets.all(16.0),
+            margin: EdgeInsets.all(width > 1800 ? 12 : 5),
             height: MediaQuery.of(context).size.height * 0.8,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(
                         cards[index],
                         style: TextStyle(
                           color: Colors.blueGrey,
-                          fontSize: 16.0,
+                          fontSize: 14.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       IconButton(
-                          icon: Icon(
-                            Icons.add,
-                            color: Colors.blueGrey,
-                          ),
-                          onPressed: () {})
+                        icon: Icon(
+                          Icons.add,
+                          color: Colors.blueGrey,
+                        ),
+                        onPressed: () {},
+                      )
                     ],
                   ),
-                ),
-                SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: DragAndDropList<String>(
-                      childres[index],
-                      itemBuilder: (BuildContext context, item) {
-                        return _cardTarefa(
-                          index,
-                          childres[index].indexOf(item),
-                        );
-                      },
-                      onDragFinish: (oldIndex, newIndex) {
-                        setState(() {
-                          _handleReOrder(oldIndex, newIndex, index);
-                        });
-                      },
-                      canBeDraggedTo: (one, two) => true,
-                      dragElevation: 8.0,
+                  SingleChildScrollView(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: DragAndDropList<String>(
+                        childres[index],
+                        itemBuilder: (BuildContext context, item) {
+                          return _cardTarefa(
+                            index,
+                            childres[index].indexOf(item),
+                          );
+                        },
+                        onDragFinish: (oldIndex, newIndex) {
+                          setState(() {
+                            _handleReOrder(oldIndex, newIndex, index);
+                          });
+                        },
+                        canBeDraggedTo: (one, two) => true,
+                        dragElevation: 8.0,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Positioned.fill(
@@ -384,14 +389,14 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
   Container _cardTarefa(int index, int innerIndex) {
     return Container(
       key: Key('$index'),
-      width: 300.0,
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      width: MediaQuery.of(context).size.width > 1800 ? 300 : 250.0,
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Draggable<dynamic>(
         feedback: Material(
           elevation: 5.0,
           child: Container(
-            width: 284.0,
-            padding: const EdgeInsets.all(16.0),
+            width: MediaQuery.of(context).size.width > 1800 ? 295 : 245.0,
+            padding: EdgeInsets.all(16.0),
             color: PmsbColors.card,
             child: Text('${tarefa01.tituloAtividade}'),
           ),

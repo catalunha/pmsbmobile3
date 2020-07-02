@@ -24,30 +24,32 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(5.0),
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[botaoAdicionarLink()],
-            ),
-            SizedBox(height: 10),
+            // SizedBox(height: 10),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: <Widget>[botaoAdicionarLink()],
+            // ),
+            SizedBox(height: 5),
             this.caixaDeEntrada,
-            SizedBox(height: 10),
+            SizedBox(height: 5),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                botaoAdicionarLink(),
                 RaisedButton(
                     child: Text("Salvar"),
                     color: PmsbColors.cor_destaque,
                     onPressed: () {}),
-                SizedBox(width: 10),
+                // SizedBox(width: 10),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
           ],
         ),
       ),
@@ -56,12 +58,10 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
 
   Widget caixaTextoLink() {
     return Container(
-      padding: EdgeInsets.all(10),
+      // padding: EdgeInsets.all(10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height: 5),
-          Text("Descrição link:"),
           SizedBox(height: 5),
           Container(
             height: 40,
@@ -70,18 +70,22 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
               border: Border.all(color: PmsbColors.card, width: 1),
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
-            padding: EdgeInsets.all(10),
-            child: TextField(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: TextField(              
               style: TextStyle(color: Colors.black),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
+                hintText: "Descrição do link:",
+                hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600]
+                ),
+                fillColor: Colors.black12,
                 border: InputBorder.none,
               ),
             ),
           ),
           SizedBox(height: 5),
-          Text("Link:"),
-          SizedBox(height: 5),
           Container(
             height: 40,
             decoration: BoxDecoration(
@@ -89,11 +93,17 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
               border: Border.all(color: PmsbColors.card, width: 1),
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.symmetric(horizontal: 5),
             child: TextField(
               style: TextStyle(color: Colors.black),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
+                hintText: "Link:",
+                hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600]
+                ),
+                fillColor: Colors.blue,
                 border: InputBorder.none,
               ),
             ),
@@ -111,7 +121,7 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
         border: Border.all(color: PmsbColors.card, width: 1),
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
       ),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(15),
       child: Center(
         child: TextField(
           autofocus: false,
@@ -120,6 +130,11 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
           keyboardType: TextInputType.multiline,
           maxLines: null,
           decoration: InputDecoration(
+            hintText: "Comentário",
+                hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600]
+                ),
             border: InputBorder.none,
           ),
         ),
@@ -135,7 +150,8 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
           onTap: () {
             setState(() {
               this.entrada = !this.entrada;
-              this.caixaDeEntrada = this.entrada ? this.caixaTexto() : this.caixaTextoLink();
+              this.caixaDeEntrada =
+                  this.entrada ? this.caixaTexto() : this.caixaTextoLink();
             });
           },
           child: Row(
@@ -146,7 +162,7 @@ class _CaixaTextoFeedWidgetState extends State<CaixaTextoFeedWidget> {
                 style: TextStyle(color: PmsbColors.texto_secundario),
               ),
               SizedBox(width: 5),
-              Icon( this.entrada ? Icons.link : Icons.text_fields),
+              Icon(this.entrada ? Icons.link : Icons.text_fields),
               SizedBox(width: 5),
             ],
           ),

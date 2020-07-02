@@ -12,13 +12,19 @@ class _EquipeWrapWidgetState extends State<EquipeWrapWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               textoQuadro("Equipe"),
+              SizedBox(width: 5),
               IconButton(
-                  icon: Icon(Icons.person_add),
+                  icon: Icon(
+                    Icons.person_add,
+                    size: 20,
+                  ),
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -29,7 +35,8 @@ class _EquipeWrapWidgetState extends State<EquipeWrapWidget> {
             ],
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 0.77,
+            //color: Colors.red,
+            // width: MediaQuery.of(context).size.width * 0.77,
             child: Wrap(
               direction: Axis.horizontal,
               textDirection: TextDirection.ltr,
@@ -74,12 +81,12 @@ class _EquipeWrapWidgetState extends State<EquipeWrapWidget> {
 
   Widget textoQuadro(String texto) {
     return Padding(
-      padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 5),
+      padding: EdgeInsets.only(top: 3.0, bottom: 3.0, left: 5),
       child: Text(
         texto,
         style: TextStyle(
           color: PmsbColors.texto_secundario,
-          fontSize: 18,
+          fontSize: 14,
         ),
       ),
     );

@@ -127,7 +127,7 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
   Widget _feedTipoLink() {
     return Container(
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(5.0),
         child: InkWell(
           hoverColor: Colors.white12,
           onTap: () {
@@ -162,9 +162,17 @@ class _ComentarioFeedWidgetState extends State<ComentarioFeedWidget> {
 
   Widget _feedTipoHistorico() {
     return Container(
-      child: Text(
-        widget.feed.valorFeed,
-        style: TextStyle(color: PmsbColors.texto_secundario, fontSize: 16),
+      child: Padding(
+        padding: EdgeInsets.all(5.0),
+        child: Row(
+          mainAxisAlignment:MainAxisAlignment.center   ,
+          children: [
+            Text(
+              widget.feed.valorFeed,
+              style: TextStyle(color: PmsbColors.texto_secundario, fontSize: 16),
+            ),
+          ],
+        ),
       ),
     );
   }

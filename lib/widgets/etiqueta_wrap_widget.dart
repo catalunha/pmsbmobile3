@@ -26,44 +26,55 @@ class _EtiquetaWrapWidgetState extends State<EtiquetaWrapWidget> {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             textoQuadro("Prioridade"),
             IconButton(icon: Icon(Icons.label), onPressed: () {}),
           ],
         ),
-        RadioListTile(
-          title: Text(
-            "Baixa",
-            style: PmsbStyles.textoPrimario,
-          ),
-          subtitle: Text(
-            "Tarefa que não necessita de resolução imediata",
-            style: PmsbStyles.textoSecundario,
-          ),
-          value: 1,
-          groupValue: botaoradioSelecionado,
-          activeColor: PmsbColors.cor_destaque,
-          onChanged: (val) {
-            print("Radio $val");
-            setBotaoRadioSelecionado(val);
-          },
-        ),
-        RadioListTile(
-          title: Text(
-            "Alta",
-            style: PmsbStyles.textoPrimario,
-          ),
-          subtitle: Text(
-              "Tarefa que necessita de resolução imediata"),
-          value: 2,
-          groupValue: botaoradioSelecionado,
-          activeColor: PmsbColors.cor_destaque,
-          onChanged: (val) {
-            print("Radio $val");
-            setBotaoRadioSelecionado(val);
-          },
-        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Flexible(
+              flex: 5,
+              child: RadioListTile(
+                title: Text(
+                  "Baixa",
+                  style: PmsbStyles.textoPrimario,
+                ),
+                // subtitle: Text(
+                //   "Tarefa que não necessita de resolução imediata",
+                //   style: PmsbStyles.textoSecundario,
+                // ),
+                value: 1,
+                groupValue: botaoradioSelecionado,
+                activeColor: PmsbColors.cor_destaque,
+                onChanged: (val) {
+                  print("Radio $val");
+                  setBotaoRadioSelecionado(val);
+                },
+              ),
+            ),
+            Flexible(
+              flex: 5,
+              child: RadioListTile(
+                title: Text(
+                  "Alta",
+                  style: PmsbStyles.textoPrimario,
+                ),
+                // subtitle: Text("Tarefa que necessita de resolução imediata"),
+                value: 2,
+                groupValue: botaoradioSelecionado,
+                activeColor: PmsbColors.cor_destaque,
+                onChanged: (val) {
+                  print("Radio $val");
+                  setBotaoRadioSelecionado(val);
+                },
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
@@ -81,7 +92,7 @@ class _EtiquetaWrapWidgetState extends State<EtiquetaWrapWidget> {
         texto,
         style: TextStyle(
           color: PmsbColors.texto_secundario,
-          fontSize: 18,
+          fontSize: 14,
         ),
       ),
     );

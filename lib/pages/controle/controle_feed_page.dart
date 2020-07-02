@@ -16,8 +16,23 @@ class ControleFeedPage extends StatefulWidget {
 
 class _ControleFeedPageState extends State<ControleFeedPage>
     with SingleTickerProviderStateMixin {
-  
   List<FeedModel> listaFeed = [
+    FeedModel(
+        dataPostagem: "15 de julho de 2020",
+        feedType: FeedType.texto,
+        usuario: UsuarioQuadroModel(nome: "Usuario teste"),
+        valorFeed:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "),
+    FeedModel(
+        dataPostagem: "15 de julho de 2020",
+        feedType: FeedType.url,
+        usuario: UsuarioQuadroModel(nome: "Usuario teste"),
+        valorFeed: "https://github.com/"),
+    FeedModel(
+        dataPostagem: "15 de julho de 2020",
+        feedType: FeedType.historico,
+        usuario: UsuarioQuadroModel(nome: "Usuario teste"),
+        valorFeed: "Moveu essa tarefa de Em avaliação para Concluido"),
     FeedModel(
         dataPostagem: "15 de julho de 2020",
         feedType: FeedType.texto,
@@ -45,8 +60,14 @@ class _ControleFeedPageState extends State<ControleFeedPage>
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(
-        children: <Widget>[CaixaTextoFeedWidget(), _listaComentario()],
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: CaixaTextoFeedWidget(),
+          ),
+          _listaComentario()
+        ],
       ),
     );
   }

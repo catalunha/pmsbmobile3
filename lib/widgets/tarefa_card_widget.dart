@@ -48,42 +48,52 @@ class TarefaCardWidget extends StatelessWidget {
                 )
               : Container(),
           ListTile(
-            trailing: Tooltip(
-              message: "Prioridade alta",
-              child: Icon(Icons.brightness_1, color: Colors.redAccent),
-            ),
+            // trailing: Tooltip(
+            //   message: "Prioridade alta",
+            //   child: Icon(Icons.brightness_1, color: Colors.redAccent),
+            // ),
             title: Text("${this.tarefa.tituloAtividade}"),
             subtitle: Text(
-                "Ações:${tarefa.getQuantAcoesFeitas()}/${tarefa.acoes.length}"),
+                "terça, 14 de julho - Ações:${tarefa.getQuantAcoesFeitas()}/${tarefa.acoes.length}"),
             onTap: onTap,
           ),
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: gerarListaUsuarios(),
-          ),
-          Container(
-            height: 30,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 2),
-                  child: Text(
-                    " terça, 14 de julho",
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.archive,
-                    size: 20,
-                  ),
-                  onPressed: () {},
-                )
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: gerarListaUsuarios(),
+              ),
+              Tooltip(
+                message: "Prioridade alta",
+                child: Icon(Icons.brightness_1, color: Colors.redAccent),
+              ),
+            ],
           )
+
+          // Container(
+          //   height: 30,
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Padding(
+          //         padding: EdgeInsets.only(left: 2),
+          //         child: Text(
+          //           " terça, 14 de julho",
+          //           style: TextStyle(color: Colors.grey, fontSize: 12),
+          //         ),
+          //       ),
+          //       IconButton(
+          //         icon: Icon(
+          //           Icons.archive,
+          //           size: 20,
+          //         ),
+          //         onPressed: () {},
+          //       )
+          //     ],
+          //   ),
+          // )
         ],
       ),
     );
