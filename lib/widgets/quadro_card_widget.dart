@@ -29,13 +29,6 @@ class QuadroCardWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(
-                icon: Icon(
-                  Icons.new_releases,
-                  color: Colors.redAccent,
-                ),
-                onPressed: () {},
-              ),
               Expanded(
                 child: ListTile(
                   onTap: this.onTap,
@@ -108,7 +101,8 @@ class QuadroCardWidget extends StatelessWidget {
           message: usuario.nome,
           child: CircleAvatar(
             backgroundColor: Colors.lightBlue[50],
-            child: Text(usuario.nome[0].toUpperCase()+usuario.nome[1].toUpperCase()),
+            child: Text(
+                usuario.nome[0].toUpperCase() + usuario.nome[1].toUpperCase()),
             backgroundImage: NetworkImage(''),
           ),
         ),
