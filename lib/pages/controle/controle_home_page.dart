@@ -23,7 +23,11 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
     descricao: "Descrição teste",
     titulo: "Titulo do Card 02",
     publico: false,
-    usuarios: [UsuarioQuadroModel(nome: "Pedro", urlImagem: ''), UsuarioQuadroModel(nome:"Natã",urlImagem: ''),UsuarioQuadroModel(nome:"Élenn",urlImagem: '')],
+    usuarios: [
+      UsuarioQuadroModel(nome: "Pedro", urlImagem: ''),
+      UsuarioQuadroModel(nome: "Natã", urlImagem: ''),
+      UsuarioQuadroModel(nome: "Élenn", urlImagem: '')
+    ],
   );
 
   @override
@@ -37,7 +41,7 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
   }
 
   Widget body() {
- return Column(
+    return Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 10.0),
@@ -47,13 +51,19 @@ class _ControleTarefaHomePageState extends State<ControleTarefaHomePage> {
               children: <Widget>[
                 Container(),
                 Container(),
-                RaisedButton(
-                  child: Text("Adicionar"),
-                  color: PmsbColors.cor_destaque,
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/controle/editar_criar_quadro");
-                  },
-                )
+                Row(
+                  children: [
+                    RaisedButton(
+                      child: Text("Adicionar"),
+                      color: PmsbColors.cor_destaque,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, "/controle/editar_criar_quadro");
+                      },
+                    ),
+                    botaoMore()
+                  ],
+                ),
               ],
             ),
           ),
