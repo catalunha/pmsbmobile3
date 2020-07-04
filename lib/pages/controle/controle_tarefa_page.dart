@@ -5,6 +5,7 @@ import 'package:pmsbmibile3/models/models_controle/tarefa_model.dart';
 import 'package:pmsbmibile3/pages/controle/controle_feed_page.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:pmsbmibile3/widgets/acao_list_widget.dart';
+import 'package:pmsbmibile3/widgets/criar_editar_tarefa_widget.dart';
 import 'package:pmsbmibile3/widgets/equipe_wrap_widget.dart';
 import 'package:pmsbmibile3/widgets/etiqueta_wrap_widget.dart';
 
@@ -72,21 +73,28 @@ class _ControleTarefaPageState extends State<ControleTarefaPage> {
                     child: Text(
                       "${widget.tarefa.descricaoAtividade}",
                       style: TextStyle(
-                          color: PmsbColors.texto_terciario, fontSize: 14),
+                        color: PmsbColors.texto_terciario,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
               ),
               Flexible(
                 flex: 3,
-                child: Row( 
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SizedBox(width: 3),
                     RaisedButton.icon(
                       color: Colors.transparent,
                       onPressed: () {
-                        print("teste");
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                CriarEditarTarefaWidget(
+                                   editar: true,
+                                ));
                       },
                       icon: Icon(Icons.edit),
                       label: Text("Editar"),

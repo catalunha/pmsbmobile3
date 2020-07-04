@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmsbmibile3/models/models_controle/acao_model.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
+import 'package:pmsbmibile3/widgets/criar_editar_acao_widget.dart';
 
 class AcaoListWidget extends StatefulWidget {
   final List<Acao> acoes;
@@ -20,7 +21,14 @@ class _AcaoListWidgetState extends State<AcaoListWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             textoQuadro("Ações"),
-            IconButton(icon: Icon(Icons.add_box), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.add_box),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          CriarEditarAcaoWidget());
+                }),
           ],
         ),
         Column(

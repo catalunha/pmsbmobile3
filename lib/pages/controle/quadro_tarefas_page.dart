@@ -12,6 +12,7 @@ import 'package:pmsbmibile3/pages/controle/controle_tarefas_arquivadas.dart';
 import 'package:pmsbmibile3/state/auth_bloc.dart';
 import 'package:pmsbmibile3/style/pmsb_colors.dart';
 import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
+import 'package:pmsbmibile3/widgets/criar_editar_tarefa_widget.dart';
 import 'package:pmsbmibile3/widgets/lista_usuarios_modal.dart';
 import 'package:pmsbmibile3/widgets/tarefa_card_widget.dart';
 
@@ -327,13 +328,28 @@ class _QuadroTarefasPageHomePageState extends State<QuadroTarefasPageHomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.add,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {},
-                      )
+                      (index == 0
+                          ? IconButton(
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.blueGrey,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        CriarEditarTarefaWidget(
+                                          editar: false,
+                                        ));
+                              },
+                            )
+                          : IconButton(
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ))
                     ],
                   ),
                   SingleChildScrollView(
